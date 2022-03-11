@@ -387,7 +387,7 @@ public final class DocumentModelAdministrationAsyncClient {
     /**
      * Generate authorization for copying a custom document analysis model into the target Form Recognizer resource.
      * <p> This should be called by the target resource (where the model will be copied to) and the output can be passed as
-     * the target parameter into {@link DocumentModelAdministrationAsyncClient#beginCopyModel(String, CopyAuthorization)}.
+     * the target parameter into {@link DocumentModelAdministrationAsyncClient#beginCopyModelTo(String, CopyAuthorization)}.
      * </p>
      *
      * @param modelId A unique ID for your copied model. If not specified, a model ID will be created for you.
@@ -418,7 +418,7 @@ public final class DocumentModelAdministrationAsyncClient {
     /**
      * Generate authorization for copying a custom document analysis model into the target Form Recognizer resource.
      * <p>This should be called by the target resource (where the model will be copied to) and the output can be passed as
-     * the target parameter into {@link DocumentModelAdministrationAsyncClient#beginCopyModel(String, CopyAuthorization)}.
+     * the target parameter into {@link DocumentModelAdministrationAsyncClient#beginCopyModelTo(String, CopyAuthorization)}.
      * </p>
      *
      * @param modelId A unique ID for your copied model. If not specified, a model ID will be created for you.
@@ -508,7 +508,7 @@ public final class DocumentModelAdministrationAsyncClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginCreateComposedModel#list-String -->
      *
-     * @param modelIDs The list of component models to compose.
+     * @param componentModelIDs The list of component models to compose.
      * @param modelId The unique model identifier for the composed model.
      * @return A {@link PollerFlux} that polls the create composed model operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns the created {@link DocumentModel composed model}.
@@ -518,8 +518,8 @@ public final class DocumentModelAdministrationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<DocumentOperationResult, DocumentModel> beginCreateComposedModel(
-        List<String> modelIDs, String modelId) {
-        return beginCreateComposedModel(modelIDs, modelId, null, null);
+        List<String> componentModelIDs, String modelId) {
+        return beginCreateComposedModel(componentModelIDs, modelId, null, null);
     }
 
     /**
@@ -560,7 +560,7 @@ public final class DocumentModelAdministrationAsyncClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginCreateComposedModel#list-String-createComposedModelOptions -->
      *
-     * @param modelIDs The list of component models to compose.
+     * @param componentModelIDs The list of component models to compose.
      * @param modelId The unique model identifier for the composed model.
      * @param createComposedModelOptions The configurable {@link CreateComposedModelOptions options} to pass when
      * creating a composed model.
@@ -571,23 +571,23 @@ public final class DocumentModelAdministrationAsyncClient {
      * @throws NullPointerException If the list of {@code modelIDs} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentOperationResult, DocumentModel> beginCreateComposedModel(List<String> modelIDs,
+    public PollerFlux<DocumentOperationResult, DocumentModel> beginCreateComposedModel(List<String> componentModelIDs,
         String modelId, CreateComposedModelOptions createComposedModelOptions) {
-        return beginCreateComposedModel(modelIDs, modelId, createComposedModelOptions, Context.NONE);
+        return beginCreateComposedModel(componentModelIDs, modelId, createComposedModelOptions, Context.NONE);
     }
 
-    PollerFlux<DocumentOperationResult, DocumentModel> beginCreateComposedModel(List<String> modelIDs,
+    PollerFlux<DocumentOperationResult, DocumentModel> beginCreateComposedModel(List<String> componentModelIDs,
         String modelId, CreateComposedModelOptions createComposedModelOptions, Context context) {
         try {
-            if (CoreUtils.isNullOrEmpty(modelIDs)) {
-                throw logger.logExceptionAsError(new NullPointerException("'modelIDs' cannot be null or empty"));
+            if (CoreUtils.isNullOrEmpty(componentModelIDs)) {
+                throw logger.logExceptionAsError(new NullPointerException("'componentModelIDs' cannot be null or empty"));
             }
             modelId = modelId == null ? Utility.generateRandomModelID() : modelId;
 
             createComposedModelOptions = getCreateComposeModelOptions(createComposedModelOptions);
 
             final ComposeDocumentModelRequest composeRequest = new ComposeDocumentModelRequest()
-                .setComponentModels(modelIDs.stream()
+                .setComponentModels(componentModelIDs.stream()
                     .map(modelIdString -> new ComponentModelInfo().setModelId(modelIdString))
                     .collect(Collectors.toList()))
                 .setModelId(modelId)
@@ -620,7 +620,7 @@ public final class DocumentModelAdministrationAsyncClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginCopyModel#string-copyAuthorization -->
+     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginCopyModelTo#string-copyAuthorization -->
      * <pre>
      * String copyModelId = &quot;copy-model&quot;;
      * String targetModelId = &quot;my-copied-model-id&quot;;
@@ -628,7 +628,7 @@ public final class DocumentModelAdministrationAsyncClient {
      * documentModelAdministrationAsyncClient.getCopyAuthorization&#40;targetModelId&#41;
      *     &#47;&#47; Start copy operation from the source client
      *     &#47;&#47; The ID of the model that needs to be copied to the target resource
-     *     .subscribe&#40;copyAuthorization -&gt; documentModelAdministrationAsyncClient.beginCopyModel&#40;copyModelId,
+     *     .subscribe&#40;copyAuthorization -&gt; documentModelAdministrationAsyncClient.beginCopyModelTo&#40;copyModelId,
      *             copyAuthorization&#41;
      *         .filter&#40;pollResponse -&gt; pollResponse.getStatus&#40;&#41;.isComplete&#40;&#41;&#41;
      *         .flatMap&#40;AsyncPollResponse::getFinalResult&#41;
@@ -638,7 +638,7 @@ public final class DocumentModelAdministrationAsyncClient {
      *                 documentModel.getCreatedOn&#40;&#41;&#41;&#41;&#41;;
      *
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginCopyModel#string-copyAuthorization -->
+     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginCopyModelTo#string-copyAuthorization -->
      *
      * @param modelId Model identifier of the model to copy to target resource.
      * @param target the copy authorization to the target Form Recognizer resource. The copy authorization can be
@@ -649,12 +649,12 @@ public final class DocumentModelAdministrationAsyncClient {
      * @throws NullPointerException If {@code modelId} or {@code target} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentOperationResult, DocumentModel> beginCopyModel(String modelId,
+    public PollerFlux<DocumentOperationResult, DocumentModel> beginCopyModelTo(String modelId,
         CopyAuthorization target) {
-        return beginCopyModel(modelId, target, null);
+        return beginCopyModelTo(modelId, target, null);
     }
 
-    PollerFlux<DocumentOperationResult, DocumentModel> beginCopyModel(String modelId,
+    PollerFlux<DocumentOperationResult, DocumentModel> beginCopyModelTo(String modelId,
         CopyAuthorization target, Context context) {
         return new PollerFlux<DocumentOperationResult, DocumentModel>(
             DEFAULT_POLL_INTERVAL,

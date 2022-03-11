@@ -364,7 +364,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
             }
 
             PollerFlux<DocumentOperationResult, DocumentModel> copyPoller =
-                client.beginCopyModel(actualModel.getModelId(), target).setPollInterval(durationTestMode);
+                client.beginCopyModelTo(actualModel.getModelId(), target).setPollInterval(durationTestMode);
             DocumentModel copiedModel = copyPoller.getSyncPoller().getFinalResult();
             Assertions.assertEquals(target.getTargetModelId(), copiedModel.getModelId());
 
@@ -397,7 +397,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
             }
 
             PollerFlux<DocumentOperationResult, DocumentModel> copyPoller =
-                client.beginCopyModel(actualModel.getModelId(), target)
+                client.beginCopyModelTo(actualModel.getModelId(), target)
                     .setPollInterval(durationTestMode);
 
             DocumentModel copiedModel = copyPoller.getSyncPoller().getFinalResult();
