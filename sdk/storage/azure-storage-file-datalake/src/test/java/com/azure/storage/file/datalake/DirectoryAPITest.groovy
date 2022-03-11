@@ -1984,7 +1984,7 @@ class DirectoryAPITest extends APISpec {
 
         def sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions)
         def sas = fsc.generateSas(sasValues)
-        def client = getDirectoryClient(sas, fsc.getFileSystemUrl(), dc.getFilePath())
+        def client = getDirectoryClient(sas, fsc.getFileSystemUrl(), dc.getDirectoryPath())
 
         when:
         def destClient = client.rename(fsc.getFileSystemName(), generatePathName())

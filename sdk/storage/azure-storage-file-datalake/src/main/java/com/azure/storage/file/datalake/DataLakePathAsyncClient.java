@@ -1386,8 +1386,8 @@ public class DataLakePathAsyncClient {
 
         DataLakePathAsyncClient dataLakePathAsyncClient = getPathAsyncClient(destinationFileSystem, destinationPath);
 
-        String renameSource = "/" + this.fileSystemName + "/" + Utility.urlEncode(pathName)
-            + "?" + this.sasToken.getSignature();
+        String renameSource = "/" + this.fileSystemName + "/" + Utility.urlEncode(pathName);
+        renameSource = this.sasToken != null ? renameSource + "?" + this.sasToken.getSignature() : renameSource;
 
         return dataLakePathAsyncClient.dataLakeStorage.getPaths().createWithResponseAsync(
             null /* request id */, null /* timeout */, null /* pathResourceType */,
