@@ -16,7 +16,7 @@ public interface HttpResponseLogger {
     /**
      * Gets the {@link LogLevel} used to log the HTTP response.
      * <p>
-     * By default this will return {@link LogLevel#INFORMATIONAL}.
+     * By default, this will return {@link LogLevel#INFORMATIONAL}.
      *
      * @param loggingOptions The information available during response logging.
      * @return The {@link LogLevel} used to log the HTTP response.

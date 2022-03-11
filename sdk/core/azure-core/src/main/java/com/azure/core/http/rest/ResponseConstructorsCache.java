@@ -42,7 +42,7 @@ final class ResponseConstructorsCache {
      * found.
      */
     MethodHandle get(Class<? extends Response<?>> responseClass) {
-        return CACHE.computeIfAbsent(responseClass, this::locateResponseConstructor);
+        return CACHE.computeIfAbsent(responseClass, ResponseConstructorsCache::locateResponseConstructor);
     }
 
     /**
@@ -63,7 +63,7 @@ final class ResponseConstructorsCache {
      * @return The {@link MethodHandle} that is capable of constructing an instance of the class or null if no handle is
      * found.
      */
-    private MethodHandle locateResponseConstructor(Class<?> responseClass) {
+    private static MethodHandle locateResponseConstructor(Class<?> responseClass) {
         MethodHandles.Lookup lookupToUse;
         try {
             lookupToUse = ReflectionUtilsApi.INSTANCE.getLookupToUse(responseClass);

@@ -10,22 +10,22 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.implementation.AccessibleByteArrayOutputStream;
+import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.http.HttpPipelineCallContextHelper;
 import com.azure.core.implementation.jackson.ObjectMapperShim;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
-import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
-import java.nio.channels.WritableByteChannel;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Locale;
@@ -181,19 +181,24 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             long contentLength = getContentLength(logger, request.getHeaders());
 
             if (shouldBodyBeLogged(contentType, contentLength)) {
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream((int) contentLength);
-                WritableByteChannel bodyContentChannel = Channels.newChannel(outputStream);
+                AccessibleByteArrayOutputStream stream = new AccessibleByteArrayOutputStream((int) contentLength);
 
                 // Add non-mutating operators to the data stream.
                 request.setBody(
                     request.getBody()
-                        .flatMap(byteBuffer -> writeBufferToBodyStream(bodyContentChannel, byteBuffer))
+                        .doOnNext(byteBuffer -> {
+                            try {
+                                ImplUtils.writeByteBufferToStream(byteBuffer.duplicate(), stream);
+                            } catch (IOException ex) {
+                                throw LOGGER.logExceptionAsError(Exceptions.propagate(ex));
+                            }
+                        })
                         .doFinally(ignored -> {
                             requestLogMessage.append(contentLength)
                                 .append("-byte body:")
                                 .append(System.lineSeparator())
                                 .append(prettyPrintIfNeeded(logger, prettyPrintBody, contentType,
-                                    convertStreamToString(outputStream, logger)))
+                                    new String(stream.toByteArray(), 0, stream.count(), StandardCharsets.UTF_8)))
                                 .append(System.lineSeparator())
                                 .append("--> END ")
                                 .append(request.getHttpMethod())
@@ -259,20 +264,18 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
             if (shouldBodyBeLogged(contentTypeHeader, contentLength)) {
                 HttpResponse bufferedResponse = response.buffer();
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream((int) contentLength);
-                WritableByteChannel bodyContentChannel = Channels.newChannel(outputStream);
-                return bufferedResponse.getBody()
-                    .flatMap(byteBuffer -> writeBufferToBodyStream(bodyContentChannel, byteBuffer))
-                    .doFinally(ignored -> {
+                AccessibleByteArrayOutputStream stream = new AccessibleByteArrayOutputStream((int) contentLength);
+                return FluxUtil.writeToOutputStream(bufferedResponse.getBody(), stream)
+                    .then(Mono.defer(() -> {
                         responseLogMessage.append("Response body:")
                             .append(System.lineSeparator())
                             .append(prettyPrintIfNeeded(logger, prettyPrintBody, contentTypeHeader,
-                                convertStreamToString(outputStream, logger)))
+                                new String(stream.toByteArray(), 0, stream.count(), StandardCharsets.UTF_8)))
                             .append(System.lineSeparator())
                             .append("<-- END HTTP");
 
-                        logAndReturn(logger, logLevel, responseLogMessage, response);
-                    }).then(Mono.just(bufferedResponse));
+                        return logAndReturn(logger, logLevel, responseLogMessage, bufferedResponse);
+                    }));
             } else {
                 responseLogMessage.append("(body content not logged)")
                     .append(System.lineSeparator())
@@ -448,29 +451,6 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         return !ContentType.APPLICATION_OCTET_STREAM.equalsIgnoreCase(contentTypeHeader)
             && contentLength != 0
             && contentLength < MAX_BODY_LOG_SIZE;
-    }
-
-    /*
-     * Helper function which converts a ByteArrayOutputStream to a String without duplicating the internal buffer.
-     */
-    private static String convertStreamToString(ByteArrayOutputStream stream, ClientLogger logger) {
-        try {
-            return stream.toString("UTF-8");
-        } catch (UnsupportedEncodingException ex) {
-            throw logger.logExceptionAsError(new RuntimeException(ex));
-        }
-    }
-
-    /*
-     * Helper function which writes body ByteBuffers into the body message channel.
-     */
-    private static Mono<ByteBuffer> writeBufferToBodyStream(WritableByteChannel channel, ByteBuffer byteBuffer) {
-        try {
-            channel.write(byteBuffer.duplicate());
-            return Mono.just(byteBuffer);
-        } catch (IOException ex) {
-            return Mono.error(ex);
-        }
     }
 
     /*
