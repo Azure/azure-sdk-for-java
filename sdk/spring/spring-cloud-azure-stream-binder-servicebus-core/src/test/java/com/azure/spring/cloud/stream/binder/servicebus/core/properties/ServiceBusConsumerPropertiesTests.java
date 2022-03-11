@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -25,8 +26,8 @@ class ServiceBusConsumerPropertiesTests {
     }
 
     @Test
-    void autoCompleteDefaultNull() {
-        assertNull(consumerProperties.getAutoComplete());
+    void autoCompleteDefaultTrue() {
+        assertTrue(consumerProperties.getAutoComplete());
     }
 
     @Test
@@ -37,13 +38,13 @@ class ServiceBusConsumerPropertiesTests {
 
     @Test
     void requeueRejectedDefaultsToFalse() {
-        assertEquals(false, consumerProperties.isRequeueRejected());
+        assertFalse(consumerProperties.isRequeueRejected());
     }
 
     @Test
     void customRequeueRejected() {
         consumerProperties.setRequeueRejected(true);
-        assertEquals(true, consumerProperties.isRequeueRejected());
+        assertTrue(consumerProperties.isRequeueRejected());
     }
 
     @Test
