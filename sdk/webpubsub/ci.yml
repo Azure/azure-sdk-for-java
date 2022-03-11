@@ -40,3 +40,6 @@ extends:
       - name: azure-resourcemanager-webpubsub
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerwebpubsub
+      - name: azure-messaging-webpubsubnew
+        groupId: com.azure
+        safeName: azuremessagingwebpubsubnew
