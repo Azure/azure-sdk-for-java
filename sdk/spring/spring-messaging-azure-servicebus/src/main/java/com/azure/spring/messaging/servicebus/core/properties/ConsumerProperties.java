@@ -15,7 +15,7 @@ import java.time.Duration;
 public class ConsumerProperties extends CommonProperties implements ServiceBusReceiverClientProperties {
 
     private Boolean sessionEnabled;
-    private Boolean autoComplete;
+    private Boolean autoComplete = true;
     private Integer prefetchCount;
     private SubQueue subQueue = SubQueue.NONE;
     private ServiceBusReceiveMode receiveMode = ServiceBusReceiveMode.PEEK_LOCK;
