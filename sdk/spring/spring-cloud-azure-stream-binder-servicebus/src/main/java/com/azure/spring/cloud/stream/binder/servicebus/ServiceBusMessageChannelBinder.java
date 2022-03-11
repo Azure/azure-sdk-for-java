@@ -15,11 +15,10 @@ import com.azure.spring.integration.core.implementation.instrumentation.DefaultI
 import com.azure.spring.integration.core.implementation.instrumentation.InstrumentationSendCallback;
 import com.azure.spring.integration.core.instrumentation.Instrumentation;
 import com.azure.spring.integration.core.instrumentation.InstrumentationManager;
-import com.azure.spring.integration.servicebus.inbound.ServiceBusInboundChannelAdapter;
 import com.azure.spring.integration.servicebus.implementation.health.ServiceBusProcessorInstrumentation;
+import com.azure.spring.integration.servicebus.inbound.ServiceBusInboundChannelAdapter;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
-import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.messaging.servicebus.core.ServiceBusTemplate;
 import com.azure.spring.messaging.servicebus.core.listener.ServiceBusMessageListenerContainer;
@@ -135,7 +134,6 @@ public class ServiceBusMessageChannelBinder extends
         ServiceBusContainerProperties containerProperties = new ServiceBusContainerProperties();
         containerProperties.setEntityName(destination.getName());
         containerProperties.setSubscriptionName(group);
-        containerProperties.setCheckpointConfig(new CheckpointConfig(properties.getExtension().getCheckpointMode()));
 
         ServiceBusMessageListenerContainer listenerContainer = new ServiceBusMessageListenerContainer(getProcessorFactory(), containerProperties);
 

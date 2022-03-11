@@ -80,8 +80,8 @@ public class ConsumerProperties extends CommonProperties implements ServiceBusRe
     }
 
     /**
-     * Set the receive mode.
-     * @param receiveMode the receive mode.
+     * Set the receiving mode.
+     * @param receiveMode the receiving mode.
      */
     public void setReceiveMode(ServiceBusReceiveMode receiveMode) {
         this.receiveMode = receiveMode;

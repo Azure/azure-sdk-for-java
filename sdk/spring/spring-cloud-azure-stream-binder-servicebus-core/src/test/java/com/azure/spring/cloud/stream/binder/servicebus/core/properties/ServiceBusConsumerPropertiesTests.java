@@ -5,7 +5,6 @@ package com.azure.spring.cloud.stream.binder.servicebus.core.properties;
 
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
-import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,10 +13,10 @@ import java.time.Duration;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ServiceBusConsumerPropertiesTests {
 
-    static final String CONNECTION_STRING = "Endpoint=sb://%s.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=key";
     private ServiceBusConsumerProperties consumerProperties;
 
     @BeforeEach
@@ -26,14 +25,14 @@ class ServiceBusConsumerPropertiesTests {
     }
 
     @Test
-    void checkpointModeDefaults() {
-        assertEquals(CheckpointMode.RECORD, consumerProperties.getCheckpointMode());
+    void autoCompleteDefaultNull() {
+        assertNull(consumerProperties.getAutoComplete());
     }
 
     @Test
-    void customCheckpointMode() {
-        consumerProperties.setCheckpointMode(CheckpointMode.BATCH);
-        assertEquals(CheckpointMode.BATCH, consumerProperties.getCheckpointMode());
+    void customizeAutoComplete() {
+        consumerProperties.setAutoComplete(true);
+        assertTrue(consumerProperties.getAutoComplete());
     }
 
     @Test
