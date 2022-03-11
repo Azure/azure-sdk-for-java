@@ -858,7 +858,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             // Note that if the file will be uploaded using a putBlob, we also can skip the exists check.
             if (!overwrite) {
                 if (UploadUtils.shouldUploadInChunks(filePath,
-                    BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES_LONG, logger)) {
+                    (long) BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES, logger)) {
                     overwriteCheck = exists().flatMap(exists -> exists
                         ? monoError(logger, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
                         : Mono.empty());
@@ -972,7 +972,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                         BlockBlobAsyncClient blockBlobAsyncClient = getBlockBlobAsyncClient();
                         long fileSize = channel.size();
 
-                        // If the file is larger than 256MB chunk it and stage it as blocks.
+                        // By default, if the file is larger than 256MB chunk it and stage it as blocks.
+                        // But, this is configurable by the user passing options with max single upload size configured.
                         if (UploadUtils.shouldUploadInChunks(options.getFilePath(),
                             finalParallelTransferOptions.getMaxSingleUploadSizeLong(), logger)) {
                             return uploadFileChunks(fileSize, finalParallelTransferOptions, originalBlockSize,
