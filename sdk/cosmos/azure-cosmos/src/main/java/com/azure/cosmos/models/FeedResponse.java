@@ -107,8 +107,16 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
             new ConcurrentHashMap<>(toBeCloned.queryMetricsMap) :
             new ConcurrentHashMap<>();
         this.cosmosDiagnostics = toBeCloned.cosmosDiagnostics != null ?
-            BridgeInternal.cloneCosmosDiagnostics(toBeCloned.cosmosDiagnostics):
+            BridgeInternal.cloneCosmosDiagnostics(toBeCloned.cosmosDiagnostics) :
             BridgeInternal.createCosmosDiagnostics(this.queryMetricsMap);
+
+        this.queryInfo = toBeCloned.queryInfo != null ? new QueryInfo(toBeCloned.queryInfo.getPropertyBag()) : null;
+        this.queryPlanDiagnosticsContext = toBeCloned.queryPlanDiagnosticsContext != null ?
+            new QueryInfo.QueryPlanDiagnosticsContext(
+                toBeCloned.queryPlanDiagnosticsContext.getStartTimeUTC(),
+                toBeCloned.queryPlanDiagnosticsContext.getEndTimeUTC(),
+                toBeCloned.queryPlanDiagnosticsContext.getRequestTimeline()) :
+            null;
     }
 
     /**

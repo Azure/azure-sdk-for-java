@@ -376,7 +376,7 @@ public class DocumentQueryExecutionContextFactory {
             correlatedActivityId,
             feedRangeEpks);
 
-        return PipelinedDocumentQueryExecutionContext.createAsync(
+        return PipelinedQueryExecutionContextBase.createAsync(
             diagnosticsClientContext, client, documentQueryParams, resourceType);
     }
 

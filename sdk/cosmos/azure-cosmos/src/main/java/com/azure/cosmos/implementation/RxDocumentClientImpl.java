@@ -40,6 +40,7 @@ import com.azure.cosmos.implementation.query.IDocumentQueryExecutionContext;
 import com.azure.cosmos.implementation.query.Paginator;
 import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfo;
 import com.azure.cosmos.implementation.query.PipelinedDocumentQueryExecutionContext;
+import com.azure.cosmos.implementation.query.PipelinedQueryExecutionContextBase;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyAndResourceTokenPair;
@@ -830,8 +831,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         AtomicBoolean isFirstResponse = new AtomicBoolean(true);
         return executionContext.flatMap(iDocumentQueryExecutionContext -> {
             QueryInfo queryInfo = null;
-            if (iDocumentQueryExecutionContext instanceof PipelinedDocumentQueryExecutionContext) {
-                queryInfo = ((PipelinedDocumentQueryExecutionContext<T>) iDocumentQueryExecutionContext).getQueryInfo();
+            if (iDocumentQueryExecutionContext instanceof PipelinedQueryExecutionContextBase) {
+                queryInfo = ((PipelinedQueryExecutionContextBase<T>) iDocumentQueryExecutionContext).getQueryInfo();
             }
 
             QueryInfo finalQueryInfo = queryInfo;
