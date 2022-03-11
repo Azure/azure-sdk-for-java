@@ -7,6 +7,8 @@ import com.azure.core.util.Configuration;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -60,8 +62,19 @@ public class EnvironmentConfiguration implements Cloneable {
     /**
      * Constructs a configuration containing the known Azure properties constants.
      */
-    public EnvironmentConfiguration() {
+    private EnvironmentConfiguration() {
         this.configurations = loadBaseConfiguration();
+    }
+
+    /**
+     * Constructs a configuration containing mocked environment. Use this constructor for testing.
+     */
+    public EnvironmentConfiguration(Map<String, String> configurations) {
+        Objects.requireNonNull(configurations, "'configurations' can't be null");
+        this.configurations = new ConcurrentHashMap<>(configurations.size());
+        for (Map.Entry<String, String> config : configurations.entrySet()) {
+            this.configurations.put(config.getKey(), Optional.ofNullable(config.getValue()));
+        }
     }
 
     private EnvironmentConfiguration(EnvironmentConfiguration original) {

@@ -3,15 +3,13 @@
 
 package com.azure.core.util;
 
-import com.azure.core.implementation.util.EnvironmentConfiguration;
-
 public class TestConfigurationBuilder {
     private TestConfigurationSource source;
-    private EnvironmentConfiguration envConfig;
+    private TestConfigurationSource envConfig;
 
     public TestConfigurationBuilder(String... testProps) {
         this.source = new TestConfigurationSource(testProps);
-        this.envConfig = new EnvironmentConfiguration();
+        this.envConfig = new TestConfigurationSource();
     }
 
     public TestConfigurationBuilder add(String key, String value) {
@@ -20,7 +18,7 @@ public class TestConfigurationBuilder {
     }
 
     public TestConfigurationBuilder addEnv(String key, String value) {
-        envConfig.put(key, value);
+        envConfig.add(key, value);
         return this;
     }
 

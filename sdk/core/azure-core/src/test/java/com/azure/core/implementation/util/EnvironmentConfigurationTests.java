@@ -8,6 +8,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.Collections;
 import java.util.stream.Stream;
 
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_TRACING_DISABLED;
@@ -31,7 +32,7 @@ public class EnvironmentConfigurationTests {
      */
     @Test
     public void runtimeConfigurationFound() {
-        EnvironmentConfiguration configuration = spy(EnvironmentConfiguration.class);
+        EnvironmentConfiguration configuration = spy(new EnvironmentConfiguration(Collections.emptyMap()));
         when(configuration.loadFromProperties(MY_CONFIGURATION)).thenReturn(EXPECTED_VALUE);
         when(configuration.loadFromEnvironment(MY_CONFIGURATION)).thenReturn(null);
 
@@ -43,7 +44,7 @@ public class EnvironmentConfigurationTests {
      */
     @Test
     public void environmentConfigurationFound() {
-        EnvironmentConfiguration configuration = spy(EnvironmentConfiguration.class);
+        EnvironmentConfiguration configuration = spy(new EnvironmentConfiguration(Collections.emptyMap()));
         when(configuration.loadFromProperties(MY_CONFIGURATION)).thenReturn(null);
         when(configuration.loadFromEnvironment(MY_CONFIGURATION)).thenReturn(EXPECTED_VALUE);
 
@@ -55,7 +56,7 @@ public class EnvironmentConfigurationTests {
      */
     @Test
     public void configurationNotFound() {
-        EnvironmentConfiguration configuration = new EnvironmentConfiguration();
+        EnvironmentConfiguration configuration = new EnvironmentConfiguration(Collections.emptyMap());
         assertNull(configuration.get(MY_CONFIGURATION));
     }
 
@@ -64,7 +65,7 @@ public class EnvironmentConfigurationTests {
      */
     @Test
     public void runtimeConfigurationPreferredOverEnvironmentConfiguration() {
-        EnvironmentConfiguration configuration = spy(EnvironmentConfiguration.class);
+        EnvironmentConfiguration configuration = spy(new EnvironmentConfiguration(Collections.emptyMap()));
         when(configuration.loadFromProperties(MY_CONFIGURATION)).thenReturn(EXPECTED_VALUE);
         when(configuration.loadFromEnvironment(MY_CONFIGURATION)).thenReturn(UNEXPECTED_VALUE);
 
@@ -76,7 +77,7 @@ public class EnvironmentConfigurationTests {
      */
     @Test
     public void foundConfigurationPreferredOverDefault() {
-        EnvironmentConfiguration configuration = spy(EnvironmentConfiguration.class);
+        EnvironmentConfiguration configuration = spy(new EnvironmentConfiguration(Collections.emptyMap()));
         when(configuration.loadFromEnvironment(MY_CONFIGURATION)).thenReturn(EXPECTED_VALUE);
 
         assertEquals(EXPECTED_VALUE, configuration.get(MY_CONFIGURATION, DEFAULT_VALUE));
@@ -87,7 +88,7 @@ public class EnvironmentConfigurationTests {
      */
     @Test
     public void fallbackToDefaultConfiguration() {
-        EnvironmentConfiguration configuration = new EnvironmentConfiguration();
+        EnvironmentConfiguration configuration = new EnvironmentConfiguration(Collections.emptyMap());
 
         assertEquals(DEFAULT_VALUE, configuration.get(MY_CONFIGURATION, DEFAULT_VALUE));
     }
@@ -97,7 +98,7 @@ public class EnvironmentConfigurationTests {
      */
     @Test
     public void foundConfigurationIsConverted() {
-        EnvironmentConfiguration configuration = spy(EnvironmentConfiguration.class);
+        EnvironmentConfiguration configuration = spy(new EnvironmentConfiguration(Collections.emptyMap()));
         when(configuration.loadFromProperties(MY_CONFIGURATION)).thenReturn(EXPECTED_VALUE);
 
         assertEquals(EXPECTED_VALUE.toUpperCase(), configuration.get(MY_CONFIGURATION, String::toUpperCase));
@@ -108,12 +109,12 @@ public class EnvironmentConfigurationTests {
      */
     @Test
     public void notFoundConfigurationIsConvertedToNull() {
-        assertNull(new EnvironmentConfiguration().get(MY_CONFIGURATION, String::toUpperCase));
+        assertNull(new EnvironmentConfiguration(Collections.emptyMap()).get(MY_CONFIGURATION, String::toUpperCase));
     }
 
     @Test
     public void cloneConfiguration() {
-        EnvironmentConfiguration configuration = new EnvironmentConfiguration()
+        EnvironmentConfiguration configuration = new EnvironmentConfiguration(Collections.emptyMap())
             .put("variable1", "value1")
             .put("variable2", "value2");
 
@@ -130,7 +131,7 @@ public class EnvironmentConfigurationTests {
 
     @Test
     public void loadValueTwice() {
-        EnvironmentConfiguration configuration = new EnvironmentConfiguration();
+        EnvironmentConfiguration configuration = new EnvironmentConfiguration(Collections.emptyMap());
         String tracingDisabled = configuration.get(PROPERTY_AZURE_TRACING_DISABLED);
         String tracingDisabled2 = configuration.get(PROPERTY_AZURE_TRACING_DISABLED);
 
@@ -140,7 +141,7 @@ public class EnvironmentConfigurationTests {
     @ParameterizedTest
     @MethodSource("getOrDefaultSupplier")
     public void getOrDefault(String configurationValue, Object defaultValue, Object expectedValue) {
-        EnvironmentConfiguration configuration = new EnvironmentConfiguration()
+        EnvironmentConfiguration configuration = new EnvironmentConfiguration(Collections.emptyMap())
             .put("getOrDefault", configurationValue);
 
         assertEquals(expectedValue, configuration.get("getOrDefault", defaultValue));
@@ -161,6 +162,6 @@ public class EnvironmentConfigurationTests {
 
     @Test
     public void getOrDefaultReturnsDefault() {
-        assertEquals("42", new EnvironmentConfiguration().get("empty", "42"));
+        assertEquals("42", new EnvironmentConfiguration(Collections.emptyMap()).get("empty", "42"));
     }
 }

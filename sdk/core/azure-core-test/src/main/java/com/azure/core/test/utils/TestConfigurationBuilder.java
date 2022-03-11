@@ -3,7 +3,6 @@
 
 package com.azure.core.test.utils;
 
-import com.azure.core.implementation.util.EnvironmentConfiguration;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.ConfigurationSource;
@@ -20,14 +19,14 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class TestConfigurationBuilder {
     private final TestConfigurationSource source;
-    private final EnvironmentConfiguration envConfig;
+    private final TestConfigurationSource envConfig;
 
     /**
      * Created {@link TestConfigurationBuilder}
      */
     public TestConfigurationBuilder() {
         this.source = new TestConfigurationSource();
-        this.envConfig = new EnvironmentConfiguration();
+        this.envConfig = new TestConfigurationSource();
     }
 
     /**
@@ -50,7 +49,7 @@ public class TestConfigurationBuilder {
      * @return the updated TestConfigurationBuilder object.
      */
     public TestConfigurationBuilder addEnv(String key, String value) {
-        envConfig.put(key, value);
+        envConfig.add(key, value);
         return this;
     }
 
@@ -75,7 +74,7 @@ public class TestConfigurationBuilder {
 
     private ConfigurationBuilder getBuilder() {
         try {
-            Constructor<?> ctor = ConfigurationBuilder.class.getDeclaredConstructor(ConfigurationSource.class, EnvironmentConfiguration.class);
+            Constructor<?> ctor = ConfigurationBuilder.class.getDeclaredConstructor(ConfigurationSource.class, ConfigurationSource.class);
             ctor.setAccessible(true);
             return (ConfigurationBuilder) ctor.newInstance(source, envConfig);
         } catch (Throwable t) {

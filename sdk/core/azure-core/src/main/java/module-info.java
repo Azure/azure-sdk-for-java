@@ -47,7 +47,6 @@ module com.azure.core {
     opens com.azure.core.implementation.serializer to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation.jackson to com.fasterxml.jackson.databind;
     opens com.azure.core.http.rest to com.fasterxml.jackson.databind;
-    exports com.azure.core.implementation.util;
     opens com.azure.core.implementation.util to com.fasterxml.jackson.databind;
 
     // Service Provider Interfaces

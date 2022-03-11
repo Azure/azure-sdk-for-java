@@ -24,10 +24,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ConfigurationTests {
 
+    private static final Map<String, String> ENV_PROPS = new HashMap<String, String>() {{
+            put("foo", "bar");
+        }};
+
     @Test
     public void environmentConfigurationFallback() {
-        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration()
-            .put("foo", "bar");
+        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(ENV_PROPS);
         Configuration configuration = new Configuration(Collections.emptyMap(), envConfiguration, null, null);
         assertEquals("bar", configuration.get("foo"));
         assertTrue(configuration.contains("foo"));
@@ -35,7 +38,7 @@ public class ConfigurationTests {
 
     @Test
     public void environmentConfigurationFallbackNotFound() {
-        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration();
+        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(Collections.emptyMap());
         Configuration configuration = new Configuration(Collections.emptyMap(), envConfiguration, null, null);
         assertNull(configuration.get("foo"));
         assertFalse(configuration.contains("foo"));
@@ -43,8 +46,10 @@ public class ConfigurationTests {
 
     @Test
     public void environmentConfigurationFallbackDefaultValue() {
-        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration()
-            .put("foo", "42");
+        Map<String, String> props = new HashMap<>();
+        props.put("foo", "42");
+
+        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(props);
         Configuration configuration = new Configuration(Collections.emptyMap(), envConfiguration, null, null);
         assertEquals(42, configuration.get("foo", 0));
         assertEquals(0, configuration.get("foo-not-found", 0));
@@ -52,9 +57,11 @@ public class ConfigurationTests {
 
     @Test
     public void environmentConfigurationFallbackConverter() {
-        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration()
-            .put("foo", "42")
-            .put("bar", "forty two");
+        Map<String, String> props = new HashMap<>();
+        props.put("foo", "42");
+        props.put("bar", "forty two");
+
+        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(props);
         Configuration configuration = new Configuration(Collections.emptyMap(), envConfiguration, null, null);
         Function<String, Integer> converter = Integer::parseInt;
         assertEquals(42, configuration.get("foo", converter));
@@ -64,8 +71,7 @@ public class ConfigurationTests {
     @Test
     @SuppressWarnings("deprecation")
     public void environmentConfigurationFallbackRemove() {
-        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration()
-            .put("foo", "bar");
+        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(ENV_PROPS);
         Configuration configuration = new Configuration(Collections.emptyMap(), envConfiguration, null, null);
         assertEquals("bar", configuration.get("foo"));
 
@@ -121,9 +127,11 @@ public class ConfigurationTests {
 
     @Test
     public void getByNameFallbackToEnv() {
-        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration()
-            .put("foo", "some value")
-            .put("bar", "baz");
+        Map<String, String> props = new HashMap<>();
+        props.put("foo", "some value");
+        props.put("bar", "baz");
+
+        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(props);
 
         Map<String, String> configurations = new HashMap<>();
         configurations.put("foo", "42");
@@ -139,8 +147,9 @@ public class ConfigurationTests {
     @Test
     @SuppressWarnings("deprecation")
     public void removeOnlyAffectsEnvironmentForBackwardCompatibility() {
-        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration()
-            .put("foo", "barEnv");
+        Map<String, String> props = new HashMap<>();
+        props.put("foo", "barEnv");
+        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(props);
 
         Map<String, String> configurations = new HashMap<>();
         configurations.put("foo", "bar");
@@ -155,7 +164,7 @@ public class ConfigurationTests {
     @Test
     @SuppressWarnings("deprecation")
     public void putOnlyAffectsEnvironmentForBackwardCompatibility() {
-        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration();
+        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(Collections.emptyMap());
 
         Map<String, String> configurations = new HashMap<>();
         configurations.put("foo", "bar");
@@ -238,11 +247,14 @@ public class ConfigurationTests {
 
     @Test
     public void getPropertyWithEnvVar() {
+        Map<String, String> props = new HashMap<>();
+        props.put("env1", "e1");
+
         ConfigurationProperty<String> prop = ConfigurationProperty.stringPropertyBuilder("prop")
             .environmentAliases("env2", "env1")
             .build();
 
-        EnvironmentConfiguration envConfig = new EnvironmentConfiguration().put("env1", "e1");
+        EnvironmentConfiguration envConfig = new EnvironmentConfiguration(props);
         Configuration config1 = new Configuration(Collections.emptyMap(), envConfig, null, null);
         assertTrue(config1.contains(prop));
         assertEquals("e1", config1.get(prop));
@@ -331,9 +343,11 @@ public class ConfigurationTests {
     @Test
     @SuppressWarnings("deprecation")
     public void cloneConfiguration() {
-        EnvironmentConfiguration envConfig = new EnvironmentConfiguration()
-            .put("envVar1", "envVar1")
-            .put("envVar2", "envVar2");
+        Map<String, String> envConfigurations = new HashMap<>();
+        envConfigurations.put("envVar1", "envVar1");
+        envConfigurations.put("envVar2", "envVar2");
+
+        EnvironmentConfiguration envConfig = new EnvironmentConfiguration(envConfigurations);
         Map<String, String> configurations = new HashMap<>();
         configurations.put("prop1", "prop1");
         configurations.put("prop2", "prop2");

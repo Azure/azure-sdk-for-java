@@ -35,18 +35,20 @@ public class ConfigurationBuilder {
      * @param source Custom {@link ConfigurationSource} containing known Azure SDK configuration properties
      */
     public ConfigurationBuilder(ConfigurationSource source) {
-        this(source, EnvironmentConfiguration.getGlobalConfiguration());
+        this.source = Objects.requireNonNull(source, "'source' cannot be null");
+        this.environmentConfiguration = EnvironmentConfiguration.getGlobalConfiguration();
     }
 
     /**
      * Creates {@code ConfigurationBuilder} with custom environment configuration. Used to test configuration.
      *
      * @param source {@link ConfigurationSource} instance containing known Azure SDK configuration properties
-     * @param environmentConfiguration Instance of {@link EnvironmentConfiguration}.
+     * @param environmentConfigurationSource {@link ConfigurationSource} instance containing known Azure SDK environment configuration.
      */
-    ConfigurationBuilder(ConfigurationSource source, EnvironmentConfiguration environmentConfiguration) {
+    ConfigurationBuilder(ConfigurationSource source, ConfigurationSource environmentConfigurationSource) {
         this.source = Objects.requireNonNull(source, "'source' cannot be null");
-        this.environmentConfiguration = environmentConfiguration;
+        Objects.requireNonNull(environmentConfigurationSource, "'source' cannot be null");
+        this.environmentConfiguration = new EnvironmentConfiguration(environmentConfigurationSource.getProperties(null));
     }
 
     /**
