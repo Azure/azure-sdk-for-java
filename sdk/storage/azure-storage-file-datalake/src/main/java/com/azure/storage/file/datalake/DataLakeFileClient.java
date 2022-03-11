@@ -865,14 +865,16 @@ public class DataLakeFileClient extends DataLakePathClient {
         DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destinationRequestConditions,
         Duration timeout, Context context) {
 
-        Mono<Response<DataLakeFileClient>> response = dataLakeFileAsyncClient.renameWithResponse(destinationFileSystem, destinationPath,
-            sourceRequestConditions, destinationRequestConditions, context)
-            .map(asyncResponse ->
-                new SimpleResponse<>(asyncResponse.getRequest(), asyncResponse.getStatusCode(),
-                    asyncResponse.getHeaders(), new DataLakeFileClient(new DataLakeFileAsyncClient(asyncResponse.getValue()),
-                    new SpecializedBlobClientBuilder()
-                        .blobAsyncClient(asyncResponse.getValue().blockBlobAsyncClient)
-                        .buildBlockBlobClient())));
+        Mono<Response<DataLakeFileClient>> response =
+            dataLakeFileAsyncClient.renameWithResponse(destinationFileSystem, destinationPath,
+                    sourceRequestConditions, destinationRequestConditions, context)
+                .map(asyncResponse ->
+                    new SimpleResponse<>(asyncResponse.getRequest(), asyncResponse.getStatusCode(),
+                        asyncResponse.getHeaders(),
+                        new DataLakeFileClient(new DataLakeFileAsyncClient(asyncResponse.getValue()),
+                            new SpecializedBlobClientBuilder()
+                                .blobAsyncClient(asyncResponse.getValue().blockBlobAsyncClient)
+                                .buildBlockBlobClient())));
 
         Response<DataLakeFileClient> resp = StorageImplUtils.blockWithOptionalTimeout(response, timeout);
         return new SimpleResponse<>(resp, new DataLakeFileClient(resp.getValue()));

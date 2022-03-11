@@ -548,14 +548,16 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
         DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destinationRequestConditions,
         Duration timeout, Context context) {
 
-        Mono<Response<DataLakeDirectoryClient>> response = dataLakeDirectoryAsyncClient.renameWithResponse(destinationFileSystem, destinationPath,
-                sourceRequestConditions, destinationRequestConditions, context)
-            .map(asyncResponse ->
+        Mono<Response<DataLakeDirectoryClient>> response =
+            dataLakeDirectoryAsyncClient.renameWithResponse(destinationFileSystem, destinationPath,
+                    sourceRequestConditions, destinationRequestConditions, context)
+                .map(asyncResponse ->
                 new SimpleResponse<>(asyncResponse.getRequest(), asyncResponse.getStatusCode(),
-                    asyncResponse.getHeaders(), new DataLakeDirectoryClient(new DataLakeDirectoryAsyncClient(asyncResponse.getValue()),
-                    new SpecializedBlobClientBuilder()
-                        .blobAsyncClient(asyncResponse.getValue().blockBlobAsyncClient)
-                        .buildBlockBlobClient())));
+                    asyncResponse.getHeaders(),
+                    new DataLakeDirectoryClient(new DataLakeDirectoryAsyncClient(asyncResponse.getValue()),
+                        new SpecializedBlobClientBuilder()
+                            .blobAsyncClient(asyncResponse.getValue().blockBlobAsyncClient)
+                            .buildBlockBlobClient())));
 
 
         Response<DataLakeDirectoryClient> resp = StorageImplUtils.blockWithOptionalTimeout(response, timeout);
