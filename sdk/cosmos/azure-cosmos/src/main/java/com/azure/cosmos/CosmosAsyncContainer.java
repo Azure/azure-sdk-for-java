@@ -670,7 +670,6 @@ public class CosmosAsyncContainer {
         FeedResponse<T> response,
         boolean isChangeFeed) {
 
-        QueryInfo queryInfo = ModelBridgeInternal.getQueryInfoFromFeedResponse(response);
         boolean useEtagAsContinuation = isChangeFeed;
         boolean isNoChangesResponse = isChangeFeed ?
             ModelBridgeInternal.getNoCHangesFromFeedResponse(response)
