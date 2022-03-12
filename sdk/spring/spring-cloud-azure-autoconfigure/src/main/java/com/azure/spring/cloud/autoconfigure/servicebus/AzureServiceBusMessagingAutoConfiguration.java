@@ -49,7 +49,7 @@ import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUti
 })
 public class AzureServiceBusMessagingAutoConfiguration {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(AzureServiceBusMessagingAutoConfiguration.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AzureServiceBusMessagingAutoConfiguration.class);
     @Bean
     @ConditionalOnMissingBean
     NamespaceProperties serviceBusNamespaceProperties(AzureServiceBusProperties properties,
