@@ -733,8 +733,10 @@ public class JsonSerializable {
     @SuppressWarnings("unchecked")
     // Implicit or explicit cast to T is done after checking values are assignable from Class<T>.
     public static <T> T toObjectFromObjectNode(JsonNode node, boolean isValueQuery, Class<T> c) {
-        // TODO: We have to remove this if we do not want to support InternalObjectNode anymore, and change all the
-        //  tests accordingly
+        if (isValueQuery && node.has(Constants.Properties.VALUE)) {
+            return OBJECT_MAPPER.convertValue(node.get(Constants.Properties.VALUE), c);
+        }
+
         if (InternalObjectNode.class.isAssignableFrom(c)) {
             return (T) new InternalObjectNode((ObjectNode)node);
         }
@@ -743,66 +745,6 @@ public class JsonSerializable {
             (JsonSerializable.class.isAssignableFrom(c) || containsJsonSerializable(c))) {
 
             return c.cast(instantiateFromObjectNodeAndType((ObjectNode)node, c));
-        }
-
-        if (c == Short.TYPE) {
-            return (T)(Object)(node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).shortValue();
-        }
-
-        if (Short.class.isAssignableFrom(c)) {
-            return c.cast((node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).shortValue());
-        }
-
-        if (c == Integer.TYPE) {
-            return (T)(Object)(node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).intValue();
-        }
-
-        if (c == Integer.TYPE || Integer.class.isAssignableFrom(c)) {
-            return c.cast((node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).intValue());
-        }
-
-        if (c == Long.TYPE) {
-            return (T)(Object)(node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).longValue();
-        }
-
-        if (Long.class.isAssignableFrom(c)) {
-            return c.cast((node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).longValue());
-        }
-
-        if (c == Float.TYPE) {
-            return (T)(Object)(node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).floatValue();
-        }
-
-        if (Float.class.isAssignableFrom(c)) {
-            return c.cast((node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).floatValue());
-        }
-
-        if (c == Double.TYPE) {
-            return (T)(Object)(node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).doubleValue();
-        }
-
-        if (Double.class.isAssignableFrom(c)) {
-            return c.cast((node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).doubleValue());
-        }
-
-        if (BigDecimal.class.isAssignableFrom(c)) {
-            return c.cast((node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).decimalValue());
-        }
-
-        if (BigInteger.class.isAssignableFrom(c)) {
-            return c.cast((node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).bigIntegerValue());
-        }
-
-        if (String.class.isAssignableFrom(c)) {
-            return c.cast((node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).asText());
-        }
-
-        if (c == Boolean.TYPE) {
-            return (T)(Object)(node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).booleanValue();
-        }
-
-        if (Boolean.class.isAssignableFrom(c)) {
-            return c.cast((node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).booleanValue());
         }
 
         if (List.class.isAssignableFrom(c)) {
@@ -819,21 +761,13 @@ public class JsonSerializable {
                     throw new IllegalArgumentException(
                         "We support JsonNode but not its sub-classes.");
                 }
-            } else {
-                if (isValueQuery) {
-                    return c.cast(node.has(Constants.Properties.VALUE) ? node.get(Constants.Properties.VALUE) : node);
-                }
             }
+
             return c.cast(node);
         } else {
             // POJO
             JsonSerializable.checkForValidPOJO(c);
             try {
-                if (isValueQuery) {
-                    return OBJECT_MAPPER.treeToValue(
-                        node.has(Constants.Properties.VALUE) ? node.get(Constants.Properties.VALUE) : node,
-                        c);
-                }
                 return OBJECT_MAPPER.treeToValue(node, c);
             } catch (IOException e) {
                throw new IllegalStateException(
