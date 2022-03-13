@@ -13,6 +13,7 @@ import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.Set;
 
@@ -31,18 +32,25 @@ public class GoodLoggingCheck extends AbstractCheck {
     private static final String CLIENT_LOGGER_PATH = "com.azure.core.util.logging.ClientLogger";
     private static final String CLIENT_LOGGER = "ClientLogger";
     private static final String LOGGER = "logger";
-    private static final String STATIC_LOGGER_ERROR = "Use a static ClientLogger instance in a static method.";
+    private static final int[] REQUIRED_TOKENS = new int[]{
+        TokenTypes.IMPORT,
+        TokenTypes.INTERFACE_DEF,
+        TokenTypes.CLASS_DEF,
+        TokenTypes.LITERAL_NEW,
+        TokenTypes.VARIABLE_DEF,
+        TokenTypes.METHOD_CALL
+    };
 
-    private static final String LOGGER_NAME_ERROR =
-        "ClientLogger instance naming: use ''%s'' instead of ''%s'' for consistency.";
-
-    private static final String NOT_CLIENT_LOGGER_ERROR =
-        "Do not use %s class. Use ''%s'' as a logging mechanism instead of ''%s''.";
+    static final String STATIC_LOGGER_ERROR = "Use a static ClientLogger instance in a static method.";
+    static final String LOGGER_NAME_ERROR = "ClientLogger instance naming: use \"%s\" instead of \"%s\" for consistency.";
+    static final String NOT_CLIENT_LOGGER_ERROR = "Do not use %s class. Use \"%s\" as a logging mechanism instead of \"%s\".";
+    static final String LOGGER_NAME_MISMATCH_ERROR = "Not newing a ClientLogger with matching class name. Use \"%s.class\" "
+        + "instead of \"%s\".";
 
     // Boolean indicator that indicates if the java class imports ClientLogger
     private boolean hasClientLoggerImported;
     // A LIFO queue stores the class names, pop top element if exist the class name AST node
-    private Queue<String> classNameDeque = Collections.asLifoQueue(new ArrayDeque<>());
+    private final Queue<String> classNameDeque = Collections.asLifoQueue(new ArrayDeque<>());
     // Collection of Invalid logging packages
     private static final Set<String> INVALID_LOGS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
         "org.slf4j", "org.apache.logging.log4j", "java.util.logging"
@@ -60,14 +68,7 @@ public class GoodLoggingCheck extends AbstractCheck {
 
     @Override
     public int[] getRequiredTokens() {
-        return new int[] {
-            TokenTypes.IMPORT,
-            TokenTypes.CLASS_DEF,
-            TokenTypes.LITERAL_NEW,
-            TokenTypes.VARIABLE_DEF,
-            TokenTypes.METHOD_CALL,
-            TokenTypes.METHOD_DEF
-        };
+        return REQUIRED_TOKENS;
     }
 
     @Override
@@ -96,6 +97,7 @@ public class GoodLoggingCheck extends AbstractCheck {
                 });
                 break;
             case TokenTypes.CLASS_DEF:
+            case TokenTypes.INTERFACE_DEF:
                 classNameDeque.offer(ast.findFirstToken(TokenTypes.IDENT).getText());
                 break;
             case TokenTypes.LITERAL_NEW:
@@ -113,9 +115,6 @@ public class GoodLoggingCheck extends AbstractCheck {
                 if (methodCallName.startsWith("System.out") || methodCallName.startsWith("System.err")) {
                     log(ast, String.format(NOT_CLIENT_LOGGER_ERROR, "Java System", CLIENT_LOGGER_PATH, methodCallName));
                 }
-                break;
-            case TokenTypes.METHOD_DEF:
-                checkForInvalidStaticLoggerUsage(ast);
                 break;
             default:
                 // Checkstyle complains if there's no default block in switch
@@ -160,9 +159,8 @@ public class GoodLoggingCheck extends AbstractCheck {
             final String containerClassName = FullIdent.createFullIdent(exprToken.getFirstChild()).getText();
             // Add suffix of '.class' at the end of class name
             final String className = classNameDeque.peek();
-            if (!containerClassName.equals(className + ".class")) {
-                log(exprToken, String.format("Not newing a ClientLogger with matching class name. Use ''%s.class'' "
-                    + "instead of ''%s''.", className, containerClassName));
+            if (!Objects.equals(className + ".class", containerClassName)) {
+                log(exprToken, String.format(LOGGER_NAME_MISMATCH_ERROR, className, containerClassName));
             }
             return true;
         });
@@ -183,34 +181,4 @@ public class GoodLoggingCheck extends AbstractCheck {
             log(varToken, String.format(LOGGER_NAME_ERROR, LOGGER, identAST.getText()));
         }
     }
-
-    /**
-     * Report error if a static ClientLogger instance used in a non-static method.
-     *
-     * @param methodDefToken METHOD_DEF AST node
-     */
-    private void checkForInvalidStaticLoggerUsage(DetailAST methodDefToken) {
-
-        // if not a static method
-        if (!(TokenUtil.findFirstTokenByPredicate(methodDefToken,
-            node -> node.branchContains(TokenTypes.LITERAL_STATIC)).isPresent())) {
-            
-            // error if static `LOGGER` present, LOGGER.*
-            if (methodDefToken.findFirstToken(TokenTypes.SLIST) != null) {
-                TokenUtil
-                    .forEachChild(methodDefToken.findFirstToken(TokenTypes.SLIST), TokenTypes.EXPR, (exprToken) -> {
-                        if (exprToken != null) {
-                            DetailAST methodCallToken = exprToken.findFirstToken(TokenTypes.METHOD_CALL);
-                            if (methodCallToken != null && methodCallToken.findFirstToken(TokenTypes.DOT) != null) {
-                                if (methodCallToken.findFirstToken(TokenTypes.DOT)
-                                    .findFirstToken(TokenTypes.IDENT).getText().equals(LOGGER.toUpperCase())) {
-                                    log(methodDefToken, STATIC_LOGGER_ERROR);
-                                }
-                            }
-                        }
-                    });
-            }
-        }
-    }
-
 }

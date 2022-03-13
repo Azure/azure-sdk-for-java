@@ -4,23 +4,61 @@
 
 package com.azure.resourcemanager.labservices.models;
 
+import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.labservices.fluent.models.OperationResultInner;
+import java.time.OffsetDateTime;
 
 /** An immutable client-side representation of OperationResult. */
 public interface OperationResult {
+    /**
+     * Gets the id property: Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
+     *
+     * @return the id value.
+     */
+    String id();
+
+    /**
+     * Gets the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    String name();
+
     /**
      * Gets the status property: The operation status.
      *
      * @return the status value.
      */
-    String status();
+    OperationStatus status();
 
     /**
-     * Gets the error property: Error details for the operation in case of a failure.
+     * Gets the startTime property: Start time.
+     *
+     * @return the startTime value.
+     */
+    OffsetDateTime startTime();
+
+    /**
+     * Gets the endTime property: End time.
+     *
+     * @return the endTime value.
+     */
+    OffsetDateTime endTime();
+
+    /**
+     * Gets the percentComplete property: Percent completion.
+     *
+     * @return the percentComplete value.
+     */
+    Float percentComplete();
+
+    /**
+     * Gets the error property: The error for a failure if the operation failed.
      *
      * @return the error value.
      */
-    OperationError error();
+    ManagementError error();
 
     /**
      * Gets the inner com.azure.resourcemanager.labservices.fluent.models.OperationResultInner object.

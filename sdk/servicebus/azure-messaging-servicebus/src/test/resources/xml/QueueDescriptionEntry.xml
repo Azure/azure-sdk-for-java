@@ -1,12 +1,12 @@
 <entry xmlns="http://www.w3.org/2005/Atom">
-    <id>https://foo.servicebus.windows.net/queue?enrich=true&amp;api-version=2017-04</id>
+    <id>https://foo.servicebus.windows.net/queue?enrich=true&amp;api-version=2021-05</id>
     <title type="text">my-test-queue</title>
     <published>2020-06-05T03:55:07Z</published>
     <updated>2020-05-05T04:10:07Z</updated>
     <author>
         <name>sb-java-conniey-4</name>
     </author>
-    <link rel="self" href="https://sb-java-conniey-4.servicebus.windows.net/queue?enrich=true&amp;api-version=2017-04"/>
+    <link rel="self" href="https://sb-java-conniey-4.servicebus.windows.net/queue?enrich=true&amp;api-version=2021-05"/>
     <content type="application/xml">
       <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect">
             <LockDuration>PT5M</LockDuration>

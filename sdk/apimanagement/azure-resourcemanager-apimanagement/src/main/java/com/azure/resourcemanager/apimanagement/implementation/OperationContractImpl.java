@@ -32,6 +32,18 @@ public final class OperationContractImpl
         return this.innerModel().type();
     }
 
+    public String displayName() {
+        return this.innerModel().displayName();
+    }
+
+    public String method() {
+        return this.innerModel().method();
+    }
+
+    public String urlTemplate() {
+        return this.innerModel().urlTemplate();
+    }
+
     public List<ParameterContract> templateParameters() {
         List<ParameterContract> inner = this.innerModel().templateParameters();
         if (inner != null) {
@@ -60,18 +72,6 @@ public final class OperationContractImpl
 
     public String policies() {
         return this.innerModel().policies();
-    }
-
-    public String displayName() {
-        return this.innerModel().displayName();
-    }
-
-    public String method() {
-        return this.innerModel().method();
-    }
-
-    public String urlTemplate() {
-        return this.innerModel().urlTemplate();
     }
 
     public OperationContractInner innerModel() {
@@ -191,6 +191,36 @@ public final class OperationContractImpl
         return this;
     }
 
+    public OperationContractImpl withDisplayName(String displayName) {
+        if (isInCreateMode()) {
+            this.innerModel().withDisplayName(displayName);
+            return this;
+        } else {
+            this.updateParameters.withDisplayName(displayName);
+            return this;
+        }
+    }
+
+    public OperationContractImpl withMethod(String method) {
+        if (isInCreateMode()) {
+            this.innerModel().withMethod(method);
+            return this;
+        } else {
+            this.updateParameters.withMethod(method);
+            return this;
+        }
+    }
+
+    public OperationContractImpl withUrlTemplate(String urlTemplate) {
+        if (isInCreateMode()) {
+            this.innerModel().withUrlTemplate(urlTemplate);
+            return this;
+        } else {
+            this.updateParameters.withUrlTemplate(urlTemplate);
+            return this;
+        }
+    }
+
     public OperationContractImpl withTemplateParameters(List<ParameterContract> templateParameters) {
         if (isInCreateMode()) {
             this.innerModel().withTemplateParameters(templateParameters);
@@ -237,36 +267,6 @@ public final class OperationContractImpl
             return this;
         } else {
             this.updateParameters.withPolicies(policies);
-            return this;
-        }
-    }
-
-    public OperationContractImpl withDisplayName(String displayName) {
-        if (isInCreateMode()) {
-            this.innerModel().withDisplayName(displayName);
-            return this;
-        } else {
-            this.updateParameters.withDisplayName(displayName);
-            return this;
-        }
-    }
-
-    public OperationContractImpl withMethod(String method) {
-        if (isInCreateMode()) {
-            this.innerModel().withMethod(method);
-            return this;
-        } else {
-            this.updateParameters.withMethod(method);
-            return this;
-        }
-    }
-
-    public OperationContractImpl withUrlTemplate(String urlTemplate) {
-        if (isInCreateMode()) {
-            this.innerModel().withUrlTemplate(urlTemplate);
-            return this;
-        } else {
-            this.updateParameters.withUrlTemplate(urlTemplate);
             return this;
         }
     }

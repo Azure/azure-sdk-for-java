@@ -1,7 +1,87 @@
 # Release History
 
-## 12.1.0-beta.1 (Unreleased)
+## 12.3.0-beta.1 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 12.2.0 (2022-02-10)
+
+### Features added
+- Implemented new traits (micro-interfaces) in `TableClientBuiler` and `TableServiceClientBuilder`. This makes the experience of using client builders more consistent across libraries in the Azure SDK for Java. 
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.25.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.7`
+
+## 12.1.5 (2022-01-11)
+
+### Bugs fixed
+- Fixed issue that made it so single quotes in entity names were not properly escaped according to OData standards. [[25066]](https://github.com/Azure/azure-sdk-for-java/pull/25066) 
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.24.1`
+- Upgraded `azure-core-http-netty` dependency to `1.11.6`
+    
+## 12.1.4 (2021-11-19)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.22.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.2`
+
+## 12.1.3 (2021-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.21.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.1`
+
+## 12.1.2 (2021-09-09)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.20.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.0`
+
+## 12.1.1 (2021-08-13)
+
+### Bugs Fixed
+- Fixed an issue that made getting entities from a Cosmos endpoint fail as it does not return a `Timestamp@odata.type` property in a `TableEntity` alongside the `Timestamp` property, like Storage endpoint do. This is apparently intended behavior, so we now always convert `Timestamp` to `OffsetDateTime` as it is a reserved property name and will always be provided by the service.
+- Updated clients to properly map an internal HTTP exception to the public type `TableServiceException` in operations such as `getAccessPolicies()`, `getProperties()`, `setProperties()` and `getStatistics()`, including their `withResponse` variants.
+- Fixed batch operations to properly log exceptions other than `TableTransactionFailedException`.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.19.0`
+- Upgraded `azure-core-http-netty` dependency to `1.10.2`
+
+## 12.1.0 (2021-07-08)
+
+### Features Added
+- Added support for Azure Active Directory (AAD) authorization to `TableServiceClient` and `TableClient`. This enables the use of `TokenCredential` credentials in client builders. Note: Only Azure Storage API endpoints currently support AAD authorization.
+
+### Bugs fixed
+- Fixed issue where HTTP headers set in a `ClientOptions` object passed to a client builder would not be set on a client instantiated by said builder.
+- Fixed an issue where a `connectionString` with an account name and key would override a `sasToken`'s authentication settings in client builders.
+- Fixed an issue that made `TableClient.listEntities()` and `TableServiceClient.listTables()` throw a `ClassCastException` when passing a non-null value for `timeout`.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.18.0`
+- Upgraded `azure-core-http-netty` dependency to `1.10.1`
 
 ## 12.0.0 (2021-06-11)
 

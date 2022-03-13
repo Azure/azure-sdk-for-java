@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.BgpCommunity;
@@ -15,22 +14,15 @@ import java.util.List;
 import java.util.Map;
 
 /** Service Community Properties. */
-@JsonFlatten
 @Fluent
-public class BgpServiceCommunityInner extends Resource {
+public final class BgpServiceCommunityInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BgpServiceCommunityInner.class);
 
     /*
-     * The name of the bgp community. e.g. Skype.
+     * Properties of the BGP service community.
      */
-    @JsonProperty(value = "properties.serviceName")
-    private String serviceName;
-
-    /*
-     * A list of bgp communities.
-     */
-    @JsonProperty(value = "properties.bgpCommunities")
-    private List<BgpCommunity> bgpCommunities;
+    @JsonProperty(value = "properties")
+    private BgpServiceCommunityPropertiesFormat innerProperties;
 
     /*
      * Resource ID.
@@ -39,43 +31,12 @@ public class BgpServiceCommunityInner extends Resource {
     private String id;
 
     /**
-     * Get the serviceName property: The name of the bgp community. e.g. Skype.
+     * Get the innerProperties property: Properties of the BGP service community.
      *
-     * @return the serviceName value.
+     * @return the innerProperties value.
      */
-    public String serviceName() {
-        return this.serviceName;
-    }
-
-    /**
-     * Set the serviceName property: The name of the bgp community. e.g. Skype.
-     *
-     * @param serviceName the serviceName value to set.
-     * @return the BgpServiceCommunityInner object itself.
-     */
-    public BgpServiceCommunityInner withServiceName(String serviceName) {
-        this.serviceName = serviceName;
-        return this;
-    }
-
-    /**
-     * Get the bgpCommunities property: A list of bgp communities.
-     *
-     * @return the bgpCommunities value.
-     */
-    public List<BgpCommunity> bgpCommunities() {
-        return this.bgpCommunities;
-    }
-
-    /**
-     * Set the bgpCommunities property: A list of bgp communities.
-     *
-     * @param bgpCommunities the bgpCommunities value to set.
-     * @return the BgpServiceCommunityInner object itself.
-     */
-    public BgpServiceCommunityInner withBgpCommunities(List<BgpCommunity> bgpCommunities) {
-        this.bgpCommunities = bgpCommunities;
-        return this;
+    private BgpServiceCommunityPropertiesFormat innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -113,13 +74,59 @@ public class BgpServiceCommunityInner extends Resource {
     }
 
     /**
+     * Get the serviceName property: The name of the bgp community. e.g. Skype.
+     *
+     * @return the serviceName value.
+     */
+    public String serviceName() {
+        return this.innerProperties() == null ? null : this.innerProperties().serviceName();
+    }
+
+    /**
+     * Set the serviceName property: The name of the bgp community. e.g. Skype.
+     *
+     * @param serviceName the serviceName value to set.
+     * @return the BgpServiceCommunityInner object itself.
+     */
+    public BgpServiceCommunityInner withServiceName(String serviceName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BgpServiceCommunityPropertiesFormat();
+        }
+        this.innerProperties().withServiceName(serviceName);
+        return this;
+    }
+
+    /**
+     * Get the bgpCommunities property: A list of bgp communities.
+     *
+     * @return the bgpCommunities value.
+     */
+    public List<BgpCommunity> bgpCommunities() {
+        return this.innerProperties() == null ? null : this.innerProperties().bgpCommunities();
+    }
+
+    /**
+     * Set the bgpCommunities property: A list of bgp communities.
+     *
+     * @param bgpCommunities the bgpCommunities value to set.
+     * @return the BgpServiceCommunityInner object itself.
+     */
+    public BgpServiceCommunityInner withBgpCommunities(List<BgpCommunity> bgpCommunities) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BgpServiceCommunityPropertiesFormat();
+        }
+        this.innerProperties().withBgpCommunities(bgpCommunities);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (bgpCommunities() != null) {
-            bgpCommunities().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

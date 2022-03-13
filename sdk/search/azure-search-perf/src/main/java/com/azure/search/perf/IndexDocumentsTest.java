@@ -22,6 +22,11 @@ public class IndexDocumentsTest extends ServiceTest<SearchPerfStressOptions> {
     private static volatile AtomicInteger ID_COUNT = new AtomicInteger();
     private final List<Hotel> hotels;
 
+    /**
+     * Creates the document indexing operations performance test.
+     *
+     * @param options Performance test configuration options.
+     */
     public IndexDocumentsTest(SearchPerfStressOptions options) {
         super(options);
 

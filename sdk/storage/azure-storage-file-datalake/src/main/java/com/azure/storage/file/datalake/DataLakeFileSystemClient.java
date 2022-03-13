@@ -63,6 +63,9 @@ public class DataLakeFileSystemClient {
     private final DataLakeFileSystemAsyncClient dataLakeFileSystemAsyncClient;
     private final BlobContainerClient blobContainerClient;
 
+    /**
+     * Special file system name for the root file system in the Storage account.
+     */
     public static final String ROOT_FILESYSTEM_NAME = DataLakeFileSystemAsyncClient.ROOT_FILESYSTEM_NAME;
 
     private static final String ROOT_DIRECTORY_NAME = "";
@@ -88,7 +91,11 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.getFileClient#String}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.getFileClient#String -->
+     * <pre>
+     * DataLakeFileClient dataLakeFileClient = client.getFileClient&#40;fileName&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.getFileClient#String -->
      *
      * @return A new {@link DataLakeFileClient} object which references the file with the specified name in this file
      * system.
@@ -110,7 +117,11 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.getDirectoryClient#String}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.getDirectoryClient#String -->
+     * <pre>
+     * DataLakeDirectoryClient dataLakeDirectoryClient = client.getDirectoryClient&#40;directoryName&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.getDirectoryClient#String -->
      *
      * @return A new {@link DataLakeDirectoryClient} object which references the directory with the specified name in
      * this file system.
@@ -129,7 +140,11 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.getRootDirectoryClient}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.getRootDirectoryClient -->
+     * <pre>
+     * DataLakeDirectoryClient dataLakeDirectoryClient = client.getRootDirectoryClient&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.getRootDirectoryClient -->
      *
      * @return A new {@link DataLakeDirectoryClient} object which references the root directory in this file system.
      */
@@ -142,7 +157,12 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.getFileSystemName}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.getFileSystemName -->
+     * <pre>
+     * String fileSystemName = client.getFileSystemName&#40;&#41;;
+     * System.out.println&#40;&quot;The name of the file system is &quot; + fileSystemName&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.getFileSystemName -->
      *
      * @return The name of file system.
      */
@@ -205,7 +225,18 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.create}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.create -->
+     * <pre>
+     * try &#123;
+     *     client.create&#40;&#41;;
+     *     System.out.printf&#40;&quot;Create completed%n&quot;&#41;;
+     * &#125; catch &#40;BlobStorageException error&#41; &#123;
+     *     if &#40;error.getErrorCode&#40;&#41;.equals&#40;BlobErrorCode.CONTAINER_ALREADY_EXISTS&#41;&#41; &#123;
+     *         System.out.printf&#40;&quot;Can't create file system. It already exists %n&quot;&#41;;
+     *     &#125;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.create -->
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void create() {
@@ -219,7 +250,15 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.createWithResponse#Map-PublicAccessType-Duration-Context}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.createWithResponse#Map-PublicAccessType-Duration-Context -->
+     * <pre>
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Create completed with status %d%n&quot;,
+     *     client.createWithResponse&#40;metadata, PublicAccessType.CONTAINER, timeout, context&#41;.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createWithResponse#Map-PublicAccessType-Duration-Context -->
      *
      * @param metadata Metadata to associate with the file system. If there is leading or trailing whitespace in any
      * metadata key or value, it must be removed or encoded.
@@ -244,7 +283,18 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.delete}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.delete -->
+     * <pre>
+     * try &#123;
+     *     client.delete&#40;&#41;;
+     *     System.out.printf&#40;&quot;Delete completed%n&quot;&#41;;
+     * &#125; catch &#40;BlobStorageException error&#41; &#123;
+     *     if &#40;error.getErrorCode&#40;&#41;.equals&#40;BlobErrorCode.CONTAINER_NOT_FOUND&#41;&#41; &#123;
+     *         System.out.printf&#40;&quot;Delete failed. File System was not found %n&quot;&#41;;
+     *     &#125;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.delete -->
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete() {
@@ -258,7 +308,17 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteWithResponse#DataLakeRequestConditions-Duration-Context}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteWithResponse#DataLakeRequestConditions-Duration-Context -->
+     * <pre>
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, client.deleteWithResponse&#40;
+     *     requestConditions, timeout, context&#41;.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteWithResponse#DataLakeRequestConditions-Duration-Context -->
      *
      * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -279,7 +339,15 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.getProperties}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.getProperties -->
+     * <pre>
+     * FileSystemProperties properties = client.getProperties&#40;&#41;;
+     * System.out.printf&#40;&quot;Public Access Type: %s, Legal Hold? %b, Immutable? %b%n&quot;,
+     *     properties.getDataLakePublicAccess&#40;&#41;,
+     *     properties.hasLegalHold&#40;&#41;,
+     *     properties.hasImmutabilityPolicy&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.getProperties -->
      *
      * @return The file system properties.
      */
@@ -294,7 +362,18 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.getPropertiesWithResponse#String-Duration-Context}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.getPropertiesWithResponse#String-Duration-Context -->
+     * <pre>
+     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
+     *
+     * FileSystemProperties properties = client.getPropertiesWithResponse&#40;leaseId, timeout, context&#41;
+     *     .getValue&#40;&#41;;
+     * System.out.printf&#40;&quot;Public Access Type: %s, Legal Hold? %b, Immutable? %b%n&quot;,
+     *     properties.getDataLakePublicAccess&#40;&#41;,
+     *     properties.hasLegalHold&#40;&#41;,
+     *     properties.hasImmutabilityPolicy&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.getPropertiesWithResponse#String-Duration-Context -->
      *
      * @param leaseId The lease ID the active lease on the file system must match.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -316,7 +395,17 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.setMetadata#Map}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.setMetadata#Map -->
+     * <pre>
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * try &#123;
+     *     client.setMetadata&#40;metadata&#41;;
+     *     System.out.printf&#40;&quot;Set metadata completed with status %n&quot;&#41;;
+     * &#125; catch &#40;UnsupportedOperationException error&#41; &#123;
+     *     System.out.printf&#40;&quot;Fail while setting metadata %n&quot;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.setMetadata#Map -->
      *
      * @param metadata Metadata to associate with the file system. If there is leading or trailing whitespace in any
      * metadata key or value, it must be removed or encoded.
@@ -332,7 +421,18 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.setMetadataWithResponse#Map-DataLakeRequestConditions-Duration-Context}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.setMetadataWithResponse#Map-DataLakeRequestConditions-Duration-Context -->
+     * <pre>
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Set metadata completed with status %d%n&quot;,
+     *     client.setMetadataWithResponse&#40;metadata, requestConditions, timeout, context&#41;.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.setMetadataWithResponse#Map-DataLakeRequestConditions-Duration-Context -->
      * @param metadata Metadata to associate with the file system. If there is leading or trailing whitespace in any
      * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link DataLakeRequestConditions}
@@ -355,7 +455,11 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.listPaths}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.listPaths -->
+     * <pre>
+     * client.listPaths&#40;&#41;.forEach&#40;path -&gt; System.out.printf&#40;&quot;Name: %s%n&quot;, path.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.listPaths -->
      *
      * @return The list of files/directories.
      */
@@ -371,7 +475,15 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.listPaths#ListPathsOptions-Duration}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.listPaths#ListPathsOptions-Duration -->
+     * <pre>
+     * ListPathsOptions options = new ListPathsOptions&#40;&#41;
+     *     .setPath&#40;&quot;pathPrefixToMatch&quot;&#41;
+     *     .setMaxResults&#40;10&#41;;
+     *
+     * client.listPaths&#40;options, timeout&#41;.forEach&#40;path -&gt; System.out.printf&#40;&quot;Name: %s%n&quot;, path.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.listPaths#ListPathsOptions-Duration -->
      *
      * @param options A {@link ListPathsOptions} which specifies what data should be returned by the service. If
      * iterating by page, the page size passed to byPage methods such as
@@ -392,7 +504,11 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.listDeletedPaths}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.listDeletedPaths -->
+     * <pre>
+     * client.listDeletedPaths&#40;&#41;.forEach&#40;path -&gt; System.out.printf&#40;&quot;Name: %s%n&quot;, path.getPath&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.listDeletedPaths -->
      *
      * @return The list of files/directories.
      */
@@ -409,7 +525,18 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.listDeletedPaths#String-Duration-Context}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.listDeletedPaths#String-Duration-Context -->
+     * <pre>
+     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
+     * int pageSize = 10;
+     *
+     * client.listDeletedPaths&#40;&quot;PathPrefixToMatch&quot;, timeout, context&#41;
+     *     .iterableByPage&#40;pageSize&#41;
+     *     .forEach&#40;page -&gt;
+     *         page.getValue&#40;&#41;.forEach&#40;path -&gt;
+     *             System.out.printf&#40;&quot;Name: %s%n&quot;, path.getPath&#40;&#41;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.listDeletedPaths#String-Duration-Context -->
      *
      * @param prefix Specifies the path to filter the results to.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -429,7 +556,11 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.createFile#String}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.createFile#String -->
+     * <pre>
+     * DataLakeFileClient fileClient = client.createFile&#40;fileName&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createFile#String -->
      *
      * @param fileName Name of the file to create. If the path name contains special characters, pass in the url encoded
      *  version of the path name.
@@ -446,7 +577,12 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.createFile#String-boolean}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.createFile#String-boolean -->
+     * <pre>
+     * boolean overwrite = false; &#47;* Default value. *&#47;
+     * DataLakeFileClient fClient = client.createFile&#40;fileName, overwrite&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createFile#String-boolean -->
      *
      * @param fileName Name of the file to create. If the path name contains special characters, pass in the url encoded
      * version of the path name.
@@ -469,7 +605,20 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context -->
+     * <pre>
+     * PathHttpHeaders httpHeaders = new PathHttpHeaders&#40;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;;
+     * String permissions = &quot;permissions&quot;;
+     * String umask = &quot;umask&quot;;
+     * Response&lt;DataLakeFileClient&gt; newFileClient = client.createFileWithResponse&#40;fileName, permissions, umask, httpHeaders,
+     *     Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;, requestConditions,
+     *     timeout, new Context&#40;key1, value1&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context -->
      *
      * @param fileName Name of the file to create. If the path name contains special characters, pass in the url encoded
      * version of the path name.
@@ -502,7 +651,12 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteFile#String}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteFile#String -->
+     * <pre>
+     * client.deleteFile&#40;fileName&#41;;
+     * System.out.println&#40;&quot;Delete request completed&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteFile#String -->
      *
      * @param fileName Name of the file to delete. If the path name contains special characters, pass in the url encoded
      * version of the path name.
@@ -519,7 +673,15 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteFileWithResponse#String-DataLakeRequestConditions-Duration-Context}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteFileWithResponse#String-DataLakeRequestConditions-Duration-Context -->
+     * <pre>
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;;
+     *
+     * client.deleteFileWithResponse&#40;fileName, requestConditions, timeout, new Context&#40;key1, value1&#41;&#41;;
+     * System.out.println&#40;&quot;Delete request completed&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteFileWithResponse#String-DataLakeRequestConditions-Duration-Context -->
      *
      * @param fileName Name of the file to delete. If the path name contains special characters, pass in the url encoded
      * version of the path name.
@@ -541,7 +703,11 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectory#String}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectory#String -->
+     * <pre>
+     * DataLakeDirectoryClient directoryClient = client.createDirectory&#40;directoryName&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectory#String -->
      *
      * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
      * url encoded version of the path name.
@@ -558,7 +724,12 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectory#String-boolean}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectory#String-boolean -->
+     * <pre>
+     * boolean overwrite = false; &#47;* Default value. *&#47;
+     * DataLakeDirectoryClient dClient = client.createDirectory&#40;fileName, overwrite&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectory#String-boolean -->
      *
      * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
      * url encoded version of the path name.
@@ -582,7 +753,20 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context -->
+     * <pre>
+     * PathHttpHeaders httpHeaders = new PathHttpHeaders&#40;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;;
+     * String permissions = &quot;permissions&quot;;
+     * String umask = &quot;umask&quot;;
+     * Response&lt;DataLakeDirectoryClient&gt; newDirectoryClient = client.createDirectoryWithResponse&#40;directoryName,
+     *     permissions, umask, httpHeaders, Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;, requestConditions,
+     *     timeout, new Context&#40;key1, value1&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context -->
      *
      * @param directoryName Name of the directory to create.  If the path name contains special characters, pass in the
      * url encoded version of the path name.
@@ -615,7 +799,12 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectory#String}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectory#String -->
+     * <pre>
+     * client.deleteDirectory&#40;directoryName&#41;;
+     * System.out.println&#40;&quot;Delete request completed&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectory#String -->
      *
      * @param directoryName Name of the directory to delete.  If the path name contains special characters, pass in the
      * url encoded version of the path name.
@@ -632,7 +821,17 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectoryWithResponse#String-boolean-DataLakeRequestConditions-Duration-Context}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectoryWithResponse#String-boolean-DataLakeRequestConditions-Duration-Context -->
+     * <pre>
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;;
+     * boolean recursive = false; &#47;&#47; Default value
+     *
+     * client.deleteDirectoryWithResponse&#40;directoryName, recursive, requestConditions, timeout,
+     *     new Context&#40;key1, value1&#41;&#41;;
+     * System.out.println&#40;&quot;Delete request completed&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectoryWithResponse#String-boolean-DataLakeRequestConditions-Duration-Context -->
      *
      * @param directoryName Name of the directory to delete. If the path name contains special characters, pass in the
      * url encoded version of the path name.
@@ -655,7 +854,12 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.undeletePath#String-String}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.undeletePath#String-String -->
+     * <pre>
+     * client.undeletePath&#40;deletedPath, deletionId&#41;;
+     * System.out.println&#40;&quot;Delete request completed&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.undeletePath#String-String -->
      *
      * @param deletedPath The deleted path
      * @param deletionId deletion ID associated with the soft deleted path that uniquely identifies a resource if
@@ -676,7 +880,12 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.undeletePathWithResponse#String-String-Duration-Context}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.undeletePathWithResponse#String-String-Duration-Context -->
+     * <pre>
+     * client.undeletePathWithResponse&#40;deletedPath, deletionId, timeout, new Context&#40;key1, value1&#41;&#41;;
+     * System.out.println&#40;&quot;Delete request completed&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.undeletePathWithResponse#String-String-Duration-Context -->
      *
      * @param deletedPath The deleted path
      * @param deletionId deletion ID associated with the soft deleted path that uniquely identifies a resource if
@@ -718,7 +927,18 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.getAccessPolicy}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.getAccessPolicy -->
+     * <pre>
+     * FileSystemAccessPolicies accessPolicies = client.getAccessPolicy&#40;&#41;;
+     * System.out.printf&#40;&quot;Data Lake Access Type: %s%n&quot;, accessPolicies.getDataLakeAccessType&#40;&#41;&#41;;
+     *
+     * for &#40;DataLakeSignedIdentifier identifier : accessPolicies.getIdentifiers&#40;&#41;&#41; &#123;
+     *     System.out.printf&#40;&quot;Identifier Name: %s, Permissions %s%n&quot;,
+     *         identifier.getId&#40;&#41;,
+     *         identifier.getAccessPolicy&#40;&#41;.getPermissions&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.getAccessPolicy -->
      *
      * @return The file system access policy.
      */
@@ -734,7 +954,20 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.getAccessPolicyWithResponse#String-Duration-Context}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.getAccessPolicyWithResponse#String-Duration-Context -->
+     * <pre>
+     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
+     * FileSystemAccessPolicies accessPolicies = client.getAccessPolicyWithResponse&#40;leaseId, timeout, context&#41;
+     *     .getValue&#40;&#41;;
+     * System.out.printf&#40;&quot;Data Lake Access Type: %s%n&quot;, accessPolicies.getDataLakeAccessType&#40;&#41;&#41;;
+     *
+     * for &#40;DataLakeSignedIdentifier identifier : accessPolicies.getIdentifiers&#40;&#41;&#41; &#123;
+     *     System.out.printf&#40;&quot;Identifier Name: %s, Permissions %s%n&quot;,
+     *         identifier.getId&#40;&#41;,
+     *         identifier.getAccessPolicy&#40;&#41;.getPermissions&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.getAccessPolicyWithResponse#String-Duration-Context -->
      *
      * @param leaseId The lease ID the active lease on the file system must match.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -759,7 +992,23 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.setAccessPolicy#PublicAccessType-List}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.setAccessPolicy#PublicAccessType-List -->
+     * <pre>
+     * DataLakeSignedIdentifier identifier = new DataLakeSignedIdentifier&#40;&#41;
+     *     .setId&#40;&quot;name&quot;&#41;
+     *     .setAccessPolicy&#40;new DataLakeAccessPolicy&#40;&#41;
+     *         .setStartsOn&#40;OffsetDateTime.now&#40;&#41;&#41;
+     *         .setExpiresOn&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;7&#41;&#41;
+     *         .setPermissions&#40;&quot;permissionString&quot;&#41;&#41;;
+     *
+     * try &#123;
+     *     client.setAccessPolicy&#40;PublicAccessType.CONTAINER, Collections.singletonList&#40;identifier&#41;&#41;;
+     *     System.out.printf&#40;&quot;Set Access Policy completed %n&quot;&#41;;
+     * &#125; catch &#40;UnsupportedOperationException error&#41; &#123;
+     *     System.out.printf&#40;&quot;Set Access Policy completed %s%n&quot;, error&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.setAccessPolicy#PublicAccessType-List -->
      *
      * @param accessType Specifies how the data in this file system is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
@@ -782,7 +1031,29 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.setAccessPolicyWithResponse#PublicAccessType-List-DataLakeRequestConditions-Duration-Context}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.setAccessPolicyWithResponse#PublicAccessType-List-DataLakeRequestConditions-Duration-Context -->
+     * <pre>
+     * DataLakeSignedIdentifier identifier = new DataLakeSignedIdentifier&#40;&#41;
+     *     .setId&#40;&quot;name&quot;&#41;
+     *     .setAccessPolicy&#40;new DataLakeAccessPolicy&#40;&#41;
+     *         .setStartsOn&#40;OffsetDateTime.now&#40;&#41;&#41;
+     *         .setExpiresOn&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;7&#41;&#41;
+     *         .setPermissions&#40;&quot;permissionString&quot;&#41;&#41;;
+     *
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     *
+     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Set access policy completed with status %d%n&quot;,
+     *     client.setAccessPolicyWithResponse&#40;PublicAccessType.CONTAINER,
+     *         Collections.singletonList&#40;identifier&#41;,
+     *         requestConditions,
+     *         timeout,
+     *         context&#41;.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.setAccessPolicyWithResponse#PublicAccessType-List-DataLakeRequestConditions-Duration-Context -->
      *
      * @param accessType Specifies how the data in this file system is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
@@ -812,7 +1083,8 @@ public class DataLakeFileSystemClient {
 //     *
 //     * <p><strong>Code Samples</strong></p>
 //     *
-//     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.rename#String}
+//     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.rename#String -->
+//     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.rename#String -->
 //     *
 //     * @param destinationFileSystemName The new name of the file system.
 //     * @return A {@link DataLakeFileSystemClient} used to interact with the renamed file system.
@@ -827,7 +1099,8 @@ public class DataLakeFileSystemClient {
 //     *
 //     * <p><strong>Code Samples</strong></p>
 //     *
-//     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.renameWithResponse#FileSystemRenameOptions-Duration-Context}
+//     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.renameWithResponse#FileSystemRenameOptions-Duration-Context -->
+//     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.renameWithResponse#FileSystemRenameOptions-Duration-Context -->
 //     *
 //     * @param options {@link FileSystemRenameOptions}
 //     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -863,7 +1136,17 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey -->
+     * <pre>
+     * OffsetDateTime myExpiryTime = OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;;
+     * FileSystemSasPermission myPermission = new FileSystemSasPermission&#40;&#41;.setReadPermission&#40;true&#41;;
+     *
+     * DataLakeServiceSasSignatureValues myValues = new DataLakeServiceSasSignatureValues&#40;expiryTime, permission&#41;
+     *     .setStartTime&#40;OffsetDateTime.now&#40;&#41;&#41;;
+     *
+     * client.generateUserDelegationSas&#40;values, userDelegationKey&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey -->
      *
      * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
      * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
@@ -886,7 +1169,17 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey-String-Context}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey-String-Context -->
+     * <pre>
+     * OffsetDateTime myExpiryTime = OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;;
+     * FileSystemSasPermission myPermission = new FileSystemSasPermission&#40;&#41;.setReadPermission&#40;true&#41;;
+     *
+     * DataLakeServiceSasSignatureValues myValues = new DataLakeServiceSasSignatureValues&#40;expiryTime, permission&#41;
+     *     .setStartTime&#40;OffsetDateTime.now&#40;&#41;&#41;;
+     *
+     * client.generateUserDelegationSas&#40;values, userDelegationKey, accountName, new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey-String-Context -->
      *
      * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
      * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
@@ -910,7 +1203,17 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.generateSas#DataLakeServiceSasSignatureValues}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.generateSas#DataLakeServiceSasSignatureValues -->
+     * <pre>
+     * OffsetDateTime expiryTime = OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;;
+     * FileSystemSasPermission permission = new FileSystemSasPermission&#40;&#41;.setReadPermission&#40;true&#41;;
+     *
+     * DataLakeServiceSasSignatureValues values = new DataLakeServiceSasSignatureValues&#40;expiryTime, permission&#41;
+     *     .setStartTime&#40;OffsetDateTime.now&#40;&#41;&#41;;
+     *
+     * client.generateSas&#40;values&#41;; &#47;&#47; Client must be authenticated via StorageSharedKeyCredential
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.generateSas#DataLakeServiceSasSignatureValues -->
      *
      * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
      *
@@ -927,7 +1230,18 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.generateSas#DataLakeServiceSasSignatureValues-Context}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.generateSas#DataLakeServiceSasSignatureValues-Context -->
+     * <pre>
+     * OffsetDateTime expiryTime = OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;;
+     * FileSystemSasPermission permission = new FileSystemSasPermission&#40;&#41;.setReadPermission&#40;true&#41;;
+     *
+     * DataLakeServiceSasSignatureValues values = new DataLakeServiceSasSignatureValues&#40;expiryTime, permission&#41;
+     *     .setStartTime&#40;OffsetDateTime.now&#40;&#41;&#41;;
+     *
+     * &#47;&#47; Client must be authenticated via StorageSharedKeyCredential
+     * client.generateSas&#40;values, new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.generateSas#DataLakeServiceSasSignatureValues-Context -->
      *
      * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
      * @param context Additional context that is passed through the code when generating a SAS.

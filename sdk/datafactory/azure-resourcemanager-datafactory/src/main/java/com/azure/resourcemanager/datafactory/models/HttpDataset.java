@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.HttpDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,180 +17,23 @@ import java.util.Map;
 /** A file in an HTTP web server. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("HttpFile")
-@JsonFlatten
 @Fluent
-public class HttpDataset extends Dataset {
+public final class HttpDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(HttpDataset.class);
 
     /*
-     * The relative URL based on the URL in the HttpLinkedService refers to an
-     * HTTP file Type: string (or Expression with resultType string).
+     * Properties specific to this dataset type.
      */
-    @JsonProperty(value = "typeProperties.relativeUrl")
-    private Object relativeUrl;
-
-    /*
-     * The HTTP method for the HTTP request. Type: string (or Expression with
-     * resultType string).
-     */
-    @JsonProperty(value = "typeProperties.requestMethod")
-    private Object requestMethod;
-
-    /*
-     * The body for the HTTP request. Type: string (or Expression with
-     * resultType string).
-     */
-    @JsonProperty(value = "typeProperties.requestBody")
-    private Object requestBody;
-
-    /*
-     * The headers for the HTTP Request. e.g.
-     * request-header-name-1:request-header-value-1
-     * ...
-     * request-header-name-n:request-header-value-n Type: string (or Expression
-     * with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.additionalHeaders")
-    private Object additionalHeaders;
-
-    /*
-     * The format of files.
-     */
-    @JsonProperty(value = "typeProperties.format")
-    private DatasetStorageFormat format;
-
-    /*
-     * The data compression method used on files.
-     */
-    @JsonProperty(value = "typeProperties.compression")
-    private DatasetCompression compression;
+    @JsonProperty(value = "typeProperties")
+    private HttpDatasetTypeProperties innerTypeProperties;
 
     /**
-     * Get the relativeUrl property: The relative URL based on the URL in the HttpLinkedService refers to an HTTP file
-     * Type: string (or Expression with resultType string).
+     * Get the innerTypeProperties property: Properties specific to this dataset type.
      *
-     * @return the relativeUrl value.
+     * @return the innerTypeProperties value.
      */
-    public Object relativeUrl() {
-        return this.relativeUrl;
-    }
-
-    /**
-     * Set the relativeUrl property: The relative URL based on the URL in the HttpLinkedService refers to an HTTP file
-     * Type: string (or Expression with resultType string).
-     *
-     * @param relativeUrl the relativeUrl value to set.
-     * @return the HttpDataset object itself.
-     */
-    public HttpDataset withRelativeUrl(Object relativeUrl) {
-        this.relativeUrl = relativeUrl;
-        return this;
-    }
-
-    /**
-     * Get the requestMethod property: The HTTP method for the HTTP request. Type: string (or Expression with resultType
-     * string).
-     *
-     * @return the requestMethod value.
-     */
-    public Object requestMethod() {
-        return this.requestMethod;
-    }
-
-    /**
-     * Set the requestMethod property: The HTTP method for the HTTP request. Type: string (or Expression with resultType
-     * string).
-     *
-     * @param requestMethod the requestMethod value to set.
-     * @return the HttpDataset object itself.
-     */
-    public HttpDataset withRequestMethod(Object requestMethod) {
-        this.requestMethod = requestMethod;
-        return this;
-    }
-
-    /**
-     * Get the requestBody property: The body for the HTTP request. Type: string (or Expression with resultType string).
-     *
-     * @return the requestBody value.
-     */
-    public Object requestBody() {
-        return this.requestBody;
-    }
-
-    /**
-     * Set the requestBody property: The body for the HTTP request. Type: string (or Expression with resultType string).
-     *
-     * @param requestBody the requestBody value to set.
-     * @return the HttpDataset object itself.
-     */
-    public HttpDataset withRequestBody(Object requestBody) {
-        this.requestBody = requestBody;
-        return this;
-    }
-
-    /**
-     * Get the additionalHeaders property: The headers for the HTTP Request. e.g.
-     * request-header-name-1:request-header-value-1 ... request-header-name-n:request-header-value-n Type: string (or
-     * Expression with resultType string).
-     *
-     * @return the additionalHeaders value.
-     */
-    public Object additionalHeaders() {
-        return this.additionalHeaders;
-    }
-
-    /**
-     * Set the additionalHeaders property: The headers for the HTTP Request. e.g.
-     * request-header-name-1:request-header-value-1 ... request-header-name-n:request-header-value-n Type: string (or
-     * Expression with resultType string).
-     *
-     * @param additionalHeaders the additionalHeaders value to set.
-     * @return the HttpDataset object itself.
-     */
-    public HttpDataset withAdditionalHeaders(Object additionalHeaders) {
-        this.additionalHeaders = additionalHeaders;
-        return this;
-    }
-
-    /**
-     * Get the format property: The format of files.
-     *
-     * @return the format value.
-     */
-    public DatasetStorageFormat format() {
-        return this.format;
-    }
-
-    /**
-     * Set the format property: The format of files.
-     *
-     * @param format the format value to set.
-     * @return the HttpDataset object itself.
-     */
-    public HttpDataset withFormat(DatasetStorageFormat format) {
-        this.format = format;
-        return this;
-    }
-
-    /**
-     * Get the compression property: The data compression method used on files.
-     *
-     * @return the compression value.
-     */
-    public DatasetCompression compression() {
-        return this.compression;
-    }
-
-    /**
-     * Set the compression property: The data compression method used on files.
-     *
-     * @param compression the compression value to set.
-     * @return the HttpDataset object itself.
-     */
-    public HttpDataset withCompression(DatasetCompression compression) {
-        this.compression = compression;
-        return this;
+    private HttpDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -243,6 +86,152 @@ public class HttpDataset extends Dataset {
     }
 
     /**
+     * Get the relativeUrl property: The relative URL based on the URL in the HttpLinkedService refers to an HTTP file
+     * Type: string (or Expression with resultType string).
+     *
+     * @return the relativeUrl value.
+     */
+    public Object relativeUrl() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().relativeUrl();
+    }
+
+    /**
+     * Set the relativeUrl property: The relative URL based on the URL in the HttpLinkedService refers to an HTTP file
+     * Type: string (or Expression with resultType string).
+     *
+     * @param relativeUrl the relativeUrl value to set.
+     * @return the HttpDataset object itself.
+     */
+    public HttpDataset withRelativeUrl(Object relativeUrl) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HttpDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withRelativeUrl(relativeUrl);
+        return this;
+    }
+
+    /**
+     * Get the requestMethod property: The HTTP method for the HTTP request. Type: string (or Expression with resultType
+     * string).
+     *
+     * @return the requestMethod value.
+     */
+    public Object requestMethod() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().requestMethod();
+    }
+
+    /**
+     * Set the requestMethod property: The HTTP method for the HTTP request. Type: string (or Expression with resultType
+     * string).
+     *
+     * @param requestMethod the requestMethod value to set.
+     * @return the HttpDataset object itself.
+     */
+    public HttpDataset withRequestMethod(Object requestMethod) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HttpDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withRequestMethod(requestMethod);
+        return this;
+    }
+
+    /**
+     * Get the requestBody property: The body for the HTTP request. Type: string (or Expression with resultType string).
+     *
+     * @return the requestBody value.
+     */
+    public Object requestBody() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().requestBody();
+    }
+
+    /**
+     * Set the requestBody property: The body for the HTTP request. Type: string (or Expression with resultType string).
+     *
+     * @param requestBody the requestBody value to set.
+     * @return the HttpDataset object itself.
+     */
+    public HttpDataset withRequestBody(Object requestBody) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HttpDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withRequestBody(requestBody);
+        return this;
+    }
+
+    /**
+     * Get the additionalHeaders property: The headers for the HTTP Request. e.g.
+     * request-header-name-1:request-header-value-1 ... request-header-name-n:request-header-value-n Type: string (or
+     * Expression with resultType string).
+     *
+     * @return the additionalHeaders value.
+     */
+    public Object additionalHeaders() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().additionalHeaders();
+    }
+
+    /**
+     * Set the additionalHeaders property: The headers for the HTTP Request. e.g.
+     * request-header-name-1:request-header-value-1 ... request-header-name-n:request-header-value-n Type: string (or
+     * Expression with resultType string).
+     *
+     * @param additionalHeaders the additionalHeaders value to set.
+     * @return the HttpDataset object itself.
+     */
+    public HttpDataset withAdditionalHeaders(Object additionalHeaders) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HttpDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withAdditionalHeaders(additionalHeaders);
+        return this;
+    }
+
+    /**
+     * Get the format property: The format of files.
+     *
+     * @return the format value.
+     */
+    public DatasetStorageFormat format() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().format();
+    }
+
+    /**
+     * Set the format property: The format of files.
+     *
+     * @param format the format value to set.
+     * @return the HttpDataset object itself.
+     */
+    public HttpDataset withFormat(DatasetStorageFormat format) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HttpDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withFormat(format);
+        return this;
+    }
+
+    /**
+     * Get the compression property: The data compression method used on files.
+     *
+     * @return the compression value.
+     */
+    public DatasetCompression compression() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().compression();
+    }
+
+    /**
+     * Set the compression property: The data compression method used on files.
+     *
+     * @param compression the compression value to set.
+     * @return the HttpDataset object itself.
+     */
+    public HttpDataset withCompression(DatasetCompression compression) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HttpDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withCompression(compression);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -250,11 +239,8 @@ public class HttpDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
-        if (format() != null) {
-            format().validate();
-        }
-        if (compression() != null) {
-            compression().validate();
+        if (innerTypeProperties() != null) {
+            innerTypeProperties().validate();
         }
     }
 }

@@ -238,6 +238,27 @@ public final class FileTaskRunRequest extends RunRequest {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public FileTaskRunRequest withIsArchiveEnabled(Boolean isArchiveEnabled) {
+        super.withIsArchiveEnabled(isArchiveEnabled);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FileTaskRunRequest withAgentPoolName(String agentPoolName) {
+        super.withAgentPoolName(agentPoolName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FileTaskRunRequest withLogTemplate(String logTemplate) {
+        super.withLogTemplate(logTemplate);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

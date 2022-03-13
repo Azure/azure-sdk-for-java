@@ -26,13 +26,28 @@ public final class EventsOperationsImpl implements EventsOperations {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<EventSummary> list(String startDate, String endDate, String scope) {
-        PagedIterable<EventSummaryInner> inner = this.serviceClient().list(startDate, endDate, scope);
+    public PagedIterable<EventSummary> listByBillingProfile(
+        String billingAccountId, String billingProfileId, String startDate, String endDate) {
+        PagedIterable<EventSummaryInner> inner =
+            this.serviceClient().listByBillingProfile(billingAccountId, billingProfileId, startDate, endDate);
         return Utils.mapPage(inner, inner1 -> new EventSummaryImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<EventSummary> list(String startDate, String endDate, String scope, Context context) {
-        PagedIterable<EventSummaryInner> inner = this.serviceClient().list(startDate, endDate, scope, context);
+    public PagedIterable<EventSummary> listByBillingProfile(
+        String billingAccountId, String billingProfileId, String startDate, String endDate, Context context) {
+        PagedIterable<EventSummaryInner> inner =
+            this.serviceClient().listByBillingProfile(billingAccountId, billingProfileId, startDate, endDate, context);
+        return Utils.mapPage(inner, inner1 -> new EventSummaryImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<EventSummary> listByBillingAccount(String billingAccountId) {
+        PagedIterable<EventSummaryInner> inner = this.serviceClient().listByBillingAccount(billingAccountId);
+        return Utils.mapPage(inner, inner1 -> new EventSummaryImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<EventSummary> listByBillingAccount(String billingAccountId, String filter, Context context) {
+        PagedIterable<EventSummaryInner> inner =
+            this.serviceClient().listByBillingAccount(billingAccountId, filter, context);
         return Utils.mapPage(inner, inner1 -> new EventSummaryImpl(inner1, this.manager()));
     }
 

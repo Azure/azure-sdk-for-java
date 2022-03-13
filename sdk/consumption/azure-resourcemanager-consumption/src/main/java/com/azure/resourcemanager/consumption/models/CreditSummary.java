@@ -31,18 +31,18 @@ public interface CreditSummary {
     String type();
 
     /**
-     * Gets the creditCurrency property: Credit Currency.
+     * Gets the etag property: The etag for the resource.
      *
-     * @return the creditCurrency value.
+     * @return the etag value.
      */
-    String creditCurrency();
+    String etag();
 
     /**
-     * Gets the billingCurrency property: Billing Currency.
+     * Gets the tags property: Resource tags.
      *
-     * @return the billingCurrency value.
+     * @return the tags value.
      */
-    String billingCurrency();
+    Map<String, String> tags();
 
     /**
      * Gets the balanceSummary property: Summary of balances associated with this credit summary.
@@ -73,25 +73,32 @@ public interface CreditSummary {
     Amount pendingEligibleCharges();
 
     /**
-     * Gets the reseller property: Reseller details.
+     * Gets the creditCurrency property: The credit currency.
+     *
+     * @return the creditCurrency value.
+     */
+    String creditCurrency();
+
+    /**
+     * Gets the billingCurrency property: The billing currency.
+     *
+     * @return the billingCurrency value.
+     */
+    String billingCurrency();
+
+    /**
+     * Gets the reseller property: Credit's reseller.
      *
      * @return the reseller value.
      */
     Reseller reseller();
 
     /**
-     * Gets the etag property: Resource etag.
+     * Gets the etagPropertiesEtag property: The eTag for the resource.
      *
-     * @return the etag value.
+     * @return the etagPropertiesEtag value.
      */
-    String etag();
-
-    /**
-     * Gets the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    Map<String, String> tags();
+    String etagPropertiesEtag();
 
     /**
      * Gets the inner com.azure.resourcemanager.consumption.fluent.models.CreditSummaryInner object.

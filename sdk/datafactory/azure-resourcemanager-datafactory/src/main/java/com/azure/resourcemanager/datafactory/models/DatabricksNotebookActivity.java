@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.DatabricksNotebookActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,96 +17,24 @@ import java.util.Map;
 /** DatabricksNotebook activity. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("DatabricksNotebook")
-@JsonFlatten
 @Fluent
-public class DatabricksNotebookActivity extends ExecutionActivity {
+public final class DatabricksNotebookActivity extends ExecutionActivity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabricksNotebookActivity.class);
 
     /*
-     * The absolute path of the notebook to be run in the Databricks Workspace.
-     * This path must begin with a slash. Type: string (or Expression with
-     * resultType string).
+     * Databricks Notebook activity properties.
      */
-    @JsonProperty(value = "typeProperties.notebookPath", required = true)
-    private Object notebookPath;
-
-    /*
-     * Base parameters to be used for each run of this job.If the notebook
-     * takes a parameter that is not specified, the default value from the
-     * notebook will be used.
-     */
-    @JsonProperty(value = "typeProperties.baseParameters")
-    private Map<String, Object> baseParameters;
-
-    /*
-     * A list of libraries to be installed on the cluster that will execute the
-     * job.
-     */
-    @JsonProperty(value = "typeProperties.libraries")
-    private List<Map<String, Object>> libraries;
+    @JsonProperty(value = "typeProperties", required = true)
+    private DatabricksNotebookActivityTypeProperties innerTypeProperties =
+        new DatabricksNotebookActivityTypeProperties();
 
     /**
-     * Get the notebookPath property: The absolute path of the notebook to be run in the Databricks Workspace. This path
-     * must begin with a slash. Type: string (or Expression with resultType string).
+     * Get the innerTypeProperties property: Databricks Notebook activity properties.
      *
-     * @return the notebookPath value.
+     * @return the innerTypeProperties value.
      */
-    public Object notebookPath() {
-        return this.notebookPath;
-    }
-
-    /**
-     * Set the notebookPath property: The absolute path of the notebook to be run in the Databricks Workspace. This path
-     * must begin with a slash. Type: string (or Expression with resultType string).
-     *
-     * @param notebookPath the notebookPath value to set.
-     * @return the DatabricksNotebookActivity object itself.
-     */
-    public DatabricksNotebookActivity withNotebookPath(Object notebookPath) {
-        this.notebookPath = notebookPath;
-        return this;
-    }
-
-    /**
-     * Get the baseParameters property: Base parameters to be used for each run of this job.If the notebook takes a
-     * parameter that is not specified, the default value from the notebook will be used.
-     *
-     * @return the baseParameters value.
-     */
-    public Map<String, Object> baseParameters() {
-        return this.baseParameters;
-    }
-
-    /**
-     * Set the baseParameters property: Base parameters to be used for each run of this job.If the notebook takes a
-     * parameter that is not specified, the default value from the notebook will be used.
-     *
-     * @param baseParameters the baseParameters value to set.
-     * @return the DatabricksNotebookActivity object itself.
-     */
-    public DatabricksNotebookActivity withBaseParameters(Map<String, Object> baseParameters) {
-        this.baseParameters = baseParameters;
-        return this;
-    }
-
-    /**
-     * Get the libraries property: A list of libraries to be installed on the cluster that will execute the job.
-     *
-     * @return the libraries value.
-     */
-    public List<Map<String, Object>> libraries() {
-        return this.libraries;
-    }
-
-    /**
-     * Set the libraries property: A list of libraries to be installed on the cluster that will execute the job.
-     *
-     * @param libraries the libraries value to set.
-     * @return the DatabricksNotebookActivity object itself.
-     */
-    public DatabricksNotebookActivity withLibraries(List<Map<String, Object>> libraries) {
-        this.libraries = libraries;
-        return this;
+    private DatabricksNotebookActivityTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -152,6 +80,79 @@ public class DatabricksNotebookActivity extends ExecutionActivity {
     }
 
     /**
+     * Get the notebookPath property: The absolute path of the notebook to be run in the Databricks Workspace. This path
+     * must begin with a slash. Type: string (or Expression with resultType string).
+     *
+     * @return the notebookPath value.
+     */
+    public Object notebookPath() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().notebookPath();
+    }
+
+    /**
+     * Set the notebookPath property: The absolute path of the notebook to be run in the Databricks Workspace. This path
+     * must begin with a slash. Type: string (or Expression with resultType string).
+     *
+     * @param notebookPath the notebookPath value to set.
+     * @return the DatabricksNotebookActivity object itself.
+     */
+    public DatabricksNotebookActivity withNotebookPath(Object notebookPath) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new DatabricksNotebookActivityTypeProperties();
+        }
+        this.innerTypeProperties().withNotebookPath(notebookPath);
+        return this;
+    }
+
+    /**
+     * Get the baseParameters property: Base parameters to be used for each run of this job.If the notebook takes a
+     * parameter that is not specified, the default value from the notebook will be used.
+     *
+     * @return the baseParameters value.
+     */
+    public Map<String, Object> baseParameters() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().baseParameters();
+    }
+
+    /**
+     * Set the baseParameters property: Base parameters to be used for each run of this job.If the notebook takes a
+     * parameter that is not specified, the default value from the notebook will be used.
+     *
+     * @param baseParameters the baseParameters value to set.
+     * @return the DatabricksNotebookActivity object itself.
+     */
+    public DatabricksNotebookActivity withBaseParameters(Map<String, Object> baseParameters) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new DatabricksNotebookActivityTypeProperties();
+        }
+        this.innerTypeProperties().withBaseParameters(baseParameters);
+        return this;
+    }
+
+    /**
+     * Get the libraries property: A list of libraries to be installed on the cluster that will execute the job.
+     *
+     * @return the libraries value.
+     */
+    public List<Map<String, Object>> libraries() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().libraries();
+    }
+
+    /**
+     * Set the libraries property: A list of libraries to be installed on the cluster that will execute the job.
+     *
+     * @param libraries the libraries value to set.
+     * @return the DatabricksNotebookActivity object itself.
+     */
+    public DatabricksNotebookActivity withLibraries(List<Map<String, Object>> libraries) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new DatabricksNotebookActivityTypeProperties();
+        }
+        this.innerTypeProperties().withLibraries(libraries);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -159,11 +160,13 @@ public class DatabricksNotebookActivity extends ExecutionActivity {
     @Override
     public void validate() {
         super.validate();
-        if (notebookPath() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property notebookPath in model DatabricksNotebookActivity"));
+                        "Missing required property innerTypeProperties in model DatabricksNotebookActivity"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

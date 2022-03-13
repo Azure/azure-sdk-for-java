@@ -11,7 +11,7 @@ import com.azure.core.util.Context;
 /** Resource collection API of PortalRevisions. */
 public interface PortalRevisions {
     /**
-     * Lists a collection of developer portal revision entities.
+     * Lists developer portal's revisions.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -23,7 +23,7 @@ public interface PortalRevisions {
     PagedIterable<PortalRevisionContract> listByService(String resourceGroupName, String serviceName);
 
     /**
-     * Lists a collection of developer portal revision entities.
+     * Lists developer portal's revisions.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -43,7 +43,7 @@ public interface PortalRevisions {
         String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
 
     /**
-     * Gets developer portal revision specified by its identifier.
+     * Gets the developer portal revision specified by its identifier.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -56,7 +56,7 @@ public interface PortalRevisions {
     void getEntityTag(String resourceGroupName, String serviceName, String portalRevisionId);
 
     /**
-     * Gets developer portal revision specified by its identifier.
+     * Gets the developer portal revision specified by its identifier.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -66,13 +66,13 @@ public interface PortalRevisions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer portal revision specified by its identifier.
+     * @return the developer portal revision specified by its identifier.
      */
     PortalRevisionsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String portalRevisionId, Context context);
 
     /**
-     * Gets developer portal revision specified by its identifier.
+     * Gets the developer portal's revision specified by its identifier.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -81,12 +81,12 @@ public interface PortalRevisions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer portal revision specified by its identifier.
+     * @return the developer portal's revision specified by its identifier.
      */
     PortalRevisionContract get(String resourceGroupName, String serviceName, String portalRevisionId);
 
     /**
-     * Gets developer portal revision specified by its identifier.
+     * Gets the developer portal's revision specified by its identifier.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -96,31 +96,31 @@ public interface PortalRevisions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer portal revision specified by its identifier.
+     * @return the developer portal's revision specified by its identifier.
      */
     Response<PortalRevisionContract> getWithResponse(
         String resourceGroupName, String serviceName, String portalRevisionId, Context context);
 
     /**
-     * Gets developer portal revision specified by its identifier.
+     * Gets the developer portal's revision specified by its identifier.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer portal revision specified by its identifier.
+     * @return the developer portal's revision specified by its identifier.
      */
     PortalRevisionContract getById(String id);
 
     /**
-     * Gets developer portal revision specified by its identifier.
+     * Gets the developer portal's revision specified by its identifier.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer portal revision specified by its identifier.
+     * @return the developer portal's revision specified by its identifier.
      */
     Response<PortalRevisionContract> getByIdWithResponse(String id, Context context);
 

@@ -32,7 +32,7 @@
     },
     "searchSku": {
       "type": "string",
-      "defaultValue": "free",
+      "defaultValue": "basic",
       "allowedValues": [
         "free",
         "basic",
@@ -62,7 +62,7 @@
       "properties": {
         "replicaCount": 1,
         "partitionCount": 1,
-        "hostingMode": "default",
+        "hostingMode": "Default",
         "publicNetworkAccess": "Enabled",
         "networkRuleSet": {
           "ipRules": []
@@ -85,8 +85,8 @@
       "kind": "StorageV2",
       "resources": [
         {
-          "type": "blobServices/containers",
-          "name": "[concat('default/', variables('storageContainerName'))]",
+          "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+          "name": "[concat(variables('storageAccountName'), '/default/', variables('storageContainerName'))]",
           "apiVersion": "[variables('storageApiVersion')]",
           "properties": {},
           "dependsOn": [

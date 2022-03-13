@@ -103,7 +103,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL pool's Maintenance Windows.
+     * @return a SQL pool's Maintenance Windows along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MaintenanceWindowsInner>> getWithResponseAsync(
@@ -134,6 +134,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
             return Mono
                 .error(new IllegalArgumentException("Parameter maintenanceWindowName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -141,7 +142,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -163,7 +164,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL pool's Maintenance Windows.
+     * @return a SQL pool's Maintenance Windows along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MaintenanceWindowsInner>> getWithResponseAsync(
@@ -198,12 +199,13 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
             return Mono
                 .error(new IllegalArgumentException("Parameter maintenanceWindowName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -223,7 +225,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL pool's Maintenance Windows.
+     * @return a SQL pool's Maintenance Windows on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MaintenanceWindowsInner> getAsync(
@@ -268,7 +270,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL pool's Maintenance Windows.
+     * @return a SQL pool's Maintenance Windows along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MaintenanceWindowsInner> getWithResponse(
@@ -292,7 +294,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> createOrUpdateWithResponseAsync(
@@ -332,13 +334,14 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         return FluxUtil
             .withContext(
                 context ->
                     service
                         .createOrUpdate(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -361,7 +364,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> createOrUpdateWithResponseAsync(
@@ -402,11 +405,12 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -427,7 +431,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> createOrUpdateAsync(
@@ -475,7 +479,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createOrUpdateWithResponse(

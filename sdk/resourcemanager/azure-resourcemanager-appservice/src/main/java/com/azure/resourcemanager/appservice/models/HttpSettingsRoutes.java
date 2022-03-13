@@ -5,25 +5,24 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The HttpSettingsRoutes model. */
-@JsonFlatten
+/** The configuration settings of the paths HTTP requests. */
 @Fluent
-public class HttpSettingsRoutes extends ProxyOnlyResource {
+public final class HttpSettingsRoutes {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(HttpSettingsRoutes.class);
 
     /*
-     * The apiPrefix property.
+     * The prefix that should precede all the authentication/authorization
+     * paths.
      */
-    @JsonProperty(value = "properties.apiPrefix")
+    @JsonProperty(value = "apiPrefix")
     private String apiPrefix;
 
     /**
-     * Get the apiPrefix property: The apiPrefix property.
+     * Get the apiPrefix property: The prefix that should precede all the authentication/authorization paths.
      *
      * @return the apiPrefix value.
      */
@@ -32,7 +31,7 @@ public class HttpSettingsRoutes extends ProxyOnlyResource {
     }
 
     /**
-     * Set the apiPrefix property: The apiPrefix property.
+     * Set the apiPrefix property: The prefix that should precede all the authentication/authorization paths.
      *
      * @param apiPrefix the apiPrefix value to set.
      * @return the HttpSettingsRoutes object itself.
@@ -42,20 +41,11 @@ public class HttpSettingsRoutes extends ProxyOnlyResource {
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public HttpSettingsRoutes withKind(String kind) {
-        super.withKind(kind);
-        return this;
-    }
-
     /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
     }
 }

@@ -12,7 +12,7 @@ license-header: MICROSOFT_MIT_SMALL
 output-folder: ../
 source-code-folder-path: ./src/generated
 java: true
-require: https://github.com/Azure/azure-rest-api-specs/blob/55b3e2d075398ec62f9322829494ff6a4323e299/specification/videoanalyzer/data-plane/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/60fcb275cbce38d343f9c35411786e672aba154e/specification/videoanalyzer/data-plane/readme.md
 add-credentials: false
 namespace: com.azure.media.videoanalyzer.edge
 sync-methods: none
@@ -61,7 +61,7 @@ directive:
           }
         }
       }
-    }    
+    }
 ```
 
 ### Customization
@@ -79,6 +79,7 @@ public class MethodRequestCustomizations extends Customization {
         customizeMethodRequest(packageCustomization.getClass("MethodRequest"));
         customizePipelineSetRequest(packageCustomization.getClass("PipelineTopologySetRequest"));
         customizeLivePipelineSetRequest(packageCustomization.getClass("LivePipelineSetRequest"));
+        customizeRemoteDeviceAdapterSetRequest(packageCustomization.getClass("RemoteDeviceAdapterSetRequest"));
     }
 
     private void customizePipelineSetRequest(ClassCustomization classCustomization) {
@@ -94,6 +95,21 @@ public class MethodRequestCustomizations extends Customization {
         classCustomization.getMethod("getPayloadAsJson").getJavadoc().addThrows("UnsupportedEncodingException", "UnsupportedEncodingException");
         classCustomization.getMethod("getPayloadAsJson").getJavadoc().setReturn("the payload as JSON");
     }
+    
+    private void customizeRemoteDeviceAdapterSetRequest(ClassCustomization classCustomization) {
+        classCustomization.addMethod(
+            "public String getPayloadAsJson() throws UnsupportedEncodingException {\n" +
+                "    RemoteDeviceAdapterSetRequestBody setRequestBody = new RemoteDeviceAdapterSetRequestBody(this.remoteDeviceAdapter.getName());\n" +
+                "    setRequestBody.setSystemData(this.remoteDeviceAdapter.getSystemData());\n" +
+                "    setRequestBody.setProperties(this.remoteDeviceAdapter.getProperties());\n" +
+                "    return setRequestBody.getPayloadAsJson();\n" +
+                "}"
+        );
+        classCustomization.getMethod("getPayloadAsJson").getJavadoc().setDescription("Get the payload as JSON: the serialized form of the request body");
+        classCustomization.getMethod("getPayloadAsJson").getJavadoc().addThrows("UnsupportedEncodingException", "UnsupportedEncodingException");
+        classCustomization.getMethod("getPayloadAsJson").getJavadoc().setReturn("the payload as JSON");
+    }
+    
     private void customizeLivePipelineSetRequest(ClassCustomization classCustomization) {
         classCustomization.addMethod(
             "public String getPayloadAsJson() throws UnsupportedEncodingException {\n" +
@@ -107,6 +123,7 @@ public class MethodRequestCustomizations extends Customization {
         classCustomization.getMethod("getPayloadAsJson").getJavadoc().addThrows("UnsupportedEncodingException", "UnsupportedEncodingException");
         classCustomization.getMethod("getPayloadAsJson").getJavadoc().setReturn("the payload as JSON");
     }
+    
     private void customizeMethodRequest(ClassCustomization classCustomization) {
         classCustomization.addMethod(
             "public String getPayloadAsJson() throws UnsupportedEncodingException {\n" +

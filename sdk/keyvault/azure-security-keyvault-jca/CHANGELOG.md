@@ -1,6 +1,57 @@
 # Release History
 
-## 1.0.0-beta.8 (Unreleased)
+## 2.7.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.6.0 (2022-02-25)
+
+### Dependency Upgrades
+Regular updates for dependency versions.
+
+## 2.5.0 (2022-01-25)
+
+### Dependency Upgrades
+Regular updates for dependency versions.
+
+## 2.4.0 (2021-12-24)
+
+### Dependency Upgrades
+Regular updates for dependency versions.
+
+## 2.3.0 (2021-11-25)
+### Dependency Upgrades
+Regular updates for dependency versions.
+
+## 2.2.0 (2021-11-02)
+### Features Added
+- Support connect to multi keyvault for keyless. ([24718](https://github.com/Azure/azure-sdk-for-java/pull/24718))
+
+## 2.1.0 (2021-09-26)
+
+### Features Added
+- Enable access token cache. ([23847](https://github.com/Azure/azure-sdk-for-java/pull/23847))
+
+
+### Bugs Fixed
+- Fix bug about dead loop. ([23923](https://github.com/Azure/azure-sdk-for-java/pull/23923))
+
+
+## 2.0.0 (2021-08-25)
+### New Features
+- Support key less certificate. ([#22105](https://github.com/Azure/azure-sdk-for-java/issues/22105))
+
+## 1.0.1 (2021-07-01)
+### Bug Fixes
+- Fixed bug: Not get certificates from Key Vault when `azure.keyvault.jca.certificates-refresh-interval` is not set. [#22666](https://github.com/Azure/azure-sdk-for-java/pull/22666)
+
+## 1.0.0 (2021-06-23)
 ### New Features
 - Load JRE key store certificates to AzureKeyVault key store. ([#21845](https://github.com/Azure/azure-sdk-for-java/pull/21845))
 - Support properties of azure.cert-path.well-known and azure.cert-path.custom to support load cert from file system. ([#21947](https://github.com/Azure/azure-sdk-for-java/pull/21947))

@@ -159,6 +159,18 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
             createTakeComponentFunction = createTopComponentFunction;
         }
 
+        BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createDCountComponentFunction;
+        if (queryInfo.hasDCount()) {
+            createDCountComponentFunction = (continuationToken, documentQueryParams) -> {
+                return DCountDocumentQueryExecutionContext.createAsync(createTakeComponentFunction,
+                                                                    queryInfo,
+                                                                    continuationToken,
+                                                                    documentQueryParams);
+            };
+        } else {
+            createDCountComponentFunction = createTakeComponentFunction;
+        }
+
         int actualPageSize = Utils.getValueOrDefault(ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(cosmosQueryRequestOptions),
                 ParallelQueryConfig.ClientInternalPageSize);
 
@@ -167,7 +179,7 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
         }
 
         int pageSize = Math.min(actualPageSize, Utils.getValueOrDefault(queryInfo.getTop(), (actualPageSize)));
-        return createTakeComponentFunction.apply(ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(cosmosQueryRequestOptions), initParams)
+        return createDCountComponentFunction.apply(ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(cosmosQueryRequestOptions), initParams)
                 .map(c -> new PipelinedDocumentQueryExecutionContext<>(c, pageSize, correlatedActivityId, queryInfo));
     }
 

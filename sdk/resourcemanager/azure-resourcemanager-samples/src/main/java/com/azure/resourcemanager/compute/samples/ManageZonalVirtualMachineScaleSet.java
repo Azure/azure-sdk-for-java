@@ -54,7 +54,7 @@ public final class ManageZonalVirtualMachineScaleSet {
         final String vmssName2 = Utils.randomResourceName(azureResourceManager, "vmss2", 15);
 
         final String userName = "tirekicker";
-        final String password = Utils.password();
+        final String sshPublicKey = Utils.sshPublicKey();
 
         try {
             ResourceGroup resourceGroup = azureResourceManager.resourceGroups()
@@ -178,7 +178,7 @@ public final class ManageZonalVirtualMachineScaleSet {
                     .withoutPrimaryInternalLoadBalancer()
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
-                    .withRootPassword(password)
+                    .withSsh(sshPublicKey)
                     .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
                     .create();
 
@@ -203,7 +203,7 @@ public final class ManageZonalVirtualMachineScaleSet {
                     .withoutPrimaryInternalLoadBalancer()
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
-                    .withRootPassword(password)
+                    .withSsh(sshPublicKey)
                     .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
                     .create();
 

@@ -157,7 +157,7 @@ public final class IotCentralClientImpl implements IotCentralClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2018-09-01";
+        this.apiVersion = "2021-06-01";
         this.apps = new AppsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
     }

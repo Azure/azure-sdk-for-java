@@ -31,10 +31,21 @@ public class GraphClient {
 
     private final AADAuthenticationProperties properties;
 
+    /**
+     * Creates a new instance of {@link GraphClient}.
+     *
+     * @param properties the AAD authentication properties
+     */
     public GraphClient(AADAuthenticationProperties properties) {
         this.properties = properties;
     }
 
+    /**
+     * Gets the group information.
+     *
+     * @param accessToken the access token
+     * @return the group information
+     */
     public GroupInformation getGroupInformation(String accessToken) {
         GroupInformation groupInformation = new GroupInformation();
         final ObjectMapper objectMapper = JacksonObjectMapperFactory.getInstance();

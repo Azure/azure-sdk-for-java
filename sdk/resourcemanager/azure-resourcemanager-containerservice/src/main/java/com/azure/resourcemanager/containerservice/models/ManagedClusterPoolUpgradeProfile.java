@@ -6,23 +6,20 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of available upgrade versions. */
 @Fluent
 public final class ManagedClusterPoolUpgradeProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterPoolUpgradeProfile.class);
-
     /*
-     * Kubernetes version (major, minor, patch).
+     * The Kubernetes version (major.minor.patch).
      */
     @JsonProperty(value = "kubernetesVersion", required = true)
     private String kubernetesVersion;
 
     /*
-     * Pool name.
+     * The Agent Pool name.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -41,7 +38,7 @@ public final class ManagedClusterPoolUpgradeProfile {
     private List<ManagedClusterPoolUpgradeProfileUpgradesItem> upgrades;
 
     /**
-     * Get the kubernetesVersion property: Kubernetes version (major, minor, patch).
+     * Get the kubernetesVersion property: The Kubernetes version (major.minor.patch).
      *
      * @return the kubernetesVersion value.
      */
@@ -50,7 +47,7 @@ public final class ManagedClusterPoolUpgradeProfile {
     }
 
     /**
-     * Set the kubernetesVersion property: Kubernetes version (major, minor, patch).
+     * Set the kubernetesVersion property: The Kubernetes version (major.minor.patch).
      *
      * @param kubernetesVersion the kubernetesVersion value to set.
      * @return the ManagedClusterPoolUpgradeProfile object itself.
@@ -61,7 +58,7 @@ public final class ManagedClusterPoolUpgradeProfile {
     }
 
     /**
-     * Get the name property: Pool name.
+     * Get the name property: The Agent Pool name.
      *
      * @return the name value.
      */
@@ -70,7 +67,7 @@ public final class ManagedClusterPoolUpgradeProfile {
     }
 
     /**
-     * Set the name property: Pool name.
+     * Set the name property: The Agent Pool name.
      *
      * @param name the name value to set.
      * @return the ManagedClusterPoolUpgradeProfile object itself.
@@ -127,13 +124,13 @@ public final class ManagedClusterPoolUpgradeProfile {
      */
     public void validate() {
         if (kubernetesVersion() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property kubernetesVersion in model ManagedClusterPoolUpgradeProfile"));
         }
         if (osType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property osType in model ManagedClusterPoolUpgradeProfile"));
@@ -142,4 +139,6 @@ public final class ManagedClusterPoolUpgradeProfile {
             upgrades().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterPoolUpgradeProfile.class);
 }

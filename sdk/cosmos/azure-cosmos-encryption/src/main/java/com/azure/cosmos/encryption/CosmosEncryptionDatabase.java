@@ -11,13 +11,12 @@ import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyResponse;
 import com.azure.cosmos.models.EncryptionKeyWrapMetadata;
 import com.azure.cosmos.util.CosmosPagedIterable;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 /**
  * CosmosEncryptionDatabase with encryption capabilities.
  */
-public class CosmosEncryptionDatabase {
+public final class CosmosEncryptionDatabase {
     private final CosmosDatabase cosmosDatabase;
     private final CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase;
 
@@ -105,7 +104,7 @@ public class CosmosEncryptionDatabase {
      * @param containerId original container id
      * @return container with encryption capabilities
      */
-    public CosmosEncryptionContainer getCosmosEncryptionAsyncContainer(String containerId) {
+    public CosmosEncryptionContainer getCosmosEncryptionContainer(String containerId) {
         CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer =
             this.cosmosEncryptionAsyncDatabase.getCosmosEncryptionAsyncContainer(containerId);
         CosmosContainer cosmosContainer = this.cosmosDatabase.getContainer(containerId);
@@ -122,9 +121,8 @@ public class CosmosEncryptionDatabase {
         try {
             return cosmosClientEncryptionKeyResponseMono.block();
         } catch (Exception ex) {
-            final Throwable throwable = Exceptions.unwrap(ex);
-            if (throwable instanceof CosmosException) {
-                throw (CosmosException) throwable;
+            if (ex instanceof CosmosException) {
+                throw (CosmosException) ex;
             } else {
                 throw ex;
             }

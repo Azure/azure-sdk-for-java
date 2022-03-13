@@ -8,9 +8,9 @@ will focus on side-by-side comparisons for similar operations between the two pa
 
 Familiarity with the `com.microsoft.azure:azure-servicebus` library is assumed. For those new to the Service Bus client
 library for Java, please refer to the
-[README](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/README.md)
+[README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/README.md)
 and [Service Bus
-samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus)
+samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus)
 for the `com.azure:azure-messaging-servicebus` library rather than this guide.
 
 ## Table of contents
@@ -428,14 +428,74 @@ ServiceBusReceiverClient receiver = builder
 ```
 You can read more about how to generate Shared Access Signatures [here](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-sas).
 
-## Upcoming features
- - [Cross entity transactions](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via) 
- to support transaction across different entities.
- - [Different AMQP body section](https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-amqp-sequence) 
- support for 'Amqp Sequence' and 'Amqp Value'. 
+## Working with cross entity transaction
+
+This feature is used when your transaction scope spans across different Service Bus entities. It is achieved by routing
+all the messages through one 'send-via' entity on server side.
+
+Previously, the 'send-via' entity used to be specified as an argument in 'ClientFactory.createMessageSenderFromEntityPath()' call.
+
+```java
+    final String intermediateQueue = "intermediate-queue"; // this is 'send-via' queue
+    final String destination1 = "destination-1";
+    final String destination2 = "destination-2";
+    IMessageSender intermediateSender = ClientFactory.createMessageSenderFromEntityPath(factory, intermediateQueue);
+    IMessageReceiver intermediateReceiver = ClientFactory.createMessageReceiverFromEntityPath(factory, intermediateQueue, ReceiveMode.PEEKLOCK);
+    IMessageSender destination1Sender = ClientFactory.createMessageSenderFromEntityPath(factory, destination1);
+    IMessageSender destination1ViaSender = ClientFactory.createTransferMessageSenderFromEntityPathAsync(factory, destination1, intermediateQueue).get();
+ 
+    queueDescription = new QueueDescription(destination2);
+    queueDescription.setEnablePartitioning(true);
+    managementClient.createQueueAsync(queueDescription).get();
+    IMessageSender destination2ViaSender = ClientFactory.createTransferMessageSenderFromEntityPathAsync(factory, destination2, intermediateQueue).get();
+    IMessageReceiver destination2Receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, destination2, ReceiveMode.PEEKLOCK);
+    intermediateSender.send(message1);
+    IMessage receivedMessage = intermediateReceiver.receive();
+    // This transaction is involves multiple queues.
+    TransactionContext transaction = this.factory.startTransactionAsync().get();
+    intermediateReceiver.complete(receivedMessage.getLockToken(), transaction);
+    destination1ViaSender.send(new Message("Message Processed."), transaction);
+    destination2ViaSender.send(new Message("Message Processed."), transaction);
+    this.factory.endTransactionAsync(transaction, true).get();
+```
+
+Now, Once clients are created for multiple entities using a common builder, the first entity that an operation occurs on 
+becomes the entity through which all subsequent sends will be routed through ('send-via' entity). This enables the 
+service to perform a transaction that is meant to span multiple entities. This means that subsequent entities that 
+perform their first operation need to either be senders, or if they are receivers they need to be on the same entity as
+the initial entity through which all sends are routed through (otherwise the service would not be able to ensure that 
+the transaction is committed because it cannot route a receive operation through a different entity).
+
+```java
+        final String intermediateQueue = "intermediate-queue";
+        final String destination1 = "destination-1";
+        final String destination2 = "destination-2";
+        
+        // Use same builder to create the client involved in cross entity transaction.
+        ServiceBusClientBuilder builder = new ServiceBusClientBuilder().connectionString(connectionString)
+            .enableCrossEntityTransactions();
+        // Initialize sender
+        final ServiceBusSenderClient intermediateQueueSender = builder.sender().queueName(intermediateQueue).buildClient();
+        final ServiceBusReceiverClient intermediateQueueReceiver = builder.receiver().queueName(intermediateQueue).buildClient();
+        final ServiceBusSenderClient destination1Sender = builder.sender().queueName(destination1).buildClient();
+        final ServiceBusSenderClient destination2Sender = builder.sender().queueName(destination2).buildClient();
+        //  send message
+        intermediateQueueSender.sendMessage(new ServiceBusMessage("Message."));
+        intermediateQueueReceiver.receiveMessages(1).stream().forEach(message -> {
+            // Process message. The message lock is renewed for up to 1 minute.
+            System.out.printf("Sequence #: %s. Contents: %s%n", message.getSequenceNumber(), message.getBody());
+            //Start a cross entity transaction
+            ServiceBusTransactionContext transactionId = destination1Sender.createTransaction();
+            intermediateQueueReceiver.complete(message, new CompleteOptions().setTransactionContext(transactionId));
+            destination1Sender.sendMessage(new ServiceBusMessage("Message Processed."), transactionId);
+            destination2Sender.sendMessage(new ServiceBusMessage("Message Processed."), transactionId);
+            destination1Sender.commitTransaction(transactionId);
+            System.out.printf("Cross entity Transaction complete for Message id: %s.%n", message.getMessageId());
+        });
+``` 
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fservice-bus%2FMIGRATIONGUIDE.png)
 
 ## Additional samples
 
-More examples can be found at [Service Bus samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus).
+More examples can be found at [Service Bus samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus).

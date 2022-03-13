@@ -8,8 +8,10 @@ import com.azure.analytics.synapse.artifacts.implementation.ArtifactsClientImpl;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -18,7 +20,9 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.util.ArrayList;
@@ -29,40 +33,50 @@ import java.util.Map;
 /** A builder for creating a new instance of the ArtifactsClient type. */
 @ServiceClientBuilder(
         serviceClients = {
-            LinkedServiceClient.class,
-            DatasetClient.class,
-            PipelineClient.class,
-            PipelineRunClient.class,
-            TriggerClient.class,
-            TriggerRunClient.class,
+            KqlScriptsClient.class,
+            KqlScriptClient.class,
+            MetastoreClient.class,
+            SparkConfigurationClient.class,
+            BigDataPoolsClient.class,
             DataFlowClient.class,
             DataFlowDebugSessionClient.class,
-            SqlScriptClient.class,
-            SparkJobDefinitionClient.class,
-            NotebookClient.class,
-            WorkspaceClient.class,
-            SqlPoolsClient.class,
-            BigDataPoolsClient.class,
+            DatasetClient.class,
+            WorkspaceGitRepoManagementClient.class,
             IntegrationRuntimesClient.class,
             LibraryClient.class,
-            WorkspaceGitRepoManagementClient.class,
-            LinkedServiceAsyncClient.class,
-            DatasetAsyncClient.class,
-            PipelineAsyncClient.class,
-            PipelineRunAsyncClient.class,
-            TriggerAsyncClient.class,
-            TriggerRunAsyncClient.class,
+            LinkedServiceClient.class,
+            NotebookClient.class,
+            NotebookOperationResultClient.class,
+            PipelineClient.class,
+            PipelineRunClient.class,
+            SparkJobDefinitionClient.class,
+            SqlPoolsClient.class,
+            SqlScriptClient.class,
+            TriggerClient.class,
+            TriggerRunClient.class,
+            WorkspaceClient.class,
+            KqlScriptsAsyncClient.class,
+            KqlScriptAsyncClient.class,
+            MetastoreAsyncClient.class,
+            SparkConfigurationAsyncClient.class,
+            BigDataPoolsAsyncClient.class,
             DataFlowAsyncClient.class,
             DataFlowDebugSessionAsyncClient.class,
-            SqlScriptAsyncClient.class,
-            SparkJobDefinitionAsyncClient.class,
-            NotebookAsyncClient.class,
-            WorkspaceAsyncClient.class,
-            SqlPoolsAsyncClient.class,
-            BigDataPoolsAsyncClient.class,
+            DatasetAsyncClient.class,
+            WorkspaceGitRepoManagementAsyncClient.class,
             IntegrationRuntimesAsyncClient.class,
             LibraryAsyncClient.class,
-            WorkspaceGitRepoManagementAsyncClient.class
+            LinkedServiceAsyncClient.class,
+            NotebookAsyncClient.class,
+            NotebookOperationResultAsyncClient.class,
+            PipelineAsyncClient.class,
+            PipelineRunAsyncClient.class,
+            SparkJobDefinitionAsyncClient.class,
+            SqlPoolsAsyncClient.class,
+            SqlScriptAsyncClient.class,
+            TriggerAsyncClient.class,
+            TriggerRunAsyncClient.class,
+            WorkspaceAsyncClient.class
         })
 public final class ArtifactsClientBuilder {
     private static final String SDK_NAME = "name";
@@ -92,22 +106,6 @@ public final class ArtifactsClientBuilder {
      */
     public ArtifactsClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
-        return this;
-    }
-
-    /*
-     * Api Version
-     */
-    private String apiVersion;
-
-    /**
-     * Sets Api Version.
-     *
-     * @param apiVersion the apiVersion value.
-     * @return the ArtifactsClientBuilder.
-     */
-    public ArtifactsClientBuilder apiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
         return this;
     }
 
@@ -230,6 +228,23 @@ public final class ArtifactsClientBuilder {
      */
     private final List<HttpPipelinePolicy> pipelinePolicies;
 
+    /*
+     * The client options such as application ID and custom headers to set on a
+     * request.
+     */
+    private ClientOptions clientOptions;
+
+    /**
+     * Sets The client options such as application ID and custom headers to set on a request.
+     *
+     * @param clientOptions the clientOptions value.
+     * @return the ArtifactsClientBuilder.
+     */
+    public ArtifactsClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
+        return this;
+    }
+
     /**
      * Adds a custom Http pipeline policy.
      *
@@ -247,16 +262,13 @@ public final class ArtifactsClientBuilder {
      * @return an instance of ArtifactsClientImpl.
      */
     private ArtifactsClientImpl buildInnerClient() {
-        if (apiVersion == null) {
-            this.apiVersion = "2019-06-01-preview";
-        }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        ArtifactsClientImpl client = new ArtifactsClientImpl(pipeline, serializerAdapter, endpoint, apiVersion);
+        ArtifactsClientImpl client = new ArtifactsClientImpl(pipeline, serializerAdapter, endpoint);
         return client;
     }
 
@@ -266,17 +278,25 @@ public final class ArtifactsClientBuilder {
         if (httpLogOptions == null) {
             httpLogOptions = new HttpLogOptions();
         }
-        List<HttpPipelinePolicy> policies = new ArrayList<>();
-        if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
+        if (clientOptions == null) {
+            clientOptions = new ClientOptions();
         }
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-        policies.add(
-                new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, buildConfiguration));
+        String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
+        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
+        HttpHeaders headers = new HttpHeaders();
+        clientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
+        if (headers.getSize() > 0) {
+            policies.add(new AddHeadersPolicy(headers));
+        }
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
         policies.add(new CookiePolicy());
+        if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
+        }
         policies.addAll(this.pipelinePolicies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
@@ -289,57 +309,48 @@ public final class ArtifactsClientBuilder {
     }
 
     /**
-     * Builds an instance of LinkedServiceAsyncClient async client.
+     * Builds an instance of KqlScriptsAsyncClient async client.
      *
-     * @return an instance of LinkedServiceAsyncClient.
+     * @return an instance of KqlScriptsAsyncClient.
      */
-    public LinkedServiceAsyncClient buildLinkedServiceAsyncClient() {
-        return new LinkedServiceAsyncClient(buildInnerClient().getLinkedServices());
+    public KqlScriptsAsyncClient buildKqlScriptsAsyncClient() {
+        return new KqlScriptsAsyncClient(buildInnerClient().getKqlScripts());
     }
 
     /**
-     * Builds an instance of DatasetAsyncClient async client.
+     * Builds an instance of KqlScriptAsyncClient async client.
      *
-     * @return an instance of DatasetAsyncClient.
+     * @return an instance of KqlScriptAsyncClient.
      */
-    public DatasetAsyncClient buildDatasetAsyncClient() {
-        return new DatasetAsyncClient(buildInnerClient().getDatasets());
+    public KqlScriptAsyncClient buildKqlScriptAsyncClient() {
+        return new KqlScriptAsyncClient(buildInnerClient().getKqlScriptsOperations());
     }
 
     /**
-     * Builds an instance of PipelineAsyncClient async client.
+     * Builds an instance of MetastoreAsyncClient async client.
      *
-     * @return an instance of PipelineAsyncClient.
+     * @return an instance of MetastoreAsyncClient.
      */
-    public PipelineAsyncClient buildPipelineAsyncClient() {
-        return new PipelineAsyncClient(buildInnerClient().getPipelines());
+    public MetastoreAsyncClient buildMetastoreAsyncClient() {
+        return new MetastoreAsyncClient(buildInnerClient().getMetastores());
     }
 
     /**
-     * Builds an instance of PipelineRunAsyncClient async client.
+     * Builds an instance of SparkConfigurationAsyncClient async client.
      *
-     * @return an instance of PipelineRunAsyncClient.
+     * @return an instance of SparkConfigurationAsyncClient.
      */
-    public PipelineRunAsyncClient buildPipelineRunAsyncClient() {
-        return new PipelineRunAsyncClient(buildInnerClient().getPipelineRuns());
+    public SparkConfigurationAsyncClient buildSparkConfigurationAsyncClient() {
+        return new SparkConfigurationAsyncClient(buildInnerClient().getSparkConfigurations());
     }
 
     /**
-     * Builds an instance of TriggerAsyncClient async client.
+     * Builds an instance of BigDataPoolsAsyncClient async client.
      *
-     * @return an instance of TriggerAsyncClient.
+     * @return an instance of BigDataPoolsAsyncClient.
      */
-    public TriggerAsyncClient buildTriggerAsyncClient() {
-        return new TriggerAsyncClient(buildInnerClient().getTriggers());
-    }
-
-    /**
-     * Builds an instance of TriggerRunAsyncClient async client.
-     *
-     * @return an instance of TriggerRunAsyncClient.
-     */
-    public TriggerRunAsyncClient buildTriggerRunAsyncClient() {
-        return new TriggerRunAsyncClient(buildInnerClient().getTriggerRuns());
+    public BigDataPoolsAsyncClient buildBigDataPoolsAsyncClient() {
+        return new BigDataPoolsAsyncClient(buildInnerClient().getBigDataPools());
     }
 
     /**
@@ -361,57 +372,21 @@ public final class ArtifactsClientBuilder {
     }
 
     /**
-     * Builds an instance of SqlScriptAsyncClient async client.
+     * Builds an instance of DatasetAsyncClient async client.
      *
-     * @return an instance of SqlScriptAsyncClient.
+     * @return an instance of DatasetAsyncClient.
      */
-    public SqlScriptAsyncClient buildSqlScriptAsyncClient() {
-        return new SqlScriptAsyncClient(buildInnerClient().getSqlScripts());
+    public DatasetAsyncClient buildDatasetAsyncClient() {
+        return new DatasetAsyncClient(buildInnerClient().getDatasets());
     }
 
     /**
-     * Builds an instance of SparkJobDefinitionAsyncClient async client.
+     * Builds an instance of WorkspaceGitRepoManagementAsyncClient async client.
      *
-     * @return an instance of SparkJobDefinitionAsyncClient.
+     * @return an instance of WorkspaceGitRepoManagementAsyncClient.
      */
-    public SparkJobDefinitionAsyncClient buildSparkJobDefinitionAsyncClient() {
-        return new SparkJobDefinitionAsyncClient(buildInnerClient().getSparkJobDefinitions());
-    }
-
-    /**
-     * Builds an instance of NotebookAsyncClient async client.
-     *
-     * @return an instance of NotebookAsyncClient.
-     */
-    public NotebookAsyncClient buildNotebookAsyncClient() {
-        return new NotebookAsyncClient(buildInnerClient().getNotebooks());
-    }
-
-    /**
-     * Builds an instance of WorkspaceAsyncClient async client.
-     *
-     * @return an instance of WorkspaceAsyncClient.
-     */
-    public WorkspaceAsyncClient buildWorkspaceAsyncClient() {
-        return new WorkspaceAsyncClient(buildInnerClient().getWorkspaces());
-    }
-
-    /**
-     * Builds an instance of SqlPoolsAsyncClient async client.
-     *
-     * @return an instance of SqlPoolsAsyncClient.
-     */
-    public SqlPoolsAsyncClient buildSqlPoolsAsyncClient() {
-        return new SqlPoolsAsyncClient(buildInnerClient().getSqlPools());
-    }
-
-    /**
-     * Builds an instance of BigDataPoolsAsyncClient async client.
-     *
-     * @return an instance of BigDataPoolsAsyncClient.
-     */
-    public BigDataPoolsAsyncClient buildBigDataPoolsAsyncClient() {
-        return new BigDataPoolsAsyncClient(buildInnerClient().getBigDataPools());
+    public WorkspaceGitRepoManagementAsyncClient buildWorkspaceGitRepoManagementAsyncClient() {
+        return new WorkspaceGitRepoManagementAsyncClient(buildInnerClient().getWorkspaceGitRepoManagements());
     }
 
     /**
@@ -433,66 +408,147 @@ public final class ArtifactsClientBuilder {
     }
 
     /**
-     * Builds an instance of WorkspaceGitRepoManagementAsyncClient async client.
+     * Builds an instance of LinkedServiceAsyncClient async client.
      *
-     * @return an instance of WorkspaceGitRepoManagementAsyncClient.
+     * @return an instance of LinkedServiceAsyncClient.
      */
-    public WorkspaceGitRepoManagementAsyncClient buildWorkspaceGitRepoManagementAsyncClient() {
-        return new WorkspaceGitRepoManagementAsyncClient(buildInnerClient().getWorkspaceGitRepoManagements());
+    public LinkedServiceAsyncClient buildLinkedServiceAsyncClient() {
+        return new LinkedServiceAsyncClient(buildInnerClient().getLinkedServices());
     }
 
     /**
-     * Builds an instance of LinkedServiceClient sync client.
+     * Builds an instance of NotebookAsyncClient async client.
      *
-     * @return an instance of LinkedServiceClient.
+     * @return an instance of NotebookAsyncClient.
      */
-    public LinkedServiceClient buildLinkedServiceClient() {
-        return new LinkedServiceClient(buildInnerClient().getLinkedServices());
+    public NotebookAsyncClient buildNotebookAsyncClient() {
+        return new NotebookAsyncClient(buildInnerClient().getNotebooks());
     }
 
     /**
-     * Builds an instance of DatasetClient sync client.
+     * Builds an instance of NotebookOperationResultAsyncClient async client.
      *
-     * @return an instance of DatasetClient.
+     * @return an instance of NotebookOperationResultAsyncClient.
      */
-    public DatasetClient buildDatasetClient() {
-        return new DatasetClient(buildInnerClient().getDatasets());
+    public NotebookOperationResultAsyncClient buildNotebookOperationResultAsyncClient() {
+        return new NotebookOperationResultAsyncClient(buildInnerClient().getNotebookOperationResults());
     }
 
     /**
-     * Builds an instance of PipelineClient sync client.
+     * Builds an instance of PipelineAsyncClient async client.
      *
-     * @return an instance of PipelineClient.
+     * @return an instance of PipelineAsyncClient.
      */
-    public PipelineClient buildPipelineClient() {
-        return new PipelineClient(buildInnerClient().getPipelines());
+    public PipelineAsyncClient buildPipelineAsyncClient() {
+        return new PipelineAsyncClient(buildInnerClient().getPipelines());
     }
 
     /**
-     * Builds an instance of PipelineRunClient sync client.
+     * Builds an instance of PipelineRunAsyncClient async client.
      *
-     * @return an instance of PipelineRunClient.
+     * @return an instance of PipelineRunAsyncClient.
      */
-    public PipelineRunClient buildPipelineRunClient() {
-        return new PipelineRunClient(buildInnerClient().getPipelineRuns());
+    public PipelineRunAsyncClient buildPipelineRunAsyncClient() {
+        return new PipelineRunAsyncClient(buildInnerClient().getPipelineRuns());
     }
 
     /**
-     * Builds an instance of TriggerClient sync client.
+     * Builds an instance of SparkJobDefinitionAsyncClient async client.
      *
-     * @return an instance of TriggerClient.
+     * @return an instance of SparkJobDefinitionAsyncClient.
      */
-    public TriggerClient buildTriggerClient() {
-        return new TriggerClient(buildInnerClient().getTriggers());
+    public SparkJobDefinitionAsyncClient buildSparkJobDefinitionAsyncClient() {
+        return new SparkJobDefinitionAsyncClient(buildInnerClient().getSparkJobDefinitions());
     }
 
     /**
-     * Builds an instance of TriggerRunClient sync client.
+     * Builds an instance of SqlPoolsAsyncClient async client.
      *
-     * @return an instance of TriggerRunClient.
+     * @return an instance of SqlPoolsAsyncClient.
      */
-    public TriggerRunClient buildTriggerRunClient() {
-        return new TriggerRunClient(buildInnerClient().getTriggerRuns());
+    public SqlPoolsAsyncClient buildSqlPoolsAsyncClient() {
+        return new SqlPoolsAsyncClient(buildInnerClient().getSqlPools());
+    }
+
+    /**
+     * Builds an instance of SqlScriptAsyncClient async client.
+     *
+     * @return an instance of SqlScriptAsyncClient.
+     */
+    public SqlScriptAsyncClient buildSqlScriptAsyncClient() {
+        return new SqlScriptAsyncClient(buildInnerClient().getSqlScripts());
+    }
+
+    /**
+     * Builds an instance of TriggerAsyncClient async client.
+     *
+     * @return an instance of TriggerAsyncClient.
+     */
+    public TriggerAsyncClient buildTriggerAsyncClient() {
+        return new TriggerAsyncClient(buildInnerClient().getTriggers());
+    }
+
+    /**
+     * Builds an instance of TriggerRunAsyncClient async client.
+     *
+     * @return an instance of TriggerRunAsyncClient.
+     */
+    public TriggerRunAsyncClient buildTriggerRunAsyncClient() {
+        return new TriggerRunAsyncClient(buildInnerClient().getTriggerRuns());
+    }
+
+    /**
+     * Builds an instance of WorkspaceAsyncClient async client.
+     *
+     * @return an instance of WorkspaceAsyncClient.
+     */
+    public WorkspaceAsyncClient buildWorkspaceAsyncClient() {
+        return new WorkspaceAsyncClient(buildInnerClient().getWorkspaces());
+    }
+
+    /**
+     * Builds an instance of KqlScriptsClient sync client.
+     *
+     * @return an instance of KqlScriptsClient.
+     */
+    public KqlScriptsClient buildKqlScriptsClient() {
+        return new KqlScriptsClient(buildInnerClient().getKqlScripts());
+    }
+
+    /**
+     * Builds an instance of KqlScriptClient sync client.
+     *
+     * @return an instance of KqlScriptClient.
+     */
+    public KqlScriptClient buildKqlScriptClient() {
+        return new KqlScriptClient(buildInnerClient().getKqlScriptsOperations());
+    }
+
+    /**
+     * Builds an instance of MetastoreClient sync client.
+     *
+     * @return an instance of MetastoreClient.
+     */
+    public MetastoreClient buildMetastoreClient() {
+        return new MetastoreClient(buildInnerClient().getMetastores());
+    }
+
+    /**
+     * Builds an instance of SparkConfigurationClient sync client.
+     *
+     * @return an instance of SparkConfigurationClient.
+     */
+    public SparkConfigurationClient buildSparkConfigurationClient() {
+        return new SparkConfigurationClient(buildInnerClient().getSparkConfigurations());
+    }
+
+    /**
+     * Builds an instance of BigDataPoolsClient sync client.
+     *
+     * @return an instance of BigDataPoolsClient.
+     */
+    public BigDataPoolsClient buildBigDataPoolsClient() {
+        return new BigDataPoolsClient(buildInnerClient().getBigDataPools());
     }
 
     /**
@@ -514,57 +570,21 @@ public final class ArtifactsClientBuilder {
     }
 
     /**
-     * Builds an instance of SqlScriptClient sync client.
+     * Builds an instance of DatasetClient sync client.
      *
-     * @return an instance of SqlScriptClient.
+     * @return an instance of DatasetClient.
      */
-    public SqlScriptClient buildSqlScriptClient() {
-        return new SqlScriptClient(buildInnerClient().getSqlScripts());
+    public DatasetClient buildDatasetClient() {
+        return new DatasetClient(buildInnerClient().getDatasets());
     }
 
     /**
-     * Builds an instance of SparkJobDefinitionClient sync client.
+     * Builds an instance of WorkspaceGitRepoManagementClient sync client.
      *
-     * @return an instance of SparkJobDefinitionClient.
+     * @return an instance of WorkspaceGitRepoManagementClient.
      */
-    public SparkJobDefinitionClient buildSparkJobDefinitionClient() {
-        return new SparkJobDefinitionClient(buildInnerClient().getSparkJobDefinitions());
-    }
-
-    /**
-     * Builds an instance of NotebookClient sync client.
-     *
-     * @return an instance of NotebookClient.
-     */
-    public NotebookClient buildNotebookClient() {
-        return new NotebookClient(buildInnerClient().getNotebooks());
-    }
-
-    /**
-     * Builds an instance of WorkspaceClient sync client.
-     *
-     * @return an instance of WorkspaceClient.
-     */
-    public WorkspaceClient buildWorkspaceClient() {
-        return new WorkspaceClient(buildInnerClient().getWorkspaces());
-    }
-
-    /**
-     * Builds an instance of SqlPoolsClient sync client.
-     *
-     * @return an instance of SqlPoolsClient.
-     */
-    public SqlPoolsClient buildSqlPoolsClient() {
-        return new SqlPoolsClient(buildInnerClient().getSqlPools());
-    }
-
-    /**
-     * Builds an instance of BigDataPoolsClient sync client.
-     *
-     * @return an instance of BigDataPoolsClient.
-     */
-    public BigDataPoolsClient buildBigDataPoolsClient() {
-        return new BigDataPoolsClient(buildInnerClient().getBigDataPools());
+    public WorkspaceGitRepoManagementClient buildWorkspaceGitRepoManagementClient() {
+        return new WorkspaceGitRepoManagementClient(buildInnerClient().getWorkspaceGitRepoManagements());
     }
 
     /**
@@ -586,11 +606,101 @@ public final class ArtifactsClientBuilder {
     }
 
     /**
-     * Builds an instance of WorkspaceGitRepoManagementClient sync client.
+     * Builds an instance of LinkedServiceClient sync client.
      *
-     * @return an instance of WorkspaceGitRepoManagementClient.
+     * @return an instance of LinkedServiceClient.
      */
-    public WorkspaceGitRepoManagementClient buildWorkspaceGitRepoManagementClient() {
-        return new WorkspaceGitRepoManagementClient(buildInnerClient().getWorkspaceGitRepoManagements());
+    public LinkedServiceClient buildLinkedServiceClient() {
+        return new LinkedServiceClient(buildInnerClient().getLinkedServices());
+    }
+
+    /**
+     * Builds an instance of NotebookClient sync client.
+     *
+     * @return an instance of NotebookClient.
+     */
+    public NotebookClient buildNotebookClient() {
+        return new NotebookClient(buildInnerClient().getNotebooks());
+    }
+
+    /**
+     * Builds an instance of NotebookOperationResultClient sync client.
+     *
+     * @return an instance of NotebookOperationResultClient.
+     */
+    public NotebookOperationResultClient buildNotebookOperationResultClient() {
+        return new NotebookOperationResultClient(buildInnerClient().getNotebookOperationResults());
+    }
+
+    /**
+     * Builds an instance of PipelineClient sync client.
+     *
+     * @return an instance of PipelineClient.
+     */
+    public PipelineClient buildPipelineClient() {
+        return new PipelineClient(buildInnerClient().getPipelines());
+    }
+
+    /**
+     * Builds an instance of PipelineRunClient sync client.
+     *
+     * @return an instance of PipelineRunClient.
+     */
+    public PipelineRunClient buildPipelineRunClient() {
+        return new PipelineRunClient(buildInnerClient().getPipelineRuns());
+    }
+
+    /**
+     * Builds an instance of SparkJobDefinitionClient sync client.
+     *
+     * @return an instance of SparkJobDefinitionClient.
+     */
+    public SparkJobDefinitionClient buildSparkJobDefinitionClient() {
+        return new SparkJobDefinitionClient(buildInnerClient().getSparkJobDefinitions());
+    }
+
+    /**
+     * Builds an instance of SqlPoolsClient sync client.
+     *
+     * @return an instance of SqlPoolsClient.
+     */
+    public SqlPoolsClient buildSqlPoolsClient() {
+        return new SqlPoolsClient(buildInnerClient().getSqlPools());
+    }
+
+    /**
+     * Builds an instance of SqlScriptClient sync client.
+     *
+     * @return an instance of SqlScriptClient.
+     */
+    public SqlScriptClient buildSqlScriptClient() {
+        return new SqlScriptClient(buildInnerClient().getSqlScripts());
+    }
+
+    /**
+     * Builds an instance of TriggerClient sync client.
+     *
+     * @return an instance of TriggerClient.
+     */
+    public TriggerClient buildTriggerClient() {
+        return new TriggerClient(buildInnerClient().getTriggers());
+    }
+
+    /**
+     * Builds an instance of TriggerRunClient sync client.
+     *
+     * @return an instance of TriggerRunClient.
+     */
+    public TriggerRunClient buildTriggerRunClient() {
+        return new TriggerRunClient(buildInnerClient().getTriggerRuns());
+    }
+
+    /**
+     * Builds an instance of WorkspaceClient sync client.
+     *
+     * @return an instance of WorkspaceClient.
+     */
+    public WorkspaceClient buildWorkspaceClient() {
+        return new WorkspaceClient(buildInnerClient().getWorkspaces());
     }
 }

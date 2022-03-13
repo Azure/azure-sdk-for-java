@@ -32,7 +32,7 @@ public final class PiiTaskParameters {
     /*
      * (Optional) describes the PII categories to return
      */
-    @JsonProperty(value = "pii-categories")
+    @JsonProperty(value = "piiCategories")
     private List<PiiCategory> piiCategories;
 
     /*

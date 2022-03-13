@@ -46,7 +46,6 @@ import com.azure.resourcemanager.storage.fluent.models.StorageAccountInner;
 import com.azure.resourcemanager.storage.fluent.models.StorageAccountListKeysResultInner;
 import com.azure.resourcemanager.storage.models.AccountSasParameters;
 import com.azure.resourcemanager.storage.models.BlobRestoreParameters;
-import com.azure.resourcemanager.storage.models.BlobRestoreRange;
 import com.azure.resourcemanager.storage.models.ListKeyExpand;
 import com.azure.resourcemanager.storage.models.ServiceSasParameters;
 import com.azure.resourcemanager.storage.models.StorageAccountCheckNameAvailabilityParameters;
@@ -56,8 +55,6 @@ import com.azure.resourcemanager.storage.models.StorageAccountListResult;
 import com.azure.resourcemanager.storage.models.StorageAccountRegenerateKeyParameters;
 import com.azure.resourcemanager.storage.models.StorageAccountUpdateParameters;
 import java.nio.ByteBuffer;
-import java.time.OffsetDateTime;
-import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -272,6 +269,37 @@ public final class StorageAccountsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Storage"
+                + "/storageAccounts/{accountName}/hnsonmigration")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> hierarchicalNamespaceMigration(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("requestType") String requestType,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Storage"
+                + "/storageAccounts/{accountName}/aborthnsonmigration")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> abortHierarchicalNamespaceMigration(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/restoreBlobRanges")
         @ExpectedResponses({200, 202})
@@ -324,14 +352,17 @@ public final class StorageAccountsClientImpl
     /**
      * Checks that the storage account name is valid and is not already in use.
      *
-     * @param name The storage account name.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the CheckNameAvailability operation response.
+     * @return the CheckNameAvailability operation response along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(String name) {
+    public Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
+        StorageAccountCheckNameAvailabilityParameters accountName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -344,12 +375,12 @@ public final class StorageAccountsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        } else {
+            accountName.validate();
         }
         final String accept = "application/json";
-        StorageAccountCheckNameAvailabilityParameters accountName = new StorageAccountCheckNameAvailabilityParameters();
-        accountName.withName(name);
         return FluxUtil
             .withContext(
                 context ->
@@ -367,16 +398,18 @@ public final class StorageAccountsClientImpl
     /**
      * Checks that the storage account name is valid and is not already in use.
      *
-     * @param name The storage account name.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the CheckNameAvailability operation response.
+     * @return the CheckNameAvailability operation response along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
-        String name, Context context) {
+        StorageAccountCheckNameAvailabilityParameters accountName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -389,12 +422,12 @@ public final class StorageAccountsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        } else {
+            accountName.validate();
         }
         final String accept = "application/json";
-        StorageAccountCheckNameAvailabilityParameters accountName = new StorageAccountCheckNameAvailabilityParameters();
-        accountName.withName(name);
         context = this.client.mergeContext(context);
         return service
             .checkNameAvailability(
@@ -409,15 +442,17 @@ public final class StorageAccountsClientImpl
     /**
      * Checks that the storage account name is valid and is not already in use.
      *
-     * @param name The storage account name.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the CheckNameAvailability operation response.
+     * @return the CheckNameAvailability operation response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CheckNameAvailabilityResultInner> checkNameAvailabilityAsync(String name) {
-        return checkNameAvailabilityWithResponseAsync(name)
+    public Mono<CheckNameAvailabilityResultInner> checkNameAvailabilityAsync(
+        StorageAccountCheckNameAvailabilityParameters accountName) {
+        return checkNameAvailabilityWithResponseAsync(accountName)
             .flatMap(
                 (Response<CheckNameAvailabilityResultInner> res) -> {
                     if (res.getValue() != null) {
@@ -431,30 +466,34 @@ public final class StorageAccountsClientImpl
     /**
      * Checks that the storage account name is valid and is not already in use.
      *
-     * @param name The storage account name.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the CheckNameAvailability operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameAvailabilityResultInner checkNameAvailability(String name) {
-        return checkNameAvailabilityAsync(name).block();
+    public CheckNameAvailabilityResultInner checkNameAvailability(
+        StorageAccountCheckNameAvailabilityParameters accountName) {
+        return checkNameAvailabilityAsync(accountName).block();
     }
 
     /**
      * Checks that the storage account name is valid and is not already in use.
      *
-     * @param name The storage account name.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the CheckNameAvailability operation response.
+     * @return the CheckNameAvailability operation response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(String name, Context context) {
-        return checkNameAvailabilityWithResponseAsync(name, context).block();
+    public Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(
+        StorageAccountCheckNameAvailabilityParameters accountName, Context context) {
+        return checkNameAvailabilityWithResponseAsync(accountName, context).block();
     }
 
     /**
@@ -471,7 +510,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account.
+     * @return the storage account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -532,7 +571,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account.
+     * @return the storage account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -589,9 +628,9 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account.
+     * @return the {@link PollerFlux} for polling of the storage account.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<StorageAccountInner>, StorageAccountInner> beginCreateAsync(
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, accountName, parameters);
@@ -602,7 +641,7 @@ public final class StorageAccountsClientImpl
                 this.client.getHttpPipeline(),
                 StorageAccountInner.class,
                 StorageAccountInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -620,9 +659,9 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account.
+     * @return the {@link PollerFlux} for polling of the storage account.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StorageAccountInner>, StorageAccountInner> beginCreateAsync(
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -648,9 +687,9 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account.
+     * @return the {@link SyncPoller} for polling of the storage account.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageAccountInner>, StorageAccountInner> beginCreate(
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) {
         return beginCreateAsync(resourceGroupName, accountName, parameters).getSyncPoller();
@@ -671,9 +710,9 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account.
+     * @return the {@link SyncPoller} for polling of the storage account.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageAccountInner>, StorageAccountInner> beginCreate(
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters, Context context) {
         return beginCreateAsync(resourceGroupName, accountName, parameters, context).getSyncPoller();
@@ -693,7 +732,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account.
+     * @return the storage account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StorageAccountInner> createAsync(
@@ -718,7 +757,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account.
+     * @return the storage account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StorageAccountInner> createAsync(
@@ -783,7 +822,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName) {
@@ -831,7 +870,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -876,7 +915,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String accountName) {
@@ -910,7 +949,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, Context context) {
@@ -930,7 +969,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account.
+     * @return the storage account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StorageAccountInner>> getByResourceGroupWithResponseAsync(
@@ -985,7 +1024,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account.
+     * @return the storage account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StorageAccountInner>> getByResourceGroupWithResponseAsync(
@@ -1036,7 +1075,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account.
+     * @return the storage account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StorageAccountInner> getByResourceGroupAsync(
@@ -1063,7 +1102,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account.
+     * @return the storage account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StorageAccountInner> getByResourceGroupAsync(String resourceGroupName, String accountName) {
@@ -1112,7 +1151,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account.
+     * @return the storage account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StorageAccountInner> getByResourceGroupWithResponse(
@@ -1136,7 +1175,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account.
+     * @return the storage account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StorageAccountInner>> updateWithResponseAsync(
@@ -1199,7 +1238,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account.
+     * @return the storage account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StorageAccountInner>> updateWithResponseAsync(
@@ -1258,7 +1297,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account.
+     * @return the storage account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StorageAccountInner> updateAsync(
@@ -1315,7 +1354,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account.
+     * @return the storage account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StorageAccountInner> updateWithResponse(
@@ -1329,7 +1368,8 @@ public final class StorageAccountsClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Accounts operation.
+     * @return the response from the List Storage Accounts operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageAccountInner>> listSinglePageAsync() {
@@ -1376,7 +1416,8 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Accounts operation.
+     * @return the response from the List Storage Accounts operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageAccountInner>> listSinglePageAsync(Context context) {
@@ -1418,7 +1459,7 @@ public final class StorageAccountsClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Accounts operation.
+     * @return the response from the List Storage Accounts operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StorageAccountInner> listAsync() {
@@ -1433,7 +1474,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Accounts operation.
+     * @return the response from the List Storage Accounts operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StorageAccountInner> listAsync(Context context) {
@@ -1447,7 +1488,7 @@ public final class StorageAccountsClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Accounts operation.
+     * @return the response from the List Storage Accounts operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageAccountInner> list() {
@@ -1462,7 +1503,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Accounts operation.
+     * @return the response from the List Storage Accounts operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageAccountInner> list(Context context) {
@@ -1478,7 +1519,8 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Accounts operation.
+     * @return the response from the List Storage Accounts operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageAccountInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -1532,7 +1574,8 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Accounts operation.
+     * @return the response from the List Storage Accounts operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageAccountInner>> listByResourceGroupSinglePageAsync(
@@ -1583,7 +1626,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Accounts operation.
+     * @return the response from the List Storage Accounts operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StorageAccountInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1602,7 +1645,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Accounts operation.
+     * @return the response from the List Storage Accounts operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StorageAccountInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1620,7 +1663,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Accounts operation.
+     * @return the response from the List Storage Accounts operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageAccountInner> listByResourceGroup(String resourceGroupName) {
@@ -1637,7 +1680,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Accounts operation.
+     * @return the response from the List Storage Accounts operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageAccountInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1655,7 +1698,8 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the ListKeys operation.
+     * @return the response from the ListKeys operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StorageAccountListKeysResultInner>> listKeysWithResponseAsync(
@@ -1708,7 +1752,8 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the ListKeys operation.
+     * @return the response from the ListKeys operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StorageAccountListKeysResultInner>> listKeysWithResponseAsync(
@@ -1757,7 +1802,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the ListKeys operation.
+     * @return the response from the ListKeys operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StorageAccountListKeysResultInner> listKeysAsync(
@@ -1783,7 +1828,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the ListKeys operation.
+     * @return the response from the ListKeys operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StorageAccountListKeysResultInner> listKeysAsync(String resourceGroupName, String accountName) {
@@ -1829,7 +1874,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the ListKeys operation.
+     * @return the response from the ListKeys operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StorageAccountListKeysResultInner> listKeysWithResponse(
@@ -1844,16 +1889,16 @@ public final class StorageAccountsClientImpl
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param keyName The name of storage keys that want to be regenerated, possible values are key1, key2, kerb1,
-     *     kerb2.
+     * @param regenerateKey Specifies name of the key which should be regenerated -- key1, key2, kerb1, kerb2.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the ListKeys operation.
+     * @return the response from the ListKeys operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StorageAccountListKeysResultInner>> regenerateKeyWithResponseAsync(
-        String resourceGroupName, String accountName, String keyName) {
+        String resourceGroupName, String accountName, StorageAccountRegenerateKeyParameters regenerateKey) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1873,12 +1918,12 @@ public final class StorageAccountsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (keyName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter keyName is required and cannot be null."));
+        if (regenerateKey == null) {
+            return Mono.error(new IllegalArgumentException("Parameter regenerateKey is required and cannot be null."));
+        } else {
+            regenerateKey.validate();
         }
         final String accept = "application/json";
-        StorageAccountRegenerateKeyParameters regenerateKey = new StorageAccountRegenerateKeyParameters();
-        regenerateKey.withKeyName(keyName);
         return FluxUtil
             .withContext(
                 context ->
@@ -1902,17 +1947,20 @@ public final class StorageAccountsClientImpl
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param keyName The name of storage keys that want to be regenerated, possible values are key1, key2, kerb1,
-     *     kerb2.
+     * @param regenerateKey Specifies name of the key which should be regenerated -- key1, key2, kerb1, kerb2.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the ListKeys operation.
+     * @return the response from the ListKeys operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StorageAccountListKeysResultInner>> regenerateKeyWithResponseAsync(
-        String resourceGroupName, String accountName, String keyName, Context context) {
+        String resourceGroupName,
+        String accountName,
+        StorageAccountRegenerateKeyParameters regenerateKey,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1932,12 +1980,12 @@ public final class StorageAccountsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (keyName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter keyName is required and cannot be null."));
+        if (regenerateKey == null) {
+            return Mono.error(new IllegalArgumentException("Parameter regenerateKey is required and cannot be null."));
+        } else {
+            regenerateKey.validate();
         }
         final String accept = "application/json";
-        StorageAccountRegenerateKeyParameters regenerateKey = new StorageAccountRegenerateKeyParameters();
-        regenerateKey.withKeyName(keyName);
         context = this.client.mergeContext(context);
         return service
             .regenerateKey(
@@ -1958,17 +2006,16 @@ public final class StorageAccountsClientImpl
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param keyName The name of storage keys that want to be regenerated, possible values are key1, key2, kerb1,
-     *     kerb2.
+     * @param regenerateKey Specifies name of the key which should be regenerated -- key1, key2, kerb1, kerb2.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the ListKeys operation.
+     * @return the response from the ListKeys operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StorageAccountListKeysResultInner> regenerateKeyAsync(
-        String resourceGroupName, String accountName, String keyName) {
-        return regenerateKeyWithResponseAsync(resourceGroupName, accountName, keyName)
+        String resourceGroupName, String accountName, StorageAccountRegenerateKeyParameters regenerateKey) {
+        return regenerateKeyWithResponseAsync(resourceGroupName, accountName, regenerateKey)
             .flatMap(
                 (Response<StorageAccountListKeysResultInner> res) -> {
                     if (res.getValue() != null) {
@@ -1986,8 +2033,7 @@ public final class StorageAccountsClientImpl
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param keyName The name of storage keys that want to be regenerated, possible values are key1, key2, kerb1,
-     *     kerb2.
+     * @param regenerateKey Specifies name of the key which should be regenerated -- key1, key2, kerb1, kerb2.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1995,8 +2041,8 @@ public final class StorageAccountsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageAccountListKeysResultInner regenerateKey(
-        String resourceGroupName, String accountName, String keyName) {
-        return regenerateKeyAsync(resourceGroupName, accountName, keyName).block();
+        String resourceGroupName, String accountName, StorageAccountRegenerateKeyParameters regenerateKey) {
+        return regenerateKeyAsync(resourceGroupName, accountName, regenerateKey).block();
     }
 
     /**
@@ -2006,18 +2052,20 @@ public final class StorageAccountsClientImpl
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param keyName The name of storage keys that want to be regenerated, possible values are key1, key2, kerb1,
-     *     kerb2.
+     * @param regenerateKey Specifies name of the key which should be regenerated -- key1, key2, kerb1, kerb2.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the ListKeys operation.
+     * @return the response from the ListKeys operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StorageAccountListKeysResultInner> regenerateKeyWithResponse(
-        String resourceGroupName, String accountName, String keyName, Context context) {
-        return regenerateKeyWithResponseAsync(resourceGroupName, accountName, keyName, context).block();
+        String resourceGroupName,
+        String accountName,
+        StorageAccountRegenerateKeyParameters regenerateKey,
+        Context context) {
+        return regenerateKeyWithResponseAsync(resourceGroupName, accountName, regenerateKey, context).block();
     }
 
     /**
@@ -2031,7 +2079,8 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List SAS credentials operation response.
+     * @return the List SAS credentials operation response along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ListAccountSasResponseInner>> listAccountSasWithResponseAsync(
@@ -2089,7 +2138,8 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List SAS credentials operation response.
+     * @return the List SAS credentials operation response along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ListAccountSasResponseInner>> listAccountSasWithResponseAsync(
@@ -2143,7 +2193,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List SAS credentials operation response.
+     * @return the List SAS credentials operation response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ListAccountSasResponseInner> listAccountSasAsync(
@@ -2190,7 +2240,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List SAS credentials operation response.
+     * @return the List SAS credentials operation response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ListAccountSasResponseInner> listAccountSasWithResponse(
@@ -2209,7 +2259,8 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List service SAS credentials operation response.
+     * @return the List service SAS credentials operation response along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ListServiceSasResponseInner>> listServiceSasWithResponseAsync(
@@ -2267,7 +2318,8 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List service SAS credentials operation response.
+     * @return the List service SAS credentials operation response along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ListServiceSasResponseInner>> listServiceSasWithResponseAsync(
@@ -2321,7 +2373,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List service SAS credentials operation response.
+     * @return the List service SAS credentials operation response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ListServiceSasResponseInner> listServiceSasAsync(
@@ -2368,7 +2420,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List service SAS credentials operation response.
+     * @return the List service SAS credentials operation response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ListServiceSasResponseInner> listServiceSasWithResponse(
@@ -2388,7 +2440,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(String resourceGroupName, String accountName) {
@@ -2438,7 +2490,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(
@@ -2485,14 +2537,15 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginFailoverAsync(String resourceGroupName, String accountName) {
         Mono<Response<Flux<ByteBuffer>>> mono = failoverWithResponseAsync(resourceGroupName, accountName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2508,9 +2561,9 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginFailoverAsync(
         String resourceGroupName, String accountName, Context context) {
         context = this.client.mergeContext(context);
@@ -2532,9 +2585,9 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFailover(String resourceGroupName, String accountName) {
         return beginFailoverAsync(resourceGroupName, accountName).getSyncPoller();
     }
@@ -2552,9 +2605,9 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFailover(
         String resourceGroupName, String accountName, Context context) {
         return beginFailoverAsync(resourceGroupName, accountName, context).getSyncPoller();
@@ -2572,7 +2625,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> failoverAsync(String resourceGroupName, String accountName) {
@@ -2592,7 +2645,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> failoverAsync(String resourceGroupName, String accountName, Context context) {
@@ -2639,22 +2692,23 @@ public final class StorageAccountsClientImpl
     }
 
     /**
-     * Restore blobs in the specified blob ranges.
+     * Live Migration of storage account to enable Hns.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param timeToRestore Restore blob to the specified time.
-     * @param blobRanges Blob ranges to restore.
+     * @param requestType Required. Hierarchical namespace migration type can either be a hierarchical namespace
+     *     validation request 'HnsOnValidationRequest' or a hydration request 'HnsOnHydrationRequest'. The validation
+     *     request will validate the migration whereas the hydration request will migrate the account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return blob restore status.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> restoreBlobRangesWithResponseAsync(
-        String resourceGroupName, String accountName, OffsetDateTime timeToRestore, List<BlobRestoreRange> blobRanges) {
+    public Mono<Response<Flux<ByteBuffer>>> hierarchicalNamespaceMigrationWithResponseAsync(
+        String resourceGroupName, String accountName, String requestType) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -2674,18 +2728,561 @@ public final class StorageAccountsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (timeToRestore == null) {
-            return Mono.error(new IllegalArgumentException("Parameter timeToRestore is required and cannot be null."));
-        }
-        if (blobRanges == null) {
-            return Mono.error(new IllegalArgumentException("Parameter blobRanges is required and cannot be null."));
-        } else {
-            blobRanges.forEach(e -> e.validate());
+        if (requestType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter requestType is required and cannot be null."));
         }
         final String accept = "application/json";
-        BlobRestoreParameters parameters = new BlobRestoreParameters();
-        parameters.withTimeToRestore(timeToRestore);
-        parameters.withBlobRanges(blobRanges);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .hierarchicalNamespaceMigration(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            accountName,
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            requestType,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Live Migration of storage account to enable Hns.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param requestType Required. Hierarchical namespace migration type can either be a hierarchical namespace
+     *     validation request 'HnsOnValidationRequest' or a hydration request 'HnsOnHydrationRequest'. The validation
+     *     request will validate the migration whereas the hydration request will migrate the account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> hierarchicalNamespaceMigrationWithResponseAsync(
+        String resourceGroupName, String accountName, String requestType, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (requestType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter requestType is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .hierarchicalNamespaceMigration(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                accountName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                requestType,
+                accept,
+                context);
+    }
+
+    /**
+     * Live Migration of storage account to enable Hns.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param requestType Required. Hierarchical namespace migration type can either be a hierarchical namespace
+     *     validation request 'HnsOnValidationRequest' or a hydration request 'HnsOnHydrationRequest'. The validation
+     *     request will validate the migration whereas the hydration request will migrate the account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginHierarchicalNamespaceMigrationAsync(
+        String resourceGroupName, String accountName, String requestType) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            hierarchicalNamespaceMigrationWithResponseAsync(resourceGroupName, accountName, requestType);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Live Migration of storage account to enable Hns.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param requestType Required. Hierarchical namespace migration type can either be a hierarchical namespace
+     *     validation request 'HnsOnValidationRequest' or a hydration request 'HnsOnHydrationRequest'. The validation
+     *     request will validate the migration whereas the hydration request will migrate the account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginHierarchicalNamespaceMigrationAsync(
+        String resourceGroupName, String accountName, String requestType, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            hierarchicalNamespaceMigrationWithResponseAsync(resourceGroupName, accountName, requestType, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Live Migration of storage account to enable Hns.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param requestType Required. Hierarchical namespace migration type can either be a hierarchical namespace
+     *     validation request 'HnsOnValidationRequest' or a hydration request 'HnsOnHydrationRequest'. The validation
+     *     request will validate the migration whereas the hydration request will migrate the account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginHierarchicalNamespaceMigration(
+        String resourceGroupName, String accountName, String requestType) {
+        return beginHierarchicalNamespaceMigrationAsync(resourceGroupName, accountName, requestType).getSyncPoller();
+    }
+
+    /**
+     * Live Migration of storage account to enable Hns.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param requestType Required. Hierarchical namespace migration type can either be a hierarchical namespace
+     *     validation request 'HnsOnValidationRequest' or a hydration request 'HnsOnHydrationRequest'. The validation
+     *     request will validate the migration whereas the hydration request will migrate the account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginHierarchicalNamespaceMigration(
+        String resourceGroupName, String accountName, String requestType, Context context) {
+        return beginHierarchicalNamespaceMigrationAsync(resourceGroupName, accountName, requestType, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Live Migration of storage account to enable Hns.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param requestType Required. Hierarchical namespace migration type can either be a hierarchical namespace
+     *     validation request 'HnsOnValidationRequest' or a hydration request 'HnsOnHydrationRequest'. The validation
+     *     request will validate the migration whereas the hydration request will migrate the account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> hierarchicalNamespaceMigrationAsync(
+        String resourceGroupName, String accountName, String requestType) {
+        return beginHierarchicalNamespaceMigrationAsync(resourceGroupName, accountName, requestType)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Live Migration of storage account to enable Hns.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param requestType Required. Hierarchical namespace migration type can either be a hierarchical namespace
+     *     validation request 'HnsOnValidationRequest' or a hydration request 'HnsOnHydrationRequest'. The validation
+     *     request will validate the migration whereas the hydration request will migrate the account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> hierarchicalNamespaceMigrationAsync(
+        String resourceGroupName, String accountName, String requestType, Context context) {
+        return beginHierarchicalNamespaceMigrationAsync(resourceGroupName, accountName, requestType, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Live Migration of storage account to enable Hns.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param requestType Required. Hierarchical namespace migration type can either be a hierarchical namespace
+     *     validation request 'HnsOnValidationRequest' or a hydration request 'HnsOnHydrationRequest'. The validation
+     *     request will validate the migration whereas the hydration request will migrate the account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void hierarchicalNamespaceMigration(String resourceGroupName, String accountName, String requestType) {
+        hierarchicalNamespaceMigrationAsync(resourceGroupName, accountName, requestType).block();
+    }
+
+    /**
+     * Live Migration of storage account to enable Hns.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param requestType Required. Hierarchical namespace migration type can either be a hierarchical namespace
+     *     validation request 'HnsOnValidationRequest' or a hydration request 'HnsOnHydrationRequest'. The validation
+     *     request will validate the migration whereas the hydration request will migrate the account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void hierarchicalNamespaceMigration(
+        String resourceGroupName, String accountName, String requestType, Context context) {
+        hierarchicalNamespaceMigrationAsync(resourceGroupName, accountName, requestType, context).block();
+    }
+
+    /**
+     * Abort live Migration of storage account to enable Hns.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> abortHierarchicalNamespaceMigrationWithResponseAsync(
+        String resourceGroupName, String accountName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .abortHierarchicalNamespaceMigration(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            accountName,
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Abort live Migration of storage account to enable Hns.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> abortHierarchicalNamespaceMigrationWithResponseAsync(
+        String resourceGroupName, String accountName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .abortHierarchicalNamespaceMigration(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                accountName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                accept,
+                context);
+    }
+
+    /**
+     * Abort live Migration of storage account to enable Hns.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginAbortHierarchicalNamespaceMigrationAsync(
+        String resourceGroupName, String accountName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            abortHierarchicalNamespaceMigrationWithResponseAsync(resourceGroupName, accountName);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Abort live Migration of storage account to enable Hns.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginAbortHierarchicalNamespaceMigrationAsync(
+        String resourceGroupName, String accountName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            abortHierarchicalNamespaceMigrationWithResponseAsync(resourceGroupName, accountName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Abort live Migration of storage account to enable Hns.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginAbortHierarchicalNamespaceMigration(
+        String resourceGroupName, String accountName) {
+        return beginAbortHierarchicalNamespaceMigrationAsync(resourceGroupName, accountName).getSyncPoller();
+    }
+
+    /**
+     * Abort live Migration of storage account to enable Hns.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginAbortHierarchicalNamespaceMigration(
+        String resourceGroupName, String accountName, Context context) {
+        return beginAbortHierarchicalNamespaceMigrationAsync(resourceGroupName, accountName, context).getSyncPoller();
+    }
+
+    /**
+     * Abort live Migration of storage account to enable Hns.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> abortHierarchicalNamespaceMigrationAsync(String resourceGroupName, String accountName) {
+        return beginAbortHierarchicalNamespaceMigrationAsync(resourceGroupName, accountName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Abort live Migration of storage account to enable Hns.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> abortHierarchicalNamespaceMigrationAsync(
+        String resourceGroupName, String accountName, Context context) {
+        return beginAbortHierarchicalNamespaceMigrationAsync(resourceGroupName, accountName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Abort live Migration of storage account to enable Hns.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void abortHierarchicalNamespaceMigration(String resourceGroupName, String accountName) {
+        abortHierarchicalNamespaceMigrationAsync(resourceGroupName, accountName).block();
+    }
+
+    /**
+     * Abort live Migration of storage account to enable Hns.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void abortHierarchicalNamespaceMigration(String resourceGroupName, String accountName, Context context) {
+        abortHierarchicalNamespaceMigrationAsync(resourceGroupName, accountName, context).block();
+    }
+
+    /**
+     * Restore blobs in the specified blob ranges.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param parameters The parameters to provide for restore blob ranges.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return blob restore status along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> restoreBlobRangesWithResponseAsync(
+        String resourceGroupName, String accountName, BlobRestoreParameters parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2709,21 +3306,16 @@ public final class StorageAccountsClientImpl
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param timeToRestore Restore blob to the specified time.
-     * @param blobRanges Blob ranges to restore.
+     * @param parameters The parameters to provide for restore blob ranges.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return blob restore status.
+     * @return blob restore status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> restoreBlobRangesWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        OffsetDateTime timeToRestore,
-        List<BlobRestoreRange> blobRanges,
-        Context context) {
+        String resourceGroupName, String accountName, BlobRestoreParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -2743,18 +3335,12 @@ public final class StorageAccountsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (timeToRestore == null) {
-            return Mono.error(new IllegalArgumentException("Parameter timeToRestore is required and cannot be null."));
-        }
-        if (blobRanges == null) {
-            return Mono.error(new IllegalArgumentException("Parameter blobRanges is required and cannot be null."));
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
-            blobRanges.forEach(e -> e.validate());
+            parameters.validate();
         }
         final String accept = "application/json";
-        BlobRestoreParameters parameters = new BlobRestoreParameters();
-        parameters.withTimeToRestore(timeToRestore);
-        parameters.withBlobRanges(blobRanges);
         context = this.client.mergeContext(context);
         return service
             .restoreBlobRanges(
@@ -2775,18 +3361,17 @@ public final class StorageAccountsClientImpl
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param timeToRestore Restore blob to the specified time.
-     * @param blobRanges Blob ranges to restore.
+     * @param parameters The parameters to provide for restore blob ranges.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return blob restore status.
+     * @return the {@link PollerFlux} for polling of blob restore status.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<BlobRestoreStatusInner>, BlobRestoreStatusInner> beginRestoreBlobRangesAsync(
-        String resourceGroupName, String accountName, OffsetDateTime timeToRestore, List<BlobRestoreRange> blobRanges) {
+        String resourceGroupName, String accountName, BlobRestoreParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            restoreBlobRangesWithResponseAsync(resourceGroupName, accountName, timeToRestore, blobRanges);
+            restoreBlobRangesWithResponseAsync(resourceGroupName, accountName, parameters);
         return this
             .client
             .<BlobRestoreStatusInner, BlobRestoreStatusInner>getLroResult(
@@ -2794,7 +3379,7 @@ public final class StorageAccountsClientImpl
                 this.client.getHttpPipeline(),
                 BlobRestoreStatusInner.class,
                 BlobRestoreStatusInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2804,24 +3389,19 @@ public final class StorageAccountsClientImpl
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param timeToRestore Restore blob to the specified time.
-     * @param blobRanges Blob ranges to restore.
+     * @param parameters The parameters to provide for restore blob ranges.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return blob restore status.
+     * @return the {@link PollerFlux} for polling of blob restore status.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BlobRestoreStatusInner>, BlobRestoreStatusInner> beginRestoreBlobRangesAsync(
-        String resourceGroupName,
-        String accountName,
-        OffsetDateTime timeToRestore,
-        List<BlobRestoreRange> blobRanges,
-        Context context) {
+        String resourceGroupName, String accountName, BlobRestoreParameters parameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            restoreBlobRangesWithResponseAsync(resourceGroupName, accountName, timeToRestore, blobRanges, context);
+            restoreBlobRangesWithResponseAsync(resourceGroupName, accountName, parameters, context);
         return this
             .client
             .<BlobRestoreStatusInner, BlobRestoreStatusInner>getLroResult(
@@ -2839,17 +3419,16 @@ public final class StorageAccountsClientImpl
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param timeToRestore Restore blob to the specified time.
-     * @param blobRanges Blob ranges to restore.
+     * @param parameters The parameters to provide for restore blob ranges.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return blob restore status.
+     * @return the {@link SyncPoller} for polling of blob restore status.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BlobRestoreStatusInner>, BlobRestoreStatusInner> beginRestoreBlobRanges(
-        String resourceGroupName, String accountName, OffsetDateTime timeToRestore, List<BlobRestoreRange> blobRanges) {
-        return beginRestoreBlobRangesAsync(resourceGroupName, accountName, timeToRestore, blobRanges).getSyncPoller();
+        String resourceGroupName, String accountName, BlobRestoreParameters parameters) {
+        return beginRestoreBlobRangesAsync(resourceGroupName, accountName, parameters).getSyncPoller();
     }
 
     /**
@@ -2859,23 +3438,17 @@ public final class StorageAccountsClientImpl
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param timeToRestore Restore blob to the specified time.
-     * @param blobRanges Blob ranges to restore.
+     * @param parameters The parameters to provide for restore blob ranges.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return blob restore status.
+     * @return the {@link SyncPoller} for polling of blob restore status.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BlobRestoreStatusInner>, BlobRestoreStatusInner> beginRestoreBlobRanges(
-        String resourceGroupName,
-        String accountName,
-        OffsetDateTime timeToRestore,
-        List<BlobRestoreRange> blobRanges,
-        Context context) {
-        return beginRestoreBlobRangesAsync(resourceGroupName, accountName, timeToRestore, blobRanges, context)
-            .getSyncPoller();
+        String resourceGroupName, String accountName, BlobRestoreParameters parameters, Context context) {
+        return beginRestoreBlobRangesAsync(resourceGroupName, accountName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -2885,17 +3458,16 @@ public final class StorageAccountsClientImpl
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param timeToRestore Restore blob to the specified time.
-     * @param blobRanges Blob ranges to restore.
+     * @param parameters The parameters to provide for restore blob ranges.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return blob restore status.
+     * @return blob restore status on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobRestoreStatusInner> restoreBlobRangesAsync(
-        String resourceGroupName, String accountName, OffsetDateTime timeToRestore, List<BlobRestoreRange> blobRanges) {
-        return beginRestoreBlobRangesAsync(resourceGroupName, accountName, timeToRestore, blobRanges)
+        String resourceGroupName, String accountName, BlobRestoreParameters parameters) {
+        return beginRestoreBlobRangesAsync(resourceGroupName, accountName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2907,22 +3479,17 @@ public final class StorageAccountsClientImpl
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param timeToRestore Restore blob to the specified time.
-     * @param blobRanges Blob ranges to restore.
+     * @param parameters The parameters to provide for restore blob ranges.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return blob restore status.
+     * @return blob restore status on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BlobRestoreStatusInner> restoreBlobRangesAsync(
-        String resourceGroupName,
-        String accountName,
-        OffsetDateTime timeToRestore,
-        List<BlobRestoreRange> blobRanges,
-        Context context) {
-        return beginRestoreBlobRangesAsync(resourceGroupName, accountName, timeToRestore, blobRanges, context)
+        String resourceGroupName, String accountName, BlobRestoreParameters parameters, Context context) {
+        return beginRestoreBlobRangesAsync(resourceGroupName, accountName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2934,8 +3501,7 @@ public final class StorageAccountsClientImpl
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param timeToRestore Restore blob to the specified time.
-     * @param blobRanges Blob ranges to restore.
+     * @param parameters The parameters to provide for restore blob ranges.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2943,8 +3509,8 @@ public final class StorageAccountsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobRestoreStatusInner restoreBlobRanges(
-        String resourceGroupName, String accountName, OffsetDateTime timeToRestore, List<BlobRestoreRange> blobRanges) {
-        return restoreBlobRangesAsync(resourceGroupName, accountName, timeToRestore, blobRanges).block();
+        String resourceGroupName, String accountName, BlobRestoreParameters parameters) {
+        return restoreBlobRangesAsync(resourceGroupName, accountName, parameters).block();
     }
 
     /**
@@ -2954,8 +3520,7 @@ public final class StorageAccountsClientImpl
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param timeToRestore Restore blob to the specified time.
-     * @param blobRanges Blob ranges to restore.
+     * @param parameters The parameters to provide for restore blob ranges.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2964,12 +3529,8 @@ public final class StorageAccountsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobRestoreStatusInner restoreBlobRanges(
-        String resourceGroupName,
-        String accountName,
-        OffsetDateTime timeToRestore,
-        List<BlobRestoreRange> blobRanges,
-        Context context) {
-        return restoreBlobRangesAsync(resourceGroupName, accountName, timeToRestore, blobRanges, context).block();
+        String resourceGroupName, String accountName, BlobRestoreParameters parameters, Context context) {
+        return restoreBlobRangesAsync(resourceGroupName, accountName, parameters, context).block();
     }
 
     /**
@@ -2982,7 +3543,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> revokeUserDelegationKeysWithResponseAsync(
@@ -3031,7 +3592,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> revokeUserDelegationKeysWithResponseAsync(
@@ -3076,7 +3637,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> revokeUserDelegationKeysAsync(String resourceGroupName, String accountName) {
@@ -3111,7 +3672,7 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> revokeUserDelegationKeysWithResponse(
@@ -3126,7 +3687,8 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Accounts operation.
+     * @return the response from the List Storage Accounts operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageAccountInner>> listNextSinglePageAsync(String nextLink) {
@@ -3162,7 +3724,8 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Accounts operation.
+     * @return the response from the List Storage Accounts operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageAccountInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -3197,7 +3760,8 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Accounts operation.
+     * @return the response from the List Storage Accounts operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageAccountInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -3234,7 +3798,8 @@ public final class StorageAccountsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Accounts operation.
+     * @return the response from the List Storage Accounts operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageAccountInner>> listByResourceGroupNextSinglePageAsync(

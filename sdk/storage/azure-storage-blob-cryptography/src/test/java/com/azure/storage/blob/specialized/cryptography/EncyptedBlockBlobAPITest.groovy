@@ -7,6 +7,7 @@ import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpPipelinePosition
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.test.TestMode
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobContainerClient
 import com.azure.storage.blob.BlobServiceClientBuilder
@@ -39,8 +40,6 @@ import reactor.core.publisher.Hooks
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import spock.lang.IgnoreIf
-import spock.lang.Requires
-import spock.lang.Shared
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -49,7 +48,7 @@ import java.nio.file.FileAlreadyExistsException
 import java.nio.file.Files
 import java.nio.file.OpenOption
 import java.nio.file.StandardOpenOption
-import java.time.Duration
+import java.util.concurrent.atomic.AtomicInteger
 
 class EncyptedBlockBlobAPITest extends APISpec {
 
@@ -65,33 +64,33 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     def setup() {
         keyId = "keyId"
-        fakeKey = new FakeKey(keyId, getRandomByteArray(256))
+        fakeKey = new FakeKey(keyId, (getEnvironment().getTestMode() == TestMode.LIVE) ? getRandomByteArray(256) : mockRandomData)
         fakeKeyResolver = new FakeKeyResolver(fakeKey)
 
-        cc = getServiceClientBuilder(env.primaryAccount)
+        cc = getServiceClientBuilder(environment.primaryAccount)
             .buildClient()
             .getBlobContainerClient(generateContainerName())
         cc.create()
 
-        beac = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential,
+        beac = mockAesKey(getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential,
             cc.getBlobContainerUrl())
             .blobName(generateBlobName())
-            .buildEncryptedBlobAsyncClient()
+            .buildEncryptedBlobAsyncClient())
 
-        bec = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential,
+        bec = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential,
             cc.getBlobContainerUrl().toString())
             .blobName(generateBlobName())
-            .buildEncryptedBlobClient()
+            .buildEncryptedBlobAsyncClient()))
 
         def blobName = generateBlobName()
 
-        def builder = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential,
+        def builder = getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential,
             cc.getBlobContainerUrl().toString())
             .blobName(blobName)
 
-        builder.buildEncryptedBlobAsyncClient().upload(data.defaultFlux, null).block()
+        mockAesKey(builder.buildEncryptedBlobAsyncClient()).upload(data.defaultFlux, null).block()
 
-        ebc = builder.buildEncryptedBlobClient()
+        ebc = new EncryptedBlobClient(mockAesKey(builder.buildEncryptedBlobAsyncClient()))
     }
 
     def cleanup() {
@@ -101,7 +100,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     // Key and key resolver null
     def "Create encryption client fails"() {
         when:
-        beac = getEncryptedClientBuilder(null, null, env.primaryAccount.credential,
+        beac = getEncryptedClientBuilder(null, null, environment.primaryAccount.credential,
             cc.getBlobContainerUrl())
             .blobName(generateBlobName())
             .buildEncryptedBlobAsyncClient()
@@ -110,7 +109,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         thrown(IllegalArgumentException)
 
         when:
-        bec = getEncryptedClientBuilder(null, null, env.primaryAccount.credential,
+        bec = getEncryptedClientBuilder(null, null, environment.primaryAccount.credential,
             cc.getBlobContainerUrl())
             .blobName(generateBlobName())
             .buildEncryptedBlobClient()
@@ -135,7 +134,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         } else {
             keyResolver = null
         }
-        beac = getEncryptedClientBuilder(key, keyResolver, env.primaryAccount.credential,
+        beac = getEncryptedClientBuilder(key, keyResolver, environment.primaryAccount.credential,
             cc.getBlobContainerUrl())
             .blobName(generateBlobName())
             .buildEncryptedBlobAsyncClient()
@@ -144,7 +143,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         notThrown(IllegalArgumentException)
 
         when:
-        bec = getEncryptedClientBuilder(key, keyResolver, env.primaryAccount.credential,
+        bec = getEncryptedClientBuilder(key, keyResolver, environment.primaryAccount.credential,
             cc.getBlobContainerUrl())
             .blobName(generateBlobName())
             .buildEncryptedBlobClient()
@@ -421,7 +420,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     def "Download unencrypted data"() {
         setup:
         // Create an async client
-        BlobContainerClient cac = getServiceClientBuilder(env.primaryAccount)
+        BlobContainerClient cac = getServiceClientBuilder(environment.primaryAccount)
             .buildClient()
             .getBlobContainerClient(generateContainerName())
 
@@ -431,10 +430,10 @@ class EncyptedBlockBlobAPITest extends APISpec {
         BlockBlobClient normalClient = cac.getBlobClient(blobName).getBlockBlobClient()
 
         // Uses builder method that takes in regular blob clients
-        EncryptedBlobClient client = getEncryptedClientBuilder(fakeKey as AsyncKeyEncryptionKey, null,
-            env.primaryAccount.credential, cac.getBlobContainerUrl())
+        EncryptedBlobClient client = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey as AsyncKeyEncryptionKey, null,
+            environment.primaryAccount.credential, cac.getBlobContainerUrl())
             .blobName(blobName)
-            .buildEncryptedBlobClient()
+            .buildEncryptedBlobAsyncClient()))
 
         when:
 
@@ -490,15 +489,15 @@ class EncyptedBlockBlobAPITest extends APISpec {
         def blobName = generateBlobName()
 
         EncryptedBlobAsyncClient decryptResolverClient =
-            getEncryptedClientBuilder(null, fakeKeyResolver as AsyncKeyEncryptionKeyResolver, env.primaryAccount.credential,
+            mockAesKey(getEncryptedClientBuilder(null, fakeKeyResolver as AsyncKeyEncryptionKeyResolver, environment.primaryAccount.credential,
                 cc.getBlobContainerUrl())
                 .blobName(blobName)
-                .buildEncryptedBlobAsyncClient()
+                .buildEncryptedBlobAsyncClient())
 
         EncryptedBlobAsyncClient encryptClient =
-            getEncryptedClientBuilder(fakeKey as AsyncKeyEncryptionKey, null, env.primaryAccount.credential, cc.getBlobContainerUrl())
+            mockAesKey(getEncryptedClientBuilder(fakeKey as AsyncKeyEncryptionKey, null, environment.primaryAccount.credential, cc.getBlobContainerUrl())
                 .blobName(blobName)
-                .buildEncryptedBlobAsyncClient()
+                .buildEncryptedBlobAsyncClient())
 
         def byteBufferList = []
 
@@ -526,7 +525,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         def blobName = generateBlobName()
         def containerName = cc.getBlobContainerName()
 
-        CloudStorageAccount v8Account = CloudStorageAccount.parse(env.primaryAccount.connectionString)
+        CloudStorageAccount v8Account = CloudStorageAccount.parse(environment.primaryAccount.connectionString)
         CloudBlobClient blobClient = v8Account.createCloudBlobClient()
         CloudBlobContainer container = blobClient.getContainerReference(containerName)
         CloudBlockBlob v8EncryptBlob = container.getBlockBlobReference(blobName)
@@ -535,7 +534,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         uploadOptions.setEncryptionPolicy(uploadPolicy)
 
         EncryptedBlobClient decryptClient =
-            getEncryptedClientBuilder(fakeKey as AsyncKeyEncryptionKey, null, env.primaryAccount.credential, cc.getBlobContainerUrl())
+            getEncryptedClientBuilder(fakeKey as AsyncKeyEncryptionKey, null, environment.primaryAccount.credential, cc.getBlobContainerUrl())
                 .blobName(blobName)
                 .buildEncryptedBlobClient()
 
@@ -562,12 +561,12 @@ class EncyptedBlockBlobAPITest extends APISpec {
         def containerName = cc.getBlobContainerName()
 
         EncryptedBlobAsyncClient encryptClient =
-            getEncryptedClientBuilder(fakeKey as AsyncKeyEncryptionKey, null, env.primaryAccount.credential,
+            getEncryptedClientBuilder(fakeKey as AsyncKeyEncryptionKey, null, environment.primaryAccount.credential,
                 cc.getBlobContainerUrl())
                 .blobName(blobName)
                 .buildEncryptedBlobAsyncClient()
 
-        CloudStorageAccount v8Account = CloudStorageAccount.parse(env.primaryAccount.connectionString)
+        CloudStorageAccount v8Account = CloudStorageAccount.parse(environment.primaryAccount.connectionString)
         CloudBlobClient blobClient = v8Account.createCloudBlobClient()
         CloudBlobContainer container = blobClient.getContainerReference(containerName)
         container.createIfNotExists()
@@ -717,10 +716,10 @@ class EncyptedBlockBlobAPITest extends APISpec {
         constructed in BlobClient.download().
          */
         setup:
-        def builder = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential,
+        def builder = getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential,
             ebc.getBlobUrl(), new MockRetryRangeResponsePolicy())
 
-        ebc = builder.buildEncryptedBlobClient()
+        ebc = new EncryptedBlobClient(mockAesKey(builder.buildEncryptedBlobAsyncClient()))
 
         when:
         def range = new BlobRange(2, 5L)
@@ -822,10 +821,10 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     def "Download error"() {
         setup:
-        ebc = new EncryptedBlobClientBuilder()
+        ebc = new EncryptedBlobClient(mockAesKey(new EncryptedBlobClientBuilder()
             .key(fakeKey, "keyWrapAlgorithm")
             .blobClient(cc.getBlobClient(generateBlobName()))
-            .buildEncryptedBlobClient()
+            .buildEncryptedBlobAsyncClient()))
 
         when:
         ebc.download(null)
@@ -986,8 +985,8 @@ class EncyptedBlockBlobAPITest extends APISpec {
         setup:
         def containerName = generateContainerName()
         def blobServiceClient = new BlobServiceClientBuilder()
-            .endpoint(env.primaryAccount.blobEndpoint)
-            .credential(env.primaryAccount.credential)
+            .endpoint(environment.primaryAccount.blobEndpoint)
+            .credential(environment.primaryAccount.credential)
             .buildClient()
 
         def encryptedBlobClient = new EncryptedBlobClientBuilder()
@@ -1033,8 +1032,8 @@ class EncyptedBlockBlobAPITest extends APISpec {
         setup:
         def containerName = generateContainerName()
         def blobServiceAsyncClient = new BlobServiceClientBuilder()
-            .endpoint(env.primaryAccount.blobEndpoint)
-            .credential(env.primaryAccount.credential)
+            .endpoint(environment.primaryAccount.blobEndpoint)
+            .credential(environment.primaryAccount.credential)
             .buildAsyncClient()
 
         def encryptedBlobAsyncClient = new EncryptedBlobClientBuilder()
@@ -1240,9 +1239,34 @@ class EncyptedBlockBlobAPITest extends APISpec {
         def outFile = new File(namer.getResourcePrefix())
         Files.deleteIfExists(file.toPath())
 
+        def counter = new AtomicInteger()
+
         expect:
-        def bac = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential,
+        def bacUploading = getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential,
             ebc.getBlobUrl().toString())
+            .buildEncryptedBlobAsyncClient()
+
+        def localData = data
+        def policy = new HttpPipelinePolicy() {
+            @Override
+            Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+                return next.process()
+                    .flatMap({ r ->
+                        if (counter.incrementAndGet() == 1) {
+                            /*
+                             * When the download begins trigger an upload to overwrite the downloading blob
+                             * so that the download is able to get an ETag before it is changed.
+                             */
+                            return bacUploading.upload(localData.defaultFlux, null, true)
+                                .thenReturn(r)
+                        }
+                        return Mono.just(r)
+                    })
+            }
+        }
+        def bacDownloading = getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential,
+            ebc.getBlobUrl().toString())
+            .addPolicy(policy)
             .buildEncryptedBlobAsyncClient()
 
         /*
@@ -1260,12 +1284,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
          */
         Hooks.onErrorDropped({ ignored -> /* do nothing with it */ })
 
-        /*
-         * When the download begins trigger an upload to overwrite the downloading blob after waiting 500 milliseconds
-         * so that the download is able to get an ETag before it is changed.
-         */
-        StepVerifier.create(bac.downloadToFileWithResponse(outFile.toPath().toString(), null, options, null, null, false)
-            .doOnSubscribe({ bac.upload(data.defaultFlux, null, true).delaySubscription(Duration.ofMillis(500)).subscribe() }))
+        StepVerifier.create(bacDownloading.downloadToFileWithResponse(outFile.toPath().toString(), null, options, null, null, false))
             .verifyErrorSatisfies({
                 /*
                  * If an operation is running on multiple threads and multiple return an exception Reactor will combine
@@ -1353,14 +1372,14 @@ class EncyptedBlockBlobAPITest extends APISpec {
     def "Download requiresEncryption"() {
         setup:
         def blobName = bec.getBlobName()
-        def bc = getBlobClientBuilder(env.primaryAccount.credential, cc.getBlobContainerUrl().toString())
+        def bc = getBlobClientBuilder(environment.primaryAccount.credential, cc.getBlobContainerUrl().toString())
             .blobName(blobName)
             .buildClient()
 
         bc.upload(data.defaultInputStream, data.defaultDataSize)
 
         when: "Sync min"
-        bec = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential,
+        bec = getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential,
             cc.getBlobContainerUrl().toString())
             .blobName(blobName)
             .requiresEncryption(true)
@@ -1377,7 +1396,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         thrown(IllegalStateException)
 
         when: "Async min"
-        beac = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential,
+        beac = getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential,
             cc.getBlobContainerUrl().toString())
             .blobName(blobName)
             .requiresEncryption(true)
@@ -1490,10 +1509,11 @@ class EncyptedBlockBlobAPITest extends APISpec {
         }
     }
 
-    @IgnoreIf( { getEnv().serviceVersion != null } )
+    @IgnoreIf( { getEnvironment().serviceVersion != null } )
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
-        def client = getEncryptedClientBuilder(fakeKey, fakeKeyResolver, env.primaryAccount.credential, bec.getBlobUrl(), getPerCallVersionPolicy()).buildEncryptedBlobClient()
+        def client = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, fakeKeyResolver, environment.primaryAccount.credential, bec.getBlobUrl(), getPerCallVersionPolicy())
+            .buildEncryptedBlobAsyncClient()))
 
         client.upload(new ByteArrayInputStream(new byte[0]), 0)
 

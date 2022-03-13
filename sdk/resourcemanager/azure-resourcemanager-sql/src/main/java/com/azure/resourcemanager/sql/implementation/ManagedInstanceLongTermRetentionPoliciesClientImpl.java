@@ -503,7 +503,7 @@ public final class ManagedInstanceLongTermRetentionPoliciesClientImpl
                 this.client.getHttpPipeline(),
                 ManagedInstanceLongTermRetentionPolicyInner.class,
                 ManagedInstanceLongTermRetentionPolicyInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

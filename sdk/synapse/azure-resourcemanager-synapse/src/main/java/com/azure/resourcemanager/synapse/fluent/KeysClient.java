@@ -64,7 +64,7 @@ public interface KeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace key.
+     * @return a workspace key along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<KeyInner> getWithResponse(String resourceGroupName, String workspaceName, String keyName, Context context);
@@ -95,7 +95,7 @@ public interface KeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace key.
+     * @return a workspace key along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<KeyInner> createOrUpdateWithResponse(
@@ -125,7 +125,7 @@ public interface KeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace key.
+     * @return a workspace key along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<KeyInner> deleteWithResponse(

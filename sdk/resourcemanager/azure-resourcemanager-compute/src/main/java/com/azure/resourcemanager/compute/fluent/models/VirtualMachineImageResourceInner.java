@@ -8,15 +8,13 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.ExtendedLocation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Virtual machine image resource information. */
 @Fluent
 public class VirtualMachineImageResourceInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineImageResourceInner.class);
-
     /*
      * The name of the resource.
      */
@@ -35,6 +33,7 @@ public class VirtualMachineImageResourceInner extends SubResource {
      * resources](https://docs.microsoft.com/azure/azure-resource-manager/resource-group-using-tags.md).
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
@@ -141,13 +140,13 @@ public class VirtualMachineImageResourceInner extends SubResource {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model VirtualMachineImageResourceInner"));
         }
         if (location() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property location in model VirtualMachineImageResourceInner"));
@@ -156,4 +155,6 @@ public class VirtualMachineImageResourceInner extends SubResource {
             extendedLocation().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineImageResourceInner.class);
 }

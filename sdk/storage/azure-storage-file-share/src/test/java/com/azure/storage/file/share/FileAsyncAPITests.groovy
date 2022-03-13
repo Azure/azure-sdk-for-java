@@ -23,7 +23,6 @@ import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues
 import reactor.core.publisher.Flux
 import reactor.test.StepVerifier
 import spock.lang.Ignore
-import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -61,7 +60,7 @@ class FileAsyncAPITests extends APISpec {
 
     def "Get file URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, filePath)
 
         when:
@@ -178,7 +177,7 @@ class FileAsyncAPITests extends APISpec {
     def "Download file buffer copy"() {
         setup:
         def shareServiceAsyncClient = new ShareServiceClientBuilder()
-            .connectionString(env.primaryAccount.connectionString)
+            .connectionString(environment.primaryAccount.connectionString)
             .buildAsyncClient()
 
         def fileClient = shareServiceAsyncClient.getShareAsyncClient(shareName)
@@ -217,7 +216,7 @@ class FileAsyncAPITests extends APISpec {
 
         when:
         def uploadVerifier = StepVerifier.create(primaryFileAsyncClient.uploadWithResponse(data.defaultFlux, data.defaultDataSizeLong, 0L))
-        def downloadVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(null, null))
+        def downloadVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(null))
 
         then:
         uploadVerifier.assertNext {
@@ -225,7 +224,7 @@ class FileAsyncAPITests extends APISpec {
         }.verifyComplete()
 
         downloadVerifier.assertNext({ response ->
-            assert assertResponseStatusCode(response, 200)
+            assert assertResponseStatusCode(response, 200, 206)
             def headers = response.getDeserializedHeaders()
             assert headers.getContentLength() == data.defaultDataSizeLong
             assert headers.getETag()
@@ -621,7 +620,7 @@ class FileAsyncAPITests extends APISpec {
         def destinationOffset = 0
 
         primaryFileAsyncClient.upload(Flux.just(ByteBuffer.wrap(data.getBytes())), data.length()).block()
-        def credential = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString)
         def sasToken = new ShareServiceSasSignatureValues()
             .setExpiryTime(namer.getUtcNow().plusDays(1))
             .setPermissions(new ShareFileSasPermission().setReadPermission(true))
@@ -657,7 +656,7 @@ class FileAsyncAPITests extends APISpec {
         def destinationOffset = 0
 
         primaryFileAsyncClient.upload(Flux.just(ByteBuffer.wrap(data.getBytes())), data.length()).block()
-        def credential = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString)
         def sasToken = new ShareServiceSasSignatureValues()
             .setExpiryTime(namer.getUtcNow().plusDays(1))
             .setPermissions(new ShareFileSasPermission().setReadPermission(true))
@@ -689,7 +688,7 @@ class FileAsyncAPITests extends APISpec {
         def destinationOffset = 0
 
         primaryFileAsyncClient.upload(Flux.just(ByteBuffer.wrap(data.getBytes())), data.length()).block()
-        def credential = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString)
         def sasToken = new ShareServiceSasSignatureValues()
             .setExpiryTime(namer.getUtcNow().plusDays(1))
             .setPermissions(new ShareFileSasPermission().setReadPermission(true))

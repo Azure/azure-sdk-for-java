@@ -9,6 +9,7 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.util.CertificateUtil;
+import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
@@ -54,6 +55,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
@@ -189,29 +191,7 @@ public class IdentityClientTests {
         Assert.assertEquals(accessToken, token.getToken());
         Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
     }
-
-    @Test
-    public void testValidMSICodeFlow() throws Exception {
-        // setup
-        Configuration configuration = Configuration.getGlobalConfiguration();
-        String endpoint = "http://localhost";
-        String secret = "secret";
-        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
-        OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
-        configuration.put("MSI_ENDPOINT", endpoint);
-        configuration.put("MSI_SECRET", secret);
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("M/d/yyyy H:mm:ss XXX");
-        String tokenJson = "{ \"access_token\" : \"token1\", \"expires_on\" : \"" + expiresOn.format(dtf) + "\" }";
-
-        // mock
-        mockForMSICodeFlow(tokenJson);
-
-        // test
-        IdentityClient client = new IdentityClientBuilder().build();
-        AccessToken token = client.authenticateToManagedIdentityEndpoint(null, null, endpoint, secret, request).block();
-        Assert.assertEquals("token1", token.getToken());
-        Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
-    }
+    
 
     @Test
     public void testValidServiceFabricCodeFlow() throws Exception {
@@ -256,7 +236,7 @@ public class IdentityClientTests {
 
         // test
         IdentityClient client = new IdentityClientBuilder().build();
-        AccessToken token = client.authenticateToManagedIdentityEndpoint(endpoint, secret, null, null, request).block();
+        AccessToken token = client.authenticateToManagedIdentityEndpoint(endpoint, secret, request).block();
         Assert.assertEquals("token1", token.getToken());
         Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
     }
@@ -306,7 +286,31 @@ public class IdentityClientTests {
 
 
         // mock
-        mockForIMDSCodeFlow(tokenJson);
+        mockForIMDSCodeFlow(IdentityConstants.DEFAULT_IMDS_ENDPOINT, tokenJson);
+
+        // mockForDeviceCodeFlow(request, accessToken, expiresOn);
+
+        // test
+        IdentityClient client = new IdentityClientBuilder().build();
+        AccessToken token = client.authenticateToIMDSEndpoint(request).block();
+        Assert.assertEquals("token1", token.getToken());
+        Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
+    }
+
+    @Test
+    public void testCustomIMDSCodeFlow() throws Exception {
+        // setup
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        String endpoint = "http://awesome.pod.url";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        configuration.put(Configuration.PROPERTY_AZURE_POD_IDENTITY_TOKEN_URL, endpoint);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("M/d/yyyy H:mm:ss XXX");
+        String tokenJson = "{ \"access_token\" : \"token1\", \"expires_on\" : \"" + expiresOn.format(dtf) + "\" }";
+
+
+        // mock
+        mockForIMDSCodeFlow(endpoint, tokenJson);
 
         // mockForDeviceCodeFlow(request, accessToken, expiresOn);
 
@@ -394,7 +398,7 @@ public class IdentityClientTests {
         // test
         IdentityClientOptions options = new IdentityClientOptions();
         IdentityClient client = new IdentityClientBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).identityClientOptions(options).build();
-        StepVerifier.create(client.authenticateWithBrowserInteraction(request, 4567, null))
+        StepVerifier.create(client.authenticateWithBrowserInteraction(request, 4567, null, null))
             .expectNextMatches(accessToken -> token.equals(accessToken.getToken())
                 && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond())
             .verifyComplete();
@@ -433,6 +437,7 @@ public class IdentityClientTests {
         when(builder.build()).thenReturn(application);
         when(builder.authority(any())).thenReturn(builder);
         when(builder.httpClient(any())).thenReturn(builder);
+        when(builder.validateAuthority(anyBoolean())).thenReturn(builder);
         whenNew(ConfidentialClientApplication.Builder.class).withAnyArguments().thenAnswer(invocation -> {
             String cid = (String) invocation.getArguments()[0];
             IClientSecret clientSecret = (IClientSecret) invocation.getArguments()[1];
@@ -462,6 +467,7 @@ public class IdentityClientTests {
         when(builder.build()).thenReturn(application);
         when(builder.authority(any())).thenReturn(builder);
         when(builder.httpClient(any())).thenReturn(builder);
+        when(builder.validateAuthority(anyBoolean())).thenReturn(builder);
         whenNew(ConfidentialClientApplication.Builder.class).withAnyArguments().thenAnswer(invocation -> {
             String cid = (String) invocation.getArguments()[0];
             IClientCredential keyCredential = (IClientCredential) invocation.getArguments()[1];
@@ -497,6 +503,7 @@ public class IdentityClientTests {
         when(builder.build()).thenReturn(application);
         when(builder.authority(any())).thenReturn(builder);
         when(builder.httpClient(any())).thenReturn(builder);
+        when(builder.validateAuthority(anyBoolean())).thenReturn(builder);
         whenNew(PublicClientApplication.Builder.class).withArguments(CLIENT_ID).thenReturn(builder);
     }
 
@@ -516,6 +523,7 @@ public class IdentityClientTests {
         when(builder.build()).thenReturn(application);
         when(builder.authority(any())).thenReturn(builder);
         when(builder.httpClient(any())).thenReturn(builder);
+        when(builder.validateAuthority(anyBoolean())).thenReturn(builder);
         whenNew(ConfidentialClientApplication.Builder.class).withAnyArguments().thenAnswer(invocation -> {
             String cid = (String) invocation.getArguments()[0];
             if (!CLIENT_ID.equals(cid)) {
@@ -570,8 +578,9 @@ public class IdentityClientTests {
         when(initConnection.getResponseCode()).thenReturn(responseCode);
     }
 
-    private void mockForIMDSCodeFlow(String tokenJson) throws Exception {
+    private void mockForIMDSCodeFlow(String endpoint, String tokenJson) throws Exception {
         URL u = PowerMockito.mock(URL.class);
+        whenNew(URL.class).withArguments(ArgumentMatchers.startsWith(endpoint)).thenReturn(u);
         whenNew(URL.class).withAnyArguments().thenReturn(u);
         HttpURLConnection huc = PowerMockito.mock(HttpURLConnection.class);
         when(u.openConnection()).thenReturn(huc);
@@ -596,6 +605,7 @@ public class IdentityClientTests {
         when(builder.build()).thenReturn(application);
         when(builder.authority(any())).thenReturn(builder);
         when(builder.httpClient(any())).thenReturn(builder);
+        when(builder.validateAuthority(anyBoolean())).thenReturn(builder);
         whenNew(PublicClientApplication.Builder.class).withArguments(CLIENT_ID).thenReturn(builder);
     }
 
@@ -626,6 +636,7 @@ public class IdentityClientTests {
         when(builder.build()).thenReturn(application);
         when(builder.authority(any())).thenReturn(builder);
         when(builder.httpClient(any())).thenReturn(builder);
+        when(builder.validateAuthority(anyBoolean())).thenReturn(builder);
         whenNew(PublicClientApplication.Builder.class).withArguments(CLIENT_ID).thenReturn(builder);
     }
 
@@ -644,6 +655,7 @@ public class IdentityClientTests {
         when(builder.build()).thenReturn(application);
         when(builder.authority(any())).thenReturn(builder);
         when(builder.httpClient(any())).thenReturn(builder);
+        when(builder.validateAuthority(anyBoolean())).thenReturn(builder);
         whenNew(PublicClientApplication.Builder.class).withArguments(CLIENT_ID).thenReturn(builder);
     }
 
@@ -662,6 +674,7 @@ public class IdentityClientTests {
         when(builder.build()).thenReturn(application);
         when(builder.authority(any())).thenReturn(builder);
         when(builder.httpClient(any())).thenReturn(builder);
+        when(builder.validateAuthority(anyBoolean())).thenReturn(builder);
         whenNew(PublicClientApplication.Builder.class).withArguments(CLIENT_ID).thenReturn(builder);
     }
 }

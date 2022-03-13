@@ -8,6 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import java.util.Iterator;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.function.Predicate;
 
 /**
  * Internal class that is a blocking iterable for {@link ContinuablePagedIterable}.
@@ -24,27 +25,34 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 final class ContinuablePagedByPageIterable<C, T, P extends ContinuablePage<C, T>> implements Iterable<P> {
     private final PageRetriever<C, P> pageRetriever;
     private final C continuationToken;
+    private final Predicate<C> continuationPredicate;
     private final Integer preferredPageSize;
 
-    ContinuablePagedByPageIterable(PageRetriever<C, P> pageRetriever, C continuationToken, Integer preferredPageSize) {
+    ContinuablePagedByPageIterable(PageRetriever<C, P> pageRetriever, C continuationToken,
+        Predicate<C> continuationPredicate, Integer preferredPageSize) {
         this.pageRetriever = pageRetriever;
         this.continuationToken = continuationToken;
+        this.continuationPredicate = continuationPredicate;
         this.preferredPageSize = preferredPageSize;
     }
 
     @Override
     public Iterator<P> iterator() {
-        return new ContinuablePagedByPageIterator<>(pageRetriever, continuationToken, preferredPageSize);
+        return new ContinuablePagedByPageIterator<>(pageRetriever, continuationToken, continuationPredicate,
+            preferredPageSize);
     }
 
     private static final class ContinuablePagedByPageIterator<C, T, P extends ContinuablePage<C, T>>
         extends ContinuablePagedByIteratorBase<C, T, P, P> {
+        // ContinuablePagedByPageIterator is a commonly used class, use static logger.
+        private static final ClientLogger LOGGER = new ClientLogger(ContinuablePagedByPageIterator.class);
+
         private volatile Queue<P> pages = new ConcurrentLinkedQueue<>();
 
         ContinuablePagedByPageIterator(PageRetriever<C, P> pageRetriever, C continuationToken,
-            Integer preferredPageSize) {
-            super(pageRetriever, new ContinuationState<>(continuationToken), preferredPageSize,
-                new ClientLogger(ContinuablePagedByPageIterator.class));
+            Predicate<C> continuationPredicate, Integer preferredPageSize) {
+            super(pageRetriever, new ContinuationState<>(continuationToken, continuationPredicate), preferredPageSize,
+                LOGGER);
 
             requestPage();
         }

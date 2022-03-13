@@ -8,7 +8,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
 /**
- * Exception thrown for an invalid response with {@link KeyVaultError} information.
+ * Exception thrown for an invalid response with {@link KeyVaultAdministrationError} information.
  */
 @Immutable
 public final class KeyVaultAdministrationException extends HttpResponseException {
@@ -29,12 +29,12 @@ public final class KeyVaultAdministrationException extends HttpResponseException
      * @param response The HTTP response.
      * @param value The deserialized response value.
      */
-    public KeyVaultAdministrationException(String message, HttpResponse response, KeyVaultError value) {
+    public KeyVaultAdministrationException(String message, HttpResponse response, KeyVaultAdministrationError value) {
         super(message, response, value);
     }
 
     @Override
-    public KeyVaultError getValue() {
-        return (KeyVaultError) super.getValue();
+    public KeyVaultAdministrationError getValue() {
+        return (KeyVaultAdministrationError) super.getValue();
     }
 }

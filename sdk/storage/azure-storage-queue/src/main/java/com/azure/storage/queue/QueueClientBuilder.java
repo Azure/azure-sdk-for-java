@@ -3,16 +3,27 @@
 package com.azure.storage.queue;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
+import com.azure.core.client.traits.AzureSasCredentialTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.ConnectionStringTrait;
+import com.azure.core.client.traits.EndpointTrait;
+import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
+import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -45,19 +56,47 @@ import java.util.function.Function;
  * client.</p>
  *
  * <p><strong>Instantiating a synchronous Queue Client with SAS token</strong></p>
- * {@codesnippet com.azure.storage.queue.queueClient.instantiation.sastoken}
+ * <!-- src_embed com.azure.storage.queue.queueClient.instantiation.sastoken -->
+ * <pre>
+ * QueueClient client = new QueueClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;https:&#47;&#47;$&#123;accountName&#125;.queue.core.windows.net?$&#123;SASToken&#125;&quot;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.queue.queueClient.instantiation.sastoken -->
  *
  * <p><strong>Instantiating an Asynchronous Queue Client with SAS token</strong></p>
- * {@codesnippet com.azure.storage.queue.queueAsyncClient.instantiation.sastoken}
+ * <!-- src_embed com.azure.storage.queue.queueAsyncClient.instantiation.sastoken -->
+ * <pre>
+ * QueueAsyncClient queueAsyncClient = new QueueClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;https:&#47;&#47;&#123;accountName&#125;.queue.core.windows.net?&#123;SASToken&#125;&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.queue.queueAsyncClient.instantiation.sastoken -->
  *
  * <p>If the {@code endpoint} doesn't contain the queue name or {@code SAS token} they may be set using
  * {@link QueueClientBuilder#queueName(String) queueName} and {@link QueueClientBuilder#sasToken(String) SAS token}.</p>
  *
  * <p><strong>Instantiating a synchronous Queue Client with credential</strong></p>
- * {@codesnippet com.azure.storage.queue.queueClient.instantiation.credential}
+ * <!-- src_embed com.azure.storage.queue.queueClient.instantiation.credential -->
+ * <pre>
+ * QueueClient client = new QueueClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;https:&#47;&#47;$&#123;accountName&#125;.queue.core.windows.net&quot;&#41;
+ *     .queueName&#40;&quot;myqueue&quot;&#41;
+ *     .sasToken&#40;&quot;&#123;SASTokenQueryParams&#125;&quot;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.queue.queueClient.instantiation.credential -->
  *
  * <p><strong>Instantiating an Asynchronous Queue Client with credential</strong></p>
- * {@codesnippet com.azure.storage.queue.queueAsyncClient.instantiation.credential}
+ * <!-- src_embed com.azure.storage.queue.queueAsyncClient.instantiation.credential -->
+ * <pre>
+ * QueueAsyncClient queueAsyncClient = new QueueClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;https:&#47;&#47;&#123;accountName&#125;.queue.core.windows.net&quot;&#41;
+ *     .queueName&#40;&quot;myqueue&quot;&#41;
+ *     .sasToken&#40;&quot;&#123;SASTokenQueryParams&#125;&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.queue.queueAsyncClient.instantiation.credential -->
  *
  * <p>Another way to authenticate the client is using a {@link StorageSharedKeyCredential}. To create a
  * StorageSharedKeyCredential a connection string from the Storage Queue service must be used.
@@ -66,17 +105,40 @@ import java.util.function.Function;
  * when authorizing requests sent to the service.</p>
  *
  * <p><strong>Instantiating a synchronous Queue Client with connection string.</strong></p>
- * {@codesnippet com.azure.storage.queue.queueClient.instantiation.connectionstring}
+ * <!-- src_embed com.azure.storage.queue.queueClient.instantiation.connectionstring -->
+ * <pre>
+ * String connectionString = &quot;DefaultEndpointsProtocol=https;AccountName=&#123;name&#125;;&quot;
+ *     + &quot;AccountKey=&#123;key&#125;;EndpointSuffix=&#123;core.windows.net&#125;&quot;;
+ * QueueClient client = new QueueClientBuilder&#40;&#41;
+ *     .connectionString&#40;connectionString&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.queue.queueClient.instantiation.connectionstring -->
  *
  * <p><strong>Instantiating an Asynchronous Queue Client with connection string.</strong></p>
- * {@codesnippet com.azure.storage.queue.queueAsyncClient.instantiation.connectionstring}
+ * <!-- src_embed com.azure.storage.queue.queueAsyncClient.instantiation.connectionstring -->
+ * <pre>
+ * String connectionString = &quot;DefaultEndpointsProtocol=https;AccountName=&#123;name&#125;;&quot;
+ *     + &quot;AccountKey=&#123;key&#125;;EndpointSuffix=&#123;core.windows.net&#125;&quot;;
+ * QueueAsyncClient queueAsyncClient = new QueueClientBuilder&#40;&#41;
+ *     .connectionString&#40;connectionString&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.queue.queueAsyncClient.instantiation.connectionstring -->
  *
  * @see QueueClient
  * @see QueueAsyncClient
  * @see StorageSharedKeyCredential
  */
 @ServiceClientBuilder(serviceClients = {QueueClient.class, QueueAsyncClient.class})
-public final class QueueClientBuilder {
+public final class QueueClientBuilder implements
+    TokenCredentialTrait<QueueClientBuilder>,
+    ConnectionStringTrait<QueueClientBuilder>,
+    AzureNamedKeyCredentialTrait<QueueClientBuilder>,
+    AzureSasCredentialTrait<QueueClientBuilder>,
+    HttpTrait<QueueClientBuilder>,
+    ConfigurationTrait<QueueClientBuilder>,
+    EndpointTrait<QueueClientBuilder> {
     private final ClientLogger logger = new ClientLogger(QueueClientBuilder.class);
 
     private String endpoint;
@@ -92,7 +154,8 @@ public final class QueueClientBuilder {
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
     private HttpLogOptions logOptions;
-    private RequestRetryOptions retryOptions = new RequestRetryOptions();
+    private RequestRetryOptions retryOptions;
+    private RetryOptions coreRetryOptions;
     private HttpPipeline httpPipeline;
 
     private ClientOptions clientOptions = new ClientOptions();
@@ -126,6 +189,8 @@ public final class QueueClientBuilder {
      * @throws IllegalStateException If neither a {@link StorageSharedKeyCredential}
      * or {@link #sasToken(String) SAS token} has been set.
      * @throws IllegalStateException If multiple credentials have been specified.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public QueueClient buildClient() {
         return new QueueClient(buildAsyncClient());
@@ -146,6 +211,8 @@ public final class QueueClientBuilder {
      * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential}
      * or {@link #sasToken(String) SAS token} has been set.
      * @throws IllegalStateException If multiple credentials have been specified.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public QueueAsyncClient buildAsyncClient() {
         StorageImplUtils.assertNotNull("queueName", queueName);
@@ -160,7 +227,7 @@ public final class QueueClientBuilder {
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
-            endpoint, retryOptions, logOptions,
+            endpoint, retryOptions, coreRetryOptions, logOptions,
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
         AzureQueueStorageImpl azureQueueStorage = new AzureQueueStorageImplBuilder()
@@ -187,11 +254,12 @@ public final class QueueClientBuilder {
      * @return the updated QueueClientBuilder object
      * @throws IllegalArgumentException If {@code endpoint} isn't a proper URL
      */
+    @Override
     public QueueClientBuilder endpoint(String endpoint) {
         BuilderHelper.QueueUrlParts parts = BuilderHelper.parseEndpoint(endpoint, logger);
         this.endpoint = parts.getEndpoint();
         this.accountName = parts.getAccountName();
-        this.queueName = parts.getQueueName();
+        this.queueName = parts.getQueueName() == null ? this.queueName : parts.getQueueName();
 
         if (!CoreUtils.isNullOrEmpty(parts.getSasToken())) {
             sasToken(parts.getSasToken());
@@ -227,12 +295,28 @@ public final class QueueClientBuilder {
     }
 
     /**
-     * Sets the {@link TokenCredential} used to authorize requests sent to the service.
+     * Sets the {@link AzureNamedKeyCredential} used to authorize requests sent to the service.
      *
-     * @param credential {@link TokenCredential}.
+     * @param credential {@link AzureNamedKeyCredential}.
      * @return the updated QueueClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
+    @Override
+    public QueueClientBuilder credential(AzureNamedKeyCredential credential) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        return credential(StorageSharedKeyCredential.fromAzureNamedKeyCredential(credential));
+    }
+
+    /**
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
+     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
+     * documentation for more details on proper usage of the {@link TokenCredential} type.
+     *
+     * @param credential {@link TokenCredential} used to authorize requests sent to the service.
+     * @return the updated QueueClientBuilder
+     * @throws NullPointerException If {@code credential} is {@code null}.
+     */
+    @Override
     public QueueClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.storageSharedKeyCredential = null;
@@ -243,7 +327,8 @@ public final class QueueClientBuilder {
     /**
      * Sets the SAS token used to authorize requests sent to the service.
      *
-     * @param sasToken The SAS token to use for authenticating requests.
+     * @param sasToken The SAS token to use for authenticating requests. This string should only be the query parameters
+     * (with or without a leading '?') and not a full url.
      * @return the updated QueueClientBuilder
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */
@@ -262,6 +347,7 @@ public final class QueueClientBuilder {
      * @return the updated QueueClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
+    @Override
     public QueueClientBuilder credential(AzureSasCredential credential) {
         this.azureSasCredential = Objects.requireNonNull(credential,
             "'credential' cannot be null.");
@@ -275,6 +361,7 @@ public final class QueueClientBuilder {
      * @return the updated QueueClientBuilder
      * @throws IllegalArgumentException If {@code connectionString} is invalid.
      */
+    @Override
     public QueueClientBuilder connectionString(String connectionString) {
         StorageConnectionString storageConnectionString
                 = StorageConnectionString.create(connectionString, logger);
@@ -299,11 +386,19 @@ public final class QueueClientBuilder {
     }
 
     /**
-     * Sets the {@link HttpClient} to use for sending a receiving requests to and from the service.
+     * Sets the {@link HttpClient} to use for sending and receiving requests to and from the service.
      *
-     * @param httpClient HttpClient to use for requests.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param httpClient The {@link HttpClient} to use for requests.
      * @return the updated QueueClientBuilder object
      */
+    @Override
     public QueueClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
             logger.info("'httpClient' is being set to 'null' when it was previously configured.");
@@ -314,13 +409,20 @@ public final class QueueClientBuilder {
     }
 
     /**
-     * Adds a pipeline policy to apply on each request sent. The policy will be added after the retry policy. If
-     * the method is called multiple times, all policies will be added and their order preserved.
+     * Adds a {@link HttpPipelinePolicy pipeline policy} to apply on each request sent.
      *
-     * @param pipelinePolicy a pipeline policy
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param pipelinePolicy A {@link HttpPipelinePolicy pipeline policy}.
      * @return the updated QueueClientBuilder object
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
+    @Override
     public QueueClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null");
         if (pipelinePolicy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
@@ -332,19 +434,29 @@ public final class QueueClientBuilder {
     }
 
     /**
-     * Sets the {@link HttpLogOptions} for service requests.
+     * Sets the {@link HttpLogOptions logging configuration} to use when sending and receiving requests to and from
+     * the service. If a {@code logLevel} is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.
      *
-     * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param logOptions The {@link HttpLogOptions logging configuration} to use when sending and receiving requests to
+     * and from the service.
      * @return the updated QueueClientBuilder object
      * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
+    @Override
     public QueueClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
     }
 
     /**
-     * Gets the default Storage whitelist log headers and query parameters.
+     * Gets the default Storage allowlist log headers and query parameters.
      *
      * @return the default http log options.
      */
@@ -358,6 +470,7 @@ public final class QueueClientBuilder {
      * @param configuration Configuration store used to retrieve environment configurations.
      * @return the updated QueueClientBuilder object
      */
+    @Override
     public QueueClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
@@ -366,23 +479,54 @@ public final class QueueClientBuilder {
     /**
      * Sets the request retry options for all the requests made through the client.
      *
+     * Setting this is mutually exclusive with using {@link #retryOptions(RetryOptions)}.
+     *
      * @param retryOptions {@link RequestRetryOptions}.
-     * @return the updated QueueClientBuilder object
-     * @throws NullPointerException If {@code retryOptions} is {@code null}.
+     * @return the updated QueueClientBuilder object.
      */
     public QueueClientBuilder retryOptions(RequestRetryOptions retryOptions) {
-        this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+        this.retryOptions = retryOptions;
+        return this;
+    }
+
+    /**
+     * Sets the {@link RetryOptions} for all the requests made through the client.
+     *
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     * <p>
+     * Setting this is mutually exclusive with using {@link #retryOptions(RequestRetryOptions)}.
+     * Consider using {@link #retryOptions(RequestRetryOptions)} to also set storage specific options.
+     *
+     * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
+     * @return the updated QueueClientBuilder object
+     */
+    @Override
+    public QueueClientBuilder retryOptions(RetryOptions retryOptions) {
+        this.coreRetryOptions = retryOptions;
         return this;
     }
 
     /**
      * Sets the {@link HttpPipeline} to use for the service client.
      *
-     * If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint}.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     * <p>
+     * The {@link #endpoint(String) endpoint} is not ignored when {@code pipeline} is set.
      *
-     * @param httpPipeline HttpPipeline to use for sending service requests and receiving responses.
+     * @param httpPipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
      * @return the updated QueueClientBuilder object
      */
+    @Override
     public QueueClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
@@ -393,12 +537,25 @@ public final class QueueClientBuilder {
     }
 
     /**
-     * Sets the client options for all the requests made through the client.
+     * Allows for setting common properties such as application ID, headers, proxy configuration, etc. Note that it is
+     * recommended that this method be called with an instance of the {@link HttpClientOptions}
+     * class (a subclass of the {@link ClientOptions} base class). The HttpClientOptions subclass provides more
+     * configuration options suitable for HTTP clients, which is applicable for any class that implements this HttpTrait
+     * interface.
      *
-     * @param clientOptions {@link ClientOptions}.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param clientOptions A configured instance of {@link HttpClientOptions}.
+     * @see HttpClientOptions
      * @return the updated QueueClientBuilder object
      * @throws NullPointerException If {@code clientOptions} is {@code null}.
      */
+    @Override
     public QueueClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
         return this;
@@ -433,7 +590,38 @@ public final class QueueClientBuilder {
      * handler itself.
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.queue.QueueClientBuilder#processMessageDecodingErrorAsyncHandler}
+     * <!-- src_embed com.azure.storage.queue.QueueClientBuilder#processMessageDecodingErrorAsyncHandler -->
+     * <pre>
+     * String connectionString = &quot;DefaultEndpointsProtocol=https;AccountName=&#123;name&#125;;&quot;
+     *     + &quot;AccountKey=&#123;key&#125;;EndpointSuffix=&#123;core.windows.net&#125;&quot;;
+     *
+     * Function&lt;QueueMessageDecodingError, Mono&lt;Void&gt;&gt; processMessageDecodingErrorHandler =
+     *     &#40;queueMessageDecodingFailure&#41; -&gt; &#123;
+     *         QueueMessageItem queueMessageItem = queueMessageDecodingFailure.getQueueMessageItem&#40;&#41;;
+     *         PeekedMessageItem peekedMessageItem = queueMessageDecodingFailure.getPeekedMessageItem&#40;&#41;;
+     *         if &#40;queueMessageItem != null&#41; &#123;
+     *             System.out.printf&#40;&quot;Received badly encoded message, messageId=%s, messageBody=%s&quot;,
+     *                 queueMessageItem.getMessageId&#40;&#41;,
+     *                 queueMessageItem.getBody&#40;&#41;.toString&#40;&#41;&#41;;
+     *             return queueMessageDecodingFailure
+     *                 .getQueueAsyncClient&#40;&#41;
+     *                 .deleteMessage&#40;queueMessageItem.getMessageId&#40;&#41;, queueMessageItem.getPopReceipt&#40;&#41;&#41;;
+     *         &#125; else if &#40;peekedMessageItem != null&#41; &#123;
+     *             System.out.printf&#40;&quot;Peeked badly encoded message, messageId=%s, messageBody=%s&quot;,
+     *                 peekedMessageItem.getMessageId&#40;&#41;,
+     *                 peekedMessageItem.getBody&#40;&#41;.toString&#40;&#41;&#41;;
+     *             return Mono.empty&#40;&#41;;
+     *         &#125; else &#123;
+     *             return Mono.empty&#40;&#41;;
+     *         &#125;
+     *     &#125;;
+     *
+     * QueueClient client = new QueueClientBuilder&#40;&#41;
+     *     .connectionString&#40;connectionString&#41;
+     *     .processMessageDecodingErrorAsync&#40;processMessageDecodingErrorHandler&#41;
+     *     .buildClient&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.QueueClientBuilder#processMessageDecodingErrorAsyncHandler -->
      *
      * @param processMessageDecodingErrorAsyncHandler the handler.
      * @return the updated QueueClientBuilder object
@@ -461,7 +649,35 @@ public final class QueueClientBuilder {
      * handler itself.
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.queue.QueueClientBuilder#processMessageDecodingErrorHandler}
+     * <!-- src_embed com.azure.storage.queue.QueueClientBuilder#processMessageDecodingErrorHandler -->
+     * <pre>
+     * String connectionString = &quot;DefaultEndpointsProtocol=https;AccountName=&#123;name&#125;;&quot;
+     *     + &quot;AccountKey=&#123;key&#125;;EndpointSuffix=&#123;core.windows.net&#125;&quot;;
+     *
+     * Consumer&lt;QueueMessageDecodingError&gt; processMessageDecodingErrorHandler =
+     *     &#40;queueMessageDecodingFailure&#41; -&gt; &#123;
+     *         QueueMessageItem queueMessageItem = queueMessageDecodingFailure.getQueueMessageItem&#40;&#41;;
+     *         PeekedMessageItem peekedMessageItem = queueMessageDecodingFailure.getPeekedMessageItem&#40;&#41;;
+     *         if &#40;queueMessageItem != null&#41; &#123;
+     *             System.out.printf&#40;&quot;Received badly encoded message, messageId=%s, messageBody=%s&quot;,
+     *                 queueMessageItem.getMessageId&#40;&#41;,
+     *                 queueMessageItem.getBody&#40;&#41;.toString&#40;&#41;&#41;;
+     *             queueMessageDecodingFailure
+     *                 .getQueueClient&#40;&#41;
+     *                 .deleteMessage&#40;queueMessageItem.getMessageId&#40;&#41;, queueMessageItem.getPopReceipt&#40;&#41;&#41;;
+     *         &#125; else if &#40;peekedMessageItem != null&#41; &#123;
+     *             System.out.printf&#40;&quot;Peeked badly encoded message, messageId=%s, messageBody=%s&quot;,
+     *                 peekedMessageItem.getMessageId&#40;&#41;,
+     *                 peekedMessageItem.getBody&#40;&#41;.toString&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;;
+     *
+     * QueueClient client = new QueueClientBuilder&#40;&#41;
+     *     .connectionString&#40;connectionString&#41;
+     *     .processMessageDecodingError&#40;processMessageDecodingErrorHandler&#41;
+     *     .buildClient&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.QueueClientBuilder#processMessageDecodingErrorHandler -->
      *
      * @param processMessageDecodingErrorHandler the handler.
      * @return the updated QueueClientBuilder object

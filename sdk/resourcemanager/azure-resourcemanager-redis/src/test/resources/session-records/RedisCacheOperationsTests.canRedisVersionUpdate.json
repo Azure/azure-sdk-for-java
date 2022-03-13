@@ -1,0 +1,987 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg65061?api-version=2021-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "93ba51b1-8a13-46c5-8f07-eed9cf10f2b8",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "227",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1199",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-correlation-request-id" : "e0a2ea5a-b419-4c9b-8864-da6ce3c469df",
+      "Date" : "Sun, 06 Mar 2022 06:20:34 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T062034Z:e0a2ea5a-b419-4c9b-8864-da6ce3c469df",
+      "Expires" : "-1",
+      "x-ms-request-id" : "e0a2ea5a-b419-4c9b-8864-da6ce3c469df",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061\",\"name\":\"javacsmrg65061\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"eastasia\",\"properties\":{\"provisioningState\":\"Succeeded\"}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/redis/javacsmrc47651?api-version=2021-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "eabc34e7-ba83-428f-a7ba-405808d9d647",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1107",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1198",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-correlation-request-id" : "2bb4601d-6047-4486-8a5b-1c45ba4c409c",
+      "Date" : "Sun, 06 Mar 2022 06:20:39 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "9a05af01-0d10-4d27-8bb8-124a3141d01a",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "eabc34e7-ba83-428f-a7ba-405808d9d647",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T062039Z:2bb4601d-6047-4486-8a5b-1c45ba4c409c",
+      "Expires" : "-1",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East Asia/asyncOperations/a1f1a4e1-7742-42be-83f3-a2922187e3ef?api-version=2021-06-01",
+      "x-ms-request-id" : "a1f1a4e1-7742-42be-83f3-a2922187e3ef",
+      "Body" : "{\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/Redis/javacsmrc47651\",\r\n  \"location\": \"East Asia\",\r\n  \"name\": \"javacsmrc47651\",\r\n  \"type\": \"Microsoft.Cache/Redis\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Creating\",\r\n    \"redisVersion\": \"4.1.14\",\r\n    \"sku\": {\r\n      \"name\": \"Basic\",\r\n      \"family\": \"C\",\r\n      \"capacity\": 0\r\n    },\r\n    \"enableNonSslPort\": false,\r\n    \"instances\": [\r\n      {\r\n        \"sslPort\": 15000,\r\n        \"isMaster\": false,\r\n        \"isPrimary\": false\r\n      }\r\n    ],\r\n    \"publicNetworkAccess\": \"Enabled\",\r\n    \"redisConfiguration\": {\r\n      \"maxclients\": \"256\",\r\n      \"maxmemory-reserved\": \"30\",\r\n      \"maxfragmentationmemory-reserved\": \"30\",\r\n      \"maxmemory-delta\": \"30\"\r\n    },\r\n    \"accessKeys\": {\r\n      \"primaryKey\": \"***REMOVED***\",\r\n      \"secondaryKey\": \"***REMOVED***\"\r\n    },\r\n    \"hostName\": \"javacsmrc47651.redis.cache.windows.net\",\r\n    \"port\": 6379,\r\n    \"sslPort\": 6380,\r\n    \"linkedServers\": []\r\n  }\r\n}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/redis/javacsmrc47651?api-version=2021-06-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/redis/javacsmrc47651?api-version=2021-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "04b17dd4-eaee-4eb0-bd22-e2b53fb70995"
+    },
+    "Response" : {
+      "content-length" : "714",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11999",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "c918aa90-ca23-4320-931b-247e8262c30b",
+      "Date" : "Sun, 06 Mar 2022 06:21:08 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "9a05af01-0d10-4d27-8bb8-124a3141d01a",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "04b17dd4-eaee-4eb0-bd22-e2b53fb70995",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T062109Z:c918aa90-ca23-4320-931b-247e8262c30b",
+      "Expires" : "-1",
+      "x-ms-request-id" : "bd9a2916-6d4c-493f-900f-6c91b95b9cd9",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/Redis/javacsmrc47651\",\"location\":\"East Asia\",\"name\":\"javacsmrc47651\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.1.14\",\"sku\":{\"name\":\"Basic\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"instances\":[{\"sslPort\":15000,\"isMaster\":false,\"isPrimary\":false}],\"publicNetworkAccess\":\"Enabled\",\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"30\",\"maxfragmentationmemory-reserved\":\"30\",\"maxmemory-delta\":\"30\"},\"accessKeys\":null,\"hostName\":\"javacsmrc47651.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/redis/javacsmrc47651?api-version=2021-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "2bfb8eac-14b9-435a-bc52-763f229bbe6e"
+    },
+    "Response" : {
+      "content-length" : "714",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11998",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "e1fede9a-352d-4f33-a18d-c8eceadcff5c",
+      "Date" : "Sun, 06 Mar 2022 06:21:39 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "9a05af01-0d10-4d27-8bb8-124a3141d01a",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "2bfb8eac-14b9-435a-bc52-763f229bbe6e",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T062139Z:e1fede9a-352d-4f33-a18d-c8eceadcff5c",
+      "Expires" : "-1",
+      "x-ms-request-id" : "ebf2ca8c-b13c-4f21-86ba-5774be4c432a",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/Redis/javacsmrc47651\",\"location\":\"East Asia\",\"name\":\"javacsmrc47651\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.1.14\",\"sku\":{\"name\":\"Basic\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"instances\":[{\"sslPort\":15000,\"isMaster\":false,\"isPrimary\":false}],\"publicNetworkAccess\":\"Enabled\",\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"30\",\"maxfragmentationmemory-reserved\":\"30\",\"maxmemory-delta\":\"30\"},\"accessKeys\":null,\"hostName\":\"javacsmrc47651.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/redis/javacsmrc47651?api-version=2021-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "07682414-a161-4d9a-84e9-80eb5d4dca5f"
+    },
+    "Response" : {
+      "content-length" : "714",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11997",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "f551a479-9c62-4239-bbe6-f8b3d67982b6",
+      "Date" : "Sun, 06 Mar 2022 06:22:09 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "9a05af01-0d10-4d27-8bb8-124a3141d01a",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "07682414-a161-4d9a-84e9-80eb5d4dca5f",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T062209Z:f551a479-9c62-4239-bbe6-f8b3d67982b6",
+      "Expires" : "-1",
+      "x-ms-request-id" : "5213c385-2cdc-44eb-8943-af8a5aededb4",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/Redis/javacsmrc47651\",\"location\":\"East Asia\",\"name\":\"javacsmrc47651\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.1.14\",\"sku\":{\"name\":\"Basic\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"instances\":[{\"sslPort\":15000,\"isMaster\":false,\"isPrimary\":false}],\"publicNetworkAccess\":\"Enabled\",\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"30\",\"maxfragmentationmemory-reserved\":\"30\",\"maxmemory-delta\":\"30\"},\"accessKeys\":null,\"hostName\":\"javacsmrc47651.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/redis/javacsmrc47651?api-version=2021-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "8938a723-689b-440d-a3d2-1bd36cfb9b8c"
+    },
+    "Response" : {
+      "content-length" : "714",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11996",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "d15843c8-a2be-491e-a843-0384f209b577",
+      "Date" : "Sun, 06 Mar 2022 06:22:39 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "9a05af01-0d10-4d27-8bb8-124a3141d01a",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "8938a723-689b-440d-a3d2-1bd36cfb9b8c",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T062240Z:d15843c8-a2be-491e-a843-0384f209b577",
+      "Expires" : "-1",
+      "x-ms-request-id" : "44080ffe-7520-40b8-8685-632f9beed77d",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/Redis/javacsmrc47651\",\"location\":\"East Asia\",\"name\":\"javacsmrc47651\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.1.14\",\"sku\":{\"name\":\"Basic\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"instances\":[{\"sslPort\":15000,\"isMaster\":false,\"isPrimary\":false}],\"publicNetworkAccess\":\"Enabled\",\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"30\",\"maxfragmentationmemory-reserved\":\"30\",\"maxmemory-delta\":\"30\"},\"accessKeys\":null,\"hostName\":\"javacsmrc47651.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/redis/javacsmrc47651?api-version=2021-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "ab6d9a2e-023a-4907-945c-0b776a8a2f1f"
+    },
+    "Response" : {
+      "content-length" : "714",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11995",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "251056ea-0e05-40c9-8fff-d81ca57e6700",
+      "Date" : "Sun, 06 Mar 2022 06:23:09 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "9a05af01-0d10-4d27-8bb8-124a3141d01a",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "ab6d9a2e-023a-4907-945c-0b776a8a2f1f",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T062310Z:251056ea-0e05-40c9-8fff-d81ca57e6700",
+      "Expires" : "-1",
+      "x-ms-request-id" : "a1311857-b549-4aa7-9313-e5fb001ae097",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/Redis/javacsmrc47651\",\"location\":\"East Asia\",\"name\":\"javacsmrc47651\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.1.14\",\"sku\":{\"name\":\"Basic\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"instances\":[{\"sslPort\":15000,\"isMaster\":false,\"isPrimary\":false}],\"publicNetworkAccess\":\"Enabled\",\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"30\",\"maxfragmentationmemory-reserved\":\"30\",\"maxmemory-delta\":\"30\"},\"accessKeys\":null,\"hostName\":\"javacsmrc47651.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/redis/javacsmrc47651?api-version=2021-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "f95e1605-5154-4521-a625-927202f98d6e"
+    },
+    "Response" : {
+      "content-length" : "714",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11994",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "c192423b-9d17-48f8-88ce-28fb0702bcb8",
+      "Date" : "Sun, 06 Mar 2022 06:23:40 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "9a05af01-0d10-4d27-8bb8-124a3141d01a",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "f95e1605-5154-4521-a625-927202f98d6e",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T062340Z:c192423b-9d17-48f8-88ce-28fb0702bcb8",
+      "Expires" : "-1",
+      "x-ms-request-id" : "3b441615-9fa5-4d96-b920-d727d1516257",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/Redis/javacsmrc47651\",\"location\":\"East Asia\",\"name\":\"javacsmrc47651\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.1.14\",\"sku\":{\"name\":\"Basic\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"instances\":[{\"sslPort\":15000,\"isMaster\":false,\"isPrimary\":false}],\"publicNetworkAccess\":\"Enabled\",\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"30\",\"maxfragmentationmemory-reserved\":\"30\",\"maxmemory-delta\":\"30\"},\"accessKeys\":null,\"hostName\":\"javacsmrc47651.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/redis/javacsmrc47651?api-version=2021-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "17dd542b-7beb-4369-b921-5a24221c59af"
+    },
+    "Response" : {
+      "content-length" : "714",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11993",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "3795fab1-9558-4423-b18a-f1d078fef37f",
+      "Date" : "Sun, 06 Mar 2022 06:24:10 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "9a05af01-0d10-4d27-8bb8-124a3141d01a",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "17dd542b-7beb-4369-b921-5a24221c59af",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T062410Z:3795fab1-9558-4423-b18a-f1d078fef37f",
+      "Expires" : "-1",
+      "x-ms-request-id" : "aaccd4c6-4946-47bb-8300-0a62fd20c2c3",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/Redis/javacsmrc47651\",\"location\":\"East Asia\",\"name\":\"javacsmrc47651\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.1.14\",\"sku\":{\"name\":\"Basic\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"instances\":[{\"sslPort\":15000,\"isMaster\":false,\"isPrimary\":false}],\"publicNetworkAccess\":\"Enabled\",\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"30\",\"maxfragmentationmemory-reserved\":\"30\",\"maxmemory-delta\":\"30\"},\"accessKeys\":null,\"hostName\":\"javacsmrc47651.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/redis/javacsmrc47651?api-version=2021-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "465cf428-5f4a-4017-a936-9c366c2167a5"
+    },
+    "Response" : {
+      "content-length" : "714",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11992",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "e03a3fe3-308c-405d-9968-cdf8c31f971c",
+      "Date" : "Sun, 06 Mar 2022 06:24:40 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "9a05af01-0d10-4d27-8bb8-124a3141d01a",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "465cf428-5f4a-4017-a936-9c366c2167a5",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T062440Z:e03a3fe3-308c-405d-9968-cdf8c31f971c",
+      "Expires" : "-1",
+      "x-ms-request-id" : "a91a3705-d54b-4401-ab0c-daeca476aa0e",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/Redis/javacsmrc47651\",\"location\":\"East Asia\",\"name\":\"javacsmrc47651\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.1.14\",\"sku\":{\"name\":\"Basic\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"instances\":[{\"sslPort\":15000,\"isMaster\":false,\"isPrimary\":false}],\"publicNetworkAccess\":\"Enabled\",\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"30\",\"maxfragmentationmemory-reserved\":\"30\",\"maxmemory-delta\":\"30\"},\"accessKeys\":null,\"hostName\":\"javacsmrc47651.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/redis/javacsmrc47651?api-version=2021-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "884c8781-47fb-43ab-adc1-7ee12f641495"
+    },
+    "Response" : {
+      "content-length" : "714",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11991",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "07835527-7807-46f2-bbdb-4cb66af1cca1",
+      "Date" : "Sun, 06 Mar 2022 06:25:10 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "9a05af01-0d10-4d27-8bb8-124a3141d01a",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "884c8781-47fb-43ab-adc1-7ee12f641495",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T062511Z:07835527-7807-46f2-bbdb-4cb66af1cca1",
+      "Expires" : "-1",
+      "x-ms-request-id" : "8b31b99f-2ead-41f4-9199-ee10d139dbc8",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/Redis/javacsmrc47651\",\"location\":\"East Asia\",\"name\":\"javacsmrc47651\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.1.14\",\"sku\":{\"name\":\"Basic\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"instances\":[{\"sslPort\":15000,\"isMaster\":false,\"isPrimary\":false}],\"publicNetworkAccess\":\"Enabled\",\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"30\",\"maxfragmentationmemory-reserved\":\"30\",\"maxmemory-delta\":\"30\"},\"accessKeys\":null,\"hostName\":\"javacsmrc47651.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/redis/javacsmrc47651?api-version=2021-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "0c039f05-e3d7-467b-9b12-1cbf10a591f7"
+    },
+    "Response" : {
+      "content-length" : "714",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11990",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "7b1e28c4-5e9e-440b-b097-2db641301a84",
+      "Date" : "Sun, 06 Mar 2022 06:25:40 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "9a05af01-0d10-4d27-8bb8-124a3141d01a",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "0c039f05-e3d7-467b-9b12-1cbf10a591f7",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T062541Z:7b1e28c4-5e9e-440b-b097-2db641301a84",
+      "Expires" : "-1",
+      "x-ms-request-id" : "4e25e8d3-a0d5-4940-bf56-df3def7cbea7",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/Redis/javacsmrc47651\",\"location\":\"East Asia\",\"name\":\"javacsmrc47651\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.1.14\",\"sku\":{\"name\":\"Basic\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"instances\":[{\"sslPort\":15000,\"isMaster\":false,\"isPrimary\":false}],\"publicNetworkAccess\":\"Enabled\",\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"30\",\"maxfragmentationmemory-reserved\":\"30\",\"maxmemory-delta\":\"30\"},\"accessKeys\":null,\"hostName\":\"javacsmrc47651.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/redis/javacsmrc47651?api-version=2021-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "23d45dcd-5ac0-4f46-89ca-735892911194"
+    },
+    "Response" : {
+      "content-length" : "714",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11989",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "c98cdee2-bee9-4375-876d-af8a6ef70dd2",
+      "Date" : "Sun, 06 Mar 2022 06:26:10 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "9a05af01-0d10-4d27-8bb8-124a3141d01a",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "23d45dcd-5ac0-4f46-89ca-735892911194",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T062611Z:c98cdee2-bee9-4375-876d-af8a6ef70dd2",
+      "Expires" : "-1",
+      "x-ms-request-id" : "e179c633-0eab-4cc0-aad9-7e8a4b017a73",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/Redis/javacsmrc47651\",\"location\":\"East Asia\",\"name\":\"javacsmrc47651\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.1.14\",\"sku\":{\"name\":\"Basic\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"instances\":[{\"sslPort\":15000,\"isMaster\":false,\"isPrimary\":false}],\"publicNetworkAccess\":\"Enabled\",\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"30\",\"maxfragmentationmemory-reserved\":\"30\",\"maxmemory-delta\":\"30\"},\"accessKeys\":null,\"hostName\":\"javacsmrc47651.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/redis/javacsmrc47651?api-version=2021-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "5615e9a5-76c9-4aec-bcb3-7dd2ab55c299"
+    },
+    "Response" : {
+      "content-length" : "714",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11988",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "a2593796-bf89-4604-b5d6-d63789c1428b",
+      "Date" : "Sun, 06 Mar 2022 06:26:41 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "9a05af01-0d10-4d27-8bb8-124a3141d01a",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "5615e9a5-76c9-4aec-bcb3-7dd2ab55c299",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T062641Z:a2593796-bf89-4604-b5d6-d63789c1428b",
+      "Expires" : "-1",
+      "x-ms-request-id" : "a913e442-1224-44c2-9269-33bcfd5a422a",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/Redis/javacsmrc47651\",\"location\":\"East Asia\",\"name\":\"javacsmrc47651\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.1.14\",\"sku\":{\"name\":\"Basic\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"instances\":[{\"sslPort\":15000,\"isMaster\":false,\"isPrimary\":false}],\"publicNetworkAccess\":\"Enabled\",\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"30\",\"maxfragmentationmemory-reserved\":\"30\",\"maxmemory-delta\":\"30\"},\"accessKeys\":null,\"hostName\":\"javacsmrc47651.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/redis/javacsmrc47651?api-version=2021-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "6e3cffca-9ee4-4e7a-84e6-4b7f37e9abfd"
+    },
+    "Response" : {
+      "content-length" : "714",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11987",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "97bef446-1749-4fe3-9217-bcdc0d571537",
+      "Date" : "Sun, 06 Mar 2022 06:27:11 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "9a05af01-0d10-4d27-8bb8-124a3141d01a",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "6e3cffca-9ee4-4e7a-84e6-4b7f37e9abfd",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T062711Z:97bef446-1749-4fe3-9217-bcdc0d571537",
+      "Expires" : "-1",
+      "x-ms-request-id" : "f063a61d-ecef-4e09-966d-8d475a593d4e",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/Redis/javacsmrc47651\",\"location\":\"East Asia\",\"name\":\"javacsmrc47651\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.1.14\",\"sku\":{\"name\":\"Basic\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"instances\":[{\"sslPort\":15000,\"isMaster\":false,\"isPrimary\":false}],\"publicNetworkAccess\":\"Enabled\",\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"30\",\"maxfragmentationmemory-reserved\":\"30\",\"maxmemory-delta\":\"30\"},\"accessKeys\":null,\"hostName\":\"javacsmrc47651.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/redis/javacsmrc47651?api-version=2021-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "7a97ad24-c248-499a-9c6d-2c7cbb74f1cd"
+    },
+    "Response" : {
+      "content-length" : "712",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11986",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "6848f3e1-b78d-4b91-855f-99de85f7bf17",
+      "Date" : "Sun, 06 Mar 2022 06:27:41 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "9a05af01-0d10-4d27-8bb8-124a3141d01a",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "7a97ad24-c248-499a-9c6d-2c7cbb74f1cd",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T062742Z:6848f3e1-b78d-4b91-855f-99de85f7bf17",
+      "Expires" : "-1",
+      "x-ms-request-id" : "f5e7606c-38ca-412d-aade-638fb5cd2763",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/Redis/javacsmrc47651\",\"location\":\"East Asia\",\"name\":\"javacsmrc47651\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.1.14\",\"sku\":{\"name\":\"Basic\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"instances\":[{\"sslPort\":15000,\"isMaster\":true,\"isPrimary\":true}],\"publicNetworkAccess\":\"Enabled\",\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"30\",\"maxfragmentationmemory-reserved\":\"30\",\"maxmemory-delta\":\"30\"},\"accessKeys\":null,\"hostName\":\"javacsmrc47651.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/redis/javacsmrc47651?api-version=2021-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "37d3d737-d440-4f85-a415-f37d50ae1f0e"
+    },
+    "Response" : {
+      "content-length" : "712",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11985",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "92241dd9-7b5c-43cd-952c-6b630243447d",
+      "Date" : "Sun, 06 Mar 2022 06:28:13 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "9a05af01-0d10-4d27-8bb8-124a3141d01a",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "37d3d737-d440-4f85-a415-f37d50ae1f0e",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T062813Z:92241dd9-7b5c-43cd-952c-6b630243447d",
+      "Expires" : "-1",
+      "x-ms-request-id" : "669854d9-1ae7-4d19-a00f-baeccc2c269e",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/Redis/javacsmrc47651\",\"location\":\"East Asia\",\"name\":\"javacsmrc47651\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.1.14\",\"sku\":{\"name\":\"Basic\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"instances\":[{\"sslPort\":15000,\"isMaster\":true,\"isPrimary\":true}],\"publicNetworkAccess\":\"Enabled\",\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"30\",\"maxfragmentationmemory-reserved\":\"30\",\"maxmemory-delta\":\"30\"},\"accessKeys\":null,\"hostName\":\"javacsmrc47651.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/redis/javacsmrc47651?api-version=2021-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "1c825ac2-6f0f-4e5e-80ca-563e9aa62a12"
+    },
+    "Response" : {
+      "content-length" : "712",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11984",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "08102134-0efa-4588-b82c-7dcba9c7d0c8",
+      "Date" : "Sun, 06 Mar 2022 06:28:42 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "9a05af01-0d10-4d27-8bb8-124a3141d01a",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "1c825ac2-6f0f-4e5e-80ca-563e9aa62a12",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T062843Z:08102134-0efa-4588-b82c-7dcba9c7d0c8",
+      "Expires" : "-1",
+      "x-ms-request-id" : "fc357135-c878-41b6-9b46-d4f3b28cd973",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/Redis/javacsmrc47651\",\"location\":\"East Asia\",\"name\":\"javacsmrc47651\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.1.14\",\"sku\":{\"name\":\"Basic\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"instances\":[{\"sslPort\":15000,\"isMaster\":true,\"isPrimary\":true}],\"publicNetworkAccess\":\"Enabled\",\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"30\",\"maxfragmentationmemory-reserved\":\"30\",\"maxmemory-delta\":\"30\"},\"accessKeys\":null,\"hostName\":\"javacsmrc47651.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/redis/javacsmrc47651?api-version=2021-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "0b08899f-30b7-4d11-a658-9a9e98f32a11"
+    },
+    "Response" : {
+      "content-length" : "712",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11983",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "c684f9a3-f1c3-4afc-9347-b3f6b0b0f2d0",
+      "Date" : "Sun, 06 Mar 2022 06:29:12 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "9a05af01-0d10-4d27-8bb8-124a3141d01a",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "0b08899f-30b7-4d11-a658-9a9e98f32a11",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T062913Z:c684f9a3-f1c3-4afc-9347-b3f6b0b0f2d0",
+      "Expires" : "-1",
+      "x-ms-request-id" : "24d8348c-8892-4477-9196-a2fea66caac4",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/Redis/javacsmrc47651\",\"location\":\"East Asia\",\"name\":\"javacsmrc47651\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.1.14\",\"sku\":{\"name\":\"Basic\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"instances\":[{\"sslPort\":15000,\"isMaster\":true,\"isPrimary\":true}],\"publicNetworkAccess\":\"Enabled\",\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"30\",\"maxfragmentationmemory-reserved\":\"30\",\"maxmemory-delta\":\"30\"},\"accessKeys\":null,\"hostName\":\"javacsmrc47651.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/redis/javacsmrc47651?api-version=2021-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "87884d9f-a2d2-47e9-a327-70632a4a0d5c"
+    },
+    "Response" : {
+      "content-length" : "712",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11982",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "44b5e024-9775-4bbe-8075-adb108438000",
+      "Date" : "Sun, 06 Mar 2022 06:29:42 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "9a05af01-0d10-4d27-8bb8-124a3141d01a",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "87884d9f-a2d2-47e9-a327-70632a4a0d5c",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T062943Z:44b5e024-9775-4bbe-8075-adb108438000",
+      "Expires" : "-1",
+      "x-ms-request-id" : "c1363434-f6af-4f0f-9ee3-e13dee8a4449",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/Redis/javacsmrc47651\",\"location\":\"East Asia\",\"name\":\"javacsmrc47651\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.1.14\",\"sku\":{\"name\":\"Basic\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"instances\":[{\"sslPort\":15000,\"isMaster\":true,\"isPrimary\":true}],\"publicNetworkAccess\":\"Enabled\",\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"30\",\"maxfragmentationmemory-reserved\":\"30\",\"maxmemory-delta\":\"30\"},\"accessKeys\":null,\"hostName\":\"javacsmrc47651.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/redis/javacsmrc47651?api-version=2021-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "87dc0102-b341-468d-b4de-d15ffc98ed8c"
+    },
+    "Response" : {
+      "content-length" : "712",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11981",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "ef83879f-1a85-4029-bbf8-54d421e9d74a",
+      "Date" : "Sun, 06 Mar 2022 06:30:13 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "9a05af01-0d10-4d27-8bb8-124a3141d01a",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "87dc0102-b341-468d-b4de-d15ffc98ed8c",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T063013Z:ef83879f-1a85-4029-bbf8-54d421e9d74a",
+      "Expires" : "-1",
+      "x-ms-request-id" : "52589cf4-73e7-400a-8e43-d64b3e992211",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/Redis/javacsmrc47651\",\"location\":\"East Asia\",\"name\":\"javacsmrc47651\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.1.14\",\"sku\":{\"name\":\"Basic\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"instances\":[{\"sslPort\":15000,\"isMaster\":true,\"isPrimary\":true}],\"publicNetworkAccess\":\"Enabled\",\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"30\",\"maxfragmentationmemory-reserved\":\"30\",\"maxmemory-delta\":\"30\"},\"accessKeys\":null,\"hostName\":\"javacsmrc47651.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/redis/javacsmrc47651?api-version=2021-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "ddfa8c1e-3b14-4223-9730-4738b21d30a1"
+    },
+    "Response" : {
+      "content-length" : "712",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11980",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "7a0a1ab2-42d0-4ae3-9fe2-8a80b44c64e2",
+      "Date" : "Sun, 06 Mar 2022 06:30:43 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "9a05af01-0d10-4d27-8bb8-124a3141d01a",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "ddfa8c1e-3b14-4223-9730-4738b21d30a1",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T063044Z:7a0a1ab2-42d0-4ae3-9fe2-8a80b44c64e2",
+      "Expires" : "-1",
+      "x-ms-request-id" : "5ae57a5d-8e04-4730-8039-71dbe1d1c43a",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/Redis/javacsmrc47651\",\"location\":\"East Asia\",\"name\":\"javacsmrc47651\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.1.14\",\"sku\":{\"name\":\"Basic\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"instances\":[{\"sslPort\":15000,\"isMaster\":true,\"isPrimary\":true}],\"publicNetworkAccess\":\"Enabled\",\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"30\",\"maxfragmentationmemory-reserved\":\"30\",\"maxmemory-delta\":\"30\"},\"accessKeys\":null,\"hostName\":\"javacsmrc47651.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/redis/javacsmrc47651?api-version=2021-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "be942e21-f6a2-4be0-b3dd-54ef35aa1b2d"
+    },
+    "Response" : {
+      "content-length" : "712",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11979",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "b3e8a984-f748-4d9d-a924-92d628865df9",
+      "Date" : "Sun, 06 Mar 2022 06:31:13 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "9a05af01-0d10-4d27-8bb8-124a3141d01a",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "be942e21-f6a2-4be0-b3dd-54ef35aa1b2d",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T063114Z:b3e8a984-f748-4d9d-a924-92d628865df9",
+      "Expires" : "-1",
+      "x-ms-request-id" : "c102e6df-9f62-4643-90ba-30d6cca90fc0",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/Redis/javacsmrc47651\",\"location\":\"East Asia\",\"name\":\"javacsmrc47651\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.1.14\",\"sku\":{\"name\":\"Basic\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"instances\":[{\"sslPort\":15000,\"isMaster\":true,\"isPrimary\":true}],\"publicNetworkAccess\":\"Enabled\",\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"30\",\"maxfragmentationmemory-reserved\":\"30\",\"maxmemory-delta\":\"30\"},\"accessKeys\":null,\"hostName\":\"javacsmrc47651.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/redis/javacsmrc47651?api-version=2021-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "0e9b0211-16dd-47ea-9e8e-13fa0d732ad1"
+    },
+    "Response" : {
+      "content-length" : "712",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11978",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "293cd775-65b9-4c72-9e81-9e66dfd5182c",
+      "Date" : "Sun, 06 Mar 2022 06:31:43 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "9a05af01-0d10-4d27-8bb8-124a3141d01a",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "0e9b0211-16dd-47ea-9e8e-13fa0d732ad1",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T063144Z:293cd775-65b9-4c72-9e81-9e66dfd5182c",
+      "Expires" : "-1",
+      "x-ms-request-id" : "74fb8d63-6b0f-448a-835c-25434babf2bc",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/Redis/javacsmrc47651\",\"location\":\"East Asia\",\"name\":\"javacsmrc47651\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.1.14\",\"sku\":{\"name\":\"Basic\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"instances\":[{\"sslPort\":15000,\"isMaster\":true,\"isPrimary\":true}],\"publicNetworkAccess\":\"Enabled\",\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"30\",\"maxfragmentationmemory-reserved\":\"30\",\"maxmemory-delta\":\"30\"},\"accessKeys\":null,\"hostName\":\"javacsmrc47651.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/redis/javacsmrc47651?api-version=2021-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "5da812ef-7e66-42a7-b11b-d20f75fb957f"
+    },
+    "Response" : {
+      "content-length" : "712",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11977",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "139824ea-f702-4456-8a48-7fc57f38d715",
+      "Date" : "Sun, 06 Mar 2022 06:32:14 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "9a05af01-0d10-4d27-8bb8-124a3141d01a",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "5da812ef-7e66-42a7-b11b-d20f75fb957f",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T063214Z:139824ea-f702-4456-8a48-7fc57f38d715",
+      "Expires" : "-1",
+      "x-ms-request-id" : "d6d777ae-432a-49e9-b462-d0ede2f9300a",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/Redis/javacsmrc47651\",\"location\":\"East Asia\",\"name\":\"javacsmrc47651\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.1.14\",\"sku\":{\"name\":\"Basic\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"instances\":[{\"sslPort\":15000,\"isMaster\":true,\"isPrimary\":true}],\"publicNetworkAccess\":\"Enabled\",\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"30\",\"maxfragmentationmemory-reserved\":\"30\",\"maxmemory-delta\":\"30\"},\"accessKeys\":null,\"hostName\":\"javacsmrc47651.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/redis/javacsmrc47651?api-version=2021-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "b67cec97-ace5-401c-b3fa-b1194674b9b5"
+    },
+    "Response" : {
+      "content-length" : "712",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11976",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "cc4acff8-6c59-4921-a58c-d4bf7dcf0ba4",
+      "Date" : "Sun, 06 Mar 2022 06:32:44 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "9a05af01-0d10-4d27-8bb8-124a3141d01a",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "b67cec97-ace5-401c-b3fa-b1194674b9b5",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T063245Z:cc4acff8-6c59-4921-a58c-d4bf7dcf0ba4",
+      "Expires" : "-1",
+      "x-ms-request-id" : "136114a9-7790-4797-a04d-41bfbbb0137b",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/Redis/javacsmrc47651\",\"location\":\"East Asia\",\"name\":\"javacsmrc47651\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.1.14\",\"sku\":{\"name\":\"Basic\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"instances\":[{\"sslPort\":15000,\"isMaster\":true,\"isPrimary\":true}],\"publicNetworkAccess\":\"Enabled\",\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"30\",\"maxfragmentationmemory-reserved\":\"30\",\"maxmemory-delta\":\"30\"},\"accessKeys\":null,\"hostName\":\"javacsmrc47651.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/redis/javacsmrc47651?api-version=2021-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "cbf85626-488e-4da6-af80-f1a1840f3252"
+    },
+    "Response" : {
+      "content-length" : "712",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11974",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "a750d4ec-6528-4bed-baaf-f57c1857bd30",
+      "Date" : "Sun, 06 Mar 2022 06:33:15 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "9a05af01-0d10-4d27-8bb8-124a3141d01a",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "cbf85626-488e-4da6-af80-f1a1840f3252",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T063316Z:a750d4ec-6528-4bed-baaf-f57c1857bd30",
+      "Expires" : "-1",
+      "x-ms-request-id" : "c6a8d6d8-bad5-4d86-94b4-3d6590424da6",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/Redis/javacsmrc47651\",\"location\":\"East Asia\",\"name\":\"javacsmrc47651\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.1.14\",\"sku\":{\"name\":\"Basic\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"instances\":[{\"sslPort\":15000,\"isMaster\":true,\"isPrimary\":true}],\"publicNetworkAccess\":\"Enabled\",\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"30\",\"maxfragmentationmemory-reserved\":\"30\",\"maxmemory-delta\":\"30\"},\"accessKeys\":null,\"hostName\":\"javacsmrc47651.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/redis/javacsmrc47651?api-version=2021-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "f80552b8-78fd-4dfb-8531-4d08eae6ac45"
+    },
+    "Response" : {
+      "content-length" : "712",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11973",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "ac3b6ddd-81db-499b-a101-04aee84d304b",
+      "Date" : "Sun, 06 Mar 2022 06:33:46 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "9a05af01-0d10-4d27-8bb8-124a3141d01a",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "f80552b8-78fd-4dfb-8531-4d08eae6ac45",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T063346Z:ac3b6ddd-81db-499b-a101-04aee84d304b",
+      "Expires" : "-1",
+      "x-ms-request-id" : "a8b6df4b-e388-44b5-b868-af4a7c5e1d7b",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/Redis/javacsmrc47651\",\"location\":\"East Asia\",\"name\":\"javacsmrc47651\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Creating\",\"redisVersion\":\"4.1.14\",\"sku\":{\"name\":\"Basic\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"instances\":[{\"sslPort\":15000,\"isMaster\":true,\"isPrimary\":true}],\"publicNetworkAccess\":\"Enabled\",\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"30\",\"maxfragmentationmemory-reserved\":\"30\",\"maxmemory-delta\":\"30\"},\"accessKeys\":null,\"hostName\":\"javacsmrc47651.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/redis/javacsmrc47651?api-version=2021-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "dacce484-1779-4192-8553-1483808ab714"
+    },
+    "Response" : {
+      "content-length" : "713",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11972",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "8f370491-8e67-4059-89c9-0278906ad206",
+      "Date" : "Sun, 06 Mar 2022 06:34:16 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "9a05af01-0d10-4d27-8bb8-124a3141d01a",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "dacce484-1779-4192-8553-1483808ab714",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T063416Z:8f370491-8e67-4059-89c9-0278906ad206",
+      "Expires" : "-1",
+      "x-ms-request-id" : "c1098118-3dea-4caf-aa89-41d6396ed868",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/Redis/javacsmrc47651\",\"location\":\"East Asia\",\"name\":\"javacsmrc47651\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"redisVersion\":\"4.1.14\",\"sku\":{\"name\":\"Basic\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"instances\":[{\"sslPort\":15000,\"isMaster\":true,\"isPrimary\":true}],\"publicNetworkAccess\":\"Enabled\",\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"30\",\"maxfragmentationmemory-reserved\":\"30\",\"maxmemory-delta\":\"30\"},\"accessKeys\":null,\"hostName\":\"javacsmrc47651.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/redis/javacsmrc47651?api-version=2021-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "a467ca16-ce8a-42a0-8b38-ceb10669d8b8",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "963",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1195",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "0387186c-1709-4720-af92-87447a938edd",
+      "Date" : "Sun, 06 Mar 2022 06:34:17 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "9a05af01-0d10-4d27-8bb8-124a3141d01a",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "a467ca16-ce8a-42a0-8b38-ceb10669d8b8",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T063417Z:0387186c-1709-4720-af92-87447a938edd",
+      "Expires" : "-1",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East Asia/asyncOperations/daae9331-1b94-4d0e-a5cf-4943d490ecf4?api-version=2021-06-01",
+      "x-ms-request-id" : "daae9331-1b94-4d0e-a5cf-4943d490ecf4",
+      "Body" : "{\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/Redis/javacsmrc47651\",\r\n  \"location\": \"East Asia\",\r\n  \"name\": \"javacsmrc47651\",\r\n  \"type\": \"Microsoft.Cache/Redis\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"redisVersion\": \"4.1.14\",\r\n    \"sku\": {\r\n      \"name\": \"Basic\",\r\n      \"family\": \"C\",\r\n      \"capacity\": 0\r\n    },\r\n    \"enableNonSslPort\": false,\r\n    \"instances\": [\r\n      {\r\n        \"sslPort\": 15000,\r\n        \"isMaster\": true,\r\n        \"isPrimary\": true\r\n      }\r\n    ],\r\n    \"publicNetworkAccess\": \"Enabled\",\r\n    \"redisConfiguration\": {\r\n      \"maxclients\": \"256\",\r\n      \"maxmemory-reserved\": \"30\",\r\n      \"maxfragmentationmemory-reserved\": \"30\",\r\n      \"maxmemory-delta\": \"30\"\r\n    },\r\n    \"accessKeys\": null,\r\n    \"hostName\": \"javacsmrc47651.redis.cache.windows.net\",\r\n    \"port\": 6379,\r\n    \"sslPort\": 6380,\r\n    \"linkedServers\": []\r\n  }\r\n}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20Asia/asyncOperations/daae9331-1b94-4d0e-a5cf-4943d490ecf4?api-version=2021-06-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/redis/javacsmrc47651?api-version=2021-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "4664d370-3bd1-4c83-afd6-8fee86a53ac9",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "713",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11966",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "98760f8e-23c6-4578-97cf-47b96227a0ec",
+      "Date" : "Sun, 06 Mar 2022 06:39:17 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "9a05af01-0d10-4d27-8bb8-124a3141d01a",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "4664d370-3bd1-4c83-afd6-8fee86a53ac9",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T063918Z:98760f8e-23c6-4578-97cf-47b96227a0ec",
+      "Expires" : "-1",
+      "x-ms-request-id" : "c44da275-d6d8-4eef-be29-370a5d9d5ce9",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/Redis/javacsmrc47651\",\"location\":\"East Asia\",\"name\":\"javacsmrc47651\",\"type\":\"Microsoft.Cache/Redis\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"redisVersion\":\"6.0.14\",\"sku\":{\"name\":\"Basic\",\"family\":\"C\",\"capacity\":0},\"enableNonSslPort\":false,\"instances\":[{\"sslPort\":15000,\"isMaster\":true,\"isPrimary\":true}],\"publicNetworkAccess\":\"Enabled\",\"redisConfiguration\":{\"maxclients\":\"256\",\"maxmemory-reserved\":\"30\",\"maxfragmentationmemory-reserved\":\"30\",\"maxmemory-delta\":\"30\"},\"accessKeys\":null,\"hostName\":\"javacsmrc47651.redis.cache.windows.net\",\"port\":6379,\"sslPort\":6380,\"linkedServers\":[]}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/redis/javacsmrc47651/firewallRules?api-version=2021-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "ded3d306-eb4e-4935-8deb-e9ca3100b623",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "12",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11965",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "2e77f731-1cf1-4d48-8a33-b45804e6485d",
+      "Date" : "Sun, 06 Mar 2022 06:39:17 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "9a05af01-0d10-4d27-8bb8-124a3141d01a",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "ded3d306-eb4e-4935-8deb-e9ca3100b623",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T063918Z:2e77f731-1cf1-4d48-8a33-b45804e6485d",
+      "Expires" : "-1",
+      "x-ms-request-id" : "0ff29df4-1caf-4e87-a223-deec264ea8f7",
+      "Body" : "{\"value\":[]}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg65061/providers/Microsoft.Cache/redis/javacsmrc47651/patchSchedules?api-version=2021-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.redis/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "8318260a-bc08-465e-84ff-6fe5dbb3a351",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "182",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11963",
+      "StatusCode" : "404",
+      "x-ms-correlation-request-id" : "e8d4eafc-69c7-4e37-ad74-8dad527b08a2",
+      "Date" : "Sun, 06 Mar 2022 06:39:18 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-rp-server-mvid" : "9a05af01-0d10-4d27-8bb8-124a3141d01a",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "8318260a-bc08-465e-84ff-6fe5dbb3a351",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T063918Z:e8d4eafc-69c7-4e37-ad74-8dad527b08a2",
+      "Expires" : "-1",
+      "x-ms-request-id" : "caf756a0-5545-48fc-b69c-a7bb3f205280",
+      "Body" : "{\"error\":{\"code\":\"ResourceNotFound\",\"message\":\"There are no patch schedules found for redis cache 'javacsmrc47651'.\\r\\nRequestID=caf756a0-5545-48fc-b69c-a7bb3f205280\",\"target\":null}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg65061?api-version=2021-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "87226984-0735-4b19-8e4f-f735d9d36a0b",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14999",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "515c678c-5b66-4fc0-967f-3b313e942081",
+      "Date" : "Sun, 06 Mar 2022 06:39:19 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T063920Z:515c678c-5b66-4fc0-967f-3b313e942081",
+      "Expires" : "-1",
+      "x-ms-request-id" : "515c678c-5b66-4fc0-967f-3b313e942081",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1KQVZBQ1NNUkc2NTA2MS1FQVNUQVNJQSIsImpvYkxvY2F0aW9uIjoiZWFzdGFzaWEifQ?api-version=2021-01-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg65061Second?api-version=2021-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.13.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "0139c9e6-fa07-4378-92fa-79aa48cda02b",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "112",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14999",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-correlation-request-id" : "0736bb56-f940-4069-bf66-d94424f4c1b3",
+      "Date" : "Sun, 06 Mar 2022 06:39:19 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-failure-cause" : "gateway",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220306T063920Z:0736bb56-f940-4069-bf66-d94424f4c1b3",
+      "Expires" : "-1",
+      "x-ms-request-id" : "0736bb56-f940-4069-bf66-d94424f4c1b3",
+      "Body" : "{\"error\":{\"code\":\"ResourceGroupNotFound\",\"message\":\"Resource group 'javacsmrg65061Second' could not be found.\"}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "javacsmrg65061", "javacsmrc47651", "javacsmsa42968" ]
+}

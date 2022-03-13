@@ -130,6 +130,14 @@ public final class AzureVmWorkloadProtectionPolicy extends ProtectionPolicy {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureVmWorkloadProtectionPolicy withResourceGuardOperationRequests(
+        List<String> resourceGuardOperationRequests) {
+        super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

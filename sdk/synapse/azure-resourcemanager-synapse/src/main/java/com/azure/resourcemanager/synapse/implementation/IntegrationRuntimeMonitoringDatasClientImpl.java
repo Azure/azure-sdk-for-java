@@ -86,7 +86,8 @@ public final class IntegrationRuntimeMonitoringDatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return monitoring data for an integration runtime.
+     * @return monitoring data for an integration runtime along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeMonitoringDataInner>> listWithResponseAsync(
@@ -115,6 +116,7 @@ public final class IntegrationRuntimeMonitoringDatasClientImpl implements Integr
                 .error(
                     new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -122,7 +124,7 @@ public final class IntegrationRuntimeMonitoringDatasClientImpl implements Integr
                     service
                         .list(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -142,7 +144,8 @@ public final class IntegrationRuntimeMonitoringDatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return monitoring data for an integration runtime.
+     * @return monitoring data for an integration runtime along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeMonitoringDataInner>> listWithResponseAsync(
@@ -171,12 +174,13 @@ public final class IntegrationRuntimeMonitoringDatasClientImpl implements Integr
                 .error(
                     new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -194,7 +198,7 @@ public final class IntegrationRuntimeMonitoringDatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return monitoring data for an integration runtime.
+     * @return monitoring data for an integration runtime on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IntegrationRuntimeMonitoringDataInner> listAsync(
@@ -237,7 +241,7 @@ public final class IntegrationRuntimeMonitoringDatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return monitoring data for an integration runtime.
+     * @return monitoring data for an integration runtime along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IntegrationRuntimeMonitoringDataInner> listWithResponse(

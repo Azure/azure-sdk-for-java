@@ -69,6 +69,7 @@ public class JacksonAdapterTests {
 
         @JsonInclude(content = JsonInclude.Include.ALWAYS)
         private Map<String, String> map = new HashMap<>();
+
         public Map<String, String> map() {
             return map;
         }
@@ -78,16 +79,19 @@ public class JacksonAdapterTests {
         }
 
     }
+
     @JacksonXmlRootElement(localName = "XmlString")
     private static class XmlString {
 
         @JsonProperty("Value")
         private String value;
+
         public String getValue() {
             return value;
         }
 
     }
+
     @ParameterizedTest
     @MethodSource("serializeCollectionSupplier")
     public void testSerializeList(List<?> values, CollectionFormat format, String expectedSerializedString) {

@@ -1,65 +1,25 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.blob.core.windows.net/18716e8c018716e8c33954658f3f16f67b14a4acfafc?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/18716e8c018716e8ca89924147fa1bdad7e67401e881?restype=container",
     "Headers" : {
-      "x-ms-version" : "2020-06-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "0ef47ba5-9f2e-4010-9887-d52d34ab8273"
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4789c1f6-4b0b-4fd1-91a9-afd4dff1d33f"
     },
     "Response" : {
       "content-length" : "0",
-      "x-ms-version" : "2020-06-12",
+      "x-ms-version" : "2020-10-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "eTag" : "0x8D90F539A9C5599",
-      "Last-Modified" : "Tue, 04 May 2021 23:23:20 GMT",
+      "eTag" : "0x8D947B7B4D3FFE3",
+      "Last-Modified" : "Thu, 15 Jul 2021 17:40:58 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "33359011-b01e-004c-763c-415a81000000",
-      "x-ms-client-request-id" : "0ef47ba5-9f2e-4010-9887-d52d34ab8273",
-      "Date" : "Tue, 04 May 2021 23:23:19 GMT"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net?comp=list&prefix=18716e8c",
-    "Headers" : {
-      "x-ms-version" : "2020-06-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "4869a5ad-e71c-4f84-bd22-8f84d1620382"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2020-06-12",
-      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "x-ms-request-id" : "4124f158-101e-0045-743c-411f52000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanadacentral.blob.core.windows.net/\"><Prefix>18716e8c</Prefix><Containers><Container><Name>18716e8c018716e8c33954658f3f16f67b14a4acfafc</Name><Properties><Last-Modified>Tue, 04 May 2021 23:23:20 GMT</Last-Modified><Etag>\"0x8D90F539A9C5599\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "x-ms-client-request-id" : "4869a5ad-e71c-4f84-bd22-8f84d1620382",
-      "Date" : "Tue, 04 May 2021 23:23:19 GMT",
-      "Content-Type" : "application/xml"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "DELETE",
-    "Uri" : "https://REDACTED.blob.core.windows.net/18716e8c018716e8c33954658f3f16f67b14a4acfafc?restype=container",
-    "Headers" : {
-      "x-ms-version" : "2020-06-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "652c0c4d-22c8-4085-bc49-bbd779072947"
-    },
-    "Response" : {
-      "content-length" : "0",
-      "x-ms-version" : "2020-06-12",
-      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "retry-after" : "0",
-      "StatusCode" : "202",
-      "x-ms-request-id" : "c798be6c-901e-0064-433c-413b29000000",
-      "x-ms-client-request-id" : "652c0c4d-22c8-4085-bc49-bbd779072947",
-      "Date" : "Tue, 04 May 2021 23:23:19 GMT"
+      "x-ms-request-id" : "46aee72c-e01e-0033-59a0-79951a000000",
+      "x-ms-client-request-id" : "4789c1f6-4b0b-4fd1-91a9-afd4dff1d33f",
+      "Date" : "Thu, 15 Jul 2021 17:40:58 GMT"
     },
     "Exception" : null
   } ],
-  "variables" : [ "18716e8c018716e8c33954658f3f16f67b14a4acfafc" ]
+  "variables" : [ "18716e8c018716e8ca89924147fa1bdad7e67401e881", "18716e8c19650128", "18716e8c55293a17" ]
 }

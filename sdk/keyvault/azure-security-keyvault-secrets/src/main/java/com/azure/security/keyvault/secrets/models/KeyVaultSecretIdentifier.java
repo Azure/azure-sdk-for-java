@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.secrets.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClient;
 
@@ -16,6 +17,7 @@ import java.net.URL;
  */
 @Immutable
 public final class KeyVaultSecretIdentifier {
+    private final ClientLogger logger = new ClientLogger(KeyVaultSecretIdentifier.class);
     private final String sourceId, vaultUrl, name, version;
 
     /**
@@ -37,7 +39,7 @@ public final class KeyVaultSecretIdentifier {
      */
     public KeyVaultSecretIdentifier(String sourceId) {
         if (sourceId == null) {
-            throw new NullPointerException("'sourceId' cannot be null.");
+            throw logger.logExceptionAsError(new NullPointerException("'sourceId' cannot be null."));
         }
 
         try {
@@ -47,7 +49,8 @@ public final class KeyVaultSecretIdentifier {
 
             // More or less segments in the URI than expected.
             if (pathSegments.length != 3 && pathSegments.length != 4) {
-                throw new IllegalArgumentException("'sourceId' is not a valid Key Vault identifier.");
+                throw logger.logExceptionAsError(
+                    new IllegalArgumentException("'sourceId' is not a valid Key Vault identifier."));
             }
 
             this.sourceId = sourceId;
@@ -55,7 +58,8 @@ public final class KeyVaultSecretIdentifier {
             this.name = pathSegments[2];
             this.version = pathSegments.length == 4 ? pathSegments[3] : null;
         } catch (MalformedURLException e) {
-            throw new IllegalArgumentException("'sourceId' is not a valid Key Vault identifier.", e);
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'sourceId' is not a valid Key Vault identifier.", e));
         }
     }
 

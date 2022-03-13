@@ -39,34 +39,6 @@ public interface Cluster {
     Sku sku();
 
     /**
-     * Gets the clusterSize property: The cluster size.
-     *
-     * @return the clusterSize value.
-     */
-    Integer clusterSize();
-
-    /**
-     * Gets the provisioningState property: The state of the cluster provisioning.
-     *
-     * @return the provisioningState value.
-     */
-    ClusterProvisioningState provisioningState();
-
-    /**
-     * Gets the clusterId property: The identity.
-     *
-     * @return the clusterId value.
-     */
-    Integer clusterId();
-
-    /**
-     * Gets the hosts property: The hosts.
-     *
-     * @return the hosts value.
-     */
-    List<String> hosts();
-
-    /**
      * Gets the inner com.azure.resourcemanager.avs.fluent.models.ClusterInner object.
      *
      * @return the inner object.
@@ -110,7 +82,7 @@ public interface Cluster {
          * The stage of the Cluster definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithClusterSize {
+        interface WithCreate {
             /**
              * Executes the create request.
              *
@@ -126,16 +98,6 @@ public interface Cluster {
              */
             Cluster create(Context context);
         }
-        /** The stage of the Cluster definition allowing to specify clusterSize. */
-        interface WithClusterSize {
-            /**
-             * Specifies the clusterSize property: The cluster size.
-             *
-             * @param clusterSize The cluster size.
-             * @return the next definition stage.
-             */
-            WithCreate withClusterSize(Integer clusterSize);
-        }
     }
     /**
      * Begins update for the Cluster resource.
@@ -145,7 +107,7 @@ public interface Cluster {
     Cluster.Update update();
 
     /** The template for Cluster update. */
-    interface Update extends UpdateStages.WithClusterSize {
+    interface Update extends UpdateStages.WithClusterSize, UpdateStages.WithHosts {
         /**
          * Executes the update request.
          *
@@ -172,6 +134,16 @@ public interface Cluster {
              * @return the next definition stage.
              */
             Update withClusterSize(Integer clusterSize);
+        }
+        /** The stage of the Cluster update allowing to specify hosts. */
+        interface WithHosts {
+            /**
+             * Specifies the hosts property: The hosts.
+             *
+             * @param hosts The hosts.
+             * @return the next definition stage.
+             */
+            Update withHosts(List<String> hosts);
         }
     }
     /**

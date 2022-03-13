@@ -5,54 +5,31 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.apimanagement.fluent.models.PortalSettingsContractProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Portal Settings for the Developer Portal. */
-@JsonFlatten
 @Fluent
-public class PortalSettingsContract extends ProxyResource {
+public final class PortalSettingsContract extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PortalSettingsContract.class);
 
     /*
-     * A delegation Url.
+     * Portal Settings contract properties.
      */
-    @JsonProperty(value = "properties.url")
-    private String url;
+    @JsonProperty(value = "properties")
+    private PortalSettingsContractProperties innerProperties;
 
-    /*
-     * A base64-encoded validation key to validate, that a request is coming
-     * from Azure API Management.
+    /**
+     * Get the innerProperties property: Portal Settings contract properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.validationKey")
-    private String validationKey;
-
-    /*
-     * Subscriptions delegation settings.
-     */
-    @JsonProperty(value = "properties.subscriptions")
-    private SubscriptionsDelegationSettingsProperties subscriptions;
-
-    /*
-     * User registration delegation settings.
-     */
-    @JsonProperty(value = "properties.userRegistration")
-    private RegistrationDelegationSettingsProperties userRegistration;
-
-    /*
-     * Redirect Anonymous users to the Sign-In page.
-     */
-    @JsonProperty(value = "properties.enabled")
-    private Boolean enabled;
-
-    /*
-     * Terms of service contract properties.
-     */
-    @JsonProperty(value = "properties.termsOfService")
-    private TermsOfServiceProperties termsOfService;
+    private PortalSettingsContractProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the url property: A delegation Url.
@@ -60,7 +37,7 @@ public class PortalSettingsContract extends ProxyResource {
      * @return the url value.
      */
     public String url() {
-        return this.url;
+        return this.innerProperties() == null ? null : this.innerProperties().url();
     }
 
     /**
@@ -70,7 +47,10 @@ public class PortalSettingsContract extends ProxyResource {
      * @return the PortalSettingsContract object itself.
      */
     public PortalSettingsContract withUrl(String url) {
-        this.url = url;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PortalSettingsContractProperties();
+        }
+        this.innerProperties().withUrl(url);
         return this;
     }
 
@@ -81,7 +61,7 @@ public class PortalSettingsContract extends ProxyResource {
      * @return the validationKey value.
      */
     public String validationKey() {
-        return this.validationKey;
+        return this.innerProperties() == null ? null : this.innerProperties().validationKey();
     }
 
     /**
@@ -92,7 +72,10 @@ public class PortalSettingsContract extends ProxyResource {
      * @return the PortalSettingsContract object itself.
      */
     public PortalSettingsContract withValidationKey(String validationKey) {
-        this.validationKey = validationKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PortalSettingsContractProperties();
+        }
+        this.innerProperties().withValidationKey(validationKey);
         return this;
     }
 
@@ -102,7 +85,7 @@ public class PortalSettingsContract extends ProxyResource {
      * @return the subscriptions value.
      */
     public SubscriptionsDelegationSettingsProperties subscriptions() {
-        return this.subscriptions;
+        return this.innerProperties() == null ? null : this.innerProperties().subscriptions();
     }
 
     /**
@@ -112,7 +95,10 @@ public class PortalSettingsContract extends ProxyResource {
      * @return the PortalSettingsContract object itself.
      */
     public PortalSettingsContract withSubscriptions(SubscriptionsDelegationSettingsProperties subscriptions) {
-        this.subscriptions = subscriptions;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PortalSettingsContractProperties();
+        }
+        this.innerProperties().withSubscriptions(subscriptions);
         return this;
     }
 
@@ -122,7 +108,7 @@ public class PortalSettingsContract extends ProxyResource {
      * @return the userRegistration value.
      */
     public RegistrationDelegationSettingsProperties userRegistration() {
-        return this.userRegistration;
+        return this.innerProperties() == null ? null : this.innerProperties().userRegistration();
     }
 
     /**
@@ -132,7 +118,10 @@ public class PortalSettingsContract extends ProxyResource {
      * @return the PortalSettingsContract object itself.
      */
     public PortalSettingsContract withUserRegistration(RegistrationDelegationSettingsProperties userRegistration) {
-        this.userRegistration = userRegistration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PortalSettingsContractProperties();
+        }
+        this.innerProperties().withUserRegistration(userRegistration);
         return this;
     }
 
@@ -142,7 +131,7 @@ public class PortalSettingsContract extends ProxyResource {
      * @return the enabled value.
      */
     public Boolean enabled() {
-        return this.enabled;
+        return this.innerProperties() == null ? null : this.innerProperties().enabled();
     }
 
     /**
@@ -152,7 +141,10 @@ public class PortalSettingsContract extends ProxyResource {
      * @return the PortalSettingsContract object itself.
      */
     public PortalSettingsContract withEnabled(Boolean enabled) {
-        this.enabled = enabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PortalSettingsContractProperties();
+        }
+        this.innerProperties().withEnabled(enabled);
         return this;
     }
 
@@ -162,7 +154,7 @@ public class PortalSettingsContract extends ProxyResource {
      * @return the termsOfService value.
      */
     public TermsOfServiceProperties termsOfService() {
-        return this.termsOfService;
+        return this.innerProperties() == null ? null : this.innerProperties().termsOfService();
     }
 
     /**
@@ -172,7 +164,10 @@ public class PortalSettingsContract extends ProxyResource {
      * @return the PortalSettingsContract object itself.
      */
     public PortalSettingsContract withTermsOfService(TermsOfServiceProperties termsOfService) {
-        this.termsOfService = termsOfService;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PortalSettingsContractProperties();
+        }
+        this.innerProperties().withTermsOfService(termsOfService);
         return this;
     }
 
@@ -182,14 +177,8 @@ public class PortalSettingsContract extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (subscriptions() != null) {
-            subscriptions().validate();
-        }
-        if (userRegistration() != null) {
-            userRegistration().validate();
-        }
-        if (termsOfService() != null) {
-            termsOfService().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

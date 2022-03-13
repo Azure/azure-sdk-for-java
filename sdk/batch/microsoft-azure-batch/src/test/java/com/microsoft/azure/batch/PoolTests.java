@@ -63,7 +63,7 @@ public class PoolTests extends BatchIntegrationTestBase {
         String poolId = getStringIdWithUserNamePrefix("-canCRUDLowPri-testPool");
 
         // Create a pool with 3 Small VMs
-        String POOL_VM_SIZE = "STANDARD_A1";
+        String POOL_VM_SIZE = "STANDARD_D1_V2";
         int POOL_VM_COUNT = 0;
         int POOL_LOW_PRI_VM_COUNT = 2;
 
@@ -191,7 +191,7 @@ public class PoolTests extends BatchIntegrationTestBase {
         String poolId = getStringIdWithUserNamePrefix("-testpool3");
 
         // Create a pool with 0 Small VMs
-        String POOL_VM_SIZE = "STANDARD_D1";
+        String POOL_VM_SIZE = "STANDARD_D1_V2";
         int POOL_VM_COUNT = 0;
         int lun = 50;
         int diskSizeGB = 50;
@@ -232,7 +232,7 @@ public class PoolTests extends BatchIntegrationTestBase {
         String poolId = getStringIdWithUserNamePrefix("-customImageExpErr");
 
         // Create a pool with 0 Small VMs
-        String POOL_VM_SIZE = "STANDARD_D1";
+        String POOL_VM_SIZE = "STANDARD_D1_V2";
         int POOL_VM_COUNT = 0;
 
         // Use IaaS VM with Linux
@@ -276,7 +276,7 @@ public class PoolTests extends BatchIntegrationTestBase {
         String poolId = getStringIdWithUserNamePrefix("-createContainerRegImage");
 
         // Create a pool with 0 Small VMs
-        String POOL_VM_SIZE = "STANDARD_D1";
+        String POOL_VM_SIZE = "STANDARD_D1_V2";
         int POOL_VM_COUNT = 0;
 
         // Use IaaS VM with Linux
@@ -329,7 +329,7 @@ public class PoolTests extends BatchIntegrationTestBase {
         String poolId = getStringIdWithUserNamePrefix("-createLinuxPool");
 
         // Create a pool with 0 Small VMs
-        String POOL_VM_SIZE = "STANDARD_D1";
+        String POOL_VM_SIZE = "STANDARD_D1_V2";
         int POOL_VM_COUNT = 0;
 
         // Use IaaS VM with Linux
@@ -389,7 +389,7 @@ public class PoolTests extends BatchIntegrationTestBase {
         String poolId = getStringIdWithUserNamePrefix("-testpool4");
 
         // Create a pool with 3 Small VMs
-        String POOL_VM_SIZE = "Small";
+        String POOL_VM_SIZE = "STANDARD_D1_V2";
         int POOL_VM_COUNT = 1;
         int POOL_LOW_PRI_VM_COUNT = 2;
         String POOL_OS_FAMILY = "4";
@@ -481,7 +481,7 @@ public class PoolTests extends BatchIntegrationTestBase {
         String poolId = getStringIdWithUserNamePrefix("-CRUDPaaS");
 
         // Create a pool with 3 Small VMs
-        String POOL_VM_SIZE = "Small";
+        String POOL_VM_SIZE = "STANDARD_D1_V2";
         int POOL_VM_COUNT = 3;
         String POOL_OS_FAMILY = "4";
         String POOL_OS_VERSION = "*";

@@ -201,12 +201,12 @@ class QueueSasClientTests extends APISpec {
      */
     def "Remember about string to sign deprecation"() {
         setup:
-        def client = queueBuilderHelper().credential(env.primaryAccount.credential).buildClient()
+        def client = queueBuilderHelper().credential(environment.primaryAccount.credential).buildClient()
         def values = new QueueServiceSasSignatureValues(namer.getUtcNow(), new QueueSasPermission())
         values.setQueueName(client.getQueueName())
 
         when:
-        def deprecatedStringToSign = values.generateSasQueryParameters(env.primaryAccount.credential).encode()
+        def deprecatedStringToSign = values.generateSasQueryParameters(environment.primaryAccount.credential).encode()
         def stringToSign = client.generateSas(values)
 
         then:

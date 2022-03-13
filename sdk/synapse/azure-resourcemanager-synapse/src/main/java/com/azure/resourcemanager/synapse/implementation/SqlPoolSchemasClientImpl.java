@@ -114,7 +114,7 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schemas of a given SQL pool.
+     * @return schemas of a given SQL pool along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlPoolSchemaInner>> listSinglePageAsync(
@@ -141,6 +141,7 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -148,7 +149,7 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
                     service
                         .list(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -179,7 +180,7 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schemas of a given SQL pool.
+     * @return schemas of a given SQL pool along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlPoolSchemaInner>> listSinglePageAsync(
@@ -206,12 +207,13 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -337,7 +339,7 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Pool schema.
+     * @return sql Pool schema along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SqlPoolSchemaInner>> getWithResponseAsync(
@@ -367,6 +369,7 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
         if (schemaName == null) {
             return Mono.error(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -374,7 +377,7 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -396,7 +399,7 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Pool schema.
+     * @return sql Pool schema along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SqlPoolSchemaInner>> getWithResponseAsync(
@@ -426,12 +429,13 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
         if (schemaName == null) {
             return Mono.error(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -451,7 +455,7 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Pool schema.
+     * @return sql Pool schema on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SqlPoolSchemaInner> getAsync(
@@ -496,7 +500,7 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Pool schema.
+     * @return sql Pool schema along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SqlPoolSchemaInner> getWithResponse(
@@ -511,7 +515,7 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Sql pool schemas.
+     * @return a list of Sql pool schemas along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlPoolSchemaInner>> listNextSinglePageAsync(String nextLink) {
@@ -547,7 +551,7 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Sql pool schemas.
+     * @return a list of Sql pool schemas along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlPoolSchemaInner>> listNextSinglePageAsync(String nextLink, Context context) {

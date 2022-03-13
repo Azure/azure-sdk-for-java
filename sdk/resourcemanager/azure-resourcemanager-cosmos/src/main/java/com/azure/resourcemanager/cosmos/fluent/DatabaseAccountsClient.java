@@ -118,7 +118,7 @@ public interface DatabaseAccountsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB database account.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<DatabaseAccountGetResultsInner>, DatabaseAccountGetResultsInner> beginUpdateAsync(
         String resourceGroupName, String accountName, DatabaseAccountUpdateParameters updateParameters);
 
@@ -133,7 +133,7 @@ public interface DatabaseAccountsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB database account.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DatabaseAccountGetResultsInner>, DatabaseAccountGetResultsInner> beginUpdate(
         String resourceGroupName, String accountName, DatabaseAccountUpdateParameters updateParameters);
 
@@ -149,7 +149,7 @@ public interface DatabaseAccountsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB database account.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DatabaseAccountGetResultsInner>, DatabaseAccountGetResultsInner> beginUpdate(
         String resourceGroupName,
         String accountName,
@@ -233,7 +233,7 @@ public interface DatabaseAccountsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB database account.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<DatabaseAccountGetResultsInner>, DatabaseAccountGetResultsInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String accountName, DatabaseAccountCreateUpdateParameters createUpdateParameters);
 
@@ -249,7 +249,7 @@ public interface DatabaseAccountsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB database account.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DatabaseAccountGetResultsInner>, DatabaseAccountGetResultsInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, DatabaseAccountCreateUpdateParameters createUpdateParameters);
 
@@ -266,7 +266,7 @@ public interface DatabaseAccountsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB database account.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DatabaseAccountGetResultsInner>, DatabaseAccountGetResultsInner> beginCreateOrUpdate(
         String resourceGroupName,
         String accountName,
@@ -348,7 +348,7 @@ public interface DatabaseAccountsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName);
 
     /**
@@ -361,7 +361,7 @@ public interface DatabaseAccountsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName);
 
     /**
@@ -375,7 +375,7 @@ public interface DatabaseAccountsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, Context context);
 
     /**
@@ -446,7 +446,7 @@ public interface DatabaseAccountsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginFailoverPriorityChangeAsync(
         String resourceGroupName, String accountName, FailoverPolicies failoverParameters);
 
@@ -463,7 +463,7 @@ public interface DatabaseAccountsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginFailoverPriorityChange(
         String resourceGroupName, String accountName, FailoverPolicies failoverParameters);
 
@@ -481,7 +481,7 @@ public interface DatabaseAccountsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginFailoverPriorityChange(
         String resourceGroupName, String accountName, FailoverPolicies failoverParameters, Context context);
 
@@ -740,7 +740,7 @@ public interface DatabaseAccountsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginOfflineRegionAsync(
         String resourceGroupName, String accountName, RegionForOnlineOffline regionParameterForOffline);
 
@@ -755,7 +755,7 @@ public interface DatabaseAccountsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginOfflineRegion(
         String resourceGroupName, String accountName, RegionForOnlineOffline regionParameterForOffline);
 
@@ -771,7 +771,7 @@ public interface DatabaseAccountsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginOfflineRegion(
         String resourceGroupName,
         String accountName,
@@ -850,7 +850,7 @@ public interface DatabaseAccountsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginOnlineRegionAsync(
         String resourceGroupName, String accountName, RegionForOnlineOffline regionParameterForOnline);
 
@@ -865,7 +865,7 @@ public interface DatabaseAccountsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginOnlineRegion(
         String resourceGroupName, String accountName, RegionForOnlineOffline regionParameterForOnline);
 
@@ -881,7 +881,7 @@ public interface DatabaseAccountsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginOnlineRegion(
         String resourceGroupName, String accountName, RegionForOnlineOffline regionParameterForOnline, Context context);
 
@@ -1065,7 +1065,7 @@ public interface DatabaseAccountsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginRegenerateKeyAsync(
         String resourceGroupName, String accountName, DatabaseAccountRegenerateKeyParameters keyToRegenerate);
 
@@ -1080,7 +1080,7 @@ public interface DatabaseAccountsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRegenerateKey(
         String resourceGroupName, String accountName, DatabaseAccountRegenerateKeyParameters keyToRegenerate);
 
@@ -1096,7 +1096,7 @@ public interface DatabaseAccountsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRegenerateKey(
         String resourceGroupName,
         String accountName,

@@ -25,7 +25,7 @@ public interface BlobServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<BlobServicePropertiesInner> listAsync(String resourceGroupName, String accountName);
@@ -40,7 +40,7 @@ public interface BlobServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BlobServicePropertiesInner> list(String resourceGroupName, String accountName);
@@ -56,7 +56,7 @@ public interface BlobServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BlobServicePropertiesInner> list(String resourceGroupName, String accountName, Context context);
@@ -74,7 +74,8 @@ public interface BlobServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a storage account’s Blob service.
+     * @return the properties of a storage account’s Blob service along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BlobServicePropertiesInner>> setServicePropertiesWithResponseAsync(
@@ -93,7 +94,7 @@ public interface BlobServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a storage account’s Blob service.
+     * @return the properties of a storage account’s Blob service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<BlobServicePropertiesInner> setServicePropertiesAsync(
@@ -132,7 +133,7 @@ public interface BlobServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a storage account’s Blob service.
+     * @return the properties of a storage account’s Blob service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BlobServicePropertiesInner> setServicePropertiesWithResponse(
@@ -150,7 +151,7 @@ public interface BlobServicesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a storage account’s Blob service, including properties for Storage Analytics and CORS
-     *     (Cross-Origin Resource Sharing) rules.
+     *     (Cross-Origin Resource Sharing) rules along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BlobServicePropertiesInner>> getServicePropertiesWithResponseAsync(
@@ -168,7 +169,7 @@ public interface BlobServicesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a storage account’s Blob service, including properties for Storage Analytics and CORS
-     *     (Cross-Origin Resource Sharing) rules.
+     *     (Cross-Origin Resource Sharing) rules on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<BlobServicePropertiesInner> getServicePropertiesAsync(String resourceGroupName, String accountName);
@@ -203,7 +204,7 @@ public interface BlobServicesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a storage account’s Blob service, including properties for Storage Analytics and CORS
-     *     (Cross-Origin Resource Sharing) rules.
+     *     (Cross-Origin Resource Sharing) rules along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BlobServicePropertiesInner> getServicePropertiesWithResponse(

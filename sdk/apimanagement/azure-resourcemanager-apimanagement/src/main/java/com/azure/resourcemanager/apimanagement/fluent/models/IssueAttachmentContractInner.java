@@ -5,36 +5,30 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Issue Attachment Contract details. */
-@JsonFlatten
 @Fluent
-public class IssueAttachmentContractInner extends ProxyResource {
+public final class IssueAttachmentContractInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(IssueAttachmentContractInner.class);
 
     /*
-     * Filename by which the binary data will be saved.
+     * Properties of the Issue Attachment.
      */
-    @JsonProperty(value = "properties.title")
-    private String title;
+    @JsonProperty(value = "properties")
+    private IssueAttachmentContractProperties innerProperties;
 
-    /*
-     * Either 'link' if content is provided via an HTTP link or the MIME type
-     * of the Base64-encoded binary data provided in the 'content' property.
+    /**
+     * Get the innerProperties property: Properties of the Issue Attachment.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.contentFormat")
-    private String contentFormat;
-
-    /*
-     * An HTTP link or Base64-encoded binary data.
-     */
-    @JsonProperty(value = "properties.content")
-    private String content;
+    private IssueAttachmentContractProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the title property: Filename by which the binary data will be saved.
@@ -42,7 +36,7 @@ public class IssueAttachmentContractInner extends ProxyResource {
      * @return the title value.
      */
     public String title() {
-        return this.title;
+        return this.innerProperties() == null ? null : this.innerProperties().title();
     }
 
     /**
@@ -52,7 +46,10 @@ public class IssueAttachmentContractInner extends ProxyResource {
      * @return the IssueAttachmentContractInner object itself.
      */
     public IssueAttachmentContractInner withTitle(String title) {
-        this.title = title;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IssueAttachmentContractProperties();
+        }
+        this.innerProperties().withTitle(title);
         return this;
     }
 
@@ -63,7 +60,7 @@ public class IssueAttachmentContractInner extends ProxyResource {
      * @return the contentFormat value.
      */
     public String contentFormat() {
-        return this.contentFormat;
+        return this.innerProperties() == null ? null : this.innerProperties().contentFormat();
     }
 
     /**
@@ -74,7 +71,10 @@ public class IssueAttachmentContractInner extends ProxyResource {
      * @return the IssueAttachmentContractInner object itself.
      */
     public IssueAttachmentContractInner withContentFormat(String contentFormat) {
-        this.contentFormat = contentFormat;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IssueAttachmentContractProperties();
+        }
+        this.innerProperties().withContentFormat(contentFormat);
         return this;
     }
 
@@ -84,7 +84,7 @@ public class IssueAttachmentContractInner extends ProxyResource {
      * @return the content value.
      */
     public String content() {
-        return this.content;
+        return this.innerProperties() == null ? null : this.innerProperties().content();
     }
 
     /**
@@ -94,7 +94,10 @@ public class IssueAttachmentContractInner extends ProxyResource {
      * @return the IssueAttachmentContractInner object itself.
      */
     public IssueAttachmentContractInner withContent(String content) {
-        this.content = content;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IssueAttachmentContractProperties();
+        }
+        this.innerProperties().withContent(content);
         return this;
     }
 
@@ -104,5 +107,8 @@ public class IssueAttachmentContractInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

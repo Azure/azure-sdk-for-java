@@ -5,18 +5,23 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.fluent.models.AzureFirewallNatRuleCollectionProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** NAT rule collection resource. */
-@JsonFlatten
 @Fluent
-public class AzureFirewallNatRuleCollection extends SubResource {
+public final class AzureFirewallNatRuleCollection extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallNatRuleCollection.class);
+
+    /*
+     * Properties of the azure firewall NAT rule collection.
+     */
+    @JsonProperty(value = "properties")
+    private AzureFirewallNatRuleCollectionProperties innerProperties;
 
     /*
      * The name of the resource that is unique within the Azure firewall. This
@@ -31,29 +36,14 @@ public class AzureFirewallNatRuleCollection extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /*
-     * Priority of the NAT rule collection resource.
+    /**
+     * Get the innerProperties property: Properties of the azure firewall NAT rule collection.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.priority")
-    private Integer priority;
-
-    /*
-     * The action type of a NAT rule collection.
-     */
-    @JsonProperty(value = "properties.action")
-    private AzureFirewallNatRCAction action;
-
-    /*
-     * Collection of rules used by a NAT rule collection.
-     */
-    @JsonProperty(value = "properties.rules")
-    private List<AzureFirewallNatRule> rules;
-
-    /*
-     * The provisioning state of the NAT rule collection resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private AzureFirewallNatRuleCollectionProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: The name of the resource that is unique within the Azure firewall. This name can be used
@@ -86,13 +76,20 @@ public class AzureFirewallNatRuleCollection extends SubResource {
         return this.etag;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureFirewallNatRuleCollection withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the priority property: Priority of the NAT rule collection resource.
      *
      * @return the priority value.
      */
     public Integer priority() {
-        return this.priority;
+        return this.innerProperties() == null ? null : this.innerProperties().priority();
     }
 
     /**
@@ -102,7 +99,10 @@ public class AzureFirewallNatRuleCollection extends SubResource {
      * @return the AzureFirewallNatRuleCollection object itself.
      */
     public AzureFirewallNatRuleCollection withPriority(Integer priority) {
-        this.priority = priority;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureFirewallNatRuleCollectionProperties();
+        }
+        this.innerProperties().withPriority(priority);
         return this;
     }
 
@@ -112,7 +112,7 @@ public class AzureFirewallNatRuleCollection extends SubResource {
      * @return the action value.
      */
     public AzureFirewallNatRCAction action() {
-        return this.action;
+        return this.innerProperties() == null ? null : this.innerProperties().action();
     }
 
     /**
@@ -122,7 +122,10 @@ public class AzureFirewallNatRuleCollection extends SubResource {
      * @return the AzureFirewallNatRuleCollection object itself.
      */
     public AzureFirewallNatRuleCollection withAction(AzureFirewallNatRCAction action) {
-        this.action = action;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureFirewallNatRuleCollectionProperties();
+        }
+        this.innerProperties().withAction(action);
         return this;
     }
 
@@ -132,7 +135,7 @@ public class AzureFirewallNatRuleCollection extends SubResource {
      * @return the rules value.
      */
     public List<AzureFirewallNatRule> rules() {
-        return this.rules;
+        return this.innerProperties() == null ? null : this.innerProperties().rules();
     }
 
     /**
@@ -142,7 +145,10 @@ public class AzureFirewallNatRuleCollection extends SubResource {
      * @return the AzureFirewallNatRuleCollection object itself.
      */
     public AzureFirewallNatRuleCollection withRules(List<AzureFirewallNatRule> rules) {
-        this.rules = rules;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureFirewallNatRuleCollectionProperties();
+        }
+        this.innerProperties().withRules(rules);
         return this;
     }
 
@@ -152,14 +158,7 @@ public class AzureFirewallNatRuleCollection extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureFirewallNatRuleCollection withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -168,11 +167,8 @@ public class AzureFirewallNatRuleCollection extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (action() != null) {
-            action().validate();
-        }
-        if (rules() != null) {
-            rules().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

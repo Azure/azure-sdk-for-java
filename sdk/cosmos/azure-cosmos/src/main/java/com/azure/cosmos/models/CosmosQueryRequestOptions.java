@@ -4,14 +4,15 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.spark.OperationContext;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.util.Beta;
 
+import java.time.Duration;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Specifies the options associated with query methods (enumeration operations)
@@ -36,12 +37,20 @@ public class CosmosQueryRequestOptions {
     private OperationContextAndListenerTuple operationContextAndListenerTuple;
     private String throughputControlGroupName;
     private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
+    private Duration thresholdForDiagnosticsOnTracer;
+    private Map<String, String> customOptions;
+    private boolean indexMetricsEnabled;
+    private boolean queryPlanRetrievalDisallowed;
+    private UUID correlationActivityId;
+    private boolean emptyPageDiagnosticsEnabled;
 
     /**
      * Instantiates a new query request options.
      */
     public CosmosQueryRequestOptions() {
+
         this.queryMetricsEnabled = true;
+        this.emptyPageDiagnosticsEnabled = Configs.isEmptyPageDiagnosticsEnabled();
     }
 
     /**
@@ -66,6 +75,11 @@ public class CosmosQueryRequestOptions {
         this.throughputControlGroupName = options.throughputControlGroupName;
         this.operationContextAndListenerTuple = options.operationContextAndListenerTuple;
         this.dedicatedGatewayRequestOptions = options.dedicatedGatewayRequestOptions;
+        this.customOptions = options.customOptions;
+        this.indexMetricsEnabled = options.indexMetricsEnabled;
+        this.queryPlanRetrievalDisallowed = options.queryPlanRetrievalDisallowed;
+        this.correlationActivityId = options.correlationActivityId;
+        this.emptyPageDiagnosticsEnabled = options.emptyPageDiagnosticsEnabled;
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -160,6 +174,29 @@ public class CosmosQueryRequestOptions {
      */
     public CosmosQueryRequestOptions setScanInQueryEnabled(Boolean scanInQueryEnabled) {
         this.scanInQueryEnabled = scanInQueryEnabled;
+        return this;
+    }
+
+    /**
+     * Gets the correlation activityId which is used across requests/responses sent in the
+     * scope of this query execution. If no correlation activityId is specified (`null`) a
+     * random UUID will be generated for each query
+     *
+     * @return the correlation activityId
+     */
+    UUID getCorrelationActivityId() {
+        return this.correlationActivityId;
+    }
+
+    /**
+     * Sets the option to allow scan on the queries which couldn't be served as
+     * indexing was opted out on the requested paths.
+     *
+     * @param correlationActivityId the correlation activityId.
+     * @return the CosmosQueryRequestOptions.
+     */
+    CosmosQueryRequestOptions setCorrelationActivityId(UUID correlationActivityId) {
+        this.correlationActivityId = correlationActivityId;
         return this;
     }
 
@@ -455,6 +492,102 @@ public class CosmosQueryRequestOptions {
         return this;
     }
 
+    /**
+     * Gets the thresholdForDiagnosticsOnTracer, if latency on query operation is greater than this
+     * diagnostics will be send to open telemetry exporter as events in tracer span of end to end CRUD api.
+     *
+     * Default is 500 ms.
+     *
+     * @return  thresholdForDiagnosticsOnTracer the latency threshold for diagnostics on tracer.
+     */
+    public Duration getThresholdForDiagnosticsOnTracer() {
+        return thresholdForDiagnosticsOnTracer;
+    }
+
+    /**
+     * Sets the thresholdForDiagnosticsOnTracer, if latency on query operation is greater than this
+     * diagnostics will be send to open telemetry exporter as events in tracer span of end to end CRUD api.
+     *
+     * Default is 500 ms
+     *
+     * @param thresholdForDiagnosticsOnTracer the latency threshold for diagnostics on tracer.
+     * @return the CosmosQueryRequestOptions
+     */
+    public CosmosQueryRequestOptions setThresholdForDiagnosticsOnTracer(Duration thresholdForDiagnosticsOnTracer) {
+        this.thresholdForDiagnosticsOnTracer = thresholdForDiagnosticsOnTracer;
+        return this;
+    }
+
+    /**
+     * Gets indexMetricsEnabled, which is used to obtain the index metrics to understand how the query engine used existing
+     * indexes and could use potential new indexes.
+     * The results will be displayed in QueryMetrics. Please note that this options will incurs overhead, so it should be
+     * enabled when debuging slow queries.
+     *
+     * @return indexMetricsEnabled (default: false)
+     */
+    public boolean isIndexMetricsEnabled() {
+        return indexMetricsEnabled;
+    }
+
+    /**
+     * Sets indexMetricsEnabled, which is used to obtain the index metrics to understand how the query engine used existing
+     * indexes and could use potential new indexes.
+     * The results will be displayed in QueryMetrics. Please note that this options will incurs overhead, so it should be
+     * enabled when debuging slow queries.
+     *
+     * By default the indexMetrics are disabled.
+     *
+     * @param indexMetricsEnabled a boolean used to obtain the index metrics
+     * @return indexMetricsEnabled
+     */
+    public CosmosQueryRequestOptions setIndexMetricsEnabled(boolean indexMetricsEnabled) {
+        this.indexMetricsEnabled = indexMetricsEnabled;
+        return this;
+    }
+
+    /**
+     * Sets the custom query request option value by key
+     *
+     * @param name  a string representing the custom option's name
+     * @param value a string representing the custom option's value
+     *
+     * @return the CosmosQueryRequestOptions.
+     */
+    CosmosQueryRequestOptions setHeader(String name, String value) {
+        if (this.customOptions == null) {
+            this.customOptions = new HashMap<>();
+        }
+        this.customOptions.put(name, value);
+        return this;
+    }
+
+    /**
+     * Gets the custom query request options
+     *
+     * @return Map of custom request options
+     */
+    Map<String, String> getHeaders() {
+        return this.customOptions;
+    }
+
+    CosmosQueryRequestOptions disallowQueryPlanRetrieval() {
+        this.queryPlanRetrievalDisallowed = true;
+
+        return this;
+    }
+
+    boolean isQueryPlanRetrievalDisallowed() {
+        return this.queryPlanRetrievalDisallowed;
+    }
+
+    boolean isEmptyPageDiagnosticsEnabled() { return this.emptyPageDiagnosticsEnabled; }
+
+    CosmosQueryRequestOptions setEmptyPageDiagnosticsEnabled(boolean emptyPageDiagnosticsEnabled) {
+        this.emptyPageDiagnosticsEnabled = emptyPageDiagnosticsEnabled;
+        return this;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -472,6 +605,55 @@ public class CosmosQueryRequestOptions {
                 @Override
                 public OperationContextAndListenerTuple getOperationContext(CosmosQueryRequestOptions queryRequestOptions) {
                     return queryRequestOptions.getOperationContextAndListenerTuple();
+                }
+
+                @Override
+                public CosmosQueryRequestOptions setHeader(CosmosQueryRequestOptions queryRequestOptions, String name
+                    , String value) {
+                    return queryRequestOptions.setHeader(name, value);
+                }
+
+                @Override
+                public Map<String, String> getHeader(CosmosQueryRequestOptions queryRequestOptions) {
+                    return queryRequestOptions.getHeaders();
+                }
+
+                @Override
+                public CosmosQueryRequestOptions disallowQueryPlanRetrieval(
+                    CosmosQueryRequestOptions queryRequestOptions) {
+
+                    return queryRequestOptions.disallowQueryPlanRetrieval();
+                }
+
+                @Override
+                public UUID getCorrelationActivityId(CosmosQueryRequestOptions queryRequestOptions) {
+                    if (queryRequestOptions == null) {
+                        return null;
+                    }
+
+                    return queryRequestOptions.getCorrelationActivityId();
+                }
+
+                @Override
+                public CosmosQueryRequestOptions setCorrelationActivityId(
+                    CosmosQueryRequestOptions queryRequestOptions, UUID correlationActivityId) {
+
+                    return queryRequestOptions.setCorrelationActivityId(correlationActivityId);
+                }
+
+                @Override
+                public boolean isQueryPlanRetrievalDisallowed(CosmosQueryRequestOptions queryRequestOptions) {
+                    return queryRequestOptions.isQueryPlanRetrievalDisallowed();
+                }
+
+                @Override
+                public boolean isEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions) {
+                    return queryRequestOptions.isEmptyPageDiagnosticsEnabled();
+                }
+
+                @Override
+                public CosmosQueryRequestOptions setEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions, boolean emptyPageDiagnosticsEnabled) {
+                    return queryRequestOptions.setEmptyPageDiagnosticsEnabled(emptyPageDiagnosticsEnabled);
                 }
             });
     }

@@ -4,8 +4,7 @@
 
 package com.azure.resourcemanager.appservice.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.FunctionAppMajorVersion;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
@@ -15,9 +14,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Function App Stack. */
-@JsonFlatten
-@Immutable
-public class FunctionAppStackInner extends ProxyOnlyResource {
+@Fluent
+public final class FunctionAppStackInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FunctionAppStackInner.class);
 
     /*
@@ -27,28 +25,10 @@ public class FunctionAppStackInner extends ProxyOnlyResource {
     private String location;
 
     /*
-     * Function App stack (display only).
+     * FunctionAppStack resource specific properties
      */
-    @JsonProperty(value = "properties.displayText", access = JsonProperty.Access.WRITE_ONLY)
-    private String displayText;
-
-    /*
-     * Function App stack name.
-     */
-    @JsonProperty(value = "properties.value", access = JsonProperty.Access.WRITE_ONLY)
-    private String value;
-
-    /*
-     * List of major versions available.
-     */
-    @JsonProperty(value = "properties.majorVersions", access = JsonProperty.Access.WRITE_ONLY)
-    private List<FunctionAppMajorVersion> majorVersions;
-
-    /*
-     * Function App stack preferred OS.
-     */
-    @JsonProperty(value = "properties.preferredOs", access = JsonProperty.Access.WRITE_ONLY)
-    private StackPreferredOs preferredOs;
+    @JsonProperty(value = "properties")
+    private FunctionAppStackProperties innerProperties;
 
     /**
      * Get the location property: Function App stack location.
@@ -60,39 +40,12 @@ public class FunctionAppStackInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the displayText property: Function App stack (display only).
+     * Get the innerProperties property: FunctionAppStack resource specific properties.
      *
-     * @return the displayText value.
+     * @return the innerProperties value.
      */
-    public String displayText() {
-        return this.displayText;
-    }
-
-    /**
-     * Get the value property: Function App stack name.
-     *
-     * @return the value value.
-     */
-    public String value() {
-        return this.value;
-    }
-
-    /**
-     * Get the majorVersions property: List of major versions available.
-     *
-     * @return the majorVersions value.
-     */
-    public List<FunctionAppMajorVersion> majorVersions() {
-        return this.majorVersions;
-    }
-
-    /**
-     * Get the preferredOs property: Function App stack preferred OS.
-     *
-     * @return the preferredOs value.
-     */
-    public StackPreferredOs preferredOs() {
-        return this.preferredOs;
+    private FunctionAppStackProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -103,6 +56,42 @@ public class FunctionAppStackInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the displayText property: Function App stack (display only).
+     *
+     * @return the displayText value.
+     */
+    public String displayText() {
+        return this.innerProperties() == null ? null : this.innerProperties().displayText();
+    }
+
+    /**
+     * Get the value property: Function App stack name.
+     *
+     * @return the value value.
+     */
+    public String value() {
+        return this.innerProperties() == null ? null : this.innerProperties().value();
+    }
+
+    /**
+     * Get the majorVersions property: List of major versions available.
+     *
+     * @return the majorVersions value.
+     */
+    public List<FunctionAppMajorVersion> majorVersions() {
+        return this.innerProperties() == null ? null : this.innerProperties().majorVersions();
+    }
+
+    /**
+     * Get the preferredOs property: Function App stack preferred OS.
+     *
+     * @return the preferredOs value.
+     */
+    public StackPreferredOs preferredOs() {
+        return this.innerProperties() == null ? null : this.innerProperties().preferredOs();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -110,8 +99,8 @@ public class FunctionAppStackInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
-        if (majorVersions() != null) {
-            majorVersions().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

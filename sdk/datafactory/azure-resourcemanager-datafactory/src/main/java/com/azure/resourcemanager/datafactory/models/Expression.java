@@ -18,7 +18,7 @@ public final class Expression {
      * Expression type.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "Expression";
 
     /*
      * Expression value.

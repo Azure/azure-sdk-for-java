@@ -44,6 +44,20 @@ public final class SmsChannel extends Channel {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public SmsChannel withEtag(String etag) {
+        super.withEtag(etag);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SmsChannel withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

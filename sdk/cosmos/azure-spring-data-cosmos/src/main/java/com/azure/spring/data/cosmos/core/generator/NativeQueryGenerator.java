@@ -15,6 +15,9 @@ public class NativeQueryGenerator {
 
     private static final NativeQueryGenerator INSTANCE = new NativeQueryGenerator();
 
+    /**
+     * @return The native query generator instance
+     */
     public static NativeQueryGenerator getInstance() {
         return INSTANCE;
     }
@@ -26,6 +29,13 @@ public class NativeQueryGenerator {
         return clone;
     }
 
+    /**
+     * Generate sorted query.
+     *
+     * @param querySpec SQL query spec
+     * @param sort Sort
+     * @return sorted query
+     */
     public SqlQuerySpec generateSortedQuery(SqlQuerySpec querySpec, Sort sort) {
         if (sort == null || sort.isUnsorted()) {
             return querySpec;
@@ -36,6 +46,12 @@ public class NativeQueryGenerator {
         }
     }
 
+    /**
+     * Generate count query.
+     *
+     * @param querySpec SQL query spec.
+     * @return count query
+     */
     public SqlQuerySpec generateCountQuery(SqlQuerySpec querySpec) {
         String queryText = querySpec.getQueryText();
         int fromIndex = queryText.toLowerCase(Locale.US).indexOf(" from ");

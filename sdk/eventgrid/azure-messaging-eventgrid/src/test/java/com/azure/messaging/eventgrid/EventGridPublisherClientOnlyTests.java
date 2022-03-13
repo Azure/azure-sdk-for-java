@@ -4,6 +4,7 @@
 package com.azure.messaging.eventgrid;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.io.UnsupportedEncodingException;
@@ -15,6 +16,7 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class EventGridPublisherClientOnlyTests {
@@ -48,5 +50,31 @@ public class EventGridPublisherClientOnlyTests {
         String unsignedSas = String.format("%s=%s&%s=%s", resKey, encodedResource, expKey, encodedExpiration);
 
         assertTrue(sasToken1.contains(unsignedSas));
+    }
+
+    @Test
+    public void createPublisherClientWithNoCredentials() {
+        final String fullEndpoint = String.format("%s?%s=%s", DUMMY_ENDPOINT, "api-version",
+            EventGridServiceVersion.getLatest().getVersion());
+
+        assertThrows(IllegalStateException.class, () -> {
+            new EventGridPublisherClientBuilder()
+                .endpoint(fullEndpoint)
+                .buildCloudEventPublisherClient();
+        });
+    }
+
+    @Test
+    public void createPublisherClientWithTwoCredentials() {
+        final String fullEndpoint = String.format("%s?%s=%s", DUMMY_ENDPOINT, "api-version",
+            EventGridServiceVersion.getLatest().getVersion());
+
+        assertThrows(IllegalStateException.class, () -> {
+            new EventGridPublisherClientBuilder()
+                .endpoint(fullEndpoint)
+                .credential(new AzureKeyCredential("FakeCredential"))
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .buildCloudEventPublisherClient();
+        });
     }
 }

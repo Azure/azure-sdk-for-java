@@ -29,13 +29,15 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 @Immutable
 public class InteractiveBrowserCredential implements TokenCredential {
+    private static final ClientLogger LOGGER = new ClientLogger(InteractiveBrowserCredential.class);
+
     private final Integer port;
     private final IdentityClient identityClient;
     private final AtomicReference<MsalAuthenticationAccount> cachedToken;
     private final boolean automaticAuthentication;
     private final String authorityHost;
     private final String redirectUrl;
-    private final ClientLogger logger = new ClientLogger(InteractiveBrowserCredential.class);
+    private final String loginHint;
 
 
     /**
@@ -50,7 +52,8 @@ public class InteractiveBrowserCredential implements TokenCredential {
      * @param identityClientOptions the options for configuring the identity client
      */
     InteractiveBrowserCredential(String clientId, String tenantId, Integer port, String redirectUrl,
-                                 boolean automaticAuthentication, IdentityClientOptions identityClientOptions) {
+                                 boolean automaticAuthentication, String loginHint,
+                                 IdentityClientOptions identityClientOptions) {
         this.port = port;
         this.redirectUrl = redirectUrl;
         identityClient = new IdentityClientBuilder()
@@ -61,6 +64,7 @@ public class InteractiveBrowserCredential implements TokenCredential {
         cachedToken = new AtomicReference<>();
         this.authorityHost = identityClientOptions.getAuthorityHost();
         this.automaticAuthentication = automaticAuthentication;
+        this.loginHint = loginHint;
         if (identityClientOptions.getAuthenticationRecord() != null) {
             cachedToken.set(new MsalAuthenticationAccount(identityClientOptions.getAuthenticationRecord()));
         }
@@ -77,14 +81,15 @@ public class InteractiveBrowserCredential implements TokenCredential {
             }
         }).switchIfEmpty(Mono.defer(() -> {
             if (!automaticAuthentication) {
-                return Mono.error(logger.logExceptionAsError(new AuthenticationRequiredException("Interactive "
+                return Mono.error(LOGGER.logExceptionAsError(new AuthenticationRequiredException("Interactive "
                              + "authentication is needed to acquire token. Call Authenticate to initiate the device "
                              + "code authentication.", request)));
             }
-            return identityClient.authenticateWithBrowserInteraction(request, port, redirectUrl);
+            return identityClient.authenticateWithBrowserInteraction(request, port, redirectUrl, loginHint);
         })).map(this::updateCache)
-            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
-            .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
+            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(),
+                request, error));
     }
 
     /**
@@ -98,9 +103,10 @@ public class InteractiveBrowserCredential implements TokenCredential {
      * when credential was instantiated.
      */
     public Mono<AuthenticationRecord> authenticate(TokenRequestContext request) {
-        return Mono.defer(() -> identityClient.authenticateWithBrowserInteraction(request, port, redirectUrl))
-                .map(this::updateCache)
-                .map(msalToken -> cachedToken.get().getAuthenticationRecord());
+        return Mono.defer(() -> identityClient.authenticateWithBrowserInteraction(
+                request, port, redirectUrl, loginHint))
+            .map(this::updateCache)
+            .map(msalToken -> cachedToken.get().getAuthenticationRecord());
     }
 
     /**
@@ -114,7 +120,8 @@ public class InteractiveBrowserCredential implements TokenCredential {
     public Mono<AuthenticationRecord> authenticate() {
         String defaultScope = AzureAuthorityHosts.getDefaultScope(authorityHost);
         if (defaultScope == null) {
-            return Mono.error(logger.logExceptionAsError(new CredentialUnavailableException("Authenticating in this "
+            return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER,
+                identityClient.getIdentityClientOptions(), new CredentialUnavailableException("Authenticating in this "
                                                     + "environment requires specifying a TokenRequestContext.")));
         }
         return authenticate(new TokenRequestContext().addScopes(defaultScope));

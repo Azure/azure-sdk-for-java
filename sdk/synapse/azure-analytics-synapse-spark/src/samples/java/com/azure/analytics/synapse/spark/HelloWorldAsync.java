@@ -29,14 +29,14 @@ public class HelloWorldAsync {
         String storageAccount = "<storage-account>";
         String fileSystem = "<file-system>";
         String name = "<job-name>";
-        String file = String.format("abfss://%s@%s.dfs.core.windows.net/samples/java/wordcount/wordcount.jar", fileSystem, storageAccount);
+        String file = String.format("abfss://%s@%s.dfs.core.windows.net/%s/%s", fileSystem, storageAccount, "<your-batch-job-path>", "<your-batch-job-file>");
         SparkBatchJobOptions options = new SparkBatchJobOptions()
             .setName(name)
             .setFile(file)
             .setClassName("WordCount")
             .setArguments(Arrays.asList(
-                String.format("abfss://%s@%s.dfs.core.windows.net/samples/java/wordcount/shakespeare.txt", fileSystem, storageAccount),
-                String.format("abfss://%s@%s.dfs.core.windows.net/samples/java/wordcount/result/", fileSystem, storageAccount)
+                String.format("abfss://%s@%s.dfs.core.windows.net/%s/%s", fileSystem, storageAccount, "<your-batch-job-path>", "<your-batch-job-param-file>"),
+                String.format("abfss://%s@%s.dfs.core.windows.net/%s/", fileSystem, storageAccount, "<your-batch-job-result-path>")
             ))
             .setDriverMemory("28g")
             .setDriverCores(4)
@@ -44,7 +44,7 @@ public class HelloWorldAsync {
             .setExecutorCores(4)
             .setExecutorCount(2);
 
-        batchClient.createSparkBatchJob(options).subscribe(job -> System.out.printf("Job ID: %f\n", job.getId()));
+        batchClient.createSparkBatchJob(options).subscribe(job -> System.out.printf("Job ID: %d%n", job.getId()));
 
         // Wait for operation completion
         Thread.sleep(30000);

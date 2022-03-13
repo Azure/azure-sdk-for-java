@@ -4,37 +4,30 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
-import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
 /** Resource collection API of Operations. */
 public interface Operations {
     /**
-     * Validate operation for specified backed up item. This is a synchronous operation.
+     * Returns the list of available operations.
      *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param parameters resource validate operation request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return operations List response which contains list of available APIs as paginated response with {@link
+     *     PagedIterable}.
      */
-    ValidateOperationsResponse validate(
-        String vaultName, String resourceGroupName, ValidateOperationRequest parameters);
+    PagedIterable<ClientDiscoveryValueForSingleApi> list();
 
     /**
-     * Validate operation for specified backed up item. This is a synchronous operation.
+     * Returns the list of available operations.
      *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param parameters resource validate operation request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return operations List response which contains list of available APIs as paginated response with {@link
+     *     PagedIterable}.
      */
-    Response<ValidateOperationsResponse> validateWithResponse(
-        String vaultName, String resourceGroupName, ValidateOperationRequest parameters, Context context);
+    PagedIterable<ClientDiscoveryValueForSingleApi> list(Context context);
 }

@@ -3,10 +3,29 @@ trigger: none
 stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
-      TimeoutInMinutes: 240
-      MaxParallel: 7
       ServiceDirectory: keyvault
+      TimeoutInMinutes: 240
+      SupportedClouds: 'Public,UsGov,China'
+      CloudConfig:
+        Public:
+          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+        UsGov:
+          SubscriptionConfiguration: $(sub-config-gov-test-resources)
+          MatrixFilters:
+            - ArmTemplateParameters=^(?!.*enableHsm.*true)
+        China:
+          SubscriptionConfiguration: $(sub-config-cn-test-resources)
+          MatrixFilters:
+            - ArmTemplateParameters=^(?!.*enableHsm.*true)
+      MatrixConfigs:
+        - Name: Key_Vault_live_test
+          Path: sdk/keyvault/platform-matrix.json
+          Selection: sparse
+          GenerateVMJobs: true
       Artifacts:
+        - name: azure-security-keyvault-administration
+          groupId: com.azure
+          safeName: azuresecuritykeyvaultadministration
         - name: azure-security-keyvault-certificates
           groupId: com.azure
           safeName: azuresecuritykeyvaultcertificates
@@ -19,8 +38,6 @@ stages:
         - name: azure-security-test-keyvault-jca
           groupId: com.azure
           safeName: azuresecuritytestkeyvaultjca
-      EnvVars:
-        ARM_CLIENTID: $(aad-azure-sdk-test-client-id)
-        ARM_CLIENTKEY: $(aad-azure-sdk-test-client-secret)
-        AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
-        AZURE_KEYVAULT_ENDPOINT: $(AZURE_KEYVAULT_ENDPOINT)
+        - name: azure-security-keyvault-jca
+          groupId: com.azure
+          safeName: azuresecuritykeyvaultjca

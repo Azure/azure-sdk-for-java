@@ -5,23 +5,27 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Create/Update/Get common properties of the redis cache. */
 @Fluent
 public class RedisCommonProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RedisCommonProperties.class);
-
     /*
      * All Redis Settings. Few possible keys:
      * rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
      * etc.
      */
     @JsonProperty(value = "redisConfiguration")
-    private Map<String, String> redisConfiguration;
+    private RedisCommonPropertiesRedisConfiguration redisConfiguration;
+
+    /*
+     * Redis version. Only major version will be used in PUT/PATCH request with
+     * current valid values: (4, 6)
+     */
+    @JsonProperty(value = "redisVersion")
+    private String redisVersion;
 
     /*
      * Specifies whether the non-ssl Redis server port (6379) is enabled.
@@ -30,15 +34,22 @@ public class RedisCommonProperties {
     private Boolean enableNonSslPort;
 
     /*
-     * The number of replicas to be created per master.
+     * The number of replicas to be created per primary.
      */
     @JsonProperty(value = "replicasPerMaster")
     private Integer replicasPerMaster;
 
     /*
+     * The number of replicas to be created per primary.
+     */
+    @JsonProperty(value = "replicasPerPrimary")
+    private Integer replicasPerPrimary;
+
+    /*
      * A dictionary of tenant settings
      */
     @JsonProperty(value = "tenantSettings")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tenantSettings;
 
     /*
@@ -70,7 +81,7 @@ public class RedisCommonProperties {
      *
      * @return the redisConfiguration value.
      */
-    public Map<String, String> redisConfiguration() {
+    public RedisCommonPropertiesRedisConfiguration redisConfiguration() {
         return this.redisConfiguration;
     }
 
@@ -82,8 +93,30 @@ public class RedisCommonProperties {
      * @param redisConfiguration the redisConfiguration value to set.
      * @return the RedisCommonProperties object itself.
      */
-    public RedisCommonProperties withRedisConfiguration(Map<String, String> redisConfiguration) {
+    public RedisCommonProperties withRedisConfiguration(RedisCommonPropertiesRedisConfiguration redisConfiguration) {
         this.redisConfiguration = redisConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the redisVersion property: Redis version. Only major version will be used in PUT/PATCH request with current
+     * valid values: (4, 6).
+     *
+     * @return the redisVersion value.
+     */
+    public String redisVersion() {
+        return this.redisVersion;
+    }
+
+    /**
+     * Set the redisVersion property: Redis version. Only major version will be used in PUT/PATCH request with current
+     * valid values: (4, 6).
+     *
+     * @param redisVersion the redisVersion value to set.
+     * @return the RedisCommonProperties object itself.
+     */
+    public RedisCommonProperties withRedisVersion(String redisVersion) {
+        this.redisVersion = redisVersion;
         return this;
     }
 
@@ -108,7 +141,7 @@ public class RedisCommonProperties {
     }
 
     /**
-     * Get the replicasPerMaster property: The number of replicas to be created per master.
+     * Get the replicasPerMaster property: The number of replicas to be created per primary.
      *
      * @return the replicasPerMaster value.
      */
@@ -117,13 +150,33 @@ public class RedisCommonProperties {
     }
 
     /**
-     * Set the replicasPerMaster property: The number of replicas to be created per master.
+     * Set the replicasPerMaster property: The number of replicas to be created per primary.
      *
      * @param replicasPerMaster the replicasPerMaster value to set.
      * @return the RedisCommonProperties object itself.
      */
     public RedisCommonProperties withReplicasPerMaster(Integer replicasPerMaster) {
         this.replicasPerMaster = replicasPerMaster;
+        return this;
+    }
+
+    /**
+     * Get the replicasPerPrimary property: The number of replicas to be created per primary.
+     *
+     * @return the replicasPerPrimary value.
+     */
+    public Integer replicasPerPrimary() {
+        return this.replicasPerPrimary;
+    }
+
+    /**
+     * Set the replicasPerPrimary property: The number of replicas to be created per primary.
+     *
+     * @param replicasPerPrimary the replicasPerPrimary value to set.
+     * @return the RedisCommonProperties object itself.
+     */
+    public RedisCommonProperties withReplicasPerPrimary(Integer replicasPerPrimary) {
+        this.replicasPerPrimary = replicasPerPrimary;
         return this;
     }
 
@@ -219,5 +272,8 @@ public class RedisCommonProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (redisConfiguration() != null) {
+            redisConfiguration().validate();
+        }
     }
 }

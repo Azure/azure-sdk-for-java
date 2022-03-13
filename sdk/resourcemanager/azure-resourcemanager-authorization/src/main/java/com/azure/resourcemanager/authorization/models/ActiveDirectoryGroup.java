@@ -49,6 +49,12 @@ public interface ActiveDirectoryGroup
 
         /** An AD Group definition allowing mail nickname to be specified. */
         interface WithEmailAlias {
+            /**
+             * Adds an email alias.
+             *
+             * @param mailNickname the Active Directory object's email alias
+             * @return the next AD Group definition stage
+             */
             WithCreate withEmailAlias(String mailNickname);
         }
 

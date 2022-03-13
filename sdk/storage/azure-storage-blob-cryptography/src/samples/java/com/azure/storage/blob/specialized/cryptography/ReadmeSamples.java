@@ -29,6 +29,8 @@ public class ReadmeSamples {
 
     private BlobClient blobClient;
     private String connectionString;
+    private String containerName;
+    private String blobName;
     private AsyncKeyEncryptionKey key;
     private AsyncKeyEncryptionKeyResolver keyResolver;
     private String keyWrapAlgorithm;
@@ -39,22 +41,29 @@ public class ReadmeSamples {
     private String keyName;
 
     public void getEncryptedBlobClientBlobClient() {
+        // BEGIN: readme-sample-getEncryptedBlobClientBlobClient
         EncryptedBlobClient client = new EncryptedBlobClientBuilder()
             .key(key, keyWrapAlgorithm)
             .keyResolver(keyResolver)
             .blobClient(blobClient)
             .buildEncryptedBlobClient();
+        // END: readme-sample-getEncryptedBlobClientBlobClient
     }
 
     public void getEncryptedBlobClient() {
+        // BEGIN: readme-sample-getEncryptedBlobClient
         EncryptedBlobClient client = new EncryptedBlobClientBuilder()
             .key(key, keyWrapAlgorithm)
             .keyResolver(keyResolver)
             .connectionString(connectionString)
+            .containerName(containerName)
+            .blobName(blobName)
             .buildEncryptedBlobClient();
+        // END: readme-sample-getEncryptedBlobClient
     }
 
     public void getClientLocalKey() {
+        // BEGIN: readme-sample-getClientLocalKey
         JsonWebKey localKey = JsonWebKey.fromAes(new SecretKeySpec(keyBytes, secretKeyAlgorithm),
             Arrays.asList(KeyOperation.WRAP_KEY, KeyOperation.UNWRAP_KEY))
             .setId("my-id");
@@ -64,10 +73,14 @@ public class ReadmeSamples {
         EncryptedBlobClient client = new EncryptedBlobClientBuilder()
             .key(akek, keyWrapAlgorithm)
             .connectionString(connectionString)
+            .containerName(containerName)
+            .blobName(blobName)
             .buildEncryptedBlobClient();
+        // END: readme-sample-getClientLocalKey
     }
 
     public void getClientKeyVaultKey() {
+        // BEGIN: readme-sample-getClientKeyVaultKey
         KeyClient keyClient = new KeyClientBuilder()
             .vaultUrl(keyVaultUrl)
             .credential(tokenCredential)
@@ -83,9 +96,10 @@ public class ReadmeSamples {
         EncryptedBlobClient client = new EncryptedBlobClientBuilder()
             .key(akek, keyWrapAlgorithm)
             .connectionString(connectionString)
+            .containerName(containerName)
+            .blobName(blobName)
             .buildEncryptedBlobClient();
+        // END: readme-sample-getClientKeyVaultKey
     }
-
-
 }
 

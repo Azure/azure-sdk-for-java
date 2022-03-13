@@ -4,47 +4,30 @@
 
 package com.azure.resourcemanager.appservice.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Preview for the Static Site Workflow to be generated. */
-@JsonFlatten
-@Immutable
-public class StaticSitesWorkflowPreviewInner extends ProxyOnlyResource {
+@Fluent
+public final class StaticSitesWorkflowPreviewInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(StaticSitesWorkflowPreviewInner.class);
 
     /*
-     * The path for the workflow file to be generated
+     * StaticSitesWorkflowPreview resource specific properties
      */
-    @JsonProperty(value = "properties.path", access = JsonProperty.Access.WRITE_ONLY)
-    private String path;
-
-    /*
-     * The contents for the workflow file to be generated
-     */
-    @JsonProperty(value = "properties.contents", access = JsonProperty.Access.WRITE_ONLY)
-    private String contents;
+    @JsonProperty(value = "properties")
+    private StaticSitesWorkflowPreviewProperties innerProperties;
 
     /**
-     * Get the path property: The path for the workflow file to be generated.
+     * Get the innerProperties property: StaticSitesWorkflowPreview resource specific properties.
      *
-     * @return the path value.
+     * @return the innerProperties value.
      */
-    public String path() {
-        return this.path;
-    }
-
-    /**
-     * Get the contents property: The contents for the workflow file to be generated.
-     *
-     * @return the contents value.
-     */
-    public String contents() {
-        return this.contents;
+    private StaticSitesWorkflowPreviewProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -55,6 +38,24 @@ public class StaticSitesWorkflowPreviewInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the path property: The path for the workflow file to be generated.
+     *
+     * @return the path value.
+     */
+    public String path() {
+        return this.innerProperties() == null ? null : this.innerProperties().path();
+    }
+
+    /**
+     * Get the contents property: The contents for the workflow file to be generated.
+     *
+     * @return the contents value.
+     */
+    public String contents() {
+        return this.innerProperties() == null ? null : this.innerProperties().contents();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -62,5 +63,8 @@ public class StaticSitesWorkflowPreviewInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

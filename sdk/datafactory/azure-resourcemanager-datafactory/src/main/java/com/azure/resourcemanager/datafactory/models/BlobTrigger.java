@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.BlobTriggerTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -16,87 +16,23 @@ import java.util.List;
 /** Trigger that runs every time the selected Blob container changes. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("BlobTrigger")
-@JsonFlatten
 @Fluent
-public class BlobTrigger extends MultiplePipelineTrigger {
+public final class BlobTrigger extends MultiplePipelineTrigger {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobTrigger.class);
 
     /*
-     * The path of the container/folder that will trigger the pipeline.
+     * Blob Trigger properties.
      */
-    @JsonProperty(value = "typeProperties.folderPath", required = true)
-    private String folderPath;
-
-    /*
-     * The max number of parallel files to handle when it is triggered.
-     */
-    @JsonProperty(value = "typeProperties.maxConcurrency", required = true)
-    private int maxConcurrency;
-
-    /*
-     * The Azure Storage linked service reference.
-     */
-    @JsonProperty(value = "typeProperties.linkedService", required = true)
-    private LinkedServiceReference linkedService;
+    @JsonProperty(value = "typeProperties", required = true)
+    private BlobTriggerTypeProperties innerTypeProperties = new BlobTriggerTypeProperties();
 
     /**
-     * Get the folderPath property: The path of the container/folder that will trigger the pipeline.
+     * Get the innerTypeProperties property: Blob Trigger properties.
      *
-     * @return the folderPath value.
+     * @return the innerTypeProperties value.
      */
-    public String folderPath() {
-        return this.folderPath;
-    }
-
-    /**
-     * Set the folderPath property: The path of the container/folder that will trigger the pipeline.
-     *
-     * @param folderPath the folderPath value to set.
-     * @return the BlobTrigger object itself.
-     */
-    public BlobTrigger withFolderPath(String folderPath) {
-        this.folderPath = folderPath;
-        return this;
-    }
-
-    /**
-     * Get the maxConcurrency property: The max number of parallel files to handle when it is triggered.
-     *
-     * @return the maxConcurrency value.
-     */
-    public int maxConcurrency() {
-        return this.maxConcurrency;
-    }
-
-    /**
-     * Set the maxConcurrency property: The max number of parallel files to handle when it is triggered.
-     *
-     * @param maxConcurrency the maxConcurrency value to set.
-     * @return the BlobTrigger object itself.
-     */
-    public BlobTrigger withMaxConcurrency(int maxConcurrency) {
-        this.maxConcurrency = maxConcurrency;
-        return this;
-    }
-
-    /**
-     * Get the linkedService property: The Azure Storage linked service reference.
-     *
-     * @return the linkedService value.
-     */
-    public LinkedServiceReference linkedService() {
-        return this.linkedService;
-    }
-
-    /**
-     * Set the linkedService property: The Azure Storage linked service reference.
-     *
-     * @param linkedService the linkedService value to set.
-     * @return the BlobTrigger object itself.
-     */
-    public BlobTrigger withLinkedService(LinkedServiceReference linkedService) {
-        this.linkedService = linkedService;
-        return this;
+    private BlobTriggerTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -121,6 +57,75 @@ public class BlobTrigger extends MultiplePipelineTrigger {
     }
 
     /**
+     * Get the folderPath property: The path of the container/folder that will trigger the pipeline.
+     *
+     * @return the folderPath value.
+     */
+    public String folderPath() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().folderPath();
+    }
+
+    /**
+     * Set the folderPath property: The path of the container/folder that will trigger the pipeline.
+     *
+     * @param folderPath the folderPath value to set.
+     * @return the BlobTrigger object itself.
+     */
+    public BlobTrigger withFolderPath(String folderPath) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new BlobTriggerTypeProperties();
+        }
+        this.innerTypeProperties().withFolderPath(folderPath);
+        return this;
+    }
+
+    /**
+     * Get the maxConcurrency property: The max number of parallel files to handle when it is triggered.
+     *
+     * @return the maxConcurrency value.
+     */
+    public int maxConcurrency() {
+        return this.innerTypeProperties() == null ? 0 : this.innerTypeProperties().maxConcurrency();
+    }
+
+    /**
+     * Set the maxConcurrency property: The max number of parallel files to handle when it is triggered.
+     *
+     * @param maxConcurrency the maxConcurrency value to set.
+     * @return the BlobTrigger object itself.
+     */
+    public BlobTrigger withMaxConcurrency(int maxConcurrency) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new BlobTriggerTypeProperties();
+        }
+        this.innerTypeProperties().withMaxConcurrency(maxConcurrency);
+        return this;
+    }
+
+    /**
+     * Get the linkedService property: The Azure Storage linked service reference.
+     *
+     * @return the linkedService value.
+     */
+    public LinkedServiceReference linkedService() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().linkedService();
+    }
+
+    /**
+     * Set the linkedService property: The Azure Storage linked service reference.
+     *
+     * @param linkedService the linkedService value to set.
+     * @return the BlobTrigger object itself.
+     */
+    public BlobTrigger withLinkedService(LinkedServiceReference linkedService) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new BlobTriggerTypeProperties();
+        }
+        this.innerTypeProperties().withLinkedService(linkedService);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -128,17 +133,12 @@ public class BlobTrigger extends MultiplePipelineTrigger {
     @Override
     public void validate() {
         super.validate();
-        if (folderPath() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property folderPath in model BlobTrigger"));
-        }
-        if (linkedService() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property linkedService in model BlobTrigger"));
+                    new IllegalArgumentException("Missing required property innerTypeProperties in model BlobTrigger"));
         } else {
-            linkedService().validate();
+            innerTypeProperties().validate();
         }
     }
 }

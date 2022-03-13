@@ -12,12 +12,12 @@ import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.ReplicationPolicy;
-import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceResponse;
@@ -32,8 +32,8 @@ import com.azure.cosmos.implementation.Warning;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
-import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
@@ -73,13 +73,13 @@ public final class BridgeInternal {
     private BridgeInternal() {}
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosDiagnostics createCosmosDiagnostics(DiagnosticsClientContext diagnosticsClientContext) {
-        return new CosmosDiagnostics(diagnosticsClientContext);
+    public static CosmosDiagnostics createCosmosDiagnostics(DiagnosticsClientContext diagnosticsClientContext, GlobalEndpointManager globalEndpointManager) {
+        return new CosmosDiagnostics(diagnosticsClientContext, globalEndpointManager);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static Set<URI> getRegionsContacted(CosmosDiagnostics cosmosDiagnostics) {
-        return cosmosDiagnostics.clientSideRequestStatistics().getRegionsContacted();
+    public static Set<String> getRegionsContacted(CosmosDiagnostics cosmosDiagnostics) {
+        return cosmosDiagnostics.clientSideRequestStatistics().getContactedRegionNames();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -214,6 +214,17 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <E extends CosmosException> RequestTimeline getRequestTimeline(E e) {
         return e.getRequestTimeline();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> E setChannelAcquisitionTimeline(E e, RntbdChannelAcquisitionTimeline channelAcquisitionTimeline) {
+        e.setChannelAcquisitionTimeline(channelAcquisitionTimeline);
+        return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> RntbdChannelAcquisitionTimeline getChannelAcqusitionTimeline(E e) {
+        return e.getChannelAcquisitionTimeline();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -376,9 +387,9 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static QueryMetrics createQueryMetricsFromDelimitedStringAndClientSideMetrics(
-        String queryMetricsDelimitedString, ClientSideMetrics clientSideMetrics, String activityId) {
+        String queryMetricsDelimitedString, ClientSideMetrics clientSideMetrics, String activityId, String indexUtilizationInfoJSONString) {
         return QueryMetrics.createFromDelimitedStringAndClientSideMetrics(queryMetricsDelimitedString,
-            clientSideMetrics, activityId);
+            clientSideMetrics, activityId, indexUtilizationInfoJSONString);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -539,9 +550,9 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setTransportClientRequestTimelineOnDiagnostics(CosmosDiagnostics cosmosDiagnostics,
-                                                                      RequestTimeline requestTimeline) {
-        cosmosDiagnostics.clientSideRequestStatistics().setTransportClientRequestTimeline(requestTimeline);
+    public static void setGatewayRequestTimelineOnDiagnostics(CosmosDiagnostics cosmosDiagnostics,
+                                                              RequestTimeline requestTimeline) {
+        cosmosDiagnostics.clientSideRequestStatistics().setGatewayRequestTimeline(requestTimeline);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -583,8 +594,13 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static String recordAddressResolutionStart(CosmosDiagnostics cosmosDiagnostics,
-                                                      URI targetEndpoint) {
-        return cosmosDiagnostics.clientSideRequestStatistics().recordAddressResolutionStart(targetEndpoint);
+                                                      URI targetEndpoint,
+                                                      boolean forceRefresh,
+                                                      boolean forceCollectionRoutingMapRefresh) {
+        return cosmosDiagnostics.clientSideRequestStatistics().recordAddressResolutionStart(
+            targetEndpoint,
+            forceRefresh,
+            forceCollectionRoutingMapRefresh);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -686,117 +702,8 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static Duration getRequestTimeoutFromDirectConnectionConfig(DirectConnectionConfig directConnectionConfig) {
-        return directConnectionConfig.getRequestTimeout();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static Duration getRequestTimeoutFromGatewayConnectionConfig(GatewayConnectionConfig gatewayConnectionConfig) {
-        return gatewayConnectionConfig.getRequestTimeout();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static String getOperationValueForCosmosItemOperationType(CosmosItemOperationType cosmosItemOperationType) {
-        return cosmosItemOperationType.getOperationValue();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static RequestOptions toRequestOptions(TransactionalBatchRequestOptions transactionalBatchRequestOptions) {
-        return transactionalBatchRequestOptions.toRequestOptions();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static TransactionalBatchOperationResult createTransactionBatchResult(
-        String eTag,
-        double requestCharge,
-        ObjectNode resourceObject,
-        int statusCode,
-        Duration retryAfter,
-        int subStatusCode,
-        CosmosItemOperation cosmosItemOperation) {
-
-        return new TransactionalBatchOperationResult(
-            eTag,
-            requestCharge,
-            resourceObject,
-            statusCode,
-            retryAfter,
-            subStatusCode,
-            cosmosItemOperation);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosBulkItemResponse createCosmosBulkItemResponse(
-        TransactionalBatchOperationResult result,
-        TransactionalBatchResponse response) {
-
-        return new CosmosBulkItemResponse(
-            result.getETag(),
-            result.getRequestCharge(),
-            result.getResourceObject(),
-            result.getStatusCode(),
-            result.getRetryAfterDuration(),
-            result.getSubStatusCode(),
-            response.getResponseHeaders(),
-            response.getDiagnostics());
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <TContext> CosmosBulkOperationResponse<TContext> createCosmosBulkOperationResponse(
-        CosmosItemOperation operation,
-        CosmosBulkItemResponse response,
-        TContext batchContext) {
-
-        return new CosmosBulkOperationResponse<>(
-            operation,
-            response,
-            batchContext);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <TContext> CosmosBulkOperationResponse<TContext> createCosmosBulkOperationResponse(
-        CosmosItemOperation operation,
-        Exception exception,
-        TContext batchContext) {
-
-        return new CosmosBulkOperationResponse<>(
-            operation,
-            exception,
-            batchContext);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static TransactionalBatchResponse createTransactionBatchResponse(
-        int responseStatusCode,
-        int responseSubStatusCode,
-        String errorMessage,
-        Map<String, String> responseHeaders,
-        CosmosDiagnostics cosmosDiagnostics) {
-
-        return new TransactionalBatchResponse(
-            responseStatusCode,
-            responseSubStatusCode,
-            errorMessage,
-            responseHeaders,
-            cosmosDiagnostics);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void addTransactionBatchResultInResponse(
-        TransactionalBatchResponse transactionalBatchResponse,
-        List<TransactionalBatchOperationResult> transactionalBatchOperationResults) {
-
-        transactionalBatchResponse.addAll(transactionalBatchOperationResults);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static List<PatchOperation> getPatchOperationsFromCosmosPatch(CosmosPatchOperations cosmosPatchOperations) {
-        return cosmosPatchOperations.getPatchOperations();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static int getPayloadLength(TransactionalBatchResponse transactionalBatchResponse) {
-        return transactionalBatchResponse.getResponseLength();
+    public static Duration getNetworkRequestTimeoutFromGatewayConnectionConfig(GatewayConnectionConfig gatewayConnectionConfig) {
+        return gatewayConnectionConfig.getNetworkRequestTimeout();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

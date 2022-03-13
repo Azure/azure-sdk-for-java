@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.ArmResourceProperties;
 import com.azure.resourcemanager.cosmos.models.TableGetPropertiesOptions;
@@ -15,61 +14,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** An Azure Cosmos DB Table. */
-@JsonFlatten
 @Fluent
-public class TableGetResultsInner extends ArmResourceProperties {
+public final class TableGetResultsInner extends ArmResourceProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TableGetResultsInner.class);
 
     /*
-     * The resource property.
+     * The properties of an Azure Cosmos DB Table
      */
-    @JsonProperty(value = "properties.resource")
-    private TableGetPropertiesResource resource;
-
-    /*
-     * The options property.
-     */
-    @JsonProperty(value = "properties.options")
-    private TableGetPropertiesOptions options;
+    @JsonProperty(value = "properties")
+    private TableGetProperties innerProperties;
 
     /**
-     * Get the resource property: The resource property.
+     * Get the innerProperties property: The properties of an Azure Cosmos DB Table.
      *
-     * @return the resource value.
+     * @return the innerProperties value.
      */
-    public TableGetPropertiesResource resource() {
-        return this.resource;
-    }
-
-    /**
-     * Set the resource property: The resource property.
-     *
-     * @param resource the resource value to set.
-     * @return the TableGetResultsInner object itself.
-     */
-    public TableGetResultsInner withResource(TableGetPropertiesResource resource) {
-        this.resource = resource;
-        return this;
-    }
-
-    /**
-     * Get the options property: The options property.
-     *
-     * @return the options value.
-     */
-    public TableGetPropertiesOptions options() {
-        return this.options;
-    }
-
-    /**
-     * Set the options property: The options property.
-     *
-     * @param options the options value to set.
-     * @return the TableGetResultsInner object itself.
-     */
-    public TableGetResultsInner withOptions(TableGetPropertiesOptions options) {
-        this.options = options;
-        return this;
+    private TableGetProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -87,6 +48,52 @@ public class TableGetResultsInner extends ArmResourceProperties {
     }
 
     /**
+     * Get the resource property: The resource property.
+     *
+     * @return the resource value.
+     */
+    public TableGetPropertiesResource resource() {
+        return this.innerProperties() == null ? null : this.innerProperties().resource();
+    }
+
+    /**
+     * Set the resource property: The resource property.
+     *
+     * @param resource the resource value to set.
+     * @return the TableGetResultsInner object itself.
+     */
+    public TableGetResultsInner withResource(TableGetPropertiesResource resource) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TableGetProperties();
+        }
+        this.innerProperties().withResource(resource);
+        return this;
+    }
+
+    /**
+     * Get the options property: The options property.
+     *
+     * @return the options value.
+     */
+    public TableGetPropertiesOptions options() {
+        return this.innerProperties() == null ? null : this.innerProperties().options();
+    }
+
+    /**
+     * Set the options property: The options property.
+     *
+     * @param options the options value to set.
+     * @return the TableGetResultsInner object itself.
+     */
+    public TableGetResultsInner withOptions(TableGetPropertiesOptions options) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TableGetProperties();
+        }
+        this.innerProperties().withOptions(options);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -94,11 +101,8 @@ public class TableGetResultsInner extends ArmResourceProperties {
     @Override
     public void validate() {
         super.validate();
-        if (resource() != null) {
-            resource().validate();
-        }
-        if (options() != null) {
-            options().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

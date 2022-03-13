@@ -207,7 +207,7 @@ public final class ManageFunctionAppSourceControl {
 
             System.out.println("Deploy to " + app5Name + " through web deploy...");
             app5.deploy()
-                    .withPackageUri("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager/azure-resourcemanager-appservice/src/test/resources/webapps.zip")
+                    .withPackageUri("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-appservice/src/test/resources/webapps.zip")
                     .withExistingDeploymentsDeleted(true)
                     .execute();
 

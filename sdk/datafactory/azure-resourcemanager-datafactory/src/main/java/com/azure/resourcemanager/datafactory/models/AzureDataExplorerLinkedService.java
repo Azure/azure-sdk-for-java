@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.AzureDataExplorerLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,152 +17,24 @@ import java.util.Map;
 /** Azure Data Explorer (Kusto) linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureDataExplorer")
-@JsonFlatten
 @Fluent
-public class AzureDataExplorerLinkedService extends LinkedService {
+public final class AzureDataExplorerLinkedService extends LinkedService {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureDataExplorerLinkedService.class);
 
     /*
-     * The endpoint of Azure Data Explorer (the engine's endpoint). URL will be
-     * in the format https://<clusterName>.<regionName>.kusto.windows.net.
-     * Type: string (or Expression with resultType string)
+     * Azure Data Explorer (Kusto) linked service properties.
      */
-    @JsonProperty(value = "typeProperties.endpoint", required = true)
-    private Object endpoint;
-
-    /*
-     * The ID of the service principal used to authenticate against Azure Data
-     * Explorer. Type: string (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.servicePrincipalId")
-    private Object servicePrincipalId;
-
-    /*
-     * The key of the service principal used to authenticate against Kusto.
-     */
-    @JsonProperty(value = "typeProperties.servicePrincipalKey")
-    private SecretBase servicePrincipalKey;
-
-    /*
-     * Database name for connection. Type: string (or Expression with
-     * resultType string).
-     */
-    @JsonProperty(value = "typeProperties.database", required = true)
-    private Object database;
-
-    /*
-     * The name or ID of the tenant to which the service principal belongs.
-     * Type: string (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.tenant")
-    private Object tenant;
+    @JsonProperty(value = "typeProperties", required = true)
+    private AzureDataExplorerLinkedServiceTypeProperties innerTypeProperties =
+        new AzureDataExplorerLinkedServiceTypeProperties();
 
     /**
-     * Get the endpoint property: The endpoint of Azure Data Explorer (the engine's endpoint). URL will be in the format
-     * https://&lt;clusterName&gt;.&lt;regionName&gt;.kusto.windows.net. Type: string (or Expression with resultType
-     * string).
+     * Get the innerTypeProperties property: Azure Data Explorer (Kusto) linked service properties.
      *
-     * @return the endpoint value.
+     * @return the innerTypeProperties value.
      */
-    public Object endpoint() {
-        return this.endpoint;
-    }
-
-    /**
-     * Set the endpoint property: The endpoint of Azure Data Explorer (the engine's endpoint). URL will be in the format
-     * https://&lt;clusterName&gt;.&lt;regionName&gt;.kusto.windows.net. Type: string (or Expression with resultType
-     * string).
-     *
-     * @param endpoint the endpoint value to set.
-     * @return the AzureDataExplorerLinkedService object itself.
-     */
-    public AzureDataExplorerLinkedService withEndpoint(Object endpoint) {
-        this.endpoint = endpoint;
-        return this;
-    }
-
-    /**
-     * Get the servicePrincipalId property: The ID of the service principal used to authenticate against Azure Data
-     * Explorer. Type: string (or Expression with resultType string).
-     *
-     * @return the servicePrincipalId value.
-     */
-    public Object servicePrincipalId() {
-        return this.servicePrincipalId;
-    }
-
-    /**
-     * Set the servicePrincipalId property: The ID of the service principal used to authenticate against Azure Data
-     * Explorer. Type: string (or Expression with resultType string).
-     *
-     * @param servicePrincipalId the servicePrincipalId value to set.
-     * @return the AzureDataExplorerLinkedService object itself.
-     */
-    public AzureDataExplorerLinkedService withServicePrincipalId(Object servicePrincipalId) {
-        this.servicePrincipalId = servicePrincipalId;
-        return this;
-    }
-
-    /**
-     * Get the servicePrincipalKey property: The key of the service principal used to authenticate against Kusto.
-     *
-     * @return the servicePrincipalKey value.
-     */
-    public SecretBase servicePrincipalKey() {
-        return this.servicePrincipalKey;
-    }
-
-    /**
-     * Set the servicePrincipalKey property: The key of the service principal used to authenticate against Kusto.
-     *
-     * @param servicePrincipalKey the servicePrincipalKey value to set.
-     * @return the AzureDataExplorerLinkedService object itself.
-     */
-    public AzureDataExplorerLinkedService withServicePrincipalKey(SecretBase servicePrincipalKey) {
-        this.servicePrincipalKey = servicePrincipalKey;
-        return this;
-    }
-
-    /**
-     * Get the database property: Database name for connection. Type: string (or Expression with resultType string).
-     *
-     * @return the database value.
-     */
-    public Object database() {
-        return this.database;
-    }
-
-    /**
-     * Set the database property: Database name for connection. Type: string (or Expression with resultType string).
-     *
-     * @param database the database value to set.
-     * @return the AzureDataExplorerLinkedService object itself.
-     */
-    public AzureDataExplorerLinkedService withDatabase(Object database) {
-        this.database = database;
-        return this;
-    }
-
-    /**
-     * Get the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
-     * Expression with resultType string).
-     *
-     * @return the tenant value.
-     */
-    public Object tenant() {
-        return this.tenant;
-    }
-
-    /**
-     * Set the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
-     * Expression with resultType string).
-     *
-     * @param tenant the tenant value to set.
-     * @return the AzureDataExplorerLinkedService object itself.
-     */
-    public AzureDataExplorerLinkedService withTenant(Object tenant) {
-        this.tenant = tenant;
-        return this;
+    private AzureDataExplorerLinkedServiceTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -194,6 +66,152 @@ public class AzureDataExplorerLinkedService extends LinkedService {
     }
 
     /**
+     * Get the endpoint property: The endpoint of Azure Data Explorer (the engine's endpoint). URL will be in the format
+     * https://&lt;clusterName&gt;.&lt;regionName&gt;.kusto.windows.net. Type: string (or Expression with resultType
+     * string).
+     *
+     * @return the endpoint value.
+     */
+    public Object endpoint() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().endpoint();
+    }
+
+    /**
+     * Set the endpoint property: The endpoint of Azure Data Explorer (the engine's endpoint). URL will be in the format
+     * https://&lt;clusterName&gt;.&lt;regionName&gt;.kusto.windows.net. Type: string (or Expression with resultType
+     * string).
+     *
+     * @param endpoint the endpoint value to set.
+     * @return the AzureDataExplorerLinkedService object itself.
+     */
+    public AzureDataExplorerLinkedService withEndpoint(Object endpoint) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureDataExplorerLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEndpoint(endpoint);
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipalId property: The ID of the service principal used to authenticate against Azure Data
+     * Explorer. Type: string (or Expression with resultType string).
+     *
+     * @return the servicePrincipalId value.
+     */
+    public Object servicePrincipalId() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().servicePrincipalId();
+    }
+
+    /**
+     * Set the servicePrincipalId property: The ID of the service principal used to authenticate against Azure Data
+     * Explorer. Type: string (or Expression with resultType string).
+     *
+     * @param servicePrincipalId the servicePrincipalId value to set.
+     * @return the AzureDataExplorerLinkedService object itself.
+     */
+    public AzureDataExplorerLinkedService withServicePrincipalId(Object servicePrincipalId) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureDataExplorerLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withServicePrincipalId(servicePrincipalId);
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipalKey property: The key of the service principal used to authenticate against Kusto.
+     *
+     * @return the servicePrincipalKey value.
+     */
+    public SecretBase servicePrincipalKey() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().servicePrincipalKey();
+    }
+
+    /**
+     * Set the servicePrincipalKey property: The key of the service principal used to authenticate against Kusto.
+     *
+     * @param servicePrincipalKey the servicePrincipalKey value to set.
+     * @return the AzureDataExplorerLinkedService object itself.
+     */
+    public AzureDataExplorerLinkedService withServicePrincipalKey(SecretBase servicePrincipalKey) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureDataExplorerLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withServicePrincipalKey(servicePrincipalKey);
+        return this;
+    }
+
+    /**
+     * Get the database property: Database name for connection. Type: string (or Expression with resultType string).
+     *
+     * @return the database value.
+     */
+    public Object database() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().database();
+    }
+
+    /**
+     * Set the database property: Database name for connection. Type: string (or Expression with resultType string).
+     *
+     * @param database the database value to set.
+     * @return the AzureDataExplorerLinkedService object itself.
+     */
+    public AzureDataExplorerLinkedService withDatabase(Object database) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureDataExplorerLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withDatabase(database);
+        return this;
+    }
+
+    /**
+     * Get the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
+     * Expression with resultType string).
+     *
+     * @return the tenant value.
+     */
+    public Object tenant() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().tenant();
+    }
+
+    /**
+     * Set the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
+     * Expression with resultType string).
+     *
+     * @param tenant the tenant value to set.
+     * @return the AzureDataExplorerLinkedService object itself.
+     */
+    public AzureDataExplorerLinkedService withTenant(Object tenant) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureDataExplorerLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withTenant(tenant);
+        return this;
+    }
+
+    /**
+     * Get the credential property: The credential reference containing authentication information.
+     *
+     * @return the credential value.
+     */
+    public CredentialReference credential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().credential();
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     *
+     * @param credential the credential value to set.
+     * @return the AzureDataExplorerLinkedService object itself.
+     */
+    public AzureDataExplorerLinkedService withCredential(CredentialReference credential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureDataExplorerLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withCredential(credential);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -201,20 +219,13 @@ public class AzureDataExplorerLinkedService extends LinkedService {
     @Override
     public void validate() {
         super.validate();
-        if (endpoint() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property endpoint in model AzureDataExplorerLinkedService"));
-        }
-        if (servicePrincipalKey() != null) {
-            servicePrincipalKey().validate();
-        }
-        if (database() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property database in model AzureDataExplorerLinkedService"));
+                        "Missing required property innerTypeProperties in model AzureDataExplorerLinkedService"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

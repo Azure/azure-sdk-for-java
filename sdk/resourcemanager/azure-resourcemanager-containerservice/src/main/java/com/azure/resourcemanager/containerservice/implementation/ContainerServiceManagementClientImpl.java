@@ -7,7 +7,6 @@ package com.azure.resourcemanager.containerservice.implementation;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.containerservice.fluent.AgentPoolsClient;
 import com.azure.resourcemanager.containerservice.fluent.ContainerServiceManagementClient;
@@ -19,6 +18,7 @@ import com.azure.resourcemanager.containerservice.fluent.OperationsClient;
 import com.azure.resourcemanager.containerservice.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.containerservice.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.containerservice.fluent.ResolvePrivateLinkServiceIdsClient;
+import com.azure.resourcemanager.containerservice.fluent.SnapshotsClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
@@ -26,8 +26,6 @@ import java.time.Duration;
 @ServiceClient(builder = ContainerServiceManagementClientBuilder.class)
 public final class ContainerServiceManagementClientImpl extends AzureServiceClient
     implements ContainerServiceManagementClient {
-    private final ClientLogger logger = new ClientLogger(ContainerServiceManagementClientImpl.class);
-
     /**
      * Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
      * the URI for every service call.
@@ -200,6 +198,18 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         return this.resolvePrivateLinkServiceIds;
     }
 
+    /** The SnapshotsClient object to access its operations. */
+    private final SnapshotsClient snapshots;
+
+    /**
+     * Gets the SnapshotsClient object to access its operations.
+     *
+     * @return the SnapshotsClient object.
+     */
+    public SnapshotsClient getSnapshots() {
+        return this.snapshots;
+    }
+
     /**
      * Initializes an instance of ContainerServiceManagementClient client.
      *
@@ -233,5 +243,6 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.resolvePrivateLinkServiceIds = new ResolvePrivateLinkServiceIdsClientImpl(this);
+        this.snapshots = new SnapshotsClientImpl(this);
     }
 }

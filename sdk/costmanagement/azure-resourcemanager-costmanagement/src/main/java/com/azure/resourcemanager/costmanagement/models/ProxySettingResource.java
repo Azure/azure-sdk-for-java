@@ -16,7 +16,7 @@ public class ProxySettingResource extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ProxySettingResource.class);
 
     /*
-     * Resource kind
+     * Resource kind.
      */
     @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private String kind;

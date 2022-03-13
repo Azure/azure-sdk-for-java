@@ -9,11 +9,18 @@ import com.azure.resourcemanager.batch.fluent.models.OperationInner;
 /** An immutable client-side representation of Operation. */
 public interface Operation {
     /**
-     * Gets the name property: This is of the format {provider}/{resource}/{operation}.
+     * Gets the name property: The operation name. This is of the format {provider}/{resource}/{operation}.
      *
      * @return the name value.
      */
     String name();
+
+    /**
+     * Gets the isDataAction property: Indicates whether the operation is a data action.
+     *
+     * @return the isDataAction value.
+     */
+    Boolean isDataAction();
 
     /**
      * Gets the display property: The object that describes the operation.

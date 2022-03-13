@@ -65,10 +65,17 @@ public final class BlobItem {
     private List<ObjectReplicationPolicy> objectReplicationSourcePolicies;
 
     /*
-     * The isPrefix property.
+     * The isPrefix property. If blobs are named to mimic a directory hierarchy (i.e. path elements separated by a
+     * delimiter), this property may be used to determine if the {@code BlobItem} is a virtual directory.
      */
     @JsonProperty(value = "IsPrefix")
     private Boolean isPrefix;
+
+    /*
+     * The HasVersionsOnly property.
+     */
+    @JsonProperty(value = "HasVersionsOnly")
+    private Boolean hasVersionsOnly;
 
     /**
      * Get the name property: The name property.
@@ -254,7 +261,28 @@ public final class BlobItem {
     }
 
     /**
-     * Get the isPrefix property: The isPrefix property.
+     * Get the hasVersionsOnly property: The HasVersionsOnly property.
+     *
+     * @return the hasVersionsOnly value.
+     */
+    public Boolean hasVersionsOnly() {
+        return this.hasVersionsOnly;
+    }
+
+    /**
+     * Set the hasVersionsOnly property: The HasVersionsOnly property.
+     *
+     * @param hasVersionsOnly the hasVersionsOnly value to set.
+     * @return the BlobItemInternal object itself.
+     */
+    public BlobItem setHasVersionsOnly(Boolean hasVersionsOnly) {
+        this.hasVersionsOnly = hasVersionsOnly;
+        return this;
+    }
+
+    /**
+     * Get the isPrefix property: If blobs are named to mimic a directory hierarchy (i.e. path elements separated by a
+     * delimiter), this property may be used to determine if the {@code BlobItem} is a virtual directory.
      *
      * @return the isPrefix value.
      */

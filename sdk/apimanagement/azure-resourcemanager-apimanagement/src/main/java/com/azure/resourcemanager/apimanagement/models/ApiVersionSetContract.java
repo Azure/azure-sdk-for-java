@@ -31,6 +31,21 @@ public interface ApiVersionSetContract {
     String type();
 
     /**
+     * Gets the displayName property: Name of API Version Set.
+     *
+     * @return the displayName value.
+     */
+    String displayName();
+
+    /**
+     * Gets the versioningScheme property: An value that determines where the API Version identifier will be located in
+     * a HTTP request.
+     *
+     * @return the versioningScheme value.
+     */
+    VersioningScheme versioningScheme();
+
+    /**
      * Gets the description property: Description of API Version Set.
      *
      * @return the description value.
@@ -52,21 +67,6 @@ public interface ApiVersionSetContract {
      * @return the versionHeaderName value.
      */
     String versionHeaderName();
-
-    /**
-     * Gets the displayName property: Name of API Version Set.
-     *
-     * @return the displayName value.
-     */
-    String displayName();
-
-    /**
-     * Gets the versioningScheme property: An value that determines where the API Version identifier will be located in
-     * a HTTP request.
-     *
-     * @return the versioningScheme value.
-     */
-    VersioningScheme versioningScheme();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.ApiVersionSetContractInner object.
@@ -100,11 +100,11 @@ public interface ApiVersionSetContract {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithDescription,
+            extends DefinitionStages.WithDisplayName,
+                DefinitionStages.WithVersioningScheme,
+                DefinitionStages.WithDescription,
                 DefinitionStages.WithVersionQueryName,
                 DefinitionStages.WithVersionHeaderName,
-                DefinitionStages.WithDisplayName,
-                DefinitionStages.WithVersioningScheme,
                 DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
@@ -120,6 +120,28 @@ public interface ApiVersionSetContract {
              * @return the created resource.
              */
             ApiVersionSetContract create(Context context);
+        }
+        /** The stage of the ApiVersionSetContract definition allowing to specify displayName. */
+        interface WithDisplayName {
+            /**
+             * Specifies the displayName property: Name of API Version Set.
+             *
+             * @param displayName Name of API Version Set.
+             * @return the next definition stage.
+             */
+            WithCreate withDisplayName(String displayName);
+        }
+        /** The stage of the ApiVersionSetContract definition allowing to specify versioningScheme. */
+        interface WithVersioningScheme {
+            /**
+             * Specifies the versioningScheme property: An value that determines where the API Version identifier will
+             * be located in a HTTP request..
+             *
+             * @param versioningScheme An value that determines where the API Version identifier will be located in a
+             *     HTTP request.
+             * @return the next definition stage.
+             */
+            WithCreate withVersioningScheme(VersioningScheme versioningScheme);
         }
         /** The stage of the ApiVersionSetContract definition allowing to specify description. */
         interface WithDescription {
@@ -155,28 +177,6 @@ public interface ApiVersionSetContract {
              */
             WithCreate withVersionHeaderName(String versionHeaderName);
         }
-        /** The stage of the ApiVersionSetContract definition allowing to specify displayName. */
-        interface WithDisplayName {
-            /**
-             * Specifies the displayName property: Name of API Version Set.
-             *
-             * @param displayName Name of API Version Set.
-             * @return the next definition stage.
-             */
-            WithCreate withDisplayName(String displayName);
-        }
-        /** The stage of the ApiVersionSetContract definition allowing to specify versioningScheme. */
-        interface WithVersioningScheme {
-            /**
-             * Specifies the versioningScheme property: An value that determines where the API Version identifier will
-             * be located in a HTTP request..
-             *
-             * @param versioningScheme An value that determines where the API Version identifier will be located in a
-             *     HTTP request.
-             * @return the next definition stage.
-             */
-            WithCreate withVersioningScheme(VersioningScheme versioningScheme);
-        }
         /** The stage of the ApiVersionSetContract definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -199,11 +199,11 @@ public interface ApiVersionSetContract {
 
     /** The template for ApiVersionSetContract update. */
     interface Update
-        extends UpdateStages.WithDescription,
+        extends UpdateStages.WithDisplayName,
+            UpdateStages.WithVersioningScheme,
+            UpdateStages.WithDescription,
             UpdateStages.WithVersionQueryName,
             UpdateStages.WithVersionHeaderName,
-            UpdateStages.WithDisplayName,
-            UpdateStages.WithVersioningScheme,
             UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
@@ -222,6 +222,28 @@ public interface ApiVersionSetContract {
     }
     /** The ApiVersionSetContract update stages. */
     interface UpdateStages {
+        /** The stage of the ApiVersionSetContract update allowing to specify displayName. */
+        interface WithDisplayName {
+            /**
+             * Specifies the displayName property: Name of API Version Set.
+             *
+             * @param displayName Name of API Version Set.
+             * @return the next definition stage.
+             */
+            Update withDisplayName(String displayName);
+        }
+        /** The stage of the ApiVersionSetContract update allowing to specify versioningScheme. */
+        interface WithVersioningScheme {
+            /**
+             * Specifies the versioningScheme property: An value that determines where the API Version identifier will
+             * be located in a HTTP request..
+             *
+             * @param versioningScheme An value that determines where the API Version identifier will be located in a
+             *     HTTP request.
+             * @return the next definition stage.
+             */
+            Update withVersioningScheme(VersioningScheme versioningScheme);
+        }
         /** The stage of the ApiVersionSetContract update allowing to specify description. */
         interface WithDescription {
             /**
@@ -255,28 +277,6 @@ public interface ApiVersionSetContract {
              * @return the next definition stage.
              */
             Update withVersionHeaderName(String versionHeaderName);
-        }
-        /** The stage of the ApiVersionSetContract update allowing to specify displayName. */
-        interface WithDisplayName {
-            /**
-             * Specifies the displayName property: Name of API Version Set.
-             *
-             * @param displayName Name of API Version Set.
-             * @return the next definition stage.
-             */
-            Update withDisplayName(String displayName);
-        }
-        /** The stage of the ApiVersionSetContract update allowing to specify versioningScheme. */
-        interface WithVersioningScheme {
-            /**
-             * Specifies the versioningScheme property: An value that determines where the API Version identifier will
-             * be located in a HTTP request..
-             *
-             * @param versioningScheme An value that determines where the API Version identifier will be located in a
-             *     HTTP request.
-             * @return the next definition stage.
-             */
-            Update withVersioningScheme(VersioningScheme versioningScheme);
         }
         /** The stage of the ApiVersionSetContract update allowing to specify ifMatch. */
         interface WithIfMatch {

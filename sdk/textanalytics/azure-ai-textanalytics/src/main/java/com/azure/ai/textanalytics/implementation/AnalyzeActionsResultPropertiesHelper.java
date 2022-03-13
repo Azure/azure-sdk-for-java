@@ -6,10 +6,13 @@ package com.azure.ai.textanalytics.implementation;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentActionResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
+import com.azure.ai.textanalytics.models.ExtractSummaryActionResult;
+import com.azure.ai.textanalytics.models.SingleCategoryClassifyActionResult;
+import com.azure.ai.textanalytics.models.MultiCategoryClassifyActionResult;
+import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesActionResult;
-import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.core.util.IterableStream;
 
 /**
@@ -24,18 +27,24 @@ public final class AnalyzeActionsResultPropertiesHelper {
      * Type defining the methods to set the non-public properties of an {@link AnalyzeActionsResult} instance.
      */
     public interface AnalyzeActionsResultAccessor {
-        void setStatistics(AnalyzeActionsResult analyzeActionsResult,
-            TextDocumentBatchStatistics operationStatistics);
-        void setRecognizeEntitiesActionResults(AnalyzeActionsResult analyzeActionsResult,
-            IterableStream<RecognizeEntitiesActionResult> recognizeEntitiesActionResults);
-        void setRecognizeLinkedEntitiesActionResults(AnalyzeActionsResult analyzeActionsResult,
-            IterableStream<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesActionResults);
-        void setRecognizePiiEntitiesActionResults(AnalyzeActionsResult analyzeActionsResult,
-            IterableStream<RecognizePiiEntitiesActionResult> recognizePiiEntitiesActionResults);
-        void setExtractKeyPhrasesActionResults(AnalyzeActionsResult analyzeActionsResult,
-            IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesActionResults);
-        void setAnalyzeSentimentActionResults(AnalyzeActionsResult analyzeActionsResult,
-            IterableStream<AnalyzeSentimentActionResult> analyzeSentimentActionResults);
+        void setRecognizeEntitiesResults(AnalyzeActionsResult analyzeActionsResult,
+            IterableStream<RecognizeEntitiesActionResult> recognizeEntitiesResults);
+        void setRecognizeLinkedEntitiesResults(AnalyzeActionsResult analyzeActionsResult,
+            IterableStream<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesResults);
+        void setRecognizePiiEntitiesResults(AnalyzeActionsResult analyzeActionsResult,
+            IterableStream<RecognizePiiEntitiesActionResult> recognizePiiEntitiesResults);
+        void setExtractKeyPhrasesResults(AnalyzeActionsResult analyzeActionsResult,
+            IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesResults);
+        void setAnalyzeSentimentResults(AnalyzeActionsResult analyzeActionsResult,
+            IterableStream<AnalyzeSentimentActionResult> analyzeSentimentResults);
+        void setExtractSummaryResults(AnalyzeActionsResult analyzeActionsResult,
+            IterableStream<ExtractSummaryActionResult> extractSummaryResults);
+        void setRecognizeCustomEntitiesResults(AnalyzeActionsResult analyzeActionsResult,
+            IterableStream<RecognizeCustomEntitiesActionResult> recognizeCustomEntitiesResults);
+        void setSingleCategoryClassifyResults(AnalyzeActionsResult analyzeActionsResult,
+            IterableStream<SingleCategoryClassifyActionResult> singleCategoryClassifyResults);
+        void setMultiCategoryClassifyResults(AnalyzeActionsResult analyzeActionsResult,
+            IterableStream<MultiCategoryClassifyActionResult> multiCategoryClassifyResults);
     }
 
     /**
@@ -47,34 +56,49 @@ public final class AnalyzeActionsResultPropertiesHelper {
         accessor = analyzeActionsResultAccessor;
     }
 
-    public static void setStatistics(AnalyzeActionsResult analyzeActionsResult,
-        TextDocumentBatchStatistics operationStatistics) {
-        accessor.setStatistics(analyzeActionsResult, operationStatistics);
+    public static void setRecognizeEntitiesResults(AnalyzeActionsResult analyzeActionsResult,
+        IterableStream<RecognizeEntitiesActionResult> recognizeEntitiesResults) {
+        accessor.setRecognizeEntitiesResults(analyzeActionsResult, recognizeEntitiesResults);
     }
 
-    public static void setRecognizeEntitiesActionResults(AnalyzeActionsResult analyzeActionsResult,
-        IterableStream<RecognizeEntitiesActionResult> recognizeEntitiesActionResults) {
-        accessor.setRecognizeEntitiesActionResults(analyzeActionsResult, recognizeEntitiesActionResults);
+    public static void setRecognizeLinkedEntitiesResults(AnalyzeActionsResult analyzeActionsResult,
+        IterableStream<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesResults) {
+        accessor.setRecognizeLinkedEntitiesResults(analyzeActionsResult,
+            recognizeLinkedEntitiesResults);
     }
 
-    public static void setRecognizeLinkedEntitiesActionResults(AnalyzeActionsResult analyzeActionsResult,
-        IterableStream<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesActionResults) {
-        accessor.setRecognizeLinkedEntitiesActionResults(analyzeActionsResult,
-            recognizeLinkedEntitiesActionResults);
+    public static void setRecognizePiiEntitiesResults(AnalyzeActionsResult analyzeActionsResult,
+        IterableStream<RecognizePiiEntitiesActionResult> recognizePiiEntitiesResults) {
+        accessor.setRecognizePiiEntitiesResults(analyzeActionsResult, recognizePiiEntitiesResults);
     }
 
-    public static void setRecognizePiiEntitiesActionResults(AnalyzeActionsResult analyzeActionsResult,
-        IterableStream<RecognizePiiEntitiesActionResult> recognizePiiEntitiesActionResults) {
-        accessor.setRecognizePiiEntitiesActionResults(analyzeActionsResult, recognizePiiEntitiesActionResults);
+    public static void setExtractKeyPhrasesResults(AnalyzeActionsResult analyzeActionsResult,
+        IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesResults) {
+        accessor.setExtractKeyPhrasesResults(analyzeActionsResult, extractKeyPhrasesResults);
     }
 
-    public static void setExtractKeyPhrasesActionResults(AnalyzeActionsResult analyzeActionsResult,
-        IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesActionResults) {
-        accessor.setExtractKeyPhrasesActionResults(analyzeActionsResult, extractKeyPhrasesActionResults);
+    public static void setAnalyzeSentimentResults(AnalyzeActionsResult analyzeActionsResult,
+        IterableStream<AnalyzeSentimentActionResult> analyzeSentimentResults) {
+        accessor.setAnalyzeSentimentResults(analyzeActionsResult, analyzeSentimentResults);
     }
 
-    public static void setAnalyzeSentimentActionResults(AnalyzeActionsResult analyzeActionsResult,
-        IterableStream<AnalyzeSentimentActionResult> analyzeSentimentActionResults) {
-        accessor.setAnalyzeSentimentActionResults(analyzeActionsResult, analyzeSentimentActionResults);
+    public static void setExtractSummaryResults(AnalyzeActionsResult analyzeActionsResult,
+        IterableStream<ExtractSummaryActionResult> extractSummaryResults) {
+        accessor.setExtractSummaryResults(analyzeActionsResult, extractSummaryResults);
+    }
+
+    public static void setRecognizeCustomEntitiesResults(AnalyzeActionsResult analyzeActionsResult,
+        IterableStream<RecognizeCustomEntitiesActionResult> recognizeCustomEntitiesResults) {
+        accessor.setRecognizeCustomEntitiesResults(analyzeActionsResult, recognizeCustomEntitiesResults);
+    }
+
+    public static void setClassifySingleCategoryResults(AnalyzeActionsResult analyzeActionsResult,
+        IterableStream<SingleCategoryClassifyActionResult> classifyCustomCategoryResults) {
+        accessor.setSingleCategoryClassifyResults(analyzeActionsResult, classifyCustomCategoryResults);
+    }
+
+    public static void setClassifyMultiCategoryResults(AnalyzeActionsResult analyzeActionsResult,
+        IterableStream<MultiCategoryClassifyActionResult> classifyCustomCategoriesResults) {
+        accessor.setMultiCategoryClassifyResults(analyzeActionsResult, classifyCustomCategoriesResults);
     }
 }

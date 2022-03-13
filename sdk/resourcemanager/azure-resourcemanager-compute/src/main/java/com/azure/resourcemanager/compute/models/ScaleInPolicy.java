@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes a scale-in policy for a virtual machine scale set. */
 @Fluent
 public final class ScaleInPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScaleInPolicy.class);
-
     /*
      * The rules to be followed when scaling-in a virtual machine scale set.
      * <br><br> Possible values are: <br><br> **Default** When a virtual
@@ -36,6 +32,14 @@ public final class ScaleInPolicy {
      */
     @JsonProperty(value = "rules")
     private List<VirtualMachineScaleSetScaleInRules> rules;
+
+    /*
+     * This property allows you to specify if virtual machines chosen for
+     * removal have to be force deleted when a virtual machine scale set is
+     * being scaled-in.(Feature in Preview)
+     */
+    @JsonProperty(value = "forceDeletion")
+    private Boolean forceDeletion;
 
     /**
      * Get the rules property: The rules to be followed when scaling-in a virtual machine scale set.
@@ -76,6 +80,28 @@ public final class ScaleInPolicy {
      */
     public ScaleInPolicy withRules(List<VirtualMachineScaleSetScaleInRules> rules) {
         this.rules = rules;
+        return this;
+    }
+
+    /**
+     * Get the forceDeletion property: This property allows you to specify if virtual machines chosen for removal have
+     * to be force deleted when a virtual machine scale set is being scaled-in.(Feature in Preview).
+     *
+     * @return the forceDeletion value.
+     */
+    public Boolean forceDeletion() {
+        return this.forceDeletion;
+    }
+
+    /**
+     * Set the forceDeletion property: This property allows you to specify if virtual machines chosen for removal have
+     * to be force deleted when a virtual machine scale set is being scaled-in.(Feature in Preview).
+     *
+     * @param forceDeletion the forceDeletion value to set.
+     * @return the ScaleInPolicy object itself.
+     */
+    public ScaleInPolicy withForceDeletion(Boolean forceDeletion) {
+        this.forceDeletion = forceDeletion;
         return this;
     }
 

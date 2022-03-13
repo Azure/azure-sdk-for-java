@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.resourcemanager.costmanagement.fluent.models.SettingInner;
+import java.util.List;
 
 /** An immutable client-side representation of Setting. */
 public interface Setting {
@@ -37,12 +38,27 @@ public interface Setting {
     String kind();
 
     /**
-     * Gets the scope property: For the myscope setting, sets the default scope the current user will see when they sign
-     * into Azure Cost Management in the Azure portal.
+     * Gets the scope property: Sets the default scope the current user will see when they sign into Azure Cost
+     * Management in the Azure portal.
      *
      * @return the scope value.
      */
     String scope();
+
+    /**
+     * Gets the startOn property: Indicates what scope Cost Management in the Azure portal should default to. Allowed
+     * values: LastUsed.
+     *
+     * @return the startOn value.
+     */
+    SettingsPropertiesStartOn startOn();
+
+    /**
+     * Gets the cache property: Array of scopes with additional details used by Cost Management in the Azure portal.
+     *
+     * @return the cache value.
+     */
+    List<CacheItem> cache();
 
     /**
      * Gets the inner com.azure.resourcemanager.costmanagement.fluent.models.SettingInner object.

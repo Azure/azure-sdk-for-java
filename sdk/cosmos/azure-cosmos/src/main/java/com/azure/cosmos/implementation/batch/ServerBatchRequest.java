@@ -3,10 +3,10 @@
 
 package com.azure.cosmos.implementation.batch;
 
-import com.azure.cosmos.CosmosItemOperation;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.util.List;
@@ -60,16 +60,14 @@ public abstract class ServerBatchRequest {
 
         for(CosmosItemOperation operation : operations) {
             JsonSerializable operationJsonSerializable;
+            int operationSerializedLength;
 
-            if (operation instanceof ItemBatchOperation<?>) {
-                operationJsonSerializable = ((ItemBatchOperation<?>) operation).serializeOperation();
-            } else if (operation instanceof ItemBulkOperation<?>) {
-                operationJsonSerializable = ((ItemBulkOperation<?>) operation).serializeOperation();
+            if (operation instanceof CosmosItemOperationBase) {
+                operationJsonSerializable = ((CosmosItemOperationBase) operation).getSerializedOperation();
+                operationSerializedLength = ((CosmosItemOperationBase) operation).getSerializedLength();
             } else {
                 throw new UnsupportedOperationException("Unknown CosmosItemOperation.");
             }
-
-            int operationSerializedLength = getOperationSerializedLength(operationJsonSerializable);
 
             if (totalOperationCount != 0 &&
                 (totalSerializedLength + operationSerializedLength > this.maxBodyLength || totalOperationCount + 1 > this.maxOperationCount)) {
@@ -122,11 +120,5 @@ public abstract class ServerBatchRequest {
 
     void setShouldContinueOnError(boolean shouldContinueOnError) {
         this.shouldContinueOnError = shouldContinueOnError;
-    }
-
-    private int getOperationSerializedLength(JsonSerializable operationSerializable) {
-        String serializedValue = operationSerializable.toString();
-
-        return serializedValue.codePointCount(0, serializedValue.length());
     }
 }

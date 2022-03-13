@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The gallery artifact version source. */
 @Fluent
 public final class GalleryArtifactVersionSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryArtifactVersionSource.class);
-
     /*
      * The id of the gallery artifact version source. Can specify a disk uri,
      * snapshot uri, user image or storage account resource.

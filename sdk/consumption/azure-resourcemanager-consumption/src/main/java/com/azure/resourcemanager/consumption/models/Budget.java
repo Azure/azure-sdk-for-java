@@ -33,6 +33,14 @@ public interface Budget {
     String type();
 
     /**
+     * Gets the etag property: eTag of the resource. To handle concurrent update scenario, this field will be used to
+     * determine whether the user is updating the latest version or not.
+     *
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
      * Gets the category property: The category of the budget, whether the budget tracks cost or usage.
      *
      * @return the category value.
@@ -94,14 +102,6 @@ public interface Budget {
     ForecastSpend forecastSpend();
 
     /**
-     * Gets the etag property: eTag of the resource. To handle concurrent update scenario, this field will be used to
-     * determine whether the user is updating the latest version or not.
-     *
-     * @return the etag value.
-     */
-    String etag();
-
-    /**
      * Gets the inner com.azure.resourcemanager.consumption.fluent.models.BudgetInner object.
      *
      * @return the inner object.
@@ -143,13 +143,13 @@ public interface Budget {
          * created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithCategory,
+            extends DefinitionStages.WithEtag,
+                DefinitionStages.WithCategory,
                 DefinitionStages.WithAmount,
                 DefinitionStages.WithTimeGrain,
                 DefinitionStages.WithTimePeriod,
                 DefinitionStages.WithFilter,
-                DefinitionStages.WithNotifications,
-                DefinitionStages.WithEtag {
+                DefinitionStages.WithNotifications {
             /**
              * Executes the create request.
              *
@@ -164,6 +164,18 @@ public interface Budget {
              * @return the created resource.
              */
             Budget create(Context context);
+        }
+        /** The stage of the Budget definition allowing to specify etag. */
+        interface WithEtag {
+            /**
+             * Specifies the etag property: eTag of the resource. To handle concurrent update scenario, this field will
+             * be used to determine whether the user is updating the latest version or not..
+             *
+             * @param etag eTag of the resource. To handle concurrent update scenario, this field will be used to
+             *     determine whether the user is updating the latest version or not.
+             * @return the next definition stage.
+             */
+            WithCreate withEtag(String etag);
         }
         /** The stage of the Budget definition allowing to specify category. */
         interface WithCategory {
@@ -236,18 +248,6 @@ public interface Budget {
              */
             WithCreate withNotifications(Map<String, Notification> notifications);
         }
-        /** The stage of the Budget definition allowing to specify etag. */
-        interface WithEtag {
-            /**
-             * Specifies the etag property: eTag of the resource. To handle concurrent update scenario, this field will
-             * be used to determine whether the user is updating the latest version or not..
-             *
-             * @param etag eTag of the resource. To handle concurrent update scenario, this field will be used to
-             *     determine whether the user is updating the latest version or not.
-             * @return the next definition stage.
-             */
-            WithCreate withEtag(String etag);
-        }
     }
     /**
      * Begins update for the Budget resource.
@@ -258,13 +258,13 @@ public interface Budget {
 
     /** The template for Budget update. */
     interface Update
-        extends UpdateStages.WithCategory,
+        extends UpdateStages.WithEtag,
+            UpdateStages.WithCategory,
             UpdateStages.WithAmount,
             UpdateStages.WithTimeGrain,
             UpdateStages.WithTimePeriod,
             UpdateStages.WithFilter,
-            UpdateStages.WithNotifications,
-            UpdateStages.WithEtag {
+            UpdateStages.WithNotifications {
         /**
          * Executes the update request.
          *
@@ -282,6 +282,18 @@ public interface Budget {
     }
     /** The Budget update stages. */
     interface UpdateStages {
+        /** The stage of the Budget update allowing to specify etag. */
+        interface WithEtag {
+            /**
+             * Specifies the etag property: eTag of the resource. To handle concurrent update scenario, this field will
+             * be used to determine whether the user is updating the latest version or not..
+             *
+             * @param etag eTag of the resource. To handle concurrent update scenario, this field will be used to
+             *     determine whether the user is updating the latest version or not.
+             * @return the next definition stage.
+             */
+            Update withEtag(String etag);
+        }
         /** The stage of the Budget update allowing to specify category. */
         interface WithCategory {
             /**
@@ -352,18 +364,6 @@ public interface Budget {
              * @return the next definition stage.
              */
             Update withNotifications(Map<String, Notification> notifications);
-        }
-        /** The stage of the Budget update allowing to specify etag. */
-        interface WithEtag {
-            /**
-             * Specifies the etag property: eTag of the resource. To handle concurrent update scenario, this field will
-             * be used to determine whether the user is updating the latest version or not..
-             *
-             * @param etag eTag of the resource. To handle concurrent update scenario, this field will be used to
-             *     determine whether the user is updating the latest version or not.
-             * @return the next definition stage.
-             */
-            Update withEtag(String etag);
         }
     }
     /**

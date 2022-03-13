@@ -27,12 +27,12 @@ public final class LogsTableCell {
      * @param rowIndex The row index of the row this cell is associated with.
      * @param rowValue The value of the cell.
      */
-    public LogsTableCell(String columnName, LogsColumnType columnType, int columnIndex, int rowIndex, String rowValue) {
+    public LogsTableCell(String columnName, LogsColumnType columnType, int columnIndex, int rowIndex, Object rowValue) {
         this.columnName = columnName;
         this.columnType = columnType;
         this.columnIndex = columnIndex;
         this.rowIndex = rowIndex;
-        this.rowValue = rowValue;
+        this.rowValue = rowValue == null ? null : rowValue.toString();
     }
 
     /**

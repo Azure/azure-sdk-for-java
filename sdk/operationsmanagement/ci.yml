@@ -3,25 +3,31 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/operationsmanagement/
+      - sdk/operationsmanagement/ci.yml
+      - sdk/operationsmanagement/azure-resourcemanager-operationsmanagement/
+    exclude:
+      - sdk/operationsmanagement/pom.xml
+      - sdk/operationsmanagement/azure-resourcemanager-operationsmanagement/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/operationsmanagement/
+      - sdk/operationsmanagement/ci.yml
+      - sdk/operationsmanagement/azure-resourcemanager-operationsmanagement/
+    exclude:
+      - sdk/operationsmanagement/pom.xml
+      - sdk/operationsmanagement/azure-resourcemanager-operationsmanagement/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

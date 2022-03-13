@@ -1,19 +1,24 @@
 # NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
 trigger:
   branches:
     include:
-      - master
       - main
       - hotfix/*
       - release/*
   paths:
     include:
       - sdk/purview/
+    exclude:
+      - sdk/purview/pom.xml
+      - sdk/purview/azure-analytics-purview-administration/pom.xml
+      - sdk/purview/azure-analytics-purview-catalog/pom.xml
+      - sdk/purview/azure-analytics-purview-scanning/pom.xml
+      - sdk/purview/azure-resourcemanager-purview/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
@@ -21,15 +26,27 @@ pr:
   paths:
     include:
       - sdk/purview/
+    exclude:
+      - sdk/purview/pom.xml
+      - sdk/purview/azure-analytics-purview-administration/pom.xml
+      - sdk/purview/azure-analytics-purview-catalog/pom.xml
+      - sdk/purview/azure-analytics-purview-scanning/pom.xml
+      - sdk/purview/azure-resourcemanager-purview/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: purview
     Artifacts:
+      - name: azure-analytics-purview-administration
+        groupId: com.azure
+        safeName: azureanalyticspurviewadministration
       - name: azure-analytics-purview-catalog
         groupId: com.azure
         safeName: azureanalyticspurviewcatalog
       - name: azure-analytics-purview-scanning
         groupId: com.azure
         safeName: azureanalyticspurviewscanning
+      - name: azure-resourcemanager-purview
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerpurview

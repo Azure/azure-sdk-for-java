@@ -21,6 +21,18 @@ public final class BaseImageTriggerUpdateParameters {
     private BaseImageTriggerType baseImageTriggerType;
 
     /*
+     * The endpoint URL for receiving update triggers.
+     */
+    @JsonProperty(value = "updateTriggerEndpoint")
+    private String updateTriggerEndpoint;
+
+    /*
+     * Type of Payload body for Base image update triggers.
+     */
+    @JsonProperty(value = "updateTriggerPayloadType")
+    private UpdateTriggerPayloadType updateTriggerPayloadType;
+
+    /*
      * The current status of trigger.
      */
     @JsonProperty(value = "status")
@@ -49,6 +61,47 @@ public final class BaseImageTriggerUpdateParameters {
      */
     public BaseImageTriggerUpdateParameters withBaseImageTriggerType(BaseImageTriggerType baseImageTriggerType) {
         this.baseImageTriggerType = baseImageTriggerType;
+        return this;
+    }
+
+    /**
+     * Get the updateTriggerEndpoint property: The endpoint URL for receiving update triggers.
+     *
+     * @return the updateTriggerEndpoint value.
+     */
+    public String updateTriggerEndpoint() {
+        return this.updateTriggerEndpoint;
+    }
+
+    /**
+     * Set the updateTriggerEndpoint property: The endpoint URL for receiving update triggers.
+     *
+     * @param updateTriggerEndpoint the updateTriggerEndpoint value to set.
+     * @return the BaseImageTriggerUpdateParameters object itself.
+     */
+    public BaseImageTriggerUpdateParameters withUpdateTriggerEndpoint(String updateTriggerEndpoint) {
+        this.updateTriggerEndpoint = updateTriggerEndpoint;
+        return this;
+    }
+
+    /**
+     * Get the updateTriggerPayloadType property: Type of Payload body for Base image update triggers.
+     *
+     * @return the updateTriggerPayloadType value.
+     */
+    public UpdateTriggerPayloadType updateTriggerPayloadType() {
+        return this.updateTriggerPayloadType;
+    }
+
+    /**
+     * Set the updateTriggerPayloadType property: Type of Payload body for Base image update triggers.
+     *
+     * @param updateTriggerPayloadType the updateTriggerPayloadType value to set.
+     * @return the BaseImageTriggerUpdateParameters object itself.
+     */
+    public BaseImageTriggerUpdateParameters withUpdateTriggerPayloadType(
+        UpdateTriggerPayloadType updateTriggerPayloadType) {
+        this.updateTriggerPayloadType = updateTriggerPayloadType;
         return this;
     }
 

@@ -5,62 +5,34 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.models.ResourceRegionType;
+import com.azure.resourcemanager.eventgrid.models.TopicTypePropertiesSupportedScopesForSourceItem;
 import com.azure.resourcemanager.eventgrid.models.TopicTypeProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of a topic type info. */
-@JsonFlatten
 @Fluent
-public class TopicTypeInfoInner extends ProxyResource {
+public final class TopicTypeInfoInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TopicTypeInfoInner.class);
 
     /*
-     * Namespace of the provider of the topic type.
+     * Properties of the topic type info
      */
-    @JsonProperty(value = "properties.provider")
-    private String provider;
+    @JsonProperty(value = "properties")
+    private TopicTypeProperties innerProperties;
 
-    /*
-     * Display Name for the topic type.
+    /**
+     * Get the innerProperties property: Properties of the topic type info.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
-
-    /*
-     * Description of the topic type.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * Region type of the resource.
-     */
-    @JsonProperty(value = "properties.resourceRegionType")
-    private ResourceRegionType resourceRegionType;
-
-    /*
-     * Provisioning state of the topic type
-     */
-    @JsonProperty(value = "properties.provisioningState")
-    private TopicTypeProvisioningState provisioningState;
-
-    /*
-     * List of locations supported by this topic type.
-     */
-    @JsonProperty(value = "properties.supportedLocations")
-    private List<String> supportedLocations;
-
-    /*
-     * Source resource format.
-     */
-    @JsonProperty(value = "properties.sourceResourceFormat")
-    private String sourceResourceFormat;
+    private TopicTypeProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the provider property: Namespace of the provider of the topic type.
@@ -68,7 +40,7 @@ public class TopicTypeInfoInner extends ProxyResource {
      * @return the provider value.
      */
     public String provider() {
-        return this.provider;
+        return this.innerProperties() == null ? null : this.innerProperties().provider();
     }
 
     /**
@@ -78,7 +50,10 @@ public class TopicTypeInfoInner extends ProxyResource {
      * @return the TopicTypeInfoInner object itself.
      */
     public TopicTypeInfoInner withProvider(String provider) {
-        this.provider = provider;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TopicTypeProperties();
+        }
+        this.innerProperties().withProvider(provider);
         return this;
     }
 
@@ -88,7 +63,7 @@ public class TopicTypeInfoInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -98,7 +73,10 @@ public class TopicTypeInfoInner extends ProxyResource {
      * @return the TopicTypeInfoInner object itself.
      */
     public TopicTypeInfoInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TopicTypeProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -108,7 +86,7 @@ public class TopicTypeInfoInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -118,7 +96,10 @@ public class TopicTypeInfoInner extends ProxyResource {
      * @return the TopicTypeInfoInner object itself.
      */
     public TopicTypeInfoInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TopicTypeProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -128,7 +109,7 @@ public class TopicTypeInfoInner extends ProxyResource {
      * @return the resourceRegionType value.
      */
     public ResourceRegionType resourceRegionType() {
-        return this.resourceRegionType;
+        return this.innerProperties() == null ? null : this.innerProperties().resourceRegionType();
     }
 
     /**
@@ -138,7 +119,10 @@ public class TopicTypeInfoInner extends ProxyResource {
      * @return the TopicTypeInfoInner object itself.
      */
     public TopicTypeInfoInner withResourceRegionType(ResourceRegionType resourceRegionType) {
-        this.resourceRegionType = resourceRegionType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TopicTypeProperties();
+        }
+        this.innerProperties().withResourceRegionType(resourceRegionType);
         return this;
     }
 
@@ -148,7 +132,7 @@ public class TopicTypeInfoInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public TopicTypeProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -158,7 +142,10 @@ public class TopicTypeInfoInner extends ProxyResource {
      * @return the TopicTypeInfoInner object itself.
      */
     public TopicTypeInfoInner withProvisioningState(TopicTypeProvisioningState provisioningState) {
-        this.provisioningState = provisioningState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TopicTypeProperties();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
         return this;
     }
 
@@ -168,7 +155,7 @@ public class TopicTypeInfoInner extends ProxyResource {
      * @return the supportedLocations value.
      */
     public List<String> supportedLocations() {
-        return this.supportedLocations;
+        return this.innerProperties() == null ? null : this.innerProperties().supportedLocations();
     }
 
     /**
@@ -178,7 +165,10 @@ public class TopicTypeInfoInner extends ProxyResource {
      * @return the TopicTypeInfoInner object itself.
      */
     public TopicTypeInfoInner withSupportedLocations(List<String> supportedLocations) {
-        this.supportedLocations = supportedLocations;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TopicTypeProperties();
+        }
+        this.innerProperties().withSupportedLocations(supportedLocations);
         return this;
     }
 
@@ -188,7 +178,7 @@ public class TopicTypeInfoInner extends ProxyResource {
      * @return the sourceResourceFormat value.
      */
     public String sourceResourceFormat() {
-        return this.sourceResourceFormat;
+        return this.innerProperties() == null ? null : this.innerProperties().sourceResourceFormat();
     }
 
     /**
@@ -198,7 +188,34 @@ public class TopicTypeInfoInner extends ProxyResource {
      * @return the TopicTypeInfoInner object itself.
      */
     public TopicTypeInfoInner withSourceResourceFormat(String sourceResourceFormat) {
-        this.sourceResourceFormat = sourceResourceFormat;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TopicTypeProperties();
+        }
+        this.innerProperties().withSourceResourceFormat(sourceResourceFormat);
+        return this;
+    }
+
+    /**
+     * Get the supportedScopesForSource property: Supported source scopes.
+     *
+     * @return the supportedScopesForSource value.
+     */
+    public List<TopicTypePropertiesSupportedScopesForSourceItem> supportedScopesForSource() {
+        return this.innerProperties() == null ? null : this.innerProperties().supportedScopesForSource();
+    }
+
+    /**
+     * Set the supportedScopesForSource property: Supported source scopes.
+     *
+     * @param supportedScopesForSource the supportedScopesForSource value to set.
+     * @return the TopicTypeInfoInner object itself.
+     */
+    public TopicTypeInfoInner withSupportedScopesForSource(
+        List<TopicTypePropertiesSupportedScopesForSourceItem> supportedScopesForSource) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TopicTypeProperties();
+        }
+        this.innerProperties().withSupportedScopesForSource(supportedScopesForSource);
         return this;
     }
 
@@ -208,5 +225,8 @@ public class TopicTypeInfoInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.InformixLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,183 +17,23 @@ import java.util.Map;
 /** Informix linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Informix")
-@JsonFlatten
 @Fluent
-public class InformixLinkedService extends LinkedService {
+public final class InformixLinkedService extends LinkedService {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(InformixLinkedService.class);
 
     /*
-     * The non-access credential portion of the connection string as well as an
-     * optional encrypted credential. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * Informix linked service properties.
      */
-    @JsonProperty(value = "typeProperties.connectionString", required = true)
-    private Object connectionString;
-
-    /*
-     * Type of authentication used to connect to the Informix as ODBC data
-     * store. Possible values are: Anonymous and Basic. Type: string (or
-     * Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.authenticationType")
-    private Object authenticationType;
-
-    /*
-     * The access credential portion of the connection string specified in
-     * driver-specific property-value format.
-     */
-    @JsonProperty(value = "typeProperties.credential")
-    private SecretBase credential;
-
-    /*
-     * User name for Basic authentication. Type: string (or Expression with
-     * resultType string).
-     */
-    @JsonProperty(value = "typeProperties.userName")
-    private Object username;
-
-    /*
-     * Password for Basic authentication.
-     */
-    @JsonProperty(value = "typeProperties.password")
-    private SecretBase password;
-
-    /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
-    private Object encryptedCredential;
+    @JsonProperty(value = "typeProperties", required = true)
+    private InformixLinkedServiceTypeProperties innerTypeProperties = new InformixLinkedServiceTypeProperties();
 
     /**
-     * Get the connectionString property: The non-access credential portion of the connection string as well as an
-     * optional encrypted credential. Type: string, SecureString or AzureKeyVaultSecretReference.
+     * Get the innerTypeProperties property: Informix linked service properties.
      *
-     * @return the connectionString value.
+     * @return the innerTypeProperties value.
      */
-    public Object connectionString() {
-        return this.connectionString;
-    }
-
-    /**
-     * Set the connectionString property: The non-access credential portion of the connection string as well as an
-     * optional encrypted credential. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
-     * @param connectionString the connectionString value to set.
-     * @return the InformixLinkedService object itself.
-     */
-    public InformixLinkedService withConnectionString(Object connectionString) {
-        this.connectionString = connectionString;
-        return this;
-    }
-
-    /**
-     * Get the authenticationType property: Type of authentication used to connect to the Informix as ODBC data store.
-     * Possible values are: Anonymous and Basic. Type: string (or Expression with resultType string).
-     *
-     * @return the authenticationType value.
-     */
-    public Object authenticationType() {
-        return this.authenticationType;
-    }
-
-    /**
-     * Set the authenticationType property: Type of authentication used to connect to the Informix as ODBC data store.
-     * Possible values are: Anonymous and Basic. Type: string (or Expression with resultType string).
-     *
-     * @param authenticationType the authenticationType value to set.
-     * @return the InformixLinkedService object itself.
-     */
-    public InformixLinkedService withAuthenticationType(Object authenticationType) {
-        this.authenticationType = authenticationType;
-        return this;
-    }
-
-    /**
-     * Get the credential property: The access credential portion of the connection string specified in driver-specific
-     * property-value format.
-     *
-     * @return the credential value.
-     */
-    public SecretBase credential() {
-        return this.credential;
-    }
-
-    /**
-     * Set the credential property: The access credential portion of the connection string specified in driver-specific
-     * property-value format.
-     *
-     * @param credential the credential value to set.
-     * @return the InformixLinkedService object itself.
-     */
-    public InformixLinkedService withCredential(SecretBase credential) {
-        this.credential = credential;
-        return this;
-    }
-
-    /**
-     * Get the username property: User name for Basic authentication. Type: string (or Expression with resultType
-     * string).
-     *
-     * @return the username value.
-     */
-    public Object username() {
-        return this.username;
-    }
-
-    /**
-     * Set the username property: User name for Basic authentication. Type: string (or Expression with resultType
-     * string).
-     *
-     * @param username the username value to set.
-     * @return the InformixLinkedService object itself.
-     */
-    public InformixLinkedService withUsername(Object username) {
-        this.username = username;
-        return this;
-    }
-
-    /**
-     * Get the password property: Password for Basic authentication.
-     *
-     * @return the password value.
-     */
-    public SecretBase password() {
-        return this.password;
-    }
-
-    /**
-     * Set the password property: Password for Basic authentication.
-     *
-     * @param password the password value to set.
-     * @return the InformixLinkedService object itself.
-     */
-    public InformixLinkedService withPassword(SecretBase password) {
-        this.password = password;
-        return this;
-    }
-
-    /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @return the encryptedCredential value.
-     */
-    public Object encryptedCredential() {
-        return this.encryptedCredential;
-    }
-
-    /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @param encryptedCredential the encryptedCredential value to set.
-     * @return the InformixLinkedService object itself.
-     */
-    public InformixLinkedService withEncryptedCredential(Object encryptedCredential) {
-        this.encryptedCredential = encryptedCredential;
-        return this;
+    private InformixLinkedServiceTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -225,6 +65,154 @@ public class InformixLinkedService extends LinkedService {
     }
 
     /**
+     * Get the connectionString property: The non-access credential portion of the connection string as well as an
+     * optional encrypted credential. Type: string, SecureString or AzureKeyVaultSecretReference.
+     *
+     * @return the connectionString value.
+     */
+    public Object connectionString() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().connectionString();
+    }
+
+    /**
+     * Set the connectionString property: The non-access credential portion of the connection string as well as an
+     * optional encrypted credential. Type: string, SecureString or AzureKeyVaultSecretReference.
+     *
+     * @param connectionString the connectionString value to set.
+     * @return the InformixLinkedService object itself.
+     */
+    public InformixLinkedService withConnectionString(Object connectionString) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new InformixLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withConnectionString(connectionString);
+        return this;
+    }
+
+    /**
+     * Get the authenticationType property: Type of authentication used to connect to the Informix as ODBC data store.
+     * Possible values are: Anonymous and Basic. Type: string (or Expression with resultType string).
+     *
+     * @return the authenticationType value.
+     */
+    public Object authenticationType() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().authenticationType();
+    }
+
+    /**
+     * Set the authenticationType property: Type of authentication used to connect to the Informix as ODBC data store.
+     * Possible values are: Anonymous and Basic. Type: string (or Expression with resultType string).
+     *
+     * @param authenticationType the authenticationType value to set.
+     * @return the InformixLinkedService object itself.
+     */
+    public InformixLinkedService withAuthenticationType(Object authenticationType) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new InformixLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withAuthenticationType(authenticationType);
+        return this;
+    }
+
+    /**
+     * Get the credential property: The access credential portion of the connection string specified in driver-specific
+     * property-value format.
+     *
+     * @return the credential value.
+     */
+    public SecretBase credential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().credential();
+    }
+
+    /**
+     * Set the credential property: The access credential portion of the connection string specified in driver-specific
+     * property-value format.
+     *
+     * @param credential the credential value to set.
+     * @return the InformixLinkedService object itself.
+     */
+    public InformixLinkedService withCredential(SecretBase credential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new InformixLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withCredential(credential);
+        return this;
+    }
+
+    /**
+     * Get the username property: User name for Basic authentication. Type: string (or Expression with resultType
+     * string).
+     *
+     * @return the username value.
+     */
+    public Object username() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().username();
+    }
+
+    /**
+     * Set the username property: User name for Basic authentication. Type: string (or Expression with resultType
+     * string).
+     *
+     * @param username the username value to set.
+     * @return the InformixLinkedService object itself.
+     */
+    public InformixLinkedService withUsername(Object username) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new InformixLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUsername(username);
+        return this;
+    }
+
+    /**
+     * Get the password property: Password for Basic authentication.
+     *
+     * @return the password value.
+     */
+    public SecretBase password() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().password();
+    }
+
+    /**
+     * Set the password property: Password for Basic authentication.
+     *
+     * @param password the password value to set.
+     * @return the InformixLinkedService object itself.
+     */
+    public InformixLinkedService withPassword(SecretBase password) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new InformixLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withPassword(password);
+        return this;
+    }
+
+    /**
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @return the encryptedCredential value.
+     */
+    public Object encryptedCredential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
+    }
+
+    /**
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @param encryptedCredential the encryptedCredential value to set.
+     * @return the InformixLinkedService object itself.
+     */
+    public InformixLinkedService withEncryptedCredential(Object encryptedCredential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new InformixLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEncryptedCredential(encryptedCredential);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -232,17 +220,13 @@ public class InformixLinkedService extends LinkedService {
     @Override
     public void validate() {
         super.validate();
-        if (connectionString() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property connectionString in model InformixLinkedService"));
-        }
-        if (credential() != null) {
-            credential().validate();
-        }
-        if (password() != null) {
-            password().validate();
+                        "Missing required property innerTypeProperties in model InformixLinkedService"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

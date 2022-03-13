@@ -9,6 +9,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.QueryMetricsConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
@@ -19,6 +20,7 @@ import com.azure.cosmos.implementation.query.QueryInfo;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -305,6 +307,23 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         return getValueOrNull(header, HttpConstants.HttpHeaders.ACTIVITY_ID);
     }
 
+    /**
+     * Gets the correlation activity ID for the responses of a query operation or null if
+     * no correlation activity id is present
+     *
+     * @return the correlation activity id or null if no correlation activity id is present.
+     */
+    public UUID getCorrelationActivityId() {
+        String correlationActivityIdAsString =
+            getValueOrNull(header, HttpConstants.HttpHeaders.CORRELATED_ACTIVITY_ID);
+
+        if (!Strings.isNullOrWhiteSpace(correlationActivityIdAsString)) {
+            return UUID.fromString(correlationActivityIdAsString);
+        }
+
+        return null;
+    }
+
     @Override
     public IterableStream<T> getElements() {
         return IterableStream.of(this.results);
@@ -484,5 +503,19 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     void setQueryPlanDiagnosticsContext(QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnosticsContext) {
         this.queryPlanDiagnosticsContext = queryPlanDiagnosticsContext;
         BridgeInternal.setQueryPlanDiagnosticsContext(cosmosDiagnostics, queryPlanDiagnosticsContext);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    static {
+        ImplementationBridgeHelpers.FeedResponseHelper.setFeedResponseAccessor(
+            new ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor() {
+                @Override
+                public <T> boolean getNoChanges(FeedResponse<T> feedResponse) {
+                    return feedResponse.getNoChanges();
+                }
+            });
     }
 }

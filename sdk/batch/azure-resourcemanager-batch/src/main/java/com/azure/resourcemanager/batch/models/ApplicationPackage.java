@@ -33,6 +33,13 @@ public interface ApplicationPackage {
     String type();
 
     /**
+     * Gets the etag property: The ETag of the resource, used for concurrency statements.
+     *
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
      * Gets the state property: The current state of the application package.
      *
      * @return the state value.
@@ -66,13 +73,6 @@ public interface ApplicationPackage {
      * @return the lastActivationTime value.
      */
     OffsetDateTime lastActivationTime();
-
-    /**
-     * Gets the etag property: The ETag of the resource, used for concurrency statements.
-     *
-     * @return the etag value.
-     */
-    String etag();
 
     /**
      * Gets the inner com.azure.resourcemanager.batch.fluent.models.ApplicationPackageInner object.

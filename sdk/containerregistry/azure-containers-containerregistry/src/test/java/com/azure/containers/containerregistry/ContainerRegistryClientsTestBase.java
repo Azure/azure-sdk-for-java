@@ -8,7 +8,9 @@ import com.azure.containers.containerregistry.models.ArtifactManifestPlatform;
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactOperatingSystem;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
+import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.containers.containerregistry.models.ContainerRepositoryProperties;
+import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -35,7 +37,7 @@ import static com.azure.containers.containerregistry.TestUtils.PAGESIZE_2;
 import static com.azure.containers.containerregistry.TestUtils.REGISTRY_ENDPOINT;
 import static com.azure.containers.containerregistry.TestUtils.REGISTRY_ENDPOINT_PLAYBACK;
 import static com.azure.containers.containerregistry.TestUtils.V1_TAG_NAME;
-import static com.azure.containers.containerregistry.TestUtils.getCredential;
+import static com.azure.containers.containerregistry.TestUtils.getCredentialsByEndpoint;
 import static com.azure.containers.containerregistry.TestUtils.isSorted;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -75,18 +77,18 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         .setDeleteEnabled(false)
         .setListEnabled(true)
         .setReadEnabled(true)
-        .setWriteEnabled(true)
-        .setTeleportEnabled(false);
+        .setWriteEnabled(true);
+        //.setTeleportEnabled(false);
 
     protected static ContainerRepositoryProperties defaultRepoWriteableProperties = new ContainerRepositoryProperties()
         .setDeleteEnabled(true)
         .setListEnabled(true)
         .setReadEnabled(true)
-        .setWriteEnabled(true)
-        .setTeleportEnabled(false);
+        .setWriteEnabled(true);
+        //.setTeleportEnabled(false);
 
     ContainerRegistryClientBuilder getContainerRegistryBuilder(HttpClient httpClient) {
-        TokenCredential credential = getCredential(getTestMode());
+        TokenCredential credential = getCredentialsByEndpoint(getTestMode(), REGISTRY_ENDPOINT);
         return getContainerRegistryBuilder(httpClient, credential);
     }
 
@@ -94,19 +96,50 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         List<Function<String, String>> redactors = new ArrayList<>();
         redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
 
+        ContainerRegistryAudience audience = TestUtils.getAudience(endpoint);
+
         ContainerRegistryClientBuilder builder = new ContainerRegistryClientBuilder()
             .endpoint(getEndpoint(endpoint))
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .addPolicy(interceptorManager.getRecordPolicy(redactors))
-            .credential(credential);
+            .credential(credential)
+            .audience(audience);
 
-           // builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
+              // builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
         return builder;
     }
 
     ContainerRegistryClientBuilder getContainerRegistryBuilder(HttpClient httpClient, TokenCredential credential) {
         return getContainerRegistryBuilder(httpClient, credential, REGISTRY_ENDPOINT);
+    }
+
+    ContainerRegistryBlobClientBuilder getBlobClientBuilder(String repositoryName, HttpClient httpClient) {
+        TokenCredential credential = getCredentialsByEndpoint(getTestMode(), REGISTRY_ENDPOINT);
+        return getBlobClientBuilder(repositoryName, httpClient, credential);
+    }
+
+    ContainerRegistryBlobClientBuilder getBlobClientBuilder(String repositoryName, HttpClient httpClient, TokenCredential credential) {
+        return getBlobClientBuilder(repositoryName, httpClient, credential, REGISTRY_ENDPOINT);
+    }
+
+    ContainerRegistryBlobClientBuilder getBlobClientBuilder(String repositoryName, HttpClient httpClient, TokenCredential credential, String endpoint) {
+        List<Function<String, String>> redactors = new ArrayList<>();
+        redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+
+        ContainerRegistryAudience audience = TestUtils.getAudience(endpoint);
+
+        ContainerRegistryBlobClientBuilder builder = new ContainerRegistryBlobClientBuilder()
+            .endpoint(getEndpoint(endpoint))
+            .repository(repositoryName)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .addPolicy(interceptorManager.getRecordPolicy(redactors))
+            .credential(credential)
+            .audience(audience);
+
+        // builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
+        return builder;
     }
 
     List<String> getChildArtifacts(Collection<ArtifactManifestPlatform> artifacts) {
@@ -130,7 +163,7 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         assertNotNull(properties.isListEnabled());
         assertNotNull(properties.isReadEnabled());
         assertNotNull(properties.isWriteEnabled());
-        assertNotNull(properties.isTeleportEnabled());
+        //assertNotNull(properties.isTeleportEnabled());
         assertNotNull(properties.getRegistryLoginServer());
     }
 
@@ -278,7 +311,7 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         assertEquals(true, properties.isListEnabled(), "isList incorrect");
         assertEquals(true, properties.isReadEnabled(), "isRead incorrect");
         assertEquals(true, properties.isWriteEnabled(), "isWrite incorrect");
-        assertEquals(false, properties.isTeleportEnabled(), "isTeleport incorrect");
+        //assertEquals(false, properties.isTeleportEnabled(), "isTeleport incorrect");
     }
 
     void validateTagContentProperties(ArtifactTagProperties properties) {

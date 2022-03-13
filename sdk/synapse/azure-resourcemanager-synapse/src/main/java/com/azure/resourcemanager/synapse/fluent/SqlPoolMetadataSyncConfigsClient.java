@@ -36,7 +36,7 @@ public interface SqlPoolMetadataSyncConfigsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the metadata sync configuration for a SQL pool.
+     * @return the metadata sync configuration for a SQL pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MetadataSyncConfigInner> getWithResponse(
@@ -52,7 +52,7 @@ public interface SqlPoolMetadataSyncConfigsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration for metadata sync.
+     * @return metadata sync configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     MetadataSyncConfigInner create(
@@ -72,7 +72,7 @@ public interface SqlPoolMetadataSyncConfigsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration for metadata sync.
+     * @return metadata sync configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MetadataSyncConfigInner> createWithResponse(

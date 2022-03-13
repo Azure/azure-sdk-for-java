@@ -5,24 +5,56 @@ package com.azure.spring.aad;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 
 /**
- * Defines grant types: client_credentials, authorization_code, on-behalf-of.
+ * Defines grant types: client_credentials, authorization_code, on_behalf_of, azure_delegated.
  */
 public enum AADAuthorizationGrantType {
 
+    /**
+     * Client credentials
+     */
     CLIENT_CREDENTIALS("client_credentials"),
-    AUTHORIZATION_CODE("authorization_code"),
-    ON_BEHALF_OF("on-behalf-of");
 
-    private String authorizationGrantType;
+    /**
+     * Authorization code
+     */
+    AUTHORIZATION_CODE("authorization_code"),
+
+    /**
+     * On behalf of
+     */
+    ON_BEHALF_OF("on_behalf_of"),
+
+    /**
+     * Azure delegated
+     */
+    AZURE_DELEGATED("azure_delegated");
+
+    private final String authorizationGrantType;
 
     AADAuthorizationGrantType(String authorizationGrantType) {
-        this.authorizationGrantType = authorizationGrantType;
+        // For backward compatibility, we support 'on-behalf-of'.
+        if ("on-behalf-of".equals(authorizationGrantType)) {
+            this.authorizationGrantType = "on_behalf_of";
+        } else {
+            this.authorizationGrantType = authorizationGrantType;
+        }
     }
 
+    /**
+     * Gets the string representation of the enum.
+     *
+     * @return the string representation of the enum
+     */
     public String getValue() {
         return authorizationGrantType;
     }
 
+    /**
+     * Whether the other grant type is the same as the AAD grant type.
+     *
+     * @param grantType the other grant type
+     * @return whether the other grant type is the same as the AAD grant type
+     */
     public boolean isSameGrantType(AuthorizationGrantType grantType) {
         return this.authorizationGrantType.equals(grantType.getValue());
     }

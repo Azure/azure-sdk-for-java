@@ -4,16 +4,12 @@
 
 package com.azure.resourcemanager.compute.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import java.time.OffsetDateTime;
 
 /** Api request input for LogAnalytics getThrottledRequests Api. */
-@Immutable
+@Fluent
 public final class ThrottledRequestsInput extends LogAnalyticsInputBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ThrottledRequestsInput.class);
-
     /** {@inheritDoc} */
     @Override
     public ThrottledRequestsInput withBlobContainerSasUri(String blobContainerSasUri) {

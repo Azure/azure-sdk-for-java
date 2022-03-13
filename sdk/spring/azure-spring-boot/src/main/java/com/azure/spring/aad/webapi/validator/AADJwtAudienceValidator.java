@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.aad.webapi.validator;
 
-import com.azure.spring.autoconfigure.aad.AADTokenClaim;
+import com.azure.spring.aad.implementation.constants.AADTokenClaim;
 import java.util.List;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
@@ -21,10 +21,9 @@ public class AADJwtAudienceValidator implements OAuth2TokenValidator<Jwt> {
      *
      * @param audiences - The audience that each {@link Jwt} should have.
      */
-    @SuppressWarnings({"unchecked", "rawtypes"})
     public AADJwtAudienceValidator(List<String> audiences) {
         Assert.notNull(audiences, "audiences cannot be null");
-        this.validator = new AADJwtClaimValidator<>(AADTokenClaim.AUD, aud -> audiences.containsAll(aud));
+        this.validator = new AADJwtClaimValidator<>(AADTokenClaim.AUD, audiences::containsAll);
     }
 
     /**

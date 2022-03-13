@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Description of VirtualNetworkRules - NetworkRules resource. */
+/** The response from the List namespace operation. */
 @Fluent
 public final class NWRuleSetVirtualNetworkRules {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NWRuleSetVirtualNetworkRules.class);
@@ -21,7 +21,7 @@ public final class NWRuleSetVirtualNetworkRules {
     private Subnet subnet;
 
     /*
-     * Value that indicates whether to ignore missing VNet Service Endpoint
+     * Value that indicates whether to ignore missing Vnet Service Endpoint
      */
     @JsonProperty(value = "ignoreMissingVnetServiceEndpoint")
     private Boolean ignoreMissingVnetServiceEndpoint;
@@ -47,7 +47,7 @@ public final class NWRuleSetVirtualNetworkRules {
     }
 
     /**
-     * Get the ignoreMissingVnetServiceEndpoint property: Value that indicates whether to ignore missing VNet Service
+     * Get the ignoreMissingVnetServiceEndpoint property: Value that indicates whether to ignore missing Vnet Service
      * Endpoint.
      *
      * @return the ignoreMissingVnetServiceEndpoint value.
@@ -57,7 +57,7 @@ public final class NWRuleSetVirtualNetworkRules {
     }
 
     /**
-     * Set the ignoreMissingVnetServiceEndpoint property: Value that indicates whether to ignore missing VNet Service
+     * Set the ignoreMissingVnetServiceEndpoint property: Value that indicates whether to ignore missing Vnet Service
      * Endpoint.
      *
      * @param ignoreMissingVnetServiceEndpoint the ignoreMissingVnetServiceEndpoint value to set.

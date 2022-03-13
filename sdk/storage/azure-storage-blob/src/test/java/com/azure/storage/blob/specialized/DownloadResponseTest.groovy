@@ -11,9 +11,7 @@ import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.util.FluxUtil
 import com.azure.storage.blob.APISpec
-import com.azure.storage.blob.HttpGetterInfo
 import com.azure.storage.blob.models.BlobRange
-import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.DownloadRetryOptions
 import reactor.core.Exceptions
@@ -60,7 +58,7 @@ class DownloadResponseTest extends APISpec {
                 })
             }
         }
-        def bsc = getServiceClientBuilder(env.primaryAccount.credential, primaryBlobServiceClient.getAccountUrl(), removeEtagPolicy).buildClient()
+        def bsc = getServiceClientBuilder(environment.primaryAccount.credential, primaryBlobServiceClient.getAccountUrl(), removeEtagPolicy).buildClient()
         def cc = bsc.getBlobContainerClient(containerName)
         def bu = cc.getBlobClient(bu.getBlobName()).getBlockBlobClient()
 
@@ -77,7 +75,7 @@ class DownloadResponseTest extends APISpec {
 
         DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5)
 
-        def bsc = getServiceClientBuilder(env.primaryAccount.credential, primaryBlobServiceClient.getAccountUrl(), flux.asPolicy()).buildAsyncClient()
+        def bsc = getServiceClientBuilder(environment.primaryAccount.credential, primaryBlobServiceClient.getAccountUrl(), flux.asPolicy()).buildAsyncClient()
         def cc = bsc.getBlobContainerAsyncClient(containerName)
         def bu = cc.getBlobAsyncClient(bu.getBlobName()).getBlockBlobAsyncClient()
         BlobRange range = setCount ? new BlobRange(0, flux.getScenarioData().remaining()) : new BlobRange(0);
@@ -106,7 +104,7 @@ class DownloadResponseTest extends APISpec {
         DownloadResponseMockFlux flux = new DownloadResponseMockFlux(scenario, this)
         DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5)
 
-        def bsc = getServiceClientBuilder(env.primaryAccount.credential, primaryBlobServiceClient.getAccountUrl(), flux.asPolicy()).buildAsyncClient()
+        def bsc = getServiceClientBuilder(environment.primaryAccount.credential, primaryBlobServiceClient.getAccountUrl(), flux.asPolicy()).buildAsyncClient()
         def cc = bsc.getBlobContainerAsyncClient(containerName)
         def bu = cc.getBlobAsyncClient(bu.getBlobName()).getBlockBlobAsyncClient()
 
@@ -136,7 +134,7 @@ class DownloadResponseTest extends APISpec {
             this)
         DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(retryCount)
 
-        def bsc = getServiceClientBuilder(env.primaryAccount.credential, primaryBlobServiceClient.getAccountUrl(), flux.asPolicy()).buildAsyncClient()
+        def bsc = getServiceClientBuilder(environment.primaryAccount.credential, primaryBlobServiceClient.getAccountUrl(), flux.asPolicy()).buildAsyncClient()
         def cc = bsc.getBlobContainerAsyncClient(containerName)
         def bu = cc.getBlobAsyncClient(bu.getBlobName()).getBlockBlobAsyncClient()
 

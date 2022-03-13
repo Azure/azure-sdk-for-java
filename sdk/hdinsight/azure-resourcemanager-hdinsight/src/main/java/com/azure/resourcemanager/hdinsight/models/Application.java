@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.hdinsight.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.hdinsight.fluent.models.ApplicationInner;
 import java.util.Map;
@@ -51,6 +52,13 @@ public interface Application {
      * @return the properties value.
      */
     ApplicationProperties properties();
+
+    /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the inner com.azure.resourcemanager.hdinsight.fluent.models.ApplicationInner object.

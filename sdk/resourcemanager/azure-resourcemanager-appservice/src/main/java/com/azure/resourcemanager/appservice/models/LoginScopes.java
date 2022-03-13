@@ -5,26 +5,24 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The LoginScopes model. */
-@JsonFlatten
+/** The configuration settings of the login flow, including the scopes that should be requested. */
 @Fluent
-public class LoginScopes extends ProxyOnlyResource {
+public final class LoginScopes {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LoginScopes.class);
 
     /*
-     * The scopes property.
+     * A list of the scopes that should be requested while authenticating.
      */
-    @JsonProperty(value = "properties.scopes")
+    @JsonProperty(value = "scopes")
     private List<String> scopes;
 
     /**
-     * Get the scopes property: The scopes property.
+     * Get the scopes property: A list of the scopes that should be requested while authenticating.
      *
      * @return the scopes value.
      */
@@ -33,7 +31,7 @@ public class LoginScopes extends ProxyOnlyResource {
     }
 
     /**
-     * Set the scopes property: The scopes property.
+     * Set the scopes property: A list of the scopes that should be requested while authenticating.
      *
      * @param scopes the scopes value to set.
      * @return the LoginScopes object itself.
@@ -43,20 +41,11 @@ public class LoginScopes extends ProxyOnlyResource {
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public LoginScopes withKind(String kind) {
-        super.withKind(kind);
-        return this;
-    }
-
     /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
     }
 }

@@ -6,6 +6,7 @@ package com.azure.identity;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClientOptions;
 
 import java.time.Duration;
@@ -87,6 +88,22 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
     public T httpClient(HttpClient client) {
         Objects.requireNonNull(client);
         this.identityClientOptions.setHttpClient(client);
+        return (T) this;
+    }
+
+    /**
+     * Sets the configuration store that is used during construction of the credential.
+     *
+     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
+     * configuration store}.
+     *
+     * @param configuration The configuration store used to load Env variables and/or properties from.
+     *
+     * @return An updated instance of this builder with the configuration store set as specified.
+     */
+    @SuppressWarnings("unchecked")
+    public T configuration(Configuration configuration) {
+        identityClientOptions.setConfiguration(configuration);
         return (T) this;
     }
 }

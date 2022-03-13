@@ -5,71 +5,30 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.cosmos.fluent.models.CassandraKeyspaceCreateUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Parameters to create and update Cosmos DB Cassandra keyspace. */
-@JsonFlatten
 @Fluent
-public class CassandraKeyspaceCreateUpdateParameters extends ArmResourceProperties {
+public final class CassandraKeyspaceCreateUpdateParameters extends ArmResourceProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CassandraKeyspaceCreateUpdateParameters.class);
 
     /*
-     * The standard JSON format of a Cassandra keyspace
+     * Properties to create and update Azure Cosmos DB Cassandra keyspace.
      */
-    @JsonProperty(value = "properties.resource", required = true)
-    private CassandraKeyspaceResource resource;
-
-    /*
-     * A key-value pair of options to be applied for the request. This
-     * corresponds to the headers sent with the request.
-     */
-    @JsonProperty(value = "properties.options")
-    private CreateUpdateOptions options;
+    @JsonProperty(value = "properties", required = true)
+    private CassandraKeyspaceCreateUpdateProperties innerProperties = new CassandraKeyspaceCreateUpdateProperties();
 
     /**
-     * Get the resource property: The standard JSON format of a Cassandra keyspace.
+     * Get the innerProperties property: Properties to create and update Azure Cosmos DB Cassandra keyspace.
      *
-     * @return the resource value.
+     * @return the innerProperties value.
      */
-    public CassandraKeyspaceResource resource() {
-        return this.resource;
-    }
-
-    /**
-     * Set the resource property: The standard JSON format of a Cassandra keyspace.
-     *
-     * @param resource the resource value to set.
-     * @return the CassandraKeyspaceCreateUpdateParameters object itself.
-     */
-    public CassandraKeyspaceCreateUpdateParameters withResource(CassandraKeyspaceResource resource) {
-        this.resource = resource;
-        return this;
-    }
-
-    /**
-     * Get the options property: A key-value pair of options to be applied for the request. This corresponds to the
-     * headers sent with the request.
-     *
-     * @return the options value.
-     */
-    public CreateUpdateOptions options() {
-        return this.options;
-    }
-
-    /**
-     * Set the options property: A key-value pair of options to be applied for the request. This corresponds to the
-     * headers sent with the request.
-     *
-     * @param options the options value to set.
-     * @return the CassandraKeyspaceCreateUpdateParameters object itself.
-     */
-    public CassandraKeyspaceCreateUpdateParameters withOptions(CreateUpdateOptions options) {
-        this.options = options;
-        return this;
+    private CassandraKeyspaceCreateUpdateProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -87,6 +46,54 @@ public class CassandraKeyspaceCreateUpdateParameters extends ArmResourceProperti
     }
 
     /**
+     * Get the resource property: The standard JSON format of a Cassandra keyspace.
+     *
+     * @return the resource value.
+     */
+    public CassandraKeyspaceResource resource() {
+        return this.innerProperties() == null ? null : this.innerProperties().resource();
+    }
+
+    /**
+     * Set the resource property: The standard JSON format of a Cassandra keyspace.
+     *
+     * @param resource the resource value to set.
+     * @return the CassandraKeyspaceCreateUpdateParameters object itself.
+     */
+    public CassandraKeyspaceCreateUpdateParameters withResource(CassandraKeyspaceResource resource) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CassandraKeyspaceCreateUpdateProperties();
+        }
+        this.innerProperties().withResource(resource);
+        return this;
+    }
+
+    /**
+     * Get the options property: A key-value pair of options to be applied for the request. This corresponds to the
+     * headers sent with the request.
+     *
+     * @return the options value.
+     */
+    public CreateUpdateOptions options() {
+        return this.innerProperties() == null ? null : this.innerProperties().options();
+    }
+
+    /**
+     * Set the options property: A key-value pair of options to be applied for the request. This corresponds to the
+     * headers sent with the request.
+     *
+     * @param options the options value to set.
+     * @return the CassandraKeyspaceCreateUpdateParameters object itself.
+     */
+    public CassandraKeyspaceCreateUpdateParameters withOptions(CreateUpdateOptions options) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CassandraKeyspaceCreateUpdateProperties();
+        }
+        this.innerProperties().withOptions(options);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -94,16 +101,13 @@ public class CassandraKeyspaceCreateUpdateParameters extends ArmResourceProperti
     @Override
     public void validate() {
         super.validate();
-        if (resource() == null) {
+        if (innerProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property resource in model CassandraKeyspaceCreateUpdateParameters"));
+                        "Missing required property innerProperties in model CassandraKeyspaceCreateUpdateParameters"));
         } else {
-            resource().validate();
-        }
-        if (options() != null) {
-            options().validate();
+            innerProperties().validate();
         }
     }
 }

@@ -913,7 +913,11 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
         return this
             .client
             .<JobExecutionInner, JobExecutionInner>getLroResult(
-                mono, this.client.getHttpPipeline(), JobExecutionInner.class, JobExecutionInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                JobExecutionInner.class,
+                JobExecutionInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1830,7 +1834,11 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
         return this
             .client
             .<JobExecutionInner, JobExecutionInner>getLroResult(
-                mono, this.client.getHttpPipeline(), JobExecutionInner.class, JobExecutionInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                JobExecutionInner.class,
+                JobExecutionInner.class,
+                this.client.getContext());
     }
 
     /**

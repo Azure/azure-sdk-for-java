@@ -21,6 +21,9 @@ public final class IndexBatchException extends AzureException {
     private static final String MESSAGE_FORMAT = "%s of %s indexing actions in the batch failed. The remaining"
         + " actions succeeded and modified the index. Check indexingResults for the status of each index action.";
 
+    /**
+     * Indexing results.
+     */
     private final ArrayList<IndexingResult> results;
 
     /**

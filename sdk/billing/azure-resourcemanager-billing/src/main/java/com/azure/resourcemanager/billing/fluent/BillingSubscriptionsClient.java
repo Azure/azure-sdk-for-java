@@ -206,7 +206,7 @@ public interface BillingSubscriptionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a billing subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BillingSubscriptionInner>, BillingSubscriptionInner> beginMove(
         String billingAccountName, TransferBillingSubscriptionRequestProperties parameters);
 
@@ -223,7 +223,7 @@ public interface BillingSubscriptionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a billing subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BillingSubscriptionInner>, BillingSubscriptionInner> beginMove(
         String billingAccountName, TransferBillingSubscriptionRequestProperties parameters, Context context);
 

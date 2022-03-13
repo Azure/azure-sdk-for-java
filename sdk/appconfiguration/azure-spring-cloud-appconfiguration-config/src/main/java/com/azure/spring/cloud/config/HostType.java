@@ -7,9 +7,24 @@ package com.azure.spring.cloud.config;
  */
 public enum HostType {
 
+    /**
+     * Unidentified Host
+     */
     UNIDENTIFIED(""),
+    
+    /**
+     * Host is Azure Web App
+     */
     AZURE_WEB_APP("AzureWebApp"),
+    
+    /**
+     * Host is Azure Function
+     */
     AZURE_FUNCTION("AzureFunction"),
+    
+    /**
+     * Host is Kubernetes
+     */
     KUBERNETES("Kubernetes");
 
     private final String text;

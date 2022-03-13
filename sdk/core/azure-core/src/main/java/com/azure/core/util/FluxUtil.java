@@ -7,9 +7,12 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.ByteBufferCollector;
+import com.azure.core.implementation.FileWriteSubscriber;
+import com.azure.core.implementation.OutputStreamWriteSubscriber;
 import com.azure.core.implementation.RetriableDownloadFlux;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LoggingEventBuilder;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
@@ -19,28 +22,31 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
 import reactor.util.context.ContextView;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.CompletionHandler;
+import java.nio.channels.FileChannel;
+import java.nio.file.StandardOpenOption;
 import java.util.Collections;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 /**
  * Utility type exposing methods to deal with {@link Flux}.
  */
 public final class FluxUtil {
     private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+    private static final ClientLogger LOGGER = new ClientLogger(FluxUtil.class);
 
     /**
      * Checks if a type is Flux&lt;ByteBuffer&gt;.
@@ -202,6 +208,40 @@ public final class FluxUtil {
             return Flux.empty();
         }
 
+        // If the InputStream is an instance of FileInputStream we should be able to leverage the FileChannel backing
+        // the FileInputStream to generated MappedByteBuffers which aren't loaded into memory until the content is
+        // consumed. This at least defers the memory usage until later and may also provide downstream calls ways to
+        // optimize if they have special cases for MappedByteBuffer.
+        if (inputStream instanceof FileInputStream) {
+            FileChannel fileChannel = ((FileInputStream) inputStream).getChannel();
+
+            return Flux.<ByteBuffer, FileChannel>generate(() -> fileChannel, (channel, sink) -> {
+                try {
+                    long channelPosition = channel.position();
+                    long channelSize = channel.size();
+
+                    if (channelPosition == channelSize) {
+                        // End of File has been reached, signal completion.
+                        channel.close();
+                        sink.complete();
+                    } else {
+                        // Determine the size of the next MappedByteBuffer, either the remaining File contents or the
+                        // expected chunk size.
+                        int nextByteBufferSize = (int) Math.min(chunkSize, channelSize - channelPosition);
+                        sink.next(channel.map(FileChannel.MapMode.READ_ONLY, channelPosition, nextByteBufferSize));
+
+                        // FileChannel.map doesn't update the FileChannel's position as reading would, so the position
+                        // needs to be updated based on the number of bytes mapped.
+                        channel.position(channelPosition + nextByteBufferSize);
+                    }
+                } catch (IOException ex) {
+                    sink.error(ex);
+                }
+
+                return channel;
+            });
+        }
+
         return Flux.<ByteBuffer, InputStream>generate(() -> inputStream, (stream, sink) -> {
             byte[] buffer = new byte[chunkSize];
 
@@ -242,7 +282,13 @@ public final class FluxUtil {
      * </p>
      *
      * <p><strong>Code samples</strong></p>
-     * {@codesnippet com.azure.core.implementation.util.fluxutil.withcontext}
+     * <!-- src_embed com.azure.core.implementation.util.fluxutil.withcontext -->
+     * <pre>
+     * String prefix = &quot;Hello, &quot;;
+     * Mono&lt;String&gt; response = FluxUtil
+     *     .withContext&#40;context -&gt; serviceCallReturnsSingle&#40;prefix, context&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.implementation.util.fluxutil.withcontext -->
      *
      * @param serviceCall The lambda function that makes the service call into which azure context will be passed
      * @param <T> The type of response returned from the service call
@@ -308,6 +354,18 @@ public final class FluxUtil {
     }
 
     /**
+     * Propagates a {@link RuntimeException} through the error channel of {@link Mono}.
+     *
+     * @param logBuilder The {@link LoggingEventBuilder} with context to log the exception.
+     * @param ex The {@link RuntimeException}.
+     * @param <T> The return type.
+     * @return A {@link Mono} that terminates with error wrapping the {@link RuntimeException}.
+     */
+    public static <T> Mono<T> monoError(LoggingEventBuilder logBuilder, RuntimeException ex) {
+        return Mono.error(logBuilder.log(Exceptions.propagate(ex)));
+    }
+
+    /**
      * Propagates a {@link RuntimeException} through the error channel of {@link Flux}.
      *
      * @param logger The {@link ClientLogger} to log the exception.
@@ -340,7 +398,13 @@ public final class FluxUtil {
      * </p>
      *
      * <p><strong>Code samples</strong></p>
-     * {@codesnippet com.azure.core.implementation.util.fluxutil.fluxcontext}
+     * <!-- src_embed com.azure.core.implementation.util.fluxutil.fluxcontext -->
+     * <pre>
+     * String prefix = &quot;Hello, &quot;;
+     * Flux&lt;String&gt; response = FluxUtil
+     *     .fluxContext&#40;context -&gt; serviceCallReturnsCollection&#40;prefix, context&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.implementation.util.fluxutil.fluxcontext -->
      *
      * @param serviceCall The lambda function that makes the service call into which the context will be passed
      * @param <T> The type of response returned from the service call
@@ -380,91 +444,94 @@ public final class FluxUtil {
             return reactor.util.context.Context.empty();
         }
 
-        // Filter out null value entries as Reactor's context doesn't allow null values.
-        Map<Object, Object> contextValues = context.getValues().entrySet().stream()
-            .filter(kvp -> kvp.getValue() != null)
-            .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+        reactor.util.context.Context returnContext = reactor.util.context.Context.empty();
 
-        return CoreUtils.isNullOrEmpty(contextValues)
-            ? reactor.util.context.Context.empty()
-            : reactor.util.context.Context.of(contextValues);
+        Context[] contextChain = context.getContextChain();
+        for (Context toAdd : contextChain) {
+            // Filter out null value entries as Reactor's context doesn't allow null values.
+            if (toAdd == null || toAdd.getValue() == null) {
+                continue;
+            }
+
+            returnContext = returnContext.put(toAdd.getKey(), toAdd.getValue());
+        }
+
+        return returnContext;
     }
 
     /**
-     * Writes the bytes emitted by a Flux to an AsynchronousFileChannel.
+     * Writes the {@link ByteBuffer ByteBuffers} emitted by a {@link Flux} of {@link ByteBuffer} to an {@link
+     * OutputStream}.
+     * <p>
+     * The {@code stream} is not closed by this call, closing of the {@code stream} is managed by the caller.
+     * <p>
+     * The response {@link Mono} will emit an error if {@code content} or {@code stream} are null. Additionally, an
+     * error will be emitted if an exception occurs while writing the {@code content} to the {@code stream}.
      *
-     * @param content the Flux content
-     * @param outFile the file channel
-     * @return a Mono which performs the write operation when subscribed
+     * @param content The {@link Flux} of {@link ByteBuffer} content.
+     * @param stream The {@link OutputStream} being written into.
+     * @return A {@link Mono} which emits a completion status once the {@link Flux} has been written to the {@link
+     * OutputStream}, or an error status if writing fails.
+     */
+    public static Mono<Void> writeToOutputStream(Flux<ByteBuffer> content, OutputStream stream) {
+        if (content == null && stream == null) {
+            return monoError(LOGGER, new NullPointerException("'content' and 'stream' cannot be null."));
+        } else if (content == null) {
+            return monoError(LOGGER, new NullPointerException("'content' cannot be null."));
+        } else if (stream == null) {
+            return monoError(LOGGER, new NullPointerException("'stream' cannot be null."));
+        }
+
+        return Mono.create(emitter -> content.subscribe(new OutputStreamWriteSubscriber(emitter, stream, LOGGER)));
+    }
+
+    /**
+     * Writes the {@link ByteBuffer ByteBuffers} emitted by a {@link Flux} of {@link ByteBuffer} to an {@link
+     * AsynchronousFileChannel}.
+     * <p>
+     * The {@code outFile} is not closed by this call, closing of the {@code outFile} is managed by the caller.
+     * <p>
+     * The response {@link Mono} will emit an error if {@code content} or {@code outFile} are null. Additionally, an
+     * error will be emitted if the {@code outFile} wasn't opened with the proper open options, such as {@link
+     * StandardOpenOption#WRITE}.
+     *
+     * @param content The {@link Flux} of {@link ByteBuffer} content.
+     * @param outFile The {@link AsynchronousFileChannel}.
+     * @return A {@link Mono} which emits a completion status once the {@link Flux} has been written to the {@link
+     * AsynchronousFileChannel}.
      */
     public static Mono<Void> writeFile(Flux<ByteBuffer> content, AsynchronousFileChannel outFile) {
         return writeFile(content, outFile, 0);
     }
 
     /**
-     * Writes the bytes emitted by a Flux to an AsynchronousFileChannel starting at the given position in the file.
+     * Writes the {@link ByteBuffer ByteBuffers} emitted by a {@link Flux} of {@link ByteBuffer} to an {@link
+     * AsynchronousFileChannel} starting at the given {@code position} in the file.
+     * <p>
+     * The {@code outFile} is not closed by this call, closing of the {@code outFile} is managed by the caller.
+     * <p>
+     * The response {@link Mono} will emit an error if {@code content} or {@code outFile} are null or {@code position}
+     * is less than 0. Additionally, an error will be emitted if the {@code outFile} wasn't opened with the proper open
+     * options, such as {@link StandardOpenOption#WRITE}.
      *
-     * @param content the Flux content
-     * @param outFile the file channel
-     * @param position the position in the file to begin writing
-     * @return a Mono which performs the write operation when subscribed
+     * @param content The {@link Flux} of {@link ByteBuffer} content.
+     * @param outFile The {@link AsynchronousFileChannel}.
+     * @param position The position in the file to begin writing the {@code content}.
+     * @return A {@link Mono} which emits a completion status once the {@link Flux} has been written to the {@link
+     * AsynchronousFileChannel}.
      */
     public static Mono<Void> writeFile(Flux<ByteBuffer> content, AsynchronousFileChannel outFile, long position) {
-        return Mono.create(emitter -> content.subscribe(new Subscriber<ByteBuffer>() {
-            // volatile ensures that writes to these fields by one thread will be immediately visible to other threads.
-            // An I/O pool thread will write to isWriting and read isCompleted,
-            // while another thread may read isWriting and write to isCompleted.
-            volatile boolean isWriting = false;
-            volatile boolean isCompleted = false;
-            volatile Subscription subscription;
-            volatile long pos = position;
+        if (content == null && outFile == null) {
+            return monoError(LOGGER, new NullPointerException("'content' and 'outFile' cannot be null."));
+        } else if (content == null) {
+            return monoError(LOGGER, new NullPointerException("'content' cannot be null."));
+        } else if (outFile == null) {
+            return monoError(LOGGER, new NullPointerException("'outFile' cannot be null."));
+        } else if (position < 0) {
+            return monoError(LOGGER, new IllegalArgumentException("'position' cannot be less than 0."));
+        }
 
-            @Override
-            public void onSubscribe(Subscription s) {
-                subscription = s;
-                s.request(1);
-            }
-
-            @Override
-            public void onNext(ByteBuffer bytes) {
-                isWriting = true;
-                outFile.write(bytes, pos, null, onWriteCompleted);
-            }
-
-
-            final CompletionHandler<Integer, Object> onWriteCompleted = new CompletionHandler<Integer, Object>() {
-                @Override
-                public void completed(Integer bytesWritten, Object attachment) {
-                    isWriting = false;
-                    if (isCompleted) {
-                        emitter.success();
-                    }
-                    //noinspection NonAtomicOperationOnVolatileField
-                    pos += bytesWritten;
-                    subscription.request(1);
-                }
-
-                @Override
-                public void failed(Throwable exc, Object attachment) {
-                    subscription.cancel();
-                    emitter.error(exc);
-                }
-            };
-
-            @Override
-            public void onError(Throwable throwable) {
-                subscription.cancel();
-                emitter.error(throwable);
-            }
-
-            @Override
-            public void onComplete() {
-                isCompleted = true;
-                if (!isWriting) {
-                    emitter.success();
-                }
-            }
-        }));
+        return Mono.create(emitter -> content.subscribe(new FileWriteSubscriber(outFile, position, emitter)));
     }
 
     /**
@@ -549,11 +616,10 @@ public final class FluxUtil {
             private volatile boolean cancelled;
             //
             volatile int wip;
-            @SuppressWarnings("rawtypes")
             static final AtomicIntegerFieldUpdater<FileReadSubscription> WIP =
                 AtomicIntegerFieldUpdater.newUpdater(FileReadSubscription.class, "wip");
+
             volatile long requested;
-            @SuppressWarnings("rawtypes")
             static final AtomicLongFieldUpdater<FileReadSubscription> REQUESTED =
                 AtomicLongFieldUpdater.newUpdater(FileReadSubscription.class, "requested");
             //

@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.MongoDbAtlasLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,68 +17,23 @@ import java.util.Map;
 /** Linked service for MongoDB Atlas data source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("MongoDbAtlas")
-@JsonFlatten
 @Fluent
-public class MongoDbAtlasLinkedService extends LinkedService {
+public final class MongoDbAtlasLinkedService extends LinkedService {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MongoDbAtlasLinkedService.class);
 
     /*
-     * The MongoDB Atlas connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * MongoDB Atlas linked service properties.
      */
-    @JsonProperty(value = "typeProperties.connectionString", required = true)
-    private Object connectionString;
-
-    /*
-     * The name of the MongoDB Atlas database that you want to access. Type:
-     * string (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.database", required = true)
-    private Object database;
+    @JsonProperty(value = "typeProperties", required = true)
+    private MongoDbAtlasLinkedServiceTypeProperties innerTypeProperties = new MongoDbAtlasLinkedServiceTypeProperties();
 
     /**
-     * Get the connectionString property: The MongoDB Atlas connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.
+     * Get the innerTypeProperties property: MongoDB Atlas linked service properties.
      *
-     * @return the connectionString value.
+     * @return the innerTypeProperties value.
      */
-    public Object connectionString() {
-        return this.connectionString;
-    }
-
-    /**
-     * Set the connectionString property: The MongoDB Atlas connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
-     * @param connectionString the connectionString value to set.
-     * @return the MongoDbAtlasLinkedService object itself.
-     */
-    public MongoDbAtlasLinkedService withConnectionString(Object connectionString) {
-        this.connectionString = connectionString;
-        return this;
-    }
-
-    /**
-     * Get the database property: The name of the MongoDB Atlas database that you want to access. Type: string (or
-     * Expression with resultType string).
-     *
-     * @return the database value.
-     */
-    public Object database() {
-        return this.database;
-    }
-
-    /**
-     * Set the database property: The name of the MongoDB Atlas database that you want to access. Type: string (or
-     * Expression with resultType string).
-     *
-     * @param database the database value to set.
-     * @return the MongoDbAtlasLinkedService object itself.
-     */
-    public MongoDbAtlasLinkedService withDatabase(Object database) {
-        this.database = database;
-        return this;
+    private MongoDbAtlasLinkedServiceTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -110,6 +65,56 @@ public class MongoDbAtlasLinkedService extends LinkedService {
     }
 
     /**
+     * Get the connectionString property: The MongoDB Atlas connection string. Type: string, SecureString or
+     * AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.
+     *
+     * @return the connectionString value.
+     */
+    public Object connectionString() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().connectionString();
+    }
+
+    /**
+     * Set the connectionString property: The MongoDB Atlas connection string. Type: string, SecureString or
+     * AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.
+     *
+     * @param connectionString the connectionString value to set.
+     * @return the MongoDbAtlasLinkedService object itself.
+     */
+    public MongoDbAtlasLinkedService withConnectionString(Object connectionString) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MongoDbAtlasLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withConnectionString(connectionString);
+        return this;
+    }
+
+    /**
+     * Get the database property: The name of the MongoDB Atlas database that you want to access. Type: string (or
+     * Expression with resultType string).
+     *
+     * @return the database value.
+     */
+    public Object database() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().database();
+    }
+
+    /**
+     * Set the database property: The name of the MongoDB Atlas database that you want to access. Type: string (or
+     * Expression with resultType string).
+     *
+     * @param database the database value to set.
+     * @return the MongoDbAtlasLinkedService object itself.
+     */
+    public MongoDbAtlasLinkedService withDatabase(Object database) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MongoDbAtlasLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withDatabase(database);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -117,17 +122,13 @@ public class MongoDbAtlasLinkedService extends LinkedService {
     @Override
     public void validate() {
         super.validate();
-        if (connectionString() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property connectionString in model MongoDbAtlasLinkedService"));
-        }
-        if (database() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property database in model MongoDbAtlasLinkedService"));
+                        "Missing required property innerTypeProperties in model MongoDbAtlasLinkedService"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

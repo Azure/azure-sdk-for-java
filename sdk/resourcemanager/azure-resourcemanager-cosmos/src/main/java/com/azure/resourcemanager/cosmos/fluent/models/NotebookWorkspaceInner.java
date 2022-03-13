@@ -4,31 +4,31 @@
 
 package com.azure.resourcemanager.cosmos.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.ArmProxyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A notebook workspace resource. */
-@JsonFlatten
-@Immutable
-public class NotebookWorkspaceInner extends ArmProxyResource {
+@Fluent
+public final class NotebookWorkspaceInner extends ArmProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NotebookWorkspaceInner.class);
 
     /*
-     * Specifies the endpoint of Notebook server.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.notebookServerEndpoint", access = JsonProperty.Access.WRITE_ONLY)
-    private String notebookServerEndpoint;
+    @JsonProperty(value = "properties")
+    private NotebookWorkspaceProperties innerProperties;
 
-    /*
-     * Status of the notebook workspace. Possible values are: Creating, Online,
-     * Deleting, Failed, Updating.
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private String status;
+    private NotebookWorkspaceProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the notebookServerEndpoint property: Specifies the endpoint of Notebook server.
@@ -36,7 +36,7 @@ public class NotebookWorkspaceInner extends ArmProxyResource {
      * @return the notebookServerEndpoint value.
      */
     public String notebookServerEndpoint() {
-        return this.notebookServerEndpoint;
+        return this.innerProperties() == null ? null : this.innerProperties().notebookServerEndpoint();
     }
 
     /**
@@ -46,7 +46,7 @@ public class NotebookWorkspaceInner extends ArmProxyResource {
      * @return the status value.
      */
     public String status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -57,5 +57,8 @@ public class NotebookWorkspaceInner extends ArmProxyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

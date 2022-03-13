@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.SubscriptionState;
@@ -14,120 +13,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Subscription details. */
-@JsonFlatten
 @Fluent
-public class SubscriptionContractInner extends ProxyResource {
+public final class SubscriptionContractInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionContractInner.class);
 
     /*
-     * The user resource identifier of the subscription owner. The value is a
-     * valid relative URL in the format of /users/{userId} where {userId} is a
-     * user identifier.
+     * Subscription contract properties.
      */
-    @JsonProperty(value = "properties.ownerId")
-    private String ownerId;
+    @JsonProperty(value = "properties")
+    private SubscriptionContractProperties innerProperties;
 
-    /*
-     * Scope like /products/{productId} or /apis or /apis/{apiId}.
-     */
-    @JsonProperty(value = "properties.scope")
-    private String scope;
-
-    /*
-     * The name of the subscription, or null if the subscription has no name.
-     */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
-
-    /*
-     * Subscription state. Possible states are * active – the subscription is
-     * active, * suspended – the subscription is blocked, and the subscriber
-     * cannot call any APIs of the product, * submitted – the subscription
-     * request has been made by the developer, but has not yet been approved or
-     * rejected, * rejected – the subscription request has been denied by an
-     * administrator, * cancelled – the subscription has been cancelled by the
-     * developer or administrator, * expired – the subscription reached its
-     * expiration date and was deactivated.
-     */
-    @JsonProperty(value = "properties.state")
-    private SubscriptionState state;
-
-    /*
-     * Subscription creation date. The date conforms to the following format:
-     * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
+    /**
+     * Get the innerProperties property: Subscription contract properties.
      *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.createdDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdDate;
-
-    /*
-     * Subscription activation date. The setting is for audit purposes only and
-     * the subscription is not automatically activated. The subscription
-     * lifecycle can be managed by using the `state` property. The date
-     * conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by
-     * the ISO 8601 standard.
-     *
-     */
-    @JsonProperty(value = "properties.startDate")
-    private OffsetDateTime startDate;
-
-    /*
-     * Subscription expiration date. The setting is for audit purposes only and
-     * the subscription is not automatically expired. The subscription
-     * lifecycle can be managed by using the `state` property. The date
-     * conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by
-     * the ISO 8601 standard.
-     *
-     */
-    @JsonProperty(value = "properties.expirationDate")
-    private OffsetDateTime expirationDate;
-
-    /*
-     * Date when subscription was cancelled or expired. The setting is for
-     * audit purposes only and the subscription is not automatically cancelled.
-     * The subscription lifecycle can be managed by using the `state` property.
-     * The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as
-     * specified by the ISO 8601 standard.
-     *
-     */
-    @JsonProperty(value = "properties.endDate")
-    private OffsetDateTime endDate;
-
-    /*
-     * Upcoming subscription expiration notification date. The date conforms to
-     * the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO
-     * 8601 standard.
-     *
-     */
-    @JsonProperty(value = "properties.notificationDate")
-    private OffsetDateTime notificationDate;
-
-    /*
-     * Subscription primary key. This property will not be filled on 'GET'
-     * operations! Use '/listSecrets' POST request to get the value.
-     */
-    @JsonProperty(value = "properties.primaryKey")
-    private String primaryKey;
-
-    /*
-     * Subscription secondary key. This property will not be filled on 'GET'
-     * operations! Use '/listSecrets' POST request to get the value.
-     */
-    @JsonProperty(value = "properties.secondaryKey")
-    private String secondaryKey;
-
-    /*
-     * Optional subscription comment added by an administrator when the state
-     * is changed to the 'rejected'.
-     */
-    @JsonProperty(value = "properties.stateComment")
-    private String stateComment;
-
-    /*
-     * Determines whether tracing is enabled
-     */
-    @JsonProperty(value = "properties.allowTracing")
-    private Boolean allowTracing;
+    private SubscriptionContractProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the ownerId property: The user resource identifier of the subscription owner. The value is a valid relative
@@ -136,7 +39,7 @@ public class SubscriptionContractInner extends ProxyResource {
      * @return the ownerId value.
      */
     public String ownerId() {
-        return this.ownerId;
+        return this.innerProperties() == null ? null : this.innerProperties().ownerId();
     }
 
     /**
@@ -147,7 +50,10 @@ public class SubscriptionContractInner extends ProxyResource {
      * @return the SubscriptionContractInner object itself.
      */
     public SubscriptionContractInner withOwnerId(String ownerId) {
-        this.ownerId = ownerId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubscriptionContractProperties();
+        }
+        this.innerProperties().withOwnerId(ownerId);
         return this;
     }
 
@@ -157,7 +63,7 @@ public class SubscriptionContractInner extends ProxyResource {
      * @return the scope value.
      */
     public String scope() {
-        return this.scope;
+        return this.innerProperties() == null ? null : this.innerProperties().scope();
     }
 
     /**
@@ -167,7 +73,10 @@ public class SubscriptionContractInner extends ProxyResource {
      * @return the SubscriptionContractInner object itself.
      */
     public SubscriptionContractInner withScope(String scope) {
-        this.scope = scope;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubscriptionContractProperties();
+        }
+        this.innerProperties().withScope(scope);
         return this;
     }
 
@@ -177,7 +86,7 @@ public class SubscriptionContractInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -187,7 +96,10 @@ public class SubscriptionContractInner extends ProxyResource {
      * @return the SubscriptionContractInner object itself.
      */
     public SubscriptionContractInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubscriptionContractProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -201,7 +113,7 @@ public class SubscriptionContractInner extends ProxyResource {
      * @return the state value.
      */
     public SubscriptionState state() {
-        return this.state;
+        return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
     /**
@@ -215,7 +127,10 @@ public class SubscriptionContractInner extends ProxyResource {
      * @return the SubscriptionContractInner object itself.
      */
     public SubscriptionContractInner withState(SubscriptionState state) {
-        this.state = state;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubscriptionContractProperties();
+        }
+        this.innerProperties().withState(state);
         return this;
     }
 
@@ -226,7 +141,7 @@ public class SubscriptionContractInner extends ProxyResource {
      * @return the createdDate value.
      */
     public OffsetDateTime createdDate() {
-        return this.createdDate;
+        return this.innerProperties() == null ? null : this.innerProperties().createdDate();
     }
 
     /**
@@ -238,7 +153,7 @@ public class SubscriptionContractInner extends ProxyResource {
      * @return the startDate value.
      */
     public OffsetDateTime startDate() {
-        return this.startDate;
+        return this.innerProperties() == null ? null : this.innerProperties().startDate();
     }
 
     /**
@@ -251,7 +166,10 @@ public class SubscriptionContractInner extends ProxyResource {
      * @return the SubscriptionContractInner object itself.
      */
     public SubscriptionContractInner withStartDate(OffsetDateTime startDate) {
-        this.startDate = startDate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubscriptionContractProperties();
+        }
+        this.innerProperties().withStartDate(startDate);
         return this;
     }
 
@@ -264,7 +182,7 @@ public class SubscriptionContractInner extends ProxyResource {
      * @return the expirationDate value.
      */
     public OffsetDateTime expirationDate() {
-        return this.expirationDate;
+        return this.innerProperties() == null ? null : this.innerProperties().expirationDate();
     }
 
     /**
@@ -277,7 +195,10 @@ public class SubscriptionContractInner extends ProxyResource {
      * @return the SubscriptionContractInner object itself.
      */
     public SubscriptionContractInner withExpirationDate(OffsetDateTime expirationDate) {
-        this.expirationDate = expirationDate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubscriptionContractProperties();
+        }
+        this.innerProperties().withExpirationDate(expirationDate);
         return this;
     }
 
@@ -290,7 +211,7 @@ public class SubscriptionContractInner extends ProxyResource {
      * @return the endDate value.
      */
     public OffsetDateTime endDate() {
-        return this.endDate;
+        return this.innerProperties() == null ? null : this.innerProperties().endDate();
     }
 
     /**
@@ -303,7 +224,10 @@ public class SubscriptionContractInner extends ProxyResource {
      * @return the SubscriptionContractInner object itself.
      */
     public SubscriptionContractInner withEndDate(OffsetDateTime endDate) {
-        this.endDate = endDate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubscriptionContractProperties();
+        }
+        this.innerProperties().withEndDate(endDate);
         return this;
     }
 
@@ -314,7 +238,7 @@ public class SubscriptionContractInner extends ProxyResource {
      * @return the notificationDate value.
      */
     public OffsetDateTime notificationDate() {
-        return this.notificationDate;
+        return this.innerProperties() == null ? null : this.innerProperties().notificationDate();
     }
 
     /**
@@ -325,7 +249,10 @@ public class SubscriptionContractInner extends ProxyResource {
      * @return the SubscriptionContractInner object itself.
      */
     public SubscriptionContractInner withNotificationDate(OffsetDateTime notificationDate) {
-        this.notificationDate = notificationDate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubscriptionContractProperties();
+        }
+        this.innerProperties().withNotificationDate(notificationDate);
         return this;
     }
 
@@ -336,7 +263,7 @@ public class SubscriptionContractInner extends ProxyResource {
      * @return the primaryKey value.
      */
     public String primaryKey() {
-        return this.primaryKey;
+        return this.innerProperties() == null ? null : this.innerProperties().primaryKey();
     }
 
     /**
@@ -347,7 +274,10 @@ public class SubscriptionContractInner extends ProxyResource {
      * @return the SubscriptionContractInner object itself.
      */
     public SubscriptionContractInner withPrimaryKey(String primaryKey) {
-        this.primaryKey = primaryKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubscriptionContractProperties();
+        }
+        this.innerProperties().withPrimaryKey(primaryKey);
         return this;
     }
 
@@ -358,7 +288,7 @@ public class SubscriptionContractInner extends ProxyResource {
      * @return the secondaryKey value.
      */
     public String secondaryKey() {
-        return this.secondaryKey;
+        return this.innerProperties() == null ? null : this.innerProperties().secondaryKey();
     }
 
     /**
@@ -369,7 +299,10 @@ public class SubscriptionContractInner extends ProxyResource {
      * @return the SubscriptionContractInner object itself.
      */
     public SubscriptionContractInner withSecondaryKey(String secondaryKey) {
-        this.secondaryKey = secondaryKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubscriptionContractProperties();
+        }
+        this.innerProperties().withSecondaryKey(secondaryKey);
         return this;
     }
 
@@ -380,7 +313,7 @@ public class SubscriptionContractInner extends ProxyResource {
      * @return the stateComment value.
      */
     public String stateComment() {
-        return this.stateComment;
+        return this.innerProperties() == null ? null : this.innerProperties().stateComment();
     }
 
     /**
@@ -391,7 +324,10 @@ public class SubscriptionContractInner extends ProxyResource {
      * @return the SubscriptionContractInner object itself.
      */
     public SubscriptionContractInner withStateComment(String stateComment) {
-        this.stateComment = stateComment;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubscriptionContractProperties();
+        }
+        this.innerProperties().withStateComment(stateComment);
         return this;
     }
 
@@ -401,7 +337,7 @@ public class SubscriptionContractInner extends ProxyResource {
      * @return the allowTracing value.
      */
     public Boolean allowTracing() {
-        return this.allowTracing;
+        return this.innerProperties() == null ? null : this.innerProperties().allowTracing();
     }
 
     /**
@@ -411,7 +347,10 @@ public class SubscriptionContractInner extends ProxyResource {
      * @return the SubscriptionContractInner object itself.
      */
     public SubscriptionContractInner withAllowTracing(Boolean allowTracing) {
-        this.allowTracing = allowTracing;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubscriptionContractProperties();
+        }
+        this.innerProperties().withAllowTracing(allowTracing);
         return this;
     }
 
@@ -421,5 +360,8 @@ public class SubscriptionContractInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

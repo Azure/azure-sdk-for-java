@@ -15,9 +15,9 @@ public final class ListAnomaliesDetectedOptions {
     private ListAnomaliesDetectedFilter filter;
 
     /**
-     * Gets limit indicating the number of items to be included in a service returned page.
+     * Gets limit indicating the number of items that will be included in a service returned page.
      *
-     * @return The maxPageSize value.
+     * @return The max page size value.
      */
     public Integer getMaxPageSize() {
         return this.maxPageSize;
@@ -45,10 +45,10 @@ public final class ListAnomaliesDetectedOptions {
     /**
      * Gets limit indicating the number of items to be included in a service returned page.
      *
-     * @param maxPageSize The maxPageSize value.
+     * @param maxPageSize The max page size value.
      * @return The ListAnomaliesDetectedOptions object itself.
      */
-    public ListAnomaliesDetectedOptions setMaxPageSize(int maxPageSize) {
+    public ListAnomaliesDetectedOptions setMaxPageSize(Integer maxPageSize) {
         this.maxPageSize = maxPageSize;
         return this;
     }
@@ -60,7 +60,7 @@ public final class ListAnomaliesDetectedOptions {
      * @param skip The skip value.
      * @return The ListAnomaliesDetectedOptions object itself.
      */
-    public ListAnomaliesDetectedOptions setSkip(int skip) {
+    public ListAnomaliesDetectedOptions setSkip(Integer skip) {
         this.skip = skip;
         return this;
     }

@@ -1,67 +1,45 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/fb5a6ed6-2b9e-4b72-8b0c-0046ead1c15c/anomalies/dimension/query?$maxpagesize=10",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/efaee305-f049-43ec-9f9b-76026d55c14a/anomalies/dimension/query?$maxpagesize=10",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.4 (1.8.0_221; Mac OS X; 10.16)",
-      "x-ms-client-request-id" : "ec8c767a-9953-4e07-a812-8d1ee8891b1f",
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7538f1aa-5feb-4ca5-8358-bde740637187",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "3be448f8-e1fa-4584-b370-3a7d0717d4ef",
-      "content-length" : "453",
-      "x-envoy-upstream-service-time" : "164",
+      "x-request-id" : "06153ea0-45d4-471f-8385-c2538aa6a68a",
+      "content-length" : "327",
+      "x-envoy-upstream-service-time" : "172",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "3be448f8-e1fa-4584-b370-3a7d0717d4ef",
+      "apim-request-id" : "06153ea0-45d4-471f-8385-c2538aa6a68a",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"value\":[\"__SUM__\",\"Shoes Handbags & Sunglasses\",\"Handmade\",\"Home & Garden\",\"Industrial & Scientific\",\"Cell Phones\",\"Office Products\",\"Software & Computer Games\",\"Electronics (Consumer)\",\"Historical & Advertising Collectibles\"],\"@nextLink\":\"https://js-metrics-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/fb5a6ed6-2b9e-4b72-8b0c-0046ead1c15c/anomalies/dimension/query?$maxpagesize=10&$skip=10\"}",
-      "Date" : "Mon, 24 May 2021 21:31:41 GMT",
+      "Body" : "{\"value\":[\"__SUM__\",\"Karachi\",\"Delhi\",\"Mumbai\",\"Seoul\",\"Beijing\",\"Cairo\",\"New York\",\"Miami\",\"Tianjin\"],\"@nextLink\":\"https://ga-metrics-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/efaee305-f049-43ec-9f9b-76026d55c14a/anomalies/dimension/query?$maxpagesize=10&$skip=10\"}",
+      "Date" : "Thu, 28 Oct 2021 22:36:25 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com:443/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/fb5a6ed6-2b9e-4b72-8b0c-0046ead1c15c/anomalies/dimension/query?$maxpagesize=10&$skip=10",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com:443/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/efaee305-f049-43ec-9f9b-76026d55c14a/anomalies/dimension/query?$maxpagesize=10&$skip=10",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.4 (1.8.0_221; Mac OS X; 10.16)",
-      "x-ms-client-request-id" : "c0a0a030-d782-41c7-9ee8-eedac31673f6",
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "53a2af7d-82a8-4483-91c8-3c4920c70291",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "0653b500-9006-4739-8cc4-18a269ea282b",
-      "content-length" : "452",
-      "x-envoy-upstream-service-time" : "1767",
+      "x-request-id" : "69a7defe-9ec8-433d-8fc6-3048e346f144",
+      "content-length" : "22",
+      "x-envoy-upstream-service-time" : "2832",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "0653b500-9006-4739-8cc4-18a269ea282b",
+      "apim-request-id" : "69a7defe-9ec8-433d-8fc6-3048e346f144",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"value\":[\"Automotive & Powersports\",\"Electronics (Accessories)\",\"Grocery & Gourmet Food\",\"Device Accessories\",\"Camera & Photo\",\"Musical Instruments\",\"Jewelry\",\"Baby Products (Excluding Apparel)\",\"Collectible Coins\",\"Outdoors\"],\"@nextLink\":\"https://js-metrics-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/fb5a6ed6-2b9e-4b72-8b0c-0046ead1c15c/anomalies/dimension/query?$maxpagesize=10&$skip=20\"}",
-      "Date" : "Mon, 24 May 2021 21:31:43 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com:443/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/fb5a6ed6-2b9e-4b72-8b0c-0046ead1c15c/anomalies/dimension/query?$maxpagesize=10&$skip=20",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.4 (1.8.0_221; Mac OS X; 10.16)",
-      "x-ms-client-request-id" : "bb569076-0198-478f-b2d3-0f24e02ea8ce",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "x-request-id" : "ee69d95d-81ba-4e6a-b0b2-bb0f9d16d91b",
-      "content-length" : "32",
-      "x-envoy-upstream-service-time" : "32970",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "ee69d95d-81ba-4e6a-b0b2-bb0f9d16d91b",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"value\":[\"Personal Computers\"]}",
-      "Date" : "Mon, 24 May 2021 21:32:16 GMT",
+      "Body" : "{\"value\":[\"Istanbul\"]}",
+      "Date" : "Thu, 28 Oct 2021 22:36:27 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

@@ -6,7 +6,7 @@ package com.azure.ai.metricsadvisor.administration;
 import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectionConfiguration;
 import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectorDirection;
 import com.azure.ai.metricsadvisor.administration.models.ChangeThresholdCondition;
-import com.azure.ai.metricsadvisor.administration.models.DetectionConditionsOperator;
+import com.azure.ai.metricsadvisor.administration.models.DetectionConditionOperator;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.administration.models.HardThresholdCondition;
 import com.azure.ai.metricsadvisor.administration.models.MetricSeriesGroupDetectionCondition;
@@ -33,58 +33,58 @@ public class AnomalyDetectionConfigurationSample {
 
         final String metricId = "0b836da8-10e6-46cd-8f4f-28262e113a62";
 
+        // List configurations
+        System.out.printf("Listing detection configurations%n");
+        PagedIterable<AnomalyDetectionConfiguration> detectionConfigsIterable
+            = advisorAdministrationClient.listDetectionConfigs(metricId);
+
+        for (AnomalyDetectionConfiguration detectionConfig : detectionConfigsIterable) {
+            printDetectionConfiguration(detectionConfig);
+        }
+
         // Create the detection configuration.
         System.out.printf("Creating detection configuration for metric: %s%n", metricId);
         AnomalyDetectionConfiguration config
             = advisorAdministrationClient
-            .createMetricAnomalyDetectionConfig(metricId, prepareDetectionConfigurationObject());
+            .createDetectionConfig(metricId, prepareDetectionConfigurationObject());
         System.out.printf("Created detection configuration: %s%n", config.getId());
 
         // Retrieve the detection configuration that just created.
         System.out.printf("Fetching detection configuration: %s%n", config.getId());
-        config = advisorAdministrationClient.getMetricAnomalyDetectionConfig(
+        config = advisorAdministrationClient.getDetectionConfig(
             config.getId());
         printDetectionConfiguration(config);
 
         // Update the detection configuration.
         System.out.printf("Updating detection configuration: %s%n", config.getId());
         config = updateDetectionConfigurationObject(config);
-        advisorAdministrationClient.updateMetricAnomalyDetectionConfig(config);
+        advisorAdministrationClient.updateDetectionConfig(config);
         System.out.printf("Updated detection configuration%n");
-
-        // List configurations
-        System.out.printf("Listing detection configurations%n");
-        PagedIterable<AnomalyDetectionConfiguration> detectionConfigsIterable
-            = advisorAdministrationClient.listMetricAnomalyDetectionConfigs(metricId);
-
-        for (AnomalyDetectionConfiguration detectionConfig : detectionConfigsIterable) {
-            printDetectionConfiguration(detectionConfig);
-        }
 
         // Delete the detection configuration.
         System.out.printf("Deleting detection configuration: %s%n", config.getId());
-        advisorAdministrationClient.deleteMetricAnomalyDetectionConfig(config.getId());
+        advisorAdministrationClient.deleteDetectionConfig(config.getId());
         System.out.printf("Deleted detection configuration%n");
     }
 
     private static AnomalyDetectionConfiguration prepareDetectionConfigurationObject() {
         final MetricWholeSeriesDetectionCondition wholeSeriesCondition = new MetricWholeSeriesDetectionCondition()
-            .setCrossConditionOperator(DetectionConditionsOperator.OR)
-            .setSmartDetectionCondition(new SmartDetectionCondition()
-                .setSensitivity(50)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(50).setMinRatio(50)))
-            .setHardThresholdCondition(new HardThresholdCondition()
+            .setConditionOperator(DetectionConditionOperator.OR)
+            .setSmartDetectionCondition(new SmartDetectionCondition(
+                50,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(12, 50)))
+            .setHardThresholdCondition(new HardThresholdCondition(
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(5, 5))
                 .setLowerBound(0.0)
-                .setUpperBound(100.0)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(5).setMinRatio(5)))
-            .setChangeThresholdCondition(new ChangeThresholdCondition()
-                .setChangePercentage(50)
-                .setShiftPoint(30)
-                .setWithinRange(true)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(2).setMinRatio(2)));
+                .setUpperBound(100.0))
+            .setChangeThresholdCondition(new ChangeThresholdCondition(
+                50,
+                30,
+                true,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(2, 2)));
 
         final String detectionConfigName = "my_detection_config";
         final String detectionConfigDescription = "anomaly detection config for metric";
@@ -103,10 +103,10 @@ public class AnomalyDetectionConfigurationSample {
             .put("city", "Seoul");
         detectionConfig.addSeriesGroupDetectionCondition(
             new MetricSeriesGroupDetectionCondition(seriesGroupKey)
-                .setSmartDetectionCondition(new SmartDetectionCondition()
-                    .setSensitivity(10.0)
-                    .setAnomalyDetectorDirection(AnomalyDetectorDirection.UP)
-                    .setSuppressCondition(new SuppressCondition().setMinNumber(2).setMinRatio(2))));
+                .setSmartDetectionCondition(new SmartDetectionCondition(
+                    10.0,
+                    AnomalyDetectorDirection.UP,
+                    new SuppressCondition(2, 2))));
         return detectionConfig;
     }
 
@@ -117,163 +117,224 @@ public class AnomalyDetectionConfigurationSample {
         System.out.printf("MetricId: %s%n", detectionConfig.getMetricId());
 
         System.out.printf("Detection conditions specified for configuration...%n");
+        printWholeSeriesCondition(detectionConfig);
+        printSeriesDetectionConditions(detectionConfig);
+        printSeriesGroupDetectionConditions(detectionConfig);
+    }
 
-        System.out.printf("Whole Series Detection Conditions:%n");
+    private static void printWholeSeriesCondition(AnomalyDetectionConfiguration detectionConfig) {
+        System.out.printf("Whole Series Detection Condition:%n");
         MetricWholeSeriesDetectionCondition wholeSeriesDetectionCondition
             = detectionConfig.getWholeSeriesDetectionCondition();
 
+        if (wholeSeriesDetectionCondition == null) {
+            System.out.printf("Whole Series Detection Condition is not set:%n");
+            return;
+        }
+
         System.out.printf("- Use %s operator for multiple detection conditions:%n",
-            wholeSeriesDetectionCondition.getCrossConditionsOperator());
+            wholeSeriesDetectionCondition.getConditionOperator());
 
         System.out.printf("- Smart Detection Condition:%n");
-        System.out.printf(" - Sensitivity: %s%n",
-            wholeSeriesDetectionCondition.getSmartDetectionCondition()
-                .getSensitivity());
-        System.out.printf(" - Detection direction: %s%n",
-            wholeSeriesDetectionCondition.getSmartDetectionCondition()
-                .getAnomalyDetectorDirection());
-        System.out.printf(" - Suppress conditions: minimum number: %s; minimum ratio: %s%n",
-            wholeSeriesDetectionCondition.getSmartDetectionCondition()
-                .getSuppressCondition().getMinNumber(),
-            wholeSeriesDetectionCondition.getSmartDetectionCondition()
-                .getSuppressCondition().getMinRatio());
+        if (wholeSeriesDetectionCondition.getSmartDetectionCondition() == null) {
+            System.out.printf("- Smart Detection Condition is not set:%n");
+        } else {
+            System.out.printf(" - Sensitivity: %s%n",
+                wholeSeriesDetectionCondition.getSmartDetectionCondition()
+                    .getSensitivity());
+            System.out.printf(" - Detection direction: %s%n",
+                wholeSeriesDetectionCondition.getSmartDetectionCondition()
+                    .getAnomalyDetectorDirection());
+            System.out.printf(" - Suppress conditions: minimum number: %s; minimum ratio: %s%n",
+                wholeSeriesDetectionCondition.getSmartDetectionCondition()
+                    .getSuppressCondition().getMinNumber(),
+                wholeSeriesDetectionCondition.getSmartDetectionCondition()
+                    .getSuppressCondition().getMinRatio());
+        }
 
         System.out.printf("- Hard Threshold Condition:%n");
-        System.out.printf(" - Lower bound: %s%n",
-            wholeSeriesDetectionCondition.getHardThresholdCondition()
-                .getLowerBound());
-        System.out.printf(" - Upper bound: %s%n",
-            wholeSeriesDetectionCondition.getHardThresholdCondition()
-                .getUpperBound());
-        System.out.printf(" - Suppress conditions: minimum number: %s; minimum ratio: %s%n",
-            wholeSeriesDetectionCondition.getHardThresholdCondition()
-                .getSuppressCondition().getMinNumber(),
-            wholeSeriesDetectionCondition.getHardThresholdCondition()
-                .getSuppressCondition().getMinRatio());
+        if (wholeSeriesDetectionCondition.getHardThresholdCondition() == null) {
+            System.out.printf("- Hard Threshold Condition is not set:%n");
+        } else {
+            System.out.printf(" - Lower bound: %s%n",
+                wholeSeriesDetectionCondition.getHardThresholdCondition()
+                    .getLowerBound());
+            System.out.printf(" - Upper bound: %s%n",
+                wholeSeriesDetectionCondition.getHardThresholdCondition()
+                    .getUpperBound());
+            System.out.printf(" - Suppress conditions: minimum number: %s; minimum ratio: %s%n",
+                wholeSeriesDetectionCondition.getHardThresholdCondition()
+                    .getSuppressCondition().getMinNumber(),
+                wholeSeriesDetectionCondition.getHardThresholdCondition()
+                    .getSuppressCondition().getMinRatio());
+        }
 
         System.out.printf("- Change Threshold Condition:%n");
-        System.out.printf(" - Change percentage: %s%n",
-            wholeSeriesDetectionCondition.getChangeThresholdCondition()
-                .getChangePercentage());
-        System.out.printf(" - Shift point: %s%n",
-            wholeSeriesDetectionCondition.getChangeThresholdCondition()
-                .getShiftPoint());
-        System.out.printf(" - Detect anomaly if within range: %s%n",
-            wholeSeriesDetectionCondition.getChangeThresholdCondition()
-                .isWithinRange());
-        System.out.printf(" - Suppress conditions: minimum number: %s; minimum ratio: %s%n",
-            wholeSeriesDetectionCondition.getChangeThresholdCondition()
-                .getSuppressCondition().getMinNumber(),
-            wholeSeriesDetectionCondition.getChangeThresholdCondition()
-                .getSuppressCondition().getMinRatio());
+        if (wholeSeriesDetectionCondition.getChangeThresholdCondition() == null) {
+            System.out.printf("- Change Threshold Condition is not set:%n");
+        } else {
+            System.out.printf(" - Change percentage: %s%n",
+                wholeSeriesDetectionCondition.getChangeThresholdCondition()
+                    .getChangePercentage());
+            System.out.printf(" - Shift point: %s%n",
+                wholeSeriesDetectionCondition.getChangeThresholdCondition()
+                    .getShiftPoint());
+            System.out.printf(" - Detect anomaly if within range: %s%n",
+                wholeSeriesDetectionCondition.getChangeThresholdCondition()
+                    .isWithinRange());
+            System.out.printf(" - Suppress conditions: minimum number: %s; minimum ratio: %s%n",
+                wholeSeriesDetectionCondition.getChangeThresholdCondition()
+                    .getSuppressCondition().getMinNumber(),
+                wholeSeriesDetectionCondition.getChangeThresholdCondition()
+                    .getSuppressCondition().getMinRatio());
+        }
+    }
 
+    private static void printSeriesDetectionConditions(AnomalyDetectionConfiguration detectionConfig) {
         List<MetricSingleSeriesDetectionCondition> seriesDetectionConditions
             = detectionConfig.getSeriesDetectionConditions();
+
         System.out.printf("Series Detection Conditions:%n");
+        if (seriesDetectionConditions.isEmpty()) {
+            System.out.printf("No Series Detection Conditions set:%n");
+        }
+
         for (MetricSingleSeriesDetectionCondition seriesDetectionCondition : seriesDetectionConditions) {
             DimensionKey seriesKey = seriesDetectionCondition.getSeriesKey();
             final String seriesKeyStr
                 = Arrays.toString(seriesKey.asMap().entrySet().stream().toArray());
-            System.out.printf("- Series Key:%n", seriesKeyStr);
+            System.out.printf("- Series Key: %s%n", seriesKeyStr);
             System.out.printf(" - Use %s operator for multiple detection conditions:%n",
-                seriesDetectionCondition.getCrossConditionsOperator());
+                seriesDetectionCondition.getConditionOperator());
 
             System.out.printf(" - Smart Detection Condition:%n");
-            System.out.printf("  - Sensitivity: %s%n",
-                seriesDetectionCondition.getSmartDetectionCondition()
-                    .getSensitivity());
-            System.out.printf("  - Detection direction: %s%n",
-                seriesDetectionCondition.getSmartDetectionCondition()
-                    .getAnomalyDetectorDirection());
-            System.out.printf("  - Suppress conditions: minimum number: %s; minimum ratio: %s%n",
-                seriesDetectionCondition.getSmartDetectionCondition()
-                    .getSuppressCondition().getMinNumber(),
-                seriesDetectionCondition.getSmartDetectionCondition()
-                    .getSuppressCondition().getMinRatio());
+            if (seriesDetectionCondition.getSmartDetectionCondition() == null) {
+                System.out.printf(" - Smart Detection Condition is not set:%n");
+            } else {
+                System.out.printf("  - Sensitivity: %s%n",
+                    seriesDetectionCondition.getSmartDetectionCondition()
+                        .getSensitivity());
+                System.out.printf("  - Detection direction: %s%n",
+                    seriesDetectionCondition.getSmartDetectionCondition()
+                        .getAnomalyDetectorDirection());
+                System.out.printf("  - Suppress conditions: minimum number: %s; minimum ratio: %s%n",
+                    seriesDetectionCondition.getSmartDetectionCondition()
+                        .getSuppressCondition().getMinNumber(),
+                    seriesDetectionCondition.getSmartDetectionCondition()
+                        .getSuppressCondition().getMinRatio());
+            }
 
             System.out.printf(" - Hard Threshold Condition:%n");
-            System.out.printf("  -  Lower bound: %s%n",
-                seriesDetectionCondition.getHardThresholdCondition()
-                    .getLowerBound());
-            System.out.printf("  -  Upper bound: %s%n",
-                seriesDetectionCondition.getHardThresholdCondition()
-                    .getUpperBound());
-            System.out.printf("  -  Suppress conditions: minimum number: %s; minimum ratio: %s%n",
-                seriesDetectionCondition.getHardThresholdCondition()
-                    .getSuppressCondition().getMinNumber(),
-                seriesDetectionCondition.getHardThresholdCondition()
-                    .getSuppressCondition().getMinRatio());
+            if (seriesDetectionCondition.getHardThresholdCondition() == null) {
+                System.out.printf(" - Hard Threshold Condition is not set:%n");
+            } else {
+                System.out.printf("  -  Lower bound: %s%n",
+                    seriesDetectionCondition.getHardThresholdCondition()
+                        .getLowerBound());
+                System.out.printf("  -  Upper bound: %s%n",
+                    seriesDetectionCondition.getHardThresholdCondition()
+                        .getUpperBound());
+                System.out.printf("  -  Suppress conditions: minimum number: %s; minimum ratio: %s%n",
+                    seriesDetectionCondition.getHardThresholdCondition()
+                        .getSuppressCondition().getMinNumber(),
+                    seriesDetectionCondition.getHardThresholdCondition()
+                        .getSuppressCondition().getMinRatio());
+            }
 
             System.out.printf(" - Change Threshold Condition:%n");
-            System.out.printf("  -  Change percentage: %s%n",
-                seriesDetectionCondition.getChangeThresholdCondition()
-                    .getChangePercentage());
-            System.out.printf("  -  Shift point: %s%n",
-                seriesDetectionCondition.getChangeThresholdCondition()
-                    .getShiftPoint());
-            System.out.printf("  -  Detect anomaly if within range: %s%n",
-                seriesDetectionCondition.getChangeThresholdCondition()
-                    .isWithinRange());
-            System.out.printf("  -  Suppress conditions: minimum number: %s; minimum ratio: %s%n",
-                seriesDetectionCondition.getChangeThresholdCondition()
-                    .getSuppressCondition().getMinNumber(),
-                seriesDetectionCondition.getChangeThresholdCondition()
-                    .getSuppressCondition().getMinRatio());
+            if (seriesDetectionCondition.getChangeThresholdCondition() == null) {
+                System.out.printf(" - Change Threshold Condition is not set:%n");
+            } else {
+                System.out.printf("  -  Change percentage: %s%n",
+                    seriesDetectionCondition.getChangeThresholdCondition()
+                        .getChangePercentage());
+                System.out.printf("  -  Shift point: %s%n",
+                    seriesDetectionCondition.getChangeThresholdCondition()
+                        .getShiftPoint());
+                System.out.printf("  -  Detect anomaly if within range: %s%n",
+                    seriesDetectionCondition.getChangeThresholdCondition()
+                        .isWithinRange());
+                System.out.printf("  -  Suppress conditions: minimum number: %s; minimum ratio: %s%n",
+                    seriesDetectionCondition.getChangeThresholdCondition()
+                        .getSuppressCondition().getMinNumber(),
+                    seriesDetectionCondition.getChangeThresholdCondition()
+                        .getSuppressCondition().getMinRatio());
+            }
         }
+    }
 
+    private static void printSeriesGroupDetectionConditions(AnomalyDetectionConfiguration detectionConfig) {
         List<MetricSeriesGroupDetectionCondition> seriesGroupDetectionConditions
             = detectionConfig.getSeriesGroupDetectionConditions();
+
         System.out.printf("Series Group Detection Conditions:%n");
+        if (seriesGroupDetectionConditions.isEmpty()) {
+            System.out.printf("Series Group Detection Conditions set:%n");
+            return;
+        }
+
         for (MetricSeriesGroupDetectionCondition seriesGroupDetectionCondition
             : seriesGroupDetectionConditions) {
             DimensionKey seriesGroupKey = seriesGroupDetectionCondition.getSeriesGroupKey();
             final String seriesGroupKeyStr
                 = Arrays.toString(seriesGroupKey.asMap().entrySet().stream().toArray());
-            System.out.printf("- Series Group Key:%n", seriesGroupKeyStr);
+            System.out.printf("- Series Group Key: %s%n", seriesGroupKeyStr);
             System.out.printf(" - Use %s operator for multiple detection conditions:%n",
-                seriesGroupDetectionCondition.getCrossConditionsOperator());
+                seriesGroupDetectionCondition.getConditionOperator());
 
             System.out.printf(" - Smart Detection Condition:%n");
-            System.out.printf("  - Sensitivity: %s%n",
-                seriesGroupDetectionCondition.getSmartDetectionCondition()
-                    .getSensitivity());
-            System.out.printf("  - Detection direction: %s%n",
-                seriesGroupDetectionCondition.getSmartDetectionCondition()
-                    .getAnomalyDetectorDirection());
-            System.out.printf("  - Suppress conditions: minimum number: %s; minimum ratio: %s%n",
-                seriesGroupDetectionCondition.getSmartDetectionCondition()
-                    .getSuppressCondition().getMinNumber(),
-                seriesGroupDetectionCondition.getSmartDetectionCondition()
-                    .getSuppressCondition().getMinRatio());
+            if (seriesGroupDetectionCondition.getSmartDetectionCondition() == null) {
+                System.out.printf(" - Smart Detection Condition is not set:%n");
+            } else {
+                System.out.printf("  - Sensitivity: %s%n",
+                    seriesGroupDetectionCondition.getSmartDetectionCondition()
+                        .getSensitivity());
+                System.out.printf("  - Detection direction: %s%n",
+                    seriesGroupDetectionCondition.getSmartDetectionCondition()
+                        .getAnomalyDetectorDirection());
+                System.out.printf("  - Suppress conditions: minimum number: %s; minimum ratio: %s%n",
+                    seriesGroupDetectionCondition.getSmartDetectionCondition()
+                        .getSuppressCondition().getMinNumber(),
+                    seriesGroupDetectionCondition.getSmartDetectionCondition()
+                        .getSuppressCondition().getMinRatio());
+            }
 
             System.out.printf(" - Hard Threshold Condition:%n");
-            System.out.printf("  -  Lower bound: %s%n",
-                seriesGroupDetectionCondition.getHardThresholdCondition()
-                    .getLowerBound());
-            System.out.printf("  -  Upper bound: %s%n",
-                seriesGroupDetectionCondition.getHardThresholdCondition()
-                    .getUpperBound());
-            System.out.printf("  -  Suppress conditions: minimum number: %s; minimum ratio: %s%n",
-                seriesGroupDetectionCondition.getHardThresholdCondition()
-                    .getSuppressCondition().getMinNumber(),
-                seriesGroupDetectionCondition.getHardThresholdCondition()
-                    .getSuppressCondition().getMinRatio());
+            if (seriesGroupDetectionCondition.getHardThresholdCondition() == null) {
+                System.out.printf(" - Hard Threshold Condition is not set:%n");
+            } else {
+                System.out.printf("  -  Lower bound: %s%n",
+                    seriesGroupDetectionCondition.getHardThresholdCondition()
+                        .getLowerBound());
+                System.out.printf("  -  Upper bound: %s%n",
+                    seriesGroupDetectionCondition.getHardThresholdCondition()
+                        .getUpperBound());
+                System.out.printf("  -  Suppress conditions: minimum number: %s; minimum ratio: %s%n",
+                    seriesGroupDetectionCondition.getHardThresholdCondition()
+                        .getSuppressCondition().getMinNumber(),
+                    seriesGroupDetectionCondition.getHardThresholdCondition()
+                        .getSuppressCondition().getMinRatio());
+            }
 
             System.out.printf(" - Change Threshold Condition:%n");
-            System.out.printf("  -  Change percentage: %s%n",
-                seriesGroupDetectionCondition.getChangeThresholdCondition()
-                    .getChangePercentage());
-            System.out.printf("  -  Shift point: %s%n",
-                seriesGroupDetectionCondition.getChangeThresholdCondition()
-                    .getShiftPoint());
-            System.out.printf("  -  Detect anomaly if within range: %s%n",
-                seriesGroupDetectionCondition.getChangeThresholdCondition()
-                    .isWithinRange());
-            System.out.printf("  -  Suppress conditions: minimum number: %s; minimum ratio: %s%n",
-                seriesGroupDetectionCondition.getChangeThresholdCondition()
-                    .getSuppressCondition().getMinNumber(),
-                seriesGroupDetectionCondition.getChangeThresholdCondition()
-                    .getSuppressCondition().getMinRatio());
+            if (seriesGroupDetectionCondition.getChangeThresholdCondition() == null) {
+                System.out.printf(" - Change Threshold Condition is not set:%n");
+            } else {
+                System.out.printf("  -  Change percentage: %s%n",
+                    seriesGroupDetectionCondition.getChangeThresholdCondition()
+                        .getChangePercentage());
+                System.out.printf("  -  Shift point: %s%n",
+                    seriesGroupDetectionCondition.getChangeThresholdCondition()
+                        .getShiftPoint());
+                System.out.printf("  -  Detect anomaly if within range: %s%n",
+                    seriesGroupDetectionCondition.getChangeThresholdCondition()
+                        .isWithinRange());
+                System.out.printf("  -  Suppress conditions: minimum number: %s; minimum ratio: %s%n",
+                    seriesGroupDetectionCondition.getChangeThresholdCondition()
+                        .getSuppressCondition().getMinNumber(),
+                    seriesGroupDetectionCondition.getChangeThresholdCondition()
+                        .getSuppressCondition().getMinRatio());
+            }
         }
     }
 }

@@ -28,6 +28,16 @@ public final class AccountsImpl implements Accounts {
         this.serviceManager = serviceManager;
     }
 
+    public PagedIterable<NetAppAccount> list() {
+        PagedIterable<NetAppAccountInner> inner = this.serviceClient().list();
+        return Utils.mapPage(inner, inner1 -> new NetAppAccountImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<NetAppAccount> list(Context context) {
+        PagedIterable<NetAppAccountInner> inner = this.serviceClient().list(context);
+        return Utils.mapPage(inner, inner1 -> new NetAppAccountImpl(inner1, this.manager()));
+    }
+
     public PagedIterable<NetAppAccount> listByResourceGroup(String resourceGroupName) {
         PagedIterable<NetAppAccountInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
         return Utils.mapPage(inner, inner1 -> new NetAppAccountImpl(inner1, this.manager()));

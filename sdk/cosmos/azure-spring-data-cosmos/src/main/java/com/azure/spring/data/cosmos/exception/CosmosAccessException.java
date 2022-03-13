@@ -19,6 +19,9 @@ import org.springframework.lang.Nullable;
  */
 public class CosmosAccessException extends DataAccessException {
 
+    /**
+     * Cosmos exception.
+     */
     protected final CosmosException cosmosException;
 
     /**

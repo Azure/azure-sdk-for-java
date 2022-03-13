@@ -16,6 +16,9 @@ import java.util.List;
  */
 @Immutable
 public final class TableTransactionFailedException extends TableServiceException {
+    /**
+     * The index position of the failed transaction in the collection submitted.
+     */
     private final Integer failedTransactionActionIndex;
 
     /**

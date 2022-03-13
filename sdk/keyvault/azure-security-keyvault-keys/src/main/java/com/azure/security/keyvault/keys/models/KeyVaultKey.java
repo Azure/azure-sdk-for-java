@@ -125,4 +125,9 @@ public class KeyVaultKey {
     private void setManaged(boolean managed) {
         properties.setManaged(managed);
     }
+
+    @JsonProperty("release_policy")
+    private void setReleasePolicy(KeyReleasePolicy releasePolicy) {
+        properties.setReleasePolicy(releasePolicy);
+    }
 }

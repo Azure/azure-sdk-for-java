@@ -2,17 +2,17 @@
   <title type="text">Queues</title>
   <id>feed-id</id>
   <updated>2020-12-05T07:17:21Z</updated>
-  <link rel="self" href="https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=5"/>
-  <link rel="next" href="https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&amp;enrich=false&amp;%24skip=5&amp;%24top=5"/>
-  <entry xml:base="https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=5">
-    <id>https://sb-java.servicebus.windows.net/q-0?api-version=2017-04</id>
+  <link rel="self" href="https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2021-05&amp;enrich=false&amp;$skip=0&amp;$top=5"/>
+  <link rel="next" href="https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2021-05&amp;enrich=false&amp;%24skip=5&amp;%24top=5"/>
+  <entry xml:base="https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2021-05&amp;enrich=false&amp;$skip=0&amp;$top=5">
+    <id>https://sb-java.servicebus.windows.net/q-0?api-version=2021-05</id>
     <title type="text">q-0</title>
     <published>2020-03-05T07:17:04Z</published>
     <updated>2020-01-05T07:17:04Z</updated>
     <author>
       <name>sb-java</name>
     </author>
-    <link rel="self" href="../q-0?api-version=2017-04"/>
+    <link rel="self" href="../q-0?api-version=2021-05"/>
     <content type="application/xml">
       <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
       >
@@ -48,15 +48,15 @@
       </QueueDescription>
     </content>
   </entry>
-  <entry xml:base="https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=5">
-    <id>https://sb-java.servicebus.windows.net/q-1?api-version=2017-04</id>
+  <entry xml:base="https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2021-05&amp;enrich=false&amp;$skip=0&amp;$top=5">
+    <id>https://sb-java.servicebus.windows.net/q-1?api-version=2021-05</id>
     <title type="text">q-1</title>
     <published>2020-06-10T07:16:25Z</published>
     <updated>2020-06-15T07:16:25Z</updated>
     <author>
       <name>sb-java2</name>
     </author>
-    <link rel="self" href="../q-1?api-version=2017-04"/>
+    <link rel="self" href="../q-1?api-version=2021-05"/>
     <content type="application/xml">
       <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
       >
@@ -92,15 +92,15 @@
       </QueueDescription>
     </content>
   </entry>
-  <entry xml:base="https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=5">
-    <id>https://sb-java.servicebus.windows.net/q-2?api-version=2017-04</id>
+  <entry xml:base="https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2021-05&amp;enrich=false&amp;$skip=0&amp;$top=5">
+    <id>https://sb-java.servicebus.windows.net/q-2?api-version=2021-05</id>
     <title type="text">q-2</title>
     <published>2020-06-05T07:17:06Z</published>
     <updated>2020-06-05T07:17:06Z</updated>
     <author>
       <name>sb-java3</name>
     </author>
-    <link rel="self" href="../q-2?api-version=2017-04"/>
+    <link rel="self" href="../q-2?api-version=2021-05"/>
     <content type="application/xml">
       <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
       >

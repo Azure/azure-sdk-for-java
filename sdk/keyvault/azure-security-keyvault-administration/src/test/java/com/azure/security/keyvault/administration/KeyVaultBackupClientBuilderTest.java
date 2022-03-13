@@ -1,11 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.security.keyvault.administration;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.ClientOptions;
@@ -136,6 +137,17 @@ public class KeyVaultBackupClientBuilderTest {
             .buildClient();
 
         assertThrows(RuntimeException.class, () -> keyVaultBackupClient.beginBackup(blobStorageUrl, sasToken));
+    }
+
+    @Test
+    public void bothRetryOptionsAndRetryPolicySet() {
+        assertThrows(IllegalStateException.class, () -> new KeyVaultBackupClientBuilder()
+            .vaultUrl(vaultUrl)
+            .serviceVersion(serviceVersion)
+            .credential(new TestUtils.TestCredential())
+            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
+            .retryPolicy(new RetryPolicy())
+            .buildClient());
     }
 
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials

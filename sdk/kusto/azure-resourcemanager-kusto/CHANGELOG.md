@@ -1,7 +1,245 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.5 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.4 (2022-02-22)
+
+- Azure Resource Manager Kusto client library for Java. This package contains Microsoft Azure SDK for Kusto Management SDK. The Azure Kusto management API provides a RESTful set of web services that interact with Azure Kusto services to manage your clusters and databases. The API enables you to create, update, and delete clusters and databases. Package tag package-2022-02. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.ClustersUpdateResponse` was added
+
+* `models.DatabasesUpdateResponse` was added
+
+* `models.ManagedPrivateEndpointsUpdateResponse` was added
+
+* `models.ManagedPrivateEndpointsUpdateHeaders` was added
+
+* `models.PublicIpType` was added
+
+* `models.DataConnectionsUpdateResponse` was added
+
+* `models.DatabasesUpdateHeaders` was added
+
+* `models.OperationsResultsLocations` was added
+
+* `models.DatabaseRouting` was added
+
+* `models.ScriptsUpdateResponse` was added
+
+* `models.ScriptsUpdateHeaders` was added
+
+* `models.ClustersUpdateHeaders` was added
+
+* `models.DataConnectionsUpdateHeaders` was added
+
+#### `models.IotHubDataConnection` was modified
+
+* `databaseRouting()` was added
+* `withDatabaseRouting(models.DatabaseRouting)` was added
+
+#### `KustoManager` was modified
+
+* `operationsResultsLocations()` was added
+
+#### `models.EventHubDataConnection` was modified
+
+* `databaseRouting()` was added
+* `managedIdentityObjectId()` was added
+* `withDatabaseRouting(models.DatabaseRouting)` was added
+
+#### `models.Script$Definition` was modified
+
+* `withScriptContent(java.lang.String)` was added
+
+#### `models.EventGridDataConnection` was modified
+
+* `databaseRouting()` was added
+* `withEventGridResourceId(java.lang.String)` was added
+* `withManagedIdentityResourceId(java.lang.String)` was added
+* `eventGridResourceId()` was added
+* `managedIdentityResourceId()` was added
+* `withDatabaseRouting(models.DatabaseRouting)` was added
+* `managedIdentityObjectId()` was added
+
+#### `models.DatabasePrincipalAssignment` was modified
+
+* `aadObjectId()` was added
+
+#### `models.Cluster` was modified
+
+* `virtualClusterGraduationProperties()` was added
+* `publicIpType()` was added
+* `privateEndpointConnections()` was added
+
+#### `models.OperationResult` was modified
+
+* `provisioningState()` was added
+
+#### `models.Cluster$Definition` was modified
+
+* `withVirtualClusterGraduationProperties(java.lang.String)` was added
+* `withPublicIpType(models.PublicIpType)` was added
+
+#### `models.ClusterPrincipalAssignment` was modified
+
+* `aadObjectId()` was added
+
+#### `models.Script` was modified
+
+* `scriptContent()` was added
+
+#### `models.ClusterUpdate` was modified
+
+* `withPublicIpType(models.PublicIpType)` was added
+* `virtualClusterGraduationProperties()` was added
+* `publicIpType()` was added
+* `privateEndpointConnections()` was added
+* `withVirtualClusterGraduationProperties(java.lang.String)` was added
+
+#### `models.Cluster$Update` was modified
+
+* `withPublicIpType(models.PublicIpType)` was added
+
+## 1.0.0-beta.3 (2021-09-13)
+
+- Azure Resource Manager Kusto client library for Java. This package contains Microsoft Azure SDK for Kusto Management SDK. The Azure Kusto management API provides a RESTful set of web services that interact with Azure Kusto services to manage your clusters and databases. The API enables you to create, update, and delete clusters and databases. Package tag package-2021-08-27. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.Script$Update` was modified
+
+* `withScriptUrlSasToken(java.lang.String)` was removed
+
+### Features Added
+
+* `models.PrivateEndpointConnection$Update` was added
+
+* `models.PrivateEndpointConnections` was added
+
+* `models.ManagedPrivateEndpoint$Update` was added
+
+* `models.PrivateLinkResourceListResult` was added
+
+* `models.PrivateLinkResource` was added
+
+* `models.AttachedDatabaseConfigurationsCheckNameRequest` was added
+
+* `models.ManagedPrivateEndpoint$Definition` was added
+
+* `models.PrivateEndpointProperty` was added
+
+* `models.AcceptedAudiences` was added
+
+* `models.PublicNetworkAccess` was added
+
+* `models.PrivateLinkResources` was added
+
+* `models.OutboundNetworkDependenciesEndpoint` was added
+
+* `models.EndpointDependency` was added
+
+* `models.ManagedPrivateEndpoint$DefinitionStages` was added
+
+* `models.EndpointDetail` was added
+
+* `models.PrivateLinkServiceConnectionStateProperty` was added
+
+* `models.ManagedPrivateEndpoints` was added
+
+* `models.ManagedPrivateEndpoint$UpdateStages` was added
+
+* `models.PrivateEndpointConnection$DefinitionStages` was added
+
+* `models.PrivateEndpointConnection$Definition` was added
+
+* `models.OutboundNetworkDependenciesEndpointListResult` was added
+
+* `models.ClusterNetworkAccessFlag` was added
+
+* `models.ManagedPrivateEndpointsCheckNameRequest` was added
+
+* `models.PrivateEndpointConnection` was added
+
+* `models.ManagedPrivateEndpoint` was added
+
+* `models.ManagedPrivateEndpointListResult` was added
+
+* `models.PrivateEndpointConnectionListResult` was added
+
+* `models.PrivateEndpointConnection$UpdateStages` was added
+
+#### `models.AttachedDatabaseConfigurations` was modified
+
+* `checkNameAvailability(java.lang.String,java.lang.String,models.AttachedDatabaseConfigurationsCheckNameRequest)` was added
+* `checkNameAvailabilityWithResponse(java.lang.String,java.lang.String,models.AttachedDatabaseConfigurationsCheckNameRequest,com.azure.core.util.Context)` was added
+
+#### `models.Clusters` was modified
+
+* `listOutboundNetworkDependenciesEndpoints(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `listOutboundNetworkDependenciesEndpoints(java.lang.String,java.lang.String)` was added
+
+#### `KustoManager` was modified
+
+* `privateLinkResources()` was added
+* `managedPrivateEndpoints()` was added
+* `privateEndpointConnections()` was added
+
+#### `models.Cluster` was modified
+
+* `enableAutoStop()` was added
+* `publicNetworkAccess()` was added
+* `restrictOutboundNetworkAccess()` was added
+* `systemData()` was added
+* `acceptedAudiences()` was added
+* `allowedFqdnList()` was added
+* `allowedIpRangeList()` was added
+
+#### `models.Cluster$Definition` was modified
+
+* `withEnableAutoStop(java.lang.Boolean)` was added
+* `withAllowedIpRangeList(java.util.List)` was added
+* `withPublicNetworkAccess(models.PublicNetworkAccess)` was added
+* `withRestrictOutboundNetworkAccess(models.ClusterNetworkAccessFlag)` was added
+* `withAllowedFqdnList(java.util.List)` was added
+* `withAcceptedAudiences(java.util.List)` was added
+
+#### `models.ClusterUpdate` was modified
+
+* `acceptedAudiences()` was added
+* `withAllowedFqdnList(java.util.List)` was added
+* `withEnableAutoStop(java.lang.Boolean)` was added
+* `withPublicNetworkAccess(models.PublicNetworkAccess)` was added
+* `enableAutoStop()` was added
+* `withAcceptedAudiences(java.util.List)` was added
+* `restrictOutboundNetworkAccess()` was added
+* `withRestrictOutboundNetworkAccess(models.ClusterNetworkAccessFlag)` was added
+* `allowedIpRangeList()` was added
+* `publicNetworkAccess()` was added
+* `allowedFqdnList()` was added
+* `withAllowedIpRangeList(java.util.List)` was added
+
+#### `models.Cluster$Update` was modified
+
+* `withPublicNetworkAccess(models.PublicNetworkAccess)` was added
+* `withAllowedFqdnList(java.util.List)` was added
+* `withRestrictOutboundNetworkAccess(models.ClusterNetworkAccessFlag)` was added
+* `withAllowedIpRangeList(java.util.List)` was added
+* `withAcceptedAudiences(java.util.List)` was added
+* `withEnableAutoStop(java.lang.Boolean)` was added
+
+#### `KustoManager$Configurable` was modified
+
+* `withScope(java.lang.String)` was added
 
 ## 1.0.0-beta.2 (2021-04-19)
 

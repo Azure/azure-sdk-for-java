@@ -10,7 +10,7 @@ import com.azure.core.util.ExpandableStringEnum;
  */
 public final class ServiceBusFailureReason extends ExpandableStringEnum<ServiceBusFailureReason> {
     // NOTE: this list is intended to mirror the reasons we have in .net
-    // https://github.com/Azure/azure-sdk-for-net/blob/master/sdk/servicebus/Azure.Messaging
+    // https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/servicebus/Azure.Messaging
     // .ServiceBus/src/Primitives/ServiceBusFailureReason.cs
 
     /** The exception was the result of a general error within the client library. */

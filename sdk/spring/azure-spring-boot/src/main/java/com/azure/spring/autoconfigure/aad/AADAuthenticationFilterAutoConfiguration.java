@@ -4,7 +4,6 @@
 package com.azure.spring.autoconfigure.aad;
 
 import com.azure.spring.aad.AADAuthorizationServerEndpoints;
-import com.azure.spring.telemetry.TelemetrySender;
 import com.nimbusds.jose.jwk.source.DefaultJWKSetCache;
 import com.nimbusds.jose.jwk.source.JWKSetCache;
 import com.nimbusds.jose.util.DefaultResourceRetriever;
@@ -21,15 +20,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.util.ClassUtils;
 
-import javax.annotation.PostConstruct;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
-import static com.azure.spring.telemetry.TelemetryData.SERVICE_NAME;
-import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Azure Active Authentication filters.
@@ -46,12 +38,20 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
 @ConditionalOnProperty(prefix = AADAuthenticationFilterAutoConfiguration.PROPERTY_PREFIX, value = { "client-id" })
 @EnableConfigurationProperties({ AADAuthenticationProperties.class })
 public class AADAuthenticationFilterAutoConfiguration {
+    /**
+     * The property prefix
+     */
     public static final String PROPERTY_PREFIX = "azure.activedirectory";
     private static final Logger LOG = LoggerFactory.getLogger(AADAuthenticationProperties.class);
 
     private final AADAuthenticationProperties properties;
     private final AADAuthorizationServerEndpoints endpoints;
 
+    /**
+     * Creates a new instance of {@link AADAuthenticationFilterAutoConfiguration}.
+     *
+     * @param properties the AAD authentication properties
+     */
     public AADAuthenticationFilterAutoConfiguration(AADAuthenticationProperties properties) {
         this.properties = properties;
         this.endpoints = new AADAuthorizationServerEndpoints(properties.getBaseUri(), properties.getTenantId());
@@ -77,6 +77,12 @@ public class AADAuthenticationFilterAutoConfiguration {
         );
     }
 
+    /**
+     * Declare AADAppRoleStatelessAuthenticationFilter bean.
+     *
+     * @param resourceRetriever the resource retriever
+     * @return AADAppRoleStatelessAuthenticationFilter bean
+     */
     @Bean
     @ConditionalOnMissingBean(AADAppRoleStatelessAuthenticationFilter.class)
     @ConditionalOnExpression("${azure.activedirectory.session-stateless:false} == true")
@@ -94,6 +100,11 @@ public class AADAuthenticationFilterAutoConfiguration {
         );
     }
 
+    /**
+     * Declare JWT ResourceRetriever bean.
+     *
+     * @return JWT ResourceRetriever bean
+     */
     @Bean
     @ConditionalOnMissingBean(ResourceRetriever.class)
     public ResourceRetriever getJWTResourceRetriever() {
@@ -104,21 +115,16 @@ public class AADAuthenticationFilterAutoConfiguration {
         );
     }
 
+    /**
+     * Declare JWTSetCache bean.
+     *
+     * @return JWTSetCache bean
+     */
     @Bean
     @ConditionalOnMissingBean(JWKSetCache.class)
     public JWKSetCache getJWKSetCache() {
         long lifespan = properties.getJwkSetCacheLifespan();
         long refreshTime = properties.getJwkSetCacheRefreshTime();
         return new DefaultJWKSetCache(lifespan, refreshTime, TimeUnit.MILLISECONDS);
-    }
-
-    @PostConstruct
-    private void sendTelemetry() {
-        if (properties.isAllowTelemetry()) {
-            final Map<String, String> events = new HashMap<>();
-            final TelemetrySender sender = new TelemetrySender();
-            events.put(SERVICE_NAME, getClassPackageSimpleName(AADAuthenticationFilterAutoConfiguration.class));
-            sender.send(ClassUtils.getUserClass(getClass()).getSimpleName(), events);
-        }
     }
 }

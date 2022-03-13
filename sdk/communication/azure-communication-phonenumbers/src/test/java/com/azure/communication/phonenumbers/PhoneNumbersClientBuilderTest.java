@@ -48,7 +48,7 @@ public class PhoneNumbersClientBuilderTest {
 
     @AfterEach
     void tearDown() {
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
     }
 
     @Test()
@@ -300,6 +300,22 @@ public class PhoneNumbersClientBuilderTest {
         assertThrows(NullPointerException.class, () -> {
             this.clientBuilder.addPolicy(null);
         });
+    }
+
+    @Test
+    public void bothRetryOptionsAndRetryPolicySetSync() {
+        assertThrows(IllegalStateException.class, () -> setupBuilderWithHttpClientWithCredential(this.clientBuilder)
+            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
+            .retryPolicy(new RetryPolicy())
+            .buildClient());
+    }
+
+    @Test
+    public void bothRetryOptionsAndRetryPolicySetAsync() {
+        assertThrows(IllegalStateException.class, () -> setupBuilderWithHttpClientWithCredential(this.clientBuilder)
+            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
+            .retryPolicy(new RetryPolicy())
+            .buildAsyncClient());
     }
 
     private PhoneNumbersClientBuilder setupBuilderWithHttpClientWithCredential(PhoneNumbersClientBuilder clientBuilder) {

@@ -7,9 +7,10 @@ package com.azure.resourcemanager.streamanalytics.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.streamanalytics.models.PrivateEndpointProperties;
+import com.azure.resourcemanager.streamanalytics.models.PrivateLinkServiceConnection;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Complete information about the private endpoint. */
 @Fluent
@@ -20,7 +21,7 @@ public final class PrivateEndpointInner extends ProxyResource {
      * The properties associated with a private endpoint.
      */
     @JsonProperty(value = "properties")
-    private PrivateEndpointProperties properties;
+    private PrivateEndpointProperties innerProperties;
 
     /*
      * Unique opaque string (generally a GUID) that represents the metadata
@@ -31,23 +32,12 @@ public final class PrivateEndpointInner extends ProxyResource {
     private String etag;
 
     /**
-     * Get the properties property: The properties associated with a private endpoint.
+     * Get the innerProperties property: The properties associated with a private endpoint.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    public PrivateEndpointProperties properties() {
-        return this.properties;
-    }
-
-    /**
-     * Set the properties property: The properties associated with a private endpoint.
-     *
-     * @param properties the properties value to set.
-     * @return the PrivateEndpointInner object itself.
-     */
-    public PrivateEndpointInner withProperties(PrivateEndpointProperties properties) {
-        this.properties = properties;
-        return this;
+    private PrivateEndpointProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -61,13 +51,48 @@ public final class PrivateEndpointInner extends ProxyResource {
     }
 
     /**
+     * Get the createdDate property: The date when this private endpoint was created.
+     *
+     * @return the createdDate value.
+     */
+    public String createdDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdDate();
+    }
+
+    /**
+     * Get the manualPrivateLinkServiceConnections property: A list of connections to the remote resource. Immutable
+     * after it is set.
+     *
+     * @return the manualPrivateLinkServiceConnections value.
+     */
+    public List<PrivateLinkServiceConnection> manualPrivateLinkServiceConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().manualPrivateLinkServiceConnections();
+    }
+
+    /**
+     * Set the manualPrivateLinkServiceConnections property: A list of connections to the remote resource. Immutable
+     * after it is set.
+     *
+     * @param manualPrivateLinkServiceConnections the manualPrivateLinkServiceConnections value to set.
+     * @return the PrivateEndpointInner object itself.
+     */
+    public PrivateEndpointInner withManualPrivateLinkServiceConnections(
+        List<PrivateLinkServiceConnection> manualPrivateLinkServiceConnections) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateEndpointProperties();
+        }
+        this.innerProperties().withManualPrivateLinkServiceConnections(manualPrivateLinkServiceConnections);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

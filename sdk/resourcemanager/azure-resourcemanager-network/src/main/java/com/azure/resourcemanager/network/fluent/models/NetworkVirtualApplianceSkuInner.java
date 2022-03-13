@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.NetworkVirtualApplianceSkuInstances;
@@ -14,11 +13,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Definition of the NetworkVirtualApplianceSkus resource. */
-@JsonFlatten
+/** Available NetworkVirtualApplianceSkus Definition of the NetworkVirtualApplianceSkus resource. */
 @Fluent
-public class NetworkVirtualApplianceSkuInner extends Resource {
+public final class NetworkVirtualApplianceSkuInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkVirtualApplianceSkuInner.class);
+
+    /*
+     * Network Virtual Appliance Sku Properties NetworkVirtualApplianceSku
+     * properties.
+     */
+    @JsonProperty(value = "properties")
+    private NetworkVirtualApplianceSkuPropertiesFormat innerProperties;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
@@ -27,28 +32,19 @@ public class NetworkVirtualApplianceSkuInner extends Resource {
     private String etag;
 
     /*
-     * Network Virtual Appliance Sku vendor.
-     */
-    @JsonProperty(value = "properties.vendor", access = JsonProperty.Access.WRITE_ONLY)
-    private String vendor;
-
-    /*
-     * Available Network Virtual Appliance versions.
-     */
-    @JsonProperty(value = "properties.availableVersions", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> availableVersions;
-
-    /*
-     * The list of scale units available.
-     */
-    @JsonProperty(value = "properties.availableScaleUnits")
-    private List<NetworkVirtualApplianceSkuInstances> availableScaleUnits;
-
-    /*
      * Resource ID.
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /**
+     * Get the innerProperties property: Network Virtual Appliance Sku Properties NetworkVirtualApplianceSku properties.
+     *
+     * @return the innerProperties value.
+     */
+    private NetworkVirtualApplianceSkuPropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
@@ -57,45 +53,6 @@ public class NetworkVirtualApplianceSkuInner extends Resource {
      */
     public String etag() {
         return this.etag;
-    }
-
-    /**
-     * Get the vendor property: Network Virtual Appliance Sku vendor.
-     *
-     * @return the vendor value.
-     */
-    public String vendor() {
-        return this.vendor;
-    }
-
-    /**
-     * Get the availableVersions property: Available Network Virtual Appliance versions.
-     *
-     * @return the availableVersions value.
-     */
-    public List<String> availableVersions() {
-        return this.availableVersions;
-    }
-
-    /**
-     * Get the availableScaleUnits property: The list of scale units available.
-     *
-     * @return the availableScaleUnits value.
-     */
-    public List<NetworkVirtualApplianceSkuInstances> availableScaleUnits() {
-        return this.availableScaleUnits;
-    }
-
-    /**
-     * Set the availableScaleUnits property: The list of scale units available.
-     *
-     * @param availableScaleUnits the availableScaleUnits value to set.
-     * @return the NetworkVirtualApplianceSkuInner object itself.
-     */
-    public NetworkVirtualApplianceSkuInner withAvailableScaleUnits(
-        List<NetworkVirtualApplianceSkuInstances> availableScaleUnits) {
-        this.availableScaleUnits = availableScaleUnits;
-        return this;
     }
 
     /**
@@ -133,13 +90,55 @@ public class NetworkVirtualApplianceSkuInner extends Resource {
     }
 
     /**
+     * Get the vendor property: Network Virtual Appliance Sku vendor.
+     *
+     * @return the vendor value.
+     */
+    public String vendor() {
+        return this.innerProperties() == null ? null : this.innerProperties().vendor();
+    }
+
+    /**
+     * Get the availableVersions property: Available Network Virtual Appliance versions.
+     *
+     * @return the availableVersions value.
+     */
+    public List<String> availableVersions() {
+        return this.innerProperties() == null ? null : this.innerProperties().availableVersions();
+    }
+
+    /**
+     * Get the availableScaleUnits property: The list of scale units available.
+     *
+     * @return the availableScaleUnits value.
+     */
+    public List<NetworkVirtualApplianceSkuInstances> availableScaleUnits() {
+        return this.innerProperties() == null ? null : this.innerProperties().availableScaleUnits();
+    }
+
+    /**
+     * Set the availableScaleUnits property: The list of scale units available.
+     *
+     * @param availableScaleUnits the availableScaleUnits value to set.
+     * @return the NetworkVirtualApplianceSkuInner object itself.
+     */
+    public NetworkVirtualApplianceSkuInner withAvailableScaleUnits(
+        List<NetworkVirtualApplianceSkuInstances> availableScaleUnits) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkVirtualApplianceSkuPropertiesFormat();
+        }
+        this.innerProperties().withAvailableScaleUnits(availableScaleUnits);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (availableScaleUnits() != null) {
-            availableScaleUnits().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

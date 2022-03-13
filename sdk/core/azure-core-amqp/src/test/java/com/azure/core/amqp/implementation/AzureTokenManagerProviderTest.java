@@ -42,7 +42,7 @@ class AzureTokenManagerProviderTest {
 
     @AfterEach
     void teardown() throws Exception {
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
 
         if (mocksCloseable != null) {
             mocksCloseable.close();

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.DataEffect;
@@ -16,59 +15,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The data policy manifest. */
-@JsonFlatten
 @Fluent
-public class DataPolicyManifestInner extends ProxyResource {
+public final class DataPolicyManifestInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DataPolicyManifestInner.class);
 
     /*
-     * The list of namespaces for the data policy manifest.
+     * The data policy manifest properties.
      */
-    @JsonProperty(value = "properties.namespaces")
-    private List<String> namespaces;
+    @JsonProperty(value = "properties")
+    private DataPolicyManifestProperties innerProperties;
 
-    /*
-     * The policy mode of the data policy manifest.
+    /**
+     * Get the innerProperties property: The data policy manifest properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.policyMode")
-    private String policyMode;
-
-    /*
-     * A value indicating whether policy mode is allowed only in built-in
-     * definitions.
-     */
-    @JsonProperty(value = "properties.isBuiltInOnly")
-    private Boolean isBuiltInOnly;
-
-    /*
-     * An array of resource type aliases.
-     */
-    @JsonProperty(value = "properties.resourceTypeAliases")
-    private List<ResourceTypeAliases> resourceTypeAliases;
-
-    /*
-     * The effect definition.
-     */
-    @JsonProperty(value = "properties.effects")
-    private List<DataEffect> effects;
-
-    /*
-     * The non-alias field accessor values that can be used in the policy rule.
-     */
-    @JsonProperty(value = "properties.fieldValues")
-    private List<String> fieldValues;
-
-    /*
-     * The standard resource functions (subscription and/or resourceGroup).
-     */
-    @JsonProperty(value = "properties.resourceFunctions.standard")
-    private List<String> standard;
-
-    /*
-     * An array of data manifest custom resource definition.
-     */
-    @JsonProperty(value = "properties.resourceFunctions.custom")
-    private List<DataManifestCustomResourceFunctionDefinition> custom;
+    private DataPolicyManifestProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the namespaces property: The list of namespaces for the data policy manifest.
@@ -76,7 +40,7 @@ public class DataPolicyManifestInner extends ProxyResource {
      * @return the namespaces value.
      */
     public List<String> namespaces() {
-        return this.namespaces;
+        return this.innerProperties() == null ? null : this.innerProperties().namespaces();
     }
 
     /**
@@ -86,7 +50,10 @@ public class DataPolicyManifestInner extends ProxyResource {
      * @return the DataPolicyManifestInner object itself.
      */
     public DataPolicyManifestInner withNamespaces(List<String> namespaces) {
-        this.namespaces = namespaces;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataPolicyManifestProperties();
+        }
+        this.innerProperties().withNamespaces(namespaces);
         return this;
     }
 
@@ -96,7 +63,7 @@ public class DataPolicyManifestInner extends ProxyResource {
      * @return the policyMode value.
      */
     public String policyMode() {
-        return this.policyMode;
+        return this.innerProperties() == null ? null : this.innerProperties().policyMode();
     }
 
     /**
@@ -106,7 +73,10 @@ public class DataPolicyManifestInner extends ProxyResource {
      * @return the DataPolicyManifestInner object itself.
      */
     public DataPolicyManifestInner withPolicyMode(String policyMode) {
-        this.policyMode = policyMode;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataPolicyManifestProperties();
+        }
+        this.innerProperties().withPolicyMode(policyMode);
         return this;
     }
 
@@ -116,7 +86,7 @@ public class DataPolicyManifestInner extends ProxyResource {
      * @return the isBuiltInOnly value.
      */
     public Boolean isBuiltInOnly() {
-        return this.isBuiltInOnly;
+        return this.innerProperties() == null ? null : this.innerProperties().isBuiltInOnly();
     }
 
     /**
@@ -126,7 +96,10 @@ public class DataPolicyManifestInner extends ProxyResource {
      * @return the DataPolicyManifestInner object itself.
      */
     public DataPolicyManifestInner withIsBuiltInOnly(Boolean isBuiltInOnly) {
-        this.isBuiltInOnly = isBuiltInOnly;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataPolicyManifestProperties();
+        }
+        this.innerProperties().withIsBuiltInOnly(isBuiltInOnly);
         return this;
     }
 
@@ -136,7 +109,7 @@ public class DataPolicyManifestInner extends ProxyResource {
      * @return the resourceTypeAliases value.
      */
     public List<ResourceTypeAliases> resourceTypeAliases() {
-        return this.resourceTypeAliases;
+        return this.innerProperties() == null ? null : this.innerProperties().resourceTypeAliases();
     }
 
     /**
@@ -146,7 +119,10 @@ public class DataPolicyManifestInner extends ProxyResource {
      * @return the DataPolicyManifestInner object itself.
      */
     public DataPolicyManifestInner withResourceTypeAliases(List<ResourceTypeAliases> resourceTypeAliases) {
-        this.resourceTypeAliases = resourceTypeAliases;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataPolicyManifestProperties();
+        }
+        this.innerProperties().withResourceTypeAliases(resourceTypeAliases);
         return this;
     }
 
@@ -156,7 +132,7 @@ public class DataPolicyManifestInner extends ProxyResource {
      * @return the effects value.
      */
     public List<DataEffect> effects() {
-        return this.effects;
+        return this.innerProperties() == null ? null : this.innerProperties().effects();
     }
 
     /**
@@ -166,7 +142,10 @@ public class DataPolicyManifestInner extends ProxyResource {
      * @return the DataPolicyManifestInner object itself.
      */
     public DataPolicyManifestInner withEffects(List<DataEffect> effects) {
-        this.effects = effects;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataPolicyManifestProperties();
+        }
+        this.innerProperties().withEffects(effects);
         return this;
     }
 
@@ -176,7 +155,7 @@ public class DataPolicyManifestInner extends ProxyResource {
      * @return the fieldValues value.
      */
     public List<String> fieldValues() {
-        return this.fieldValues;
+        return this.innerProperties() == null ? null : this.innerProperties().fieldValues();
     }
 
     /**
@@ -186,7 +165,10 @@ public class DataPolicyManifestInner extends ProxyResource {
      * @return the DataPolicyManifestInner object itself.
      */
     public DataPolicyManifestInner withFieldValues(List<String> fieldValues) {
-        this.fieldValues = fieldValues;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataPolicyManifestProperties();
+        }
+        this.innerProperties().withFieldValues(fieldValues);
         return this;
     }
 
@@ -196,7 +178,7 @@ public class DataPolicyManifestInner extends ProxyResource {
      * @return the standard value.
      */
     public List<String> standard() {
-        return this.standard;
+        return this.innerProperties() == null ? null : this.innerProperties().standard();
     }
 
     /**
@@ -206,7 +188,10 @@ public class DataPolicyManifestInner extends ProxyResource {
      * @return the DataPolicyManifestInner object itself.
      */
     public DataPolicyManifestInner withStandard(List<String> standard) {
-        this.standard = standard;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataPolicyManifestProperties();
+        }
+        this.innerProperties().withStandard(standard);
         return this;
     }
 
@@ -216,7 +201,7 @@ public class DataPolicyManifestInner extends ProxyResource {
      * @return the custom value.
      */
     public List<DataManifestCustomResourceFunctionDefinition> custom() {
-        return this.custom;
+        return this.innerProperties() == null ? null : this.innerProperties().custom();
     }
 
     /**
@@ -226,7 +211,10 @@ public class DataPolicyManifestInner extends ProxyResource {
      * @return the DataPolicyManifestInner object itself.
      */
     public DataPolicyManifestInner withCustom(List<DataManifestCustomResourceFunctionDefinition> custom) {
-        this.custom = custom;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataPolicyManifestProperties();
+        }
+        this.innerProperties().withCustom(custom);
         return this;
     }
 
@@ -236,14 +224,8 @@ public class DataPolicyManifestInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (resourceTypeAliases() != null) {
-            resourceTypeAliases().forEach(e -> e.validate());
-        }
-        if (effects() != null) {
-            effects().forEach(e -> e.validate());
-        }
-        if (custom() != null) {
-            custom().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

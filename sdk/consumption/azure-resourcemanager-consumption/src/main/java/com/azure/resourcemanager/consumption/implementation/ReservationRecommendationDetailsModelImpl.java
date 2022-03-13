@@ -44,6 +44,19 @@ public final class ReservationRecommendationDetailsModelImpl implements Reservat
         return this.innerModel().sku();
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
+    }
+
     public String currency() {
         return this.innerModel().currency();
     }
@@ -66,19 +79,6 @@ public final class ReservationRecommendationDetailsModelImpl implements Reservat
 
     public ReservationRecommendationDetailsUsageProperties usage() {
         return this.innerModel().usage();
-    }
-
-    public String etag() {
-        return this.innerModel().etag();
-    }
-
-    public Map<String, String> tags() {
-        Map<String, String> inner = this.innerModel().tags();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
     }
 
     public ReservationRecommendationDetailsModelInner innerModel() {

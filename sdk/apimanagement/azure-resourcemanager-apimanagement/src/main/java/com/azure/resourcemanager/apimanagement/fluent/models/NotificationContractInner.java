@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.RecipientsContractProperties;
@@ -13,28 +12,24 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Notification details. */
-@JsonFlatten
 @Fluent
-public class NotificationContractInner extends ProxyResource {
+public final class NotificationContractInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NotificationContractInner.class);
 
     /*
-     * Title of the Notification.
+     * Notification entity contract properties.
      */
-    @JsonProperty(value = "properties.title")
-    private String title;
+    @JsonProperty(value = "properties")
+    private NotificationContractProperties innerProperties;
 
-    /*
-     * Description of the Notification.
+    /**
+     * Get the innerProperties property: Notification entity contract properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * Recipient Parameter values.
-     */
-    @JsonProperty(value = "properties.recipients")
-    private RecipientsContractProperties recipients;
+    private NotificationContractProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the title property: Title of the Notification.
@@ -42,7 +37,7 @@ public class NotificationContractInner extends ProxyResource {
      * @return the title value.
      */
     public String title() {
-        return this.title;
+        return this.innerProperties() == null ? null : this.innerProperties().title();
     }
 
     /**
@@ -52,7 +47,10 @@ public class NotificationContractInner extends ProxyResource {
      * @return the NotificationContractInner object itself.
      */
     public NotificationContractInner withTitle(String title) {
-        this.title = title;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NotificationContractProperties();
+        }
+        this.innerProperties().withTitle(title);
         return this;
     }
 
@@ -62,7 +60,7 @@ public class NotificationContractInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -72,7 +70,10 @@ public class NotificationContractInner extends ProxyResource {
      * @return the NotificationContractInner object itself.
      */
     public NotificationContractInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NotificationContractProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -82,7 +83,7 @@ public class NotificationContractInner extends ProxyResource {
      * @return the recipients value.
      */
     public RecipientsContractProperties recipients() {
-        return this.recipients;
+        return this.innerProperties() == null ? null : this.innerProperties().recipients();
     }
 
     /**
@@ -92,7 +93,10 @@ public class NotificationContractInner extends ProxyResource {
      * @return the NotificationContractInner object itself.
      */
     public NotificationContractInner withRecipients(RecipientsContractProperties recipients) {
-        this.recipients = recipients;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NotificationContractProperties();
+        }
+        this.innerProperties().withRecipients(recipients);
         return this;
     }
 
@@ -102,8 +106,8 @@ public class NotificationContractInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (recipients() != null) {
-            recipients().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

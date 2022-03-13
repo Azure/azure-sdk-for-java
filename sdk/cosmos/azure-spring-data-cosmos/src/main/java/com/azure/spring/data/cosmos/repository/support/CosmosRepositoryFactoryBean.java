@@ -45,6 +45,9 @@ public class CosmosRepositoryFactoryBean<T extends Repository<S, ID>, S, ID exte
         return getFactoryInstance();
     }
 
+    /**
+     * @return the factory instance
+     */
     protected RepositoryFactorySupport getFactoryInstance() {
         return new CosmosRepositoryFactory(operations);
     }

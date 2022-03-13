@@ -27,15 +27,43 @@ import java.util.UUID;
  *
  * <p><strong>Instantiating LeaseClients</strong></p>
  *
- * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClientBuilder.syncInstantiationWithBlobAndLeaseId}
+ * <!-- src_embed com.azure.storage.blob.specialized.BlobLeaseClientBuilder.syncInstantiationWithBlobAndLeaseId -->
+ * <pre>
+ * BlobLeaseClient blobLeaseClient = new BlobLeaseClientBuilder&#40;&#41;
+ *     .blobClient&#40;blobClient&#41;
+ *     .leaseId&#40;leaseId&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.blob.specialized.BlobLeaseClientBuilder.syncInstantiationWithBlobAndLeaseId -->
  *
- * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClientBuilder.syncInstantiationWithContainerAndLeaseId}
+ * <!-- src_embed com.azure.storage.blob.specialized.BlobLeaseClientBuilder.syncInstantiationWithContainerAndLeaseId -->
+ * <pre>
+ * BlobLeaseClient blobLeaseClient = new BlobLeaseClientBuilder&#40;&#41;
+ *     .containerClient&#40;blobContainerClient&#41;
+ *     .leaseId&#40;leaseId&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.blob.specialized.BlobLeaseClientBuilder.syncInstantiationWithContainerAndLeaseId -->
  *
  * <p><strong>Instantiating LeaseAsyncClients</strong></p>
  *
- * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClientBuilder.asyncInstantiationWithBlobAndLeaseId}
+ * <!-- src_embed com.azure.storage.blob.specialized.BlobLeaseClientBuilder.asyncInstantiationWithBlobAndLeaseId -->
+ * <pre>
+ * BlobLeaseAsyncClient blobLeaseAsyncClient = new BlobLeaseClientBuilder&#40;&#41;
+ *     .blobAsyncClient&#40;blobAsyncClient&#41;
+ *     .leaseId&#40;leaseId&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.blob.specialized.BlobLeaseClientBuilder.asyncInstantiationWithBlobAndLeaseId -->
  *
- * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClientBuilder.asyncInstantiationWithContainerAndLeaseId}
+ * <!-- src_embed com.azure.storage.blob.specialized.BlobLeaseClientBuilder.asyncInstantiationWithContainerAndLeaseId -->
+ * <pre>
+ * BlobLeaseAsyncClient blobLeaseAsyncClient = new BlobLeaseClientBuilder&#40;&#41;
+ *     .containerAsyncClient&#40;blobContainerAsyncClient&#41;
+ *     .leaseId&#40;leaseId&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.blob.specialized.BlobLeaseClientBuilder.asyncInstantiationWithContainerAndLeaseId -->
  *
  * @see BlobLeaseClient
  * @see BlobLeaseAsyncClient

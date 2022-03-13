@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.AmazonS3LinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,187 +17,23 @@ import java.util.Map;
 /** Linked service for Amazon S3. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AmazonS3")
-@JsonFlatten
 @Fluent
-public class AmazonS3LinkedService extends LinkedService {
+public final class AmazonS3LinkedService extends LinkedService {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AmazonS3LinkedService.class);
 
     /*
-     * The authentication type of S3. Allowed value: AccessKey (default) or
-     * TemporarySecurityCredentials. Type: string (or Expression with
-     * resultType string).
+     * Amazon S3 linked service properties.
      */
-    @JsonProperty(value = "typeProperties.authenticationType")
-    private Object authenticationType;
-
-    /*
-     * The access key identifier of the Amazon S3 Identity and Access
-     * Management (IAM) user. Type: string (or Expression with resultType
-     * string).
-     */
-    @JsonProperty(value = "typeProperties.accessKeyId")
-    private Object accessKeyId;
-
-    /*
-     * The secret access key of the Amazon S3 Identity and Access Management
-     * (IAM) user.
-     */
-    @JsonProperty(value = "typeProperties.secretAccessKey")
-    private SecretBase secretAccessKey;
-
-    /*
-     * This value specifies the endpoint to access with the S3 Connector. This
-     * is an optional property; change it only if you want to try a different
-     * service endpoint or want to switch between https and http. Type: string
-     * (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.serviceUrl")
-    private Object serviceUrl;
-
-    /*
-     * The session token for the S3 temporary security credential.
-     */
-    @JsonProperty(value = "typeProperties.sessionToken")
-    private SecretBase sessionToken;
-
-    /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
-    private Object encryptedCredential;
+    @JsonProperty(value = "typeProperties", required = true)
+    private AmazonS3LinkedServiceTypeProperties innerTypeProperties = new AmazonS3LinkedServiceTypeProperties();
 
     /**
-     * Get the authenticationType property: The authentication type of S3. Allowed value: AccessKey (default) or
-     * TemporarySecurityCredentials. Type: string (or Expression with resultType string).
+     * Get the innerTypeProperties property: Amazon S3 linked service properties.
      *
-     * @return the authenticationType value.
+     * @return the innerTypeProperties value.
      */
-    public Object authenticationType() {
-        return this.authenticationType;
-    }
-
-    /**
-     * Set the authenticationType property: The authentication type of S3. Allowed value: AccessKey (default) or
-     * TemporarySecurityCredentials. Type: string (or Expression with resultType string).
-     *
-     * @param authenticationType the authenticationType value to set.
-     * @return the AmazonS3LinkedService object itself.
-     */
-    public AmazonS3LinkedService withAuthenticationType(Object authenticationType) {
-        this.authenticationType = authenticationType;
-        return this;
-    }
-
-    /**
-     * Get the accessKeyId property: The access key identifier of the Amazon S3 Identity and Access Management (IAM)
-     * user. Type: string (or Expression with resultType string).
-     *
-     * @return the accessKeyId value.
-     */
-    public Object accessKeyId() {
-        return this.accessKeyId;
-    }
-
-    /**
-     * Set the accessKeyId property: The access key identifier of the Amazon S3 Identity and Access Management (IAM)
-     * user. Type: string (or Expression with resultType string).
-     *
-     * @param accessKeyId the accessKeyId value to set.
-     * @return the AmazonS3LinkedService object itself.
-     */
-    public AmazonS3LinkedService withAccessKeyId(Object accessKeyId) {
-        this.accessKeyId = accessKeyId;
-        return this;
-    }
-
-    /**
-     * Get the secretAccessKey property: The secret access key of the Amazon S3 Identity and Access Management (IAM)
-     * user.
-     *
-     * @return the secretAccessKey value.
-     */
-    public SecretBase secretAccessKey() {
-        return this.secretAccessKey;
-    }
-
-    /**
-     * Set the secretAccessKey property: The secret access key of the Amazon S3 Identity and Access Management (IAM)
-     * user.
-     *
-     * @param secretAccessKey the secretAccessKey value to set.
-     * @return the AmazonS3LinkedService object itself.
-     */
-    public AmazonS3LinkedService withSecretAccessKey(SecretBase secretAccessKey) {
-        this.secretAccessKey = secretAccessKey;
-        return this;
-    }
-
-    /**
-     * Get the serviceUrl property: This value specifies the endpoint to access with the S3 Connector. This is an
-     * optional property; change it only if you want to try a different service endpoint or want to switch between https
-     * and http. Type: string (or Expression with resultType string).
-     *
-     * @return the serviceUrl value.
-     */
-    public Object serviceUrl() {
-        return this.serviceUrl;
-    }
-
-    /**
-     * Set the serviceUrl property: This value specifies the endpoint to access with the S3 Connector. This is an
-     * optional property; change it only if you want to try a different service endpoint or want to switch between https
-     * and http. Type: string (or Expression with resultType string).
-     *
-     * @param serviceUrl the serviceUrl value to set.
-     * @return the AmazonS3LinkedService object itself.
-     */
-    public AmazonS3LinkedService withServiceUrl(Object serviceUrl) {
-        this.serviceUrl = serviceUrl;
-        return this;
-    }
-
-    /**
-     * Get the sessionToken property: The session token for the S3 temporary security credential.
-     *
-     * @return the sessionToken value.
-     */
-    public SecretBase sessionToken() {
-        return this.sessionToken;
-    }
-
-    /**
-     * Set the sessionToken property: The session token for the S3 temporary security credential.
-     *
-     * @param sessionToken the sessionToken value to set.
-     * @return the AmazonS3LinkedService object itself.
-     */
-    public AmazonS3LinkedService withSessionToken(SecretBase sessionToken) {
-        this.sessionToken = sessionToken;
-        return this;
-    }
-
-    /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @return the encryptedCredential value.
-     */
-    public Object encryptedCredential() {
-        return this.encryptedCredential;
-    }
-
-    /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @param encryptedCredential the encryptedCredential value to set.
-     * @return the AmazonS3LinkedService object itself.
-     */
-    public AmazonS3LinkedService withEncryptedCredential(Object encryptedCredential) {
-        this.encryptedCredential = encryptedCredential;
-        return this;
+    private AmazonS3LinkedServiceTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -229,6 +65,156 @@ public class AmazonS3LinkedService extends LinkedService {
     }
 
     /**
+     * Get the authenticationType property: The authentication type of S3. Allowed value: AccessKey (default) or
+     * TemporarySecurityCredentials. Type: string (or Expression with resultType string).
+     *
+     * @return the authenticationType value.
+     */
+    public Object authenticationType() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().authenticationType();
+    }
+
+    /**
+     * Set the authenticationType property: The authentication type of S3. Allowed value: AccessKey (default) or
+     * TemporarySecurityCredentials. Type: string (or Expression with resultType string).
+     *
+     * @param authenticationType the authenticationType value to set.
+     * @return the AmazonS3LinkedService object itself.
+     */
+    public AmazonS3LinkedService withAuthenticationType(Object authenticationType) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonS3LinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withAuthenticationType(authenticationType);
+        return this;
+    }
+
+    /**
+     * Get the accessKeyId property: The access key identifier of the Amazon S3 Identity and Access Management (IAM)
+     * user. Type: string (or Expression with resultType string).
+     *
+     * @return the accessKeyId value.
+     */
+    public Object accessKeyId() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().accessKeyId();
+    }
+
+    /**
+     * Set the accessKeyId property: The access key identifier of the Amazon S3 Identity and Access Management (IAM)
+     * user. Type: string (or Expression with resultType string).
+     *
+     * @param accessKeyId the accessKeyId value to set.
+     * @return the AmazonS3LinkedService object itself.
+     */
+    public AmazonS3LinkedService withAccessKeyId(Object accessKeyId) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonS3LinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withAccessKeyId(accessKeyId);
+        return this;
+    }
+
+    /**
+     * Get the secretAccessKey property: The secret access key of the Amazon S3 Identity and Access Management (IAM)
+     * user.
+     *
+     * @return the secretAccessKey value.
+     */
+    public SecretBase secretAccessKey() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().secretAccessKey();
+    }
+
+    /**
+     * Set the secretAccessKey property: The secret access key of the Amazon S3 Identity and Access Management (IAM)
+     * user.
+     *
+     * @param secretAccessKey the secretAccessKey value to set.
+     * @return the AmazonS3LinkedService object itself.
+     */
+    public AmazonS3LinkedService withSecretAccessKey(SecretBase secretAccessKey) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonS3LinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSecretAccessKey(secretAccessKey);
+        return this;
+    }
+
+    /**
+     * Get the serviceUrl property: This value specifies the endpoint to access with the S3 Connector. This is an
+     * optional property; change it only if you want to try a different service endpoint or want to switch between https
+     * and http. Type: string (or Expression with resultType string).
+     *
+     * @return the serviceUrl value.
+     */
+    public Object serviceUrl() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().serviceUrl();
+    }
+
+    /**
+     * Set the serviceUrl property: This value specifies the endpoint to access with the S3 Connector. This is an
+     * optional property; change it only if you want to try a different service endpoint or want to switch between https
+     * and http. Type: string (or Expression with resultType string).
+     *
+     * @param serviceUrl the serviceUrl value to set.
+     * @return the AmazonS3LinkedService object itself.
+     */
+    public AmazonS3LinkedService withServiceUrl(Object serviceUrl) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonS3LinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withServiceUrl(serviceUrl);
+        return this;
+    }
+
+    /**
+     * Get the sessionToken property: The session token for the S3 temporary security credential.
+     *
+     * @return the sessionToken value.
+     */
+    public SecretBase sessionToken() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sessionToken();
+    }
+
+    /**
+     * Set the sessionToken property: The session token for the S3 temporary security credential.
+     *
+     * @param sessionToken the sessionToken value to set.
+     * @return the AmazonS3LinkedService object itself.
+     */
+    public AmazonS3LinkedService withSessionToken(SecretBase sessionToken) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonS3LinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSessionToken(sessionToken);
+        return this;
+    }
+
+    /**
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @return the encryptedCredential value.
+     */
+    public Object encryptedCredential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
+    }
+
+    /**
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @param encryptedCredential the encryptedCredential value to set.
+     * @return the AmazonS3LinkedService object itself.
+     */
+    public AmazonS3LinkedService withEncryptedCredential(Object encryptedCredential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonS3LinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEncryptedCredential(encryptedCredential);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -236,11 +222,13 @@ public class AmazonS3LinkedService extends LinkedService {
     @Override
     public void validate() {
         super.validate();
-        if (secretAccessKey() != null) {
-            secretAccessKey().validate();
-        }
-        if (sessionToken() != null) {
-            sessionToken().validate();
+        if (innerTypeProperties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model AmazonS3LinkedService"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

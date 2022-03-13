@@ -24,7 +24,7 @@ public class ServiceBusQueueInboundAdapterTest extends InboundChannelAdapterTest
     public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
         this.adapter = new ServiceBusQueueInboundChannelAdapter(destination,
-                                                                new ServiceBusQueueTestOperation(clientFactory));
+            new ServiceBusQueueTestOperation(clientFactory));
     }
 
     @AfterEach

@@ -5,57 +5,31 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.containerregistry.fluent.models.WebhookPropertiesUpdateParameters;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** The parameters for updating a webhook. */
-@JsonFlatten
 @Fluent
-public class WebhookUpdateParameters {
+public final class WebhookUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WebhookUpdateParameters.class);
 
     /*
      * The tags for the webhook.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
-     * The service URI for the webhook to post notifications.
+     * The properties that the webhook will be updated with.
      */
-    @JsonProperty(value = "properties.serviceUri")
-    private String serviceUri;
-
-    /*
-     * Custom headers that will be added to the webhook notifications.
-     */
-    @JsonProperty(value = "properties.customHeaders")
-    private Map<String, String> customHeaders;
-
-    /*
-     * The status of the webhook at the time the operation was called.
-     */
-    @JsonProperty(value = "properties.status")
-    private WebhookStatus status;
-
-    /*
-     * The scope of repositories where the event can be triggered. For example,
-     * 'foo:*' means events for all tags under repository 'foo'. 'foo:bar'
-     * means events for 'foo:bar' only. 'foo' is equivalent to 'foo:latest'.
-     * Empty means all events.
-     */
-    @JsonProperty(value = "properties.scope")
-    private String scope;
-
-    /*
-     * The list of actions that trigger the webhook to post notifications.
-     */
-    @JsonProperty(value = "properties.actions")
-    private List<WebhookAction> actions;
+    @JsonProperty(value = "properties")
+    private WebhookPropertiesUpdateParameters innerProperties;
 
     /**
      * Get the tags property: The tags for the webhook.
@@ -78,12 +52,21 @@ public class WebhookUpdateParameters {
     }
 
     /**
+     * Get the innerProperties property: The properties that the webhook will be updated with.
+     *
+     * @return the innerProperties value.
+     */
+    private WebhookPropertiesUpdateParameters innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the serviceUri property: The service URI for the webhook to post notifications.
      *
      * @return the serviceUri value.
      */
     public String serviceUri() {
-        return this.serviceUri;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceUri();
     }
 
     /**
@@ -93,7 +76,10 @@ public class WebhookUpdateParameters {
      * @return the WebhookUpdateParameters object itself.
      */
     public WebhookUpdateParameters withServiceUri(String serviceUri) {
-        this.serviceUri = serviceUri;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookPropertiesUpdateParameters();
+        }
+        this.innerProperties().withServiceUri(serviceUri);
         return this;
     }
 
@@ -103,7 +89,7 @@ public class WebhookUpdateParameters {
      * @return the customHeaders value.
      */
     public Map<String, String> customHeaders() {
-        return this.customHeaders;
+        return this.innerProperties() == null ? null : this.innerProperties().customHeaders();
     }
 
     /**
@@ -113,7 +99,10 @@ public class WebhookUpdateParameters {
      * @return the WebhookUpdateParameters object itself.
      */
     public WebhookUpdateParameters withCustomHeaders(Map<String, String> customHeaders) {
-        this.customHeaders = customHeaders;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookPropertiesUpdateParameters();
+        }
+        this.innerProperties().withCustomHeaders(customHeaders);
         return this;
     }
 
@@ -123,7 +112,7 @@ public class WebhookUpdateParameters {
      * @return the status value.
      */
     public WebhookStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -133,7 +122,10 @@ public class WebhookUpdateParameters {
      * @return the WebhookUpdateParameters object itself.
      */
     public WebhookUpdateParameters withStatus(WebhookStatus status) {
-        this.status = status;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookPropertiesUpdateParameters();
+        }
+        this.innerProperties().withStatus(status);
         return this;
     }
 
@@ -145,7 +137,7 @@ public class WebhookUpdateParameters {
      * @return the scope value.
      */
     public String scope() {
-        return this.scope;
+        return this.innerProperties() == null ? null : this.innerProperties().scope();
     }
 
     /**
@@ -157,7 +149,10 @@ public class WebhookUpdateParameters {
      * @return the WebhookUpdateParameters object itself.
      */
     public WebhookUpdateParameters withScope(String scope) {
-        this.scope = scope;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookPropertiesUpdateParameters();
+        }
+        this.innerProperties().withScope(scope);
         return this;
     }
 
@@ -167,7 +162,7 @@ public class WebhookUpdateParameters {
      * @return the actions value.
      */
     public List<WebhookAction> actions() {
-        return this.actions;
+        return this.innerProperties() == null ? null : this.innerProperties().actions();
     }
 
     /**
@@ -177,7 +172,10 @@ public class WebhookUpdateParameters {
      * @return the WebhookUpdateParameters object itself.
      */
     public WebhookUpdateParameters withActions(List<WebhookAction> actions) {
-        this.actions = actions;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookPropertiesUpdateParameters();
+        }
+        this.innerProperties().withActions(actions);
         return this;
     }
 
@@ -187,5 +185,8 @@ public class WebhookUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -12,12 +12,6 @@ import java.util.List;
 @Fluent
 public final class TasksStateTasks {
     /*
-     * The details property.
-     */
-    @JsonProperty(value = "details")
-    private TasksStateTasksDetails details;
-
-    /*
      * The completed property.
      */
     @JsonProperty(value = "completed", required = true)
@@ -71,25 +65,29 @@ public final class TasksStateTasks {
     @JsonProperty(value = "sentimentAnalysisTasks")
     private List<TasksStateTasksSentimentAnalysisTasksItem> sentimentAnalysisTasks;
 
-    /**
-     * Get the details property: The details property.
-     *
-     * @return the details value.
+    /*
+     * The extractiveSummarizationTasks property.
      */
-    public TasksStateTasksDetails getDetails() {
-        return this.details;
-    }
+    @JsonProperty(value = "extractiveSummarizationTasks")
+    private List<TasksStateTasksExtractiveSummarizationTasksItem> extractiveSummarizationTasks;
 
-    /**
-     * Set the details property: The details property.
-     *
-     * @param details the details value to set.
-     * @return the TasksStateTasks object itself.
+    /*
+     * The customEntityRecognitionTasks property.
      */
-    public TasksStateTasks setDetails(TasksStateTasksDetails details) {
-        this.details = details;
-        return this;
-    }
+    @JsonProperty(value = "customEntityRecognitionTasks")
+    private List<TasksStateTasksCustomEntityRecognitionTasksItem> customEntityRecognitionTasks;
+
+    /*
+     * The customSingleClassificationTasks property.
+     */
+    @JsonProperty(value = "customSingleClassificationTasks")
+    private List<TasksStateTasksCustomSingleClassificationTasksItem> customSingleClassificationTasks;
+
+    /*
+     * The customMultiClassificationTasks property.
+     */
+    @JsonProperty(value = "customMultiClassificationTasks")
+    private List<TasksStateTasksCustomMultiClassificationTasksItem> customMultiClassificationTasks;
 
     /**
      * Get the completed property: The completed property.
@@ -272,6 +270,90 @@ public final class TasksStateTasks {
     public TasksStateTasks setSentimentAnalysisTasks(
             List<TasksStateTasksSentimentAnalysisTasksItem> sentimentAnalysisTasks) {
         this.sentimentAnalysisTasks = sentimentAnalysisTasks;
+        return this;
+    }
+
+    /**
+     * Get the extractiveSummarizationTasks property: The extractiveSummarizationTasks property.
+     *
+     * @return the extractiveSummarizationTasks value.
+     */
+    public List<TasksStateTasksExtractiveSummarizationTasksItem> getExtractiveSummarizationTasks() {
+        return this.extractiveSummarizationTasks;
+    }
+
+    /**
+     * Set the extractiveSummarizationTasks property: The extractiveSummarizationTasks property.
+     *
+     * @param extractiveSummarizationTasks the extractiveSummarizationTasks value to set.
+     * @return the TasksStateTasks object itself.
+     */
+    public TasksStateTasks setExtractiveSummarizationTasks(
+            List<TasksStateTasksExtractiveSummarizationTasksItem> extractiveSummarizationTasks) {
+        this.extractiveSummarizationTasks = extractiveSummarizationTasks;
+        return this;
+    }
+
+    /**
+     * Get the customEntityRecognitionTasks property: The customEntityRecognitionTasks property.
+     *
+     * @return the customEntityRecognitionTasks value.
+     */
+    public List<TasksStateTasksCustomEntityRecognitionTasksItem> getCustomEntityRecognitionTasks() {
+        return this.customEntityRecognitionTasks;
+    }
+
+    /**
+     * Set the customEntityRecognitionTasks property: The customEntityRecognitionTasks property.
+     *
+     * @param customEntityRecognitionTasks the customEntityRecognitionTasks value to set.
+     * @return the TasksStateTasks object itself.
+     */
+    public TasksStateTasks setCustomEntityRecognitionTasks(
+            List<TasksStateTasksCustomEntityRecognitionTasksItem> customEntityRecognitionTasks) {
+        this.customEntityRecognitionTasks = customEntityRecognitionTasks;
+        return this;
+    }
+
+    /**
+     * Get the customSingleClassificationTasks property: The customSingleClassificationTasks property.
+     *
+     * @return the customSingleClassificationTasks value.
+     */
+    public List<TasksStateTasksCustomSingleClassificationTasksItem> getCustomSingleClassificationTasks() {
+        return this.customSingleClassificationTasks;
+    }
+
+    /**
+     * Set the customSingleClassificationTasks property: The customSingleClassificationTasks property.
+     *
+     * @param customSingleClassificationTasks the customSingleClassificationTasks value to set.
+     * @return the TasksStateTasks object itself.
+     */
+    public TasksStateTasks setCustomSingleClassificationTasks(
+            List<TasksStateTasksCustomSingleClassificationTasksItem> customSingleClassificationTasks) {
+        this.customSingleClassificationTasks = customSingleClassificationTasks;
+        return this;
+    }
+
+    /**
+     * Get the customMultiClassificationTasks property: The customMultiClassificationTasks property.
+     *
+     * @return the customMultiClassificationTasks value.
+     */
+    public List<TasksStateTasksCustomMultiClassificationTasksItem> getCustomMultiClassificationTasks() {
+        return this.customMultiClassificationTasks;
+    }
+
+    /**
+     * Set the customMultiClassificationTasks property: The customMultiClassificationTasks property.
+     *
+     * @param customMultiClassificationTasks the customMultiClassificationTasks value to set.
+     * @return the TasksStateTasks object itself.
+     */
+    public TasksStateTasks setCustomMultiClassificationTasks(
+            List<TasksStateTasksCustomMultiClassificationTasksItem> customMultiClassificationTasks) {
+        this.customMultiClassificationTasks = customMultiClassificationTasks;
         return this;
     }
 }

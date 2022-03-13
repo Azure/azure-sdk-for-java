@@ -158,7 +158,7 @@ public final class HcxEnterpriseSitesImpl implements HcxEnterpriseSites {
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'hcxEnterpriseSites'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, privateCloudName, hcxEnterpriseSiteName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, privateCloudName, hcxEnterpriseSiteName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {

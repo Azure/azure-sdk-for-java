@@ -153,8 +153,8 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         final boolean useCredentials = false;
         final Duration shortTimeout = Duration.ofSeconds(15);
-        final int viaIntermediateEntity = TestUtils.USE_CASE_SEND_VIA_QUEUE_1;
-        final int destinationEntity = TestUtils.USE_CASE_SEND_VIA_QUEUE_2;
+        final int viaIntermediateEntity = TestUtils.USE_CASE_TXN_1;
+        final int destinationEntity = TestUtils.USE_CASE_TXN_2;
         final boolean shareConnection = true;
         final MessagingEntityType entityType = MessagingEntityType.QUEUE;
         final boolean isSessionEnabled = false;

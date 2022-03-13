@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Describes the virtual machine used to build, customize and capture images. */
 @Fluent
@@ -16,7 +17,7 @@ public final class ImageTemplateVmProfile {
 
     /*
      * Size of the virtual machine used to build, customize and capture images.
-     * Omit or specify empty string to use the default (Standard_D1_v2).
+     * Omit or specify empty string to use the default (Standard_D2ds_v4).
      */
     @JsonProperty(value = "vmSize")
     private String vmSize;
@@ -29,6 +30,14 @@ public final class ImageTemplateVmProfile {
     private Integer osDiskSizeGB;
 
     /*
+     * Optional array of resource IDs of user assigned managed identities to be
+     * configured on the build VM. This may include the identity of the image
+     * template.
+     */
+    @JsonProperty(value = "userAssignedIdentities")
+    private List<String> userAssignedIdentities;
+
+    /*
      * Optional configuration of the virtual network to use to deploy the build
      * virtual machine in. Omit if no specific virtual network needs to be
      * used.
@@ -38,7 +47,7 @@ public final class ImageTemplateVmProfile {
 
     /**
      * Get the vmSize property: Size of the virtual machine used to build, customize and capture images. Omit or specify
-     * empty string to use the default (Standard_D1_v2).
+     * empty string to use the default (Standard_D2ds_v4).
      *
      * @return the vmSize value.
      */
@@ -48,7 +57,7 @@ public final class ImageTemplateVmProfile {
 
     /**
      * Set the vmSize property: Size of the virtual machine used to build, customize and capture images. Omit or specify
-     * empty string to use the default (Standard_D1_v2).
+     * empty string to use the default (Standard_D2ds_v4).
      *
      * @param vmSize the vmSize value to set.
      * @return the ImageTemplateVmProfile object itself.
@@ -75,6 +84,28 @@ public final class ImageTemplateVmProfile {
      */
     public ImageTemplateVmProfile withOsDiskSizeGB(Integer osDiskSizeGB) {
         this.osDiskSizeGB = osDiskSizeGB;
+        return this;
+    }
+
+    /**
+     * Get the userAssignedIdentities property: Optional array of resource IDs of user assigned managed identities to be
+     * configured on the build VM. This may include the identity of the image template.
+     *
+     * @return the userAssignedIdentities value.
+     */
+    public List<String> userAssignedIdentities() {
+        return this.userAssignedIdentities;
+    }
+
+    /**
+     * Set the userAssignedIdentities property: Optional array of resource IDs of user assigned managed identities to be
+     * configured on the build VM. This may include the identity of the image template.
+     *
+     * @param userAssignedIdentities the userAssignedIdentities value to set.
+     * @return the ImageTemplateVmProfile object itself.
+     */
+    public ImageTemplateVmProfile withUserAssignedIdentities(List<String> userAssignedIdentities) {
+        this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }
 

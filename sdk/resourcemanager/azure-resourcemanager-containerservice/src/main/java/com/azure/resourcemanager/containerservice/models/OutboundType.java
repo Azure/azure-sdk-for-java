@@ -16,6 +16,12 @@ public final class OutboundType extends ExpandableStringEnum<OutboundType> {
     /** Static value userDefinedRouting for OutboundType. */
     public static final OutboundType USER_DEFINED_ROUTING = fromString("userDefinedRouting");
 
+    /** Static value managedNATGateway for OutboundType. */
+    public static final OutboundType MANAGED_NATGATEWAY = fromString("managedNATGateway");
+
+    /** Static value userAssignedNATGateway for OutboundType. */
+    public static final OutboundType USER_ASSIGNED_NATGATEWAY = fromString("userAssignedNATGateway");
+
     /**
      * Creates or finds a OutboundType from its string representation.
      *

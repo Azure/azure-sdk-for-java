@@ -16,6 +16,9 @@ public final class KeyType extends ExpandableStringEnum<KeyType> {
     /** Static value Secondary for KeyType. */
     public static final KeyType SECONDARY = fromString("Secondary");
 
+    /** Static value Salt for KeyType. */
+    public static final KeyType SALT = fromString("Salt");
+
     /**
      * Creates or finds a KeyType from its string representation.
      *

@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.DiagnosticsProfile;
 import com.azure.resourcemanager.compute.models.HardwareProfile;
@@ -20,17 +18,13 @@ import com.azure.resourcemanager.compute.models.Sku;
 import com.azure.resourcemanager.compute.models.StorageProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMNetworkProfileConfiguration;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProtectionPolicy;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** Describes a virtual machine scale set virtual machine. */
-@JsonFlatten
 @Fluent
-public class VirtualMachineScaleSetVMInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetVMInner.class);
-
+public final class VirtualMachineScaleSetVMInner extends Resource {
     /*
      * The virtual machine instance ID.
      */
@@ -42,6 +36,12 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      */
     @JsonProperty(value = "sku", access = JsonProperty.Access.WRITE_ONLY)
     private Sku sku;
+
+    /*
+     * Describes the properties of a virtual machine scale set virtual machine.
+     */
+    @JsonProperty(value = "properties")
+    private VirtualMachineScaleSetVMPropertiesInner innerProperties;
 
     /*
      * Specifies information about the marketplace image used to create the
@@ -67,135 +67,6 @@ public class VirtualMachineScaleSetVMInner extends Resource {
     @JsonProperty(value = "zones", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> zones;
 
-    /*
-     * Specifies whether the latest model has been applied to the virtual
-     * machine.
-     */
-    @JsonProperty(value = "properties.latestModelApplied", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean latestModelApplied;
-
-    /*
-     * Azure VM unique ID.
-     */
-    @JsonProperty(value = "properties.vmId", access = JsonProperty.Access.WRITE_ONLY)
-    private String vmId;
-
-    /*
-     * The virtual machine instance view.
-     */
-    @JsonProperty(value = "properties.instanceView", access = JsonProperty.Access.WRITE_ONLY)
-    private VirtualMachineScaleSetVMInstanceViewInner instanceView;
-
-    /*
-     * Specifies the hardware settings for the virtual machine.
-     */
-    @JsonProperty(value = "properties.hardwareProfile")
-    private HardwareProfile hardwareProfile;
-
-    /*
-     * Specifies the storage settings for the virtual machine disks.
-     */
-    @JsonProperty(value = "properties.storageProfile")
-    private StorageProfile storageProfile;
-
-    /*
-     * Specifies additional capabilities enabled or disabled on the virtual
-     * machine in the scale set. For instance: whether the virtual machine has
-     * the capability to support attaching managed data disks with UltraSSD_LRS
-     * storage account type.
-     */
-    @JsonProperty(value = "properties.additionalCapabilities")
-    private AdditionalCapabilities additionalCapabilities;
-
-    /*
-     * Specifies the operating system settings for the virtual machine.
-     */
-    @JsonProperty(value = "properties.osProfile")
-    private OSProfile osProfile;
-
-    /*
-     * Specifies the Security related profile settings for the virtual machine.
-     */
-    @JsonProperty(value = "properties.securityProfile")
-    private SecurityProfile securityProfile;
-
-    /*
-     * Specifies the network interfaces of the virtual machine.
-     */
-    @JsonProperty(value = "properties.networkProfile")
-    private NetworkProfile networkProfile;
-
-    /*
-     * Specifies the network profile configuration of the virtual machine.
-     */
-    @JsonProperty(value = "properties.networkProfileConfiguration")
-    private VirtualMachineScaleSetVMNetworkProfileConfiguration networkProfileConfiguration;
-
-    /*
-     * Specifies the boot diagnostic settings state. <br><br>Minimum
-     * api-version: 2015-06-15.
-     */
-    @JsonProperty(value = "properties.diagnosticsProfile")
-    private DiagnosticsProfile diagnosticsProfile;
-
-    /*
-     * Specifies information about the availability set that the virtual
-     * machine should be assigned to. Virtual machines specified in the same
-     * availability set are allocated to different nodes to maximize
-     * availability. For more information about availability sets, see
-     * [Availability sets
-     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview).
-     * <br><br> For more information on Azure planned maintenance, see
-     * [Maintenance and updates for Virtual Machines in
-     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates)
-     * <br><br> Currently, a VM can only be added to availability set at
-     * creation time. An existing VM cannot be added to an availability set.
-     */
-    @JsonProperty(value = "properties.availabilitySet")
-    private SubResource availabilitySet;
-
-    /*
-     * The provisioning state, which only appears in the response.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * Specifies that the image or disk that is being used was licensed
-     * on-premises. <br><br> Possible values for Windows Server operating
-     * system are: <br><br> Windows_Client <br><br> Windows_Server <br><br>
-     * Possible values for Linux Server operating system are: <br><br>
-     * RHEL_BYOS (for RHEL) <br><br> SLES_BYOS (for SUSE) <br><br> For more
-     * information, see [Azure Hybrid Use Benefit for Windows
-     * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
-     * <br><br> [Azure Hybrid Use Benefit for Linux
-     * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux)
-     * <br><br> Minimum api-version: 2015-06-15
-     */
-    @JsonProperty(value = "properties.licenseType")
-    private String licenseType;
-
-    /*
-     * Specifies whether the model applied to the virtual machine is the model
-     * of the virtual machine scale set or the customized model for the virtual
-     * machine.
-     */
-    @JsonProperty(value = "properties.modelDefinitionApplied", access = JsonProperty.Access.WRITE_ONLY)
-    private String modelDefinitionApplied;
-
-    /*
-     * Specifies the protection policy of the virtual machine.
-     */
-    @JsonProperty(value = "properties.protectionPolicy")
-    private VirtualMachineScaleSetVMProtectionPolicy protectionPolicy;
-
-    /*
-     * UserData for the VM, which must be base-64 encoded. Customer should not
-     * pass any secrets in here. <br><br>Minimum api-version: 2021-03-01
-     */
-    @JsonProperty(value = "properties.userData")
-    private String userData;
-
     /**
      * Get the instanceId property: The virtual machine instance ID.
      *
@@ -212,6 +83,15 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      */
     public Sku sku() {
         return this.sku;
+    }
+
+    /**
+     * Get the innerProperties property: Describes the properties of a virtual machine scale set virtual machine.
+     *
+     * @return the innerProperties value.
+     */
+    private VirtualMachineScaleSetVMPropertiesInner innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -260,13 +140,27 @@ public class VirtualMachineScaleSetVMInner extends Resource {
         return this.zones;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineScaleSetVMInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineScaleSetVMInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
     /**
      * Get the latestModelApplied property: Specifies whether the latest model has been applied to the virtual machine.
      *
      * @return the latestModelApplied value.
      */
     public Boolean latestModelApplied() {
-        return this.latestModelApplied;
+        return this.innerProperties() == null ? null : this.innerProperties().latestModelApplied();
     }
 
     /**
@@ -275,7 +169,7 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @return the vmId value.
      */
     public String vmId() {
-        return this.vmId;
+        return this.innerProperties() == null ? null : this.innerProperties().vmId();
     }
 
     /**
@@ -284,7 +178,7 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @return the instanceView value.
      */
     public VirtualMachineScaleSetVMInstanceViewInner instanceView() {
-        return this.instanceView;
+        return this.innerProperties() == null ? null : this.innerProperties().instanceView();
     }
 
     /**
@@ -293,7 +187,7 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @return the hardwareProfile value.
      */
     public HardwareProfile hardwareProfile() {
-        return this.hardwareProfile;
+        return this.innerProperties() == null ? null : this.innerProperties().hardwareProfile();
     }
 
     /**
@@ -303,7 +197,10 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
     public VirtualMachineScaleSetVMInner withHardwareProfile(HardwareProfile hardwareProfile) {
-        this.hardwareProfile = hardwareProfile;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetVMPropertiesInner();
+        }
+        this.innerProperties().withHardwareProfile(hardwareProfile);
         return this;
     }
 
@@ -313,7 +210,7 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @return the storageProfile value.
      */
     public StorageProfile storageProfile() {
-        return this.storageProfile;
+        return this.innerProperties() == null ? null : this.innerProperties().storageProfile();
     }
 
     /**
@@ -323,7 +220,10 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
     public VirtualMachineScaleSetVMInner withStorageProfile(StorageProfile storageProfile) {
-        this.storageProfile = storageProfile;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetVMPropertiesInner();
+        }
+        this.innerProperties().withStorageProfile(storageProfile);
         return this;
     }
 
@@ -335,7 +235,7 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @return the additionalCapabilities value.
      */
     public AdditionalCapabilities additionalCapabilities() {
-        return this.additionalCapabilities;
+        return this.innerProperties() == null ? null : this.innerProperties().additionalCapabilities();
     }
 
     /**
@@ -347,7 +247,10 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
     public VirtualMachineScaleSetVMInner withAdditionalCapabilities(AdditionalCapabilities additionalCapabilities) {
-        this.additionalCapabilities = additionalCapabilities;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetVMPropertiesInner();
+        }
+        this.innerProperties().withAdditionalCapabilities(additionalCapabilities);
         return this;
     }
 
@@ -357,7 +260,7 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @return the osProfile value.
      */
     public OSProfile osProfile() {
-        return this.osProfile;
+        return this.innerProperties() == null ? null : this.innerProperties().osProfile();
     }
 
     /**
@@ -367,7 +270,10 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
     public VirtualMachineScaleSetVMInner withOsProfile(OSProfile osProfile) {
-        this.osProfile = osProfile;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetVMPropertiesInner();
+        }
+        this.innerProperties().withOsProfile(osProfile);
         return this;
     }
 
@@ -377,7 +283,7 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @return the securityProfile value.
      */
     public SecurityProfile securityProfile() {
-        return this.securityProfile;
+        return this.innerProperties() == null ? null : this.innerProperties().securityProfile();
     }
 
     /**
@@ -387,7 +293,10 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
     public VirtualMachineScaleSetVMInner withSecurityProfile(SecurityProfile securityProfile) {
-        this.securityProfile = securityProfile;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetVMPropertiesInner();
+        }
+        this.innerProperties().withSecurityProfile(securityProfile);
         return this;
     }
 
@@ -397,7 +306,7 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @return the networkProfile value.
      */
     public NetworkProfile networkProfile() {
-        return this.networkProfile;
+        return this.innerProperties() == null ? null : this.innerProperties().networkProfile();
     }
 
     /**
@@ -407,7 +316,10 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
     public VirtualMachineScaleSetVMInner withNetworkProfile(NetworkProfile networkProfile) {
-        this.networkProfile = networkProfile;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetVMPropertiesInner();
+        }
+        this.innerProperties().withNetworkProfile(networkProfile);
         return this;
     }
 
@@ -417,7 +329,7 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @return the networkProfileConfiguration value.
      */
     public VirtualMachineScaleSetVMNetworkProfileConfiguration networkProfileConfiguration() {
-        return this.networkProfileConfiguration;
+        return this.innerProperties() == null ? null : this.innerProperties().networkProfileConfiguration();
     }
 
     /**
@@ -428,7 +340,10 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      */
     public VirtualMachineScaleSetVMInner withNetworkProfileConfiguration(
         VirtualMachineScaleSetVMNetworkProfileConfiguration networkProfileConfiguration) {
-        this.networkProfileConfiguration = networkProfileConfiguration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetVMPropertiesInner();
+        }
+        this.innerProperties().withNetworkProfileConfiguration(networkProfileConfiguration);
         return this;
     }
 
@@ -439,7 +354,7 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @return the diagnosticsProfile value.
      */
     public DiagnosticsProfile diagnosticsProfile() {
-        return this.diagnosticsProfile;
+        return this.innerProperties() == null ? null : this.innerProperties().diagnosticsProfile();
     }
 
     /**
@@ -450,7 +365,10 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
     public VirtualMachineScaleSetVMInner withDiagnosticsProfile(DiagnosticsProfile diagnosticsProfile) {
-        this.diagnosticsProfile = diagnosticsProfile;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetVMPropertiesInner();
+        }
+        this.innerProperties().withDiagnosticsProfile(diagnosticsProfile);
         return this;
     }
 
@@ -467,7 +385,7 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @return the availabilitySet value.
      */
     public SubResource availabilitySet() {
-        return this.availabilitySet;
+        return this.innerProperties() == null ? null : this.innerProperties().availabilitySet();
     }
 
     /**
@@ -484,7 +402,10 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
     public VirtualMachineScaleSetVMInner withAvailabilitySet(SubResource availabilitySet) {
-        this.availabilitySet = availabilitySet;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetVMPropertiesInner();
+        }
+        this.innerProperties().withAvailabilitySet(availabilitySet);
         return this;
     }
 
@@ -494,7 +415,7 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -511,7 +432,7 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @return the licenseType value.
      */
     public String licenseType() {
-        return this.licenseType;
+        return this.innerProperties() == null ? null : this.innerProperties().licenseType();
     }
 
     /**
@@ -529,7 +450,10 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
     public VirtualMachineScaleSetVMInner withLicenseType(String licenseType) {
-        this.licenseType = licenseType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetVMPropertiesInner();
+        }
+        this.innerProperties().withLicenseType(licenseType);
         return this;
     }
 
@@ -540,7 +464,7 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @return the modelDefinitionApplied value.
      */
     public String modelDefinitionApplied() {
-        return this.modelDefinitionApplied;
+        return this.innerProperties() == null ? null : this.innerProperties().modelDefinitionApplied();
     }
 
     /**
@@ -549,7 +473,7 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @return the protectionPolicy value.
      */
     public VirtualMachineScaleSetVMProtectionPolicy protectionPolicy() {
-        return this.protectionPolicy;
+        return this.innerProperties() == null ? null : this.innerProperties().protectionPolicy();
     }
 
     /**
@@ -560,7 +484,10 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      */
     public VirtualMachineScaleSetVMInner withProtectionPolicy(
         VirtualMachineScaleSetVMProtectionPolicy protectionPolicy) {
-        this.protectionPolicy = protectionPolicy;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetVMPropertiesInner();
+        }
+        this.innerProperties().withProtectionPolicy(protectionPolicy);
         return this;
     }
 
@@ -571,7 +498,7 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @return the userData value.
      */
     public String userData() {
-        return this.userData;
+        return this.innerProperties() == null ? null : this.innerProperties().userData();
     }
 
     /**
@@ -582,21 +509,10 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
     public VirtualMachineScaleSetVMInner withUserData(String userData) {
-        this.userData = userData;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public VirtualMachineScaleSetVMInner withLocation(String location) {
-        super.withLocation(location);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public VirtualMachineScaleSetVMInner withTags(Map<String, String> tags) {
-        super.withTags(tags);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetVMPropertiesInner();
+        }
+        this.innerProperties().withUserData(userData);
         return this;
     }
 
@@ -609,41 +525,14 @@ public class VirtualMachineScaleSetVMInner extends Resource {
         if (sku() != null) {
             sku().validate();
         }
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (plan() != null) {
             plan().validate();
         }
         if (resources() != null) {
             resources().forEach(e -> e.validate());
-        }
-        if (instanceView() != null) {
-            instanceView().validate();
-        }
-        if (hardwareProfile() != null) {
-            hardwareProfile().validate();
-        }
-        if (storageProfile() != null) {
-            storageProfile().validate();
-        }
-        if (additionalCapabilities() != null) {
-            additionalCapabilities().validate();
-        }
-        if (osProfile() != null) {
-            osProfile().validate();
-        }
-        if (securityProfile() != null) {
-            securityProfile().validate();
-        }
-        if (networkProfile() != null) {
-            networkProfile().validate();
-        }
-        if (networkProfileConfiguration() != null) {
-            networkProfileConfiguration().validate();
-        }
-        if (diagnosticsProfile() != null) {
-            diagnosticsProfile().validate();
-        }
-        if (protectionPolicy() != null) {
-            protectionPolicy().validate();
         }
     }
 }

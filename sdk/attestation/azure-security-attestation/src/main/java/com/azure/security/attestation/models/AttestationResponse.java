@@ -4,43 +4,43 @@
 
 package com.azure.security.attestation.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.rest.ResponseBase;
 
-/** The result of an attestation operation. */
-@Fluent
-public final class AttestationResponse {
+/**
+ * The result of an attestation operation.
+ */
+@Immutable
+public final class AttestationResponse<T> extends ResponseBase<Void, T> {
+
     /*
      * An RFC 7519 JSON Web Token, the body of which is an AttestationResult
      * object.
      */
-    @JsonProperty(value = "token")
-    private String token;
+    private final AttestationToken token;
+
+    /**
+     * Creates a {@link ResponseBase}.
+     *
+     * @param request The HTTP request which resulted in this response.
+     * @param statusCode The status code of the HTTP response.
+     * @param headers The headers of the HTTP response.
+     * @param value The deserialized value of the HTTP response.
+     * @param token The Attestation Token which was returned from the service.
+     */
+    public AttestationResponse(HttpRequest request, int statusCode, HttpHeaders headers, T value, AttestationToken token) {
+        super(request, statusCode, headers, value, null);
+        this.token = token;
+    }
 
     /**
      * Get the token property: An RFC 7519 JSON Web Token, the body of which is an AttestationResult object.
      *
      * @return the token value.
      */
-    public String getToken() {
+    public AttestationToken getToken() {
         return this.token;
     }
-
-    /**
-     * Set the token property: An RFC 7519 JSON Web Token, the body of which is an AttestationResult object.
-     *
-     * @param token the token value to set.
-     * @return the AttestationResponse object itself.
-     */
-    public AttestationResponse setToken(String token) {
-        this.token = token;
-        return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {}
 }

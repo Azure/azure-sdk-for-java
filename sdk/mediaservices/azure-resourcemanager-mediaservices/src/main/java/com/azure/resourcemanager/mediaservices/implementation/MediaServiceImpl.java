@@ -16,6 +16,7 @@ import com.azure.resourcemanager.mediaservices.models.ListEdgePoliciesInput;
 import com.azure.resourcemanager.mediaservices.models.MediaService;
 import com.azure.resourcemanager.mediaservices.models.MediaServiceIdentity;
 import com.azure.resourcemanager.mediaservices.models.MediaServiceUpdate;
+import com.azure.resourcemanager.mediaservices.models.PublicNetworkAccess;
 import com.azure.resourcemanager.mediaservices.models.StorageAccount;
 import com.azure.resourcemanager.mediaservices.models.StorageAuthentication;
 import com.azure.resourcemanager.mediaservices.models.SyncStorageKeysInput;
@@ -85,6 +86,10 @@ public final class MediaServiceImpl implements MediaService, MediaService.Defini
 
     public KeyDelivery keyDelivery() {
         return this.innerModel().keyDelivery();
+    }
+
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerModel().publicNetworkAccess();
     }
 
     public Region region() {
@@ -279,6 +284,16 @@ public final class MediaServiceImpl implements MediaService, MediaService.Defini
             return this;
         } else {
             this.updateParameters.withKeyDelivery(keyDelivery);
+            return this;
+        }
+    }
+
+    public MediaServiceImpl withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (isInCreateMode()) {
+            this.innerModel().withPublicNetworkAccess(publicNetworkAccess);
+            return this;
+        } else {
+            this.updateParameters.withPublicNetworkAccess(publicNetworkAccess);
             return this;
         }
     }

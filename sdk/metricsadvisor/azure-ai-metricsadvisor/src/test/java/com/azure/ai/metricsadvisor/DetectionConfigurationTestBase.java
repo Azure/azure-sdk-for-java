@@ -13,7 +13,7 @@ import com.azure.ai.metricsadvisor.administration.models.DataFeedGranularity;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedGranularityType;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionSettings;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedSchema;
-import com.azure.ai.metricsadvisor.administration.models.DetectionConditionsOperator;
+import com.azure.ai.metricsadvisor.administration.models.DetectionConditionOperator;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.administration.models.HardThresholdCondition;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedMetric;
@@ -44,22 +44,22 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
 
         final String detectionConfigName = "testdetectionconfig" + UUID.randomUUID();
         final MetricWholeSeriesDetectionCondition wholeSeriesCondition = new MetricWholeSeriesDetectionCondition()
-            .setCrossConditionOperator(DetectionConditionsOperator.OR)
-            .setSmartDetectionCondition(new SmartDetectionCondition()
-                .setSensitivity(50)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(50).setMinRatio(50)))
-            .setHardThresholdCondition(new HardThresholdCondition()
+            .setConditionOperator(DetectionConditionOperator.OR)
+            .setSmartDetectionCondition(new SmartDetectionCondition(
+                50,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(13, 50)))
+            .setHardThresholdCondition(new HardThresholdCondition(
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(5, 5))
                 .setLowerBound(0.0)
-                .setUpperBound(100.0)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(5).setMinRatio(5)))
-            .setChangeThresholdCondition(new ChangeThresholdCondition()
-                .setChangePercentage(50)
-                .setShiftPoint(30)
-                .setWithinRange(true)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(2).setMinRatio(2)));
+                .setUpperBound(100.0))
+            .setChangeThresholdCondition(new ChangeThresholdCondition(
+                50,
+                30,
+                true,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(2, 2)));
 
         final AnomalyDetectionConfiguration detectionConfiguration
             = new AnomalyDetectionConfiguration(detectionConfigName)
@@ -86,8 +86,8 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
             = CreateDetectionConfigurationForWholeSeriesInput.INSTANCE.wholeSeriesCondition;
 
         Assertions.assertNotNull(createdWholeSeriesCondition);
-        Assertions.assertEquals(expectedWholeSeriesCondition.getCrossConditionsOperator(),
-            createdWholeSeriesCondition.getCrossConditionsOperator());
+        Assertions.assertEquals(expectedWholeSeriesCondition.getConditionOperator(),
+            createdWholeSeriesCondition.getConditionOperator());
         // WholeSeries::SmartDetection
         Assertions.assertNotNull(createdWholeSeriesCondition.getSmartDetectionCondition());
         Assertions.assertEquals(
@@ -143,43 +143,43 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
 
         final String detectionConfigName = "testdetectionconfig" + UUID.randomUUID();
         final MetricWholeSeriesDetectionCondition wholeSeriesCondition = new MetricWholeSeriesDetectionCondition()
-            .setCrossConditionOperator(DetectionConditionsOperator.AND)
-            .setSmartDetectionCondition(new SmartDetectionCondition()
-                .setSensitivity(50)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(50).setMinRatio(50)))
-            .setHardThresholdCondition(new HardThresholdCondition()
+            .setConditionOperator(DetectionConditionOperator.AND)
+            .setSmartDetectionCondition(new SmartDetectionCondition(
+                50,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(13, 50)))
+            .setHardThresholdCondition(new HardThresholdCondition(
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(5, 5))
                 .setLowerBound(0.0)
-                .setUpperBound(100.0)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(5).setMinRatio(5)))
-            .setChangeThresholdCondition(new ChangeThresholdCondition()
-                .setChangePercentage(50)
-                .setShiftPoint(30)
-                .setWithinRange(true)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(2).setMinRatio(2)));
+                .setUpperBound(100.0))
+            .setChangeThresholdCondition(new ChangeThresholdCondition(
+                50,
+                30,
+                true,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(2, 2)));
 
         final DimensionKey seriesKey = new DimensionKey()
-            .put("city", "Shenzhen")
+            .put("region", "Shenzhen")
             .put("category", "Jewelry");
 
         final MetricSingleSeriesDetectionCondition seriesCondition
             = new MetricSingleSeriesDetectionCondition(seriesKey)
-            .setSmartDetectionCondition(new SmartDetectionCondition()
-                .setSensitivity(63)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(1).setMinRatio(100)));
+            .setSmartDetectionCondition(new SmartDetectionCondition(
+                63,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(1, 100)));
 
         final DimensionKey seriesGroupKey = new DimensionKey()
-            .put("city", "Sao Paulo");
+            .put("region", "Sao Paulo");
 
         final MetricSeriesGroupDetectionCondition seriesGroupCondition
             = new MetricSeriesGroupDetectionCondition(seriesGroupKey)
-            .setSmartDetectionCondition(new SmartDetectionCondition()
-                .setSensitivity(63)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(1).setMinRatio(100)));
+            .setSmartDetectionCondition(new SmartDetectionCondition(
+                63,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(1, 100)));
 
         final AnomalyDetectionConfiguration detectionConfiguration
             = new AnomalyDetectionConfiguration(detectionConfigName)
@@ -205,8 +205,8 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
             = CreateDetectionConfigurationForSeriesAndGroupInput.INSTANCE.wholeSeriesCondition;
 
         Assertions.assertNotNull(createdWholeSeriesCondition);
-        Assertions.assertEquals(expectedWholeSeriesCondition.getCrossConditionsOperator(),
-            createdWholeSeriesCondition.getCrossConditionsOperator());
+        Assertions.assertEquals(expectedWholeSeriesCondition.getConditionOperator(),
+            createdWholeSeriesCondition.getConditionOperator());
         // WholeSeries::SmartDetection
         Assertions.assertNotNull(createdWholeSeriesCondition.getSmartDetectionCondition());
         Assertions.assertEquals(
@@ -320,88 +320,88 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
 
         final String detectionConfigName = "testdetectionconfig" + UUID.randomUUID();
         final MetricWholeSeriesDetectionCondition wholeSeriesCondition = new MetricWholeSeriesDetectionCondition()
-            .setCrossConditionOperator(DetectionConditionsOperator.AND)
-            .setSmartDetectionCondition(new SmartDetectionCondition()
-                .setSensitivity(50)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(50).setMinRatio(50)))
-            .setHardThresholdCondition(new HardThresholdCondition()
+            .setConditionOperator(DetectionConditionOperator.AND)
+            .setSmartDetectionCondition(new SmartDetectionCondition(
+                50,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(13, 50)))
+            .setHardThresholdCondition(new HardThresholdCondition(
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(5, 5))
                 .setLowerBound(0.0)
-                .setUpperBound(100.0)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(5).setMinRatio(5)))
-            .setChangeThresholdCondition(new ChangeThresholdCondition()
-                .setChangePercentage(50)
-                .setShiftPoint(30)
-                .setWithinRange(true)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(2).setMinRatio(2)));
+                .setUpperBound(100.0))
+            .setChangeThresholdCondition(new ChangeThresholdCondition(
+                50,
+                30,
+                true,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(2, 2)));
 
         final DimensionKey seriesKey1 = new DimensionKey()
-            .put("city", "Shenzhen")
+            .put("region", "Shenzhen")
             .put("category", "Jewelry");
 
         final MetricSingleSeriesDetectionCondition seriesCondition1
             = new MetricSingleSeriesDetectionCondition(seriesKey1)
-            .setCrossConditionOperator(DetectionConditionsOperator.OR)
-            .setSmartDetectionCondition(new SmartDetectionCondition()
-                .setSensitivity(63)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(1).setMinRatio(100)))
-            .setHardThresholdCondition(new HardThresholdCondition()
+            .setConditionOperator(DetectionConditionOperator.OR)
+            .setSmartDetectionCondition(new SmartDetectionCondition(
+                63,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(1, 100)))
+            .setHardThresholdCondition(new HardThresholdCondition(
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(5, 5))
                 .setLowerBound(0.0)
-                .setUpperBound(100.0)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(5).setMinRatio(5)))
-            .setChangeThresholdCondition(new ChangeThresholdCondition()
-                .setChangePercentage(50)
-                .setShiftPoint(30)
-                .setWithinRange(true)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(2).setMinRatio(2)));
+                .setUpperBound(100.0))
+            .setChangeThresholdCondition(new ChangeThresholdCondition(
+                50,
+                30,
+                true,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(2, 2)));
 
         final DimensionKey seriesKey2 = new DimensionKey()
-            .put("city", "Osaka")
+            .put("region", "Osaka")
             .put("category", "Cell Phones");
 
         final MetricSingleSeriesDetectionCondition seriesCondition2
             = new MetricSingleSeriesDetectionCondition(seriesKey2)
-            .setSmartDetectionCondition(new SmartDetectionCondition()
-                .setSensitivity(63)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(1).setMinRatio(100)));
+            .setSmartDetectionCondition(new SmartDetectionCondition(
+                63,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(1, 100)));
 
         final DimensionKey seriesGroupKey1 = new DimensionKey()
-            .put("city", "Sao Paulo");
+            .put("region", "Sao Paulo");
 
         final MetricSeriesGroupDetectionCondition seriesGroupCondition1
             = new MetricSeriesGroupDetectionCondition(seriesGroupKey1)
-            .setCrossConditionOperator(DetectionConditionsOperator.OR)
-            .setSmartDetectionCondition(new SmartDetectionCondition()
-                .setSensitivity(63)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(1).setMinRatio(100)))
-            .setHardThresholdCondition(new HardThresholdCondition()
+            .setConditionOperator(DetectionConditionOperator.OR)
+            .setSmartDetectionCondition(new SmartDetectionCondition(
+                63,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(1, 100)))
+            .setHardThresholdCondition(new HardThresholdCondition(
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(5, 5))
                 .setLowerBound(0.0)
-                .setUpperBound(100.0)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(5).setMinRatio(5)))
-            .setChangeThresholdCondition(new ChangeThresholdCondition()
-                .setChangePercentage(50)
-                .setShiftPoint(30)
-                .setWithinRange(true)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(2).setMinRatio(2)));
+                .setUpperBound(100.0))
+            .setChangeThresholdCondition(new ChangeThresholdCondition(
+                50,
+                30,
+                true,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(2, 2)));
 
         final DimensionKey seriesGroupKey2 = new DimensionKey()
-            .put("city", "Seoul");
+            .put("region", "Seoul");
 
         final MetricSeriesGroupDetectionCondition seriesGroupCondition2
             = new MetricSeriesGroupDetectionCondition(seriesGroupKey2)
-            .setSmartDetectionCondition(new SmartDetectionCondition()
-                .setSensitivity(63)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(1).setMinRatio(100)));
+            .setSmartDetectionCondition(new SmartDetectionCondition(
+                63,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(1, 100)));
 
         final AnomalyDetectionConfiguration detectionConfiguration
             = new AnomalyDetectionConfiguration(detectionConfigName)
@@ -431,8 +431,8 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
             = CreateDetectionConfigurationForMultipleSeriesAndGroupInput.INSTANCE.wholeSeriesCondition;
 
         Assertions.assertNotNull(createdWholeSeriesCondition);
-        Assertions.assertEquals(expectedWholeSeriesCondition.getCrossConditionsOperator(),
-            createdWholeSeriesCondition.getCrossConditionsOperator());
+        Assertions.assertEquals(expectedWholeSeriesCondition.getConditionOperator(),
+            createdWholeSeriesCondition.getConditionOperator());
         // WholeSeries::SmartDetection
         Assertions.assertNotNull(createdWholeSeriesCondition.getSmartDetectionCondition());
         Assertions.assertEquals(
@@ -496,8 +496,8 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
 
         final MetricSingleSeriesDetectionCondition expectedSeriesCondition1
             = CreateDetectionConfigurationForMultipleSeriesAndGroupInput.INSTANCE.seriesCondition1;
-        Assertions.assertEquals(createdSeriesCondition1.getCrossConditionsOperator(),
-            expectedSeriesCondition1.getCrossConditionsOperator());
+        Assertions.assertEquals(createdSeriesCondition1.getConditionOperator(),
+            expectedSeriesCondition1.getConditionOperator());
         // Series1::SmartDetection
         Assertions.assertNotNull(createdSeriesCondition1.getSmartDetectionCondition());
         Assertions.assertEquals(
@@ -596,8 +596,8 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
 
         final MetricSeriesGroupDetectionCondition expectedSeriesGroupCondition1
             = CreateDetectionConfigurationForMultipleSeriesAndGroupInput.INSTANCE.seriesGroupCondition1;
-        Assertions.assertEquals(createdSeriesGroupCondition1.getCrossConditionsOperator(),
-            expectedSeriesGroupCondition1.getCrossConditionsOperator());
+        Assertions.assertEquals(createdSeriesGroupCondition1.getConditionOperator(),
+            expectedSeriesGroupCondition1.getConditionOperator());
         // SeriesGroup1::SmartDetection
         Assertions.assertNotNull(createdSeriesGroupCondition1.getSmartDetectionCondition());
         Assertions.assertEquals(
@@ -688,78 +688,78 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
 
         final String detectionConfigName = "testdetectionconfig" + UUID.randomUUID();
         final MetricWholeSeriesDetectionCondition wholeSeriesCondition = new MetricWholeSeriesDetectionCondition()
-            .setCrossConditionOperator(DetectionConditionsOperator.AND)
-            .setSmartDetectionCondition(new SmartDetectionCondition()
-                .setSensitivity(50)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(50).setMinRatio(50)))
-            .setHardThresholdCondition(new HardThresholdCondition()
+            .setConditionOperator(DetectionConditionOperator.AND)
+            .setSmartDetectionCondition(new SmartDetectionCondition(
+                50,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(13, 50)))
+            .setHardThresholdCondition(new HardThresholdCondition(
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(5, 5))
                 .setLowerBound(0.0)
-                .setUpperBound(100.0)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(5).setMinRatio(5)))
-            .setChangeThresholdCondition(new ChangeThresholdCondition()
-                .setChangePercentage(50)
-                .setShiftPoint(30)
-                .setWithinRange(true)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(2).setMinRatio(2)));
+                .setUpperBound(100.0))
+            .setChangeThresholdCondition(new ChangeThresholdCondition(
+                50,
+                30,
+                true,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(2, 2)));
 
         final DimensionKey seriesKey1 = new DimensionKey()
-            .put("city", "Shenzhen")
+            .put("region", "Shenzhen")
             .put("category", "Jewelry");
 
         final MetricSingleSeriesDetectionCondition seriesCondition1
             = new MetricSingleSeriesDetectionCondition(seriesKey1)
-            .setCrossConditionOperator(DetectionConditionsOperator.OR)
-            .setSmartDetectionCondition(new SmartDetectionCondition()
-                .setSensitivity(63)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(1).setMinRatio(100)))
-            .setHardThresholdCondition(new HardThresholdCondition()
+            .setConditionOperator(DetectionConditionOperator.OR)
+            .setSmartDetectionCondition(new SmartDetectionCondition(
+                63,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(1, 100)))
+            .setHardThresholdCondition(new HardThresholdCondition(
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(5, 5))
                 .setLowerBound(0.0)
-                .setUpperBound(100.0)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(5).setMinRatio(5)))
-            .setChangeThresholdCondition(new ChangeThresholdCondition()
-                .setChangePercentage(50)
-                .setShiftPoint(30)
-                .setWithinRange(true)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(2).setMinRatio(2)));
+                .setUpperBound(100.0))
+            .setChangeThresholdCondition(new ChangeThresholdCondition(
+                50,
+                30,
+                true,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(2, 2)));
 
         final DimensionKey seriesKey2 = new DimensionKey()
-            .put("city", "Osaka")
+            .put("region", "Osaka")
             .put("category", "Cell Phones");
 
         final MetricSingleSeriesDetectionCondition seriesCondition2
             = new MetricSingleSeriesDetectionCondition(seriesKey2)
-            .setSmartDetectionCondition(new SmartDetectionCondition()
-                .setSensitivity(63)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(1).setMinRatio(100)));
+            .setSmartDetectionCondition(new SmartDetectionCondition(
+                63,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(1, 100)));
 
         final DimensionKey seriesGroupKey1 = new DimensionKey()
-            .put("city", "Sao Paulo");
+            .put("region", "Sao Paulo");
 
         final MetricSeriesGroupDetectionCondition seriesGroupCondition1
             = new MetricSeriesGroupDetectionCondition(seriesGroupKey1)
-            .setCrossConditionOperator(DetectionConditionsOperator.OR)
-            .setSmartDetectionCondition(new SmartDetectionCondition()
-                .setSensitivity(63)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(1).setMinRatio(100)))
-            .setHardThresholdCondition(new HardThresholdCondition()
+            .setConditionOperator(DetectionConditionOperator.OR)
+            .setSmartDetectionCondition(new SmartDetectionCondition(
+                63,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(1, 100)))
+            .setHardThresholdCondition(new HardThresholdCondition(
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(5, 5))
                 .setLowerBound(0.0)
-                .setUpperBound(100.0)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(5).setMinRatio(5)))
-            .setChangeThresholdCondition(new ChangeThresholdCondition()
-                .setChangePercentage(50)
-                .setShiftPoint(30)
-                .setWithinRange(true)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(2).setMinRatio(2)));
+                .setUpperBound(100.0))
+            .setChangeThresholdCondition(new ChangeThresholdCondition(
+                50,
+                30,
+                true,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(2, 2)));
 
         final AnomalyDetectionConfiguration detectionConfiguration
             = new AnomalyDetectionConfiguration(detectionConfigName)
@@ -773,14 +773,14 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
         final DimensionKey seriesKeyToRemoveOnUpdate = seriesKey2;
 
         final DimensionKey seriesGroupKeyToAddOnUpdate = new DimensionKey()
-            .put("city", "Seoul");
+            .put("region", "Seoul");
 
         final MetricSeriesGroupDetectionCondition seriesGroupConditionToAddOnUpdate
             = new MetricSeriesGroupDetectionCondition(seriesGroupKeyToAddOnUpdate)
-            .setSmartDetectionCondition(new SmartDetectionCondition()
-                .setSensitivity(63)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(1).setMinRatio(100)));
+            .setSmartDetectionCondition(new SmartDetectionCondition(
+                63,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(1, 100)));
     }
 
     protected DataFeed createDataFeed(HttpClient httpClient,
@@ -792,11 +792,11 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
             SQL_SERVER_CONNECTION_STRING,
             TEMPLATE_QUERY));
         dataFeed.setSchema(new DataFeedSchema(Arrays.asList(
-            new DataFeedMetric().setName("cost").setDisplayName("cost"),
-            new DataFeedMetric().setName("revenue").setDisplayName("revenue")))
+            new DataFeedMetric("cost").setDisplayName("cost"),
+            new DataFeedMetric("revenue").setDisplayName("revenue")))
             .setDimensions(Arrays.asList(
-                new DataFeedDimension().setName("city").setDisplayName("city"),
-                new DataFeedDimension().setName("category").setDisplayName("category"))))
+                new DataFeedDimension("region").setDisplayName("region"),
+                new DataFeedDimension("category").setDisplayName("category"))))
             .setName("java_data_feed_for_detection" + UUID.randomUUID())
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
             .setIngestionSettings(new DataFeedIngestionSettings(INGESTION_START_TIME));
@@ -823,8 +823,8 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
             = UpdateDetectionConfigurationInput.INSTANCE.wholeSeriesCondition;
 
         Assertions.assertNotNull(createdWholeSeriesCondition);
-        Assertions.assertEquals(expectedWholeSeriesCondition.getCrossConditionsOperator(),
-            createdWholeSeriesCondition.getCrossConditionsOperator());
+        Assertions.assertEquals(expectedWholeSeriesCondition.getConditionOperator(),
+            createdWholeSeriesCondition.getConditionOperator());
         // WholeSeries::SmartDetection
         Assertions.assertNotNull(createdWholeSeriesCondition.getSmartDetectionCondition());
         Assertions.assertEquals(
@@ -888,8 +888,8 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
 
         final MetricSingleSeriesDetectionCondition expectedSeriesCondition1
             = UpdateDetectionConfigurationInput.INSTANCE.seriesCondition1;
-        Assertions.assertEquals(createdSeriesCondition1.getCrossConditionsOperator(),
-            expectedSeriesCondition1.getCrossConditionsOperator());
+        Assertions.assertEquals(createdSeriesCondition1.getConditionOperator(),
+            expectedSeriesCondition1.getConditionOperator());
         // Series1::SmartDetection
         Assertions.assertNotNull(createdSeriesCondition1.getSmartDetectionCondition());
         Assertions.assertEquals(
@@ -965,8 +965,8 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
 
         final MetricSeriesGroupDetectionCondition expectedSeriesGroupCondition1
             = UpdateDetectionConfigurationInput.INSTANCE.seriesGroupCondition1;
-        Assertions.assertEquals(createdSeriesGroupCondition1.getCrossConditionsOperator(),
-            expectedSeriesGroupCondition1.getCrossConditionsOperator());
+        Assertions.assertEquals(createdSeriesGroupCondition1.getConditionOperator(),
+            expectedSeriesGroupCondition1.getConditionOperator());
         // SeriesGroup1::SmartDetection
         Assertions.assertNotNull(createdSeriesGroupCondition1.getSmartDetectionCondition());
         Assertions.assertEquals(

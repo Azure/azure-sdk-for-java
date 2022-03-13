@@ -23,7 +23,7 @@ public interface DigitalTwinsEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return digitalTwinsInstance Endpoints.
+     * @return digitalTwinsInstance Endpoints as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DigitalTwinsEndpointResourceInner> list(String resourceGroupName, String resourceName);
@@ -37,7 +37,7 @@ public interface DigitalTwinsEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return digitalTwinsInstance Endpoints.
+     * @return digitalTwinsInstance Endpoints as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DigitalTwinsEndpointResourceInner> list(
@@ -67,7 +67,7 @@ public interface DigitalTwinsEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return digitalTwinsInstances Endpoint.
+     * @return digitalTwinsInstances Endpoint along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DigitalTwinsEndpointResourceInner> getWithResponse(
@@ -83,9 +83,9 @@ public interface DigitalTwinsEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return digitalTwinsInstance endpoint resource.
+     * @return the {@link SyncPoller} for polling of digitalTwinsInstance endpoint resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DigitalTwinsEndpointResourceInner>, DigitalTwinsEndpointResourceInner> beginCreateOrUpdate(
         String resourceGroupName,
         String resourceName,
@@ -103,9 +103,9 @@ public interface DigitalTwinsEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return digitalTwinsInstance endpoint resource.
+     * @return the {@link SyncPoller} for polling of digitalTwinsInstance endpoint resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DigitalTwinsEndpointResourceInner>, DigitalTwinsEndpointResourceInner> beginCreateOrUpdate(
         String resourceGroupName,
         String resourceName,
@@ -162,9 +162,9 @@ public interface DigitalTwinsEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return digitalTwinsInstance endpoint resource.
+     * @return the {@link SyncPoller} for polling of digitalTwinsInstance endpoint resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DigitalTwinsEndpointResourceInner>, DigitalTwinsEndpointResourceInner> beginDelete(
         String resourceGroupName, String resourceName, String endpointName);
 
@@ -178,9 +178,9 @@ public interface DigitalTwinsEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return digitalTwinsInstance endpoint resource.
+     * @return the {@link SyncPoller} for polling of digitalTwinsInstance endpoint resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DigitalTwinsEndpointResourceInner>, DigitalTwinsEndpointResourceInner> beginDelete(
         String resourceGroupName, String resourceName, String endpointName, Context context);
 

@@ -13,6 +13,7 @@ import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
 import com.azure.spring.cloud.context.core.util.Memoizer;
 import com.azure.spring.cloud.context.core.util.Tuple;
+import com.azure.spring.integration.core.api.BatchConsumerConfig;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import com.azure.spring.integration.eventhub.impl.EventHubProcessor;
 import com.azure.storage.blob.BlobContainerAsyncClient;
@@ -62,13 +63,12 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
     public DefaultEventHubClientFactory(@NonNull String eventHubConnectionString,
                                         String checkpointConnectionString,
                                         String checkpointStorageContainer) {
-        Assert.hasText(checkpointConnectionString, "checkpointConnectionString can't be null or empty");
         this.eventHubConnectionString = eventHubConnectionString;
         this.checkpointStorageConnectionString = checkpointConnectionString;
         this.checkpointStorageContainer = checkpointStorageContainer;
     }
 
-    private EventHubConsumerAsyncClient createEventHubClient(String eventHubName, String consumerGroup) {
+    EventHubConsumerAsyncClient createEventHubClient(String eventHubName, String consumerGroup) {
         return new EventHubClientBuilder()
             .connectionString(eventHubConnectionString, eventHubName)
             .consumerGroup(consumerGroup)
@@ -76,25 +76,31 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
             .buildAsyncConsumerClient();
     }
 
-    private EventHubProducerAsyncClient createProducerClient(String eventHubName) {
+    EventHubProducerAsyncClient createProducerClient(String eventHubName) {
         return new EventHubClientBuilder()
             .connectionString(eventHubConnectionString, eventHubName)
             .clientOptions(new ClientOptions().setApplicationId(SPRING_EVENT_HUB_APPLICATION_ID))
             .buildAsyncProducerClient();
     }
 
-    private EventProcessorClient createEventProcessorClientInternal(String eventHubName, String consumerGroup,
-                                                                    EventHubProcessor eventHubProcessor) {
-
-        // We set eventHubName as the container name when we use track1 library, and the EventHubProcessor will create
-        // the container automatically if not exists
-        String containerName = checkpointStorageContainer == null ? eventHubName : checkpointStorageContainer;
-
-        BlobContainerAsyncClient blobClient = new BlobContainerClientBuilder()
+    BlobContainerAsyncClient createBlobClient(String containerName) {
+        return new BlobContainerClientBuilder()
             .connectionString(checkpointStorageConnectionString)
             .containerName(containerName)
             .httpLogOptions(new HttpLogOptions().setApplicationId(SPRING_EVENT_HUB_APPLICATION_ID))
             .buildAsyncClient();
+    }
+
+    EventProcessorClient createEventProcessorClientInternal(String eventHubName, String consumerGroup,
+                                                                    EventHubProcessor eventHubProcessor,
+                                                                    BatchConsumerConfig batchConsumerConfig) {
+        Assert.hasText(checkpointStorageConnectionString, "checkpointConnectionString can't be null or empty, check "
+            + "whether checkpoint-storage-account is configured in the configuration file.");
+        // We set eventHubName as the container name when we use track1 library, and the EventHubProcessor will create
+        // the container automatically if not exists
+        String containerName = checkpointStorageContainer == null ? eventHubName : checkpointStorageContainer;
+
+        BlobContainerAsyncClient blobClient = createBlobClient(containerName);
 
         final Boolean isContainerExist = blobClient.exists().block();
         if (isContainerExist == null || !isContainerExist) {
@@ -104,15 +110,27 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
         }
 
         // TODO (xiada): set up event processing position for each partition
-        return new EventProcessorClientBuilder()
-            .connectionString(eventHubConnectionString, eventHubName)
-            .consumerGroup(consumerGroup)
-            .checkpointStore(new BlobCheckpointStore(blobClient))
-            .processPartitionInitialization(eventHubProcessor::onInitialize)
-            .processPartitionClose(eventHubProcessor::onClose)
-            .processEvent(eventHubProcessor::onEvent)
-            .processError(eventHubProcessor::onError)
-            .buildEventProcessorClient();
+        if (batchConsumerConfig != null) {
+            return new EventProcessorClientBuilder()
+                .connectionString(eventHubConnectionString, eventHubName)
+                .consumerGroup(consumerGroup)
+                .checkpointStore(new BlobCheckpointStore(blobClient))
+                .processPartitionInitialization(eventHubProcessor::onInitialize)
+                .processPartitionClose(eventHubProcessor::onClose)
+                .processEventBatch(eventHubProcessor::onEventBatch, batchConsumerConfig.getMaxBatchSize(), batchConsumerConfig.getMaxWaitTime())
+                .processError(eventHubProcessor::onError)
+                .buildEventProcessorClient();
+        } else {
+            return new EventProcessorClientBuilder()
+                .connectionString(eventHubConnectionString, eventHubName)
+                .consumerGroup(consumerGroup)
+                .checkpointStore(new BlobCheckpointStore(blobClient))
+                .processPartitionInitialization(eventHubProcessor::onInitialize)
+                .processPartitionClose(eventHubProcessor::onClose)
+                .processEvent(eventHubProcessor::onEvent)
+                .processError(eventHubProcessor::onError)
+                .buildEventProcessorClient();
+        }
     }
 
     private <K, V> void close(Map<K, V> map, Consumer<V> close) {
@@ -144,9 +162,9 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
 
     @Override
     public EventProcessorClient createEventProcessorClient(String eventHubName, String consumerGroup,
-                                                           EventHubProcessor processor) {
+                                                           EventHubProcessor processor, BatchConsumerConfig batchConsumerConfig) {
         return processorClientMap.computeIfAbsent(Tuple.of(eventHubName, consumerGroup), (t) ->
-            createEventProcessorClientInternal(eventHubName, consumerGroup, processor));
+            createEventProcessorClientInternal(eventHubName, consumerGroup, processor, batchConsumerConfig));
     }
 
     @Override

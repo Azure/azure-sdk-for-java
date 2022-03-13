@@ -4,36 +4,31 @@
 package com.azure.data.schemaregistry;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-import java.util.concurrent.CountDownLatch;
-
 /**
- * Sample to demonstrate retrieving a schema from Schema Registry.
+ * Sample to demonstrate retrieving a schema from Schema Registry using the sync client.
  */
 public class GetSchemaSample {
     /**
      * The main method to run this program.
+     *
      * @param args Ignored args.
      */
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
-        SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBuilder()
-            .endpoint("{schema-registry-endpoint")
+        SchemaRegistryClient client = new SchemaRegistryClientBuilder()
+            .fullyQualifiedNamespace("{schema-registry-endpoint")
             .credential(tokenCredential)
-            .buildAsyncClient();
+            .buildClient();
 
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-        // Register a schema
-        schemaRegistryAsyncClient
-            .getSchema("{schema-id}")
-            .subscribe(schemaProperties -> {
-                System.out.println("Successfully retrieved the schema " + schemaProperties.getSchemaName());
-                countDownLatch.countDown();
-            });
+        // Get a schema using its id. The schema id is generated when it is registered via the client or Azure Portal.
+        SchemaRegistrySchema schema = client.getSchema("{schema-id}");
 
-        // wait for the async task to complete
-        countDownLatch.await();
+        System.out.println("Successfully retrieved schema.");
+        System.out.printf("Id: %s%nContents: %s%n", schema.getProperties().getId(), schema.getDefinition());
+
     }
 }

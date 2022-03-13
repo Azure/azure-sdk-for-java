@@ -6,9 +6,11 @@ import com.azure.resourcemanager.containerservice.fluent.models.AgentPoolInner;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
+import com.azure.resourcemanager.containerservice.models.KubeletDiskType;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusterAgentPool;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
+import com.azure.resourcemanager.containerservice.models.OSDiskType;
 import com.azure.resourcemanager.containerservice.models.OSType;
 import com.azure.resourcemanager.containerservice.models.PowerState;
 import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
@@ -42,6 +44,11 @@ public class KubernetesClusterAgentPoolImpl
     @Override
     public String name() {
         return this.innerModel().name();
+    }
+
+    @Override
+    public String provisioningState() {
+        return this.innerModel().provisioningState();
     }
 
     @Override
@@ -150,6 +157,23 @@ public class KubernetesClusterAgentPoolImpl
     }
 
     @Override
+    public OSDiskType osDiskType() {
+        return innerModel().osDiskType();
+    }
+
+    @Override
+    public KubeletDiskType kubeletDiskType() {
+        return innerModel().kubeletDiskType();
+    }
+
+    @Override
+    public Map<String, String> tags() {
+        return innerModel().tags() == null
+            ? Collections.emptyMap()
+            : Collections.unmodifiableMap(innerModel().tags());
+    }
+
+    @Override
     public KubernetesClusterAgentPoolImpl withVirtualMachineSize(ContainerServiceVMSizeTypes vmSize) {
         this.innerModel().withVmSize(vmSize.toString());
         return this;
@@ -204,25 +228,32 @@ public class KubernetesClusterAgentPoolImpl
         return this.parent().addNewAgentPool(this);
     }
 
-    public AgentPoolInner getAgentPoolInner() {
+    AgentPoolInner getAgentPoolInner() {
         AgentPoolInner agentPoolInner = new AgentPoolInner();
         agentPoolInner.withCount(innerModel().count());
         agentPoolInner.withVmSize(innerModel().vmSize());
         agentPoolInner.withOsDiskSizeGB(innerModel().osDiskSizeGB());
+        agentPoolInner.withOsDiskType(innerModel().osDiskType());
+        agentPoolInner.withKubeletDiskType(innerModel().kubeletDiskType());
+        agentPoolInner.withWorkloadRuntime(innerModel().workloadRuntime());
         agentPoolInner.withVnetSubnetId(innerModel().vnetSubnetId());
+        agentPoolInner.withPodSubnetId(innerModel().podSubnetId());
         agentPoolInner.withMaxPods(innerModel().maxPods());
         agentPoolInner.withOsType(innerModel().osType());
+        agentPoolInner.withOsSku(innerModel().osSku());
         agentPoolInner.withMaxCount(innerModel().maxCount());
         agentPoolInner.withMinCount(innerModel().minCount());
         agentPoolInner.withEnableAutoScaling(innerModel().enableAutoScaling());
+        agentPoolInner.withScaleDownMode(innerModel().scaleDownMode());
         agentPoolInner.withTypePropertiesType(innerModel().type());
         agentPoolInner.withMode(innerModel().mode());
         agentPoolInner.withOrchestratorVersion(innerModel().orchestratorVersion());
-        // nodeImageVersion is readOnly now
-//        agentPoolInner.withNodeImageVersion(innerModel().nodeImageVersion());
+//        agentPoolInner.withNodeImageVersion(innerModel().nodeImageVersion());     // nodeImageVersion is readOnly now
         agentPoolInner.withUpgradeSettings(innerModel().upgradeSettings());
+        agentPoolInner.withPowerState(innerModel().powerState());
         agentPoolInner.withAvailabilityZones(innerModel().availabilityZones());
         agentPoolInner.withEnableNodePublicIp(innerModel().enableNodePublicIp());
+        agentPoolInner.withNodePublicIpPrefixId(innerModel().nodePublicIpPrefixId());
         agentPoolInner.withScaleSetPriority(innerModel().scaleSetPriority());
         agentPoolInner.withScaleSetEvictionPolicy(innerModel().scaleSetEvictionPolicy());
         agentPoolInner.withSpotMaxPrice(innerModel().spotMaxPrice());
@@ -301,6 +332,41 @@ public class KubernetesClusterAgentPoolImpl
     @Override
     public KubernetesClusterAgentPoolImpl withVirtualMachineMaximumPrice(Double maxPriceInUsDollars) {
         innerModel().withSpotMaxPrice(maxPriceInUsDollars.floatValue());
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterAgentPoolImpl withOSDiskType(OSDiskType osDiskType) {
+        innerModel().withOsDiskType(osDiskType);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterAgentPoolImpl withKubeletDiskType(KubeletDiskType kubeletDiskType) {
+        innerModel().withKubeletDiskType(kubeletDiskType);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterAgentPoolImpl withTags(Map<String, String> tags) {
+        innerModel().withTags(tags);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterAgentPoolImpl withTag(String key, String value) {
+        if (innerModel().tags() == null) {
+            innerModel().withTags(new TreeMap<>());
+        }
+        innerModel().tags().put(key, value);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterAgentPoolImpl withoutTag(String key) {
+        if (innerModel().tags() != null) {
+            innerModel().tags().remove(key);
+        }
         return this;
     }
 }

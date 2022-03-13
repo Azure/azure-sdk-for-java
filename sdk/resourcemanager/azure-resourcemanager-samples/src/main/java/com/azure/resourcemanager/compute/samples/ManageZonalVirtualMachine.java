@@ -41,7 +41,7 @@ public final class ManageZonalVirtualMachine {
         final String pipName2 = Utils.randomResourceName(azureResourceManager, "pip2", 15);
         final String diskName = Utils.randomResourceName(azureResourceManager, "ds", 15);
         final String userName = "tirekicker";
-        final String password = Utils.password();
+        final String sshPublicKey = Utils.sshPublicKey();
 
         try {
 
@@ -59,7 +59,7 @@ public final class ManageZonalVirtualMachine {
                     .withNewPrimaryPublicIPAddress(pipName1)
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
-                    .withRootPassword(password)
+                    .withSsh(sshPublicKey)
                     // Optional
                     .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
                     .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
@@ -121,7 +121,7 @@ public final class ManageZonalVirtualMachine {
                     .withExistingPrimaryPublicIPAddress(publicIPAddress)
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
-                    .withRootPassword(password)
+                    .withSsh(sshPublicKey)
                     // Optional
                     .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
                     .withExistingDataDisk(dataDisk)

@@ -20,11 +20,11 @@ class SoftDeleteTest extends APISpec{
     DataLakeFileSystemClient fileSystemClient
 
     def setupSpec() {
-        if (env.testMode != TestMode.PLAYBACK) {
+        if (environment.testMode != TestMode.PLAYBACK) {
             // This is to enable soft delete until better way is found. No need for recording.
             def setupClient = new DataLakeServiceClientBuilder()
-                .endpoint(env.dataLakeSoftDeleteAccount.dataLakeEndpoint)
-                .credential(env.dataLakeSoftDeleteAccount.credential)
+                .endpoint(environment.dataLakeSoftDeleteAccount.dataLakeEndpoint)
+                .credential(environment.dataLakeSoftDeleteAccount.credential)
                 .buildClient()
             setupClient.setProperties(new DataLakeServiceProperties()
                 .setDeleteRetentionPolicy(new DataLakeRetentionPolicy().setEnabled(true).setDays(2)))
@@ -34,7 +34,7 @@ class SoftDeleteTest extends APISpec{
     }
 
     def setup() {
-        softDeleteDataLakeServiceClient = getServiceClient(env.dataLakeSoftDeleteAccount)
+        softDeleteDataLakeServiceClient = getServiceClient(environment.dataLakeSoftDeleteAccount)
         fileSystemClient = softDeleteDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
         fileSystemClient.create()
     }

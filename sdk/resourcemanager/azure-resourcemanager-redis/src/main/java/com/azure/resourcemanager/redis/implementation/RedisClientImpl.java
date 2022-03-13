@@ -31,19 +31,18 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.redis.fluent.RedisClient;
-import com.azure.resourcemanager.redis.fluent.models.NotificationListResponseInner;
 import com.azure.resourcemanager.redis.fluent.models.RedisAccessKeysInner;
 import com.azure.resourcemanager.redis.fluent.models.RedisForceRebootResponseInner;
 import com.azure.resourcemanager.redis.fluent.models.RedisResourceInner;
+import com.azure.resourcemanager.redis.fluent.models.UpgradeNotificationInner;
 import com.azure.resourcemanager.redis.models.CheckNameAvailabilityParameters;
 import com.azure.resourcemanager.redis.models.ExportRdbParameters;
 import com.azure.resourcemanager.redis.models.ImportRdbParameters;
+import com.azure.resourcemanager.redis.models.NotificationListResponse;
 import com.azure.resourcemanager.redis.models.RedisCreateParameters;
-import com.azure.resourcemanager.redis.models.RedisKeyType;
 import com.azure.resourcemanager.redis.models.RedisListResult;
 import com.azure.resourcemanager.redis.models.RedisRebootParameters;
 import com.azure.resourcemanager.redis.models.RedisRegenerateKeyParameters;
@@ -61,8 +60,6 @@ public final class RedisClientImpl
         InnerSupportsListing<RedisResourceInner>,
         InnerSupportsDelete<Void>,
         RedisClient {
-    private final ClientLogger logger = new ClientLogger(RedisClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RedisService service;
 
@@ -104,7 +101,7 @@ public final class RedisClientImpl
                 + "/listUpgradeNotifications")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NotificationListResponseInner>> listUpgradeNotifications(
+        Mono<Response<NotificationListResponse>> listUpgradeNotifications(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -278,6 +275,16 @@ public final class RedisClientImpl
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<NotificationListResponse>> listUpgradeNotificationsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RedisListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
@@ -303,7 +310,7 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> checkNameAvailabilityWithResponseAsync(CheckNameAvailabilityParameters parameters) {
@@ -348,7 +355,7 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> checkNameAvailabilityWithResponseAsync(
@@ -390,7 +397,7 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> checkNameAvailabilityAsync(CheckNameAvailabilityParameters parameters) {
@@ -420,7 +427,7 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> checkNameAvailabilityWithResponse(
@@ -437,10 +444,11 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any upgrade notifications for a Redis cache.
+     * @return any upgrade notifications for a Redis cache along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<NotificationListResponseInner>> listUpgradeNotificationsWithResponseAsync(
+    private Mono<PagedResponse<UpgradeNotificationInner>> listUpgradeNotificationsSinglePageAsync(
         String resourceGroupName, String name, double history) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -475,6 +483,15 @@ public final class RedisClientImpl
                             history,
                             accept,
                             context))
+            .<PagedResponse<UpgradeNotificationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -488,10 +505,11 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any upgrade notifications for a Redis cache.
+     * @return any upgrade notifications for a Redis cache along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NotificationListResponseInner>> listUpgradeNotificationsWithResponseAsync(
+    private Mono<PagedResponse<UpgradeNotificationInner>> listUpgradeNotificationsSinglePageAsync(
         String resourceGroupName, String name, double history, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -523,7 +541,16 @@ public final class RedisClientImpl
                 this.client.getSubscriptionId(),
                 history,
                 accept,
-                context);
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
@@ -535,37 +562,14 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any upgrade notifications for a Redis cache.
+     * @return any upgrade notifications for a Redis cache as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NotificationListResponseInner> listUpgradeNotificationsAsync(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<UpgradeNotificationInner> listUpgradeNotificationsAsync(
         String resourceGroupName, String name, double history) {
-        return listUpgradeNotificationsWithResponseAsync(resourceGroupName, name, history)
-            .flatMap(
-                (Response<NotificationListResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets any upgrade notifications for a Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param history how many minutes in past to look for upgrade notifications.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any upgrade notifications for a Redis cache.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NotificationListResponseInner listUpgradeNotifications(
-        String resourceGroupName, String name, double history) {
-        return listUpgradeNotificationsAsync(resourceGroupName, name, history).block();
+        return new PagedFlux<>(
+            () -> listUpgradeNotificationsSinglePageAsync(resourceGroupName, name, history),
+            nextLink -> listUpgradeNotificationsNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -578,12 +582,49 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any upgrade notifications for a Redis cache.
+     * @return any upgrade notifications for a Redis cache as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NotificationListResponseInner> listUpgradeNotificationsWithResponse(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<UpgradeNotificationInner> listUpgradeNotificationsAsync(
         String resourceGroupName, String name, double history, Context context) {
-        return listUpgradeNotificationsWithResponseAsync(resourceGroupName, name, history, context).block();
+        return new PagedFlux<>(
+            () -> listUpgradeNotificationsSinglePageAsync(resourceGroupName, name, history, context),
+            nextLink -> listUpgradeNotificationsNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Gets any upgrade notifications for a Redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the Redis cache.
+     * @param history how many minutes in past to look for upgrade notifications.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any upgrade notifications for a Redis cache as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<UpgradeNotificationInner> listUpgradeNotifications(
+        String resourceGroupName, String name, double history) {
+        return new PagedIterable<>(listUpgradeNotificationsAsync(resourceGroupName, name, history));
+    }
+
+    /**
+     * Gets any upgrade notifications for a Redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the Redis cache.
+     * @param history how many minutes in past to look for upgrade notifications.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any upgrade notifications for a Redis cache as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<UpgradeNotificationInner> listUpgradeNotifications(
+        String resourceGroupName, String name, double history, Context context) {
+        return new PagedIterable<>(listUpgradeNotificationsAsync(resourceGroupName, name, history, context));
     }
 
     /**
@@ -595,7 +636,8 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single Redis item in List or Get Operation.
+     * @return a single Redis item in List or Get Operation along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -651,7 +693,8 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single Redis item in List or Get Operation.
+     * @return a single Redis item in List or Get Operation along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -703,16 +746,20 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single Redis item in List or Get Operation.
+     * @return the {@link PollerFlux} for polling of a single Redis item in List or Get Operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<RedisResourceInner>, RedisResourceInner> beginCreateAsync(
         String resourceGroupName, String name, RedisCreateParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, name, parameters);
         return this
             .client
             .<RedisResourceInner, RedisResourceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RedisResourceInner.class, RedisResourceInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                RedisResourceInner.class,
+                RedisResourceInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -725,9 +772,9 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single Redis item in List or Get Operation.
+     * @return the {@link PollerFlux} for polling of a single Redis item in List or Get Operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RedisResourceInner>, RedisResourceInner> beginCreateAsync(
         String resourceGroupName, String name, RedisCreateParameters parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -747,9 +794,9 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single Redis item in List or Get Operation.
+     * @return the {@link SyncPoller} for polling of a single Redis item in List or Get Operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RedisResourceInner>, RedisResourceInner> beginCreate(
         String resourceGroupName, String name, RedisCreateParameters parameters) {
         return beginCreateAsync(resourceGroupName, name, parameters).getSyncPoller();
@@ -765,9 +812,9 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single Redis item in List or Get Operation.
+     * @return the {@link SyncPoller} for polling of a single Redis item in List or Get Operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RedisResourceInner>, RedisResourceInner> beginCreate(
         String resourceGroupName, String name, RedisCreateParameters parameters, Context context) {
         return beginCreateAsync(resourceGroupName, name, parameters, context).getSyncPoller();
@@ -782,7 +829,7 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single Redis item in List or Get Operation.
+     * @return a single Redis item in List or Get Operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RedisResourceInner> createAsync(
@@ -802,7 +849,7 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single Redis item in List or Get Operation.
+     * @return a single Redis item in List or Get Operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RedisResourceInner> createAsync(
@@ -855,7 +902,8 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single Redis item in List or Get Operation.
+     * @return a single Redis item in List or Get Operation along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RedisResourceInner>> updateWithResponseAsync(
@@ -911,7 +959,8 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single Redis item in List or Get Operation.
+     * @return a single Redis item in List or Get Operation along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RedisResourceInner>> updateWithResponseAsync(
@@ -963,7 +1012,7 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single Redis item in List or Get Operation.
+     * @return a single Redis item in List or Get Operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RedisResourceInner> updateAsync(
@@ -1005,7 +1054,7 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single Redis item in List or Get Operation.
+     * @return a single Redis item in List or Get Operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RedisResourceInner> updateWithResponse(
@@ -1021,7 +1070,7 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String name) {
@@ -1069,7 +1118,7 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1114,14 +1163,15 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, name);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1133,9 +1183,9 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String name, Context context) {
         context = this.client.mergeContext(context);
@@ -1153,9 +1203,9 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name) {
         return beginDeleteAsync(resourceGroupName, name).getSyncPoller();
     }
@@ -1169,9 +1219,9 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name, Context context) {
         return beginDeleteAsync(resourceGroupName, name, context).getSyncPoller();
     }
@@ -1184,7 +1234,7 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String name) {
@@ -1200,7 +1250,7 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String name, Context context) {
@@ -1244,7 +1294,8 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Redis cache (resource description).
+     * @return a Redis cache (resource description) along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RedisResourceInner>> getByResourceGroupWithResponseAsync(
@@ -1293,7 +1344,8 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Redis cache (resource description).
+     * @return a Redis cache (resource description) along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RedisResourceInner>> getByResourceGroupWithResponseAsync(
@@ -1338,7 +1390,7 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Redis cache (resource description).
+     * @return a Redis cache (resource description) on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RedisResourceInner> getByResourceGroupAsync(String resourceGroupName, String name) {
@@ -1377,7 +1429,7 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Redis cache (resource description).
+     * @return a Redis cache (resource description) along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RedisResourceInner> getByResourceGroupWithResponse(
@@ -1392,7 +1444,8 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list Redis operation.
+     * @return the response of list Redis operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RedisResourceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -1444,7 +1497,8 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list Redis operation.
+     * @return the response of list Redis operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RedisResourceInner>> listByResourceGroupSinglePageAsync(
@@ -1493,7 +1547,7 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list Redis operation.
+     * @return the response of list Redis operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RedisResourceInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1510,7 +1564,7 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list Redis operation.
+     * @return the response of list Redis operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RedisResourceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1526,7 +1580,7 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list Redis operation.
+     * @return the response of list Redis operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RedisResourceInner> listByResourceGroup(String resourceGroupName) {
@@ -1541,7 +1595,7 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list Redis operation.
+     * @return the response of list Redis operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RedisResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1553,7 +1607,8 @@ public final class RedisClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Redis caches in the specified subscription.
+     * @return all Redis caches in the specified subscription along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RedisResourceInner>> listSinglePageAsync() {
@@ -1599,7 +1654,8 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Redis caches in the specified subscription.
+     * @return all Redis caches in the specified subscription along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RedisResourceInner>> listSinglePageAsync(Context context) {
@@ -1640,7 +1696,7 @@ public final class RedisClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Redis caches in the specified subscription.
+     * @return all Redis caches in the specified subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RedisResourceInner> listAsync() {
@@ -1655,7 +1711,7 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Redis caches in the specified subscription.
+     * @return all Redis caches in the specified subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RedisResourceInner> listAsync(Context context) {
@@ -1668,7 +1724,7 @@ public final class RedisClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Redis caches in the specified subscription.
+     * @return all Redis caches in the specified subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RedisResourceInner> list() {
@@ -1682,7 +1738,7 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Redis caches in the specified subscription.
+     * @return all Redis caches in the specified subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RedisResourceInner> list(Context context) {
@@ -1697,7 +1753,7 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return redis cache access keys.
+     * @return redis cache access keys along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RedisAccessKeysInner>> listKeysWithResponseAsync(String resourceGroupName, String name) {
@@ -1745,7 +1801,7 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return redis cache access keys.
+     * @return redis cache access keys along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RedisAccessKeysInner>> listKeysWithResponseAsync(
@@ -1790,7 +1846,7 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return redis cache access keys.
+     * @return redis cache access keys on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RedisAccessKeysInner> listKeysAsync(String resourceGroupName, String name) {
@@ -1829,7 +1885,7 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return redis cache access keys.
+     * @return redis cache access keys along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RedisAccessKeysInner> listKeysWithResponse(String resourceGroupName, String name, Context context) {
@@ -1841,15 +1897,15 @@ public final class RedisClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
-     * @param keyType The Redis access key to regenerate.
+     * @param parameters Specifies which key to regenerate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return redis cache access keys.
+     * @return redis cache access keys along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RedisAccessKeysInner>> regenerateKeyWithResponseAsync(
-        String resourceGroupName, String name, RedisKeyType keyType) {
+        String resourceGroupName, String name, RedisRegenerateKeyParameters parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1869,12 +1925,12 @@ public final class RedisClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (keyType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter keyType is required and cannot be null."));
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
         }
         final String accept = "application/json";
-        RedisRegenerateKeyParameters parameters = new RedisRegenerateKeyParameters();
-        parameters.withKeyType(keyType);
         return FluxUtil
             .withContext(
                 context ->
@@ -1896,16 +1952,16 @@ public final class RedisClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
-     * @param keyType The Redis access key to regenerate.
+     * @param parameters Specifies which key to regenerate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return redis cache access keys.
+     * @return redis cache access keys along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RedisAccessKeysInner>> regenerateKeyWithResponseAsync(
-        String resourceGroupName, String name, RedisKeyType keyType, Context context) {
+        String resourceGroupName, String name, RedisRegenerateKeyParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1925,12 +1981,12 @@ public final class RedisClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (keyType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter keyType is required and cannot be null."));
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
         }
         final String accept = "application/json";
-        RedisRegenerateKeyParameters parameters = new RedisRegenerateKeyParameters();
-        parameters.withKeyType(keyType);
         context = this.client.mergeContext(context);
         return service
             .regenerateKey(
@@ -1949,15 +2005,16 @@ public final class RedisClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
-     * @param keyType The Redis access key to regenerate.
+     * @param parameters Specifies which key to regenerate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return redis cache access keys.
+     * @return redis cache access keys on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RedisAccessKeysInner> regenerateKeyAsync(String resourceGroupName, String name, RedisKeyType keyType) {
-        return regenerateKeyWithResponseAsync(resourceGroupName, name, keyType)
+    public Mono<RedisAccessKeysInner> regenerateKeyAsync(
+        String resourceGroupName, String name, RedisRegenerateKeyParameters parameters) {
+        return regenerateKeyWithResponseAsync(resourceGroupName, name, parameters)
             .flatMap(
                 (Response<RedisAccessKeysInner> res) -> {
                     if (res.getValue() != null) {
@@ -1973,15 +2030,16 @@ public final class RedisClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
-     * @param keyType The Redis access key to regenerate.
+     * @param parameters Specifies which key to regenerate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return redis cache access keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RedisAccessKeysInner regenerateKey(String resourceGroupName, String name, RedisKeyType keyType) {
-        return regenerateKeyAsync(resourceGroupName, name, keyType).block();
+    public RedisAccessKeysInner regenerateKey(
+        String resourceGroupName, String name, RedisRegenerateKeyParameters parameters) {
+        return regenerateKeyAsync(resourceGroupName, name, parameters).block();
     }
 
     /**
@@ -1989,17 +2047,17 @@ public final class RedisClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
-     * @param keyType The Redis access key to regenerate.
+     * @param parameters Specifies which key to regenerate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return redis cache access keys.
+     * @return redis cache access keys along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RedisAccessKeysInner> regenerateKeyWithResponse(
-        String resourceGroupName, String name, RedisKeyType keyType, Context context) {
-        return regenerateKeyWithResponseAsync(resourceGroupName, name, keyType, context).block();
+        String resourceGroupName, String name, RedisRegenerateKeyParameters parameters, Context context) {
+        return regenerateKeyWithResponseAsync(resourceGroupName, name, parameters, context).block();
     }
 
     /**
@@ -2012,7 +2070,8 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to force reboot for Redis cache.
+     * @return response to force reboot for Redis cache along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RedisForceRebootResponseInner>> forceRebootWithResponseAsync(
@@ -2069,7 +2128,8 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to force reboot for Redis cache.
+     * @return response to force reboot for Redis cache along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RedisForceRebootResponseInner>> forceRebootWithResponseAsync(
@@ -2122,7 +2182,7 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to force reboot for Redis cache.
+     * @return response to force reboot for Redis cache on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RedisForceRebootResponseInner> forceRebootAsync(
@@ -2167,7 +2227,7 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to force reboot for Redis cache.
+     * @return response to force reboot for Redis cache along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RedisForceRebootResponseInner> forceRebootWithResponse(
@@ -2184,7 +2244,7 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> importDataWithResponseAsync(
@@ -2240,7 +2300,7 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> importDataWithResponseAsync(
@@ -2292,15 +2352,16 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginImportDataAsync(
         String resourceGroupName, String name, ImportRdbParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = importDataWithResponseAsync(resourceGroupName, name, parameters);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2313,9 +2374,9 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginImportDataAsync(
         String resourceGroupName, String name, ImportRdbParameters parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -2335,9 +2396,9 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginImportData(
         String resourceGroupName, String name, ImportRdbParameters parameters) {
         return beginImportDataAsync(resourceGroupName, name, parameters).getSyncPoller();
@@ -2353,9 +2414,9 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginImportData(
         String resourceGroupName, String name, ImportRdbParameters parameters, Context context) {
         return beginImportDataAsync(resourceGroupName, name, parameters, context).getSyncPoller();
@@ -2370,7 +2431,7 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> importDataAsync(String resourceGroupName, String name, ImportRdbParameters parameters) {
@@ -2389,7 +2450,7 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> importDataAsync(
@@ -2439,7 +2500,7 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> exportDataWithResponseAsync(
@@ -2495,7 +2556,7 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> exportDataWithResponseAsync(
@@ -2547,15 +2608,16 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginExportDataAsync(
         String resourceGroupName, String name, ExportRdbParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = exportDataWithResponseAsync(resourceGroupName, name, parameters);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2568,9 +2630,9 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginExportDataAsync(
         String resourceGroupName, String name, ExportRdbParameters parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -2590,9 +2652,9 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginExportData(
         String resourceGroupName, String name, ExportRdbParameters parameters) {
         return beginExportDataAsync(resourceGroupName, name, parameters).getSyncPoller();
@@ -2608,9 +2670,9 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginExportData(
         String resourceGroupName, String name, ExportRdbParameters parameters, Context context) {
         return beginExportDataAsync(resourceGroupName, name, parameters, context).getSyncPoller();
@@ -2625,7 +2687,7 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> exportDataAsync(String resourceGroupName, String name, ExportRdbParameters parameters) {
@@ -2644,7 +2706,7 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> exportDataAsync(
@@ -2692,7 +2754,83 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list Redis operation.
+     * @return the response of listUpgradeNotifications along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<UpgradeNotificationInner>> listUpgradeNotificationsNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.listUpgradeNotificationsNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<UpgradeNotificationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of listUpgradeNotifications along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<UpgradeNotificationInner>> listUpgradeNotificationsNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listUpgradeNotificationsNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of list Redis operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RedisResourceInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -2729,7 +2867,8 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list Redis operation.
+     * @return the response of list Redis operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RedisResourceInner>> listByResourceGroupNextSinglePageAsync(
@@ -2765,7 +2904,8 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list Redis operation.
+     * @return the response of list Redis operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RedisResourceInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -2802,7 +2942,8 @@ public final class RedisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list Redis operation.
+     * @return the response of list Redis operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RedisResourceInner>> listBySubscriptionNextSinglePageAsync(

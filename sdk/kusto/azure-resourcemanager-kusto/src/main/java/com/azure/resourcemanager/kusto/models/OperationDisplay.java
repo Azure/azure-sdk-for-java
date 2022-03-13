@@ -21,7 +21,7 @@ public final class OperationDisplay {
     private String provider;
 
     /*
-     * For example: read, write, delete.
+     * The operation type. For example: read, write, delete.
      */
     @JsonProperty(value = "operation")
     private String operation;
@@ -59,7 +59,7 @@ public final class OperationDisplay {
     }
 
     /**
-     * Get the operation property: For example: read, write, delete.
+     * Get the operation property: The operation type. For example: read, write, delete.
      *
      * @return the operation value.
      */
@@ -68,7 +68,7 @@ public final class OperationDisplay {
     }
 
     /**
-     * Set the operation property: For example: read, write, delete.
+     * Set the operation property: The operation type. For example: read, write, delete.
      *
      * @param operation the operation value to set.
      * @return the OperationDisplay object itself.

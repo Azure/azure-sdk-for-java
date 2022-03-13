@@ -44,7 +44,7 @@ public final class DataFeedIngestionSettings {
      *
      * @return the the max concurrency of data ingestion queries against user data source value.
      */
-    public int getDataSourceRequestConcurrency() {
+    public Integer getDataSourceRequestConcurrency() {
         return this.sourceRequestConcurrency;
     }
 
@@ -85,7 +85,7 @@ public final class DataFeedIngestionSettings {
      *
      * @return the DataFeedIngestionSettings object itself.
      */
-    public DataFeedIngestionSettings setDataSourceRequestConcurrency(int maxConcurrency) {
+    public DataFeedIngestionSettings setDataSourceRequestConcurrency(Integer maxConcurrency) {
         this.sourceRequestConcurrency = maxConcurrency;
         return this;
     }

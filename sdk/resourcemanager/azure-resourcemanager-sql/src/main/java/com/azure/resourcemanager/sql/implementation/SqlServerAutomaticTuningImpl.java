@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.sql.implementation;
 
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
 import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.models.AutomaticTuningOptionModeDesired;
@@ -120,12 +122,23 @@ public class SqlServerAutomaticTuningImpl
 
     @Override
     public Mono<SqlServerAutomaticTuning> applyAsync() {
+        return applyAsync(Context.NONE);
+    }
+
+    @Override
+    public SqlServerAutomaticTuning apply(Context context) {
+        return applyAsync(context).block();
+    }
+
+    @Override
+    public Mono<SqlServerAutomaticTuning> applyAsync(Context context) {
         final SqlServerAutomaticTuningImpl self = this;
         return this
             .sqlServerManager
             .serviceClient()
             .getServerAutomaticTunings()
             .updateAsync(this.resourceGroupName, this.sqlServerName, this.innerModel())
+            .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()))
             .map(
                 serverAutomaticTuningInner -> {
                     self.setInner(serverAutomaticTuningInner);

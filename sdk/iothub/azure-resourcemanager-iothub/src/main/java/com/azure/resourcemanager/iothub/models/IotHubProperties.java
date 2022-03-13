@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iothub.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.iothub.fluent.models.SharedAccessSignatureAuthorizationRuleInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,40 @@ public final class IotHubProperties {
      */
     @JsonProperty(value = "authorizationPolicies")
     private List<SharedAccessSignatureAuthorizationRuleInner> authorizationPolicies;
+
+    /*
+     * If true, SAS tokens with Iot hub scoped SAS keys cannot be used for
+     * authentication.
+     */
+    @JsonProperty(value = "disableLocalAuth")
+    private Boolean disableLocalAuth;
+
+    /*
+     * If true, all device(including Edge devices but excluding modules) scoped
+     * SAS keys cannot be used for authentication.
+     */
+    @JsonProperty(value = "disableDeviceSAS")
+    private Boolean disableDeviceSas;
+
+    /*
+     * If true, all module scoped SAS keys cannot be used for authentication.
+     */
+    @JsonProperty(value = "disableModuleSAS")
+    private Boolean disableModuleSas;
+
+    /*
+     * If true, egress from IotHub will be restricted to only the allowed FQDNs
+     * that are configured via allowedFqdnList.
+     */
+    @JsonProperty(value = "restrictOutboundNetworkAccess")
+    private Boolean restrictOutboundNetworkAccess;
+
+    /*
+     * List of allowed FQDNs(Fully Qualified Domain Name) for egress from Iot
+     * Hub.
+     */
+    @JsonProperty(value = "allowedFqdnList")
+    private List<String> allowedFqdnList;
 
     /*
      * Whether requests from Public Network are allowed
@@ -80,6 +115,7 @@ public final class IotHubProperties {
      * while making create or update calls for the IoT hub.
      */
     @JsonProperty(value = "eventHubEndpoints")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, EventHubProperties> eventHubEndpoints;
 
     /*
@@ -98,6 +134,7 @@ public final class IotHubProperties {
      * an error to be thrown.
      */
     @JsonProperty(value = "storageEndpoints")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, StorageEndpointProperties> storageEndpoints;
 
     /*
@@ -105,6 +142,7 @@ public final class IotHubProperties {
      * queue.
      */
     @JsonProperty(value = "messagingEndpoints")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, MessagingEndpointProperties> messagingEndpoints;
 
     /*
@@ -137,6 +175,13 @@ public final class IotHubProperties {
     @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
     private List<IotHubLocationDescription> locations;
 
+    /*
+     * This property when set to true, will enable data residency, thus,
+     * disabling disaster recovery.
+     */
+    @JsonProperty(value = "enableDataResidency")
+    private Boolean enableDataResidency;
+
     /**
      * Get the authorizationPolicies property: The shared access policies you can use to secure a connection to the IoT
      * hub.
@@ -157,6 +202,112 @@ public final class IotHubProperties {
     public IotHubProperties withAuthorizationPolicies(
         List<SharedAccessSignatureAuthorizationRuleInner> authorizationPolicies) {
         this.authorizationPolicies = authorizationPolicies;
+        return this;
+    }
+
+    /**
+     * Get the disableLocalAuth property: If true, SAS tokens with Iot hub scoped SAS keys cannot be used for
+     * authentication.
+     *
+     * @return the disableLocalAuth value.
+     */
+    public Boolean disableLocalAuth() {
+        return this.disableLocalAuth;
+    }
+
+    /**
+     * Set the disableLocalAuth property: If true, SAS tokens with Iot hub scoped SAS keys cannot be used for
+     * authentication.
+     *
+     * @param disableLocalAuth the disableLocalAuth value to set.
+     * @return the IotHubProperties object itself.
+     */
+    public IotHubProperties withDisableLocalAuth(Boolean disableLocalAuth) {
+        this.disableLocalAuth = disableLocalAuth;
+        return this;
+    }
+
+    /**
+     * Get the disableDeviceSas property: If true, all device(including Edge devices but excluding modules) scoped SAS
+     * keys cannot be used for authentication.
+     *
+     * @return the disableDeviceSas value.
+     */
+    public Boolean disableDeviceSas() {
+        return this.disableDeviceSas;
+    }
+
+    /**
+     * Set the disableDeviceSas property: If true, all device(including Edge devices but excluding modules) scoped SAS
+     * keys cannot be used for authentication.
+     *
+     * @param disableDeviceSas the disableDeviceSas value to set.
+     * @return the IotHubProperties object itself.
+     */
+    public IotHubProperties withDisableDeviceSas(Boolean disableDeviceSas) {
+        this.disableDeviceSas = disableDeviceSas;
+        return this;
+    }
+
+    /**
+     * Get the disableModuleSas property: If true, all module scoped SAS keys cannot be used for authentication.
+     *
+     * @return the disableModuleSas value.
+     */
+    public Boolean disableModuleSas() {
+        return this.disableModuleSas;
+    }
+
+    /**
+     * Set the disableModuleSas property: If true, all module scoped SAS keys cannot be used for authentication.
+     *
+     * @param disableModuleSas the disableModuleSas value to set.
+     * @return the IotHubProperties object itself.
+     */
+    public IotHubProperties withDisableModuleSas(Boolean disableModuleSas) {
+        this.disableModuleSas = disableModuleSas;
+        return this;
+    }
+
+    /**
+     * Get the restrictOutboundNetworkAccess property: If true, egress from IotHub will be restricted to only the
+     * allowed FQDNs that are configured via allowedFqdnList.
+     *
+     * @return the restrictOutboundNetworkAccess value.
+     */
+    public Boolean restrictOutboundNetworkAccess() {
+        return this.restrictOutboundNetworkAccess;
+    }
+
+    /**
+     * Set the restrictOutboundNetworkAccess property: If true, egress from IotHub will be restricted to only the
+     * allowed FQDNs that are configured via allowedFqdnList.
+     *
+     * @param restrictOutboundNetworkAccess the restrictOutboundNetworkAccess value to set.
+     * @return the IotHubProperties object itself.
+     */
+    public IotHubProperties withRestrictOutboundNetworkAccess(Boolean restrictOutboundNetworkAccess) {
+        this.restrictOutboundNetworkAccess = restrictOutboundNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get the allowedFqdnList property: List of allowed FQDNs(Fully Qualified Domain Name) for egress from Iot Hub.
+     *
+     * @return the allowedFqdnList value.
+     */
+    public List<String> allowedFqdnList() {
+        return this.allowedFqdnList;
+    }
+
+    /**
+     * Set the allowedFqdnList property: List of allowed FQDNs(Fully Qualified Domain Name) for egress from Iot Hub.
+     *
+     * @param allowedFqdnList the allowedFqdnList value to set.
+     * @return the IotHubProperties object itself.
+     */
+    public IotHubProperties withAllowedFqdnList(List<String> allowedFqdnList) {
+        this.allowedFqdnList = allowedFqdnList;
         return this;
     }
 
@@ -469,6 +620,28 @@ public final class IotHubProperties {
      */
     public List<IotHubLocationDescription> locations() {
         return this.locations;
+    }
+
+    /**
+     * Get the enableDataResidency property: This property when set to true, will enable data residency, thus, disabling
+     * disaster recovery.
+     *
+     * @return the enableDataResidency value.
+     */
+    public Boolean enableDataResidency() {
+        return this.enableDataResidency;
+    }
+
+    /**
+     * Set the enableDataResidency property: This property when set to true, will enable data residency, thus, disabling
+     * disaster recovery.
+     *
+     * @param enableDataResidency the enableDataResidency value to set.
+     * @return the IotHubProperties object itself.
+     */
+    public IotHubProperties withEnableDataResidency(Boolean enableDataResidency) {
+        this.enableDataResidency = enableDataResidency;
+        return this;
     }
 
     /**

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -14,9 +13,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Network watcher in a resource group. */
-@JsonFlatten
 @Fluent
-public class NetworkWatcherInner extends Resource {
+public final class NetworkWatcherInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkWatcherInner.class);
 
     /*
@@ -26,10 +24,10 @@ public class NetworkWatcherInner extends Resource {
     private String etag;
 
     /*
-     * The provisioning state of the network watcher resource.
+     * Properties of the network watcher.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "properties")
+    private NetworkWatcherPropertiesFormat innerProperties;
 
     /*
      * Resource ID.
@@ -47,12 +45,12 @@ public class NetworkWatcherInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the network watcher resource.
+     * Get the innerProperties property: Properties of the network watcher.
      *
-     * @return the provisioningState value.
+     * @return the innerProperties value.
      */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
+    private NetworkWatcherPropertiesFormat innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -90,10 +88,22 @@ public class NetworkWatcherInner extends Resource {
     }
 
     /**
+     * Get the provisioningState property: The provisioning state of the network watcher resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

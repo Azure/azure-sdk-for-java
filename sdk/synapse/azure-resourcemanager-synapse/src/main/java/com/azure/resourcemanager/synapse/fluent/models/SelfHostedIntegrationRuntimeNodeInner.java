@@ -11,6 +11,7 @@ import com.azure.resourcemanager.synapse.models.SelfHostedIntegrationRuntimeNode
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -49,6 +50,7 @@ public final class SelfHostedIntegrationRuntimeNodeInner {
      * The integration runtime capabilities dictionary
      */
     @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> capabilities;
 
     /*

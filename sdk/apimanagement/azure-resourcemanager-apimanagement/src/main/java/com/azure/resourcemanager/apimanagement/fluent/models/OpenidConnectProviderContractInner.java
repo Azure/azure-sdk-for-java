@@ -5,47 +5,30 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** OpenId Connect Provider details. */
-@JsonFlatten
 @Fluent
-public class OpenidConnectProviderContractInner extends ProxyResource {
+public final class OpenidConnectProviderContractInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OpenidConnectProviderContractInner.class);
 
     /*
-     * User-friendly OpenID Connect Provider name.
+     * OpenId Connect Provider contract properties.
      */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
+    @JsonProperty(value = "properties")
+    private OpenidConnectProviderContractProperties innerProperties;
 
-    /*
-     * User-friendly description of OpenID Connect Provider.
+    /**
+     * Get the innerProperties property: OpenId Connect Provider contract properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * Metadata endpoint URI.
-     */
-    @JsonProperty(value = "properties.metadataEndpoint")
-    private String metadataEndpoint;
-
-    /*
-     * Client ID of developer console which is the client application.
-     */
-    @JsonProperty(value = "properties.clientId")
-    private String clientId;
-
-    /*
-     * Client Secret of developer console which is the client application.
-     */
-    @JsonProperty(value = "properties.clientSecret")
-    private String clientSecret;
+    private OpenidConnectProviderContractProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the displayName property: User-friendly OpenID Connect Provider name.
@@ -53,7 +36,7 @@ public class OpenidConnectProviderContractInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -63,7 +46,10 @@ public class OpenidConnectProviderContractInner extends ProxyResource {
      * @return the OpenidConnectProviderContractInner object itself.
      */
     public OpenidConnectProviderContractInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OpenidConnectProviderContractProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -73,7 +59,7 @@ public class OpenidConnectProviderContractInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -83,7 +69,10 @@ public class OpenidConnectProviderContractInner extends ProxyResource {
      * @return the OpenidConnectProviderContractInner object itself.
      */
     public OpenidConnectProviderContractInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OpenidConnectProviderContractProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -93,7 +82,7 @@ public class OpenidConnectProviderContractInner extends ProxyResource {
      * @return the metadataEndpoint value.
      */
     public String metadataEndpoint() {
-        return this.metadataEndpoint;
+        return this.innerProperties() == null ? null : this.innerProperties().metadataEndpoint();
     }
 
     /**
@@ -103,7 +92,10 @@ public class OpenidConnectProviderContractInner extends ProxyResource {
      * @return the OpenidConnectProviderContractInner object itself.
      */
     public OpenidConnectProviderContractInner withMetadataEndpoint(String metadataEndpoint) {
-        this.metadataEndpoint = metadataEndpoint;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OpenidConnectProviderContractProperties();
+        }
+        this.innerProperties().withMetadataEndpoint(metadataEndpoint);
         return this;
     }
 
@@ -113,7 +105,7 @@ public class OpenidConnectProviderContractInner extends ProxyResource {
      * @return the clientId value.
      */
     public String clientId() {
-        return this.clientId;
+        return this.innerProperties() == null ? null : this.innerProperties().clientId();
     }
 
     /**
@@ -123,7 +115,10 @@ public class OpenidConnectProviderContractInner extends ProxyResource {
      * @return the OpenidConnectProviderContractInner object itself.
      */
     public OpenidConnectProviderContractInner withClientId(String clientId) {
-        this.clientId = clientId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OpenidConnectProviderContractProperties();
+        }
+        this.innerProperties().withClientId(clientId);
         return this;
     }
 
@@ -133,7 +128,7 @@ public class OpenidConnectProviderContractInner extends ProxyResource {
      * @return the clientSecret value.
      */
     public String clientSecret() {
-        return this.clientSecret;
+        return this.innerProperties() == null ? null : this.innerProperties().clientSecret();
     }
 
     /**
@@ -143,7 +138,10 @@ public class OpenidConnectProviderContractInner extends ProxyResource {
      * @return the OpenidConnectProviderContractInner object itself.
      */
     public OpenidConnectProviderContractInner withClientSecret(String clientSecret) {
-        this.clientSecret = clientSecret;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OpenidConnectProviderContractProperties();
+        }
+        this.innerProperties().withClientSecret(clientSecret);
         return this;
     }
 
@@ -153,5 +151,8 @@ public class OpenidConnectProviderContractInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

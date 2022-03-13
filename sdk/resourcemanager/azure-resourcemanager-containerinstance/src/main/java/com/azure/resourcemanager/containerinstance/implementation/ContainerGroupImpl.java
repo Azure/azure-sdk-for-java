@@ -16,9 +16,11 @@ import com.azure.resourcemanager.containerinstance.models.ContainerExecResponse;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupDiagnostics;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupIpAddressType;
-import com.azure.resourcemanager.containerinstance.models.ContainerGroupNetworkProfile;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupNetworkProtocol;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupRestartPolicy;
+import com.azure.resourcemanager.containerinstance.models.ContainerGroupSubnetId;
+import com.azure.resourcemanager.containerinstance.models.ContainerNetworkProtocol;
+import com.azure.resourcemanager.containerinstance.models.ContainerPort;
 import com.azure.resourcemanager.containerinstance.models.DnsConfiguration;
 import com.azure.resourcemanager.containerinstance.models.Event;
 import com.azure.resourcemanager.containerinstance.models.ImageRegistryCredential;
@@ -30,11 +32,9 @@ import com.azure.resourcemanager.containerinstance.models.Port;
 import com.azure.resourcemanager.containerinstance.models.ResourceIdentityType;
 import com.azure.resourcemanager.containerinstance.models.Volume;
 import com.azure.resourcemanager.msi.models.Identity;
-import com.azure.resourcemanager.network.fluent.models.IpConfigurationProfileInner;
-import com.azure.resourcemanager.network.fluent.models.NetworkProfileInner;
-import com.azure.resourcemanager.network.fluent.models.SubnetInner;
-import com.azure.resourcemanager.network.models.ContainerNetworkInterfaceConfiguration;
 import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.Subnet;
+import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
@@ -62,8 +62,6 @@ public class ContainerGroupImpl
 
     private String creatableStorageAccountKey;
     private Creatable<Network> creatableVirtualNetwork;
-    private NetworkProfileInner creatableNetworkProfileInner;
-    private String creatableNetworkProfileName;
     private Map<String, String> newFileShares;
 
     private Map<String, Container> containers;
@@ -90,23 +88,6 @@ public class ContainerGroupImpl
                             creatableVirtualNetwork = null;
                             return Mono.empty();
                         });
-        }
-        if (creatableNetworkProfileName != null && creatableNetworkProfileInner != null) {
-            mono =
-                mono
-                    .then(
-                        manager()
-                            .networkManager()
-                            .serviceClient()
-                            .getNetworkProfiles()
-                            .createOrUpdateAsync(
-                                resourceGroupName(), creatableNetworkProfileName, creatableNetworkProfileInner)
-                            .flatMap(
-                                profile -> {
-                                    creatableNetworkProfileName = null;
-                                    creatableNetworkProfileInner = null;
-                                    return Mono.empty();
-                                }));
         }
         return mono;
     }
@@ -210,6 +191,13 @@ public class ContainerGroupImpl
         if (this.innerModel().containers() != null && this.innerModel().containers().size() > 0) {
             for (Container containerInstance : this.innerModel().containers()) {
                 this.containers.put(containerInstance.name(), containerInstance);
+                if (containerInstance.ports() != null) {
+                    for (ContainerPort port : containerInstance.ports()) {
+                        if (port.protocol() == null) {
+                            port.withProtocol(ContainerNetworkProtocol.TCP);
+                        }
+                    }
+                }
             }
         }
 
@@ -235,6 +223,9 @@ public class ContainerGroupImpl
             List<Port> tcpPorts = new ArrayList<>();
             List<Port> udpPorts = new ArrayList<>();
             for (Port port : this.innerModel().ipAddress().ports()) {
+                if (port.protocol() == null) {
+                    port.withProtocol(ContainerGroupNetworkProtocol.TCP);
+                }
                 if (port.protocol().equals(ContainerGroupNetworkProtocol.TCP)) {
                     tcpPorts.add(port);
                 } else if (port.protocol().equals(ContainerGroupNetworkProtocol.UDP)) {
@@ -444,61 +435,25 @@ public class ContainerGroupImpl
     }
 
     @Override
-    public ContainerGroupImpl withExistingNetworkProfile(
-        String subscriptionId, String resourceGroupName, String networkProfileName) {
-        String networkProfileId =
-            "/subscriptions/"
-                + subscriptionId
-                + "/resourceGroups/"
-                + resourceGroupName
-                + "/providers/Microsoft.Network/networkProfiles/"
-                + networkProfileName;
-        return this.withExistingNetworkProfile(networkProfileId);
+    public ContainerGroupImpl withExistingSubnet(Subnet subnet) {
+        return withExistingSubnet(subnet.id());
     }
 
     @Override
-    public ContainerGroupImpl withExistingNetworkProfile(String networkProfileId) {
-        this.innerModel().withNetworkProfile(new ContainerGroupNetworkProfile().withId(networkProfileId));
-        if (this.innerModel().ipAddress() == null) {
-            this.innerModel().withIpAddress(new IpAddress());
+    public ContainerGroupImpl withExistingSubnet(String subnetId) {
+        if (innerModel().subnetIds() == null) {
+            innerModel().withSubnetIds(new ArrayList<>());
         }
-        this.innerModel().ipAddress().withType(ContainerGroupIpAddressType.PRIVATE);
+        String name = ResourceUtils.nameFromResourceId(subnetId);
+        innerModel().subnetIds().add(new ContainerGroupSubnetId().withName(name).withId(subnetId));
         return this;
     }
 
     @Override
     public ContainerGroupImpl withNewNetworkProfileOnExistingVirtualNetwork(
         String virtualNetworkId, String subnetName) {
-        String randomNetworkProfileName = manager().resourceManager().internalContext()
-            .randomResourceName("aci-profile-", 20);
-        return this.withNewNetworkProfileOnExistingVirtualNetwork(randomNetworkProfileName,
-            virtualNetworkId, subnetName);
-    }
-
-    @Override
-    public ContainerGroupImpl withNewNetworkProfileOnExistingVirtualNetwork(
-        String networkProfileName, String virtualNetworkId, String subnetName) {
-        creatableNetworkProfileName = networkProfileName;
         String subnetId = String.format("%s/subnets/%s", virtualNetworkId, subnetName);
-        SubnetInner subnetInner = new SubnetInner();
-        subnetInner.withId(subnetId);
-        creatableNetworkProfileInner =
-            new NetworkProfileInner()
-                .withContainerNetworkInterfaceConfigurations(
-                    Collections
-                        .singletonList(
-                            new ContainerNetworkInterfaceConfiguration()
-                                .withName("eth0")
-                                .withIpConfigurations(
-                                    Collections
-                                        .singletonList(
-                                            new IpConfigurationProfileInner()
-                                                .withName("ipconfig0")
-                                                .withSubnet(subnetInner)))));
-        creatableNetworkProfileInner.withLocation(regionName());
-
-        return this.withExistingNetworkProfile(
-            manager().subscriptionId(), resourceGroupName(), creatableNetworkProfileName);
+        return this.withExistingSubnet(subnetId);
     }
 
     @Override
@@ -690,8 +645,8 @@ public class ContainerGroupImpl
     }
 
     @Override
-    public String networkProfileId() {
-        return this.innerModel().networkProfile().id();
+    public List<ContainerGroupSubnetId> subnetIds() {
+        return innerModel().subnetIds();
     }
 
     @Override

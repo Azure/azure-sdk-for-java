@@ -27,7 +27,7 @@ public interface StorageTargetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDnsRefresh(
         String resourceGroupName, String cacheName, String storageTargetName);
 
@@ -44,7 +44,7 @@ public interface StorageTargetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDnsRefresh(
         String resourceGroupName, String cacheName, String storageTargetName, Context context);
 
@@ -116,14 +116,16 @@ public interface StorageTargetsClient {
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
+     * @param force Boolean value requesting the force delete operation for a storage target. Force delete discards
+     *     unwritten-data in the cache instead of flushing it to back-end storage.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String cacheName, String storageTargetName);
+        String resourceGroupName, String cacheName, String storageTargetName, String force);
 
     /**
      * Removes a Storage Target from a Cache. This operation is allowed at any time, but if the Cache is down or
@@ -135,15 +137,36 @@ public interface StorageTargetsClient {
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
+     * @param force Boolean value requesting the force delete operation for a storage target. Force delete discards
+     *     unwritten-data in the cache instead of flushing it to back-end storage.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String cacheName, String storageTargetName, Context context);
+        String resourceGroupName, String cacheName, String storageTargetName, String force, Context context);
+
+    /**
+     * Removes a Storage Target from a Cache. This operation is allowed at any time, but if the Cache is down or
+     * unhealthy, the actual removal of the Storage Target may be delayed until the Cache is healthy again. Note that if
+     * the Cache has data to flush to the Storage Target, the data will be flushed before the Storage Target will be
+     * deleted.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
+     * @param force Boolean value requesting the force delete operation for a storage target. Force delete discards
+     *     unwritten-data in the cache instead of flushing it to back-end storage.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String cacheName, String storageTargetName, String force);
 
     /**
      * Removes a Storage Target from a Cache. This operation is allowed at any time, but if the Cache is down or
@@ -172,13 +195,15 @@ public interface StorageTargetsClient {
      * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
+     * @param force Boolean value requesting the force delete operation for a storage target. Force delete discards
+     *     unwritten-data in the cache instead of flushing it to back-end storage.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String cacheName, String storageTargetName, Context context);
+    void delete(String resourceGroupName, String cacheName, String storageTargetName, String force, Context context);
 
     /**
      * Returns a Storage Target from a Cache.
@@ -226,7 +251,7 @@ public interface StorageTargetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return type of the Storage Target.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<StorageTargetInner>, StorageTargetInner> beginCreateOrUpdate(
         String resourceGroupName, String cacheName, String storageTargetName, StorageTargetInner storagetarget);
 
@@ -245,7 +270,7 @@ public interface StorageTargetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return type of the Storage Target.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<StorageTargetInner>, StorageTargetInner> beginCreateOrUpdate(
         String resourceGroupName,
         String cacheName,

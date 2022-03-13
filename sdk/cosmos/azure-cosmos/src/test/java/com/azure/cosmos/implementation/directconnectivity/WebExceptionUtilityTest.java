@@ -9,6 +9,7 @@ import io.netty.channel.ConnectTimeoutException;
 import io.netty.handler.timeout.ReadTimeoutException;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import reactor.netty.http.client.PrematureCloseException;
 
 import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLHandshakeException;
@@ -62,6 +63,9 @@ public class WebExceptionUtilityTest {
                 },
                 {
                         new SocketTimeoutException(), false
+                },
+                {
+                        PrematureCloseException.TEST_EXCEPTION, false
                 }
         };
     }
@@ -136,6 +140,9 @@ public class WebExceptionUtilityTest {
                 },
                 {
                         new JsonMappingException(null, "dummy"), false
+                },
+                {
+                        PrematureCloseException.TEST_EXCEPTION, true
                 }
         };
     }

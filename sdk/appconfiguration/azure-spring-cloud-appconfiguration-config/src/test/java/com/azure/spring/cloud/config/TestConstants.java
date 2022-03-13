@@ -13,10 +13,10 @@ public final class TestConstants {
     public static final String CONN_STRING_PROP_NEW =
         "spring.cloud.azure.appconfiguration.stores[1].connection-string";
     public static final String STORE_ENDPOINT_PROP = "spring.cloud.azure.appconfiguration.stores[0].endpoint";
-    public static final String LABEL_PROP = "spring.cloud.azure.appconfiguration.stores[0].label";
+    public static final String KEY_PROP = "spring.cloud.azure.appconfiguration.stores[0].selects[0].key-filter";
+    public static final String LABEL_PROP = "spring.cloud.azure.appconfiguration.stores[0].selects[0].label-filter";
     public static final String WATCHED_KEY_PROP = "spring.cloud.azure.appconfiguration.stores[0].watched-key";
     public static final String CLIENT_ID = "spring.cloud.azure.appconfiguration.managed-identity.client-id";
-    public static final String DEFAULT_CONTEXT_PROP = "spring.cloud.azure.appconfiguration.default-context";
     public static final String CONFIG_ENABLED_PROP = "spring.cloud.azure.appconfiguration.enabled";
     public static final String REFRESH_INTERVAL_PROP = "spring.cloud.azure.appconfiguration.refresh-interval";
     public static final String FAIL_FAST_PROP = "spring.cloud.azure.appconfiguration.failFast";
@@ -36,12 +36,9 @@ public final class TestConstants {
     public static final String TEST_ENDPOINT = "https://fake.test.config.io";
     public static final String TEST_KV_API = TEST_ENDPOINT + "/kv?key=fake-key*&label=fake-label";
     public static final String TEST_ID = "fake-conn-id";
-    public static final String TEST_SECRET = "ZmFrZS1jb25uLXNlY3JldA=="; // Base64 encoded
     public static final String TEST_ACCESS_TOKEN = "fake_token";
     // from
     // fake-conn-secret
-    public static final String TEST_DEFAULT_CONTEXT = "/application/";
-    public static final String TEST_CONTEXT = "/foo/";
     public static final String TEST_KEY_1 = "test_key_1";
     public static final String TEST_VALUE_1 = "test_value_1";
     public static final String TEST_LABEL_1 = "test_label_1";
@@ -56,7 +53,6 @@ public final class TestConstants {
     public static final String TEST_ETAG = "fake-etag";
     public static final String TEST_KEY_VAULT_1 = "test_key_vault_1";
     public static final String TEST_URI_VAULT_1 = "https://test.key.vault.com/my_secret_url";
-    public static final String TEST_VALUE_VAULT_1 = "{\"uri\":\"" + TEST_URI_VAULT_1 + "\"}";
     public static final String TEST_LABEL_VAULT_1 = "test_lable_vault_1";
     public static final String FEATURE_KEY = "feature-management.featureManagement";
     public static final String FEATURE_VALUE = "{\"id\":\"Alpha\",\"description\":\"\",\"enabled\":true,"
@@ -72,7 +68,7 @@ public final class TestConstants {
     public static final String FEATURE_LABEL = "";
     public static final String LIST_KEY_1 = "test.list[0].key";
     public static final String LIST_KEY_2 = "test.list[1].key";
-    public static final String TEST_SLASH_KEY = "test/slash/key";
+    public static final String TEST_SLASH_KEY = "slash/key";
     public static final String TEST_SLASH_VALUE = "prop value for slashed key name";
     public static final String TEST_SUBSCRIPTION_1 = "fake-subscription-id-1";
     public static final String TEST_SUBSCRIPTION_2 = "fake-subscription-id-2";

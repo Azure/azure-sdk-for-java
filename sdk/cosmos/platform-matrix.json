@@ -7,7 +7,6 @@
     "-Pmulti-master": "MultiMaster",
     "-Pmulti-region": "MultiRegion",
     "-e -Plong": "Long",
-    "-DargLine=\"-Dazure.cosmos.directModeProtocol=Https\"": "Https",
     "-DargLine=\"-Dazure.cosmos.directModeProtocol=Tcp\"": "TCP",
     "Session": "",
     "ubuntu": "",
@@ -29,12 +28,11 @@
         }
       },
       "AdditionalArgs": [
-          "-DargLine=\"-Dazure.cosmos.directModeProtocol=Https\"",
           "-DargLine=\"-Dazure.cosmos.directModeProtocol=Tcp\""
       ],
       "ProfileFlag": "-Pe2e",
       "Agent": {
-        "ubuntu": { "OSVmImage": "MMSUbuntu18.04", "Pool": "azsdk-pool-mms-ubuntu-1804-general" }
+        "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
       }
     },
     {
@@ -44,7 +42,7 @@
       "ProfileFlag": [ "-Pnon-emulator", "-Pfast", "-Pdirect", "-e -Plong" ],
       "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }",
       "Agent": {
-        "ubuntu": { "OSVmImage": "MMSUbuntu18.04", "Pool": "azsdk-pool-mms-ubuntu-1804-general" }
+        "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
       }
     },
     {
@@ -54,7 +52,7 @@
       "PROTOCOLS": "[\"Tcp\"]",
       "ProfileFlag": "-Pfast",
       "Agent": {
-        "ubuntu": { "OSVmImage": "MMSUbuntu18.04", "Pool": "azsdk-pool-mms-ubuntu-1804-general" }
+        "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
       }
     },
     {
@@ -64,7 +62,7 @@
       "ProfileFlag": "-Pe2e",
       "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }",
       "Agent": {
-        "ubuntu": { "OSVmImage": "MMSUbuntu18.04", "Pool": "azsdk-pool-mms-ubuntu-1804-general" }
+        "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
       }
     },
     {
@@ -74,7 +72,7 @@
       "ProfileFlag": [ "-Pdirect", "-Pnon-emulator" ],
       "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }",
       "Agent": {
-        "ubuntu": { "OSVmImage": "MMSUbuntu18.04", "Pool": "azsdk-pool-mms-ubuntu-1804-general" }
+        "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
       }
     },
     {
@@ -93,7 +91,7 @@
       "PROTOCOLS": "[\"Tcp\"]",
       "ProfileFlag": [ "-Pmulti-master", "-Pfast", "-Pdirect", "-Pnon-emulator" ],
       "Agent": {
-        "ubuntu": { "OSVmImage": "MMSUbuntu18.04", "Pool": "azsdk-pool-mms-ubuntu-1804-general" }
+        "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
       }
     },
     {
@@ -108,7 +106,7 @@
       "PROTOCOLS": "[\"Tcp\"]",
       "PREFERRED_LOCATIONS": null,
       "Agent": {
-        "ubuntu": { "OSVmImage": "MMSUbuntu18.04", "Pool": "azsdk-pool-mms-ubuntu-1804-general" }
+        "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
       }
     }
   ]

@@ -3,7 +3,6 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
@@ -11,11 +10,13 @@ trigger:
   paths:
     include:
       - sdk/modelsrepository/
+    exclude:
+      - sdk/modelsrepository/pom.xml
+      - sdk/modelsrepository/azure-iot-modelsrepository/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
@@ -23,6 +24,9 @@ pr:
   paths:
     include:
       - sdk/modelsrepository/
+    exclude:
+      - sdk/modelsrepository/pom.xml
+      - sdk/modelsrepository/azure-iot-modelsrepository/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

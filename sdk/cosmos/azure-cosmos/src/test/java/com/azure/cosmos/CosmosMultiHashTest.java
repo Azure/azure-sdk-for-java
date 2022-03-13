@@ -6,7 +6,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.InternalObjectNode;
 
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -26,13 +25,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
-import org.apache.http.HttpStatus;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import javax.print.Doc;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;

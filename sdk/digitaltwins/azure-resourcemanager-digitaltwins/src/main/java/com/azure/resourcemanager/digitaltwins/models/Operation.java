@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.digitaltwins.models;
 
 import com.azure.resourcemanager.digitaltwins.fluent.models.OperationInner;
+import java.util.Map;
 
 /** An immutable client-side representation of Operation. */
 public interface Operation {
@@ -35,6 +36,13 @@ public interface Operation {
      * @return the isDataAction value.
      */
     Boolean isDataAction();
+
+    /**
+     * Gets the properties property: Operation properties.
+     *
+     * @return the properties value.
+     */
+    Map<String, Object> properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.digitaltwins.fluent.models.OperationInner object.

@@ -39,6 +39,13 @@ public final class IntegrationRuntimeVNetProperties {
     private List<String> publicIPs;
 
     /*
+     * The ID of subnet, to which this Azure-SSIS integration runtime will be
+     * joined.
+     */
+    @JsonProperty(value = "subnetId")
+    private String subnetId;
+
+    /*
      * VNet properties for managed integration runtime.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
@@ -100,6 +107,26 @@ public final class IntegrationRuntimeVNetProperties {
      */
     public IntegrationRuntimeVNetProperties withPublicIPs(List<String> publicIPs) {
         this.publicIPs = publicIPs;
+        return this;
+    }
+
+    /**
+     * Get the subnetId property: The ID of subnet, to which this Azure-SSIS integration runtime will be joined.
+     *
+     * @return the subnetId value.
+     */
+    public String subnetId() {
+        return this.subnetId;
+    }
+
+    /**
+     * Set the subnetId property: The ID of subnet, to which this Azure-SSIS integration runtime will be joined.
+     *
+     * @param subnetId the subnetId value to set.
+     * @return the IntegrationRuntimeVNetProperties object itself.
+     */
+    public IntegrationRuntimeVNetProperties withSubnetId(String subnetId) {
+        this.subnetId = subnetId;
         return this;
     }
 

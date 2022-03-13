@@ -48,7 +48,9 @@ import static com.azure.core.util.FluxUtil.monoError;
 /** A builder for creating a new instance of the MixedRealityRemoteRendering type. */
 @ServiceClient(builder = RemoteRenderingClientBuilder.class, isAsync = true)
 public final class RemoteRenderingAsyncClient {
-    private static final Duration DEFAULT_POLLER_TIME = Duration.ofSeconds(10);
+    private static final Duration CONVERSION_POLLING_INTERVAL = Duration.ofSeconds(10);
+    private static final Duration STANDARD_SESSION_POLLING_INTERVAL = Duration.ofSeconds(2);
+    private static final Duration DEFAULT_SESSION_POLLING_INTERVAL = Duration.ofSeconds(10);
 
     private final ClientLogger logger = new ClientLogger(RemoteRenderingAsyncClient.class);
 
@@ -103,7 +105,7 @@ public final class RemoteRenderingAsyncClient {
         }
 
         return new PollerFlux<>(
-            DEFAULT_POLLER_TIME,
+            (options.getSize() == RenderingSessionSize.STANDARD) ? STANDARD_SESSION_POLLING_INTERVAL : DEFAULT_SESSION_POLLING_INTERVAL,
             pollingContext -> impl.getRemoteRenderings().createSessionWithResponseAsync(accountId, sessionId, ModelTranslator.toGenerated(options), context).map(r -> ModelTranslator.fromGenerated(r.getValue())),
             pollingContext -> {
                 Mono<RenderingSession> response = impl.getRemoteRenderings().getSessionWithResponseAsync(accountId, sessionId, context).map(r -> ModelTranslator.fromGenerated(r.getValue()));
@@ -334,7 +336,7 @@ public final class RemoteRenderingAsyncClient {
         Objects.requireNonNull(context, "'context' cannot be null.");
 
         return new PollerFlux<>(
-            DEFAULT_POLLER_TIME,
+            CONVERSION_POLLING_INTERVAL,
             pollingContext -> impl.getRemoteRenderings().createConversionWithResponseAsync(accountId, conversionId, new CreateConversionSettings(ModelTranslator.toGenerated(options)), context).map(c -> ModelTranslator.fromGenerated(c.getValue())),
             pollingContext -> {
                 Mono<AssetConversion> response = impl.getRemoteRenderings().getConversionWithResponseAsync(accountId, conversionId, context).map(c -> ModelTranslator.fromGenerated(c.getValue()));
@@ -480,20 +482,15 @@ public final class RemoteRenderingAsyncClient {
         private static <T, Y> T fromGeneratedGeneric(Y value) {
             if (value == null) {
                 return null;
-            }
-            else if (value instanceof com.azure.mixedreality.remoterendering.implementation.models.Conversion) {
+            } else if (value instanceof com.azure.mixedreality.remoterendering.implementation.models.Conversion) {
                 return (T) fromGenerated((com.azure.mixedreality.remoterendering.implementation.models.Conversion) value);
-            }
-            else if (value instanceof SessionProperties) {
+            } else if (value instanceof SessionProperties) {
                 return (T) fromGenerated((SessionProperties) value);
-            }
-            else if (value instanceof com.azure.mixedreality.remoterendering.implementation.models.Error) {
+            } else if (value instanceof com.azure.mixedreality.remoterendering.implementation.models.Error) {
                 return (T) fromGenerated((com.azure.mixedreality.remoterendering.implementation.models.Error) value);
-            }
-            else if (value instanceof com.azure.mixedreality.remoterendering.implementation.models.ConversionSettings) {
+            } else if (value instanceof com.azure.mixedreality.remoterendering.implementation.models.ConversionSettings) {
                 return (T) fromGenerated((com.azure.mixedreality.remoterendering.implementation.models.ConversionSettings) value);
-            }
-            else {
+            } else {
                 // throw?
                 return null;
             }

@@ -294,14 +294,17 @@ public class TaskGroup
      * @return an observable that emits the result of tasks in the order they finishes.
      */
     public Flux<Indexable> invokeDependencyAsync(final InvocationContext context) {
+        final String postRunErrorMessage
+            = "Resource configuration which includes 'after create/update' operation is not supported.";
+
         context.put(TaskGroup.InvocationContext.KEY_SKIP_TASKS, Collections.singleton(this.key()));
         return Flux.defer(() -> {
             if (proxyTaskGroupWrapper.isActive()) {
-                return Flux.error(new IllegalStateException("postRunDependent is not supported"));
+                return Flux.error(new IllegalStateException(postRunErrorMessage));
             } else {
                 Set<String> processedKeys = runBeforeGroupInvoke(null);
                 if (proxyTaskGroupWrapper.isActive()) {
-                    return Flux.error(new IllegalStateException("postRunDependent is not supported"));
+                    return Flux.error(new IllegalStateException(postRunErrorMessage));
                 } else {
                     return invokeInternAsync(context, false, null);
                 }
@@ -607,6 +610,7 @@ public class TaskGroup
      * of the TaskGroup.
      */
     public static final class InvocationContext {
+        /** Key of the {@link Set} of tasks to skip. */
         public static final String KEY_SKIP_TASKS = "SKIP_TASKS";
 
         private final Map<String, Object> properties;

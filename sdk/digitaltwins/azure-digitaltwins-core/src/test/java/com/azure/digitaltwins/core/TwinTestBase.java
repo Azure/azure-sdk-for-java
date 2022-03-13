@@ -1,8 +1,11 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.digitaltwins.core;
 
+import com.azure.core.http.HttpClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
-import com.azure.core.http.HttpClient;
 
 /**
  * This abstract test class defines all the tests that both the sync and async twin test classes need to implement.

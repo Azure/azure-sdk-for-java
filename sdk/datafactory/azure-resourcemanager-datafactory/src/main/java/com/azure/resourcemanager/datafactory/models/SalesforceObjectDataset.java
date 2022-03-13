@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.SalesforceObjectDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,38 +17,23 @@ import java.util.Map;
 /** The Salesforce object dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SalesforceObject")
-@JsonFlatten
 @Fluent
-public class SalesforceObjectDataset extends Dataset {
+public final class SalesforceObjectDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SalesforceObjectDataset.class);
 
     /*
-     * The Salesforce object API name. Type: string (or Expression with
-     * resultType string).
+     * Salesforce object dataset properties.
      */
-    @JsonProperty(value = "typeProperties.objectApiName")
-    private Object objectApiName;
+    @JsonProperty(value = "typeProperties")
+    private SalesforceObjectDatasetTypeProperties innerTypeProperties;
 
     /**
-     * Get the objectApiName property: The Salesforce object API name. Type: string (or Expression with resultType
-     * string).
+     * Get the innerTypeProperties property: Salesforce object dataset properties.
      *
-     * @return the objectApiName value.
+     * @return the innerTypeProperties value.
      */
-    public Object objectApiName() {
-        return this.objectApiName;
-    }
-
-    /**
-     * Set the objectApiName property: The Salesforce object API name. Type: string (or Expression with resultType
-     * string).
-     *
-     * @param objectApiName the objectApiName value to set.
-     * @return the SalesforceObjectDataset object itself.
-     */
-    public SalesforceObjectDataset withObjectApiName(Object objectApiName) {
-        this.objectApiName = objectApiName;
-        return this;
+    private SalesforceObjectDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -101,6 +86,31 @@ public class SalesforceObjectDataset extends Dataset {
     }
 
     /**
+     * Get the objectApiName property: The Salesforce object API name. Type: string (or Expression with resultType
+     * string).
+     *
+     * @return the objectApiName value.
+     */
+    public Object objectApiName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().objectApiName();
+    }
+
+    /**
+     * Set the objectApiName property: The Salesforce object API name. Type: string (or Expression with resultType
+     * string).
+     *
+     * @param objectApiName the objectApiName value to set.
+     * @return the SalesforceObjectDataset object itself.
+     */
+    public SalesforceObjectDataset withObjectApiName(Object objectApiName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SalesforceObjectDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withObjectApiName(objectApiName);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -108,5 +118,8 @@ public class SalesforceObjectDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
+        if (innerTypeProperties() != null) {
+            innerTypeProperties().validate();
+        }
     }
 }

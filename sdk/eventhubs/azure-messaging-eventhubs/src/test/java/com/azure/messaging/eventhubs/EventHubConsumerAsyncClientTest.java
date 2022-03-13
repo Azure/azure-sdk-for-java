@@ -152,7 +152,7 @@ class EventHubConsumerAsyncClientTest {
     @AfterEach
     void teardown() throws Exception {
         testScheduler.dispose();
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
         Mockito.clearInvocations(amqpReceiveLink, connection, tokenCredential);
         consumer.close();
 
@@ -221,6 +221,7 @@ class EventHubConsumerAsyncClientTest {
     void receivesNumberOfEvents() {
         // Arrange
         final int numberOfEvents = 10;
+        when(amqpReceiveLink.getCredits()).thenReturn(numberOfEvents);
 
         // Act & Assert
         StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).take(numberOfEvents))

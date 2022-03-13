@@ -5,11 +5,16 @@
 package com.azure.resourcemanager.netapp.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.netapp.fluent.models.MountTargetProperties;
 import com.azure.resourcemanager.netapp.fluent.models.VolumeInner;
 import com.azure.resourcemanager.netapp.models.AuthorizeRequest;
+import com.azure.resourcemanager.netapp.models.AvsDataStore;
 import com.azure.resourcemanager.netapp.models.BreakReplicationRequest;
-import com.azure.resourcemanager.netapp.models.MountTargetProperties;
+import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
+import com.azure.resourcemanager.netapp.models.NetworkFeatures;
+import com.azure.resourcemanager.netapp.models.PlacementKeyValuePairs;
 import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
 import com.azure.resourcemanager.netapp.models.SecurityStyle;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
@@ -20,6 +25,7 @@ import com.azure.resourcemanager.netapp.models.VolumePatchPropertiesExportPolicy
 import com.azure.resourcemanager.netapp.models.VolumePropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesExportPolicy;
 import com.azure.resourcemanager.netapp.models.VolumeRevert;
+import com.azure.resourcemanager.netapp.models.VolumeStorageToNetworkProximity;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -52,6 +58,14 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String fileSystemId() {
@@ -101,6 +115,18 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public String subnetId() {
         return this.innerModel().subnetId();
+    }
+
+    public NetworkFeatures networkFeatures() {
+        return this.innerModel().networkFeatures();
+    }
+
+    public String networkSiblingSetId() {
+        return this.innerModel().networkSiblingSetId();
+    }
+
+    public VolumeStorageToNetworkProximity storageToNetworkProximity() {
+        return this.innerModel().storageToNetworkProximity();
     }
 
     public List<MountTargetProperties> mountTargets() {
@@ -166,6 +192,63 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public String unixPermissions() {
         return this.innerModel().unixPermissions();
+    }
+
+    public Integer cloneProgress() {
+        return this.innerModel().cloneProgress();
+    }
+
+    public AvsDataStore avsDataStore() {
+        return this.innerModel().avsDataStore();
+    }
+
+    public Boolean isDefaultQuotaEnabled() {
+        return this.innerModel().isDefaultQuotaEnabled();
+    }
+
+    public Long defaultUserQuotaInKiBs() {
+        return this.innerModel().defaultUserQuotaInKiBs();
+    }
+
+    public Long defaultGroupQuotaInKiBs() {
+        return this.innerModel().defaultGroupQuotaInKiBs();
+    }
+
+    public Long maximumNumberOfFiles() {
+        return this.innerModel().maximumNumberOfFiles();
+    }
+
+    public String volumeGroupName() {
+        return this.innerModel().volumeGroupName();
+    }
+
+    public String capacityPoolResourceId() {
+        return this.innerModel().capacityPoolResourceId();
+    }
+
+    public String proximityPlacementGroup() {
+        return this.innerModel().proximityPlacementGroup();
+    }
+
+    public String t2Network() {
+        return this.innerModel().t2Network();
+    }
+
+    public String volumeSpecName() {
+        return this.innerModel().volumeSpecName();
+    }
+
+    public List<PlacementKeyValuePairs> placementRules() {
+        List<PlacementKeyValuePairs> inner = this.innerModel().placementRules();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public EnableSubvolumes enableSubvolumes() {
+        return this.innerModel().enableSubvolumes();
     }
 
     public Region region() {
@@ -404,6 +487,11 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this;
     }
 
+    public VolumeImpl withNetworkFeatures(NetworkFeatures networkFeatures) {
+        this.innerModel().withNetworkFeatures(networkFeatures);
+        return this;
+    }
+
     public VolumeImpl withVolumeType(String volumeType) {
         this.innerModel().withVolumeType(volumeType);
         return this;
@@ -475,7 +563,72 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     }
 
     public VolumeImpl withUnixPermissions(String unixPermissions) {
-        this.innerModel().withUnixPermissions(unixPermissions);
+        if (isInCreateMode()) {
+            this.innerModel().withUnixPermissions(unixPermissions);
+            return this;
+        } else {
+            this.updateBody.withUnixPermissions(unixPermissions);
+            return this;
+        }
+    }
+
+    public VolumeImpl withAvsDataStore(AvsDataStore avsDataStore) {
+        this.innerModel().withAvsDataStore(avsDataStore);
+        return this;
+    }
+
+    public VolumeImpl withIsDefaultQuotaEnabled(Boolean isDefaultQuotaEnabled) {
+        if (isInCreateMode()) {
+            this.innerModel().withIsDefaultQuotaEnabled(isDefaultQuotaEnabled);
+            return this;
+        } else {
+            this.updateBody.withIsDefaultQuotaEnabled(isDefaultQuotaEnabled);
+            return this;
+        }
+    }
+
+    public VolumeImpl withDefaultUserQuotaInKiBs(Long defaultUserQuotaInKiBs) {
+        if (isInCreateMode()) {
+            this.innerModel().withDefaultUserQuotaInKiBs(defaultUserQuotaInKiBs);
+            return this;
+        } else {
+            this.updateBody.withDefaultUserQuotaInKiBs(defaultUserQuotaInKiBs);
+            return this;
+        }
+    }
+
+    public VolumeImpl withDefaultGroupQuotaInKiBs(Long defaultGroupQuotaInKiBs) {
+        if (isInCreateMode()) {
+            this.innerModel().withDefaultGroupQuotaInKiBs(defaultGroupQuotaInKiBs);
+            return this;
+        } else {
+            this.updateBody.withDefaultGroupQuotaInKiBs(defaultGroupQuotaInKiBs);
+            return this;
+        }
+    }
+
+    public VolumeImpl withCapacityPoolResourceId(String capacityPoolResourceId) {
+        this.innerModel().withCapacityPoolResourceId(capacityPoolResourceId);
+        return this;
+    }
+
+    public VolumeImpl withProximityPlacementGroup(String proximityPlacementGroup) {
+        this.innerModel().withProximityPlacementGroup(proximityPlacementGroup);
+        return this;
+    }
+
+    public VolumeImpl withVolumeSpecName(String volumeSpecName) {
+        this.innerModel().withVolumeSpecName(volumeSpecName);
+        return this;
+    }
+
+    public VolumeImpl withPlacementRules(List<PlacementKeyValuePairs> placementRules) {
+        this.innerModel().withPlacementRules(placementRules);
+        return this;
+    }
+
+    public VolumeImpl withEnableSubvolumes(EnableSubvolumes enableSubvolumes) {
+        this.innerModel().withEnableSubvolumes(enableSubvolumes);
         return this;
     }
 

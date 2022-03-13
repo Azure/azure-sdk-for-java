@@ -24,6 +24,16 @@ public final class EventSubscriptionUpdateParameters {
     private EventSubscriptionDestination destination;
 
     /*
+     * Information about the destination where events have to be delivered for
+     * the event subscription.
+     * Uses the managed identity setup on the parent resource (topic / domain)
+     * to acquire the authentication tokens being used during delivery /
+     * dead-lettering.
+     */
+    @JsonProperty(value = "deliveryWithResourceIdentity")
+    private DeliveryWithResourceIdentity deliveryWithResourceIdentity;
+
+    /*
      * Information about the filter for the event subscription.
      */
     @JsonProperty(value = "filter")
@@ -60,6 +70,17 @@ public final class EventSubscriptionUpdateParameters {
     @JsonProperty(value = "deadLetterDestination")
     private DeadLetterDestination deadLetterDestination;
 
+    /*
+     * The dead letter destination of the event subscription. Any event that
+     * cannot be delivered to its' destination is sent to the dead letter
+     * destination.
+     * Uses the managed identity setup on the parent resource (topic / domain)
+     * to acquire the authentication tokens being used during delivery /
+     * dead-lettering.
+     */
+    @JsonProperty(value = "deadLetterWithResourceIdentity")
+    private DeadLetterWithResourceIdentity deadLetterWithResourceIdentity;
+
     /**
      * Get the destination property: Information about the destination where events have to be delivered for the event
      * subscription.
@@ -79,6 +100,31 @@ public final class EventSubscriptionUpdateParameters {
      */
     public EventSubscriptionUpdateParameters withDestination(EventSubscriptionDestination destination) {
         this.destination = destination;
+        return this;
+    }
+
+    /**
+     * Get the deliveryWithResourceIdentity property: Information about the destination where events have to be
+     * delivered for the event subscription. Uses the managed identity setup on the parent resource (topic / domain) to
+     * acquire the authentication tokens being used during delivery / dead-lettering.
+     *
+     * @return the deliveryWithResourceIdentity value.
+     */
+    public DeliveryWithResourceIdentity deliveryWithResourceIdentity() {
+        return this.deliveryWithResourceIdentity;
+    }
+
+    /**
+     * Set the deliveryWithResourceIdentity property: Information about the destination where events have to be
+     * delivered for the event subscription. Uses the managed identity setup on the parent resource (topic / domain) to
+     * acquire the authentication tokens being used during delivery / dead-lettering.
+     *
+     * @param deliveryWithResourceIdentity the deliveryWithResourceIdentity value to set.
+     * @return the EventSubscriptionUpdateParameters object itself.
+     */
+    public EventSubscriptionUpdateParameters withDeliveryWithResourceIdentity(
+        DeliveryWithResourceIdentity deliveryWithResourceIdentity) {
+        this.deliveryWithResourceIdentity = deliveryWithResourceIdentity;
         return this;
     }
 
@@ -205,6 +251,33 @@ public final class EventSubscriptionUpdateParameters {
     }
 
     /**
+     * Get the deadLetterWithResourceIdentity property: The dead letter destination of the event subscription. Any event
+     * that cannot be delivered to its' destination is sent to the dead letter destination. Uses the managed identity
+     * setup on the parent resource (topic / domain) to acquire the authentication tokens being used during delivery /
+     * dead-lettering.
+     *
+     * @return the deadLetterWithResourceIdentity value.
+     */
+    public DeadLetterWithResourceIdentity deadLetterWithResourceIdentity() {
+        return this.deadLetterWithResourceIdentity;
+    }
+
+    /**
+     * Set the deadLetterWithResourceIdentity property: The dead letter destination of the event subscription. Any event
+     * that cannot be delivered to its' destination is sent to the dead letter destination. Uses the managed identity
+     * setup on the parent resource (topic / domain) to acquire the authentication tokens being used during delivery /
+     * dead-lettering.
+     *
+     * @param deadLetterWithResourceIdentity the deadLetterWithResourceIdentity value to set.
+     * @return the EventSubscriptionUpdateParameters object itself.
+     */
+    public EventSubscriptionUpdateParameters withDeadLetterWithResourceIdentity(
+        DeadLetterWithResourceIdentity deadLetterWithResourceIdentity) {
+        this.deadLetterWithResourceIdentity = deadLetterWithResourceIdentity;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -212,6 +285,9 @@ public final class EventSubscriptionUpdateParameters {
     public void validate() {
         if (destination() != null) {
             destination().validate();
+        }
+        if (deliveryWithResourceIdentity() != null) {
+            deliveryWithResourceIdentity().validate();
         }
         if (filter() != null) {
             filter().validate();
@@ -221,6 +297,9 @@ public final class EventSubscriptionUpdateParameters {
         }
         if (deadLetterDestination() != null) {
             deadLetterDestination().validate();
+        }
+        if (deadLetterWithResourceIdentity() != null) {
+            deadLetterWithResourceIdentity().validate();
         }
     }
 }

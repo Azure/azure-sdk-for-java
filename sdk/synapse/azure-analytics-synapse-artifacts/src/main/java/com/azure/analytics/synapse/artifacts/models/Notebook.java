@@ -61,6 +61,13 @@ public final class Notebook {
     private List<NotebookCell> cells;
 
     /*
+     * The folder that this notebook is in. If not specified, this notebook
+     * will appear at the root level.
+     */
+    @JsonProperty(value = "folder")
+    private NotebookFolder folder;
+
+    /*
      * Notebook.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
@@ -206,6 +213,28 @@ public final class Notebook {
      */
     public Notebook setCells(List<NotebookCell> cells) {
         this.cells = cells;
+        return this;
+    }
+
+    /**
+     * Get the folder property: The folder that this notebook is in. If not specified, this notebook will appear at the
+     * root level.
+     *
+     * @return the folder value.
+     */
+    public NotebookFolder getFolder() {
+        return this.folder;
+    }
+
+    /**
+     * Set the folder property: The folder that this notebook is in. If not specified, this notebook will appear at the
+     * root level.
+     *
+     * @param folder the folder value to set.
+     * @return the Notebook object itself.
+     */
+    public Notebook setFolder(NotebookFolder folder) {
+        this.folder = folder;
         return this;
     }
 

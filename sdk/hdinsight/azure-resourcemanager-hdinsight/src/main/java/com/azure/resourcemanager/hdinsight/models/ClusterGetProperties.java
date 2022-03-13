@@ -6,6 +6,7 @@ package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.hdinsight.fluent.models.PrivateEndpointConnectionInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -146,6 +147,18 @@ public final class ClusterGetProperties {
      */
     @JsonProperty(value = "computeIsolationProperties")
     private ComputeIsolationProperties computeIsolationProperties;
+
+    /*
+     * The private link configurations.
+     */
+    @JsonProperty(value = "privateLinkConfigurations")
+    private List<PrivateLinkConfiguration> privateLinkConfigurations;
+
+    /*
+     * The list of private endpoint connections.
+     */
+    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /**
      * Get the clusterVersion property: The version of the cluster.
@@ -589,6 +602,36 @@ public final class ClusterGetProperties {
     }
 
     /**
+     * Get the privateLinkConfigurations property: The private link configurations.
+     *
+     * @return the privateLinkConfigurations value.
+     */
+    public List<PrivateLinkConfiguration> privateLinkConfigurations() {
+        return this.privateLinkConfigurations;
+    }
+
+    /**
+     * Set the privateLinkConfigurations property: The private link configurations.
+     *
+     * @param privateLinkConfigurations the privateLinkConfigurations value to set.
+     * @return the ClusterGetProperties object itself.
+     */
+    public ClusterGetProperties withPrivateLinkConfigurations(
+        List<PrivateLinkConfiguration> privateLinkConfigurations) {
+        this.privateLinkConfigurations = privateLinkConfigurations;
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: The list of private endpoint connections.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -637,6 +680,12 @@ public final class ClusterGetProperties {
         }
         if (computeIsolationProperties() != null) {
             computeIsolationProperties().validate();
+        }
+        if (privateLinkConfigurations() != null) {
+            privateLinkConfigurations().forEach(e -> e.validate());
+        }
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
         }
     }
 }

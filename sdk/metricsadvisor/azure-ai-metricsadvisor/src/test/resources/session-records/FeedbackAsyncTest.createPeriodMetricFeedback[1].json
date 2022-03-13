@@ -3,41 +3,41 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.4 (1.8.0_221; Mac OS X; 10.16)",
-      "x-ms-client-request-id" : "aa51c9e6-1584-4f9e-b9b0-78101f3900ca",
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "144dabae-8653-4994-8f32-12ce546d39ce",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "563a069f-1267-4dab-af5b-fb324445db75",
+      "x-request-id" : "76c7fac1-63e9-4e60-a387-1e609b7c3395",
       "content-length" : "0",
-      "x-envoy-upstream-service-time" : "212",
+      "x-envoy-upstream-service-time" : "508",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "563a069f-1267-4dab-af5b-fb324445db75",
+      "apim-request-id" : "76c7fac1-63e9-4e60-a387-1e609b7c3395",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Mon, 24 May 2021 21:32:17 GMT",
-      "Location" : "https://js-metrics-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/79845962-8b2a-4e49-92c0-30ae3450d6be"
+      "Date" : "Thu, 28 Oct 2021 22:36:53 GMT",
+      "Location" : "https://ga-metrics-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/e0dc3f81-3159-4d87-9f93-6090dfa14ec8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/79845962-8b2a-4e49-92c0-30ae3450d6be",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/e0dc3f81-3159-4d87-9f93-6090dfa14ec8",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.4 (1.8.0_221; Mac OS X; 10.16)",
-      "x-ms-client-request-id" : "9b838860-2be1-4de2-927d-2fb44277a19d"
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1bb54550-51c3-4adf-8bf7-15972e05214f"
     },
     "Response" : {
-      "x-request-id" : "c43c257a-f907-494a-a405-304aeab9c78a",
-      "content-length" : "360",
-      "x-envoy-upstream-service-time" : "37",
+      "x-request-id" : "afb608b3-d320-4a0e-a807-dada3d76266a",
+      "content-length" : "367",
+      "x-envoy-upstream-service-time" : "65",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "c43c257a-f907-494a-a405-304aeab9c78a",
+      "apim-request-id" : "afb608b3-d320-4a0e-a807-dada3d76266a",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"feedbackId\":\"79845962-8b2a-4e49-92c0-30ae3450d6be\",\"createdTime\":\"2021-05-24T21:32:17.859Z\",\"userPrincipal\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimensionFilter\":{\"dimension\":{\"city\":\"Miami\",\"category\":\"Health & Personal Care\"}},\"feedbackType\":\"Period\",\"value\":{\"periodType\":\"AutoDetect\",\"periodValue\":3}}",
-      "Date" : "Mon, 24 May 2021 21:32:17 GMT",
+      "Body" : "{\"feedbackId\":\"e0dc3f81-3159-4d87-9f93-6090dfa14ec8\",\"createdTime\":\"2021-10-28T22:36:53.651Z\",\"userPrincipal\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimensionFilter\":{\"dimension\":{\"region\":\"Miami\",\"category\":\"Shoes Handbags & Sunglasses\"}},\"feedbackType\":\"Period\",\"value\":{\"periodType\":\"AutoDetect\",\"periodValue\":3}}",
+      "Date" : "Thu, 28 Oct 2021 22:36:53 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

@@ -5,17 +5,17 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.cosmos.fluent.models.DatabaseAccountUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** Parameters for patching Azure Cosmos DB database account properties. */
-@JsonFlatten
 @Fluent
-public class DatabaseAccountUpdateParameters {
+public final class DatabaseAccountUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseAccountUpdateParameters.class);
 
     /*
@@ -29,6 +29,7 @@ public class DatabaseAccountUpdateParameters {
      * and "MongoDB".
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
@@ -44,153 +45,10 @@ public class DatabaseAccountUpdateParameters {
     private ManagedServiceIdentity identity;
 
     /*
-     * The consistency policy for the Cosmos DB account.
+     * Properties to update Azure Cosmos DB database accounts.
      */
-    @JsonProperty(value = "properties.consistencyPolicy")
-    private ConsistencyPolicy consistencyPolicy;
-
-    /*
-     * An array that contains the georeplication locations enabled for the
-     * Cosmos DB account.
-     */
-    @JsonProperty(value = "properties.locations")
-    private List<Location> locations;
-
-    /*
-     * List of IpRules.
-     */
-    @JsonProperty(value = "properties.ipRules")
-    private List<IpAddressOrRange> ipRules;
-
-    /*
-     * Flag to indicate whether to enable/disable Virtual Network ACL rules.
-     */
-    @JsonProperty(value = "properties.isVirtualNetworkFilterEnabled")
-    private Boolean isVirtualNetworkFilterEnabled;
-
-    /*
-     * Enables automatic failover of the write region in the rare event that
-     * the region is unavailable due to an outage. Automatic failover will
-     * result in a new write region for the account and is chosen based on the
-     * failover priorities configured for the account.
-     */
-    @JsonProperty(value = "properties.enableAutomaticFailover")
-    private Boolean enableAutomaticFailover;
-
-    /*
-     * List of Cosmos DB capabilities for the account
-     */
-    @JsonProperty(value = "properties.capabilities")
-    private List<Capability> capabilities;
-
-    /*
-     * List of Virtual Network ACL rules configured for the Cosmos DB account.
-     */
-    @JsonProperty(value = "properties.virtualNetworkRules")
-    private List<VirtualNetworkRule> virtualNetworkRules;
-
-    /*
-     * Enables the account to write in multiple locations
-     */
-    @JsonProperty(value = "properties.enableMultipleWriteLocations")
-    private Boolean enableMultipleWriteLocations;
-
-    /*
-     * Enables the cassandra connector on the Cosmos DB C* account
-     */
-    @JsonProperty(value = "properties.enableCassandraConnector")
-    private Boolean enableCassandraConnector;
-
-    /*
-     * The cassandra connector offer type for the Cosmos DB database C*
-     * account.
-     */
-    @JsonProperty(value = "properties.connectorOffer")
-    private ConnectorOffer connectorOffer;
-
-    /*
-     * Disable write operations on metadata resources (databases, containers,
-     * throughput) via account keys
-     */
-    @JsonProperty(value = "properties.disableKeyBasedMetadataWriteAccess")
-    private Boolean disableKeyBasedMetadataWriteAccess;
-
-    /*
-     * The URI of the key vault
-     */
-    @JsonProperty(value = "properties.keyVaultKeyUri")
-    private String keyVaultKeyUri;
-
-    /*
-     * The default identity for accessing key vault used in features like
-     * customer managed keys. The default identity needs to be explicitly set
-     * by the users. It can be "FirstPartyIdentity", "SystemAssignedIdentity"
-     * and more.
-     */
-    @JsonProperty(value = "properties.defaultIdentity")
-    private String defaultIdentity;
-
-    /*
-     * Whether requests from Public Network are allowed
-     */
-    @JsonProperty(value = "properties.publicNetworkAccess")
-    private PublicNetworkAccess publicNetworkAccess;
-
-    /*
-     * Flag to indicate whether Free Tier is enabled.
-     */
-    @JsonProperty(value = "properties.enableFreeTier")
-    private Boolean enableFreeTier;
-
-    /*
-     * API specific properties. Currently, supported only for MongoDB API.
-     */
-    @JsonProperty(value = "properties.apiProperties")
-    private ApiProperties apiProperties;
-
-    /*
-     * Flag to indicate whether to enable storage analytics.
-     */
-    @JsonProperty(value = "properties.enableAnalyticalStorage")
-    private Boolean enableAnalyticalStorage;
-
-    /*
-     * Analytical storage specific properties.
-     */
-    @JsonProperty(value = "properties.analyticalStorageConfiguration")
-    private AnalyticalStorageConfiguration analyticalStorageConfiguration;
-
-    /*
-     * The object representing the policy for taking backups on an account.
-     */
-    @JsonProperty(value = "properties.backupPolicy")
-    private BackupPolicy backupPolicy;
-
-    /*
-     * The CORS policy for the Cosmos DB database account.
-     */
-    @JsonProperty(value = "properties.cors")
-    private List<CorsPolicy> cors;
-
-    /*
-     * Indicates what services are allowed to bypass firewall checks.
-     */
-    @JsonProperty(value = "properties.networkAclBypass")
-    private NetworkAclBypass networkAclBypass;
-
-    /*
-     * An array that contains the Resource Ids for Network Acl Bypass for the
-     * Cosmos DB account.
-     */
-    @JsonProperty(value = "properties.networkAclBypassResourceIds")
-    private List<String> networkAclBypassResourceIds;
-
-    /*
-     * Opt-out of local authentication and ensure only MSI and AAD can be used
-     * exclusively for authentication.
-     */
-    @JsonProperty(value = "properties.disableLocalAuth")
-    private Boolean disableLocalAuth;
+    @JsonProperty(value = "properties")
+    private DatabaseAccountUpdateProperties innerProperties;
 
     /**
      * Get the tags property: Tags are a list of key-value pairs that describe the resource. These tags can be used in
@@ -261,12 +119,21 @@ public class DatabaseAccountUpdateParameters {
     }
 
     /**
+     * Get the innerProperties property: Properties to update Azure Cosmos DB database accounts.
+     *
+     * @return the innerProperties value.
+     */
+    private DatabaseAccountUpdateProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the consistencyPolicy property: The consistency policy for the Cosmos DB account.
      *
      * @return the consistencyPolicy value.
      */
     public ConsistencyPolicy consistencyPolicy() {
-        return this.consistencyPolicy;
+        return this.innerProperties() == null ? null : this.innerProperties().consistencyPolicy();
     }
 
     /**
@@ -276,7 +143,10 @@ public class DatabaseAccountUpdateParameters {
      * @return the DatabaseAccountUpdateParameters object itself.
      */
     public DatabaseAccountUpdateParameters withConsistencyPolicy(ConsistencyPolicy consistencyPolicy) {
-        this.consistencyPolicy = consistencyPolicy;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withConsistencyPolicy(consistencyPolicy);
         return this;
     }
 
@@ -287,7 +157,7 @@ public class DatabaseAccountUpdateParameters {
      * @return the locations value.
      */
     public List<Location> locations() {
-        return this.locations;
+        return this.innerProperties() == null ? null : this.innerProperties().locations();
     }
 
     /**
@@ -298,7 +168,10 @@ public class DatabaseAccountUpdateParameters {
      * @return the DatabaseAccountUpdateParameters object itself.
      */
     public DatabaseAccountUpdateParameters withLocations(List<Location> locations) {
-        this.locations = locations;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withLocations(locations);
         return this;
     }
 
@@ -308,7 +181,7 @@ public class DatabaseAccountUpdateParameters {
      * @return the ipRules value.
      */
     public List<IpAddressOrRange> ipRules() {
-        return this.ipRules;
+        return this.innerProperties() == null ? null : this.innerProperties().ipRules();
     }
 
     /**
@@ -318,7 +191,10 @@ public class DatabaseAccountUpdateParameters {
      * @return the DatabaseAccountUpdateParameters object itself.
      */
     public DatabaseAccountUpdateParameters withIpRules(List<IpAddressOrRange> ipRules) {
-        this.ipRules = ipRules;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withIpRules(ipRules);
         return this;
     }
 
@@ -329,7 +205,7 @@ public class DatabaseAccountUpdateParameters {
      * @return the isVirtualNetworkFilterEnabled value.
      */
     public Boolean isVirtualNetworkFilterEnabled() {
-        return this.isVirtualNetworkFilterEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().isVirtualNetworkFilterEnabled();
     }
 
     /**
@@ -340,7 +216,10 @@ public class DatabaseAccountUpdateParameters {
      * @return the DatabaseAccountUpdateParameters object itself.
      */
     public DatabaseAccountUpdateParameters withIsVirtualNetworkFilterEnabled(Boolean isVirtualNetworkFilterEnabled) {
-        this.isVirtualNetworkFilterEnabled = isVirtualNetworkFilterEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withIsVirtualNetworkFilterEnabled(isVirtualNetworkFilterEnabled);
         return this;
     }
 
@@ -352,7 +231,7 @@ public class DatabaseAccountUpdateParameters {
      * @return the enableAutomaticFailover value.
      */
     public Boolean enableAutomaticFailover() {
-        return this.enableAutomaticFailover;
+        return this.innerProperties() == null ? null : this.innerProperties().enableAutomaticFailover();
     }
 
     /**
@@ -364,7 +243,10 @@ public class DatabaseAccountUpdateParameters {
      * @return the DatabaseAccountUpdateParameters object itself.
      */
     public DatabaseAccountUpdateParameters withEnableAutomaticFailover(Boolean enableAutomaticFailover) {
-        this.enableAutomaticFailover = enableAutomaticFailover;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withEnableAutomaticFailover(enableAutomaticFailover);
         return this;
     }
 
@@ -374,7 +256,7 @@ public class DatabaseAccountUpdateParameters {
      * @return the capabilities value.
      */
     public List<Capability> capabilities() {
-        return this.capabilities;
+        return this.innerProperties() == null ? null : this.innerProperties().capabilities();
     }
 
     /**
@@ -384,7 +266,10 @@ public class DatabaseAccountUpdateParameters {
      * @return the DatabaseAccountUpdateParameters object itself.
      */
     public DatabaseAccountUpdateParameters withCapabilities(List<Capability> capabilities) {
-        this.capabilities = capabilities;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withCapabilities(capabilities);
         return this;
     }
 
@@ -394,7 +279,7 @@ public class DatabaseAccountUpdateParameters {
      * @return the virtualNetworkRules value.
      */
     public List<VirtualNetworkRule> virtualNetworkRules() {
-        return this.virtualNetworkRules;
+        return this.innerProperties() == null ? null : this.innerProperties().virtualNetworkRules();
     }
 
     /**
@@ -404,7 +289,10 @@ public class DatabaseAccountUpdateParameters {
      * @return the DatabaseAccountUpdateParameters object itself.
      */
     public DatabaseAccountUpdateParameters withVirtualNetworkRules(List<VirtualNetworkRule> virtualNetworkRules) {
-        this.virtualNetworkRules = virtualNetworkRules;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withVirtualNetworkRules(virtualNetworkRules);
         return this;
     }
 
@@ -414,7 +302,7 @@ public class DatabaseAccountUpdateParameters {
      * @return the enableMultipleWriteLocations value.
      */
     public Boolean enableMultipleWriteLocations() {
-        return this.enableMultipleWriteLocations;
+        return this.innerProperties() == null ? null : this.innerProperties().enableMultipleWriteLocations();
     }
 
     /**
@@ -424,7 +312,10 @@ public class DatabaseAccountUpdateParameters {
      * @return the DatabaseAccountUpdateParameters object itself.
      */
     public DatabaseAccountUpdateParameters withEnableMultipleWriteLocations(Boolean enableMultipleWriteLocations) {
-        this.enableMultipleWriteLocations = enableMultipleWriteLocations;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withEnableMultipleWriteLocations(enableMultipleWriteLocations);
         return this;
     }
 
@@ -434,7 +325,7 @@ public class DatabaseAccountUpdateParameters {
      * @return the enableCassandraConnector value.
      */
     public Boolean enableCassandraConnector() {
-        return this.enableCassandraConnector;
+        return this.innerProperties() == null ? null : this.innerProperties().enableCassandraConnector();
     }
 
     /**
@@ -444,7 +335,10 @@ public class DatabaseAccountUpdateParameters {
      * @return the DatabaseAccountUpdateParameters object itself.
      */
     public DatabaseAccountUpdateParameters withEnableCassandraConnector(Boolean enableCassandraConnector) {
-        this.enableCassandraConnector = enableCassandraConnector;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withEnableCassandraConnector(enableCassandraConnector);
         return this;
     }
 
@@ -454,7 +348,7 @@ public class DatabaseAccountUpdateParameters {
      * @return the connectorOffer value.
      */
     public ConnectorOffer connectorOffer() {
-        return this.connectorOffer;
+        return this.innerProperties() == null ? null : this.innerProperties().connectorOffer();
     }
 
     /**
@@ -464,7 +358,10 @@ public class DatabaseAccountUpdateParameters {
      * @return the DatabaseAccountUpdateParameters object itself.
      */
     public DatabaseAccountUpdateParameters withConnectorOffer(ConnectorOffer connectorOffer) {
-        this.connectorOffer = connectorOffer;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withConnectorOffer(connectorOffer);
         return this;
     }
 
@@ -475,7 +372,7 @@ public class DatabaseAccountUpdateParameters {
      * @return the disableKeyBasedMetadataWriteAccess value.
      */
     public Boolean disableKeyBasedMetadataWriteAccess() {
-        return this.disableKeyBasedMetadataWriteAccess;
+        return this.innerProperties() == null ? null : this.innerProperties().disableKeyBasedMetadataWriteAccess();
     }
 
     /**
@@ -487,7 +384,10 @@ public class DatabaseAccountUpdateParameters {
      */
     public DatabaseAccountUpdateParameters withDisableKeyBasedMetadataWriteAccess(
         Boolean disableKeyBasedMetadataWriteAccess) {
-        this.disableKeyBasedMetadataWriteAccess = disableKeyBasedMetadataWriteAccess;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withDisableKeyBasedMetadataWriteAccess(disableKeyBasedMetadataWriteAccess);
         return this;
     }
 
@@ -497,7 +397,7 @@ public class DatabaseAccountUpdateParameters {
      * @return the keyVaultKeyUri value.
      */
     public String keyVaultKeyUri() {
-        return this.keyVaultKeyUri;
+        return this.innerProperties() == null ? null : this.innerProperties().keyVaultKeyUri();
     }
 
     /**
@@ -507,7 +407,10 @@ public class DatabaseAccountUpdateParameters {
      * @return the DatabaseAccountUpdateParameters object itself.
      */
     public DatabaseAccountUpdateParameters withKeyVaultKeyUri(String keyVaultKeyUri) {
-        this.keyVaultKeyUri = keyVaultKeyUri;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withKeyVaultKeyUri(keyVaultKeyUri);
         return this;
     }
 
@@ -519,7 +422,7 @@ public class DatabaseAccountUpdateParameters {
      * @return the defaultIdentity value.
      */
     public String defaultIdentity() {
-        return this.defaultIdentity;
+        return this.innerProperties() == null ? null : this.innerProperties().defaultIdentity();
     }
 
     /**
@@ -531,7 +434,10 @@ public class DatabaseAccountUpdateParameters {
      * @return the DatabaseAccountUpdateParameters object itself.
      */
     public DatabaseAccountUpdateParameters withDefaultIdentity(String defaultIdentity) {
-        this.defaultIdentity = defaultIdentity;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withDefaultIdentity(defaultIdentity);
         return this;
     }
 
@@ -541,7 +447,7 @@ public class DatabaseAccountUpdateParameters {
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
-        return this.publicNetworkAccess;
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
     }
 
     /**
@@ -551,7 +457,10 @@ public class DatabaseAccountUpdateParameters {
      * @return the DatabaseAccountUpdateParameters object itself.
      */
     public DatabaseAccountUpdateParameters withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
-        this.publicNetworkAccess = publicNetworkAccess;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 
@@ -561,7 +470,7 @@ public class DatabaseAccountUpdateParameters {
      * @return the enableFreeTier value.
      */
     public Boolean enableFreeTier() {
-        return this.enableFreeTier;
+        return this.innerProperties() == null ? null : this.innerProperties().enableFreeTier();
     }
 
     /**
@@ -571,7 +480,10 @@ public class DatabaseAccountUpdateParameters {
      * @return the DatabaseAccountUpdateParameters object itself.
      */
     public DatabaseAccountUpdateParameters withEnableFreeTier(Boolean enableFreeTier) {
-        this.enableFreeTier = enableFreeTier;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withEnableFreeTier(enableFreeTier);
         return this;
     }
 
@@ -581,7 +493,7 @@ public class DatabaseAccountUpdateParameters {
      * @return the apiProperties value.
      */
     public ApiProperties apiProperties() {
-        return this.apiProperties;
+        return this.innerProperties() == null ? null : this.innerProperties().apiProperties();
     }
 
     /**
@@ -591,7 +503,10 @@ public class DatabaseAccountUpdateParameters {
      * @return the DatabaseAccountUpdateParameters object itself.
      */
     public DatabaseAccountUpdateParameters withApiProperties(ApiProperties apiProperties) {
-        this.apiProperties = apiProperties;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withApiProperties(apiProperties);
         return this;
     }
 
@@ -601,7 +516,7 @@ public class DatabaseAccountUpdateParameters {
      * @return the enableAnalyticalStorage value.
      */
     public Boolean enableAnalyticalStorage() {
-        return this.enableAnalyticalStorage;
+        return this.innerProperties() == null ? null : this.innerProperties().enableAnalyticalStorage();
     }
 
     /**
@@ -611,7 +526,10 @@ public class DatabaseAccountUpdateParameters {
      * @return the DatabaseAccountUpdateParameters object itself.
      */
     public DatabaseAccountUpdateParameters withEnableAnalyticalStorage(Boolean enableAnalyticalStorage) {
-        this.enableAnalyticalStorage = enableAnalyticalStorage;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withEnableAnalyticalStorage(enableAnalyticalStorage);
         return this;
     }
 
@@ -621,7 +539,7 @@ public class DatabaseAccountUpdateParameters {
      * @return the analyticalStorageConfiguration value.
      */
     public AnalyticalStorageConfiguration analyticalStorageConfiguration() {
-        return this.analyticalStorageConfiguration;
+        return this.innerProperties() == null ? null : this.innerProperties().analyticalStorageConfiguration();
     }
 
     /**
@@ -632,7 +550,10 @@ public class DatabaseAccountUpdateParameters {
      */
     public DatabaseAccountUpdateParameters withAnalyticalStorageConfiguration(
         AnalyticalStorageConfiguration analyticalStorageConfiguration) {
-        this.analyticalStorageConfiguration = analyticalStorageConfiguration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withAnalyticalStorageConfiguration(analyticalStorageConfiguration);
         return this;
     }
 
@@ -642,7 +563,7 @@ public class DatabaseAccountUpdateParameters {
      * @return the backupPolicy value.
      */
     public BackupPolicy backupPolicy() {
-        return this.backupPolicy;
+        return this.innerProperties() == null ? null : this.innerProperties().backupPolicy();
     }
 
     /**
@@ -652,7 +573,10 @@ public class DatabaseAccountUpdateParameters {
      * @return the DatabaseAccountUpdateParameters object itself.
      */
     public DatabaseAccountUpdateParameters withBackupPolicy(BackupPolicy backupPolicy) {
-        this.backupPolicy = backupPolicy;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withBackupPolicy(backupPolicy);
         return this;
     }
 
@@ -662,7 +586,7 @@ public class DatabaseAccountUpdateParameters {
      * @return the cors value.
      */
     public List<CorsPolicy> cors() {
-        return this.cors;
+        return this.innerProperties() == null ? null : this.innerProperties().cors();
     }
 
     /**
@@ -672,7 +596,10 @@ public class DatabaseAccountUpdateParameters {
      * @return the DatabaseAccountUpdateParameters object itself.
      */
     public DatabaseAccountUpdateParameters withCors(List<CorsPolicy> cors) {
-        this.cors = cors;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withCors(cors);
         return this;
     }
 
@@ -682,7 +609,7 @@ public class DatabaseAccountUpdateParameters {
      * @return the networkAclBypass value.
      */
     public NetworkAclBypass networkAclBypass() {
-        return this.networkAclBypass;
+        return this.innerProperties() == null ? null : this.innerProperties().networkAclBypass();
     }
 
     /**
@@ -692,7 +619,10 @@ public class DatabaseAccountUpdateParameters {
      * @return the DatabaseAccountUpdateParameters object itself.
      */
     public DatabaseAccountUpdateParameters withNetworkAclBypass(NetworkAclBypass networkAclBypass) {
-        this.networkAclBypass = networkAclBypass;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withNetworkAclBypass(networkAclBypass);
         return this;
     }
 
@@ -703,7 +633,7 @@ public class DatabaseAccountUpdateParameters {
      * @return the networkAclBypassResourceIds value.
      */
     public List<String> networkAclBypassResourceIds() {
-        return this.networkAclBypassResourceIds;
+        return this.innerProperties() == null ? null : this.innerProperties().networkAclBypassResourceIds();
     }
 
     /**
@@ -714,7 +644,10 @@ public class DatabaseAccountUpdateParameters {
      * @return the DatabaseAccountUpdateParameters object itself.
      */
     public DatabaseAccountUpdateParameters withNetworkAclBypassResourceIds(List<String> networkAclBypassResourceIds) {
-        this.networkAclBypassResourceIds = networkAclBypassResourceIds;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withNetworkAclBypassResourceIds(networkAclBypassResourceIds);
         return this;
     }
 
@@ -725,7 +658,7 @@ public class DatabaseAccountUpdateParameters {
      * @return the disableLocalAuth value.
      */
     public Boolean disableLocalAuth() {
-        return this.disableLocalAuth;
+        return this.innerProperties() == null ? null : this.innerProperties().disableLocalAuth();
     }
 
     /**
@@ -736,7 +669,35 @@ public class DatabaseAccountUpdateParameters {
      * @return the DatabaseAccountUpdateParameters object itself.
      */
     public DatabaseAccountUpdateParameters withDisableLocalAuth(Boolean disableLocalAuth) {
-        this.disableLocalAuth = disableLocalAuth;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withDisableLocalAuth(disableLocalAuth);
+        return this;
+    }
+
+    /**
+     * Get the capacity property: The object that represents all properties related to capacity enforcement on an
+     * account.
+     *
+     * @return the capacity value.
+     */
+    public Capacity capacity() {
+        return this.innerProperties() == null ? null : this.innerProperties().capacity();
+    }
+
+    /**
+     * Set the capacity property: The object that represents all properties related to capacity enforcement on an
+     * account.
+     *
+     * @param capacity the capacity value to set.
+     * @return the DatabaseAccountUpdateParameters object itself.
+     */
+    public DatabaseAccountUpdateParameters withCapacity(Capacity capacity) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withCapacity(capacity);
         return this;
     }
 
@@ -749,32 +710,8 @@ public class DatabaseAccountUpdateParameters {
         if (identity() != null) {
             identity().validate();
         }
-        if (consistencyPolicy() != null) {
-            consistencyPolicy().validate();
-        }
-        if (locations() != null) {
-            locations().forEach(e -> e.validate());
-        }
-        if (ipRules() != null) {
-            ipRules().forEach(e -> e.validate());
-        }
-        if (capabilities() != null) {
-            capabilities().forEach(e -> e.validate());
-        }
-        if (virtualNetworkRules() != null) {
-            virtualNetworkRules().forEach(e -> e.validate());
-        }
-        if (apiProperties() != null) {
-            apiProperties().validate();
-        }
-        if (analyticalStorageConfiguration() != null) {
-            analyticalStorageConfiguration().validate();
-        }
-        if (backupPolicy() != null) {
-            backupPolicy().validate();
-        }
-        if (cors() != null) {
-            cors().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

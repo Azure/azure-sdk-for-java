@@ -56,10 +56,6 @@ public final class SasTokenCredential {
      *
      * <p>The entries in the passed map will be combined into a query string that is used as the SAS token.</p>
      *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.common.credentials.SasTokenCredential.fromQueryParameters#Map}
-     *
      * @param queryParameters URL query parameters
      * @return a SAS token credential if {@code queryParameters} is not {@code null} and has
      * the signature ("sig") query parameter, otherwise returns {@code null}.

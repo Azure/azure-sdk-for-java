@@ -83,34 +83,7 @@ public interface VideoAnalyzers {
     Response<Void> deleteWithResponse(String resourceGroupName, String accountName, Context context);
 
     /**
-     * Synchronizes storage account keys for a storage account associated with the Video Analyzer account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The Video Analyzer account name.
-     * @param parameters The request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void syncStorageKeys(String resourceGroupName, String accountName, SyncStorageKeysInput parameters);
-
-    /**
-     * Synchronizes storage account keys for a storage account associated with the Video Analyzer account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The Video Analyzer account name.
-     * @param parameters The request parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<Void> syncStorageKeysWithResponse(
-        String resourceGroupName, String accountName, SyncStorageKeysInput parameters, Context context);
-
-    /**
-     * Lists the Video Analyzer accounts in the specific subscription.
+     * List all Video Analyzer accounts in the specified subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -119,7 +92,7 @@ public interface VideoAnalyzers {
     VideoAnalyzerCollection listBySubscription();
 
     /**
-     * Lists the Video Analyzer accounts in the specific subscription.
+     * List all Video Analyzer accounts in the specified subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

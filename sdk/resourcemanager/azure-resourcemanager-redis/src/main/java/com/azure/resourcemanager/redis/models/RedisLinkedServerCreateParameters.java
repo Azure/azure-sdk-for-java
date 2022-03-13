@@ -5,34 +5,27 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.redis.fluent.models.RedisLinkedServerCreateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameter required for creating a linked server to redis cache. */
-@JsonFlatten
 @Fluent
-public class RedisLinkedServerCreateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RedisLinkedServerCreateParameters.class);
-
+public final class RedisLinkedServerCreateParameters {
     /*
-     * Fully qualified resourceId of the linked redis cache.
+     * Properties required to create a linked server.
      */
-    @JsonProperty(value = "properties.linkedRedisCacheId", required = true)
-    private String linkedRedisCacheId;
+    @JsonProperty(value = "properties", required = true)
+    private RedisLinkedServerCreateProperties innerProperties = new RedisLinkedServerCreateProperties();
 
-    /*
-     * Location of the linked redis cache.
+    /**
+     * Get the innerProperties property: Properties required to create a linked server.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.linkedRedisCacheLocation", required = true)
-    private String linkedRedisCacheLocation;
-
-    /*
-     * Role of the linked server.
-     */
-    @JsonProperty(value = "properties.serverRole", required = true)
-    private ReplicationRole serverRole;
+    private RedisLinkedServerCreateProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the linkedRedisCacheId property: Fully qualified resourceId of the linked redis cache.
@@ -40,7 +33,7 @@ public class RedisLinkedServerCreateParameters {
      * @return the linkedRedisCacheId value.
      */
     public String linkedRedisCacheId() {
-        return this.linkedRedisCacheId;
+        return this.innerProperties() == null ? null : this.innerProperties().linkedRedisCacheId();
     }
 
     /**
@@ -50,7 +43,10 @@ public class RedisLinkedServerCreateParameters {
      * @return the RedisLinkedServerCreateParameters object itself.
      */
     public RedisLinkedServerCreateParameters withLinkedRedisCacheId(String linkedRedisCacheId) {
-        this.linkedRedisCacheId = linkedRedisCacheId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RedisLinkedServerCreateProperties();
+        }
+        this.innerProperties().withLinkedRedisCacheId(linkedRedisCacheId);
         return this;
     }
 
@@ -60,7 +56,7 @@ public class RedisLinkedServerCreateParameters {
      * @return the linkedRedisCacheLocation value.
      */
     public String linkedRedisCacheLocation() {
-        return this.linkedRedisCacheLocation;
+        return this.innerProperties() == null ? null : this.innerProperties().linkedRedisCacheLocation();
     }
 
     /**
@@ -70,7 +66,10 @@ public class RedisLinkedServerCreateParameters {
      * @return the RedisLinkedServerCreateParameters object itself.
      */
     public RedisLinkedServerCreateParameters withLinkedRedisCacheLocation(String linkedRedisCacheLocation) {
-        this.linkedRedisCacheLocation = linkedRedisCacheLocation;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RedisLinkedServerCreateProperties();
+        }
+        this.innerProperties().withLinkedRedisCacheLocation(linkedRedisCacheLocation);
         return this;
     }
 
@@ -80,7 +79,7 @@ public class RedisLinkedServerCreateParameters {
      * @return the serverRole value.
      */
     public ReplicationRole serverRole() {
-        return this.serverRole;
+        return this.innerProperties() == null ? null : this.innerProperties().serverRole();
     }
 
     /**
@@ -90,7 +89,10 @@ public class RedisLinkedServerCreateParameters {
      * @return the RedisLinkedServerCreateParameters object itself.
      */
     public RedisLinkedServerCreateParameters withServerRole(ReplicationRole serverRole) {
-        this.serverRole = serverRole;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RedisLinkedServerCreateProperties();
+        }
+        this.innerProperties().withServerRole(serverRole);
         return this;
     }
 
@@ -100,24 +102,15 @@ public class RedisLinkedServerCreateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (linkedRedisCacheId() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property linkedRedisCacheId in model RedisLinkedServerCreateParameters"));
-        }
-        if (linkedRedisCacheLocation() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property linkedRedisCacheLocation in model"
-                            + " RedisLinkedServerCreateParameters"));
-        }
-        if (serverRole() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property serverRole in model RedisLinkedServerCreateParameters"));
+                        "Missing required property innerProperties in model RedisLinkedServerCreateParameters"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RedisLinkedServerCreateParameters.class);
 }

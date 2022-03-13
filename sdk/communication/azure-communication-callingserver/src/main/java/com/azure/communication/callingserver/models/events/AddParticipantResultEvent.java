@@ -63,7 +63,7 @@ public final class AddParticipantResultEvent extends CallingServerEventBase {
      *                         communications related to this operation
      * @param status the status value.
      */
-    public AddParticipantResultEvent(ResultInfo resultInfo, String operationContext, OperationStatus status) {
+    AddParticipantResultEvent(ResultInfo resultInfo, String operationContext, OperationStatus status) {
         this.resultInfo = resultInfo;
         this.operationContext = operationContext;
         this.status = status;

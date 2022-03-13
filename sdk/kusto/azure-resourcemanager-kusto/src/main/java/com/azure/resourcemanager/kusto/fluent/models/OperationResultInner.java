@@ -5,17 +5,16 @@
 package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.kusto.models.ProvisioningState;
 import com.azure.resourcemanager.kusto.models.Status;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Operation Result Entity. */
-@JsonFlatten
 @Fluent
-public class OperationResultInner {
+public final class OperationResultInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationResultInner.class);
 
     /*
@@ -55,28 +54,16 @@ public class OperationResultInner {
     private Double percentComplete;
 
     /*
-     * The code of the error.
+     * Properties of the operation results
      */
-    @JsonProperty(value = "error.code")
-    private String code;
+    @JsonProperty(value = "properties")
+    private OperationResultProperties innerProperties;
 
     /*
-     * The error message.
+     * Object that contains the error code and message if the operation failed.
      */
-    @JsonProperty(value = "error.message")
-    private String message;
-
-    /*
-     * The kind of the operation.
-     */
-    @JsonProperty(value = "properties.operationKind")
-    private String operationKind;
-
-    /*
-     * The state of the operation.
-     */
-    @JsonProperty(value = "properties.operationState")
-    private String operationState;
+    @JsonProperty(value = "error")
+    private OperationResultErrorProperties innerError;
 
     /**
      * Get the id property: ID of the resource.
@@ -166,43 +153,21 @@ public class OperationResultInner {
     }
 
     /**
-     * Get the code property: The code of the error.
+     * Get the innerProperties property: Properties of the operation results.
      *
-     * @return the code value.
+     * @return the innerProperties value.
      */
-    public String code() {
-        return this.code;
+    private OperationResultProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Set the code property: The code of the error.
+     * Get the innerError property: Object that contains the error code and message if the operation failed.
      *
-     * @param code the code value to set.
-     * @return the OperationResultInner object itself.
+     * @return the innerError value.
      */
-    public OperationResultInner withCode(String code) {
-        this.code = code;
-        return this;
-    }
-
-    /**
-     * Get the message property: The error message.
-     *
-     * @return the message value.
-     */
-    public String message() {
-        return this.message;
-    }
-
-    /**
-     * Set the message property: The error message.
-     *
-     * @param message the message value to set.
-     * @return the OperationResultInner object itself.
-     */
-    public OperationResultInner withMessage(String message) {
-        this.message = message;
-        return this;
+    private OperationResultErrorProperties innerError() {
+        return this.innerError;
     }
 
     /**
@@ -211,7 +176,7 @@ public class OperationResultInner {
      * @return the operationKind value.
      */
     public String operationKind() {
-        return this.operationKind;
+        return this.innerProperties() == null ? null : this.innerProperties().operationKind();
     }
 
     /**
@@ -221,8 +186,20 @@ public class OperationResultInner {
      * @return the OperationResultInner object itself.
      */
     public OperationResultInner withOperationKind(String operationKind) {
-        this.operationKind = operationKind;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OperationResultProperties();
+        }
+        this.innerProperties().withOperationKind(operationKind);
         return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioned state of the resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -231,7 +208,7 @@ public class OperationResultInner {
      * @return the operationState value.
      */
     public String operationState() {
-        return this.operationState;
+        return this.innerProperties() == null ? null : this.innerProperties().operationState();
     }
 
     /**
@@ -241,7 +218,56 @@ public class OperationResultInner {
      * @return the OperationResultInner object itself.
      */
     public OperationResultInner withOperationState(String operationState) {
-        this.operationState = operationState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OperationResultProperties();
+        }
+        this.innerProperties().withOperationState(operationState);
+        return this;
+    }
+
+    /**
+     * Get the code property: The code of the error.
+     *
+     * @return the code value.
+     */
+    public String code() {
+        return this.innerError() == null ? null : this.innerError().code();
+    }
+
+    /**
+     * Set the code property: The code of the error.
+     *
+     * @param code the code value to set.
+     * @return the OperationResultInner object itself.
+     */
+    public OperationResultInner withCode(String code) {
+        if (this.innerError() == null) {
+            this.innerError = new OperationResultErrorProperties();
+        }
+        this.innerError().withCode(code);
+        return this;
+    }
+
+    /**
+     * Get the message property: The error message.
+     *
+     * @return the message value.
+     */
+    public String message() {
+        return this.innerError() == null ? null : this.innerError().message();
+    }
+
+    /**
+     * Set the message property: The error message.
+     *
+     * @param message the message value to set.
+     * @return the OperationResultInner object itself.
+     */
+    public OperationResultInner withMessage(String message) {
+        if (this.innerError() == null) {
+            this.innerError = new OperationResultErrorProperties();
+        }
+        this.innerError().withMessage(message);
         return this;
     }
 
@@ -251,5 +277,11 @@ public class OperationResultInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+        if (innerError() != null) {
+            innerError().validate();
+        }
     }
 }

@@ -20,6 +20,18 @@ public final class DynamicExecutorAllocation {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
+    /*
+     * The minimum number of executors alloted
+     */
+    @JsonProperty(value = "minExecutors")
+    private Integer minExecutors;
+
+    /*
+     * The maximum number of executors alloted
+     */
+    @JsonProperty(value = "maxExecutors")
+    private Integer maxExecutors;
+
     /**
      * Get the enabled property: Indicates whether Dynamic Executor Allocation is enabled or not.
      *
@@ -37,6 +49,46 @@ public final class DynamicExecutorAllocation {
      */
     public DynamicExecutorAllocation withEnabled(Boolean enabled) {
         this.enabled = enabled;
+        return this;
+    }
+
+    /**
+     * Get the minExecutors property: The minimum number of executors alloted.
+     *
+     * @return the minExecutors value.
+     */
+    public Integer minExecutors() {
+        return this.minExecutors;
+    }
+
+    /**
+     * Set the minExecutors property: The minimum number of executors alloted.
+     *
+     * @param minExecutors the minExecutors value to set.
+     * @return the DynamicExecutorAllocation object itself.
+     */
+    public DynamicExecutorAllocation withMinExecutors(Integer minExecutors) {
+        this.minExecutors = minExecutors;
+        return this;
+    }
+
+    /**
+     * Get the maxExecutors property: The maximum number of executors alloted.
+     *
+     * @return the maxExecutors value.
+     */
+    public Integer maxExecutors() {
+        return this.maxExecutors;
+    }
+
+    /**
+     * Set the maxExecutors property: The maximum number of executors alloted.
+     *
+     * @param maxExecutors the maxExecutors value to set.
+     * @return the DynamicExecutorAllocation object itself.
+     */
+    public DynamicExecutorAllocation withMaxExecutors(Integer maxExecutors) {
+        this.maxExecutors = maxExecutors;
         return this;
     }
 

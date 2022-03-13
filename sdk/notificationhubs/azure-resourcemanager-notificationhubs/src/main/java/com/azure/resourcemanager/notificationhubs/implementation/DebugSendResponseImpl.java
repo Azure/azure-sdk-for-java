@@ -47,6 +47,10 @@ public final class DebugSendResponseImpl implements DebugSendResponse {
         }
     }
 
+    public Sku sku() {
+        return this.innerModel().sku();
+    }
+
     public Float success() {
         return this.innerModel().success();
     }
@@ -57,10 +61,6 @@ public final class DebugSendResponseImpl implements DebugSendResponse {
 
     public Object results() {
         return this.innerModel().results();
-    }
-
-    public Sku sku() {
-        return this.innerModel().sku();
     }
 
     public DebugSendResponseInner innerModel() {

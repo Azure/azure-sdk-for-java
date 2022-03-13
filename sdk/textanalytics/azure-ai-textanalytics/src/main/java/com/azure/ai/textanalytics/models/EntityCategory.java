@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 /**
  * Gets the entity category inferred by the text analytics service's named entity recognition model.
  * The list of available categories is described at
- * See <a href="https://docs.microsoft.com/en-us/azure/cognitive-services/Text-Analytics/named-entity-types">named entity types</a>.
+ * See <a href="https://docs.microsoft.com/azure/cognitive-services/Text-Analytics/named-entity-types">named entity types</a>.
  */
 @Immutable
 public final class EntityCategory extends ExpandableStringEnum<EntityCategory> {

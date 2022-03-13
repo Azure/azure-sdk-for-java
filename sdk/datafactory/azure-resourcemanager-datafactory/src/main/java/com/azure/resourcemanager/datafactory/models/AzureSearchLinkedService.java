@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.AzureSearchLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,92 +17,23 @@ import java.util.Map;
 /** Linked service for Windows Azure Search Service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureSearch")
-@JsonFlatten
 @Fluent
-public class AzureSearchLinkedService extends LinkedService {
+public final class AzureSearchLinkedService extends LinkedService {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureSearchLinkedService.class);
 
     /*
-     * URL for Azure Search service. Type: string (or Expression with
-     * resultType string).
+     * Windows Azure Search Service linked service properties.
      */
-    @JsonProperty(value = "typeProperties.url", required = true)
-    private Object url;
-
-    /*
-     * Admin Key for Azure Search service
-     */
-    @JsonProperty(value = "typeProperties.key")
-    private SecretBase key;
-
-    /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
-    private Object encryptedCredential;
+    @JsonProperty(value = "typeProperties", required = true)
+    private AzureSearchLinkedServiceTypeProperties innerTypeProperties = new AzureSearchLinkedServiceTypeProperties();
 
     /**
-     * Get the url property: URL for Azure Search service. Type: string (or Expression with resultType string).
+     * Get the innerTypeProperties property: Windows Azure Search Service linked service properties.
      *
-     * @return the url value.
+     * @return the innerTypeProperties value.
      */
-    public Object url() {
-        return this.url;
-    }
-
-    /**
-     * Set the url property: URL for Azure Search service. Type: string (or Expression with resultType string).
-     *
-     * @param url the url value to set.
-     * @return the AzureSearchLinkedService object itself.
-     */
-    public AzureSearchLinkedService withUrl(Object url) {
-        this.url = url;
-        return this;
-    }
-
-    /**
-     * Get the key property: Admin Key for Azure Search service.
-     *
-     * @return the key value.
-     */
-    public SecretBase key() {
-        return this.key;
-    }
-
-    /**
-     * Set the key property: Admin Key for Azure Search service.
-     *
-     * @param key the key value to set.
-     * @return the AzureSearchLinkedService object itself.
-     */
-    public AzureSearchLinkedService withKey(SecretBase key) {
-        this.key = key;
-        return this;
-    }
-
-    /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @return the encryptedCredential value.
-     */
-    public Object encryptedCredential() {
-        return this.encryptedCredential;
-    }
-
-    /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @param encryptedCredential the encryptedCredential value to set.
-     * @return the AzureSearchLinkedService object itself.
-     */
-    public AzureSearchLinkedService withEncryptedCredential(Object encryptedCredential) {
-        this.encryptedCredential = encryptedCredential;
-        return this;
+    private AzureSearchLinkedServiceTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -134,6 +65,77 @@ public class AzureSearchLinkedService extends LinkedService {
     }
 
     /**
+     * Get the url property: URL for Azure Search service. Type: string (or Expression with resultType string).
+     *
+     * @return the url value.
+     */
+    public Object url() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().url();
+    }
+
+    /**
+     * Set the url property: URL for Azure Search service. Type: string (or Expression with resultType string).
+     *
+     * @param url the url value to set.
+     * @return the AzureSearchLinkedService object itself.
+     */
+    public AzureSearchLinkedService withUrl(Object url) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureSearchLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUrl(url);
+        return this;
+    }
+
+    /**
+     * Get the key property: Admin Key for Azure Search service.
+     *
+     * @return the key value.
+     */
+    public SecretBase key() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().key();
+    }
+
+    /**
+     * Set the key property: Admin Key for Azure Search service.
+     *
+     * @param key the key value to set.
+     * @return the AzureSearchLinkedService object itself.
+     */
+    public AzureSearchLinkedService withKey(SecretBase key) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureSearchLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withKey(key);
+        return this;
+    }
+
+    /**
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @return the encryptedCredential value.
+     */
+    public Object encryptedCredential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
+    }
+
+    /**
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @param encryptedCredential the encryptedCredential value to set.
+     * @return the AzureSearchLinkedService object itself.
+     */
+    public AzureSearchLinkedService withEncryptedCredential(Object encryptedCredential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureSearchLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEncryptedCredential(encryptedCredential);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -141,13 +143,13 @@ public class AzureSearchLinkedService extends LinkedService {
     @Override
     public void validate() {
         super.validate();
-        if (url() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property url in model AzureSearchLinkedService"));
-        }
-        if (key() != null) {
-            key().validate();
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model AzureSearchLinkedService"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

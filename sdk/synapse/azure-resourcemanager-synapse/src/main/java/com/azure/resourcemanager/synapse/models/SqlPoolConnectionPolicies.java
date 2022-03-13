@@ -35,7 +35,7 @@ public interface SqlPoolConnectionPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool's connection policy, which is used with table auditing.
+     * @return a Sql pool's connection policy, which is used with table auditing along with {@link Response}.
      */
     Response<SqlPoolConnectionPolicy> getWithResponse(
         String resourceGroupName,

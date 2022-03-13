@@ -20,6 +20,14 @@ public final class VirtualNetworkConfig {
     @JsonProperty(value = "subnetId")
     private String subnetId;
 
+    /*
+     * Size of the virtual machine used to build, customize and capture images.
+     * Omit or specify empty string to use the default (Standard_D1_v2 for Gen1
+     * images and Standard_D2ds_v4 for Gen2 images).
+     */
+    @JsonProperty(value = "proxyVmSize")
+    private String proxyVmSize;
+
     /**
      * Get the subnetId property: Resource id of a pre-existing subnet.
      *
@@ -37,6 +45,28 @@ public final class VirtualNetworkConfig {
      */
     public VirtualNetworkConfig withSubnetId(String subnetId) {
         this.subnetId = subnetId;
+        return this;
+    }
+
+    /**
+     * Get the proxyVmSize property: Size of the virtual machine used to build, customize and capture images. Omit or
+     * specify empty string to use the default (Standard_D1_v2 for Gen1 images and Standard_D2ds_v4 for Gen2 images).
+     *
+     * @return the proxyVmSize value.
+     */
+    public String proxyVmSize() {
+        return this.proxyVmSize;
+    }
+
+    /**
+     * Set the proxyVmSize property: Size of the virtual machine used to build, customize and capture images. Omit or
+     * specify empty string to use the default (Standard_D1_v2 for Gen1 images and Standard_D2ds_v4 for Gen2 images).
+     *
+     * @param proxyVmSize the proxyVmSize value to set.
+     * @return the VirtualNetworkConfig object itself.
+     */
+    public VirtualNetworkConfig withProxyVmSize(String proxyVmSize) {
+        this.proxyVmSize = proxyVmSize;
         return this;
     }
 

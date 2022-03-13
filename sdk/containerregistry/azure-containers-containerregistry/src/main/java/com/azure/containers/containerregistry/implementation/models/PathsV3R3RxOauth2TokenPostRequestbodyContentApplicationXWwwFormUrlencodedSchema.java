@@ -34,7 +34,7 @@ public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFo
      * Grant type is expected to be refresh_token
      */
     @JsonProperty(value = "grant_type", required = true)
-    private TokenGrantType grantType;
+    private TokenGrantType grantType = TokenGrantType.REFRESH_TOKEN;
 
     /**
      * Get the service property: Indicates the name of your Azure container registry.

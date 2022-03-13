@@ -1,7 +1,69 @@
 # Release History
 
-## 12.11.0-beta.1 (Unreleased)
+## 12.12.0-beta.4 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 12.11.4 (2022-02-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.1` to version `1.25.0`.
+- Upgraded `azure-core-http-netty` from `1.11.6` to version `1.11.7`.
+- Upgraded `azure-storage-blob` from `12.14.3` to version `12.14.4`.
+
+## 12.12.0-beta.3 (2022-02-09)
+
+### Features Added
+- Added support for 2021-04-10 service version.
+
+## 12.11.3 (2022-01-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.22.0` to version `1.24.1`.
+- Upgraded `azure-core-http-netty` from `1.11.2` to version `1.11.6`.
+- Upgraded `azure-storage-blob` from `12.14.2` to version `12.14.3`.
+
+## 12.12.0-beta.2 (2021-12-07)
+
+### Features Added
+- Added support for 2021-02-12 service version.
+
+## 12.11.2 (2021-11-10)
+
+### Other Changes
+#### Dependency Updates
+- Updated to version `12.14.1` of `azure-storage-blob`
+- Updated to version 1.22.0 of `azure-core`
+
+## 12.12.0-beta.1 (2021-11-05)
+
+### Features Added
+- Added support for the 2020-12-06 service version.
+
+## 12.11.1 (2021-10-12)
+
+### Other Changes
+#### Dependency Updates
+- Updated to version `12.14.1` of `azure-storage-blob`
+- Updated to version 1.21.0 of `azure-core`
+
+## 12.11.0 (2021-09-15)
+- GA release
+
+## 12.11.0-beta.1 (2021-07-28)
+- Added support for the 2020-10-02 service version.
 
 ## 12.10.0 (2021-06-09)
 - GA release

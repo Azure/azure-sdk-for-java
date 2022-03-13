@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.ServerKeyType;
@@ -13,9 +12,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The server encryption protector. */
-@JsonFlatten
 @Fluent
-public class EncryptionProtectorInner extends ProxyResource {
+public final class EncryptionProtectorInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionProtectorInner.class);
 
     /*
@@ -32,34 +30,10 @@ public class EncryptionProtectorInner extends ProxyResource {
     private String location;
 
     /*
-     * Subregion of the encryption protector.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.subregion", access = JsonProperty.Access.WRITE_ONLY)
-    private String subregion;
-
-    /*
-     * The name of the server key.
-     */
-    @JsonProperty(value = "properties.serverKeyName")
-    private String serverKeyName;
-
-    /*
-     * The encryption protector type like 'ServiceManaged', 'AzureKeyVault'.
-     */
-    @JsonProperty(value = "properties.serverKeyType")
-    private ServerKeyType serverKeyType;
-
-    /*
-     * The URI of the server key.
-     */
-    @JsonProperty(value = "properties.uri", access = JsonProperty.Access.WRITE_ONLY)
-    private String uri;
-
-    /*
-     * Thumbprint of the server key.
-     */
-    @JsonProperty(value = "properties.thumbprint", access = JsonProperty.Access.WRITE_ONLY)
-    private String thumbprint;
+    @JsonProperty(value = "properties")
+    private EncryptionProtectorProperties innerProperties;
 
     /**
      * Get the kind property: Kind of encryption protector. This is metadata used for the Azure portal experience.
@@ -80,12 +54,21 @@ public class EncryptionProtectorInner extends ProxyResource {
     }
 
     /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
+     */
+    private EncryptionProtectorProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the subregion property: Subregion of the encryption protector.
      *
      * @return the subregion value.
      */
     public String subregion() {
-        return this.subregion;
+        return this.innerProperties() == null ? null : this.innerProperties().subregion();
     }
 
     /**
@@ -94,7 +77,7 @@ public class EncryptionProtectorInner extends ProxyResource {
      * @return the serverKeyName value.
      */
     public String serverKeyName() {
-        return this.serverKeyName;
+        return this.innerProperties() == null ? null : this.innerProperties().serverKeyName();
     }
 
     /**
@@ -104,7 +87,10 @@ public class EncryptionProtectorInner extends ProxyResource {
      * @return the EncryptionProtectorInner object itself.
      */
     public EncryptionProtectorInner withServerKeyName(String serverKeyName) {
-        this.serverKeyName = serverKeyName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EncryptionProtectorProperties();
+        }
+        this.innerProperties().withServerKeyName(serverKeyName);
         return this;
     }
 
@@ -114,7 +100,7 @@ public class EncryptionProtectorInner extends ProxyResource {
      * @return the serverKeyType value.
      */
     public ServerKeyType serverKeyType() {
-        return this.serverKeyType;
+        return this.innerProperties() == null ? null : this.innerProperties().serverKeyType();
     }
 
     /**
@@ -124,7 +110,10 @@ public class EncryptionProtectorInner extends ProxyResource {
      * @return the EncryptionProtectorInner object itself.
      */
     public EncryptionProtectorInner withServerKeyType(ServerKeyType serverKeyType) {
-        this.serverKeyType = serverKeyType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EncryptionProtectorProperties();
+        }
+        this.innerProperties().withServerKeyType(serverKeyType);
         return this;
     }
 
@@ -134,7 +123,7 @@ public class EncryptionProtectorInner extends ProxyResource {
      * @return the uri value.
      */
     public String uri() {
-        return this.uri;
+        return this.innerProperties() == null ? null : this.innerProperties().uri();
     }
 
     /**
@@ -143,7 +132,7 @@ public class EncryptionProtectorInner extends ProxyResource {
      * @return the thumbprint value.
      */
     public String thumbprint() {
-        return this.thumbprint;
+        return this.innerProperties() == null ? null : this.innerProperties().thumbprint();
     }
 
     /**
@@ -152,5 +141,8 @@ public class EncryptionProtectorInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

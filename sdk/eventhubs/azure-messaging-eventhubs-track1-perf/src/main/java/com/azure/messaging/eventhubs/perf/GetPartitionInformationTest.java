@@ -12,19 +12,14 @@ import java.util.concurrent.ExecutionException;
 /**
  * Gets partition information.
  */
-public class GetPartitionInformationTest extends ServiceTest<EventHubsOptions> {
+public class GetPartitionInformationTest extends ServiceTest<EventHubsPartitionOptions> {
     /**
      * Creates an instance of performance test.
      *
      * @param options the options configured for the test.
-     * @throws RuntimeException If {@link EventHubsOptions#getPartitionId()} is not set.
      */
-    public GetPartitionInformationTest(EventHubsOptions options) {
+    public GetPartitionInformationTest(EventHubsPartitionOptions options) {
         super(options);
-
-        if (options.getPartitionId() == null) {
-            throw new RuntimeException("options.getPartitionId() cannot be null");
-        }
     }
 
     @Override
@@ -52,10 +47,6 @@ public class GetPartitionInformationTest extends ServiceTest<EventHubsOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        if (options.getPartitionId() == null) {
-            throw new RuntimeException("options.getPartitionId() cannot be null");
-        }
-
         return Mono.fromCompletionStage(clientFuture
             .thenComposeAsync(client -> client.getPartitionRuntimeInformation(options.getPartitionId()))
             .thenAccept(information -> printRuntimeInformation(information)));

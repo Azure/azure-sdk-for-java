@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.PrivateEndpointConnectionForPrivateLinkHubBasic;
@@ -15,50 +14,23 @@ import java.util.List;
 import java.util.Map;
 
 /** A privateLinkHub. */
-@JsonFlatten
 @Fluent
-public class PrivateLinkHubInner extends Resource {
+public final class PrivateLinkHubInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkHubInner.class);
 
     /*
-     * PrivateLinkHub provisioning state
+     * PrivateLinkHub resource properties
      */
-    @JsonProperty(value = "properties.provisioningState")
-    private String provisioningState;
-
-    /*
-     * List of private endpoint connections
-     */
-    @JsonProperty(value = "properties.privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
-    private List<PrivateEndpointConnectionForPrivateLinkHubBasic> privateEndpointConnections;
+    @JsonProperty(value = "properties")
+    private PrivateLinkHubProperties innerProperties;
 
     /**
-     * Get the provisioningState property: PrivateLinkHub provisioning state.
+     * Get the innerProperties property: PrivateLinkHub resource properties.
      *
-     * @return the provisioningState value.
+     * @return the innerProperties value.
      */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState property: PrivateLinkHub provisioning state.
-     *
-     * @param provisioningState the provisioningState value to set.
-     * @return the PrivateLinkHubInner object itself.
-     */
-    public PrivateLinkHubInner withProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
-    }
-
-    /**
-     * Get the privateEndpointConnections property: List of private endpoint connections.
-     *
-     * @return the privateEndpointConnections value.
-     */
-    public List<PrivateEndpointConnectionForPrivateLinkHubBasic> privateEndpointConnections() {
-        return this.privateEndpointConnections;
+    private PrivateLinkHubProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -76,13 +48,45 @@ public class PrivateLinkHubInner extends Resource {
     }
 
     /**
+     * Get the provisioningState property: PrivateLinkHub provisioning state.
+     *
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Set the provisioningState property: PrivateLinkHub provisioning state.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the PrivateLinkHubInner object itself.
+     */
+    public PrivateLinkHubInner withProvisioningState(String provisioningState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateLinkHubProperties();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: List of private endpoint connections.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionForPrivateLinkHubBasic> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (privateEndpointConnections() != null) {
-            privateEndpointConnections().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

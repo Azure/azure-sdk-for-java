@@ -4,15 +4,28 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
 /**
  * The {@link EntityConditionality} model.
  */
 @Immutable
-public enum EntityConditionality {
+public final class EntityConditionality extends ExpandableStringEnum<EntityConditionality> {
     /** Enum value Hypothetical. */
-    HYPOTHETICAL,
+    public static final EntityConditionality HYPOTHETICAL = fromString("Hypothetical");
 
     /** Enum value Conditional. */
-    CONDITIONAL
+    public static final EntityConditionality CONDITIONAL = fromString("Conditional");
+
+    /**
+     * Creates or finds a {@link EntityConditionality} from its string representation.
+     *
+     * @param name The string name to look for.
+     * @return The corresponding {@link EntityConditionality}.
+     */
+    @JsonCreator
+    public static EntityConditionality fromString(String name) {
+        return fromString(name, EntityConditionality.class);
+    }
 }

@@ -5,17 +5,11 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem model. */
 @Fluent
 public final class AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem.class);
-
     /*
      * Whether this version is the default agent pool version.
      */
@@ -23,7 +17,7 @@ public final class AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem {
     private Boolean defaultProperty;
 
     /*
-     * Kubernetes version (major, minor, patch).
+     * The Kubernetes version (major.minor.patch).
      */
     @JsonProperty(value = "kubernetesVersion")
     private String kubernetesVersion;
@@ -55,7 +49,7 @@ public final class AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem {
     }
 
     /**
-     * Get the kubernetesVersion property: Kubernetes version (major, minor, patch).
+     * Get the kubernetesVersion property: The Kubernetes version (major.minor.patch).
      *
      * @return the kubernetesVersion value.
      */
@@ -64,7 +58,7 @@ public final class AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem {
     }
 
     /**
-     * Set the kubernetesVersion property: Kubernetes version (major, minor, patch).
+     * Set the kubernetesVersion property: The Kubernetes version (major.minor.patch).
      *
      * @param kubernetesVersion the kubernetesVersion value to set.
      * @return the AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem object itself.

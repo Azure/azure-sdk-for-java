@@ -4,11 +4,15 @@
 package com.azure.storage.common.policy;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.ExponentialBackoffOptions;
+import com.azure.core.http.policy.FixedDelayOptions;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.util.logging.ClientLogger;
 
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.time.Duration;
+import java.util.Objects;
 
 /**
  * Configuration options for {@link RequestRetryPolicy}.
@@ -233,5 +237,46 @@ public final class RequestRetryOptions {
         }
 
         return result;
+    }
+
+    /**
+     * Creates new {@link RequestRetryOptions} from {@link RetryOptions} and let specify storage specific parameters.
+     *
+     * @param retryOptions The {@link RetryOptions}.
+     * @param tryTimeout Optional. Specified the maximum time allowed before a request is cancelled and
+     * assumed failed, default is {@link Integer#MAX_VALUE}.
+     * @param secondaryHost Optional. Specified a secondary Storage account to retry requests against, default is none.
+     * @return The {@link RequestRetryOptions}
+     * @throws IllegalArgumentException if {@code retryOptions} can't be mapped to {@code RequestRetryOptions}.
+     */
+    public static RequestRetryOptions fromRetryOptions(
+        RetryOptions retryOptions,
+        Duration tryTimeout,
+        String secondaryHost
+    ) {
+        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+        RetryPolicyType policyType;
+        Integer maxTries = null;
+        Duration retryDelay;
+        Duration maxRetryDelay = null;
+        FixedDelayOptions fixedDelayOptions = retryOptions.getFixedDelayOptions();
+        ExponentialBackoffOptions exponentialBackoffOptions = retryOptions.getExponentialBackoffOptions();
+        if (fixedDelayOptions != null) {
+            policyType = RetryPolicyType.FIXED;
+            maxTries = fixedDelayOptions.getMaxRetries() + 1; // maxTries in original + retries
+            retryDelay = fixedDelayOptions.getDelay();
+            maxRetryDelay = fixedDelayOptions.getDelay();
+        } else if (exponentialBackoffOptions != null) {
+            policyType = RetryPolicyType.EXPONENTIAL;
+            if (exponentialBackoffOptions.getMaxRetries() != null) {
+                maxTries = exponentialBackoffOptions.getMaxRetries() + 1; // maxTries in original + retries
+            }
+            retryDelay = exponentialBackoffOptions.getBaseDelay();
+            maxRetryDelay = exponentialBackoffOptions.getMaxDelay();
+        } else {
+            throw new IllegalArgumentException("Unsupported RetryPolicyType");
+        }
+
+        return new RequestRetryOptions(policyType, maxTries, tryTimeout, retryDelay, maxRetryDelay, secondaryHost);
     }
 }

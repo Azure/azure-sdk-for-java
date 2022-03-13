@@ -6,7 +6,7 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.models.DetectorDefinitionInner;
+import com.azure.resourcemanager.appservice.fluent.models.DetectorDefinitionResourceInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -20,7 +20,7 @@ public final class DiagnosticDetectorCollection {
      * Collection of resources.
      */
     @JsonProperty(value = "value", required = true)
-    private List<DetectorDefinitionInner> value;
+    private List<DetectorDefinitionResourceInner> value;
 
     /*
      * Link to next page of resources.
@@ -33,7 +33,7 @@ public final class DiagnosticDetectorCollection {
      *
      * @return the value value.
      */
-    public List<DetectorDefinitionInner> value() {
+    public List<DetectorDefinitionResourceInner> value() {
         return this.value;
     }
 
@@ -43,7 +43,7 @@ public final class DiagnosticDetectorCollection {
      * @param value the value value to set.
      * @return the DiagnosticDetectorCollection object itself.
      */
-    public DiagnosticDetectorCollection withValue(List<DetectorDefinitionInner> value) {
+    public DiagnosticDetectorCollection withValue(List<DetectorDefinitionResourceInner> value) {
         this.value = value;
         return this;
     }

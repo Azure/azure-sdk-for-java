@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.ColumnDataType;
@@ -13,22 +12,24 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A Sql pool column resource. */
-@JsonFlatten
 @Fluent
-public class SqlPoolColumnInner extends ProxyResource {
+public final class SqlPoolColumnInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolColumnInner.class);
 
     /*
-     * The column data type.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.columnType")
-    private ColumnDataType columnType;
+    @JsonProperty(value = "properties")
+    private SqlPoolColumnProperties innerProperties;
 
-    /*
-     * Indicates whether column value is computed or not
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.isComputed", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean isComputed;
+    private SqlPoolColumnProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the columnType property: The column data type.
@@ -36,7 +37,7 @@ public class SqlPoolColumnInner extends ProxyResource {
      * @return the columnType value.
      */
     public ColumnDataType columnType() {
-        return this.columnType;
+        return this.innerProperties() == null ? null : this.innerProperties().columnType();
     }
 
     /**
@@ -46,7 +47,10 @@ public class SqlPoolColumnInner extends ProxyResource {
      * @return the SqlPoolColumnInner object itself.
      */
     public SqlPoolColumnInner withColumnType(ColumnDataType columnType) {
-        this.columnType = columnType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlPoolColumnProperties();
+        }
+        this.innerProperties().withColumnType(columnType);
         return this;
     }
 
@@ -56,7 +60,7 @@ public class SqlPoolColumnInner extends ProxyResource {
      * @return the isComputed value.
      */
     public Boolean isComputed() {
-        return this.isComputed;
+        return this.innerProperties() == null ? null : this.innerProperties().isComputed();
     }
 
     /**
@@ -65,5 +69,8 @@ public class SqlPoolColumnInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

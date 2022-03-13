@@ -117,7 +117,7 @@ public class EventHubProducerClientTest {
 
     @AfterEach
     public void teardown() {
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
         sendLink = null;
         singleMessageCaptor = null;
         messagesCaptor = null;

@@ -3,11 +3,11 @@
 
 package com.azure.cosmos.implementation.patch;
 
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosPatchOperations;
-import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.JsonSerializable;
+import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.models.CosmosPatchOperations;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.util.List;
@@ -35,7 +35,7 @@ public final class PatchUtil {
     private static JsonSerializable cosmosPatchToJsonSerializable(CosmosPatchOperations patchOperations, RequestOptions requestOptions) {
         JsonSerializable jsonSerializable = new JsonSerializable();
         ArrayNode operations = Utils.getSimpleObjectMapper().createArrayNode();
-        List<PatchOperation> patchOperationList = BridgeInternal.getPatchOperationsFromCosmosPatch(patchOperations);
+        List<PatchOperation> patchOperationList = ModelBridgeInternal.getPatchOperationsFromCosmosPatch(patchOperations);
 
         for (PatchOperation patchOperation : patchOperationList) {
 

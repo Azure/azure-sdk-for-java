@@ -5,6 +5,7 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -316,22 +317,30 @@ public final class DeploymentImpl extends
 
     @Override
     public Accepted<Deployment> beginCreate() {
+        return beginCreate(Context.NONE);
+    }
+
+    @Override
+    public Accepted<Deployment> beginCreate(Context context) {
         return AcceptedImpl.newAccepted(logger,
             this.manager().serviceClient().getHttpPipeline(),
             this.manager().serviceClient().getDefaultPollInterval(),
             () -> this.manager().serviceClient().getDeployments()
-                .createOrUpdateWithResponseAsync(resourceGroupName(), name(), deploymentCreateUpdateParameters).block(),
+                .createOrUpdateWithResponseAsync(resourceGroupName(), name(), deploymentCreateUpdateParameters)
+                .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()))
+                .block(),
             inner -> new DeploymentImpl(inner, inner.name(), resourceManager),
             DeploymentExtendedInner.class,
             () -> {
                 if (this.creatableResourceGroup != null) {
-                    this.creatableResourceGroup.create();
+                    this.creatableResourceGroup.create(context);
                 }
             },
             inner -> {
                 setInner(inner);
                 prepareForUpdate(inner);
-            });
+            },
+            context);
     }
 
     @Override

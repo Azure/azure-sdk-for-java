@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.SparkDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,94 +17,23 @@ import java.util.Map;
 /** Spark Server dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SparkObject")
-@JsonFlatten
 @Fluent
-public class SparkObjectDataset extends Dataset {
+public final class SparkObjectDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SparkObjectDataset.class);
 
     /*
-     * This property will be retired. Please consider using schema + table
-     * properties instead.
+     * Properties specific to this dataset type.
      */
-    @JsonProperty(value = "typeProperties.tableName")
-    private Object tableName;
-
-    /*
-     * The table name of the Spark. Type: string (or Expression with resultType
-     * string).
-     */
-    @JsonProperty(value = "typeProperties.table")
-    private Object table;
-
-    /*
-     * The schema name of the Spark. Type: string (or Expression with
-     * resultType string).
-     */
-    @JsonProperty(value = "typeProperties.schema")
-    private Object schemaTypePropertiesSchema;
+    @JsonProperty(value = "typeProperties")
+    private SparkDatasetTypeProperties innerTypeProperties;
 
     /**
-     * Get the tableName property: This property will be retired. Please consider using schema + table properties
-     * instead.
+     * Get the innerTypeProperties property: Properties specific to this dataset type.
      *
-     * @return the tableName value.
+     * @return the innerTypeProperties value.
      */
-    public Object tableName() {
-        return this.tableName;
-    }
-
-    /**
-     * Set the tableName property: This property will be retired. Please consider using schema + table properties
-     * instead.
-     *
-     * @param tableName the tableName value to set.
-     * @return the SparkObjectDataset object itself.
-     */
-    public SparkObjectDataset withTableName(Object tableName) {
-        this.tableName = tableName;
-        return this;
-    }
-
-    /**
-     * Get the table property: The table name of the Spark. Type: string (or Expression with resultType string).
-     *
-     * @return the table value.
-     */
-    public Object table() {
-        return this.table;
-    }
-
-    /**
-     * Set the table property: The table name of the Spark. Type: string (or Expression with resultType string).
-     *
-     * @param table the table value to set.
-     * @return the SparkObjectDataset object itself.
-     */
-    public SparkObjectDataset withTable(Object table) {
-        this.table = table;
-        return this;
-    }
-
-    /**
-     * Get the schemaTypePropertiesSchema property: The schema name of the Spark. Type: string (or Expression with
-     * resultType string).
-     *
-     * @return the schemaTypePropertiesSchema value.
-     */
-    public Object schemaTypePropertiesSchema() {
-        return this.schemaTypePropertiesSchema;
-    }
-
-    /**
-     * Set the schemaTypePropertiesSchema property: The schema name of the Spark. Type: string (or Expression with
-     * resultType string).
-     *
-     * @param schemaTypePropertiesSchema the schemaTypePropertiesSchema value to set.
-     * @return the SparkObjectDataset object itself.
-     */
-    public SparkObjectDataset withSchemaTypePropertiesSchema(Object schemaTypePropertiesSchema) {
-        this.schemaTypePropertiesSchema = schemaTypePropertiesSchema;
-        return this;
+    private SparkDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -157,6 +86,77 @@ public class SparkObjectDataset extends Dataset {
     }
 
     /**
+     * Get the tableName property: This property will be retired. Please consider using schema + table properties
+     * instead.
+     *
+     * @return the tableName value.
+     */
+    public Object tableName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().tableName();
+    }
+
+    /**
+     * Set the tableName property: This property will be retired. Please consider using schema + table properties
+     * instead.
+     *
+     * @param tableName the tableName value to set.
+     * @return the SparkObjectDataset object itself.
+     */
+    public SparkObjectDataset withTableName(Object tableName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SparkDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withTableName(tableName);
+        return this;
+    }
+
+    /**
+     * Get the table property: The table name of the Spark. Type: string (or Expression with resultType string).
+     *
+     * @return the table value.
+     */
+    public Object table() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().table();
+    }
+
+    /**
+     * Set the table property: The table name of the Spark. Type: string (or Expression with resultType string).
+     *
+     * @param table the table value to set.
+     * @return the SparkObjectDataset object itself.
+     */
+    public SparkObjectDataset withTable(Object table) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SparkDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withTable(table);
+        return this;
+    }
+
+    /**
+     * Get the schema property: The schema name of the Spark. Type: string (or Expression with resultType string).
+     *
+     * @return the schema value.
+     */
+    public Object schemaTypePropertiesSchema() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().schema();
+    }
+
+    /**
+     * Set the schema property: The schema name of the Spark. Type: string (or Expression with resultType string).
+     *
+     * @param schema the schema value to set.
+     * @return the SparkObjectDataset object itself.
+     */
+    public SparkObjectDataset withSchemaTypePropertiesSchema(Object schema) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SparkDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withSchema(schema);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -164,5 +164,8 @@ public class SparkObjectDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
+        if (innerTypeProperties() != null) {
+            innerTypeProperties().validate();
+        }
     }
 }

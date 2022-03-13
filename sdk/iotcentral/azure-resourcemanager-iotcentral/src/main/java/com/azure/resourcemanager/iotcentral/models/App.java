@@ -54,6 +54,13 @@ public interface App {
     AppSkuInfo sku();
 
     /**
+     * Gets the identity property: The managed identities for the IoT Central application.
+     *
+     * @return the identity value.
+     */
+    SystemAssignedServiceIdentity identity();
+
+    /**
      * Gets the applicationId property: The ID of the application.
      *
      * @return the applicationId value.
@@ -82,6 +89,13 @@ public interface App {
      * @return the template value.
      */
     String template();
+
+    /**
+     * Gets the state property: The current state of the application.
+     *
+     * @return the state value.
+     */
+    AppState state();
 
     /**
      * Gets the region of the resource.
@@ -161,6 +175,7 @@ public interface App {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
+                DefinitionStages.WithIdentity,
                 DefinitionStages.WithDisplayName,
                 DefinitionStages.WithSubdomain,
                 DefinitionStages.WithTemplate {
@@ -188,6 +203,16 @@ public interface App {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
+        }
+        /** The stage of the App definition allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The managed identities for the IoT Central application..
+             *
+             * @param identity The managed identities for the IoT Central application.
+             * @return the next definition stage.
+             */
+            WithCreate withIdentity(SystemAssignedServiceIdentity identity);
         }
         /** The stage of the App definition allowing to specify displayName. */
         interface WithDisplayName {
@@ -235,9 +260,9 @@ public interface App {
     interface Update
         extends UpdateStages.WithTags,
             UpdateStages.WithSku,
+            UpdateStages.WithIdentity,
             UpdateStages.WithDisplayName,
-            UpdateStages.WithSubdomain,
-            UpdateStages.WithTemplate {
+            UpdateStages.WithSubdomain {
         /**
          * Executes the update request.
          *
@@ -275,6 +300,16 @@ public interface App {
              */
             Update withSku(AppSkuInfo sku);
         }
+        /** The stage of the App update allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The managed identities for the IoT Central application..
+             *
+             * @param identity The managed identities for the IoT Central application.
+             * @return the next definition stage.
+             */
+            Update withIdentity(SystemAssignedServiceIdentity identity);
+        }
         /** The stage of the App update allowing to specify displayName. */
         interface WithDisplayName {
             /**
@@ -294,20 +329,6 @@ public interface App {
              * @return the next definition stage.
              */
             Update withSubdomain(String subdomain);
-        }
-        /** The stage of the App update allowing to specify template. */
-        interface WithTemplate {
-            /**
-             * Specifies the template property: The ID of the application template, which is a blueprint that defines
-             * the characteristics and behaviors of an application. Optional; if not specified, defaults to a blank
-             * blueprint and allows the application to be defined from scratch..
-             *
-             * @param template The ID of the application template, which is a blueprint that defines the characteristics
-             *     and behaviors of an application. Optional; if not specified, defaults to a blank blueprint and allows
-             *     the application to be defined from scratch.
-             * @return the next definition stage.
-             */
-            Update withTemplate(String template);
         }
     }
     /**

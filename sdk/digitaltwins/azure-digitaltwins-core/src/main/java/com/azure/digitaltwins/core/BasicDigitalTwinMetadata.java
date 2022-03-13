@@ -5,12 +5,14 @@ package com.azure.digitaltwins.core;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.digitaltwins.core.models.DigitalTwinsJsonPropertyNames;
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.fasterxml.jackson.annotation.JsonInclude.*;
 
 /**
  * An optional, helper class for deserializing a digital twin.
@@ -18,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.*;
  * Only properties with non-null values are included.
  */
 @Fluent
-@JsonInclude(Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public final class BasicDigitalTwinMetadata {
 
     @JsonProperty(value = DigitalTwinsJsonPropertyNames.METADATA_MODEL, required = true)

@@ -11,6 +11,9 @@ import com.azure.cosmos.util.Beta.SinceVersion;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Builder for partition keys.
+ */
 @Beta(value = SinceVersion.V4_16_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class PartitionKeyBuilder {
     private final List<Object> partitionKeyValues;

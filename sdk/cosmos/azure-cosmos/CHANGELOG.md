@@ -1,7 +1,141 @@
 ## Release History
 
-## 4.17.0-beta.1 (Unreleased)
+### 4.27.0-beta.1 (Unreleased)
 
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+* Fixed an issue in `CosmosPagedIterable` resulting in excessive memory consumption due to unbounded prefetch of pages when converting the `CosmosPagedIterable` into an `Iterator<FeedResponse<T>>`. - See [PR 27237](https://github.com/Azure/azure-sdk-for-java/pull/27237) and [PR 27299](https://github.com/Azure/azure-sdk-for-java/pull/27299)
+* Fixed a `NullPointerException` in `CosmosDiagnostics isDiagnosticsCapturedInPagedFlux` - See [PR 27261](https://github.com/Azure/azure-sdk-for-java/pull/27261)
+
+#### Other Changes
+
+### 4.26.0 (2022-02-11)
+#### Features Added
+* Added support to resume a "multi order by query" from a continuation token - See [PR 26267](https://github.com/Azure/azure-sdk-for-java/pull/26267)
+* Added `RNTBD - open connections` information in `ClientTelemetry`.
+* Added Beta API to set custom `Reactor` scheduler to be used by the `ChangeFeedProcessor` implementation - See [PR 26750](https://github.com/Azure/azure-sdk-for-java/pull/26750)
+* Added support for correlating queries executed via the Cosmos Spark connector with service-telemetry based on the `correlationActivityId` - See [PR 26908](https://github.com/Azure/azure-sdk-for-java/pull/26908)
+
+#### Key Bug Fixes
+* Fixed an issue in `ChangeFeedProcessor` related to `leases` that were found expired - See [PR 26750](https://github.com/Azure/azure-sdk-for-java/pull/26750)
+* Fixed an issue with `QueryPlan` caching double initialization - See [PR 26825](https://github.com/Azure/azure-sdk-for-java/pull/26825)
+
+### 4.26.0-beta.1 (2022-01-25)
+
+#### Features Added
+* Added support to resume a "multi order by query" from a continuation token - See [PR 26267](https://github.com/Azure/azure-sdk-for-java/pull/26267)
+
+### 4.25.0 (2022-01-14)
+#### Key Bug Fixes
+* Fixed `NullPointerException` in bulk mode for deleted/recreated containers.
+* Added missing exception cause in case of `InternalServerException`.
+
+### 4.24.0 (2021-12-21)
+#### Features Added
+* Added implementation for `CosmosAuthorizationTokenResolver`.
+* Scoped session token per partition level for gateway call.
+
+#### Key Bug Fixes
+* Fixed issue causing CosmosException with statusCode 0 to be thrown on connectivity issues for Gateway.
+* Addressed potential race condition in `ChangeFeedProcessor` when check-pointing current state.
+
+### 4.23.0 (2021-12-10)
+#### Features Added
+* Added `setMaxMicroBatchConcurrency` and `getMaxMicroBatchConcurrency` in `CosmosBulkExecutionOptions`.
+
+#### Key Bug Fixes
+* Bulk execution improvement triggering a flush when total payload size exceeds the max payload size limit.
+* Bulk execution improvement shortening the flush interval when the `Flux` of incoming operations signals completion.
+* Fixed metadata cache refresh scenario on collection recreate for gateway mode.
+
+### 4.22.0 (2021-12-03)
+#### Features Added
+* Added Beta API `getContactedRegionNames` in `CosmosDiagnostics`.
+
+#### Key Bug Fixes
+* Fixed `IllegalStateException` for `getFeedRanges` when container recreated with same name.
+* Made Cosmos spans CLIENT which will allow Azure Monitor to show HTTP calls nested under Cosmos spans.
+* Fixed `ConcurrentModificationException` when getting `NotFoundException` with session consistency.
+
+### 4.21.1 (2021-11-13)
+#### Key Bug Fixes
+* Fixed an issue in `ChangeFeedProcessor` where processing stops in some rare cases because of a race condition can occur which prevents work to be promptly assigned to other instances.
+
+### 4.21.0 (2021-11-12)
+#### Features Added
+* GA of `Patch`, `Batch` and `Bulk` API.
+* GA of `ChangeFeedProcessorState` API.
+* Added `networkRequestTimeout` API for `DirectConnectionConfig`.
+
+#### Key Bug Fixes
+* Override the default keep-alive config on linux to keep connections open and detect a broken connection faster.
+
+### 4.20.1 (2021-10-27)
+#### Key Bug Fixes
+* Removed `AfterBurner` module for Java version 16+.
+* Fixed `BadRequestException` issue when using `Distinct` with matched `orderBy` queries via `continuationToken`.
+
+### 4.20.0 (2021-10-14)
+#### Features Added
+* Enabling `queryplan` cache by default.
+
+#### Key Bug Fixes
+* Fixed issue with bulk reads when `contentResponseOnWrite` is not explicitly enabled on the cosmos client.
+
+### 4.19.1 (2021-09-24)
+#### Features Added
+* Added support to config retry count for `openConnectionsAndInitCaches`.
+
+#### Key Bug Fixes
+* Fixed ReadMany Api on partition split.
+* Removed full exception trace from 404 error on open telemetry.
+* Fixed issue with onErrorDropped being called when using concatWith in QuorumReader.
+
+### 4.20.0-beta.1 (2021-09-22)
+#### Features Added
+* Added support to config retry count for `openConnectionsAndInitCaches`.
+
+### 4.19.0 (2021-09-09)
+#### New Features
+* Added support for distinct count queries.
+* Added support for capturing `IndexMetrics` in `CosmosQueryRequestOptions`.
+
+#### Key Bug Fixes
+* Added support to switch off IO thread for response processing.
+* Fixed issue for resuming order by queries from continuation token that includes undefined/null.
+
+### 4.19.0-beta.1 (2021-09-02)
+#### Key Bug Fixes
+* Added support to switch off IO thread for response processing.
+
+### 4.18.0 (2021-08-16)
+> [!IMPORTANT]
+> We strongly recommend our customers to use version 4.18.0 and above.
+#### New Features
+* Integrated cosmos diagnostics with open telemetry tracer.
+
+#### Key Bug Fixes
+* Added reactor netty timeline to query plan calls.
+* Fixed serialization warning on `clientSideRequestDiagnostics`.
+* Fixed an issue when `IdleEndpointTimeout` is set to 0 in `DirectConnectionConfig`.
+* Added retry for `PrematureCloseException`.
+* Fixed an issue where application hangs in bulk executor.
+* Fixed an issue which preventing recovery from 410/0 after split.
+
+### 4.18.0-beta.1 (2021-08-11)
+#### Key Bug Fixes
+* Added `TransportRequestChannelAcquisitionContext` in `CosmosDiagnostics`.
+
+### 4.17.0 (2021-07-08)
+#### New Features
+* Adjust `MicroBatchSize` dynamically based on throttling rate in `BulkExecutor`.
+
+#### Key Bug Fixes
+* Fixed an issue with AAD authentication in `Strong` and `BoundedStaleness` in direct mode.
+* Fixed an issue where `ChangeFeedProcessor` was resuming from zero continuation token for new partitions on partition splits.
 
 ### 4.16.0 (2021-06-11)
 #### Key Bug Fixes
@@ -54,7 +188,7 @@
 * Fixed warning caused because of afterburner module usage in `CosmosDiagnostics`.
 * Query performance improvements.
 
-### 4.13.0 (2021-03-11) 
+### 4.13.0 (2021-03-11)
 > [!IMPORTANT] 
 > This release updates `reactor-core` and `reactor-netty` major versions to `2020.0.4 (Europium)` release train.
 #### New Features
@@ -118,9 +252,7 @@
 #### Key Bug Fixes
 * Improved the 449 retry policy to force back-off on initial retry and start with shorter back-offs.
 
-### 4.7.0 (2020-10-17) 
-> [!IMPORTANT] 
-> We strongly recommend our customers to use version 4.7.0 and above.
+### 4.7.0 (2020-10-17)
 #### New Features
 * Added Beta API for transactional batches.
 

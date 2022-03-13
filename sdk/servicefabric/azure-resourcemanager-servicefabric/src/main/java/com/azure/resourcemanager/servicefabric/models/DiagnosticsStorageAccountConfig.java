@@ -27,6 +27,14 @@ public final class DiagnosticsStorageAccountConfig {
     private String protectedAccountKeyName;
 
     /*
+     * The secondary protected diagnostics storage key name. If one of the
+     * storage account keys is rotated the cluster will fallback to using the
+     * other.
+     */
+    @JsonProperty(value = "protectedAccountKeyName2")
+    private String protectedAccountKeyName2;
+
+    /*
      * The blob endpoint of the azure storage account.
      */
     @JsonProperty(value = "blobEndpoint", required = true)
@@ -81,6 +89,28 @@ public final class DiagnosticsStorageAccountConfig {
      */
     public DiagnosticsStorageAccountConfig withProtectedAccountKeyName(String protectedAccountKeyName) {
         this.protectedAccountKeyName = protectedAccountKeyName;
+        return this;
+    }
+
+    /**
+     * Get the protectedAccountKeyName2 property: The secondary protected diagnostics storage key name. If one of the
+     * storage account keys is rotated the cluster will fallback to using the other.
+     *
+     * @return the protectedAccountKeyName2 value.
+     */
+    public String protectedAccountKeyName2() {
+        return this.protectedAccountKeyName2;
+    }
+
+    /**
+     * Set the protectedAccountKeyName2 property: The secondary protected diagnostics storage key name. If one of the
+     * storage account keys is rotated the cluster will fallback to using the other.
+     *
+     * @param protectedAccountKeyName2 the protectedAccountKeyName2 value to set.
+     * @return the DiagnosticsStorageAccountConfig object itself.
+     */
+    public DiagnosticsStorageAccountConfig withProtectedAccountKeyName2(String protectedAccountKeyName2) {
+        this.protectedAccountKeyName2 = protectedAccountKeyName2;
         return this;
     }
 

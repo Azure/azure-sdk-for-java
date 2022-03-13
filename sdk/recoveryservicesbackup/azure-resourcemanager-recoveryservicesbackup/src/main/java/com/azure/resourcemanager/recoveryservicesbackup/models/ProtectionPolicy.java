@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** Base class for backup policy. Workload-specific backup policies are derived from this class. */
 @JsonTypeInfo(
@@ -37,6 +38,12 @@ public class ProtectionPolicy {
     @JsonProperty(value = "protectedItemsCount")
     private Integer protectedItemsCount;
 
+    /*
+     * ResourceGuard Operation Requests
+     */
+    @JsonProperty(value = "resourceGuardOperationRequests")
+    private List<String> resourceGuardOperationRequests;
+
     /**
      * Get the protectedItemsCount property: Number of items associated with this policy.
      *
@@ -54,6 +61,26 @@ public class ProtectionPolicy {
      */
     public ProtectionPolicy withProtectedItemsCount(Integer protectedItemsCount) {
         this.protectedItemsCount = protectedItemsCount;
+        return this;
+    }
+
+    /**
+     * Get the resourceGuardOperationRequests property: ResourceGuard Operation Requests.
+     *
+     * @return the resourceGuardOperationRequests value.
+     */
+    public List<String> resourceGuardOperationRequests() {
+        return this.resourceGuardOperationRequests;
+    }
+
+    /**
+     * Set the resourceGuardOperationRequests property: ResourceGuard Operation Requests.
+     *
+     * @param resourceGuardOperationRequests the resourceGuardOperationRequests value to set.
+     * @return the ProtectionPolicy object itself.
+     */
+    public ProtectionPolicy withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
+        this.resourceGuardOperationRequests = resourceGuardOperationRequests;
         return this;
     }
 

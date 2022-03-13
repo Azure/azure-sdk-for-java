@@ -4,15 +4,11 @@
 
 package com.azure.resourcemanager.compute.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 
 /** This is the OS disk image. */
-@Immutable
+@Fluent
 public final class GalleryOSDiskImage extends GalleryDiskImage {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryOSDiskImage.class);
-
     /** {@inheritDoc} */
     @Override
     public GalleryOSDiskImage withHostCaching(HostCaching hostCaching) {

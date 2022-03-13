@@ -11,7 +11,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestBase;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableItem;
@@ -28,6 +27,7 @@ import com.azure.data.tables.sas.TableAccountSasService;
 import com.azure.data.tables.sas.TableAccountSasSignatureValues;
 import com.azure.data.tables.sas.TableSasIpRange;
 import com.azure.data.tables.sas.TableSasProtocol;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -41,6 +41,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringJoiner;
 
+import static com.azure.data.tables.TestUtils.assertPropertiesEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -51,8 +52,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tests methods for {@link TableServiceClient}.
  */
-public class TableServiceClientTest extends TestBase {
+public class TableServiceClientTest extends TableServiceClientTestBase {
     private static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
+    private static final boolean IS_COSMOS_TEST = TestUtils.isCosmosTest();
 
     private TableServiceClient serviceClient;
     private HttpPipelinePolicy recordPolicy;
@@ -83,7 +85,7 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    void serviceCreateTable() {
+    public void serviceCreateTable() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
 
@@ -92,7 +94,7 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    void serviceCreateTableWithResponse() {
+    public void serviceCreateTableWithResponse() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
 
@@ -101,7 +103,7 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    void serviceCreateTableFailsIfExists() {
+    public void serviceCreateTableFailsIfExists() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         serviceClient.createTable(tableName);
@@ -111,7 +113,7 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    void serviceCreateTableIfNotExists() {
+    public void serviceCreateTableIfNotExists() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
 
@@ -120,7 +122,7 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    void serviceCreateTableIfNotExistsSucceedsIfExists() {
+    public void serviceCreateTableIfNotExistsSucceedsIfExists() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         serviceClient.createTable(tableName);
@@ -129,9 +131,8 @@ public class TableServiceClientTest extends TestBase {
         assertNull(serviceClient.createTableIfNotExists(tableName));
     }
 
-
     @Test
-    void serviceCreateTableIfNotExistsWithResponse() {
+    public void serviceCreateTableIfNotExistsWithResponse() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         int expectedStatusCode = 204;
@@ -144,7 +145,7 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    void serviceCreateTableIfNotExistsWithResponseSucceedsIfExists() {
+    public void serviceCreateTableIfNotExistsWithResponseSucceedsIfExists() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         int expectedStatusCode = 409;
@@ -158,7 +159,7 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    void serviceDeleteTable() {
+    public void serviceDeleteTable() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
         serviceClient.createTable(tableName);
@@ -168,7 +169,7 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    void serviceDeleteNonExistingTable() {
+    public void serviceDeleteNonExistingTable() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
 
@@ -177,7 +178,7 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    void serviceDeleteTableWithResponse() {
+    public void serviceDeleteTableWithResponse() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         int expectedStatusCode = 204;
@@ -188,7 +189,7 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    void serviceDeleteNonExistingTableWithResponse() {
+    public void serviceDeleteNonExistingTableWithResponse() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         int expectedStatusCode = 404;
@@ -198,7 +199,7 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    void serviceListTables() {
+    public void serviceListTables() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
         final String tableName2 = testResourceNamer.randomName("test", 20);
@@ -213,7 +214,7 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    void serviceListTablesWithFilter() {
+    public void serviceListTablesWithFilter() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
         final String tableName2 = testResourceNamer.randomName("test", 20);
@@ -227,7 +228,7 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    void serviceListTablesWithTop() {
+    public void serviceListTablesWithTop() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
         final String tableName2 = testResourceNamer.randomName("test", 20);
@@ -245,7 +246,7 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    void serviceGetTableClient() {
+    public void serviceGetTableClient() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
         serviceClient.createTable(tableName);
@@ -253,7 +254,7 @@ public class TableServiceClientTest extends TestBase {
         TableClient tableClient = serviceClient.getTableClient(tableName);
 
         // Act & Assert
-        TableClientTest.getEntityWithResponseImpl(tableClient, this.testResourceNamer);
+        TableClientTest.getEntityWithResponseImpl(tableClient, testResourceNamer, "partitionKey", "rowKey");
     }
 
     @Test
@@ -372,6 +373,9 @@ public class TableServiceClientTest extends TestBase {
 
     @Test
     public void setGetProperties() {
+        Assumptions.assumeFalse(IS_COSMOS_TEST,
+            "Setting and getting properties is not supported on Cosmos endpoints.");
+
         TableServiceRetentionPolicy retentionPolicy = new TableServiceRetentionPolicy()
             .setDaysToRetain(5)
             .setEnabled(true);
@@ -401,27 +405,28 @@ public class TableServiceClientTest extends TestBase {
             .setRetentionPolicy(retentionPolicy)
             .setIncludeApis(true);
 
-        TableServiceProperties properties = new TableServiceProperties()
+        TableServiceProperties sentProperties = new TableServiceProperties()
             .setLogging(logging)
             .setCorsRules(corsRules)
             .setMinuteMetrics(minuteMetrics)
             .setHourMetrics(hourMetrics);
 
-        assertDoesNotThrow(() -> serviceClient.setProperties(properties));
+        Response<Void> response = serviceClient.setPropertiesWithResponse(sentProperties, null, null);
+
+        assertNotNull(response.getHeaders().getValue("x-ms-request-id"));
+        assertNotNull(response.getHeaders().getValue("x-ms-version"));
+
+        sleepIfRunningAgainstService(20000);
 
         TableServiceProperties retrievedProperties = serviceClient.getProperties();
 
-        assertNotNull(retrievedProperties);
-        assertNotNull(retrievedProperties.getCorsRules());
-        assertEquals(1, retrievedProperties.getCorsRules().size());
-        assertNotNull(retrievedProperties.getCorsRules().get(0));
-        assertNotNull(retrievedProperties.getHourMetrics());
-        assertNotNull(retrievedProperties.getMinuteMetrics());
-        assertNotNull(retrievedProperties.getLogging());
+        assertPropertiesEquals(sentProperties, retrievedProperties);
     }
 
     @Test
     public void getStatistics() throws URISyntaxException {
+        Assumptions.assumeFalse(IS_COSMOS_TEST, "Getting statistics is not supported on Cosmos endpoints.");
+
         URI primaryEndpoint = new URI(serviceClient.getServiceEndpoint());
         String[] hostParts = primaryEndpoint.getHost().split("\\.");
         StringJoiner secondaryHostJoiner = new StringJoiner(".");

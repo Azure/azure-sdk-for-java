@@ -179,7 +179,7 @@ public final class InputsImpl implements Inputs {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'inputs'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, jobName, inputName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, jobName, inputName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {

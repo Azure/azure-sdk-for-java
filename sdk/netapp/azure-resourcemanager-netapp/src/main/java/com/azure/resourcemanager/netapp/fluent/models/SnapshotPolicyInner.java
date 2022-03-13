@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.DailySchedule;
 import com.azure.resourcemanager.netapp.models.HourlySchedule;
@@ -17,154 +17,53 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Snapshot policy information. */
-@JsonFlatten
 @Fluent
-public class SnapshotPolicyInner extends Resource {
+public final class SnapshotPolicyInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SnapshotPolicyInner.class);
 
     /*
-     * Schedule for hourly snapshots
+     * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "properties.hourlySchedule")
-    private HourlySchedule hourlySchedule;
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    private String etag;
 
     /*
-     * Schedule for daily snapshots
+     * Snapshot policy Properties
      */
-    @JsonProperty(value = "properties.dailySchedule")
-    private DailySchedule dailySchedule;
+    @JsonProperty(value = "properties", required = true)
+    private SnapshotPolicyProperties innerProperties = new SnapshotPolicyProperties();
 
     /*
-     * Schedule for weekly snapshots
+     * The system meta data relating to this resource.
      */
-    @JsonProperty(value = "properties.weeklySchedule")
-    private WeeklySchedule weeklySchedule;
-
-    /*
-     * Schedule for monthly snapshots
-     */
-    @JsonProperty(value = "properties.monthlySchedule")
-    private MonthlySchedule monthlySchedule;
-
-    /*
-     * The property to decide policy is enabled or not
-     */
-    @JsonProperty(value = "properties.enabled")
-    private Boolean enabled;
-
-    /*
-     * Azure lifecycle management
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /**
-     * Get the hourlySchedule property: Schedule for hourly snapshots.
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
      *
-     * @return the hourlySchedule value.
+     * @return the etag value.
      */
-    public HourlySchedule hourlySchedule() {
-        return this.hourlySchedule;
+    public String etag() {
+        return this.etag;
     }
 
     /**
-     * Set the hourlySchedule property: Schedule for hourly snapshots.
+     * Get the innerProperties property: Snapshot policy Properties.
      *
-     * @param hourlySchedule the hourlySchedule value to set.
-     * @return the SnapshotPolicyInner object itself.
+     * @return the innerProperties value.
      */
-    public SnapshotPolicyInner withHourlySchedule(HourlySchedule hourlySchedule) {
-        this.hourlySchedule = hourlySchedule;
-        return this;
+    private SnapshotPolicyProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Get the dailySchedule property: Schedule for daily snapshots.
+     * Get the systemData property: The system meta data relating to this resource.
      *
-     * @return the dailySchedule value.
+     * @return the systemData value.
      */
-    public DailySchedule dailySchedule() {
-        return this.dailySchedule;
-    }
-
-    /**
-     * Set the dailySchedule property: Schedule for daily snapshots.
-     *
-     * @param dailySchedule the dailySchedule value to set.
-     * @return the SnapshotPolicyInner object itself.
-     */
-    public SnapshotPolicyInner withDailySchedule(DailySchedule dailySchedule) {
-        this.dailySchedule = dailySchedule;
-        return this;
-    }
-
-    /**
-     * Get the weeklySchedule property: Schedule for weekly snapshots.
-     *
-     * @return the weeklySchedule value.
-     */
-    public WeeklySchedule weeklySchedule() {
-        return this.weeklySchedule;
-    }
-
-    /**
-     * Set the weeklySchedule property: Schedule for weekly snapshots.
-     *
-     * @param weeklySchedule the weeklySchedule value to set.
-     * @return the SnapshotPolicyInner object itself.
-     */
-    public SnapshotPolicyInner withWeeklySchedule(WeeklySchedule weeklySchedule) {
-        this.weeklySchedule = weeklySchedule;
-        return this;
-    }
-
-    /**
-     * Get the monthlySchedule property: Schedule for monthly snapshots.
-     *
-     * @return the monthlySchedule value.
-     */
-    public MonthlySchedule monthlySchedule() {
-        return this.monthlySchedule;
-    }
-
-    /**
-     * Set the monthlySchedule property: Schedule for monthly snapshots.
-     *
-     * @param monthlySchedule the monthlySchedule value to set.
-     * @return the SnapshotPolicyInner object itself.
-     */
-    public SnapshotPolicyInner withMonthlySchedule(MonthlySchedule monthlySchedule) {
-        this.monthlySchedule = monthlySchedule;
-        return this;
-    }
-
-    /**
-     * Get the enabled property: The property to decide policy is enabled or not.
-     *
-     * @return the enabled value.
-     */
-    public Boolean enabled() {
-        return this.enabled;
-    }
-
-    /**
-     * Set the enabled property: The property to decide policy is enabled or not.
-     *
-     * @param enabled the enabled value to set.
-     * @return the SnapshotPolicyInner object itself.
-     */
-    public SnapshotPolicyInner withEnabled(Boolean enabled) {
-        this.enabled = enabled;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: Azure lifecycle management.
-     *
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.provisioningState;
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /** {@inheritDoc} */
@@ -182,22 +81,142 @@ public class SnapshotPolicyInner extends Resource {
     }
 
     /**
+     * Get the hourlySchedule property: Schedule for hourly snapshots.
+     *
+     * @return the hourlySchedule value.
+     */
+    public HourlySchedule hourlySchedule() {
+        return this.innerProperties() == null ? null : this.innerProperties().hourlySchedule();
+    }
+
+    /**
+     * Set the hourlySchedule property: Schedule for hourly snapshots.
+     *
+     * @param hourlySchedule the hourlySchedule value to set.
+     * @return the SnapshotPolicyInner object itself.
+     */
+    public SnapshotPolicyInner withHourlySchedule(HourlySchedule hourlySchedule) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SnapshotPolicyProperties();
+        }
+        this.innerProperties().withHourlySchedule(hourlySchedule);
+        return this;
+    }
+
+    /**
+     * Get the dailySchedule property: Schedule for daily snapshots.
+     *
+     * @return the dailySchedule value.
+     */
+    public DailySchedule dailySchedule() {
+        return this.innerProperties() == null ? null : this.innerProperties().dailySchedule();
+    }
+
+    /**
+     * Set the dailySchedule property: Schedule for daily snapshots.
+     *
+     * @param dailySchedule the dailySchedule value to set.
+     * @return the SnapshotPolicyInner object itself.
+     */
+    public SnapshotPolicyInner withDailySchedule(DailySchedule dailySchedule) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SnapshotPolicyProperties();
+        }
+        this.innerProperties().withDailySchedule(dailySchedule);
+        return this;
+    }
+
+    /**
+     * Get the weeklySchedule property: Schedule for weekly snapshots.
+     *
+     * @return the weeklySchedule value.
+     */
+    public WeeklySchedule weeklySchedule() {
+        return this.innerProperties() == null ? null : this.innerProperties().weeklySchedule();
+    }
+
+    /**
+     * Set the weeklySchedule property: Schedule for weekly snapshots.
+     *
+     * @param weeklySchedule the weeklySchedule value to set.
+     * @return the SnapshotPolicyInner object itself.
+     */
+    public SnapshotPolicyInner withWeeklySchedule(WeeklySchedule weeklySchedule) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SnapshotPolicyProperties();
+        }
+        this.innerProperties().withWeeklySchedule(weeklySchedule);
+        return this;
+    }
+
+    /**
+     * Get the monthlySchedule property: Schedule for monthly snapshots.
+     *
+     * @return the monthlySchedule value.
+     */
+    public MonthlySchedule monthlySchedule() {
+        return this.innerProperties() == null ? null : this.innerProperties().monthlySchedule();
+    }
+
+    /**
+     * Set the monthlySchedule property: Schedule for monthly snapshots.
+     *
+     * @param monthlySchedule the monthlySchedule value to set.
+     * @return the SnapshotPolicyInner object itself.
+     */
+    public SnapshotPolicyInner withMonthlySchedule(MonthlySchedule monthlySchedule) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SnapshotPolicyProperties();
+        }
+        this.innerProperties().withMonthlySchedule(monthlySchedule);
+        return this;
+    }
+
+    /**
+     * Get the enabled property: The property to decide policy is enabled or not.
+     *
+     * @return the enabled value.
+     */
+    public Boolean enabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().enabled();
+    }
+
+    /**
+     * Set the enabled property: The property to decide policy is enabled or not.
+     *
+     * @param enabled the enabled value to set.
+     * @return the SnapshotPolicyInner object itself.
+     */
+    public SnapshotPolicyInner withEnabled(Boolean enabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SnapshotPolicyProperties();
+        }
+        this.innerProperties().withEnabled(enabled);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: Azure lifecycle management.
+     *
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (hourlySchedule() != null) {
-            hourlySchedule().validate();
-        }
-        if (dailySchedule() != null) {
-            dailySchedule().validate();
-        }
-        if (weeklySchedule() != null) {
-            weeklySchedule().validate();
-        }
-        if (monthlySchedule() != null) {
-            monthlySchedule().validate();
+        if (innerProperties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model SnapshotPolicyInner"));
+        } else {
+            innerProperties().validate();
         }
     }
 }

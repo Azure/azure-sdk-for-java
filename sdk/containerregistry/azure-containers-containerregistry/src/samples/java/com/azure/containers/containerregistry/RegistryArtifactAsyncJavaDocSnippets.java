@@ -5,7 +5,8 @@ package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
-import com.azure.containers.containerregistry.models.ArtifactTagOrderBy;
+import com.azure.containers.containerregistry.models.ArtifactTagOrder;
+import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -20,6 +21,7 @@ public class RegistryArtifactAsyncJavaDocSnippets {
         RegistryArtifactAsync registryArtifactAsync = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
             .credential(credential)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .buildAsyncClient().getArtifact(repository, digest);
         // END: com.azure.containers.containerregistry.RegistryArtifactAsync.instantiation
         return registryArtifactAsync;
@@ -39,6 +41,7 @@ public class RegistryArtifactAsyncJavaDocSnippets {
             .pipeline(pipeline)
             .endpoint(endpoint)
             .credential(credential)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .buildAsyncClient().getArtifact(repository, digest);
         // END: com.azure.containers.containerregistry.RegistryArtifactAsync.pipeline.instantiation
         return registryArtifactAsync;
@@ -130,7 +133,7 @@ public class RegistryArtifactAsyncJavaDocSnippets {
     public void listTagPropertiesWithOptionsCodeSnippet() {
         RegistryArtifactAsync client = getAsyncClient();
         // BEGIN: com.azure.containers.containerregistry.RegistryArtifactAsync.listTagPropertiesWithOptions
-        client.listTagProperties(ArtifactTagOrderBy.LAST_UPDATED_ON_DESCENDING)
+        client.listTagProperties(ArtifactTagOrder.LAST_UPDATED_ON_DESCENDING)
             .byPage(10)
             .subscribe(tagPropertiesPagedResponse -> {
                 tagPropertiesPagedResponse.getValue()

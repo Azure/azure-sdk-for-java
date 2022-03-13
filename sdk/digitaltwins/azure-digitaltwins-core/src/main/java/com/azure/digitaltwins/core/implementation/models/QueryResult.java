@@ -6,6 +6,7 @@ package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /** The results of a query operation and an optional continuation token. */
@@ -71,5 +72,5 @@ public final class QueryResult {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    public void validate() {}
+    public void validate() { }
 }

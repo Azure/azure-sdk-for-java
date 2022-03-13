@@ -3,7 +3,6 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - hotfix/*
       - release/*
@@ -14,7 +13,6 @@ trigger:
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
@@ -37,3 +35,6 @@ extends:
       - name: azure-sdk-parent
         groupId: com.azure
         safeName: azuresdkparent
+      - name: azure-perf-test-parent
+        groupId: com.azure
+        safeName: azureperftestparent

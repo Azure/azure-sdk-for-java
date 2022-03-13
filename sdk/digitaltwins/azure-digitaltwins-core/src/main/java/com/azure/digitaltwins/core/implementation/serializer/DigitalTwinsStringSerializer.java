@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import java.io.IOException;
 
 /**
- * Configures the {@link StdSerializer<String>} with custom behavior needed to work with Digital Twins REST API.
+ * Configures the {@link StdSerializer} with custom behavior needed to work with Digital Twins REST API.
  */
 public final class DigitalTwinsStringSerializer extends StdSerializer<String> {
     private static final long serialVersionUID = 1L;
@@ -41,10 +41,11 @@ public final class DigitalTwinsStringSerializer extends StdSerializer<String> {
      * is not intended to be intercepted as primitive types (since it's a string token). The only types we like to treat as
      * json payloads are actual json objects (for when String is chosen as the generic type for APIs) or the token itself is an escaped
      * json string node.
+     *
      * @param stringToken The string token to evaluate.
      * @return True if the string token should be treated as a json node and not a string representation.
      */
-    private boolean shouldWriteRawValue(String stringToken ) {
+    private boolean shouldWriteRawValue(String stringToken) {
         try {
             JsonNode node = mapper.readTree(stringToken);
             return node.isContainerNode() || node.isTextual();

@@ -3,14 +3,22 @@
 
 package com.azure.cosmos.rx;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.ChangeFeedProcessorBuilder;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
+import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.caches.AsyncCache;
+import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
+import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
+import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
@@ -18,6 +26,7 @@ import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -30,17 +39,18 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
+import java.lang.reflect.Field;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
     private final static int TIMEOUT = 300000;
@@ -61,16 +71,48 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
         String query = "SELECT * FROM r";
 
         Consumer<CosmosAsyncContainer> func = (container) -> {
-            TestObject docDefinition = getDocumentDefinition();
-            container.createItem(docDefinition).block();
 
-            CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions();
-            CosmosPagedFlux<TestObject> queryFlux = container.queryItems(query, requestOptions, TestObject.class);
-            FeedResponseListValidator<TestObject> queryValidator = new FeedResponseListValidator.Builder<TestObject>()
-                .totalSize(1)
-                .numberOfPages(1)
-                .build();
-            validateQuerySuccess(queryFlux.byPage(10), queryValidator);
+            // Create data with new client, so cache can be tested in query workload on recreate
+            CosmosAsyncClient cosmosClient =  getClientBuilder().buildAsyncClient();
+            CosmosAsyncContainer cosmosAsyncContainer = cosmosClient.getDatabase(container.getDatabase().getId()).getContainer(container.getId());
+            TestObject docDefinition = getDocumentDefinition();
+            cosmosAsyncContainer.createItem(docDefinition).block();
+            cosmosClient.close();
+
+            ThroughputResponse throughputResponse = container.readThroughput().block();
+            if(throughputResponse.getProperties().getManualThroughput() > 10000) {
+                CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions();
+                CosmosPagedFlux<TestObject> queryFlux = container.queryItems(query, requestOptions, TestObject.class);
+                FeedResponseListValidator<TestObject> queryValidator = new FeedResponseListValidator.Builder<TestObject>()
+                    .totalSize(1)
+                    .numberOfPages(1)
+                    .build();
+                validateQuerySuccess(queryFlux.byPage(10), queryValidator);
+            } else {
+                // This is after recreate, when we lower the ru from 10100 to 400 , pkrange reduced to 1 from 2
+                // First in-flight query will still fail as the request has been created in query pipeline with wrong pkrange
+                 CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions();
+                CosmosPagedFlux<TestObject> queryFlux = container.queryItems(query, requestOptions, TestObject.class);
+                FailureValidator queryFailureValidator = new FailureValidator.Builder()
+                    .build();
+                validateQueryFailure(queryFlux.byPage(10), queryFailureValidator);
+
+                // Cache should have been refreshed by now and all the subsequent query requests will pass
+                queryFlux = container.queryItems(query, requestOptions, TestObject.class);
+                FeedResponseListValidator<TestObject> queryValidator = new FeedResponseListValidator.Builder<TestObject>()
+                    .totalSize(1)
+                    .numberOfPages(1)
+                    .build();
+                validateQuerySuccess(queryFlux.byPage(10), queryValidator);
+            }
+
+            CosmosContainerProperties containerProperties = container.read().block().getProperties();
+            try {
+                DocumentCollection cachedDocumentCollection = getDocumentCollectionFromCache(BridgeInternal.extractContainerSelfLink(container).substring(1));
+                assertThat(cachedDocumentCollection.getResourceId()).isEqualTo(containerProperties.getResourceId());
+            } catch (Exception e) {
+                fail("error while fetching documentCollection from cache");
+            }
         };
 
         createDeleteContainerWithSameName(func);
@@ -80,8 +122,12 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
     public <T> void readItem() throws Exception {
 
         Consumer<CosmosAsyncContainer> func = (container) -> {
+            // Create data with new client, so cache can be tested in read workload on recreate
+            CosmosAsyncClient cosmosClient =  getClientBuilder().buildAsyncClient();
+            CosmosAsyncContainer cosmosAsyncContainer = cosmosClient.getDatabase(container.getDatabase().getId()).getContainer(container.getId());
             TestObject docDefinition = getDocumentDefinition();
-            container.createItem(docDefinition).block();
+            cosmosAsyncContainer.createItem(docDefinition).block();
+            cosmosClient.close();
 
             Mono<CosmosItemResponse<TestObject>> responseMono = container.readItem(docDefinition.getId(),
                 new PartitionKey(docDefinition.getMypk()),
@@ -94,6 +140,14 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
                     .build();
 
             this.validateItemSuccess(responseMono, validator);
+
+            CosmosContainerProperties containerProperties = container.read().block().getProperties();
+            try {
+                DocumentCollection cachedDocumentCollection = getDocumentCollectionFromCache(BridgeInternal.extractContainerSelfLink(container).substring(1));
+                assertThat(cachedDocumentCollection.getResourceId()).isEqualTo(containerProperties.getResourceId());
+            } catch (Exception e) {
+                fail("error while fetching documentCollection from cache");
+            }
         };
 
         createDeleteContainerWithSameName(func);
@@ -103,8 +157,12 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
     public <T> void deleteItem() throws Exception {
 
         Consumer<CosmosAsyncContainer> func = (container) -> {
+            // Create data with new client, so cache can be tested in delete workload on recreate
+            CosmosAsyncClient cosmosClient =  getClientBuilder().buildAsyncClient();
+            CosmosAsyncContainer cosmosAsyncContainer = cosmosClient.getDatabase(container.getDatabase().getId()).getContainer(container.getId());
             TestObject docDefinition = getDocumentDefinition();
-            container.createItem(docDefinition).block();
+            cosmosAsyncContainer.createItem(docDefinition).block();
+            cosmosClient.close();
 
             Mono<CosmosItemResponse<Object>> deleteObservable = container.deleteItem(
                 docDefinition.getId(),
@@ -116,6 +174,14 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
                     .nullResource()
                     .build();
             this.validateItemSuccess(deleteObservable, validator);
+
+            CosmosContainerProperties containerProperties = container.read().block().getProperties();
+            try {
+                DocumentCollection cachedDocumentCollection = getDocumentCollectionFromCache(BridgeInternal.extractContainerSelfLink(container).substring(1));
+                assertThat(cachedDocumentCollection.getResourceId()).isEqualTo(containerProperties.getResourceId());
+            } catch (Exception e) {
+                fail("error while fetching documentCollection from cache");
+            }
         };
 
         createDeleteContainerWithSameName(func);
@@ -125,8 +191,12 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
     public <T> void upsertItem() throws Exception {
 
         Consumer<CosmosAsyncContainer> func = (container) -> {
+            // Create data with new client, so cache can be tested in upsert workload on recreate
+            CosmosAsyncClient cosmosClient =  getClientBuilder().buildAsyncClient();
+            CosmosAsyncContainer cosmosAsyncContainer = cosmosClient.getDatabase(container.getDatabase().getId()).getContainer(container.getId());
             TestObject docDefinition = getDocumentDefinition();
-            docDefinition = container.createItem(docDefinition).block().getItem();
+            cosmosAsyncContainer.createItem(docDefinition).block();
+            cosmosClient.close();
 
             docDefinition.setProp(UUID.randomUUID().toString());
 
@@ -139,6 +209,43 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
                     .build();
 
             this.validateItemSuccess(readObservable, validator);
+
+            CosmosContainerProperties containerProperties = container.read().block().getProperties();
+            try {
+                DocumentCollection cachedDocumentCollection = getDocumentCollectionFromCache(BridgeInternal.extractContainerSelfLink(container).substring(1));
+                assertThat(cachedDocumentCollection.getResourceId()).isEqualTo(containerProperties.getResourceId());
+            } catch (Exception e) {
+                fail("error while fetching documentCollection from cache");
+            }
+        };
+
+        createDeleteContainerWithSameName(func);
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public <T> void createItem() throws Exception {
+
+        Consumer<CosmosAsyncContainer> func = (container) -> {
+            TestObject docDefinition = getDocumentDefinition();
+            container.createItem(docDefinition);
+
+            Mono<CosmosItemResponse<TestObject>> readObservable = container.createItem(docDefinition);
+
+            // Validate result
+            CosmosItemResponseValidator validator =
+                new CosmosItemResponseValidator.Builder<CosmosItemResponse<TestObject>>()
+                    .withProperty("prop", docDefinition.getProp())
+                    .build();
+
+            this.validateItemSuccess(readObservable, validator);
+
+            CosmosContainerProperties containerProperties = container.read().block().getProperties();
+            try {
+                DocumentCollection cachedDocumentCollection = getDocumentCollectionFromCache(BridgeInternal.extractContainerSelfLink(container).substring(1));
+                assertThat(cachedDocumentCollection.getResourceId()).isEqualTo(containerProperties.getResourceId());
+            } catch (Exception e) {
+                fail("error while fetching documentCollection from cache");
+            }
         };
 
         createDeleteContainerWithSameName(func);
@@ -231,7 +338,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
             // step1: create container
             String testContainerId = UUID.randomUUID().toString();
             CosmosContainerProperties containerProperties = getCollectionDefinition(testContainerId);
-            container = createCollection(this.createdDatabase, containerProperties, new CosmosContainerRequestOptions());
+            container = createCollection(this.createdDatabase, containerProperties, new CosmosContainerRequestOptions(), 10100);
 
             // Step2: execute func
             validateFunc.accept(container);
@@ -241,6 +348,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
             Thread.sleep(COLLECTION_RECREATION_TIME_DELAY);
 
             // step4: recreate the container with same id as step1
+            containerProperties = getCollectionDefinition(testContainerId);
             container = createCollection(this.createdDatabase, containerProperties, new CosmosContainerRequestOptions());
 
             // step5: same as step2.
@@ -347,5 +455,23 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
         public void setProp(String prop) {
             this.prop = prop;
         }
+    }
+
+    private DocumentCollection getDocumentCollectionFromCache(String containerCacheKey) throws Exception {
+        RxClientCollectionCache collectionCache =
+            ReflectionUtils.getClientCollectionCache((RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(client));
+        AsyncCache<String, DocumentCollection> collectionInfoByNameCache =
+            ReflectionUtils.getCollectionInfoByNameCache(collectionCache);
+        ConcurrentHashMap<String, ?> collectionInfoByNameMap = ReflectionUtils.getValueMap(collectionInfoByNameCache);
+
+        Field locationInfoField = LocationCache.class.getDeclaredField("locationInfo");
+        locationInfoField.setAccessible(true);
+        Object locationInfo = collectionInfoByNameMap.get(containerCacheKey);
+
+        Class<?> AsyncLazyClass = Class.forName("com.azure.cosmos.implementation.caches.AsyncLazy");
+        Field valueField = AsyncLazyClass.getDeclaredField("value");
+        valueField.setAccessible(true);
+
+        return (DocumentCollection) valueField.get(locationInfo);
     }
 }

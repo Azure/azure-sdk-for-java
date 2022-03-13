@@ -45,7 +45,7 @@ public final class OfferDetail {
     private String termUnit;
 
     /*
-     * SaaS Offer Status
+     * SaaSOfferStatus SaaS Offer Status
      */
     @JsonProperty(value = "status")
     private SaaSOfferStatus status;
@@ -151,7 +151,7 @@ public final class OfferDetail {
     }
 
     /**
-     * Get the status property: SaaS Offer Status.
+     * Get the status property: SaaSOfferStatus SaaS Offer Status.
      *
      * @return the status value.
      */
@@ -160,7 +160,7 @@ public final class OfferDetail {
     }
 
     /**
-     * Set the status property: SaaS Offer Status.
+     * Set the status property: SaaSOfferStatus SaaS Offer Status.
      *
      * @param status the status value to set.
      * @return the OfferDetail object itself.

@@ -45,6 +45,13 @@ public interface PnsCredentialsResource {
     Map<String, String> tags();
 
     /**
+     * Gets the sku property: The sku of the created namespace.
+     *
+     * @return the sku value.
+     */
+    Sku sku();
+
+    /**
      * Gets the apnsCredential property: The ApnsCredential of the created NotificationHub.
      *
      * @return the apnsCredential value.
@@ -85,13 +92,6 @@ public interface PnsCredentialsResource {
      * @return the baiduCredential value.
      */
     BaiduCredential baiduCredential();
-
-    /**
-     * Gets the sku property: The sku of the created namespace.
-     *
-     * @return the sku value.
-     */
-    Sku sku();
 
     /**
      * Gets the inner com.azure.resourcemanager.notificationhubs.fluent.models.PnsCredentialsResourceInner object.

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,82 +12,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Process Thread Information. */
-@JsonFlatten
 @Fluent
-public class ProcessThreadInfoInner extends ProxyOnlyResource {
+public final class ProcessThreadInfoInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ProcessThreadInfoInner.class);
 
     /*
-     * Site extension ID.
+     * ProcessThreadInfo resource specific properties
      */
-    @JsonProperty(value = "properties.identifier", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer identifier;
+    @JsonProperty(value = "properties")
+    private ProcessThreadInfoProperties innerProperties;
 
-    /*
-     * HRef URI.
+    /**
+     * Get the innerProperties property: ProcessThreadInfo resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.href")
-    private String href;
+    private ProcessThreadInfoProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Process URI.
-     */
-    @JsonProperty(value = "properties.process")
-    private String process;
-
-    /*
-     * Start address.
-     */
-    @JsonProperty(value = "properties.start_address")
-    private String startAddress;
-
-    /*
-     * Current thread priority.
-     */
-    @JsonProperty(value = "properties.current_priority")
-    private Integer currentPriority;
-
-    /*
-     * Thread priority level.
-     */
-    @JsonProperty(value = "properties.priority_level")
-    private String priorityLevel;
-
-    /*
-     * Base priority.
-     */
-    @JsonProperty(value = "properties.base_priority")
-    private Integer basePriority;
-
-    /*
-     * Start time.
-     */
-    @JsonProperty(value = "properties.start_time")
-    private OffsetDateTime startTime;
-
-    /*
-     * Total processor time.
-     */
-    @JsonProperty(value = "properties.total_processor_time")
-    private String totalProcessorTime;
-
-    /*
-     * User processor time.
-     */
-    @JsonProperty(value = "properties.user_processor_time")
-    private String userProcessorTime;
-
-    /*
-     * Thread state.
-     */
-    @JsonProperty(value = "properties.state")
-    private String state;
-
-    /*
-     * Wait reason.
-     */
-    @JsonProperty(value = "properties.wait_reason")
-    private String waitReason;
+    /** {@inheritDoc} */
+    @Override
+    public ProcessThreadInfoInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the identifier property: Site extension ID.
@@ -96,7 +44,7 @@ public class ProcessThreadInfoInner extends ProxyOnlyResource {
      * @return the identifier value.
      */
     public Integer identifier() {
-        return this.identifier;
+        return this.innerProperties() == null ? null : this.innerProperties().identifier();
     }
 
     /**
@@ -105,7 +53,7 @@ public class ProcessThreadInfoInner extends ProxyOnlyResource {
      * @return the href value.
      */
     public String href() {
-        return this.href;
+        return this.innerProperties() == null ? null : this.innerProperties().href();
     }
 
     /**
@@ -115,7 +63,10 @@ public class ProcessThreadInfoInner extends ProxyOnlyResource {
      * @return the ProcessThreadInfoInner object itself.
      */
     public ProcessThreadInfoInner withHref(String href) {
-        this.href = href;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessThreadInfoProperties();
+        }
+        this.innerProperties().withHref(href);
         return this;
     }
 
@@ -125,7 +76,7 @@ public class ProcessThreadInfoInner extends ProxyOnlyResource {
      * @return the process value.
      */
     public String process() {
-        return this.process;
+        return this.innerProperties() == null ? null : this.innerProperties().process();
     }
 
     /**
@@ -135,7 +86,10 @@ public class ProcessThreadInfoInner extends ProxyOnlyResource {
      * @return the ProcessThreadInfoInner object itself.
      */
     public ProcessThreadInfoInner withProcess(String process) {
-        this.process = process;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessThreadInfoProperties();
+        }
+        this.innerProperties().withProcess(process);
         return this;
     }
 
@@ -145,7 +99,7 @@ public class ProcessThreadInfoInner extends ProxyOnlyResource {
      * @return the startAddress value.
      */
     public String startAddress() {
-        return this.startAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().startAddress();
     }
 
     /**
@@ -155,7 +109,10 @@ public class ProcessThreadInfoInner extends ProxyOnlyResource {
      * @return the ProcessThreadInfoInner object itself.
      */
     public ProcessThreadInfoInner withStartAddress(String startAddress) {
-        this.startAddress = startAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessThreadInfoProperties();
+        }
+        this.innerProperties().withStartAddress(startAddress);
         return this;
     }
 
@@ -165,7 +122,7 @@ public class ProcessThreadInfoInner extends ProxyOnlyResource {
      * @return the currentPriority value.
      */
     public Integer currentPriority() {
-        return this.currentPriority;
+        return this.innerProperties() == null ? null : this.innerProperties().currentPriority();
     }
 
     /**
@@ -175,7 +132,10 @@ public class ProcessThreadInfoInner extends ProxyOnlyResource {
      * @return the ProcessThreadInfoInner object itself.
      */
     public ProcessThreadInfoInner withCurrentPriority(Integer currentPriority) {
-        this.currentPriority = currentPriority;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessThreadInfoProperties();
+        }
+        this.innerProperties().withCurrentPriority(currentPriority);
         return this;
     }
 
@@ -185,7 +145,7 @@ public class ProcessThreadInfoInner extends ProxyOnlyResource {
      * @return the priorityLevel value.
      */
     public String priorityLevel() {
-        return this.priorityLevel;
+        return this.innerProperties() == null ? null : this.innerProperties().priorityLevel();
     }
 
     /**
@@ -195,7 +155,10 @@ public class ProcessThreadInfoInner extends ProxyOnlyResource {
      * @return the ProcessThreadInfoInner object itself.
      */
     public ProcessThreadInfoInner withPriorityLevel(String priorityLevel) {
-        this.priorityLevel = priorityLevel;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessThreadInfoProperties();
+        }
+        this.innerProperties().withPriorityLevel(priorityLevel);
         return this;
     }
 
@@ -205,7 +168,7 @@ public class ProcessThreadInfoInner extends ProxyOnlyResource {
      * @return the basePriority value.
      */
     public Integer basePriority() {
-        return this.basePriority;
+        return this.innerProperties() == null ? null : this.innerProperties().basePriority();
     }
 
     /**
@@ -215,7 +178,10 @@ public class ProcessThreadInfoInner extends ProxyOnlyResource {
      * @return the ProcessThreadInfoInner object itself.
      */
     public ProcessThreadInfoInner withBasePriority(Integer basePriority) {
-        this.basePriority = basePriority;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessThreadInfoProperties();
+        }
+        this.innerProperties().withBasePriority(basePriority);
         return this;
     }
 
@@ -225,7 +191,7 @@ public class ProcessThreadInfoInner extends ProxyOnlyResource {
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
-        return this.startTime;
+        return this.innerProperties() == null ? null : this.innerProperties().startTime();
     }
 
     /**
@@ -235,7 +201,10 @@ public class ProcessThreadInfoInner extends ProxyOnlyResource {
      * @return the ProcessThreadInfoInner object itself.
      */
     public ProcessThreadInfoInner withStartTime(OffsetDateTime startTime) {
-        this.startTime = startTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessThreadInfoProperties();
+        }
+        this.innerProperties().withStartTime(startTime);
         return this;
     }
 
@@ -245,7 +214,7 @@ public class ProcessThreadInfoInner extends ProxyOnlyResource {
      * @return the totalProcessorTime value.
      */
     public String totalProcessorTime() {
-        return this.totalProcessorTime;
+        return this.innerProperties() == null ? null : this.innerProperties().totalProcessorTime();
     }
 
     /**
@@ -255,7 +224,10 @@ public class ProcessThreadInfoInner extends ProxyOnlyResource {
      * @return the ProcessThreadInfoInner object itself.
      */
     public ProcessThreadInfoInner withTotalProcessorTime(String totalProcessorTime) {
-        this.totalProcessorTime = totalProcessorTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessThreadInfoProperties();
+        }
+        this.innerProperties().withTotalProcessorTime(totalProcessorTime);
         return this;
     }
 
@@ -265,7 +237,7 @@ public class ProcessThreadInfoInner extends ProxyOnlyResource {
      * @return the userProcessorTime value.
      */
     public String userProcessorTime() {
-        return this.userProcessorTime;
+        return this.innerProperties() == null ? null : this.innerProperties().userProcessorTime();
     }
 
     /**
@@ -275,7 +247,10 @@ public class ProcessThreadInfoInner extends ProxyOnlyResource {
      * @return the ProcessThreadInfoInner object itself.
      */
     public ProcessThreadInfoInner withUserProcessorTime(String userProcessorTime) {
-        this.userProcessorTime = userProcessorTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessThreadInfoProperties();
+        }
+        this.innerProperties().withUserProcessorTime(userProcessorTime);
         return this;
     }
 
@@ -285,7 +260,7 @@ public class ProcessThreadInfoInner extends ProxyOnlyResource {
      * @return the state value.
      */
     public String state() {
-        return this.state;
+        return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
     /**
@@ -295,7 +270,10 @@ public class ProcessThreadInfoInner extends ProxyOnlyResource {
      * @return the ProcessThreadInfoInner object itself.
      */
     public ProcessThreadInfoInner withState(String state) {
-        this.state = state;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessThreadInfoProperties();
+        }
+        this.innerProperties().withState(state);
         return this;
     }
 
@@ -305,7 +283,7 @@ public class ProcessThreadInfoInner extends ProxyOnlyResource {
      * @return the waitReason value.
      */
     public String waitReason() {
-        return this.waitReason;
+        return this.innerProperties() == null ? null : this.innerProperties().waitReason();
     }
 
     /**
@@ -315,14 +293,10 @@ public class ProcessThreadInfoInner extends ProxyOnlyResource {
      * @return the ProcessThreadInfoInner object itself.
      */
     public ProcessThreadInfoInner withWaitReason(String waitReason) {
-        this.waitReason = waitReason;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ProcessThreadInfoInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessThreadInfoProperties();
+        }
+        this.innerProperties().withWaitReason(waitReason);
         return this;
     }
 
@@ -334,5 +308,8 @@ public class ProcessThreadInfoInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

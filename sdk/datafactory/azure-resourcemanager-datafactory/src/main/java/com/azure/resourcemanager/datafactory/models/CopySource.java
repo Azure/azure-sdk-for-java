@@ -48,6 +48,7 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "HdfsSource", value = HdfsSource.class),
     @JsonSubTypes.Type(name = "AzureDataExplorerSource", value = AzureDataExplorerSource.class),
     @JsonSubTypes.Type(name = "OracleSource", value = OracleSource.class),
+    @JsonSubTypes.Type(name = "AmazonRdsForOracleSource", value = AmazonRdsForOracleSource.class),
     @JsonSubTypes.Type(name = "WebSource", value = WebSource.class),
     @JsonSubTypes.Type(name = "MongoDbSource", value = MongoDbSource.class),
     @JsonSubTypes.Type(name = "MongoDbAtlasSource", value = MongoDbAtlasSource.class),

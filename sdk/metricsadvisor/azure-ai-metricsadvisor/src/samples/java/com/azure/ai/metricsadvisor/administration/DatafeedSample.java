@@ -39,12 +39,12 @@ public class DatafeedSample {
             .setSchema(
                 new DataFeedSchema(
                     Arrays.asList(
-                        new DataFeedMetric().setName("cost"),
-                        new DataFeedMetric().setName("revenue")
+                        new DataFeedMetric("cost"),
+                        new DataFeedMetric("revenue")
                     )).setDimensions(
                     Arrays.asList(
-                        new DataFeedDimension().setName("city"),
-                        new DataFeedDimension().setName("category")
+                        new DataFeedDimension("city"),
+                        new DataFeedDimension("category")
                     ))
             ).setIngestionSettings(new DataFeedIngestionSettings(OffsetDateTime.parse("2020-07-01T00:00:00Z")));
 
@@ -79,9 +79,11 @@ public class DatafeedSample {
 
         // Update the data feed.
         System.out.printf("Updating data feed: %s%n", dataFeed.getId());
-        dataFeed = advisorAdministrationClient.updateDataFeed(dataFeed
-            .setOptions(new DataFeedOptions().setAdminEmails(Collections.singletonList("admin1@admin.com"))));
-        System.out.printf("Updated data feed admin list: %s%n", dataFeed.getOptions().getAdminEmails());
+        dataFeed = advisorAdministrationClient.updateDataFeed(dataFeed.setOptions(new DataFeedOptions()
+            .setAdmins(Collections.singletonList("admin1@admin.com"))
+        ));
+        System.out.printf("Updated data feed admin list: %s%n",
+            String.join(",", dataFeed.getOptions().getAdmins()));
 
         // Delete the data feed.
         System.out.printf("Deleting data feed: %s%n", dataFeed.getId());

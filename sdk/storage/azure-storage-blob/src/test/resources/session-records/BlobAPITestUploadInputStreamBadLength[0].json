@@ -1,0 +1,50 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/7f5018f307f5018f3aec15131ec2a5fb9dde640e685e?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-08-04",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a3d9e138-90e1-4885-8cd7-544bce3e1fca"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-08-04",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D92C58EF0BCAB0",
+      "Last-Modified" : "Thu, 10 Jun 2021 21:44:32 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "69ef6576-b01e-0019-0641-5e7a16000000",
+      "x-ms-client-request-id" : "a3d9e138-90e1-4885-8cd7-544bce3e1fca",
+      "Date" : "Thu, 10 Jun 2021 21:44:32 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/7f5018f307f5018f3aec15131ec2a5fb9dde640e685e/7f5018f317f5018f3aec68648158188ad9aa3434bb9a",
+    "Headers" : {
+      "x-ms-version" : "2020-08-04",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9fe09bbf-3b98-4f30-b335-6ae82cb45011",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-08-04",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "6RYQPwaVsyQ=",
+      "Last-Modified" : "Thu, 10 Jun 2021 21:44:33 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Thu, 10 Jun 2021 21:44:32 GMT",
+      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
+      "eTag" : "0x8D92C58EF38659F",
+      "x-ms-request-id" : "69ef6580-b01e-0019-0b41-5e7a16000000",
+      "x-ms-client-request-id" : "9fe09bbf-3b98-4f30-b335-6ae82cb45011"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "7f5018f307f5018f3aec15131ec2a5fb9dde640e685e", "7f5018f317f5018f3aec68648158188ad9aa3434bb9a" ]
+}

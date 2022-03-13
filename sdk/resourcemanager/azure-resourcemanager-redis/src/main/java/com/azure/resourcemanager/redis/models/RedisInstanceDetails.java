@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details of single instance of redis. */
 @Immutable
 public final class RedisInstanceDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RedisInstanceDetails.class);
-
     /*
      * Redis instance SSL port.
      */
@@ -40,10 +36,16 @@ public final class RedisInstanceDetails {
     private Integer shardId;
 
     /*
-     * Specifies whether the instance is a master node.
+     * Specifies whether the instance is a primary node.
      */
     @JsonProperty(value = "isMaster", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isMaster;
+
+    /*
+     * Specifies whether the instance is a primary node.
+     */
+    @JsonProperty(value = "isPrimary", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean isPrimary;
 
     /**
      * Get the sslPort property: Redis instance SSL port.
@@ -83,12 +85,21 @@ public final class RedisInstanceDetails {
     }
 
     /**
-     * Get the isMaster property: Specifies whether the instance is a master node.
+     * Get the isMaster property: Specifies whether the instance is a primary node.
      *
      * @return the isMaster value.
      */
     public Boolean isMaster() {
         return this.isMaster;
+    }
+
+    /**
+     * Get the isPrimary property: Specifies whether the instance is a primary node.
+     *
+     * @return the isPrimary value.
+     */
+    public Boolean isPrimary() {
+        return this.isPrimary;
     }
 
     /**

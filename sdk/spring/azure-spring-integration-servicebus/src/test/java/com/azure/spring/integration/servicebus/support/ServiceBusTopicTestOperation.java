@@ -10,11 +10,14 @@ import com.azure.spring.integration.core.api.PartitionSupplier;
 import com.azure.spring.integration.servicebus.DefaultServiceBusMessageProcessor;
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
 import com.azure.spring.integration.servicebus.topic.ServiceBusTopicTemplate;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
 import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.messaging.Message;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
@@ -30,7 +33,7 @@ import static org.mockito.Mockito.when;
  */
 public class ServiceBusTopicTestOperation extends ServiceBusTopicTemplate {
 
-    private final Multimap<String, ServiceBusReceivedMessageContext> topicsByName = ArrayListMultimap.create();
+    private final Map<String, List<ServiceBusReceivedMessageContext>> topicsByName = new HashMap<>();
     private final Map<String, Map<String, DefaultServiceBusMessageProcessor>> processorsByTopicAndSub =
         new ConcurrentHashMap<>();
     private final AtomicInteger abandonCalledTimes = new AtomicInteger(0);
@@ -46,8 +49,11 @@ public class ServiceBusTopicTestOperation extends ServiceBusTopicTemplate {
         ServiceBusMessage azureMessage = getMessageConverter().fromMessage(message, ServiceBusMessage.class);
 
         final ServiceBusReceivedMessageContext receivedMessageContext = mockReceivedMessageContext(azureMessage);
-
-        topicsByName.put(name, receivedMessageContext);
+        if (topicsByName.containsKey(name)) {
+            topicsByName.get(name).add(receivedMessageContext);
+        } else {
+            topicsByName.put(name, new ArrayList<>(Arrays.asList(receivedMessageContext)));
+        }
         processorsByTopicAndSub.get(name).values().forEach(c -> c.processMessage().accept(receivedMessageContext));
 
         return CompletableFuture.completedFuture(null);
@@ -61,14 +67,15 @@ public class ServiceBusTopicTestOperation extends ServiceBusTopicTemplate {
 
     @Override
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    protected void internalSubscribe(String name,
-                                     String consumerGroup,
-                                     Consumer<Message<?>> consumer,
-                                     Class<?> payloadType) {
+    public void internalSubscribe(String name,
+                                  String consumerGroup,
+                                  Consumer<Message<?>> consumer,
+                                  @Nullable Consumer<Throwable> errorHandler,
+                                  Class<?> payloadType) {
 
         // client
         DefaultServiceBusMessageProcessor messageProcessor = new DefaultServiceBusMessageProcessor(
-            this.checkpointConfig, payloadType, consumer, this.messageConverter);
+            this.checkpointConfig, payloadType, consumer, errorHandler, this.messageConverter);
 
 
         processorsByTopicAndSub.computeIfAbsent(name, t -> new ConcurrentHashMap<>())

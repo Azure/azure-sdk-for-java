@@ -5,46 +5,30 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.apimanagement.fluent.models.OpenidConnectProviderUpdateContractProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters supplied to the Update OpenID Connect Provider operation. */
-@JsonFlatten
 @Fluent
-public class OpenidConnectProviderUpdateContract {
+public final class OpenidConnectProviderUpdateContract {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OpenidConnectProviderUpdateContract.class);
 
     /*
-     * User-friendly OpenID Connect Provider name.
+     * OpenId Connect Provider Update contract properties.
      */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
+    @JsonProperty(value = "properties")
+    private OpenidConnectProviderUpdateContractProperties innerProperties;
 
-    /*
-     * User-friendly description of OpenID Connect Provider.
+    /**
+     * Get the innerProperties property: OpenId Connect Provider Update contract properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * Metadata endpoint URI.
-     */
-    @JsonProperty(value = "properties.metadataEndpoint")
-    private String metadataEndpoint;
-
-    /*
-     * Client ID of developer console which is the client application.
-     */
-    @JsonProperty(value = "properties.clientId")
-    private String clientId;
-
-    /*
-     * Client Secret of developer console which is the client application.
-     */
-    @JsonProperty(value = "properties.clientSecret")
-    private String clientSecret;
+    private OpenidConnectProviderUpdateContractProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the displayName property: User-friendly OpenID Connect Provider name.
@@ -52,7 +36,7 @@ public class OpenidConnectProviderUpdateContract {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -62,7 +46,10 @@ public class OpenidConnectProviderUpdateContract {
      * @return the OpenidConnectProviderUpdateContract object itself.
      */
     public OpenidConnectProviderUpdateContract withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OpenidConnectProviderUpdateContractProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -72,7 +59,7 @@ public class OpenidConnectProviderUpdateContract {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -82,7 +69,10 @@ public class OpenidConnectProviderUpdateContract {
      * @return the OpenidConnectProviderUpdateContract object itself.
      */
     public OpenidConnectProviderUpdateContract withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OpenidConnectProviderUpdateContractProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -92,7 +82,7 @@ public class OpenidConnectProviderUpdateContract {
      * @return the metadataEndpoint value.
      */
     public String metadataEndpoint() {
-        return this.metadataEndpoint;
+        return this.innerProperties() == null ? null : this.innerProperties().metadataEndpoint();
     }
 
     /**
@@ -102,7 +92,10 @@ public class OpenidConnectProviderUpdateContract {
      * @return the OpenidConnectProviderUpdateContract object itself.
      */
     public OpenidConnectProviderUpdateContract withMetadataEndpoint(String metadataEndpoint) {
-        this.metadataEndpoint = metadataEndpoint;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OpenidConnectProviderUpdateContractProperties();
+        }
+        this.innerProperties().withMetadataEndpoint(metadataEndpoint);
         return this;
     }
 
@@ -112,7 +105,7 @@ public class OpenidConnectProviderUpdateContract {
      * @return the clientId value.
      */
     public String clientId() {
-        return this.clientId;
+        return this.innerProperties() == null ? null : this.innerProperties().clientId();
     }
 
     /**
@@ -122,7 +115,10 @@ public class OpenidConnectProviderUpdateContract {
      * @return the OpenidConnectProviderUpdateContract object itself.
      */
     public OpenidConnectProviderUpdateContract withClientId(String clientId) {
-        this.clientId = clientId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OpenidConnectProviderUpdateContractProperties();
+        }
+        this.innerProperties().withClientId(clientId);
         return this;
     }
 
@@ -132,7 +128,7 @@ public class OpenidConnectProviderUpdateContract {
      * @return the clientSecret value.
      */
     public String clientSecret() {
-        return this.clientSecret;
+        return this.innerProperties() == null ? null : this.innerProperties().clientSecret();
     }
 
     /**
@@ -142,7 +138,10 @@ public class OpenidConnectProviderUpdateContract {
      * @return the OpenidConnectProviderUpdateContract object itself.
      */
     public OpenidConnectProviderUpdateContract withClientSecret(String clientSecret) {
-        this.clientSecret = clientSecret;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OpenidConnectProviderUpdateContractProperties();
+        }
+        this.innerProperties().withClientSecret(clientSecret);
         return this;
     }
 
@@ -152,5 +151,8 @@ public class OpenidConnectProviderUpdateContract {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

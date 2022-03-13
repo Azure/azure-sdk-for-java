@@ -97,7 +97,7 @@ public class ConnectionHandlerTest {
             handler.close();
         }
 
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
 
         if (mocksCloseable != null) {
             mocksCloseable.close();

@@ -8,7 +8,7 @@ parameters:
     default: 0
   - name: Timeout
     type: number
-    default: 15
+    default: 90
 
 
 jobs:

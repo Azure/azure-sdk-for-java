@@ -10,8 +10,6 @@ import com.azure.communication.callingserver.models.EventSubscriptionType;
 import com.azure.communication.callingserver.models.MediaType;
 import com.azure.communication.common.CommunicationIdentifier;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,16 +24,16 @@ public final class CallConnectionRequestConverter {
      */
     public static CreateCallRequest convert(
         CommunicationIdentifier source,
-        CommunicationIdentifier[] targets,
+        List<CommunicationIdentifier> targets,
         CreateCallOptions createCallOptions) {
-        if (source == null || targets == null || targets.length == 0) {
+        if (source == null || targets == null || targets.size() == 0) {
             return null;
         }
 
         CreateCallRequest createCallRequest =
             new CreateCallRequest()
                 .setSource(CommunicationIdentifierConverter.convert(source))
-                .setTargets(new ArrayList<>(Arrays.asList(targets))
+                .setTargets(targets
                     .stream()
                     .map(CommunicationIdentifierConverter::convert)
                     .collect(Collectors.toList()));

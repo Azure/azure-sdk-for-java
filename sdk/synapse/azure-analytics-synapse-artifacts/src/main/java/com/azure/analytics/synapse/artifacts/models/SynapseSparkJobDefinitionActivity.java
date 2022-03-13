@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** Execute spark job activity. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -21,6 +22,12 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      */
     @JsonProperty(value = "typeProperties.sparkJob", required = true)
     private SynapseSparkJobReference sparkJob;
+
+    /*
+     * User specified arguments to SynapseSparkJobDefinitionActivity.
+     */
+    @JsonProperty(value = "typeProperties.args")
+    private List<Object> arguments;
 
     /**
      * Get the sparkJob property: Synapse spark job reference.
@@ -39,6 +46,26 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      */
     public SynapseSparkJobDefinitionActivity setSparkJob(SynapseSparkJobReference sparkJob) {
         this.sparkJob = sparkJob;
+        return this;
+    }
+
+    /**
+     * Get the arguments property: User specified arguments to SynapseSparkJobDefinitionActivity.
+     *
+     * @return the arguments value.
+     */
+    public List<Object> getArguments() {
+        return this.arguments;
+    }
+
+    /**
+     * Set the arguments property: User specified arguments to SynapseSparkJobDefinitionActivity.
+     *
+     * @param arguments the arguments value to set.
+     * @return the SynapseSparkJobDefinitionActivity object itself.
+     */
+    public SynapseSparkJobDefinitionActivity setArguments(List<Object> arguments) {
+        this.arguments = arguments;
         return this;
     }
 }

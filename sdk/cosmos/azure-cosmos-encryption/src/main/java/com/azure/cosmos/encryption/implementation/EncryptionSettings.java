@@ -3,19 +3,18 @@
 
 package com.azure.cosmos.encryption.implementation;
 
-import com.azure.cosmos.encryption.EncryptionBridgeInternal;
+import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.AeadAes256CbcHmac256EncryptionAlgorithm;
+import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.EncryptionKeyStoreProvider;
+import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.EncryptionType;
+import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.KeyEncryptionKey;
+import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.MicrosoftDataEncryptionException;
+import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.ProtectedDataEncryptionKey;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
-import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
-import com.microsoft.data.encryption.cryptography.AeadAes256CbcHmac256EncryptionAlgorithm;
-import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
-import com.microsoft.data.encryption.cryptography.EncryptionType;
-import com.microsoft.data.encryption.cryptography.KeyEncryptionKey;
-import com.microsoft.data.encryption.cryptography.MicrosoftDataEncryptionException;
-import com.microsoft.data.encryption.cryptography.ProtectedDataEncryptionKey;
+import com.azure.cosmos.models.CosmosContainerProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -37,6 +36,9 @@ public final class EncryptionSettings {
     private ProtectedDataEncryptionKey dataEncryptionKey;
     private AeadAes256CbcHmac256EncryptionAlgorithm aeadAes256CbcHmac256EncryptionAlgorithm;
     private EncryptionType encryptionType;
+    private String databaseRid;
+    private final static EncryptionImplementationBridgeHelpers.CosmosEncryptionAsyncClientHelper.CosmosEncryptionAsyncClientAccessor cosmosEncryptionAsyncClientAccessor =
+        EncryptionImplementationBridgeHelpers.CosmosEncryptionAsyncClientHelper.getCosmosEncryptionAsyncClientAccessor();
 
     public Mono<EncryptionSettings> getEncryptionSettingForPropertyAsync(
         String propertyName,
@@ -65,16 +67,17 @@ public final class EncryptionSettings {
 
     Mono<CachedEncryptionSettings> fetchCachedEncryptionSettingsAsync(String propertyName,
                                                                       EncryptionProcessor encryptionProcessor) {
-        Mono<ClientEncryptionPolicy> encryptionPolicyMono =
-            EncryptionBridgeInternal.getClientEncryptionPolicyAsync(encryptionProcessor.getEncryptionCosmosClient(),
+        Mono<CosmosContainerProperties> containerPropertiesMono =
+            cosmosEncryptionAsyncClientAccessor.getContainerPropertiesAsync(encryptionProcessor.getEncryptionCosmosClient(),
                 encryptionProcessor.getCosmosAsyncContainer(), false);
         AtomicBoolean forceRefreshClientEncryptionKey = new AtomicBoolean(false);
-        return encryptionPolicyMono.flatMap(clientEncryptionPolicy -> {
-            if (clientEncryptionPolicy != null) {
-                for (ClientEncryptionIncludedPath propertyToEncrypt : clientEncryptionPolicy.getIncludedPaths()) {
+        return containerPropertiesMono.flatMap(cosmosContainerProperties -> {
+            if (cosmosContainerProperties.getClientEncryptionPolicy() != null) {
+                for (ClientEncryptionIncludedPath propertyToEncrypt : cosmosContainerProperties.getClientEncryptionPolicy().getIncludedPaths()) {
                     if (propertyToEncrypt.getPath().substring(1).equals(propertyName)) {
-                        return EncryptionBridgeInternal.getClientEncryptionPropertiesAsync(encryptionProcessor.getEncryptionCosmosClient(),
+                        return cosmosEncryptionAsyncClientAccessor.getClientEncryptionPropertiesAsync(encryptionProcessor.getEncryptionCosmosClient(),
                             propertyToEncrypt.getClientEncryptionKeyId(),
+                            this.databaseRid,
                             encryptionProcessor.getCosmosAsyncContainer(),
                             forceRefreshClientEncryptionKey.get())
                             .publishOn(Schedulers.boundedElastic())
@@ -82,22 +85,23 @@ public final class EncryptionSettings {
                                 ProtectedDataEncryptionKey protectedDataEncryptionKey;
                                 try {
                                     protectedDataEncryptionKey = buildProtectedDataEncryptionKey(keyProperties,
-                                        encryptionProcessor.getEncryptionKeyStoreProvider(),
+                                        encryptionProcessor.getEncryptionKeyStoreProviderImpl(),
                                         propertyToEncrypt.getClientEncryptionKeyId());
                                 } catch (Exception ex) {
                                     return Mono.error(ex);
                                 }
                                 EncryptionSettings encryptionSettings = new EncryptionSettings();
+                                encryptionSettings.setDatabaseRid(databaseRid);
                                 encryptionSettings.encryptionSettingTimeToLive =
                                     Instant.now().plus(Duration.ofMinutes(Constants.CACHED_ENCRYPTION_SETTING_DEFAULT_DEFAULT_TTL_IN_MINUTES));
                                 encryptionSettings.clientEncryptionKeyId = propertyToEncrypt.getClientEncryptionKeyId();
                                 encryptionSettings.dataEncryptionKey = protectedDataEncryptionKey;
                                 EncryptionType encryptionType = EncryptionType.Plaintext;
-                                switch (propertyToEncrypt.getEncryptionType()) {
-                                    case CosmosEncryptionType.DETERMINISTIC:
+                                switch (CosmosEncryptionType.get(propertyToEncrypt.getEncryptionType())) {
+                                    case DETERMINISTIC:
                                         encryptionType = EncryptionType.Deterministic;
                                         break;
-                                    case CosmosEncryptionType.RANDOMIZED:
+                                    case RANDOMIZED:
                                         encryptionType = EncryptionType.Randomized;
                                         break;
                                     default:
@@ -194,6 +198,14 @@ public final class EncryptionSettings {
         this.encryptionType = encryptionType;
     }
 
+    public String getDatabaseRid() {
+        return databaseRid;
+    }
+
+    public void setDatabaseRid(String databaseRid) {
+        this.databaseRid = databaseRid;
+    }
+
     void setEncryptionSettingForProperty(String propertyName, EncryptionSettings encryptionSettings,
                                          Instant expiryUtc) {
         CachedEncryptionSettings cachedEncryptionSettings = new CachedEncryptionSettings(encryptionSettings, expiryUtc);
@@ -204,6 +216,7 @@ public final class EncryptionSettings {
         EncryptionSettings settingsForKey,
         EncryptionType encryptionType) throws MicrosoftDataEncryptionException {
         EncryptionSettings encryptionSettings = new EncryptionSettings();
+        encryptionSettings.setDatabaseRid(settingsForKey.getDatabaseRid());
         encryptionSettings.setClientEncryptionKeyId(settingsForKey.clientEncryptionKeyId);
         encryptionSettings.setDataEncryptionKey(settingsForKey.getDataEncryptionKey());
         encryptionSettings.setEncryptionSettingTimeToLive(settingsForKey.getEncryptionSettingTimeToLive());

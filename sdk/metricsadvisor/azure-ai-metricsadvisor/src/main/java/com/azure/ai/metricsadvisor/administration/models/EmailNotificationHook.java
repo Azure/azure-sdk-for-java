@@ -5,11 +5,8 @@ package com.azure.ai.metricsadvisor.administration.models;
 
 import com.azure.core.annotation.Fluent;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.TreeSet;
-import java.util.stream.IntStream;
 
 /**
  * A hook that describes email based incident alerts notification.
@@ -27,7 +24,6 @@ public final class EmailNotificationHook extends NotificationHook {
      * @param name The email hook name.
      */
     public EmailNotificationHook(String name) {
-        this.emailsToAlert = new ArrayList<>();
         this.name = name;
     }
 
@@ -38,9 +34,7 @@ public final class EmailNotificationHook extends NotificationHook {
      * @param emails The emails to send the alerts.
      */
     public EmailNotificationHook(String name, List<String> emails) {
-        if (emails == null) {
-            this.emailsToAlert = new ArrayList<>();
-        } else {
+        if (emails != null) {
             this.emailsToAlert = dedupe(emails);
         }
         this.name = name;
@@ -57,15 +51,6 @@ public final class EmailNotificationHook extends NotificationHook {
     }
 
     /**
-     * Gets the emails to send the alerts.
-     *
-     * @return The emails.
-     */
-    public List<String> getEmailsToAlert() {
-        return Collections.unmodifiableList(this.emailsToAlert);
-    }
-
-    /**
      * Gets the customized external link which is displayed in the title bar of the alert email.
      *
      * @return The external link.
@@ -75,50 +60,26 @@ public final class EmailNotificationHook extends NotificationHook {
     }
 
     /**
+     * Gets the emails to send the alerts.
+     *
+     * @return The emails.
+     */
+    public List<String> getEmailsToAlert() {
+        if (this.emailsToAlert != null) {
+            return Collections.unmodifiableList(this.emailsToAlert);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    /**
      * Sets the emails to send the alert.
      *
      * @param emails The emails.
      * @return The EmailNotificationHook object itself.
      */
     public EmailNotificationHook setEmailsToAlert(List<String> emails) {
-        if (emails == null) {
-            this.emailsToAlert = new ArrayList<>();
-        } else {
-            this.emailsToAlert = dedupe(emails);
-        }
-        return this;
-    }
-
-    /**
-     * Add an email to the list of emails to send the alert.
-     *
-     * @param email The email to add.
-     * @return The EmailNotificationHook object itself.
-     */
-    public EmailNotificationHook addEmailToAlert(String email) {
-        if (this.emailsToAlert
-            .stream()
-            .anyMatch(email::equalsIgnoreCase)) {
-            return this;
-        }
-        this.emailsToAlert.add(email);
-        return this;
-    }
-
-    /**
-     * Removes an email from the list of alert emails.
-     *
-     * @param email The email to remove.
-     * @return The EmailNotificationHook object itself.
-     */
-    public EmailNotificationHook removeEmailToAlert(String email) {
-        int idx = IntStream.range(0, this.emailsToAlert.size())
-            .filter(i -> this.emailsToAlert.get(i).equalsIgnoreCase(email))
-            .findFirst()
-            .orElse(-1);
-        if (idx != -1) {
-            this.emailsToAlert.remove(idx);
-        }
+        this.emailsToAlert = emails != null ? dedupe(emails) : null;
         return this;
     }
 
@@ -156,15 +117,22 @@ public final class EmailNotificationHook extends NotificationHook {
     }
 
     /**
-     * Removes duplicates in a list.
+     * Sets the user e-mails and clientIds with administrative rights to manage the hook.
+     * <p>
+     * The administrators have total control over the hook, being allowed to update or delete the hook.
+     * Each element in this list represents a user with administrator access, but the value of each string element
+     * is either user email address or clientId uniquely identifying the user service principal.
      *
-     * @param list The list to dedupe
-     * @return A new deduped list.
+     * @param admins A list containing email or clientId of admins
+     * @return The EmailNotificationHook object itself.
      */
-    private List<String> dedupe(List<String> list) {
-        TreeSet<String> seen = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-        List<String> dedupedList = new ArrayList<>(list);
-        dedupedList.removeIf(e -> !seen.add(e));
-        return dedupedList;
+    public EmailNotificationHook setAdmins(List<String> admins) {
+        super.setAdministrators(admins);
+        return this;
+    }
+
+    List<String> getEmailsToAlertRaw() {
+        // package private getter that won't translate null emails to empty-list.
+        return this.emailsToAlert;
     }
 }

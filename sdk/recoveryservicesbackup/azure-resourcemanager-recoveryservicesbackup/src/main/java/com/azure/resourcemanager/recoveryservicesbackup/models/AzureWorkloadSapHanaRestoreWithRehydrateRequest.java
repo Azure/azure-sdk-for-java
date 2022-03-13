@@ -82,6 +82,13 @@ public final class AzureWorkloadSapHanaRestoreWithRehydrateRequest extends Azure
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureWorkloadSapHanaRestoreWithRehydrateRequest withTargetVirtualMachineId(String targetVirtualMachineId) {
+        super.withTargetVirtualMachineId(targetVirtualMachineId);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

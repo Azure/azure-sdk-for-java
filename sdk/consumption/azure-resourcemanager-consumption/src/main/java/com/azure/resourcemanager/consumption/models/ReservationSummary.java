@@ -33,6 +33,20 @@ public interface ReservationSummary {
     String type();
 
     /**
+     * Gets the etag property: The etag for the resource.
+     *
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
+     * Gets the tags property: Resource tags.
+     *
+     * @return the tags value.
+     */
+    Map<String, String> tags();
+
+    /**
      * Gets the reservationOrderId property: The reservation order ID is the identifier for a reservation purchase. Each
      * reservation order ID represents a single purchase transaction. A reservation order contains reservations. The
      * reservation order specifies the VM size and region for the reservations.
@@ -149,20 +163,6 @@ public interface ReservationSummary {
      * @return the utilizedPercentage value.
      */
     BigDecimal utilizedPercentage();
-
-    /**
-     * Gets the etag property: Resource etag.
-     *
-     * @return the etag value.
-     */
-    String etag();
-
-    /**
-     * Gets the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    Map<String, String> tags();
 
     /**
      * Gets the inner com.azure.resourcemanager.consumption.fluent.models.ReservationSummaryInner object.

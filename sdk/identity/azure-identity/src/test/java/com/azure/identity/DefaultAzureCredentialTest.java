@@ -52,7 +52,7 @@ public class DefaultAzureCredentialTest {
             IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
             when(identityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
             when(identityClient.authenticateWithConfidentialClient(request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
-            PowerMockito.whenNew(IdentityClient.class).withArguments(eq(TENANT_ID), eq(CLIENT_ID), eq(secret), isNull(), isNull(), isNull(), eq(false), any()).thenReturn(identityClient);
+            PowerMockito.whenNew(IdentityClient.class).withArguments(eq(TENANT_ID), eq(CLIENT_ID), eq(secret), isNull(), isNull(), isNull(), isNull(), isNull(), isNull(), eq(false), isNull(), any()).thenReturn(identityClient);
 
             IntelliJCredential intelliJCredential = PowerMockito.mock(IntelliJCredential.class);
             when(intelliJCredential.getToken(request1))
@@ -211,6 +211,12 @@ public class DefaultAzureCredentialTest {
         PowerMockito.whenNew(AzurePowerShellCredential.class).withAnyArguments()
             .thenReturn(powerShellCredential);
 
+        AzureCliCredential azureCliCredential = PowerMockito.mock(AzureCliCredential.class);
+        when(azureCliCredential.getToken(request))
+            .thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from Cli credential")));
+        PowerMockito.whenNew(AzureCliCredential.class).withAnyArguments()
+            .thenReturn(azureCliCredential);
+
         // test
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
             .build();
@@ -218,5 +224,14 @@ public class DefaultAzureCredentialTest {
             .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
                 .startsWith("EnvironmentCredential authentication unavailable. "))
             .verify();
+    }
+
+    @Test (expected = IllegalStateException.class)
+    public void testInvalidIdCombination()  {
+        // setup
+        String resourceId = "/subscriptions/" + UUID.randomUUID() + "/resourcegroups/aresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ident";
+
+        // test
+        new DefaultAzureCredentialBuilder().managedIdentityClientId(CLIENT_ID).managedIdentityResourceId(resourceId).build();
     }
 }

@@ -39,7 +39,7 @@ public final class ListAnomalyAlertConfigsOptions {
      *
      * @return The ListAnomalyAlertConfigsOptions object itself.
      */
-    public ListAnomalyAlertConfigsOptions setMaxPageSize(int maxPageSize) {
+    public ListAnomalyAlertConfigsOptions setMaxPageSize(Integer maxPageSize) {
         this.maxPageSize = maxPageSize;
         return this;
     }
@@ -51,7 +51,7 @@ public final class ListAnomalyAlertConfigsOptions {
      * @param skip The skip value.
      * @return ListAnomalyAlertConfigsOptions itself.
      */
-    public ListAnomalyAlertConfigsOptions setSkip(int skip) {
+    public ListAnomalyAlertConfigsOptions setSkip(Integer skip) {
         this.skip = skip;
         return this;
     }

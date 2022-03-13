@@ -8,11 +8,11 @@ import com.azure.ai.metricsadvisor.administration.models.AzureBlobDataFeedSource
 import com.azure.ai.metricsadvisor.administration.models.AzureDataExplorerDataFeedSource;
 import com.azure.ai.metricsadvisor.administration.models.AzureDataLakeStorageGen2DataFeedSource;
 import com.azure.ai.metricsadvisor.administration.models.DataFeed;
-import com.azure.ai.metricsadvisor.administration.models.DatasourceDataLakeGen2SharedKey;
-import com.azure.ai.metricsadvisor.administration.models.DatasourceAuthenticationType;
-import com.azure.ai.metricsadvisor.administration.models.DatasourceServicePrincipal;
-import com.azure.ai.metricsadvisor.administration.models.DatasourceServicePrincipalInKeyVault;
-import com.azure.ai.metricsadvisor.administration.models.DatasourceSqlServerConnectionString;
+import com.azure.ai.metricsadvisor.administration.models.DataSourceDataLakeGen2SharedKey;
+import com.azure.ai.metricsadvisor.administration.models.DataSourceAuthenticationType;
+import com.azure.ai.metricsadvisor.administration.models.DataSourceServicePrincipal;
+import com.azure.ai.metricsadvisor.administration.models.DataSourceServicePrincipalInKeyVault;
+import com.azure.ai.metricsadvisor.administration.models.DataSourceSqlServerConnectionString;
 import com.azure.ai.metricsadvisor.administration.models.SqlServerDataFeedSource;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.Assertions;
@@ -57,7 +57,7 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
                     dataFeed.set(createdDataFeed);
                     Assertions.assertTrue(createdDataFeed.getSource() instanceof SqlServerDataFeedSource);
                     Assertions.assertNull(((SqlServerDataFeedSource) createdDataFeed.getSource()).getCredentialId());
-                    Assertions.assertEquals(DatasourceAuthenticationType.BASIC,
+                    Assertions.assertEquals(DataSourceAuthenticationType.BASIC,
                         ((SqlServerDataFeedSource) createdDataFeed.getSource()).getAuthenticationType());
                 })
                 .verifyComplete();
@@ -72,7 +72,7 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
                     dataFeed.set(updatedDataFeed);
                     Assertions.assertTrue(updatedDataFeed.getSource() instanceof SqlServerDataFeedSource);
                     Assertions.assertNull(((SqlServerDataFeedSource) updatedDataFeed.getSource()).getCredentialId());
-                    Assertions.assertEquals(DatasourceAuthenticationType.MANAGED_IDENTITY,
+                    Assertions.assertEquals(DataSourceAuthenticationType.MANAGED_IDENTITY,
                         ((SqlServerDataFeedSource) updatedDataFeed.getSource()).getAuthenticationType());
                 })
                 .verifyComplete();
@@ -94,7 +94,7 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
                 StepVerifier.create(client.deleteDataFeed(dataFeed.get().getId())).verifyComplete();
             } finally {
                 credIds.forEach(credentialId ->
-                    StepVerifier.create(client.deleteDatasourceCredential(credentialId)).verifyComplete());
+                    StepVerifier.create(client.deleteDataSourceCredential(credentialId)).verifyComplete());
             }
         }
     }
@@ -102,14 +102,14 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
     private DataFeed sqlServerWithConnStringCred(MetricsAdvisorAdministrationAsyncClient client,
                                                  DataFeed dataFeed,
                                                  List<String> credIds) {
-        final AtomicReference<DatasourceSqlServerConnectionString> sqlConStrCred
+        final AtomicReference<DataSourceSqlServerConnectionString> sqlConStrCred
             = new AtomicReference<>(initDatasourceSqlServerConnectionString());
 
-        StepVerifier.create(client.createDatasourceCredential(sqlConStrCred.get()))
+        StepVerifier.create(client.createDataSourceCredential(sqlConStrCred.get()))
             .assertNext(createdCredential -> {
-                Assertions.assertTrue(createdCredential instanceof DatasourceSqlServerConnectionString);
+                Assertions.assertTrue(createdCredential instanceof DataSourceSqlServerConnectionString);
                 credIds.add(createdCredential.getId());
-                sqlConStrCred.set((DatasourceSqlServerConnectionString) createdCredential);
+                sqlConStrCred.set((DataSourceSqlServerConnectionString) createdCredential);
             })
             .verifyComplete();
 
@@ -132,14 +132,14 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
     private DataFeed sqlServerWithServicePrincipalCred(MetricsAdvisorAdministrationAsyncClient client,
                                                        DataFeed dataFeed,
                                                        List<String> credIds) {
-        final AtomicReference<DatasourceServicePrincipal> servicePrincipalCred
+        final AtomicReference<DataSourceServicePrincipal> servicePrincipalCred
             = new AtomicReference<>(initDatasourceServicePrincipal());
 
-        StepVerifier.create(client.createDatasourceCredential(servicePrincipalCred.get()))
+        StepVerifier.create(client.createDataSourceCredential(servicePrincipalCred.get()))
             .assertNext(createdCredential -> {
-                Assertions.assertTrue(createdCredential instanceof DatasourceServicePrincipal);
+                Assertions.assertTrue(createdCredential instanceof DataSourceServicePrincipal);
                 credIds.add(createdCredential.getId());
-                servicePrincipalCred.set((DatasourceServicePrincipal) createdCredential);
+                servicePrincipalCred.set((DataSourceServicePrincipal) createdCredential);
             })
             .verifyComplete();
 
@@ -161,14 +161,14 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
     private DataFeed sqlServerWithServicePrincipalInKVCred(MetricsAdvisorAdministrationAsyncClient client,
                                                            DataFeed dataFeed,
                                                            List<String> credIds) {
-        final AtomicReference<DatasourceServicePrincipalInKeyVault> servicePrincipalInKVCred
+        final AtomicReference<DataSourceServicePrincipalInKeyVault> servicePrincipalInKVCred
             = new AtomicReference<>(initDatasourceServicePrincipalInKeyVault());
 
-        StepVerifier.create(client.createDatasourceCredential(servicePrincipalInKVCred.get()))
+        StepVerifier.create(client.createDataSourceCredential(servicePrincipalInKVCred.get()))
             .assertNext(createdCredential -> {
-                Assertions.assertTrue(createdCredential instanceof DatasourceServicePrincipalInKeyVault);
+                Assertions.assertTrue(createdCredential instanceof DataSourceServicePrincipalInKeyVault);
                 credIds.add(createdCredential.getId());
-                servicePrincipalInKVCred.set((DatasourceServicePrincipalInKeyVault) createdCredential);
+                servicePrincipalInKVCred.set((DataSourceServicePrincipalInKeyVault) createdCredential);
             })
             .verifyComplete();
 
@@ -212,7 +212,7 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
                     Assertions.assertTrue(createdDataFeed.getSource() instanceof AzureDataLakeStorageGen2DataFeedSource);
                     Assertions.assertNull(
                         ((AzureDataLakeStorageGen2DataFeedSource) createdDataFeed.getSource()).getCredentialId());
-                    Assertions.assertEquals(DatasourceAuthenticationType.BASIC,
+                    Assertions.assertEquals(DataSourceAuthenticationType.BASIC,
                         ((AzureDataLakeStorageGen2DataFeedSource) createdDataFeed.getSource()).getAuthenticationType());
                 })
                 .verifyComplete();
@@ -233,7 +233,7 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
                 StepVerifier.create(client.deleteDataFeed(dataFeed.get().getId())).verifyComplete();
             } finally {
                 credIds.forEach(credentialId ->
-                    StepVerifier.create(client.deleteDatasourceCredential(credentialId)).verifyComplete());
+                    StepVerifier.create(client.deleteDataSourceCredential(credentialId)).verifyComplete());
             }
         }
     }
@@ -241,14 +241,14 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
     private DataFeed dataLakeWithSharedKeyCred(MetricsAdvisorAdministrationAsyncClient client,
                                                DataFeed dataFeed,
                                                List<String> credIds) {
-        final AtomicReference<DatasourceDataLakeGen2SharedKey> sharedKeyCred
+        final AtomicReference<DataSourceDataLakeGen2SharedKey> sharedKeyCred
             = new AtomicReference<>(initDataSourceDataLakeGen2SharedKey());
 
-        StepVerifier.create(client.createDatasourceCredential(sharedKeyCred.get()))
+        StepVerifier.create(client.createDataSourceCredential(sharedKeyCred.get()))
             .assertNext(createdCredential -> {
-                Assertions.assertTrue(createdCredential instanceof DatasourceDataLakeGen2SharedKey);
+                Assertions.assertTrue(createdCredential instanceof DataSourceDataLakeGen2SharedKey);
                 credIds.add(createdCredential.getId());
-                sharedKeyCred.set((DatasourceDataLakeGen2SharedKey) createdCredential);
+                sharedKeyCred.set((DataSourceDataLakeGen2SharedKey) createdCredential);
             })
             .verifyComplete();
 
@@ -272,14 +272,14 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
     private DataFeed dataLakeWithServicePrincipalCred(MetricsAdvisorAdministrationAsyncClient client,
                                                       DataFeed dataFeed,
                                                       List<String> credIds) {
-        final AtomicReference<DatasourceServicePrincipal> servicePrincipalCred
+        final AtomicReference<DataSourceServicePrincipal> servicePrincipalCred
             = new AtomicReference<>(initDatasourceServicePrincipal());
 
-        StepVerifier.create(client.createDatasourceCredential(servicePrincipalCred.get()))
+        StepVerifier.create(client.createDataSourceCredential(servicePrincipalCred.get()))
             .assertNext(createdCredential -> {
-                Assertions.assertTrue(createdCredential instanceof DatasourceServicePrincipal);
+                Assertions.assertTrue(createdCredential instanceof DataSourceServicePrincipal);
                 credIds.add(createdCredential.getId());
-                servicePrincipalCred.set((DatasourceServicePrincipal) createdCredential);
+                servicePrincipalCred.set((DataSourceServicePrincipal) createdCredential);
             })
             .verifyComplete();
 
@@ -303,14 +303,14 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
     private DataFeed dataLakeWithServicePrincipalInKVCred(MetricsAdvisorAdministrationAsyncClient client,
                                                           DataFeed dataFeed,
                                                           List<String> credIds) {
-        final AtomicReference<DatasourceServicePrincipalInKeyVault> servicePrincipalInKVCred
+        final AtomicReference<DataSourceServicePrincipalInKeyVault> servicePrincipalInKVCred
             = new AtomicReference<>(initDatasourceServicePrincipalInKeyVault());
 
-        StepVerifier.create(client.createDatasourceCredential(servicePrincipalInKVCred.get()))
+        StepVerifier.create(client.createDataSourceCredential(servicePrincipalInKVCred.get()))
             .assertNext(createdCredential -> {
-                Assertions.assertTrue(createdCredential instanceof DatasourceServicePrincipalInKeyVault);
+                Assertions.assertTrue(createdCredential instanceof DataSourceServicePrincipalInKeyVault);
                 credIds.add(createdCredential.getId());
-                servicePrincipalInKVCred.set((DatasourceServicePrincipalInKeyVault) createdCredential);
+                servicePrincipalInKVCred.set((DataSourceServicePrincipalInKeyVault) createdCredential);
             })
             .verifyComplete();
 
@@ -352,7 +352,7 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
                     Assertions.assertTrue(createdDataFeed.getSource() instanceof AzureDataExplorerDataFeedSource);
                     Assertions.assertNull(((AzureDataExplorerDataFeedSource) createdDataFeed.getSource())
                         .getCredentialId());
-                    Assertions.assertEquals(DatasourceAuthenticationType.BASIC,
+                    Assertions.assertEquals(DataSourceAuthenticationType.BASIC,
                         ((AzureDataExplorerDataFeedSource) createdDataFeed.getSource())
                             .getAuthenticationType());
                 })
@@ -370,7 +370,7 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
                     Assertions.assertTrue(updatedDataFeed.getSource() instanceof AzureDataExplorerDataFeedSource);
                     Assertions.assertNull(((AzureDataExplorerDataFeedSource) updatedDataFeed.getSource())
                         .getCredentialId());
-                    Assertions.assertEquals(DatasourceAuthenticationType.MANAGED_IDENTITY,
+                    Assertions.assertEquals(DataSourceAuthenticationType.MANAGED_IDENTITY,
                         ((AzureDataExplorerDataFeedSource) updatedDataFeed.getSource())
                             .getAuthenticationType());
                 })
@@ -388,7 +388,7 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
                 StepVerifier.create(client.deleteDataFeed(dataFeed.get().getId())).verifyComplete();
             } finally {
                 credIds.forEach(credentialId ->
-                    StepVerifier.create(client.deleteDatasourceCredential(credentialId)).verifyComplete());
+                    StepVerifier.create(client.deleteDataSourceCredential(credentialId)).verifyComplete());
             }
         }
     }
@@ -396,14 +396,14 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
     private DataFeed dataExplorerWithServicePrincipalCred(MetricsAdvisorAdministrationAsyncClient client,
                                                           DataFeed dataFeed,
                                                           List<String> credIds) {
-        final AtomicReference<DatasourceServicePrincipal> servicePrincipalCred
+        final AtomicReference<DataSourceServicePrincipal> servicePrincipalCred
             = new AtomicReference<>(initDatasourceServicePrincipal());
 
-        StepVerifier.create(client.createDatasourceCredential(servicePrincipalCred.get()))
+        StepVerifier.create(client.createDataSourceCredential(servicePrincipalCred.get()))
             .assertNext(createdCredential -> {
-                Assertions.assertTrue(createdCredential instanceof DatasourceServicePrincipal);
+                Assertions.assertTrue(createdCredential instanceof DataSourceServicePrincipal);
                 credIds.add(createdCredential.getId());
-                servicePrincipalCred.set((DatasourceServicePrincipal) createdCredential);
+                servicePrincipalCred.set((DataSourceServicePrincipal) createdCredential);
             })
             .verifyComplete();
 
@@ -425,14 +425,14 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
     private DataFeed dataExplorerWithServicePrincipalInKVCred(MetricsAdvisorAdministrationAsyncClient client,
                                                               DataFeed dataFeed,
                                                               List<String> credIds) {
-        final AtomicReference<DatasourceServicePrincipalInKeyVault> servicePrincipalInKVCred
+        final AtomicReference<DataSourceServicePrincipalInKeyVault> servicePrincipalInKVCred
             = new AtomicReference<>(initDatasourceServicePrincipalInKeyVault());
 
-        StepVerifier.create(client.createDatasourceCredential(servicePrincipalInKVCred.get()))
+        StepVerifier.create(client.createDataSourceCredential(servicePrincipalInKVCred.get()))
             .assertNext(createdCredential -> {
-                Assertions.assertTrue(createdCredential instanceof DatasourceServicePrincipalInKeyVault);
+                Assertions.assertTrue(createdCredential instanceof DataSourceServicePrincipalInKeyVault);
                 credIds.add(createdCredential.getId());
-                servicePrincipalInKVCred.set((DatasourceServicePrincipalInKeyVault) createdCredential);
+                servicePrincipalInKVCred.set((DataSourceServicePrincipalInKeyVault) createdCredential);
             })
             .verifyComplete();
 
@@ -468,7 +468,7 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
                 .assertNext(createdDataFeed -> {
                     dataFeed.set(createdDataFeed);
                     Assertions.assertTrue(createdDataFeed.getSource() instanceof AzureBlobDataFeedSource);
-                    Assertions.assertEquals(DatasourceAuthenticationType.BASIC,
+                    Assertions.assertEquals(DataSourceAuthenticationType.BASIC,
                         ((AzureBlobDataFeedSource) createdDataFeed.getSource()).getAuthenticationType());
                 })
                 .verifyComplete();
@@ -482,7 +482,7 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
                 .assertNext(updatedDataFeed -> {
                     dataFeed.set(updatedDataFeed);
                     Assertions.assertTrue(updatedDataFeed.getSource() instanceof AzureBlobDataFeedSource);
-                    Assertions.assertEquals(DatasourceAuthenticationType.MANAGED_IDENTITY,
+                    Assertions.assertEquals(DataSourceAuthenticationType.MANAGED_IDENTITY,
                         ((AzureBlobDataFeedSource) updatedDataFeed.getSource()).getAuthenticationType());
                 })
                 .verifyComplete();

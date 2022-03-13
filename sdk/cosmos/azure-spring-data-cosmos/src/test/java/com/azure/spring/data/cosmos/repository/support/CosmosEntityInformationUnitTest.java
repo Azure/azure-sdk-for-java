@@ -9,12 +9,14 @@ import com.azure.spring.data.cosmos.domain.Address;
 import com.azure.spring.data.cosmos.domain.LongIdDomain;
 import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.domain.Student;
+import com.azure.spring.data.cosmos.domain.UUIDIdDomain;
 import org.junit.Test;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -411,6 +413,25 @@ public class CosmosEntityInformationUnitTest {
                 + '\''
                 + '}';
         }
+    }
+
+    @Test
+    public void testGetIdFieldWithUUIDType() {
+        final CosmosEntityInformation<UUIDIdDomain, UUID> entityInformation =
+            new CosmosEntityInformation<>(UUIDIdDomain.class);
+        assertThat(entityInformation.getIdField().getType().equals(UUID.class)).isTrue();
+    }
+
+    @Test
+    public void testUUIDIdTypeSerialization() {
+        final UUID uuid = UUID.randomUUID();
+        String s = uuid.toString();
+        assertThat(uuid).isEqualTo(UUID.fromString(s));
+        String lowerCase = s.toLowerCase();
+        String upperCase = s.toUpperCase();
+        assertThat(uuid).isEqualTo(UUID.fromString(lowerCase));
+        assertThat(uuid).isEqualTo(UUID.fromString(upperCase));
+        assertThat(UUID.fromString(upperCase).toString()).isEqualTo(UUID.fromString(lowerCase).toString());
     }
 
     @Test

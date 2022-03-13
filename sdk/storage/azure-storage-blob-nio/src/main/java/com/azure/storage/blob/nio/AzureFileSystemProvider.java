@@ -81,7 +81,7 @@ import java.util.function.Supplier;
  * {@link FileSystemProvider}.
  * <p>
  * The scheme for this provider is {@code "azb"}, and the format of the URI to identify an {@code AzureFileSystem} is
- * {@code "azb://?endpoint=<endpoing>"}. The endpoint of the Storage account is used to uniquely identify the
+ * {@code "azb://?endpoint=<endpoint>"}. The endpoint of the Storage account is used to uniquely identify the
  * filesystem.
  * <p>
  * An {@link AzureFileSystem} is backed by an account. An {@link AzureFileStore} is backed by a container. Any number of
@@ -94,7 +94,8 @@ import java.util.function.Supplier;
  * <p>
  * {@link #newFileSystem(URI, Map)} will check for the following keys in the configuration map and expect the named
  * types. Any entries not listed here will be ignored. Note that {@link AzureFileSystem} has public constants defined
- * for each of the keys for convenience.
+ * for each of the keys for convenience. Most values are documented in the blob package. Any values which are unique to
+ * nio will be documented here.
  * <ul>
  *     <li>{@code AzureStorageSharedKeyCredential:}{@link com.azure.storage.common.StorageSharedKeyCredential}</li>
  *     <li>{@code AzureStorageSasTokenCredential:}{@link com.azure.core.credential.AzureSasCredential}</li>
@@ -111,6 +112,9 @@ import java.util.function.Supplier;
  *     <li>{@code AzureStorageMaxConcurrencyPerRequest:}{@link Integer}</li>
  *     <li>{@code AzureStorageDownloadResumeRetries:}{@link Integer}</li>
  *     <li>{@code AzureStorageFileStores:}{@link String}</li>
+ *     <li>{@code AzureStorageSkipInitialContainerCheck:}{@link Boolean}. Indicates that the initial check which
+ *     confirms the existence of the containers meant to act as file stores should be skipped. This can be usesful in
+ *     cases where a sas token that is scoped to only one file is used to authenticate.</li>
  * </ul>
  * <p>
  * Either an account key or a sas token must be specified. If both are provided, the account key will be preferred. If
@@ -226,7 +230,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     /**
      * Returns an existing FileSystem created by this provider.
      * <p>
-     * The format of a {@code URI} identifying an file system is {@code "azb://?endpoint=&lt;endpoint&gt;"}.
+     * The format of a {@code URI} identifying a file system is {@code "azb://?endpoint=&lt;endpoint&gt;"}.
      * <p>
      * Trying to retrieve a closed file system will throw a {@link FileSystemNotFoundException}. Once closed, a
      * file system with the same identifier may be reopened.
@@ -274,7 +278,6 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * overwriting existing files.
      * <p>
      * This type is not threadsafe to prevent having to hold locks across network calls.
-     * <p>
      *
      * @param path the path of the file to open
      * @param set options specifying how the file should be opened
@@ -873,7 +876,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * <p>
      * See {@link AzureBasicFileAttributeView} and {@link AzureBlobFileAttributeView} for more information.
      * <p>
-     * Reading or setting attributes on a virtual directory is not supported and will throw an {@link IOException}. See
+     * Reading attributes on a virtual directory will return {@code null} for most properties other than
+     * {@link AzureBlobFileAttributes#isVirtualDirectory()}, which will return true. See
      * {@link #createDirectory(Path, FileAttribute[])} for more information on virtual directories.
      *
      * @param path the path to the file
@@ -902,7 +906,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * <p>
      * See {@link AzureBasicFileAttributes} and {@link AzureBlobFileAttributes} for more information.
      * <p>
-     * Reading attributes on a virtual directory is not supported and will throw an {@link IOException}. See
+     * Reading attributes on a virtual directory will return {@code null} for most properties other than
+     * {@link AzureBlobFileAttributes#isVirtualDirectory()}, which will return true. See
      * {@link #createDirectory(Path, FileAttribute[])} for more information on virtual directories.
      *
      * @param path the path to the file
@@ -940,7 +945,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * <p>
      * See {@link AzureBasicFileAttributes} and {@link AzureBlobFileAttributes} for more information.
      * <p>
-     * Reading attributes on a virtual directory is not supported and will throw an {@link IOException}. See
+     * Reading attributes on a virtual directory will return {@code null} for all properties other than
+     * {@link AzureBlobFileAttributes#isVirtualDirectory()}, which will return true. See
      * {@link #createDirectory(Path, FileAttribute[])} for more information on virtual directories.
      *
      * @param path the path to the file
@@ -992,7 +998,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         For specificity, our basic implementation of BasicFileAttributes uses the name azureBasic. However, the docs
         state that "basic" must be supported, so we funnel to azureBasic.
          */
-        if (viewType.equals("basic")) {
+        if ("basic".equals(viewType)) {
             viewType = AzureBasicFileAttributeView.NAME;
         }
         if (!viewType.equals(AzureBasicFileAttributeView.NAME) && !viewType.equals(AzureBlobFileAttributeView.NAME)) {
@@ -1007,7 +1013,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
              */
             // TODO: Put these strings in constants
             if (viewType.equals(AzureBasicFileAttributeView.NAME)) {
-                if (!AzureBasicFileAttributes.ATTRIBUTE_STRINGS.contains(attributeName) && !attributeName.equals("*")) {
+                if (!AzureBasicFileAttributes.ATTRIBUTE_STRINGS.contains(attributeName) && !"*".equals(attributeName)) {
                     throw LoggingUtility.logError(logger,
                         new IllegalArgumentException("Invalid attribute. View: " + viewType
                             + ". Attribute: " + attributeName));
@@ -1022,7 +1028,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             }
 
             // If "*" is specified, add all of the attributes from the specified set.
-            if (attributeName.equals("*")) {
+            if ("*".equals(attributeName)) {
                 if (viewType.equals(AzureBasicFileAttributeView.NAME)) {
                     for (String attr : AzureBasicFileAttributes.ATTRIBUTE_STRINGS) {
                         results.put(attr, attributeSuppliers.get(attr).get());
@@ -1096,7 +1102,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         For specificity, our basic implementation of BasicFileAttributes uses the name azureBasic. However, the docs
         state that "basic" must be supported, so we funnel to azureBasic.
          */
-        if (viewType.equals("basic")) {
+        if ("basic".equals(viewType)) {
             viewType = AzureBasicFileAttributeView.NAME;
         }
 
@@ -1143,9 +1149,9 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
         String endpoint = Flux.fromArray(uri.getQuery().split("&"))
                 .filter(s -> s.startsWith(ENDPOINT_QUERY_KEY + "="))
-                .switchIfEmpty(Mono.error(LoggingUtility.logError(this.logger, new IllegalArgumentException(
-                        "URI does not contain an \"" + ENDPOINT_QUERY_KEY + "=\" parameter. FileSystems require a URI "
-                            + "of the format \"azb://?endpoint=<endpoint>\""))))
+                .switchIfEmpty(Mono.defer(() -> Mono.error(LoggingUtility.logError(this.logger,
+                    new IllegalArgumentException("URI does not contain an \"" + ENDPOINT_QUERY_KEY + "=\" parameter. "
+                        + "FileSystems require a URI of the format \"azb://?endpoint=<endpoint>\"")))))
                 .map(s -> s.substring(ENDPOINT_QUERY_KEY.length() + 1)) // Trim the query key and =
                 .blockLast();
 

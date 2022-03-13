@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.AlwaysLog;
@@ -18,65 +17,24 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Diagnostic details. */
-@JsonFlatten
 @Fluent
-public class DiagnosticContractInner extends ProxyResource {
+public final class DiagnosticContractInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DiagnosticContractInner.class);
 
     /*
-     * Specifies for what type of messages sampling settings should not apply.
+     * Diagnostic entity contract properties.
      */
-    @JsonProperty(value = "properties.alwaysLog")
-    private AlwaysLog alwaysLog;
+    @JsonProperty(value = "properties")
+    private DiagnosticContractProperties innerProperties;
 
-    /*
-     * Resource Id of a target logger.
+    /**
+     * Get the innerProperties property: Diagnostic entity contract properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.loggerId")
-    private String loggerId;
-
-    /*
-     * Sampling settings for Diagnostic.
-     */
-    @JsonProperty(value = "properties.sampling")
-    private SamplingSettings sampling;
-
-    /*
-     * Diagnostic settings for incoming/outgoing HTTP messages to the Gateway.
-     */
-    @JsonProperty(value = "properties.frontend")
-    private PipelineDiagnosticSettings frontend;
-
-    /*
-     * Diagnostic settings for incoming/outgoing HTTP messages to the Backend
-     */
-    @JsonProperty(value = "properties.backend")
-    private PipelineDiagnosticSettings backend;
-
-    /*
-     * Log the ClientIP. Default is false.
-     */
-    @JsonProperty(value = "properties.logClientIp")
-    private Boolean logClientIp;
-
-    /*
-     * Sets correlation protocol to use for Application Insights diagnostics.
-     */
-    @JsonProperty(value = "properties.httpCorrelationProtocol")
-    private HttpCorrelationProtocol httpCorrelationProtocol;
-
-    /*
-     * The verbosity level applied to traces emitted by trace policies.
-     */
-    @JsonProperty(value = "properties.verbosity")
-    private Verbosity verbosity;
-
-    /*
-     * The format of the Operation Name for Application Insights telemetries.
-     * Default is Name.
-     */
-    @JsonProperty(value = "properties.operationNameFormat")
-    private OperationNameFormat operationNameFormat;
+    private DiagnosticContractProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the alwaysLog property: Specifies for what type of messages sampling settings should not apply.
@@ -84,7 +42,7 @@ public class DiagnosticContractInner extends ProxyResource {
      * @return the alwaysLog value.
      */
     public AlwaysLog alwaysLog() {
-        return this.alwaysLog;
+        return this.innerProperties() == null ? null : this.innerProperties().alwaysLog();
     }
 
     /**
@@ -94,7 +52,10 @@ public class DiagnosticContractInner extends ProxyResource {
      * @return the DiagnosticContractInner object itself.
      */
     public DiagnosticContractInner withAlwaysLog(AlwaysLog alwaysLog) {
-        this.alwaysLog = alwaysLog;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiagnosticContractProperties();
+        }
+        this.innerProperties().withAlwaysLog(alwaysLog);
         return this;
     }
 
@@ -104,7 +65,7 @@ public class DiagnosticContractInner extends ProxyResource {
      * @return the loggerId value.
      */
     public String loggerId() {
-        return this.loggerId;
+        return this.innerProperties() == null ? null : this.innerProperties().loggerId();
     }
 
     /**
@@ -114,7 +75,10 @@ public class DiagnosticContractInner extends ProxyResource {
      * @return the DiagnosticContractInner object itself.
      */
     public DiagnosticContractInner withLoggerId(String loggerId) {
-        this.loggerId = loggerId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiagnosticContractProperties();
+        }
+        this.innerProperties().withLoggerId(loggerId);
         return this;
     }
 
@@ -124,7 +88,7 @@ public class DiagnosticContractInner extends ProxyResource {
      * @return the sampling value.
      */
     public SamplingSettings sampling() {
-        return this.sampling;
+        return this.innerProperties() == null ? null : this.innerProperties().sampling();
     }
 
     /**
@@ -134,7 +98,10 @@ public class DiagnosticContractInner extends ProxyResource {
      * @return the DiagnosticContractInner object itself.
      */
     public DiagnosticContractInner withSampling(SamplingSettings sampling) {
-        this.sampling = sampling;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiagnosticContractProperties();
+        }
+        this.innerProperties().withSampling(sampling);
         return this;
     }
 
@@ -144,7 +111,7 @@ public class DiagnosticContractInner extends ProxyResource {
      * @return the frontend value.
      */
     public PipelineDiagnosticSettings frontend() {
-        return this.frontend;
+        return this.innerProperties() == null ? null : this.innerProperties().frontend();
     }
 
     /**
@@ -154,7 +121,10 @@ public class DiagnosticContractInner extends ProxyResource {
      * @return the DiagnosticContractInner object itself.
      */
     public DiagnosticContractInner withFrontend(PipelineDiagnosticSettings frontend) {
-        this.frontend = frontend;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiagnosticContractProperties();
+        }
+        this.innerProperties().withFrontend(frontend);
         return this;
     }
 
@@ -164,7 +134,7 @@ public class DiagnosticContractInner extends ProxyResource {
      * @return the backend value.
      */
     public PipelineDiagnosticSettings backend() {
-        return this.backend;
+        return this.innerProperties() == null ? null : this.innerProperties().backend();
     }
 
     /**
@@ -174,7 +144,10 @@ public class DiagnosticContractInner extends ProxyResource {
      * @return the DiagnosticContractInner object itself.
      */
     public DiagnosticContractInner withBackend(PipelineDiagnosticSettings backend) {
-        this.backend = backend;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiagnosticContractProperties();
+        }
+        this.innerProperties().withBackend(backend);
         return this;
     }
 
@@ -184,7 +157,7 @@ public class DiagnosticContractInner extends ProxyResource {
      * @return the logClientIp value.
      */
     public Boolean logClientIp() {
-        return this.logClientIp;
+        return this.innerProperties() == null ? null : this.innerProperties().logClientIp();
     }
 
     /**
@@ -194,7 +167,10 @@ public class DiagnosticContractInner extends ProxyResource {
      * @return the DiagnosticContractInner object itself.
      */
     public DiagnosticContractInner withLogClientIp(Boolean logClientIp) {
-        this.logClientIp = logClientIp;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiagnosticContractProperties();
+        }
+        this.innerProperties().withLogClientIp(logClientIp);
         return this;
     }
 
@@ -204,7 +180,7 @@ public class DiagnosticContractInner extends ProxyResource {
      * @return the httpCorrelationProtocol value.
      */
     public HttpCorrelationProtocol httpCorrelationProtocol() {
-        return this.httpCorrelationProtocol;
+        return this.innerProperties() == null ? null : this.innerProperties().httpCorrelationProtocol();
     }
 
     /**
@@ -214,7 +190,10 @@ public class DiagnosticContractInner extends ProxyResource {
      * @return the DiagnosticContractInner object itself.
      */
     public DiagnosticContractInner withHttpCorrelationProtocol(HttpCorrelationProtocol httpCorrelationProtocol) {
-        this.httpCorrelationProtocol = httpCorrelationProtocol;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiagnosticContractProperties();
+        }
+        this.innerProperties().withHttpCorrelationProtocol(httpCorrelationProtocol);
         return this;
     }
 
@@ -224,7 +203,7 @@ public class DiagnosticContractInner extends ProxyResource {
      * @return the verbosity value.
      */
     public Verbosity verbosity() {
-        return this.verbosity;
+        return this.innerProperties() == null ? null : this.innerProperties().verbosity();
     }
 
     /**
@@ -234,7 +213,10 @@ public class DiagnosticContractInner extends ProxyResource {
      * @return the DiagnosticContractInner object itself.
      */
     public DiagnosticContractInner withVerbosity(Verbosity verbosity) {
-        this.verbosity = verbosity;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiagnosticContractProperties();
+        }
+        this.innerProperties().withVerbosity(verbosity);
         return this;
     }
 
@@ -245,7 +227,7 @@ public class DiagnosticContractInner extends ProxyResource {
      * @return the operationNameFormat value.
      */
     public OperationNameFormat operationNameFormat() {
-        return this.operationNameFormat;
+        return this.innerProperties() == null ? null : this.innerProperties().operationNameFormat();
     }
 
     /**
@@ -256,7 +238,10 @@ public class DiagnosticContractInner extends ProxyResource {
      * @return the DiagnosticContractInner object itself.
      */
     public DiagnosticContractInner withOperationNameFormat(OperationNameFormat operationNameFormat) {
-        this.operationNameFormat = operationNameFormat;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiagnosticContractProperties();
+        }
+        this.innerProperties().withOperationNameFormat(operationNameFormat);
         return this;
     }
 
@@ -266,14 +251,8 @@ public class DiagnosticContractInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (sampling() != null) {
-            sampling().validate();
-        }
-        if (frontend() != null) {
-            frontend().validate();
-        }
-        if (backend() != null) {
-            backend().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

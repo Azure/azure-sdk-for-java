@@ -11,10 +11,13 @@ import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
+import com.azure.storage.file.share.implementation.models.FileProperty;
+import com.azure.storage.file.share.implementation.models.InternalShareFileItemProperties;
 import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentHeaders;
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
 import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
+import com.azure.storage.file.share.models.ShareFileItemProperties;
 import com.azure.storage.file.share.models.ShareItem;
 import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareProtocols;
@@ -24,7 +27,7 @@ import java.io.IOException;
 
 public class ModelHelper {
 
-    private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
+    private static final SerializerAdapter SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
     private static final ClientLogger LOGGER = new ClientLogger(ModelHelper.class);
 
     private static final long MAX_FILE_PUT_RANGE_BYTES = 4 * Constants.MB;
@@ -136,6 +139,7 @@ public class ModelHelper {
         properties.setProtocols(parseShareProtocols(sharePropertiesInternal.getEnabledProtocols()));
         properties.setRootSquash(sharePropertiesInternal.getRootSquash());
         properties.setMetadata(sharePropertiesInternal.getMetadata());
+        properties.setProvisionedBandwidthMiBps(sharePropertiesInternal.getProvisionedBandwidthMiBps());
 
         return properties;
     }
@@ -187,5 +191,17 @@ public class ModelHelper {
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
+    }
+
+    public static String getETag(HttpHeaders headers) {
+        return headers.getValue("ETag");
+    }
+
+    public static ShareFileItemProperties transformFileProperty(FileProperty property) {
+        if (property == null) {
+            return null;
+        }
+        return new InternalShareFileItemProperties(property.getCreationTime(), property.getLastAccessTime(),
+            property.getLastWriteTime(), property.getChangeTime(), property.getLastModified(), property.getEtag());
     }
 }

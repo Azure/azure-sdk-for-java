@@ -5,12 +5,10 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.ApiError;
 import com.azure.resourcemanager.compute.models.PatchInstallationDetail;
 import com.azure.resourcemanager.compute.models.PatchOperationStatus;
 import com.azure.resourcemanager.compute.models.VMGuestPatchRebootStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -18,8 +16,6 @@ import java.util.List;
 /** The result summary of an installation operation. */
 @Immutable
 public final class VirtualMachineInstallPatchesResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineInstallPatchesResultInner.class);
-
     /*
      * The overall success or failure status of the operation. It remains
      * "InProgress" until the operation completes. At that point it will become

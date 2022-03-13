@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.HDInsightMapReduceActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,217 +17,24 @@ import java.util.Map;
 /** HDInsight MapReduce activity type. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("HDInsightMapReduce")
-@JsonFlatten
 @Fluent
-public class HDInsightMapReduceActivity extends ExecutionActivity {
+public final class HDInsightMapReduceActivity extends ExecutionActivity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(HDInsightMapReduceActivity.class);
 
     /*
-     * Storage linked service references.
+     * HDInsight MapReduce activity properties.
      */
-    @JsonProperty(value = "typeProperties.storageLinkedServices")
-    private List<LinkedServiceReference> storageLinkedServices;
-
-    /*
-     * User specified arguments to HDInsightActivity.
-     */
-    @JsonProperty(value = "typeProperties.arguments")
-    private List<Object> arguments;
-
-    /*
-     * Debug info option.
-     */
-    @JsonProperty(value = "typeProperties.getDebugInfo")
-    private HDInsightActivityDebugInfoOption getDebugInfo;
-
-    /*
-     * Class name. Type: string (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.className", required = true)
-    private Object className;
-
-    /*
-     * Jar path. Type: string (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.jarFilePath", required = true)
-    private Object jarFilePath;
-
-    /*
-     * Jar linked service reference.
-     */
-    @JsonProperty(value = "typeProperties.jarLinkedService")
-    private LinkedServiceReference jarLinkedService;
-
-    /*
-     * Jar libs.
-     */
-    @JsonProperty(value = "typeProperties.jarLibs")
-    private List<Object> jarLibs;
-
-    /*
-     * Allows user to specify defines for the MapReduce job request.
-     */
-    @JsonProperty(value = "typeProperties.defines")
-    private Map<String, Object> defines;
+    @JsonProperty(value = "typeProperties", required = true)
+    private HDInsightMapReduceActivityTypeProperties innerTypeProperties =
+        new HDInsightMapReduceActivityTypeProperties();
 
     /**
-     * Get the storageLinkedServices property: Storage linked service references.
+     * Get the innerTypeProperties property: HDInsight MapReduce activity properties.
      *
-     * @return the storageLinkedServices value.
+     * @return the innerTypeProperties value.
      */
-    public List<LinkedServiceReference> storageLinkedServices() {
-        return this.storageLinkedServices;
-    }
-
-    /**
-     * Set the storageLinkedServices property: Storage linked service references.
-     *
-     * @param storageLinkedServices the storageLinkedServices value to set.
-     * @return the HDInsightMapReduceActivity object itself.
-     */
-    public HDInsightMapReduceActivity withStorageLinkedServices(List<LinkedServiceReference> storageLinkedServices) {
-        this.storageLinkedServices = storageLinkedServices;
-        return this;
-    }
-
-    /**
-     * Get the arguments property: User specified arguments to HDInsightActivity.
-     *
-     * @return the arguments value.
-     */
-    public List<Object> arguments() {
-        return this.arguments;
-    }
-
-    /**
-     * Set the arguments property: User specified arguments to HDInsightActivity.
-     *
-     * @param arguments the arguments value to set.
-     * @return the HDInsightMapReduceActivity object itself.
-     */
-    public HDInsightMapReduceActivity withArguments(List<Object> arguments) {
-        this.arguments = arguments;
-        return this;
-    }
-
-    /**
-     * Get the getDebugInfo property: Debug info option.
-     *
-     * @return the getDebugInfo value.
-     */
-    public HDInsightActivityDebugInfoOption getDebugInfo() {
-        return this.getDebugInfo;
-    }
-
-    /**
-     * Set the getDebugInfo property: Debug info option.
-     *
-     * @param getDebugInfo the getDebugInfo value to set.
-     * @return the HDInsightMapReduceActivity object itself.
-     */
-    public HDInsightMapReduceActivity withGetDebugInfo(HDInsightActivityDebugInfoOption getDebugInfo) {
-        this.getDebugInfo = getDebugInfo;
-        return this;
-    }
-
-    /**
-     * Get the className property: Class name. Type: string (or Expression with resultType string).
-     *
-     * @return the className value.
-     */
-    public Object className() {
-        return this.className;
-    }
-
-    /**
-     * Set the className property: Class name. Type: string (or Expression with resultType string).
-     *
-     * @param className the className value to set.
-     * @return the HDInsightMapReduceActivity object itself.
-     */
-    public HDInsightMapReduceActivity withClassName(Object className) {
-        this.className = className;
-        return this;
-    }
-
-    /**
-     * Get the jarFilePath property: Jar path. Type: string (or Expression with resultType string).
-     *
-     * @return the jarFilePath value.
-     */
-    public Object jarFilePath() {
-        return this.jarFilePath;
-    }
-
-    /**
-     * Set the jarFilePath property: Jar path. Type: string (or Expression with resultType string).
-     *
-     * @param jarFilePath the jarFilePath value to set.
-     * @return the HDInsightMapReduceActivity object itself.
-     */
-    public HDInsightMapReduceActivity withJarFilePath(Object jarFilePath) {
-        this.jarFilePath = jarFilePath;
-        return this;
-    }
-
-    /**
-     * Get the jarLinkedService property: Jar linked service reference.
-     *
-     * @return the jarLinkedService value.
-     */
-    public LinkedServiceReference jarLinkedService() {
-        return this.jarLinkedService;
-    }
-
-    /**
-     * Set the jarLinkedService property: Jar linked service reference.
-     *
-     * @param jarLinkedService the jarLinkedService value to set.
-     * @return the HDInsightMapReduceActivity object itself.
-     */
-    public HDInsightMapReduceActivity withJarLinkedService(LinkedServiceReference jarLinkedService) {
-        this.jarLinkedService = jarLinkedService;
-        return this;
-    }
-
-    /**
-     * Get the jarLibs property: Jar libs.
-     *
-     * @return the jarLibs value.
-     */
-    public List<Object> jarLibs() {
-        return this.jarLibs;
-    }
-
-    /**
-     * Set the jarLibs property: Jar libs.
-     *
-     * @param jarLibs the jarLibs value to set.
-     * @return the HDInsightMapReduceActivity object itself.
-     */
-    public HDInsightMapReduceActivity withJarLibs(List<Object> jarLibs) {
-        this.jarLibs = jarLibs;
-        return this;
-    }
-
-    /**
-     * Get the defines property: Allows user to specify defines for the MapReduce job request.
-     *
-     * @return the defines value.
-     */
-    public Map<String, Object> defines() {
-        return this.defines;
-    }
-
-    /**
-     * Set the defines property: Allows user to specify defines for the MapReduce job request.
-     *
-     * @param defines the defines value to set.
-     * @return the HDInsightMapReduceActivity object itself.
-     */
-    public HDInsightMapReduceActivity withDefines(Map<String, Object> defines) {
-        this.defines = defines;
-        return this;
+    private HDInsightMapReduceActivityTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -273,6 +80,190 @@ public class HDInsightMapReduceActivity extends ExecutionActivity {
     }
 
     /**
+     * Get the storageLinkedServices property: Storage linked service references.
+     *
+     * @return the storageLinkedServices value.
+     */
+    public List<LinkedServiceReference> storageLinkedServices() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().storageLinkedServices();
+    }
+
+    /**
+     * Set the storageLinkedServices property: Storage linked service references.
+     *
+     * @param storageLinkedServices the storageLinkedServices value to set.
+     * @return the HDInsightMapReduceActivity object itself.
+     */
+    public HDInsightMapReduceActivity withStorageLinkedServices(List<LinkedServiceReference> storageLinkedServices) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HDInsightMapReduceActivityTypeProperties();
+        }
+        this.innerTypeProperties().withStorageLinkedServices(storageLinkedServices);
+        return this;
+    }
+
+    /**
+     * Get the arguments property: User specified arguments to HDInsightActivity.
+     *
+     * @return the arguments value.
+     */
+    public List<Object> arguments() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().arguments();
+    }
+
+    /**
+     * Set the arguments property: User specified arguments to HDInsightActivity.
+     *
+     * @param arguments the arguments value to set.
+     * @return the HDInsightMapReduceActivity object itself.
+     */
+    public HDInsightMapReduceActivity withArguments(List<Object> arguments) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HDInsightMapReduceActivityTypeProperties();
+        }
+        this.innerTypeProperties().withArguments(arguments);
+        return this;
+    }
+
+    /**
+     * Get the getDebugInfo property: Debug info option.
+     *
+     * @return the getDebugInfo value.
+     */
+    public HDInsightActivityDebugInfoOption getDebugInfo() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().getDebugInfo();
+    }
+
+    /**
+     * Set the getDebugInfo property: Debug info option.
+     *
+     * @param getDebugInfo the getDebugInfo value to set.
+     * @return the HDInsightMapReduceActivity object itself.
+     */
+    public HDInsightMapReduceActivity withGetDebugInfo(HDInsightActivityDebugInfoOption getDebugInfo) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HDInsightMapReduceActivityTypeProperties();
+        }
+        this.innerTypeProperties().withGetDebugInfo(getDebugInfo);
+        return this;
+    }
+
+    /**
+     * Get the className property: Class name. Type: string (or Expression with resultType string).
+     *
+     * @return the className value.
+     */
+    public Object className() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().className();
+    }
+
+    /**
+     * Set the className property: Class name. Type: string (or Expression with resultType string).
+     *
+     * @param className the className value to set.
+     * @return the HDInsightMapReduceActivity object itself.
+     */
+    public HDInsightMapReduceActivity withClassName(Object className) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HDInsightMapReduceActivityTypeProperties();
+        }
+        this.innerTypeProperties().withClassName(className);
+        return this;
+    }
+
+    /**
+     * Get the jarFilePath property: Jar path. Type: string (or Expression with resultType string).
+     *
+     * @return the jarFilePath value.
+     */
+    public Object jarFilePath() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().jarFilePath();
+    }
+
+    /**
+     * Set the jarFilePath property: Jar path. Type: string (or Expression with resultType string).
+     *
+     * @param jarFilePath the jarFilePath value to set.
+     * @return the HDInsightMapReduceActivity object itself.
+     */
+    public HDInsightMapReduceActivity withJarFilePath(Object jarFilePath) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HDInsightMapReduceActivityTypeProperties();
+        }
+        this.innerTypeProperties().withJarFilePath(jarFilePath);
+        return this;
+    }
+
+    /**
+     * Get the jarLinkedService property: Jar linked service reference.
+     *
+     * @return the jarLinkedService value.
+     */
+    public LinkedServiceReference jarLinkedService() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().jarLinkedService();
+    }
+
+    /**
+     * Set the jarLinkedService property: Jar linked service reference.
+     *
+     * @param jarLinkedService the jarLinkedService value to set.
+     * @return the HDInsightMapReduceActivity object itself.
+     */
+    public HDInsightMapReduceActivity withJarLinkedService(LinkedServiceReference jarLinkedService) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HDInsightMapReduceActivityTypeProperties();
+        }
+        this.innerTypeProperties().withJarLinkedService(jarLinkedService);
+        return this;
+    }
+
+    /**
+     * Get the jarLibs property: Jar libs.
+     *
+     * @return the jarLibs value.
+     */
+    public List<Object> jarLibs() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().jarLibs();
+    }
+
+    /**
+     * Set the jarLibs property: Jar libs.
+     *
+     * @param jarLibs the jarLibs value to set.
+     * @return the HDInsightMapReduceActivity object itself.
+     */
+    public HDInsightMapReduceActivity withJarLibs(List<Object> jarLibs) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HDInsightMapReduceActivityTypeProperties();
+        }
+        this.innerTypeProperties().withJarLibs(jarLibs);
+        return this;
+    }
+
+    /**
+     * Get the defines property: Allows user to specify defines for the MapReduce job request.
+     *
+     * @return the defines value.
+     */
+    public Map<String, Object> defines() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().defines();
+    }
+
+    /**
+     * Set the defines property: Allows user to specify defines for the MapReduce job request.
+     *
+     * @param defines the defines value to set.
+     * @return the HDInsightMapReduceActivity object itself.
+     */
+    public HDInsightMapReduceActivity withDefines(Map<String, Object> defines) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HDInsightMapReduceActivityTypeProperties();
+        }
+        this.innerTypeProperties().withDefines(defines);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -280,23 +271,13 @@ public class HDInsightMapReduceActivity extends ExecutionActivity {
     @Override
     public void validate() {
         super.validate();
-        if (storageLinkedServices() != null) {
-            storageLinkedServices().forEach(e -> e.validate());
-        }
-        if (className() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property className in model HDInsightMapReduceActivity"));
-        }
-        if (jarFilePath() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property jarFilePath in model HDInsightMapReduceActivity"));
-        }
-        if (jarLinkedService() != null) {
-            jarLinkedService().validate();
+                        "Missing required property innerTypeProperties in model HDInsightMapReduceActivity"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

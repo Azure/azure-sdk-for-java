@@ -20,6 +20,12 @@ public final class RunGetLogResultInner {
     @JsonProperty(value = "logLink")
     private String logLink;
 
+    /*
+     * The link to logs in registry for a run on a azure container registry.
+     */
+    @JsonProperty(value = "logArtifactLink")
+    private String logArtifactLink;
+
     /**
      * Get the logLink property: The link to logs for a run on a azure container registry.
      *
@@ -37,6 +43,26 @@ public final class RunGetLogResultInner {
      */
     public RunGetLogResultInner withLogLink(String logLink) {
         this.logLink = logLink;
+        return this;
+    }
+
+    /**
+     * Get the logArtifactLink property: The link to logs in registry for a run on a azure container registry.
+     *
+     * @return the logArtifactLink value.
+     */
+    public String logArtifactLink() {
+        return this.logArtifactLink;
+    }
+
+    /**
+     * Set the logArtifactLink property: The link to logs in registry for a run on a azure container registry.
+     *
+     * @param logArtifactLink the logArtifactLink value to set.
+     * @return the RunGetLogResultInner object itself.
+     */
+    public RunGetLogResultInner withLogArtifactLink(String logArtifactLink) {
+        this.logArtifactLink = logArtifactLink;
         return this;
     }
 

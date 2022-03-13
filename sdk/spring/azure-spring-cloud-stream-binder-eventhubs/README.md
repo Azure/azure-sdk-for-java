@@ -11,15 +11,14 @@ microservice using **Spring Cloud Stream** based on [Azure Event Hub][azure_even
 - [Environment checklist][environment_checklist]
 
 ### Include the package
-[//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-stream-binder-eventhubs;current})
+1. [Add azure-spring-cloud-dependencies].
+1. Add dependency. `<version>` can be skipped because we already add `azure-spring-cloud-dependencies`.
 ```xml
 <dependency>
-    <groupId>com.azure.spring</groupId>
-    <artifactId>azure-spring-cloud-stream-binder-eventhubs</artifactId>
-    <version>2.5.0</version>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-cloud-stream-binder-eventhubs</artifactId>
 </dependency>
 ```
-[//]: # ({x-version-update-end})
 
 ## Key concepts
 
@@ -28,7 +27,7 @@ microservice using **Spring Cloud Stream** based on [Azure Event Hub][azure_even
 The Spring Cloud Stream Binder for Azure Event Hub provides the binding implementation for the Spring Cloud Stream.
 This implementation uses Spring Integration Event Hub Channel Adapters at its foundation. From design's perspective, 
 Event Hub is similar as Kafka. Also, Event Hub could be accessed via Kafka API. If your project has tight dependency 
-on Kafka API, you can try `Event Hub with Kafka API Sample`
+on Kafka API, you can try [Event Hub with Kafka API Sample][kafka_sample]
 #### Consumer Group
 
 Event Hub provides similar support of consumer group as Apache Kafka, but with slight different logic. While Kafka 
@@ -38,12 +37,22 @@ that's why you have to fill `spring.cloud.stream.eventhub.checkpoint-storage-acc
 
 #### Partitioning Support
 
-Event Hub provides a similar concept of physical partition as Kafka. But unlike Kafka's auto rebalancing between consumers and partitions, Event Hub provides a kind of preemptive mode. The storage account acts as a lease to determine which partition is owned by which consumer. When a new consumer starts, it will try to steal some partitions
+Event Hubs provides a similar concept of physical partition as Kafka. But unlike Kafka's auto rebalancing between consumers and partitions, Event Hub provides a kind of preemptive mode. The storage account acts as a lease to determine which partition is owned by which consumer. When a new consumer starts, it will try to steal some partitions
 from most heavy-loaded consumers to achieve the workload balancing.
+
+#### Batch Consumer Support
+Azure Event Hubs Spring Cloud Stream Binder supports [Spring Cloud Stream Batch Consumer feature][spring-cloud-stream-batch0-consumer]. 
+
+When enabled, an **org.springframework.messaging.Message** of which the payload is a list of batched events will be received and passed to the consumer function. Each message header is also converted as a list, of which the content is the associated header value parsed from each event. For the communal headers of **com.azure.spring.integration.core.AzureHeaders#RAW_PARTITION_ID** and **com.azure.spring.integration.core.AzureHeaders.CHECKPOINTER**, they are presented as a single value for the entire batch of events share the same one. Note, the checkpoint header only exists when **MANUAL** checkpoint mode is used.
+
+Checkpointing of batch consumer supports two modes: BATCH and MANUAL. BATCH mode is an auto checkpointing mode to checkpoint the entire batch of events together once they are received by the binder. MANUAL mode is to checkpoint the events by users. When used, the 
+**com.azure.spring.integration.core.api.reactor.Checkpointer** will be passes into the message header, and users could use it to do checkpointing.
+
+The batch size can be specified by properties of `max-batch-size` and `max-wait-time` with prefix as `spring.cloud.stream.bindings.<binding-name>.consumer.`. See the below section for more information about the [configuration](#batch-consumer) and [examples](#batch-consumer-sample).
 
 ## Examples 
 
-Please use this `sample` as a reference for how to use this binder. 
+Please use this [sample][sample] as a reference for how to use this binder. 
 
 ### Configuration Options 
 
@@ -51,12 +60,22 @@ The binder provides the following configuration options in `application.properti
 
 #### Spring Cloud Azure Properties ####
 
-Name | Description | Required | Default 
----|---|---|---
- spring.cloud.azure.resource-group | Name of Azure resource group | Yes |
- spring.cloud.azure.region | Region name of the Azure resource group, e.g. westus | Yes | 
- spring.cloud.azure.eventhub.namespace | Event Hub Namespace. Auto creating if missing | Yes |
- spring.cloud.azure.eventhub.checkpoint-storage-account | StorageAccount name for checkpoint message successfully consumed | Yes
+|Name | Description | Required | Default 
+|:---|:---|:---|:---
+spring.cloud.azure.auto-create-resources | If enable auto-creation for Azure resources |  | false
+spring.cloud.azure.region | Region name of the Azure resource group, e.g. westus | Yes if spring.cloud.azure.auto-create-resources is enabled. |
+spring.cloud.azure.environment | Azure Cloud name for Azure resources, supported values are  `azure`, `azurechina`, `azure_germany` and `azureusgovernment` which are case insensitive | |azure | 
+spring.cloud.azure.client-id | Client (application) id of a service principal or Managed Service Identity (MSI) | Yes if service principal or MSI is used as credential configuration. |
+spring.cloud.azure.client-secret | Client secret of a service principal | Yes if service principal is used as credential configuration. |
+spring.cloud.azure.msi-enabled | If enable MSI as credential configuration | Yes if MSI is used as credential configuration. | false
+spring.cloud.azure.resource-group | Name of Azure resource group | Yes if service principal or MSI is used as credential configuration. |
+spring.cloud.azure.subscription-id | Subscription id of an MSI | Yes if MSI is used as credential configuration. |
+spring.cloud.azure.tenant-id | Tenant id of a service principal | Yes if service principal is used as credential configuration. |
+spring.cloud.azure.eventhub.connection-string | Event Hubs Namespace connection string | Yes if connection string is used as Event Hubs credential configuration |
+spring.cloud.azure.eventhub.checkpoint-storage-account | StorageAccount name for message checkpoint | Yes
+spring.cloud.azure.eventhub.checkpoint-access-key | StorageAccount access key for message checkpoint | Yes if StorageAccount access key is used as StorageAccount credential configuration
+spring.cloud.azure.eventhub.checkpoint-container | StorageAccount container name for message checkpoint | Yes
+spring.cloud.azure.eventhub.namespace | Event Hub Namespace. Auto creating if missing | Yes if service principal or MSI is used as credential configuration. |
 
 #### Common Producer Properties ####
 
@@ -111,6 +130,21 @@ Effective only if `sync` is set to true. The amount of time to wait for a respon
 
 Default: `10000`
 
+#### Common Consumer Properties ####
+
+You can use the below consumer configurations of **Spring Cloud Stream**, 
+it uses the configuration with the format of `spring.cloud.stream.bindings.<channelName>.consumer`.
+
+##### Batch Consumer
+
+When `spring.cloud.stream.binding.<name>.consumer.batch-mode` is set to `true`, all of the received events will be presented as a `List<?>` to the consumer function. Otherwise, the function will be called with one event at a time. The size of the batch is controlled by Event Hubs consumer properties `max-batch-size`(required) and `max-batch-duration`(optional); refer to the [below section](#event-hub-consumer-properties) for more information.
+
+**_batch-mode_**
+
+Whether to enable the entire batch of messages to be passed to the consumer function in a `List`.
+
+Default: `False`
+
 #### Event Hub Consumer Properties ####
 
 It supports the following configurations with the format of `spring.cloud.stream.eventhub.bindings.<channelName>.consumer`.
@@ -150,6 +184,20 @@ Effectively only when `checkpoint-mode` is `Time`. Decides The time interval to 
 
 Default: `5s`
 
+**_max-batch-size_**
+
+The maximum number of events that will be in the list of a message payload when the consumer callback is invoked.
+
+Default: `10`
+
+**_max-wait-time_**
+
+The max time `Duration` to wait to receive a batch of events upto the max batch size before invoking the consumer callback.
+
+Default: `null`
+
+For configuration of a `Duration` property, please refer to [the offical Spring Boot documentation][spring-boot-converting-duration]. Note: when setting a `long` value, the unit of milliseconds is used.
+
 ### Error Channels
 **_consumer error channel_**
 
@@ -179,23 +227,87 @@ you can handle the error message in this way:
     }
 ```
 
+### Batch Consumer Sample
+
+#### Configuration Options
+To enable the batch consumer mode, you should add below configuration
+```yaml
+spring:
+  cloud:
+    stream:
+      bindings:
+        consume-in-0:
+          destination: {event-hub-name}
+          group: [consumer-group-name]
+          consumer:
+            batch-mode: true 
+      eventhub:
+        bindings:
+          consume-in-0:
+            consumer:
+              checkpoint-mode: BATCH # or MANUAL as needed
+              max-batch-size: 2 # The default valueis 10
+              max-wait-time: 1m # Optional, the default value is null
+```
+
+#### Consume messages in batches
+For checkpointing mode as BATCH, you can use below code to send messages and consume in batches.
+```java
+    @Bean
+    public Consumer<List<String>> consume() {
+        return list -> list.forEach(event -> LOGGER.info("New event received: '{}'",event));
+    }
+
+    @Bean
+    public Supplier<Message<String>> supply() {
+        return () -> {
+            LOGGER.info("Sending message, sequence " + i);
+            return MessageBuilder.withPayload("\"test"+ i++ +"\"").build();
+        };
+    }
+```
+
+For checkpointing mode as MANUAL, you can use below code to send messages and consume/checkpoint in batches.
+```java
+    @Bean
+    public Consumer<Message<List<String>>> consume() {
+        return message -> {
+            for (int i = 0; i < message.getPayload().size(); i++) {
+                LOGGER.info("New message received: '{}', partition key: {}, sequence number: {}, offset: {}, enqueued time: {}",
+                    message.getPayload().get(i),
+                    ((List<Object>) message.getHeaders().get(EventHubHeaders.PARTITION_KEY)).get(i),
+                    ((List<Object>) message.getHeaders().get(EventHubHeaders.SEQUENCE_NUMBER)).get(i),
+                    ((List<Object>) message.getHeaders().get(EventHubHeaders.OFFSET)).get(i),
+                    ((List<Object>) message.getHeaders().get(EventHubHeaders.ENQUEUED_TIME)).get(i));
+            }
+        
+            Checkpointer checkpointer = (Checkpointer) message.getHeaders().get(CHECKPOINTER);
+            checkpointer.success()
+                        .doOnSuccess(success -> LOGGER.info("Message '{}' successfully checkpointed", message.getPayload()))
+                        .doOnError(error -> LOGGER.error("Exception found", error))
+                        .subscribe();
+        };
+    }
+
+    @Bean
+    public Supplier<Message<String>> supply() {
+        return () -> {
+            LOGGER.info("Sending message, sequence " + i);
+            return MessageBuilder.withPayload("\"test"+ i++ +"\"").build();
+        };
+    }
+```
 ## Troubleshooting
-### Enable client logging
-Azure SDKs for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
+### Logging setting
+Please refer to [spring logging document] to get more information about logging.
 
-### Enable Spring logging
-Spring allow all the supported logging systems to set logger levels set in the Spring Environment (for example, in application.properties) by using `logging.level.<logger-name>=<level>` where level is one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF. The root logger can be configured by using logging.level.root.
-
-The following example shows potential logging settings in `application.properties`:
-
+#### Logging setting examples
+- Example: Setting logging level of hibernate
 ```properties
 logging.level.root=WARN
 logging.level.org.springframework.web=DEBUG
 logging.level.org.hibernate=ERROR
 ```
-
-For more information about setting logging in spring, please refer to the [official doc][logging_doc].
- 
 
 ## Next steps
 
@@ -210,15 +322,18 @@ This project welcomes contributions and suggestions.  Most contributions require
 Please follow [instructions here][contributing_md] to build from source or contribute.
 
 <!-- Link -->
-[src]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-stream-binder-eventhubs/src
-[package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-cloud-azure-eventhubs-stream-binder
+[src]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-stream-binder-eventhubs/src
+[package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-cloud-stream-binder-eventhubs
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springcloud.html#azure-spring-cloud-stream-binder-eventhubs
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-cloud-stream-binder-java-app-azure-event-hub
-[sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-binder
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
-[logging_doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
-[eventhubs_multibinders_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-multibinders
-[contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/CONTRIBUTING.md
+[sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/eventhubs/azure-spring-cloud-stream-binder-eventhubs
+[spring logging document]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
+[eventhubs_multibinders_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/eventhubs/azure-spring-cloud-stream-binder-eventhubs/eventhubs-multibinders
+[contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CONTRIBUTING.md
 [azure_event_hub]: https://azure.microsoft.com/services/event-hubs/
-[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [spring_cloud_stream_current_producer_properties]: https://docs.spring.io/spring-cloud-stream/docs/current/reference/html/spring-cloud-stream.html#_producer_properties
+[Add azure-spring-cloud-dependencies]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-cloud-dependencies
+[kafka_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/eventhubs/azure-spring-cloud-starter-eventhubs-kafka/eventhubs-kafka
+[spring-boot-converting-duration]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.external-config.typesafe-configuration-properties.conversion.durations
+[spring-cloud-stream-batch0-consumer]: https://docs.spring.io/spring-cloud-stream/docs/3.1.4/reference/html/spring-cloud-stream.html#_batch_consumers

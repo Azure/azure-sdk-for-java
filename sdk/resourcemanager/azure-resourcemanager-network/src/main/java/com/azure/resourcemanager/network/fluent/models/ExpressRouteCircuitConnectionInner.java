@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.CircuitConnectionStatus;
@@ -15,10 +14,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Express Route Circuit Connection in an ExpressRouteCircuitPeering resource. */
-@JsonFlatten
 @Fluent
-public class ExpressRouteCircuitConnectionInner extends SubResource {
+public final class ExpressRouteCircuitConnectionInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitConnectionInner.class);
+
+    /*
+     * Properties of the express route circuit connection.
+     */
+    @JsonProperty(value = "properties")
+    private ExpressRouteCircuitConnectionPropertiesFormat innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This
@@ -39,49 +43,14 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * Reference to Express Route Circuit Private Peering Resource of the
-     * circuit initiating connection.
+    /**
+     * Get the innerProperties property: Properties of the express route circuit connection.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.expressRouteCircuitPeering")
-    private SubResource expressRouteCircuitPeering;
-
-    /*
-     * Reference to Express Route Circuit Private Peering Resource of the
-     * peered circuit.
-     */
-    @JsonProperty(value = "properties.peerExpressRouteCircuitPeering")
-    private SubResource peerExpressRouteCircuitPeering;
-
-    /*
-     * /29 IP address space to carve out Customer addresses for tunnels.
-     */
-    @JsonProperty(value = "properties.addressPrefix")
-    private String addressPrefix;
-
-    /*
-     * The authorization key.
-     */
-    @JsonProperty(value = "properties.authorizationKey")
-    private String authorizationKey;
-
-    /*
-     * IPv6 Address PrefixProperties of the express route circuit connection.
-     */
-    @JsonProperty(value = "properties.ipv6CircuitConnectionConfig")
-    private Ipv6CircuitConnectionConfig ipv6CircuitConnectionConfig;
-
-    /*
-     * Express Route Circuit connection state.
-     */
-    @JsonProperty(value = "properties.circuitConnectionStatus", access = JsonProperty.Access.WRITE_ONLY)
-    private CircuitConnectionStatus circuitConnectionStatus;
-
-    /*
-     * The provisioning state of the express route circuit connection resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private ExpressRouteCircuitConnectionPropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
@@ -123,6 +92,13 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ExpressRouteCircuitConnectionInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the expressRouteCircuitPeering property: Reference to Express Route Circuit Private Peering Resource of the
      * circuit initiating connection.
@@ -130,7 +106,7 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
      * @return the expressRouteCircuitPeering value.
      */
     public SubResource expressRouteCircuitPeering() {
-        return this.expressRouteCircuitPeering;
+        return this.innerProperties() == null ? null : this.innerProperties().expressRouteCircuitPeering();
     }
 
     /**
@@ -141,7 +117,10 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
      * @return the ExpressRouteCircuitConnectionInner object itself.
      */
     public ExpressRouteCircuitConnectionInner withExpressRouteCircuitPeering(SubResource expressRouteCircuitPeering) {
-        this.expressRouteCircuitPeering = expressRouteCircuitPeering;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteCircuitConnectionPropertiesFormat();
+        }
+        this.innerProperties().withExpressRouteCircuitPeering(expressRouteCircuitPeering);
         return this;
     }
 
@@ -152,7 +131,7 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
      * @return the peerExpressRouteCircuitPeering value.
      */
     public SubResource peerExpressRouteCircuitPeering() {
-        return this.peerExpressRouteCircuitPeering;
+        return this.innerProperties() == null ? null : this.innerProperties().peerExpressRouteCircuitPeering();
     }
 
     /**
@@ -164,7 +143,10 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
      */
     public ExpressRouteCircuitConnectionInner withPeerExpressRouteCircuitPeering(
         SubResource peerExpressRouteCircuitPeering) {
-        this.peerExpressRouteCircuitPeering = peerExpressRouteCircuitPeering;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteCircuitConnectionPropertiesFormat();
+        }
+        this.innerProperties().withPeerExpressRouteCircuitPeering(peerExpressRouteCircuitPeering);
         return this;
     }
 
@@ -174,7 +156,7 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
      * @return the addressPrefix value.
      */
     public String addressPrefix() {
-        return this.addressPrefix;
+        return this.innerProperties() == null ? null : this.innerProperties().addressPrefix();
     }
 
     /**
@@ -184,7 +166,10 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
      * @return the ExpressRouteCircuitConnectionInner object itself.
      */
     public ExpressRouteCircuitConnectionInner withAddressPrefix(String addressPrefix) {
-        this.addressPrefix = addressPrefix;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteCircuitConnectionPropertiesFormat();
+        }
+        this.innerProperties().withAddressPrefix(addressPrefix);
         return this;
     }
 
@@ -194,7 +179,7 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
      * @return the authorizationKey value.
      */
     public String authorizationKey() {
-        return this.authorizationKey;
+        return this.innerProperties() == null ? null : this.innerProperties().authorizationKey();
     }
 
     /**
@@ -204,7 +189,10 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
      * @return the ExpressRouteCircuitConnectionInner object itself.
      */
     public ExpressRouteCircuitConnectionInner withAuthorizationKey(String authorizationKey) {
-        this.authorizationKey = authorizationKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteCircuitConnectionPropertiesFormat();
+        }
+        this.innerProperties().withAuthorizationKey(authorizationKey);
         return this;
     }
 
@@ -215,7 +203,7 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
      * @return the ipv6CircuitConnectionConfig value.
      */
     public Ipv6CircuitConnectionConfig ipv6CircuitConnectionConfig() {
-        return this.ipv6CircuitConnectionConfig;
+        return this.innerProperties() == null ? null : this.innerProperties().ipv6CircuitConnectionConfig();
     }
 
     /**
@@ -227,7 +215,10 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
      */
     public ExpressRouteCircuitConnectionInner withIpv6CircuitConnectionConfig(
         Ipv6CircuitConnectionConfig ipv6CircuitConnectionConfig) {
-        this.ipv6CircuitConnectionConfig = ipv6CircuitConnectionConfig;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteCircuitConnectionPropertiesFormat();
+        }
+        this.innerProperties().withIpv6CircuitConnectionConfig(ipv6CircuitConnectionConfig);
         return this;
     }
 
@@ -237,7 +228,7 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
      * @return the circuitConnectionStatus value.
      */
     public CircuitConnectionStatus circuitConnectionStatus() {
-        return this.circuitConnectionStatus;
+        return this.innerProperties() == null ? null : this.innerProperties().circuitConnectionStatus();
     }
 
     /**
@@ -246,14 +237,7 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ExpressRouteCircuitConnectionInner withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -262,8 +246,8 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (ipv6CircuitConnectionConfig() != null) {
-            ipv6CircuitConnectionConfig().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

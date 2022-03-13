@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Enables or disables a capability on the virtual machine or virtual machine scale set. */
 @Fluent
 public final class AdditionalCapabilities {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdditionalCapabilities.class);
-
     /*
      * The flag that enables or disables a capability to have one or more
      * managed data disks with UltraSSD_LRS storage account type on the VM or
@@ -23,6 +19,12 @@ public final class AdditionalCapabilities {
      */
     @JsonProperty(value = "ultraSSDEnabled")
     private Boolean ultraSsdEnabled;
+
+    /*
+     * The flag that enables or disables hibernation capability on the VM.
+     */
+    @JsonProperty(value = "hibernationEnabled")
+    private Boolean hibernationEnabled;
 
     /**
      * Get the ultraSsdEnabled property: The flag that enables or disables a capability to have one or more managed data
@@ -45,6 +47,26 @@ public final class AdditionalCapabilities {
      */
     public AdditionalCapabilities withUltraSsdEnabled(Boolean ultraSsdEnabled) {
         this.ultraSsdEnabled = ultraSsdEnabled;
+        return this;
+    }
+
+    /**
+     * Get the hibernationEnabled property: The flag that enables or disables hibernation capability on the VM.
+     *
+     * @return the hibernationEnabled value.
+     */
+    public Boolean hibernationEnabled() {
+        return this.hibernationEnabled;
+    }
+
+    /**
+     * Set the hibernationEnabled property: The flag that enables or disables hibernation capability on the VM.
+     *
+     * @param hibernationEnabled the hibernationEnabled value to set.
+     * @return the AdditionalCapabilities object itself.
+     */
+    public AdditionalCapabilities withHibernationEnabled(Boolean hibernationEnabled) {
+        this.hibernationEnabled = hibernationEnabled;
         return this;
     }
 

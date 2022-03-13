@@ -2,9 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.stores;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -13,18 +12,20 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
+import org.mockito.MockitoAnnotations;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.spring.cloud.config.KeyVaultCredentialProvider;
+import com.azure.spring.cloud.config.KeyVaultSecretProvider;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.resource.AppConfigManagedIdentityProperties;
 
@@ -33,20 +34,34 @@ import reactor.core.publisher.Mono;
 public class KeyVaultClientTest {
 
     static TokenCredential tokenCredential;
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+
     private KeyVaultClient clientStore;
+
     @Mock
     private SecretClientBuilder builderMock;
+
     @Mock
     private SecretAsyncClient clientMock;
+
     @Mock
     private TokenCredential credentialMock;
+
     @Mock
     private Mono<KeyVaultSecret> monoSecret;
+
     private AppConfigurationProperties azureProperties;
 
-    @Test(expected = IllegalArgumentException.class)
+    @BeforeEach
+    public void setup() {
+        MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    public void cleanup() throws Exception {
+        MockitoAnnotations.openMocks(this).close();
+    }
+
+    @Test
     public void multipleArguments() throws IOException, URISyntaxException {
         azureProperties = new AppConfigurationProperties();
         AppConfigManagedIdentityProperties msiProps = new AppConfigManagedIdentityProperties();
@@ -64,13 +79,12 @@ public class KeyVaultClientTest {
             }
         };
 
-        clientStore = new KeyVaultClient(azureProperties, new URI(keyVaultUri), provider, null);
+        clientStore = new KeyVaultClient(azureProperties, new URI(keyVaultUri), provider, null, null);
 
         KeyVaultClient test = Mockito.spy(clientStore);
         Mockito.doReturn(builderMock).when(test).getBuilder();
 
-        test.build();
-        fail();
+        Assertions.assertThrows(IllegalArgumentException.class, () -> test.build());
     }
 
     @Test
@@ -90,7 +104,7 @@ public class KeyVaultClientTest {
             }
         };
 
-        clientStore = new KeyVaultClient(azureProperties, new URI(keyVaultUri), provider, null);
+        clientStore = new KeyVaultClient(azureProperties, new URI(keyVaultUri), provider, null, null);
 
         KeyVaultClient test = Mockito.spy(clientStore);
         Mockito.doReturn(builderMock).when(test).getBuilder();
@@ -118,7 +132,7 @@ public class KeyVaultClientTest {
 
         String keyVaultUri = "https://keyvault.vault.azure.net/secrets/mySecret";
 
-        clientStore = new KeyVaultClient(azureProperties, new URI(keyVaultUri), null, null);
+        clientStore = new KeyVaultClient(azureProperties, new URI(keyVaultUri), null, null, null);
 
         KeyVaultClient test = Mockito.spy(clientStore);
         Mockito.doReturn(builderMock).when(test).getBuilder();
@@ -148,7 +162,7 @@ public class KeyVaultClientTest {
 
         String keyVaultUri = "https://keyvault.vault.azure.net/secrets/mySecret";
 
-        clientStore = new KeyVaultClient(azureProperties, new URI(keyVaultUri), null, null);
+        clientStore = new KeyVaultClient(azureProperties, new URI(keyVaultUri), null, null, null);
 
         KeyVaultClient test = Mockito.spy(clientStore);
         Mockito.doReturn(builderMock).when(test).getBuilder();
@@ -168,4 +182,32 @@ public class KeyVaultClientTest {
         verify(test2, times(1)).getClientId();
     }
 
+    @Test
+    public void secretResolverTest() throws URISyntaxException {
+        azureProperties = new AppConfigurationProperties();
+
+        String keyVaultUri = "https://keyvault.vault.azure.net/secrets/mySecret";
+
+        clientStore = new KeyVaultClient(azureProperties, new URI(keyVaultUri), null, null, new TestSecretResolver());
+
+        KeyVaultClient test = Mockito.spy(clientStore);
+        Mockito.doReturn(builderMock).when(test).getBuilder();
+
+        when(builderMock.vaultUrl(Mockito.any())).thenReturn(builderMock);
+
+        assertEquals("Test-Value", test.getSecret(new URI(keyVaultUri + "/testSecret"), 10).getValue());
+        assertEquals("Default-Secret", test.getSecret(new URI(keyVaultUri + "/testSecret2"), 10).getValue());
+    }
+
+    class TestSecretResolver implements KeyVaultSecretProvider {
+
+        @Override
+        public String getSecret(String uri) {
+            if (uri.endsWith("/testSecret")) {
+                return "Test-Value";
+            }
+            return "Default-Secret";
+        }
+
+    }
 }

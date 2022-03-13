@@ -31,12 +31,15 @@ public class QueueTemplateSubscribeTest extends SubscribeOperationTest<ServiceBu
 
     private AutoCloseable closeable;
 
+
     @BeforeEach
     public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
         this.processorClientWrapper = new ServiceBusProcessorClientWrapper();
         this.subscribeOperation = new ServiceBusQueueTemplate(mockClientFactory, new ServiceBusMessageConverter());
         when(this.mockClientFactory.getOrCreateProcessor(eq(this.destination), any(), any())).thenReturn(
+            processorClientWrapper.getClient());
+        when(this.mockClientFactory.removeProcessor(eq(this.destination))).thenReturn(
             processorClientWrapper.getClient());
     }
 
@@ -48,13 +51,13 @@ public class QueueTemplateSubscribeTest extends SubscribeOperationTest<ServiceBu
     @Override
     protected void verifySubscriberCreatorCalled() {
         verify(this.mockClientFactory, atLeastOnce()).getOrCreateProcessor(anyString(),
-                                                                           any(ServiceBusClientConfig.class), any());
+            any(ServiceBusClientConfig.class), any());
     }
 
     @Override
     protected void verifySubscriberCreatorNotCalled() {
         verify(this.mockClientFactory, never()).getOrCreateProcessor(anyString(), any(ServiceBusClientConfig.class),
-                                                                     any());
+            any());
     }
 
     @Override

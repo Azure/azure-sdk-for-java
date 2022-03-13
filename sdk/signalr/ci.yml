@@ -3,25 +3,31 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/signalr/
+      - sdk/signalr/ci.yml
+      - sdk/signalr/azure-resourcemanager-signalr/
+    exclude:
+      - sdk/signalr/pom.xml
+      - sdk/signalr/azure-resourcemanager-signalr/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/signalr/
+      - sdk/signalr/ci.yml
+      - sdk/signalr/azure-resourcemanager-signalr/
+    exclude:
+      - sdk/signalr/pom.xml
+      - sdk/signalr/azure-resourcemanager-signalr/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

@@ -18,7 +18,7 @@ public final class TriggerReference {
      * Trigger reference type.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "TriggerReference";
 
     /*
      * Reference trigger name.

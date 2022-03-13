@@ -47,6 +47,33 @@ public final class WorkspaceCustomParameters {
     private WorkspaceCustomBooleanParameter enableNoPublicIp;
 
     /*
+     * Name of the outbound Load Balancer Backend Pool for Secure Cluster
+     * Connectivity (No Public IP).
+     */
+    @JsonProperty(value = "loadBalancerBackendPoolName")
+    private WorkspaceCustomStringParameter loadBalancerBackendPoolName;
+
+    /*
+     * Resource URI of Outbound Load balancer for Secure Cluster Connectivity
+     * (No Public IP) workspace.
+     */
+    @JsonProperty(value = "loadBalancerId")
+    private WorkspaceCustomStringParameter loadBalancerId;
+
+    /*
+     * Name of the NAT gateway for Secure Cluster Connectivity (No Public IP)
+     * workspace subnets.
+     */
+    @JsonProperty(value = "natGatewayName")
+    private WorkspaceCustomStringParameter natGatewayName;
+
+    /*
+     * Name of the Public IP for No Public IP workspace with managed vNet.
+     */
+    @JsonProperty(value = "publicIpName")
+    private WorkspaceCustomStringParameter publicIpName;
+
+    /*
      * Prepare the workspace for encryption. Enables the Managed Identity for
      * managed storage account.
      */
@@ -67,6 +94,33 @@ public final class WorkspaceCustomParameters {
      */
     @JsonProperty(value = "requireInfrastructureEncryption")
     private WorkspaceCustomBooleanParameter requireInfrastructureEncryption;
+
+    /*
+     * Default DBFS storage account name.
+     */
+    @JsonProperty(value = "storageAccountName")
+    private WorkspaceCustomStringParameter storageAccountName;
+
+    /*
+     * Storage account SKU name, ex: Standard_GRS, Standard_LRS. Refer
+     * https://aka.ms/storageskus for valid inputs.
+     */
+    @JsonProperty(value = "storageAccountSkuName")
+    private WorkspaceCustomStringParameter storageAccountSkuName;
+
+    /*
+     * Address prefix for Managed virtual network. Default value for this input
+     * is 10.139.
+     */
+    @JsonProperty(value = "vnetAddressPrefix")
+    private WorkspaceCustomStringParameter vnetAddressPrefix;
+
+    /*
+     * Tags applied to resources under Managed resource group. These can be
+     * updated by updating tags at workspace level.
+     */
+    @JsonProperty(value = "resourceTags", access = JsonProperty.Access.WRITE_ONLY)
+    private WorkspaceCustomObjectParameter resourceTags;
 
     /**
      * Get the amlWorkspaceId property: The ID of a Azure Machine Learning workspace to link with Databricks workspace.
@@ -172,6 +226,93 @@ public final class WorkspaceCustomParameters {
     }
 
     /**
+     * Get the loadBalancerBackendPoolName property: Name of the outbound Load Balancer Backend Pool for Secure Cluster
+     * Connectivity (No Public IP).
+     *
+     * @return the loadBalancerBackendPoolName value.
+     */
+    public WorkspaceCustomStringParameter loadBalancerBackendPoolName() {
+        return this.loadBalancerBackendPoolName;
+    }
+
+    /**
+     * Set the loadBalancerBackendPoolName property: Name of the outbound Load Balancer Backend Pool for Secure Cluster
+     * Connectivity (No Public IP).
+     *
+     * @param loadBalancerBackendPoolName the loadBalancerBackendPoolName value to set.
+     * @return the WorkspaceCustomParameters object itself.
+     */
+    public WorkspaceCustomParameters withLoadBalancerBackendPoolName(
+        WorkspaceCustomStringParameter loadBalancerBackendPoolName) {
+        this.loadBalancerBackendPoolName = loadBalancerBackendPoolName;
+        return this;
+    }
+
+    /**
+     * Get the loadBalancerId property: Resource URI of Outbound Load balancer for Secure Cluster Connectivity (No
+     * Public IP) workspace.
+     *
+     * @return the loadBalancerId value.
+     */
+    public WorkspaceCustomStringParameter loadBalancerId() {
+        return this.loadBalancerId;
+    }
+
+    /**
+     * Set the loadBalancerId property: Resource URI of Outbound Load balancer for Secure Cluster Connectivity (No
+     * Public IP) workspace.
+     *
+     * @param loadBalancerId the loadBalancerId value to set.
+     * @return the WorkspaceCustomParameters object itself.
+     */
+    public WorkspaceCustomParameters withLoadBalancerId(WorkspaceCustomStringParameter loadBalancerId) {
+        this.loadBalancerId = loadBalancerId;
+        return this;
+    }
+
+    /**
+     * Get the natGatewayName property: Name of the NAT gateway for Secure Cluster Connectivity (No Public IP) workspace
+     * subnets.
+     *
+     * @return the natGatewayName value.
+     */
+    public WorkspaceCustomStringParameter natGatewayName() {
+        return this.natGatewayName;
+    }
+
+    /**
+     * Set the natGatewayName property: Name of the NAT gateway for Secure Cluster Connectivity (No Public IP) workspace
+     * subnets.
+     *
+     * @param natGatewayName the natGatewayName value to set.
+     * @return the WorkspaceCustomParameters object itself.
+     */
+    public WorkspaceCustomParameters withNatGatewayName(WorkspaceCustomStringParameter natGatewayName) {
+        this.natGatewayName = natGatewayName;
+        return this;
+    }
+
+    /**
+     * Get the publicIpName property: Name of the Public IP for No Public IP workspace with managed vNet.
+     *
+     * @return the publicIpName value.
+     */
+    public WorkspaceCustomStringParameter publicIpName() {
+        return this.publicIpName;
+    }
+
+    /**
+     * Set the publicIpName property: Name of the Public IP for No Public IP workspace with managed vNet.
+     *
+     * @param publicIpName the publicIpName value to set.
+     * @return the WorkspaceCustomParameters object itself.
+     */
+    public WorkspaceCustomParameters withPublicIpName(WorkspaceCustomStringParameter publicIpName) {
+        this.publicIpName = publicIpName;
+        return this;
+    }
+
+    /**
      * Get the prepareEncryption property: Prepare the workspace for encryption. Enables the Managed Identity for
      * managed storage account.
      *
@@ -237,6 +378,80 @@ public final class WorkspaceCustomParameters {
     }
 
     /**
+     * Get the storageAccountName property: Default DBFS storage account name.
+     *
+     * @return the storageAccountName value.
+     */
+    public WorkspaceCustomStringParameter storageAccountName() {
+        return this.storageAccountName;
+    }
+
+    /**
+     * Set the storageAccountName property: Default DBFS storage account name.
+     *
+     * @param storageAccountName the storageAccountName value to set.
+     * @return the WorkspaceCustomParameters object itself.
+     */
+    public WorkspaceCustomParameters withStorageAccountName(WorkspaceCustomStringParameter storageAccountName) {
+        this.storageAccountName = storageAccountName;
+        return this;
+    }
+
+    /**
+     * Get the storageAccountSkuName property: Storage account SKU name, ex: Standard_GRS, Standard_LRS. Refer
+     * https://aka.ms/storageskus for valid inputs.
+     *
+     * @return the storageAccountSkuName value.
+     */
+    public WorkspaceCustomStringParameter storageAccountSkuName() {
+        return this.storageAccountSkuName;
+    }
+
+    /**
+     * Set the storageAccountSkuName property: Storage account SKU name, ex: Standard_GRS, Standard_LRS. Refer
+     * https://aka.ms/storageskus for valid inputs.
+     *
+     * @param storageAccountSkuName the storageAccountSkuName value to set.
+     * @return the WorkspaceCustomParameters object itself.
+     */
+    public WorkspaceCustomParameters withStorageAccountSkuName(WorkspaceCustomStringParameter storageAccountSkuName) {
+        this.storageAccountSkuName = storageAccountSkuName;
+        return this;
+    }
+
+    /**
+     * Get the vnetAddressPrefix property: Address prefix for Managed virtual network. Default value for this input is
+     * 10.139.
+     *
+     * @return the vnetAddressPrefix value.
+     */
+    public WorkspaceCustomStringParameter vnetAddressPrefix() {
+        return this.vnetAddressPrefix;
+    }
+
+    /**
+     * Set the vnetAddressPrefix property: Address prefix for Managed virtual network. Default value for this input is
+     * 10.139.
+     *
+     * @param vnetAddressPrefix the vnetAddressPrefix value to set.
+     * @return the WorkspaceCustomParameters object itself.
+     */
+    public WorkspaceCustomParameters withVnetAddressPrefix(WorkspaceCustomStringParameter vnetAddressPrefix) {
+        this.vnetAddressPrefix = vnetAddressPrefix;
+        return this;
+    }
+
+    /**
+     * Get the resourceTags property: Tags applied to resources under Managed resource group. These can be updated by
+     * updating tags at workspace level.
+     *
+     * @return the resourceTags value.
+     */
+    public WorkspaceCustomObjectParameter resourceTags() {
+        return this.resourceTags;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -257,6 +472,18 @@ public final class WorkspaceCustomParameters {
         if (enableNoPublicIp() != null) {
             enableNoPublicIp().validate();
         }
+        if (loadBalancerBackendPoolName() != null) {
+            loadBalancerBackendPoolName().validate();
+        }
+        if (loadBalancerId() != null) {
+            loadBalancerId().validate();
+        }
+        if (natGatewayName() != null) {
+            natGatewayName().validate();
+        }
+        if (publicIpName() != null) {
+            publicIpName().validate();
+        }
         if (prepareEncryption() != null) {
             prepareEncryption().validate();
         }
@@ -265,6 +492,18 @@ public final class WorkspaceCustomParameters {
         }
         if (requireInfrastructureEncryption() != null) {
             requireInfrastructureEncryption().validate();
+        }
+        if (storageAccountName() != null) {
+            storageAccountName().validate();
+        }
+        if (storageAccountSkuName() != null) {
+            storageAccountSkuName().validate();
+        }
+        if (vnetAddressPrefix() != null) {
+            vnetAddressPrefix().validate();
+        }
+        if (resourceTags() != null) {
+            resourceTags().validate();
         }
     }
 }

@@ -6,6 +6,7 @@ package com.azure.security.attestation.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.ReturnType;
@@ -15,8 +16,7 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.security.attestation.models.CloudErrorException;
+import com.azure.security.attestation.implementation.models.CloudErrorException;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in MetadataConfigurations. */
@@ -49,24 +49,8 @@ public final class MetadataConfigurationsImpl {
         @Get("/.well-known/openid-configuration")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<Object>> get(@HostParam("instanceUrl") String instanceUrl, Context context);
-    }
-
-    /**
-     * Retrieves metadata about the attestation signing keys in use by the attestation service.
-     *
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> getWithResponseAsync() {
-        if (this.client.getInstanceUrl() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getInstanceUrl() is required and cannot be null."));
-        }
-        return FluxUtil.withContext(context -> service.get(this.client.getInstanceUrl(), context));
+        Mono<Response<Object>> get(
+                @HostParam("instanceUrl") String instanceUrl, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -85,74 +69,7 @@ public final class MetadataConfigurationsImpl {
                     new IllegalArgumentException(
                             "Parameter this.client.getInstanceUrl() is required and cannot be null."));
         }
-        return service.get(this.client.getInstanceUrl(), context);
-    }
-
-    /**
-     * Retrieves metadata about the attestation signing keys in use by the attestation service.
-     *
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> getAsync() {
-        return getWithResponseAsync()
-                .flatMap(
-                        (Response<Object> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Retrieves metadata about the attestation signing keys in use by the attestation service.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> getAsync(Context context) {
-        return getWithResponseAsync(context)
-                .flatMap(
-                        (Response<Object> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Retrieves metadata about the attestation signing keys in use by the attestation service.
-     *
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object get() {
-        return getAsync().block();
-    }
-
-    /**
-     * Retrieves metadata about the attestation signing keys in use by the attestation service.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> getWithResponse(Context context) {
-        return getWithResponseAsync(context).block();
+        final String accept = "application/json";
+        return service.get(this.client.getInstanceUrl(), accept, context);
     }
 }

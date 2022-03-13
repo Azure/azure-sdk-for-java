@@ -4,9 +4,6 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.ai.metricsadvisor.administration.models.ChangeThresholdCondition;
-import com.azure.ai.metricsadvisor.administration.models.HardThresholdCondition;
-import com.azure.ai.metricsadvisor.administration.models.SmartDetectionCondition;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -3,6 +3,7 @@
 
 package com.azure.communication.callingserver;
 
+import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.CreateCallOptions;
 import com.azure.communication.callingserver.models.JoinCallOptions;
 import com.azure.communication.callingserver.models.ParallelDownloadOptions;
@@ -16,15 +17,27 @@ import com.azure.core.util.Context;
 
 import java.io.OutputStream;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Objects;
 
 
 /**
- * A Sync Client that supports calling server operations.
+ * Synchronous client that supports calling server operations.
  *
  * <p><strong>Instantiating a synchronous Calling Server Client</strong></p>
  *
- * {@codesnippet com.azure.communication.callingserver.CallingServerClient.pipeline.instantiation}
+ * <!-- src_embed com.azure.communication.callingserver.CallingServerClient.pipeline.instantiation -->
+ * <pre>
+ * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
+ *     .policies&#40;&#47;* add policies *&#47;&#41;
+ *     .build&#40;&#41;;
+ *
+ * CallingServerClient callingServerClient = new CallingServerClientBuilder&#40;&#41;
+ *     .pipeline&#40;pipeline&#41;
+ *     .connectionString&#40;connectionString&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.communication.callingserver.CallingServerClient.pipeline.instantiation -->
  *
  * <p>View {@link CallingServerClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -44,14 +57,29 @@ public final class CallingServerClient {
      * @param source The source of the call.
      * @param targets The targets of the call.
      * @param createCallOptions The call Options.
-     * @return response for a successful CreateCallConnection request.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful CreateCallConnection request.
      *
-     * {@codesnippet com.azure.communication.callingserver.CallingServerClient.create.call.connection}
+     * <!-- src_embed com.azure.communication.callingserver.CallingServerClient.create.call.connection -->
+     * <pre>
+     * List&lt;CommunicationIdentifier&gt; targets = Arrays.asList&#40;firstCallee, secondCallee&#41;;
+     * List&lt;MediaType&gt; requestedMediaTypes = Arrays.asList&#40;MediaType.AUDIO, MediaType.VIDEO&#41;;
+     * List&lt;EventSubscriptionType&gt; requestedCallEvents = Arrays.asList&#40;
+     *     EventSubscriptionType.DTMF_RECEIVED,
+     *     EventSubscriptionType.PARTICIPANTS_UPDATED&#41;;
+     * CreateCallOptions createCallOptions = new CreateCallOptions&#40;
+     *     callbackUri,
+     *     requestedMediaTypes,
+     *     requestedCallEvents&#41;;
+     * CallConnection callConnection = callingServerClient.createCallConnection&#40;source, targets, createCallOptions&#41;;
+     * </pre>
+     * <!-- end com.azure.communication.callingserver.CallingServerClient.create.call.connection -->
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CallConnection createCallConnection(
         CommunicationIdentifier source,
-        CommunicationIdentifier[] targets,
+        List<CommunicationIdentifier> targets,
         CreateCallOptions createCallOptions) {
         return callingServerAsyncClient.createCallConnectionInternal(source, targets, createCallOptions).block();
     }
@@ -63,12 +91,14 @@ public final class CallingServerClient {
      * @param targets The targets of the call.
      * @param createCallOptions The call Options.
      * @param context A {@link Context} representing the request context.
-     * @return response for a successful CreateCallConnection request.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CallConnection> createCallConnectionWithResponse(
         CommunicationIdentifier source,
-        CommunicationIdentifier[] targets,
+        List<CommunicationIdentifier> targets,
         CreateCallOptions createCallOptions,
         final Context context) {
         return callingServerAsyncClient
@@ -81,10 +111,12 @@ public final class CallingServerClient {
      * @param serverCallId The server call id.
      * @param source of Join Call request.
      * @param joinCallOptions to Join Call.
-     * @return CallConnection for a successful Join request.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return CallConnection for a successful join request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallConnection join(
+    public CallConnection joinCall(
         String serverCallId,
         CommunicationIdentifier source,
         JoinCallOptions joinCallOptions) {
@@ -97,11 +129,13 @@ public final class CallingServerClient {
      * @param serverCallId The server call id.
      * @param source of Join Call request.
      * @param joinCallOptions to Join Call.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @param context A {@link Context} representing the request context.
-     * @return response for a successful Join request.
+     * @return Response for a successful join request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallConnection> joinWithResponse(
+    public Response<CallConnection> joinCallWithResponse(
         String serverCallId,
         CommunicationIdentifier source,
         JoinCallOptions joinCallOptions,
@@ -122,7 +156,7 @@ public final class CallingServerClient {
     /**
      * Get ServerCall object
      *
-     * @param serverCallId The server call id.
+     * @param serverCallId Server call id.
      * @return ServerCall
      */
     public ServerCall initializeServerCall(String serverCallId) {

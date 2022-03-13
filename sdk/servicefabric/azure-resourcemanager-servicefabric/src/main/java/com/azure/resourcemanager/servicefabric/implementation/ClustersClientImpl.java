@@ -14,6 +14,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -32,7 +33,9 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.servicefabric.fluent.ClustersClient;
 import com.azure.resourcemanager.servicefabric.fluent.models.ClusterInner;
 import com.azure.resourcemanager.servicefabric.fluent.models.ClusterListResultInner;
+import com.azure.resourcemanager.servicefabric.fluent.models.UpgradableVersionPathResultInner;
 import com.azure.resourcemanager.servicefabric.models.ClusterUpdateParameters;
+import com.azure.resourcemanager.servicefabric.models.UpgradableVersionsDescription;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -148,6 +151,22 @@ public final class ClustersClientImpl implements ClustersClient {
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric"
+                + "/clusters/{clusterName}/listUpgradableVersions")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<UpgradableVersionPathResultInner>> listUpgradableVersions(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("clusterName") String clusterName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") UpgradableVersionsDescription versionsDescription,
             @HeaderParam("Accept") String accept,
             Context context);
     }
@@ -315,7 +334,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the cluster resource properties.
+     * @return the cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -371,7 +390,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the cluster resource properties.
+     * @return the cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -423,7 +442,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the cluster resource properties.
+     * @return the cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdateAsync(
@@ -446,7 +465,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the cluster resource properties.
+     * @return the cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdateAsync(
@@ -469,7 +488,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the cluster resource properties.
+     * @return the cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(
@@ -487,7 +506,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the cluster resource properties.
+     * @return the cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(
@@ -504,7 +523,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the cluster resource properties.
+     * @return the cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ClusterInner> createOrUpdateAsync(
@@ -524,7 +543,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the cluster resource properties.
+     * @return the cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ClusterInner> createOrUpdateAsync(
@@ -543,7 +562,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the cluster resource properties.
+     * @return the cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner createOrUpdate(String resourceGroupName, String clusterName, ClusterInner parameters) {
@@ -560,7 +579,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the cluster resource properties.
+     * @return the cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner createOrUpdate(
@@ -578,7 +597,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the cluster resource properties.
+     * @return the cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -635,7 +654,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the cluster resource properties.
+     * @return the cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -688,7 +707,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the cluster resource properties.
+     * @return the cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginUpdateAsync(
@@ -711,7 +730,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the cluster resource properties.
+     * @return the cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginUpdateAsync(
@@ -735,7 +754,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the cluster resource properties.
+     * @return the cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(
@@ -754,7 +773,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the cluster resource properties.
+     * @return the cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(
@@ -772,7 +791,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the cluster resource properties.
+     * @return the cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ClusterInner> updateAsync(
@@ -793,7 +812,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the cluster resource properties.
+     * @return the cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ClusterInner> updateAsync(
@@ -813,7 +832,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the cluster resource properties.
+     * @return the cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner update(String resourceGroupName, String clusterName, ClusterUpdateParameters parameters) {
@@ -831,7 +850,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the cluster resource properties.
+     * @return the cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner update(
@@ -1224,5 +1243,212 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ClusterListResultInner> listWithResponse(Context context) {
         return listWithResponseAsync(context).block();
+    }
+
+    /**
+     * If a target is not provided, it will get the minimum and maximum versions available from the current cluster
+     * version. If a target is given, it will provide the required path to get from the current cluster version to the
+     * target version.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster resource.
+     * @param versionsDescription The upgrade path description with target version.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of intermediate cluster code versions for an upgrade or downgrade.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<UpgradableVersionPathResultInner>> listUpgradableVersionsWithResponseAsync(
+        String resourceGroupName, String clusterName, UpgradableVersionsDescription versionsDescription) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (versionsDescription != null) {
+            versionsDescription.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listUpgradableVersions(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            clusterName,
+                            this.client.getApiVersion(),
+                            versionsDescription,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * If a target is not provided, it will get the minimum and maximum versions available from the current cluster
+     * version. If a target is given, it will provide the required path to get from the current cluster version to the
+     * target version.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster resource.
+     * @param versionsDescription The upgrade path description with target version.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of intermediate cluster code versions for an upgrade or downgrade.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<UpgradableVersionPathResultInner>> listUpgradableVersionsWithResponseAsync(
+        String resourceGroupName,
+        String clusterName,
+        UpgradableVersionsDescription versionsDescription,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (versionsDescription != null) {
+            versionsDescription.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listUpgradableVersions(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                clusterName,
+                this.client.getApiVersion(),
+                versionsDescription,
+                accept,
+                context);
+    }
+
+    /**
+     * If a target is not provided, it will get the minimum and maximum versions available from the current cluster
+     * version. If a target is given, it will provide the required path to get from the current cluster version to the
+     * target version.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster resource.
+     * @param versionsDescription The upgrade path description with target version.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of intermediate cluster code versions for an upgrade or downgrade.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<UpgradableVersionPathResultInner> listUpgradableVersionsAsync(
+        String resourceGroupName, String clusterName, UpgradableVersionsDescription versionsDescription) {
+        return listUpgradableVersionsWithResponseAsync(resourceGroupName, clusterName, versionsDescription)
+            .flatMap(
+                (Response<UpgradableVersionPathResultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * If a target is not provided, it will get the minimum and maximum versions available from the current cluster
+     * version. If a target is given, it will provide the required path to get from the current cluster version to the
+     * target version.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of intermediate cluster code versions for an upgrade or downgrade.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<UpgradableVersionPathResultInner> listUpgradableVersionsAsync(
+        String resourceGroupName, String clusterName) {
+        final UpgradableVersionsDescription versionsDescription = null;
+        return listUpgradableVersionsWithResponseAsync(resourceGroupName, clusterName, versionsDescription)
+            .flatMap(
+                (Response<UpgradableVersionPathResultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * If a target is not provided, it will get the minimum and maximum versions available from the current cluster
+     * version. If a target is given, it will provide the required path to get from the current cluster version to the
+     * target version.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of intermediate cluster code versions for an upgrade or downgrade.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public UpgradableVersionPathResultInner listUpgradableVersions(String resourceGroupName, String clusterName) {
+        final UpgradableVersionsDescription versionsDescription = null;
+        return listUpgradableVersionsAsync(resourceGroupName, clusterName, versionsDescription).block();
+    }
+
+    /**
+     * If a target is not provided, it will get the minimum and maximum versions available from the current cluster
+     * version. If a target is given, it will provide the required path to get from the current cluster version to the
+     * target version.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster resource.
+     * @param versionsDescription The upgrade path description with target version.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of intermediate cluster code versions for an upgrade or downgrade.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<UpgradableVersionPathResultInner> listUpgradableVersionsWithResponse(
+        String resourceGroupName,
+        String clusterName,
+        UpgradableVersionsDescription versionsDescription,
+        Context context) {
+        return listUpgradableVersionsWithResponseAsync(resourceGroupName, clusterName, versionsDescription, context)
+            .block();
     }
 }

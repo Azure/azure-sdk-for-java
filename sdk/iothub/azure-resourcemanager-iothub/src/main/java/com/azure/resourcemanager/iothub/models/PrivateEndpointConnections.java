@@ -34,7 +34,7 @@ public interface PrivateEndpointConnections {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of private endpoint connections for an IotHub.
+     * @return the list of private endpoint connections for an IotHub along with {@link Response}.
      */
     Response<List<PrivateEndpointConnection>> listWithResponse(
         String resourceGroupName, String resourceName, Context context);
@@ -64,7 +64,7 @@ public interface PrivateEndpointConnections {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection properties.
+     * @return private endpoint connection properties along with {@link Response}.
      */
     Response<PrivateEndpointConnection> getWithResponse(
         String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context);

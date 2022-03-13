@@ -6,9 +6,7 @@ package com.azure.core.amqp.implementation;
 import org.apache.qpid.proton.engine.Record;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -33,6 +31,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class ReactorDispatcherTest {
+    private static final Duration VERIFY_TIMEOUT = Duration.ofSeconds(5);
+
     @Mock
     private Reactor reactor;
     @Mock
@@ -51,16 +51,6 @@ public class ReactorDispatcherTest {
     private final AtomicReference<Selectable.Callback> closeScheduler = new AtomicReference<>();
     private final AtomicReference<Selectable.Callback> workScheduler = new AtomicReference<>();
     private AutoCloseable mockCloseable;
-
-    @BeforeAll
-    public static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(5));
-    }
-
-    @AfterAll
-    public static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     @BeforeEach
     public void beforeEach() throws IOException {
@@ -124,7 +114,8 @@ public class ReactorDispatcherTest {
                 assertFalse(signal.isInitiatedByClient());
                 assertFalse(signal.isTransient());
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
 
         verify(sourceChannel).close();
         verify(sinkChannel).close();
@@ -156,6 +147,6 @@ public class ReactorDispatcherTest {
             })
             .expectErrorMatches(error -> error instanceof RuntimeException
                 && error.getCause().equals(testException))
-            .verify();
+            .verify(VERIFY_TIMEOUT);
     }
 }

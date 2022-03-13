@@ -47,12 +47,17 @@ public final class StorageTargetsImpl implements StorageTargets {
         return Utils.mapPage(inner, inner1 -> new StorageTargetImpl(inner1, this.manager()));
     }
 
+    public void delete(String resourceGroupName, String cacheName, String storageTargetName, String force) {
+        this.serviceClient().delete(resourceGroupName, cacheName, storageTargetName, force);
+    }
+
     public void delete(String resourceGroupName, String cacheName, String storageTargetName) {
         this.serviceClient().delete(resourceGroupName, cacheName, storageTargetName);
     }
 
-    public void delete(String resourceGroupName, String cacheName, String storageTargetName, Context context) {
-        this.serviceClient().delete(resourceGroupName, cacheName, storageTargetName, context);
+    public void delete(
+        String resourceGroupName, String cacheName, String storageTargetName, String force, Context context) {
+        this.serviceClient().delete(resourceGroupName, cacheName, storageTargetName, force, context);
     }
 
     public StorageTarget get(String resourceGroupName, String cacheName, String storageTargetName) {
@@ -157,10 +162,11 @@ public final class StorageTargetsImpl implements StorageTargets {
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'storageTargets'.", id)));
         }
-        this.delete(resourceGroupName, cacheName, storageTargetName, Context.NONE);
+        String localForce = null;
+        this.delete(resourceGroupName, cacheName, storageTargetName, localForce, Context.NONE);
     }
 
-    public void deleteByIdWithResponse(String id, Context context) {
+    public void deleteByIdWithResponse(String id, String force, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
             throw logger
@@ -184,7 +190,7 @@ public final class StorageTargetsImpl implements StorageTargets {
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'storageTargets'.", id)));
         }
-        this.delete(resourceGroupName, cacheName, storageTargetName, context);
+        this.delete(resourceGroupName, cacheName, storageTargetName, force, context);
     }
 
     private StorageTargetsClient serviceClient() {

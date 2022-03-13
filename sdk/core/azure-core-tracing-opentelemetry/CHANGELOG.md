@@ -1,7 +1,114 @@
 # Release History
 
-## 1.0.0-beta.12 (Unreleased)
+## 1.0.0-beta.22 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.21 (2022-03-04)
+
+### Other Changes
+
+- Updated all `ClientLogger`s to be static constants instead of instance variables. ([#27339](https://github.com/Azure/azure-sdk-for-java/pull/27339))
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.25.0` to `1.26.0`.
+- Upgraded OpenTelemetry from `1.0.0` to `1.11.0`.
+
+## 1.0.0-beta.20 (2022-02-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.1` to `1.25.0`.
+
+## 1.0.0-beta.19 (2022-01-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.0` to `1.24.1`.
+
+## 1.0.0-beta.18 (2022-01-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.23.1` to `1.24.0`.
+
+## 1.0.0-beta.17 (2021-12-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.22.0` to `1.23.1`.
+
+## 1.0.0-beta.16 (2021-11-05)
+
+### Features Added
+
+- Provide HTTP URL and method before span is started to allow for sampling decisions to be based on them. ([#24996](https://github.com/Azure/azure-sdk-for-java/pull/24996))
+
+### Bugs Fixed
+
+- Fixed OpenTelemetry context propagation and span duplication. ([#25012](https://github.com/Azure/azure-sdk-for-java/pull/25012))
+- Fixed inconsistencies in span creation and the OpenTelemetry specification. ([#24954](https://github.com/Azure/azure-sdk-for-java/pull/24954))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.21.0` to `1.22.0`.
+
+## 1.0.0-beta.15 (2021-10-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.20.0` to `1.21.0`.
+
+## 1.0.0-beta.14 (2021-09-07)
+
+### Fixed
+
+- Fixed a case where AMQP span context should set remote parent. ([#21667](https://github.com/Azure/azure-sdk-for-java/pull/21667))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.19.0` to `1.20.0`.
+
+## 1.0.0-beta.13 (2021-08-06)
+
+### Features Added
+
+- Added support to create tracing spans with customizations. ([#23159](https://github.com/Azure/azure-sdk-for-java/pull/23159))
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.18.0` to `1.19.0`.
+
+## 1.0.0-beta.12 (2021-07-01)
+
+### Key Bugs Fixed
+
+- Fixed `addEvent` API to use the span provided in the context rather than `Span.current()`.
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.17.0` to `1.18.0`.
 
 ## 1.0.0-beta.11 (2021-06-07)
 

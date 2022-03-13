@@ -7,6 +7,7 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -26,6 +27,7 @@ public final class SnowflakeImportCopyCommand extends ImportSettings {
      * "MM/DD/YYYY", "TIME_FORMAT": "'HH24:MI:SS.FF'" }
      */
     @JsonProperty(value = "additionalCopyOptions")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> additionalCopyOptions;
 
     /*
@@ -35,6 +37,7 @@ public final class SnowflakeImportCopyCommand extends ImportSettings {
      * "TRUE", "LOAD_UNCERTAIN_FILES": "'FALSE'" }
      */
     @JsonProperty(value = "additionalFormatOptions")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> additionalFormatOptions;
 
     /**

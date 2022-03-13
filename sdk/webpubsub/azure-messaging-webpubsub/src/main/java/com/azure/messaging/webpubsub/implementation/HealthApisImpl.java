@@ -12,8 +12,8 @@ import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
@@ -26,116 +26,100 @@ public final class HealthApisImpl {
     private final HealthApisService service;
 
     /** The service client containing this operation class. */
-    private final AzureWebPubSubServiceRestAPIImpl client;
+    private final AzureWebPubSubServiceRestApiImpl client;
 
     /**
      * Initializes an instance of HealthApisImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    HealthApisImpl(AzureWebPubSubServiceRestAPIImpl client) {
+    HealthApisImpl(AzureWebPubSubServiceRestApiImpl client) {
         this.service =
                 RestProxy.create(HealthApisService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureWebPubSubServiceRestAPIHealthApis to be used by the proxy
+     * The interface defining all the services for AzureWebPubSubServiceRestApiHealthApis to be used by the proxy
      * service to perform REST calls.
      */
-    @Host("{$host}")
+    @Host("{Endpoint}")
     @ServiceInterface(name = "AzureWebPubSubServic")
     public interface HealthApisService {
         @Head("/api/health")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> getHealthStatus(
-                @HostParam("$host") String host, @QueryParam("api-version") String apiVersion, Context context);
+        Mono<Response<Void>> getServiceStatus(
+                @HostParam("Endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                RequestOptions requestOptions,
+                Context context);
     }
 
     /**
      * Get service health status.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return service health status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> getHealthStatusWithResponseAsync() {
-        if (this.client.getHost() == null) {
-            return Mono.error(
-                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
-        }
+    public Mono<Response<Void>> getServiceStatusWithResponseAsync(RequestOptions requestOptions) {
         return FluxUtil.withContext(
-                context -> service.getHealthStatus(this.client.getHost(), this.client.getApiVersion(), context));
+                context ->
+                        service.getServiceStatus(
+                                this.client.getEndpoint(),
+                                this.client.getServiceVersion().getVersion(),
+                                requestOptions,
+                                context));
     }
 
     /**
      * Get service health status.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return service health status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> getHealthStatusWithResponseAsync(Context context) {
-        if (this.client.getHost() == null) {
-            return Mono.error(
-                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
-        }
-        return service.getHealthStatus(this.client.getHost(), this.client.getApiVersion(), context);
+    public Mono<Response<Void>> getServiceStatusWithResponseAsync(RequestOptions requestOptions, Context context) {
+        return service.getServiceStatus(
+                this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), requestOptions, context);
     }
 
     /**
      * Get service health status.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return service health status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> getHealthStatusAsync() {
-        return getHealthStatusWithResponseAsync().flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Get service health status.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service health status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> getHealthStatusAsync(Context context) {
-        return getHealthStatusWithResponseAsync(context).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Get service health status.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getHealthStatus() {
-        getHealthStatusAsync().block();
-    }
-
-    /**
-     * Get service health status.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service health status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getHealthStatusWithResponse(Context context) {
-        return getHealthStatusWithResponseAsync(context).block();
+    public Response<Void> getServiceStatusWithResponse(RequestOptions requestOptions) {
+        return getServiceStatusWithResponseAsync(requestOptions).block();
     }
 }

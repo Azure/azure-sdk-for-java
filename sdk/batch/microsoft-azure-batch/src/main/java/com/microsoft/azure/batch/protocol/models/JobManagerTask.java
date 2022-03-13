@@ -121,7 +121,8 @@ public class JobManagerTask {
      * The number of scheduling slots that the Task requires to run.
      * The default is 1. A Task can only be scheduled to run on a compute node
      * if the node has enough free scheduling slots available. For
-     * multi-instance Tasks, this must be 1.
+     * multi-instance Tasks, this property is not supported and must not be
+     * specified.
      */
     @JsonProperty(value = "requiredSlots")
     private Integer requiredSlots;
@@ -362,7 +363,7 @@ public class JobManagerTask {
     }
 
     /**
-     * Get the default is 1. A Task can only be scheduled to run on a compute node if the node has enough free scheduling slots available. For multi-instance Tasks, this must be 1.
+     * Get the default is 1. A Task can only be scheduled to run on a compute node if the node has enough free scheduling slots available. For multi-instance Tasks, this property is not supported and must not be specified.
      *
      * @return the requiredSlots value
      */
@@ -371,7 +372,7 @@ public class JobManagerTask {
     }
 
     /**
-     * Set the default is 1. A Task can only be scheduled to run on a compute node if the node has enough free scheduling slots available. For multi-instance Tasks, this must be 1.
+     * Set the default is 1. A Task can only be scheduled to run on a compute node if the node has enough free scheduling slots available. For multi-instance Tasks, this property is not supported and must not be specified.
      *
      * @param requiredSlots the requiredSlots value to set
      * @return the JobManagerTask object itself.

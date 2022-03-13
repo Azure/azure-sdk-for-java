@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.privatedns.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
@@ -13,11 +12,11 @@ import com.azure.resourcemanager.privatedns.models.ProvisioningState;
 import com.azure.resourcemanager.privatedns.models.VirtualNetworkLinkState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Describes a link to virtual network for a Private DNS zone. */
-@JsonFlatten
 @Fluent
-public class VirtualNetworkLinkInner extends Resource {
+public final class VirtualNetworkLinkInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkLinkInner.class);
 
     /*
@@ -27,32 +26,10 @@ public class VirtualNetworkLinkInner extends Resource {
     private String etag;
 
     /*
-     * The reference of the virtual network.
+     * Properties of the virtual network link to the Private DNS zone.
      */
-    @JsonProperty(value = "properties.virtualNetwork")
-    private SubResource virtualNetwork;
-
-    /*
-     * Is auto-registration of virtual machine records in the virtual network
-     * in the Private DNS zone enabled?
-     */
-    @JsonProperty(value = "properties.registrationEnabled")
-    private Boolean registrationEnabled;
-
-    /*
-     * The status of the virtual network link to the Private DNS zone. Possible
-     * values are 'InProgress' and 'Done'. This is a read-only property and any
-     * attempt to set this value will be ignored.
-     */
-    @JsonProperty(value = "properties.virtualNetworkLinkState", access = JsonProperty.Access.WRITE_ONLY)
-    private VirtualNetworkLinkState virtualNetworkLinkState;
-
-    /*
-     * The provisioning state of the resource. This is a read-only property and
-     * any attempt to set this value will be ignored.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "properties")
+    private VirtualNetworkLinkProperties innerProperties;
 
     /**
      * Get the etag property: The ETag of the virtual network link.
@@ -75,12 +52,35 @@ public class VirtualNetworkLinkInner extends Resource {
     }
 
     /**
+     * Get the innerProperties property: Properties of the virtual network link to the Private DNS zone.
+     *
+     * @return the innerProperties value.
+     */
+    private VirtualNetworkLinkProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualNetworkLinkInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualNetworkLinkInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
      * Get the virtualNetwork property: The reference of the virtual network.
      *
      * @return the virtualNetwork value.
      */
     public SubResource virtualNetwork() {
-        return this.virtualNetwork;
+        return this.innerProperties() == null ? null : this.innerProperties().virtualNetwork();
     }
 
     /**
@@ -90,7 +90,10 @@ public class VirtualNetworkLinkInner extends Resource {
      * @return the VirtualNetworkLinkInner object itself.
      */
     public VirtualNetworkLinkInner withVirtualNetwork(SubResource virtualNetwork) {
-        this.virtualNetwork = virtualNetwork;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkLinkProperties();
+        }
+        this.innerProperties().withVirtualNetwork(virtualNetwork);
         return this;
     }
 
@@ -101,7 +104,7 @@ public class VirtualNetworkLinkInner extends Resource {
      * @return the registrationEnabled value.
      */
     public Boolean registrationEnabled() {
-        return this.registrationEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().registrationEnabled();
     }
 
     /**
@@ -112,7 +115,10 @@ public class VirtualNetworkLinkInner extends Resource {
      * @return the VirtualNetworkLinkInner object itself.
      */
     public VirtualNetworkLinkInner withRegistrationEnabled(Boolean registrationEnabled) {
-        this.registrationEnabled = registrationEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkLinkProperties();
+        }
+        this.innerProperties().withRegistrationEnabled(registrationEnabled);
         return this;
     }
 
@@ -124,7 +130,7 @@ public class VirtualNetworkLinkInner extends Resource {
      * @return the virtualNetworkLinkState value.
      */
     public VirtualNetworkLinkState virtualNetworkLinkState() {
-        return this.virtualNetworkLinkState;
+        return this.innerProperties() == null ? null : this.innerProperties().virtualNetworkLinkState();
     }
 
     /**
@@ -134,7 +140,7 @@ public class VirtualNetworkLinkInner extends Resource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -143,5 +149,8 @@ public class VirtualNetworkLinkInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -5,134 +5,176 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.apimanagement.fluent.models.AuthorizationServerUpdateContractProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** External OAuth authorization server settings. */
-@JsonFlatten
 @Fluent
-public class AuthorizationServerUpdateContract extends ProxyResource {
+public final class AuthorizationServerUpdateContract extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AuthorizationServerUpdateContract.class);
 
     /*
-     * Description of the authorization server. Can contain HTML formatting
-     * tags.
+     * Properties of the External OAuth authorization server update Contract.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    @JsonProperty(value = "properties")
+    private AuthorizationServerUpdateContractProperties innerProperties;
 
-    /*
-     * HTTP verbs supported by the authorization endpoint. GET must be always
-     * present. POST is optional.
+    /**
+     * Get the innerProperties property: Properties of the External OAuth authorization server update Contract.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.authorizationMethods")
-    private List<AuthorizationMethod> authorizationMethods;
+    private AuthorizationServerUpdateContractProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Method of authentication supported by the token endpoint of this
-     * authorization server. Possible values are Basic and/or Body. When Body
-     * is specified, client credentials and other parameters are passed within
-     * the request body in the application/x-www-form-urlencoded format.
+    /**
+     * Get the displayName property: User-friendly authorization server name.
+     *
+     * @return the displayName value.
      */
-    @JsonProperty(value = "properties.clientAuthenticationMethod")
-    private List<ClientAuthenticationMethod> clientAuthenticationMethod;
+    public String displayName() {
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
+    }
 
-    /*
-     * Additional parameters required by the token endpoint of this
-     * authorization server represented as an array of JSON objects with name
-     * and value string properties, i.e. {"name" : "name value", "value": "a
-     * value"}.
+    /**
+     * Set the displayName property: User-friendly authorization server name.
+     *
+     * @param displayName the displayName value to set.
+     * @return the AuthorizationServerUpdateContract object itself.
      */
-    @JsonProperty(value = "properties.tokenBodyParameters")
-    private List<TokenBodyParameterContract> tokenBodyParameters;
+    public AuthorizationServerUpdateContract withDisplayName(String displayName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AuthorizationServerUpdateContractProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
+        return this;
+    }
 
-    /*
-     * OAuth token endpoint. Contains absolute URI to entity being referenced.
+    /**
+     * Get the clientRegistrationEndpoint property: Optional reference to a page where client or app registration for
+     * this authorization server is performed. Contains absolute URL to entity being referenced.
+     *
+     * @return the clientRegistrationEndpoint value.
      */
-    @JsonProperty(value = "properties.tokenEndpoint")
-    private String tokenEndpoint;
+    public String clientRegistrationEndpoint() {
+        return this.innerProperties() == null ? null : this.innerProperties().clientRegistrationEndpoint();
+    }
 
-    /*
-     * If true, authorization server will include state parameter from the
-     * authorization request to its response. Client may use state parameter to
-     * raise protocol security.
+    /**
+     * Set the clientRegistrationEndpoint property: Optional reference to a page where client or app registration for
+     * this authorization server is performed. Contains absolute URL to entity being referenced.
+     *
+     * @param clientRegistrationEndpoint the clientRegistrationEndpoint value to set.
+     * @return the AuthorizationServerUpdateContract object itself.
      */
-    @JsonProperty(value = "properties.supportState")
-    private Boolean supportState;
+    public AuthorizationServerUpdateContract withClientRegistrationEndpoint(String clientRegistrationEndpoint) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AuthorizationServerUpdateContractProperties();
+        }
+        this.innerProperties().withClientRegistrationEndpoint(clientRegistrationEndpoint);
+        return this;
+    }
 
-    /*
-     * Access token scope that is going to be requested by default. Can be
-     * overridden at the API level. Should be provided in the form of a string
-     * containing space-delimited values.
-     */
-    @JsonProperty(value = "properties.defaultScope")
-    private String defaultScope;
-
-    /*
-     * Specifies the mechanism by which access token is passed to the API.
-     */
-    @JsonProperty(value = "properties.bearerTokenSendingMethods")
-    private List<BearerTokenSendingMethod> bearerTokenSendingMethods;
-
-    /*
-     * Can be optionally specified when resource owner password grant type is
-     * supported by this authorization server. Default resource owner username.
-     */
-    @JsonProperty(value = "properties.resourceOwnerUsername")
-    private String resourceOwnerUsername;
-
-    /*
-     * Can be optionally specified when resource owner password grant type is
-     * supported by this authorization server. Default resource owner password.
-     */
-    @JsonProperty(value = "properties.resourceOwnerPassword")
-    private String resourceOwnerPassword;
-
-    /*
-     * User-friendly authorization server name.
-     */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
-
-    /*
-     * Optional reference to a page where client or app registration for this
-     * authorization server is performed. Contains absolute URL to entity being
-     * referenced.
-     */
-    @JsonProperty(value = "properties.clientRegistrationEndpoint")
-    private String clientRegistrationEndpoint;
-
-    /*
-     * OAuth authorization endpoint. See
+    /**
+     * Get the authorizationEndpoint property: OAuth authorization endpoint. See
      * http://tools.ietf.org/html/rfc6749#section-3.2.
+     *
+     * @return the authorizationEndpoint value.
      */
-    @JsonProperty(value = "properties.authorizationEndpoint")
-    private String authorizationEndpoint;
+    public String authorizationEndpoint() {
+        return this.innerProperties() == null ? null : this.innerProperties().authorizationEndpoint();
+    }
 
-    /*
-     * Form of an authorization grant, which the client uses to request the
-     * access token.
+    /**
+     * Set the authorizationEndpoint property: OAuth authorization endpoint. See
+     * http://tools.ietf.org/html/rfc6749#section-3.2.
+     *
+     * @param authorizationEndpoint the authorizationEndpoint value to set.
+     * @return the AuthorizationServerUpdateContract object itself.
      */
-    @JsonProperty(value = "properties.grantTypes")
-    private List<GrantType> grantTypes;
+    public AuthorizationServerUpdateContract withAuthorizationEndpoint(String authorizationEndpoint) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AuthorizationServerUpdateContractProperties();
+        }
+        this.innerProperties().withAuthorizationEndpoint(authorizationEndpoint);
+        return this;
+    }
 
-    /*
-     * Client or app id registered with this authorization server.
+    /**
+     * Get the grantTypes property: Form of an authorization grant, which the client uses to request the access token.
+     *
+     * @return the grantTypes value.
      */
-    @JsonProperty(value = "properties.clientId")
-    private String clientId;
+    public List<GrantType> grantTypes() {
+        return this.innerProperties() == null ? null : this.innerProperties().grantTypes();
+    }
 
-    /*
-     * Client or app secret registered with this authorization server. This
-     * property will not be filled on 'GET' operations! Use '/listSecrets' POST
-     * request to get the value.
+    /**
+     * Set the grantTypes property: Form of an authorization grant, which the client uses to request the access token.
+     *
+     * @param grantTypes the grantTypes value to set.
+     * @return the AuthorizationServerUpdateContract object itself.
      */
-    @JsonProperty(value = "properties.clientSecret")
-    private String clientSecret;
+    public AuthorizationServerUpdateContract withGrantTypes(List<GrantType> grantTypes) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AuthorizationServerUpdateContractProperties();
+        }
+        this.innerProperties().withGrantTypes(grantTypes);
+        return this;
+    }
+
+    /**
+     * Get the clientId property: Client or app id registered with this authorization server.
+     *
+     * @return the clientId value.
+     */
+    public String clientId() {
+        return this.innerProperties() == null ? null : this.innerProperties().clientId();
+    }
+
+    /**
+     * Set the clientId property: Client or app id registered with this authorization server.
+     *
+     * @param clientId the clientId value to set.
+     * @return the AuthorizationServerUpdateContract object itself.
+     */
+    public AuthorizationServerUpdateContract withClientId(String clientId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AuthorizationServerUpdateContractProperties();
+        }
+        this.innerProperties().withClientId(clientId);
+        return this;
+    }
+
+    /**
+     * Get the clientSecret property: Client or app secret registered with this authorization server. This property will
+     * not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
+     *
+     * @return the clientSecret value.
+     */
+    public String clientSecret() {
+        return this.innerProperties() == null ? null : this.innerProperties().clientSecret();
+    }
+
+    /**
+     * Set the clientSecret property: Client or app secret registered with this authorization server. This property will
+     * not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
+     *
+     * @param clientSecret the clientSecret value to set.
+     * @return the AuthorizationServerUpdateContract object itself.
+     */
+    public AuthorizationServerUpdateContract withClientSecret(String clientSecret) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AuthorizationServerUpdateContractProperties();
+        }
+        this.innerProperties().withClientSecret(clientSecret);
+        return this;
+    }
 
     /**
      * Get the description property: Description of the authorization server. Can contain HTML formatting tags.
@@ -140,7 +182,7 @@ public class AuthorizationServerUpdateContract extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -150,7 +192,10 @@ public class AuthorizationServerUpdateContract extends ProxyResource {
      * @return the AuthorizationServerUpdateContract object itself.
      */
     public AuthorizationServerUpdateContract withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AuthorizationServerUpdateContractProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -161,7 +206,7 @@ public class AuthorizationServerUpdateContract extends ProxyResource {
      * @return the authorizationMethods value.
      */
     public List<AuthorizationMethod> authorizationMethods() {
-        return this.authorizationMethods;
+        return this.innerProperties() == null ? null : this.innerProperties().authorizationMethods();
     }
 
     /**
@@ -172,7 +217,10 @@ public class AuthorizationServerUpdateContract extends ProxyResource {
      * @return the AuthorizationServerUpdateContract object itself.
      */
     public AuthorizationServerUpdateContract withAuthorizationMethods(List<AuthorizationMethod> authorizationMethods) {
-        this.authorizationMethods = authorizationMethods;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AuthorizationServerUpdateContractProperties();
+        }
+        this.innerProperties().withAuthorizationMethods(authorizationMethods);
         return this;
     }
 
@@ -184,7 +232,7 @@ public class AuthorizationServerUpdateContract extends ProxyResource {
      * @return the clientAuthenticationMethod value.
      */
     public List<ClientAuthenticationMethod> clientAuthenticationMethod() {
-        return this.clientAuthenticationMethod;
+        return this.innerProperties() == null ? null : this.innerProperties().clientAuthenticationMethod();
     }
 
     /**
@@ -197,7 +245,10 @@ public class AuthorizationServerUpdateContract extends ProxyResource {
      */
     public AuthorizationServerUpdateContract withClientAuthenticationMethod(
         List<ClientAuthenticationMethod> clientAuthenticationMethod) {
-        this.clientAuthenticationMethod = clientAuthenticationMethod;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AuthorizationServerUpdateContractProperties();
+        }
+        this.innerProperties().withClientAuthenticationMethod(clientAuthenticationMethod);
         return this;
     }
 
@@ -209,7 +260,7 @@ public class AuthorizationServerUpdateContract extends ProxyResource {
      * @return the tokenBodyParameters value.
      */
     public List<TokenBodyParameterContract> tokenBodyParameters() {
-        return this.tokenBodyParameters;
+        return this.innerProperties() == null ? null : this.innerProperties().tokenBodyParameters();
     }
 
     /**
@@ -222,7 +273,10 @@ public class AuthorizationServerUpdateContract extends ProxyResource {
      */
     public AuthorizationServerUpdateContract withTokenBodyParameters(
         List<TokenBodyParameterContract> tokenBodyParameters) {
-        this.tokenBodyParameters = tokenBodyParameters;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AuthorizationServerUpdateContractProperties();
+        }
+        this.innerProperties().withTokenBodyParameters(tokenBodyParameters);
         return this;
     }
 
@@ -232,7 +286,7 @@ public class AuthorizationServerUpdateContract extends ProxyResource {
      * @return the tokenEndpoint value.
      */
     public String tokenEndpoint() {
-        return this.tokenEndpoint;
+        return this.innerProperties() == null ? null : this.innerProperties().tokenEndpoint();
     }
 
     /**
@@ -242,7 +296,10 @@ public class AuthorizationServerUpdateContract extends ProxyResource {
      * @return the AuthorizationServerUpdateContract object itself.
      */
     public AuthorizationServerUpdateContract withTokenEndpoint(String tokenEndpoint) {
-        this.tokenEndpoint = tokenEndpoint;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AuthorizationServerUpdateContractProperties();
+        }
+        this.innerProperties().withTokenEndpoint(tokenEndpoint);
         return this;
     }
 
@@ -253,7 +310,7 @@ public class AuthorizationServerUpdateContract extends ProxyResource {
      * @return the supportState value.
      */
     public Boolean supportState() {
-        return this.supportState;
+        return this.innerProperties() == null ? null : this.innerProperties().supportState();
     }
 
     /**
@@ -264,7 +321,10 @@ public class AuthorizationServerUpdateContract extends ProxyResource {
      * @return the AuthorizationServerUpdateContract object itself.
      */
     public AuthorizationServerUpdateContract withSupportState(Boolean supportState) {
-        this.supportState = supportState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AuthorizationServerUpdateContractProperties();
+        }
+        this.innerProperties().withSupportState(supportState);
         return this;
     }
 
@@ -275,7 +335,7 @@ public class AuthorizationServerUpdateContract extends ProxyResource {
      * @return the defaultScope value.
      */
     public String defaultScope() {
-        return this.defaultScope;
+        return this.innerProperties() == null ? null : this.innerProperties().defaultScope();
     }
 
     /**
@@ -286,7 +346,10 @@ public class AuthorizationServerUpdateContract extends ProxyResource {
      * @return the AuthorizationServerUpdateContract object itself.
      */
     public AuthorizationServerUpdateContract withDefaultScope(String defaultScope) {
-        this.defaultScope = defaultScope;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AuthorizationServerUpdateContractProperties();
+        }
+        this.innerProperties().withDefaultScope(defaultScope);
         return this;
     }
 
@@ -296,7 +359,7 @@ public class AuthorizationServerUpdateContract extends ProxyResource {
      * @return the bearerTokenSendingMethods value.
      */
     public List<BearerTokenSendingMethod> bearerTokenSendingMethods() {
-        return this.bearerTokenSendingMethods;
+        return this.innerProperties() == null ? null : this.innerProperties().bearerTokenSendingMethods();
     }
 
     /**
@@ -307,7 +370,10 @@ public class AuthorizationServerUpdateContract extends ProxyResource {
      */
     public AuthorizationServerUpdateContract withBearerTokenSendingMethods(
         List<BearerTokenSendingMethod> bearerTokenSendingMethods) {
-        this.bearerTokenSendingMethods = bearerTokenSendingMethods;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AuthorizationServerUpdateContractProperties();
+        }
+        this.innerProperties().withBearerTokenSendingMethods(bearerTokenSendingMethods);
         return this;
     }
 
@@ -318,7 +384,7 @@ public class AuthorizationServerUpdateContract extends ProxyResource {
      * @return the resourceOwnerUsername value.
      */
     public String resourceOwnerUsername() {
-        return this.resourceOwnerUsername;
+        return this.innerProperties() == null ? null : this.innerProperties().resourceOwnerUsername();
     }
 
     /**
@@ -329,7 +395,10 @@ public class AuthorizationServerUpdateContract extends ProxyResource {
      * @return the AuthorizationServerUpdateContract object itself.
      */
     public AuthorizationServerUpdateContract withResourceOwnerUsername(String resourceOwnerUsername) {
-        this.resourceOwnerUsername = resourceOwnerUsername;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AuthorizationServerUpdateContractProperties();
+        }
+        this.innerProperties().withResourceOwnerUsername(resourceOwnerUsername);
         return this;
     }
 
@@ -340,7 +409,7 @@ public class AuthorizationServerUpdateContract extends ProxyResource {
      * @return the resourceOwnerPassword value.
      */
     public String resourceOwnerPassword() {
-        return this.resourceOwnerPassword;
+        return this.innerProperties() == null ? null : this.innerProperties().resourceOwnerPassword();
     }
 
     /**
@@ -351,133 +420,10 @@ public class AuthorizationServerUpdateContract extends ProxyResource {
      * @return the AuthorizationServerUpdateContract object itself.
      */
     public AuthorizationServerUpdateContract withResourceOwnerPassword(String resourceOwnerPassword) {
-        this.resourceOwnerPassword = resourceOwnerPassword;
-        return this;
-    }
-
-    /**
-     * Get the displayName property: User-friendly authorization server name.
-     *
-     * @return the displayName value.
-     */
-    public String displayName() {
-        return this.displayName;
-    }
-
-    /**
-     * Set the displayName property: User-friendly authorization server name.
-     *
-     * @param displayName the displayName value to set.
-     * @return the AuthorizationServerUpdateContract object itself.
-     */
-    public AuthorizationServerUpdateContract withDisplayName(String displayName) {
-        this.displayName = displayName;
-        return this;
-    }
-
-    /**
-     * Get the clientRegistrationEndpoint property: Optional reference to a page where client or app registration for
-     * this authorization server is performed. Contains absolute URL to entity being referenced.
-     *
-     * @return the clientRegistrationEndpoint value.
-     */
-    public String clientRegistrationEndpoint() {
-        return this.clientRegistrationEndpoint;
-    }
-
-    /**
-     * Set the clientRegistrationEndpoint property: Optional reference to a page where client or app registration for
-     * this authorization server is performed. Contains absolute URL to entity being referenced.
-     *
-     * @param clientRegistrationEndpoint the clientRegistrationEndpoint value to set.
-     * @return the AuthorizationServerUpdateContract object itself.
-     */
-    public AuthorizationServerUpdateContract withClientRegistrationEndpoint(String clientRegistrationEndpoint) {
-        this.clientRegistrationEndpoint = clientRegistrationEndpoint;
-        return this;
-    }
-
-    /**
-     * Get the authorizationEndpoint property: OAuth authorization endpoint. See
-     * http://tools.ietf.org/html/rfc6749#section-3.2.
-     *
-     * @return the authorizationEndpoint value.
-     */
-    public String authorizationEndpoint() {
-        return this.authorizationEndpoint;
-    }
-
-    /**
-     * Set the authorizationEndpoint property: OAuth authorization endpoint. See
-     * http://tools.ietf.org/html/rfc6749#section-3.2.
-     *
-     * @param authorizationEndpoint the authorizationEndpoint value to set.
-     * @return the AuthorizationServerUpdateContract object itself.
-     */
-    public AuthorizationServerUpdateContract withAuthorizationEndpoint(String authorizationEndpoint) {
-        this.authorizationEndpoint = authorizationEndpoint;
-        return this;
-    }
-
-    /**
-     * Get the grantTypes property: Form of an authorization grant, which the client uses to request the access token.
-     *
-     * @return the grantTypes value.
-     */
-    public List<GrantType> grantTypes() {
-        return this.grantTypes;
-    }
-
-    /**
-     * Set the grantTypes property: Form of an authorization grant, which the client uses to request the access token.
-     *
-     * @param grantTypes the grantTypes value to set.
-     * @return the AuthorizationServerUpdateContract object itself.
-     */
-    public AuthorizationServerUpdateContract withGrantTypes(List<GrantType> grantTypes) {
-        this.grantTypes = grantTypes;
-        return this;
-    }
-
-    /**
-     * Get the clientId property: Client or app id registered with this authorization server.
-     *
-     * @return the clientId value.
-     */
-    public String clientId() {
-        return this.clientId;
-    }
-
-    /**
-     * Set the clientId property: Client or app id registered with this authorization server.
-     *
-     * @param clientId the clientId value to set.
-     * @return the AuthorizationServerUpdateContract object itself.
-     */
-    public AuthorizationServerUpdateContract withClientId(String clientId) {
-        this.clientId = clientId;
-        return this;
-    }
-
-    /**
-     * Get the clientSecret property: Client or app secret registered with this authorization server. This property will
-     * not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
-     *
-     * @return the clientSecret value.
-     */
-    public String clientSecret() {
-        return this.clientSecret;
-    }
-
-    /**
-     * Set the clientSecret property: Client or app secret registered with this authorization server. This property will
-     * not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
-     *
-     * @param clientSecret the clientSecret value to set.
-     * @return the AuthorizationServerUpdateContract object itself.
-     */
-    public AuthorizationServerUpdateContract withClientSecret(String clientSecret) {
-        this.clientSecret = clientSecret;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AuthorizationServerUpdateContractProperties();
+        }
+        this.innerProperties().withResourceOwnerPassword(resourceOwnerPassword);
         return this;
     }
 
@@ -487,8 +433,8 @@ public class AuthorizationServerUpdateContract extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (tokenBodyParameters() != null) {
-            tokenBodyParameters().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

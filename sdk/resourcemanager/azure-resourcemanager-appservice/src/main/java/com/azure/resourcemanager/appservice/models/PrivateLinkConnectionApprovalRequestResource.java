@@ -5,23 +5,38 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.fluent.models.PrivateLinkConnectionApprovalRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Private Endpoint Connection Approval ARM resource. */
-@JsonFlatten
 @Fluent
-public class PrivateLinkConnectionApprovalRequestResource extends ProxyOnlyResource {
+public final class PrivateLinkConnectionApprovalRequestResource extends ProxyOnlyResource {
     @JsonIgnore
     private final ClientLogger logger = new ClientLogger(PrivateLinkConnectionApprovalRequestResource.class);
 
     /*
-     * The state of a private link connection
+     * Core resource properties
      */
-    @JsonProperty(value = "properties.privateLinkServiceConnectionState")
-    private PrivateLinkConnectionState privateLinkServiceConnectionState;
+    @JsonProperty(value = "properties")
+    private PrivateLinkConnectionApprovalRequest innerProperties;
+
+    /**
+     * Get the innerProperties property: Core resource properties.
+     *
+     * @return the innerProperties value.
+     */
+    private PrivateLinkConnectionApprovalRequest innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PrivateLinkConnectionApprovalRequestResource withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the privateLinkServiceConnectionState property: The state of a private link connection.
@@ -29,7 +44,7 @@ public class PrivateLinkConnectionApprovalRequestResource extends ProxyOnlyResou
      * @return the privateLinkServiceConnectionState value.
      */
     public PrivateLinkConnectionState privateLinkServiceConnectionState() {
-        return this.privateLinkServiceConnectionState;
+        return this.innerProperties() == null ? null : this.innerProperties().privateLinkServiceConnectionState();
     }
 
     /**
@@ -40,14 +55,10 @@ public class PrivateLinkConnectionApprovalRequestResource extends ProxyOnlyResou
      */
     public PrivateLinkConnectionApprovalRequestResource withPrivateLinkServiceConnectionState(
         PrivateLinkConnectionState privateLinkServiceConnectionState) {
-        this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public PrivateLinkConnectionApprovalRequestResource withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateLinkConnectionApprovalRequest();
+        }
+        this.innerProperties().withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
         return this;
     }
 
@@ -59,8 +70,8 @@ public class PrivateLinkConnectionApprovalRequestResource extends ProxyOnlyResou
     @Override
     public void validate() {
         super.validate();
-        if (privateLinkServiceConnectionState() != null) {
-            privateLinkServiceConnectionState().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

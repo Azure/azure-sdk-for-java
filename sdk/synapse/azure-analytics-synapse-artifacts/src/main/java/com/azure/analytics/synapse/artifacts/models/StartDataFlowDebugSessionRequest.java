@@ -24,6 +24,12 @@ public final class StartDataFlowDebugSessionRequest {
     private DataFlowResource dataFlow;
 
     /*
+     * List of Data flows
+     */
+    @JsonProperty(value = "dataFlows")
+    private List<DataFlowResource> dataFlows;
+
+    /*
      * List of datasets.
      */
     @JsonProperty(value = "datasets")
@@ -90,6 +96,26 @@ public final class StartDataFlowDebugSessionRequest {
      */
     public StartDataFlowDebugSessionRequest setDataFlow(DataFlowResource dataFlow) {
         this.dataFlow = dataFlow;
+        return this;
+    }
+
+    /**
+     * Get the dataFlows property: List of Data flows.
+     *
+     * @return the dataFlows value.
+     */
+    public List<DataFlowResource> getDataFlows() {
+        return this.dataFlows;
+    }
+
+    /**
+     * Set the dataFlows property: List of Data flows.
+     *
+     * @param dataFlows the dataFlows value to set.
+     * @return the StartDataFlowDebugSessionRequest object itself.
+     */
+    public StartDataFlowDebugSessionRequest setDataFlows(List<DataFlowResource> dataFlows) {
+        this.dataFlows = dataFlows;
         return this;
     }
 

@@ -61,6 +61,13 @@ public interface TenantConfigurationSyncStateContract {
     OffsetDateTime configurationChangeDate();
 
     /**
+     * Gets the lastOperationId property: Most recent tenant configuration operation identifier.
+     *
+     * @return the lastOperationId value.
+     */
+    String lastOperationId();
+
+    /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.TenantConfigurationSyncStateContractInner
      * object.
      *

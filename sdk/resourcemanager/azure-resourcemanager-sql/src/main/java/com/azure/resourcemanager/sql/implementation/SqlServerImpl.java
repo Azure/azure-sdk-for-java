@@ -20,6 +20,7 @@ import com.azure.resourcemanager.sql.fluent.models.ServerInner;
 import com.azure.resourcemanager.sql.fluent.models.ServerUsageInner;
 import com.azure.resourcemanager.sql.fluent.models.ServiceObjectiveInner;
 import com.azure.resourcemanager.sql.models.AdministratorName;
+import com.azure.resourcemanager.sql.models.AdministratorType;
 import com.azure.resourcemanager.sql.models.IdentityType;
 import com.azure.resourcemanager.sql.models.RecommendedElasticPool;
 import com.azure.resourcemanager.sql.models.ResourceIdentity;
@@ -315,13 +316,21 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
 
     @Override
     public void removeAccessFromAzureServices() {
-        SqlFirewallRule firewallRule =
-            this
-                .manager()
-                .sqlServers()
-                .firewallRules()
-                .getBySqlServer(this.resourceGroupName(), this.name(), "AllowAllWindowsAzureIps");
-        if (firewallRule != null) {
+        SqlFirewallRule firewallRule = null;
+        try {
+            firewallRule =
+                this
+                    .manager()
+                    .sqlServers()
+                    .firewallRules()
+                    .getBySqlServer(this.resourceGroupName(), this.name(), "AllowAllWindowsAzureIps");
+        } catch (ManagementException e) {
+            if (e.getResponse().getStatusCode() != 404) {
+                throw logger.logExceptionAsError(e);
+            }
+        }
+
+        if (firewallRule == null) {
             this
                 .manager()
                 .sqlServers()
@@ -334,6 +343,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     public SqlActiveDirectoryAdministratorImpl setActiveDirectoryAdministrator(String userLogin, String objectId) {
         ServerAzureADAdministratorInner serverAzureADAdministratorInner =
             new ServerAzureADAdministratorInner()
+                .withAdministratorType(AdministratorType.ACTIVE_DIRECTORY)
                 .withLogin(userLogin)
                 .withSid(UUID.fromString(objectId))
                 .withTenantId(UUID.fromString(this.manager().tenantId()));
@@ -424,6 +434,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
             context -> {
                 ServerAzureADAdministratorInner serverAzureADAdministratorInner =
                     new ServerAzureADAdministratorInner()
+                        .withAdministratorType(AdministratorType.ACTIVE_DIRECTORY)
                         .withLogin(userLogin)
                         .withSid(UUID.fromString(objectId))
                         .withTenantId(UUID.fromString(self.manager().tenantId()));

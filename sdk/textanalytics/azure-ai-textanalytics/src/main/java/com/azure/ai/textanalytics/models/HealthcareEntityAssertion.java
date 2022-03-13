@@ -4,10 +4,12 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.HealthcareEntityAssertionPropertiesHelper;
+import com.azure.core.annotation.Immutable;
 
 /**
  * The {@link HealthcareEntityAssertion} model.
  */
+@Immutable
 public final class HealthcareEntityAssertion {
     /*
      * Describes any conditionality on the entity.
@@ -47,9 +49,9 @@ public final class HealthcareEntityAssertion {
     }
 
     /**
-     * Get the conditionality property: Describes any conditionality on the entity.
+     * Gets the conditionality property: Describes any conditionality on the entity.
      *
-     * @return the conditionality value.
+     * @return The conditionality value.
      */
     public EntityConditionality getConditionality() {
         return this.conditionality;
@@ -57,18 +59,19 @@ public final class HealthcareEntityAssertion {
 
 
     /**
-     * Get the certainty property: Describes the entities certainty and polarity.
+     * Gets the certainty property: Describes the entities certainty and polarity.
      *
-     * @return the certainty value.
+     * @return The certainty value.
      */
     public EntityCertainty getCertainty() {
         return this.certainty;
     }
 
     /**
-     * Get the association property: Describes if the entity is the subject of the text or if it describes someone else.
+     * Gets the association property: Describes if the entity is the subject of the text or if it describes someone
+     * else.
      *
-     * @return the association value.
+     * @return The association value.
      */
     public EntityAssociation getAssociation() {
         return this.association;

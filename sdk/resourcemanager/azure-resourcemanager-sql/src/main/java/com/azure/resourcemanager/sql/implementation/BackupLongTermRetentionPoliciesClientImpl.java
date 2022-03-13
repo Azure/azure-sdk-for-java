@@ -470,7 +470,7 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
                 this.client.getHttpPipeline(),
                 BackupLongTermRetentionPolicyInner.class,
                 BackupLongTermRetentionPolicyInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

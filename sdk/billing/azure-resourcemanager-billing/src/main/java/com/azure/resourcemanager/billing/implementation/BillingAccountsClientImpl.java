@@ -503,7 +503,7 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a billing account.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BillingAccountInner>, BillingAccountInner> beginUpdateAsync(
         String billingAccountName, BillingAccountUpdateRequest parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(billingAccountName, parameters);
@@ -529,7 +529,7 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a billing account.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BillingAccountInner>, BillingAccountInner> beginUpdateAsync(
         String billingAccountName, BillingAccountUpdateRequest parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -551,7 +551,7 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a billing account.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BillingAccountInner>, BillingAccountInner> beginUpdate(
         String billingAccountName, BillingAccountUpdateRequest parameters) {
         return beginUpdateAsync(billingAccountName, parameters).getSyncPoller();
@@ -569,7 +569,7 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a billing account.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BillingAccountInner>, BillingAccountInner> beginUpdate(
         String billingAccountName, BillingAccountUpdateRequest parameters, Context context) {
         return beginUpdateAsync(billingAccountName, parameters, context).getSyncPoller();

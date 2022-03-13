@@ -58,7 +58,7 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
     @ServiceInterface(name = "PostgreSqlManagement")
     private interface CheckNameAvailabilitiesService {
         @Headers({"Content-Type: application/json"})
-        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DBForPostgreSQL/checkNameAvailability")
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/checkNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NameAvailabilityInner>> execute(
@@ -77,7 +77,8 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a resource name availability.
+     * @return represents a resource name availability along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NameAvailabilityInner>> executeWithResponseAsync(
@@ -125,7 +126,8 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a resource name availability.
+     * @return represents a resource name availability along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NameAvailabilityInner>> executeWithResponseAsync(
@@ -169,7 +171,7 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a resource name availability.
+     * @return represents a resource name availability on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NameAvailabilityInner> executeAsync(NameAvailabilityRequest nameAvailabilityRequest) {
@@ -206,7 +208,7 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a resource name availability.
+     * @return represents a resource name availability along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NameAvailabilityInner> executeWithResponse(

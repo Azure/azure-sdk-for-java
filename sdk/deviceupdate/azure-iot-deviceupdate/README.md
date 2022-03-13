@@ -2,7 +2,7 @@
 
 The library provides access to the Device Update for IoT Hub service that enables customers to publish updates for their IoT devices to the cloud, and then deploy these updates to their devices (approve updates to groups of devices managed and provisioned in IoT Hub). 
 
-  [Source code](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk) | [Product documentation](https://docs.microsoft.com/azure/iot-hub-device-update/understand-device-update)
+  [Source code](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk) | [Product documentation](https://docs.microsoft.com/azure/iot-hub-device-update/understand-device-update)
 
 ## Getting started
 
@@ -24,52 +24,50 @@ For the best development experience, developers should use the official Microsof
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-iot-deviceupdate</artifactId>
-  <version>1.0.0-beta.1</version>
+  <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 ### Authenticate the client
 
-In order to interact with the Device Update for IoT Hub service, you will need to create an instance of a [TokenCredential class](https://docs.microsoft.com/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable) and pass it to the constructor of your AzureDeviceUpdateClientBuilder class.
+In order to interact with the Device Update for IoT Hub service, you will need to create an instance of a [TokenCredential class](https://docs.microsoft.com/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable) and pass it to the constructor of your `DeviceUpdateClientBuilder` class.
+
+Please refer to [Java SDK Get Started document](https://docs.microsoft.com/azure/developer/java/sdk/get-started#set-up-authentication) for more authentication configuration.
 
 ## Key concepts
 
-Device Update for IoT Hub is a managed service that enables you to deploy over-the-air updates for your IoT devices. The client library has three main components:
+Device Update for IoT Hub is a managed service that enables you to deploy over-the-air updates for your IoT devices. The client library has two main components:
 
-- **Updates**: update management (import, enumerate, delete, etc.)
-- **Devices**: device management (enumerate devices and retrieve device properties)
-- **Deployments**: deployment management (start and monitor update deployments to a set of devices)
+- **DeviceUpdate**: update management (import, enumerate, delete, etc.)
+- **DeviceManagement**: device management (enumerate devices and retrieve device properties), deployment management (start and monitor update deployments to a set of devices)
 
 You can learn more about Device Update for IoT Hub by visiting [Device Update for IoT Hub](https://github.com/azure/iot-hub-device-update).
 
 ## Examples
 
-You can familiarize yourself with different APIs using [Samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/deviceupdate/azure-iot-deviceupdate/src/samples).
+You can familiarize yourself with different APIs using [Samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/deviceupdate/azure-iot-deviceupdate/src/samples).
 
 ## Troubleshooting
 
 All Device Update for IoT Hub service operations will throw a ErrorResponseException on failure with helpful ErrorCodes.
 
-For example, if you use the `getUpdateAsync` operation and the model you are looking for doesn't exist, you can catch that specific HttpStatusCode to decide the operation that follows in that case.
+For example, if you use the `getUpdateWithResponse` operation and the model you are looking for doesn't exist, you can catch that specific HttpStatusCode to decide the operation that follows in that case.
 
-``` java
+``` java com.azure.iot.deviceupdate.DeviceUpdateAsyncClient.notfound
 try {
-    Update update = client.getUpdates().getUpdateAsync(
-      "provider", "name", "1.0.0.0")
-      .block();
-}
-catch (HttpResponseException ex) {
-    if (e..getResponse().getStatusCode() == 404) {
-        // Update does not exist.
+    client.getUpdateWithResponse("foo", "bar", "0.0.0.1", null).block();
+} catch (HttpResponseException e) {
+    if (e.getResponse().getStatusCode() == 404) {
+        // update does not exist
+        System.out.println("update does not exist");
     }
 }
-
 ```
 
 ## Next steps
 
-Get started with our [Device Update for IoT Hub samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/deviceupdate/azure-iot-deviceupdate/src/samples)
+Get started with our [Device Update for IoT Hub samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/deviceupdate/azure-iot-deviceupdate/src/samples)
 
 ## Contributing
 

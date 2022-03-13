@@ -18,11 +18,8 @@ public final class AsciiFoldingTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        AsciiFoldingTokenFilter asciiFoldingTokenFilter = new AsciiFoldingTokenFilter(obj.getName());
 
-        Boolean preserveOriginal = obj.isPreserveOriginal();
-        asciiFoldingTokenFilter.setPreserveOriginal(preserveOriginal);
-        return asciiFoldingTokenFilter;
+        return new AsciiFoldingTokenFilter(obj.getName()).setPreserveOriginal(obj.isPreserveOriginal());
     }
 
     /**
@@ -33,13 +30,9 @@ public final class AsciiFoldingTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.indexes.implementation.models.AsciiFoldingTokenFilter asciiFoldingTokenFilter =
-            new com.azure.search.documents.indexes.implementation.models.AsciiFoldingTokenFilter(obj.getName());
 
-        Boolean preserveOriginal = obj.isPreserveOriginal();
-        asciiFoldingTokenFilter.setPreserveOriginal(preserveOriginal);
-
-        return asciiFoldingTokenFilter;
+        return new com.azure.search.documents.indexes.implementation.models.AsciiFoldingTokenFilter(obj.getName())
+            .setPreserveOriginal(obj.isPreserveOriginal());
     }
 
     private AsciiFoldingTokenFilterConverter() {

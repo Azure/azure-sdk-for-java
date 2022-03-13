@@ -20,10 +20,10 @@ public final class WorkspacesImpl implements Workspaces {
 
     private final WorkspacesClient innerClient;
 
-    private final com.azure.resourcemanager.databricks.DatabricksManager serviceManager;
+    private final com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager;
 
     public WorkspacesImpl(
-        WorkspacesClient innerClient, com.azure.resourcemanager.databricks.DatabricksManager serviceManager) {
+        WorkspacesClient innerClient, com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -160,7 +160,7 @@ public final class WorkspacesImpl implements Workspaces {
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.databricks.DatabricksManager manager() {
+    private com.azure.resourcemanager.databricks.AzureDatabricksManager manager() {
         return this.serviceManager;
     }
 

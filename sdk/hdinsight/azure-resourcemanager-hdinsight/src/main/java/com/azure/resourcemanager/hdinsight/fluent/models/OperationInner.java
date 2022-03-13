@@ -23,7 +23,7 @@ public final class OperationInner {
     private String name;
 
     /*
-     * The object that represents the operation.
+     * The display of operation.
      */
     @JsonProperty(value = "display")
     private OperationDisplay display;
@@ -55,7 +55,7 @@ public final class OperationInner {
     }
 
     /**
-     * Get the display property: The object that represents the operation.
+     * Get the display property: The display of operation.
      *
      * @return the display value.
      */
@@ -64,7 +64,7 @@ public final class OperationInner {
     }
 
     /**
-     * Set the display property: The object that represents the operation.
+     * Set the display property: The display of operation.
      *
      * @param display the display value to set.
      * @return the OperationInner object itself.

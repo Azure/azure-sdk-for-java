@@ -67,6 +67,13 @@ public interface EventGridManagementClient {
     EventSubscriptionsClient getEventSubscriptions();
 
     /**
+     * Gets the SystemTopicEventSubscriptionsClient object to access its operations.
+     *
+     * @return the SystemTopicEventSubscriptionsClient object.
+     */
+    SystemTopicEventSubscriptionsClient getSystemTopicEventSubscriptions();
+
+    /**
      * Gets the OperationsClient object to access its operations.
      *
      * @return the OperationsClient object.
@@ -93,6 +100,20 @@ public interface EventGridManagementClient {
      * @return the PrivateLinkResourcesClient object.
      */
     PrivateLinkResourcesClient getPrivateLinkResources();
+
+    /**
+     * Gets the SystemTopicsClient object to access its operations.
+     *
+     * @return the SystemTopicsClient object.
+     */
+    SystemTopicsClient getSystemTopics();
+
+    /**
+     * Gets the ExtensionTopicsClient object to access its operations.
+     *
+     * @return the ExtensionTopicsClient object.
+     */
+    ExtensionTopicsClient getExtensionTopics();
 
     /**
      * Gets the TopicTypesClient object to access its operations.

@@ -194,6 +194,7 @@ public class AsynReadWithMultipleClients<T> {
                     CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
                         .endpoint(endpoint)
                         .key(key)
+                        .preferredRegions(this.configuration.getPreferredRegionsList())
                         .consistencyLevel(configuration.getConsistencyLevel())
                         .connectionSharingAcrossClientsEnabled(true)
                         .contentResponseOnWriteEnabled(Boolean.parseBoolean(configuration.isContentResponseOnWriteEnabled()));

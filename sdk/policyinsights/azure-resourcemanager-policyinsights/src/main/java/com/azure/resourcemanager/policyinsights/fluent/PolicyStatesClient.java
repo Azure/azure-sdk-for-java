@@ -389,7 +389,7 @@ public interface PolicyStatesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginTriggerSubscriptionEvaluation(String subscriptionId);
 
     /**
@@ -402,7 +402,7 @@ public interface PolicyStatesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginTriggerSubscriptionEvaluation(String subscriptionId, Context context);
 
     /**
@@ -438,7 +438,7 @@ public interface PolicyStatesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginTriggerResourceGroupEvaluation(
         String subscriptionId, String resourceGroupName);
 
@@ -453,7 +453,7 @@ public interface PolicyStatesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginTriggerResourceGroupEvaluation(
         String subscriptionId, String resourceGroupName, Context context);
 

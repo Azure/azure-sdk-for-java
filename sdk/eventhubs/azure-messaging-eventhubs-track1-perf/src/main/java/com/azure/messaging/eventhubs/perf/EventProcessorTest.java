@@ -12,6 +12,7 @@ import com.microsoft.azure.storage.blob.BlobOutputStream;
 import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -23,11 +24,9 @@ import java.security.InvalidKeyException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 /**
  * Tests Event Processor Host.
@@ -97,17 +96,20 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
         return Mono.usingWhen(
             Mono.fromCompletionStage(createEventHubClientAsync()),
             client -> Mono.fromCompletionStage(client.getRuntimeInformation())
-                .flatMap(runtimeInformation -> {
+                .flatMapMany(runtimeInformation -> {
                     for (String id : runtimeInformation.getPartitionIds()) {
                         partitionProcessorMap.put(id, new SamplePartitionProcessor());
                     }
-
-                    final List<Mono<Void>> allSends = Arrays.stream(runtimeInformation.getPartitionIds())
-                        .map(id -> sendMessages(client, id, options.getEventsToSend()))
-                        .collect(Collectors.toList());
-
-                    return Mono.when(allSends);
-                }),
+                    return Flux.fromArray(runtimeInformation.getPartitionIds());
+                })
+                .flatMap(partitionId -> {
+                    if (options.publishMessages()) {
+                        return sendMessages(client, partitionId, options.getEventsToSend());
+                    } else {
+                        return Mono.empty();
+                    }
+                })
+                .then(),
             client -> Mono.fromCompletionStage(client.close()));
     }
 
@@ -118,7 +120,7 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        final Mono<EventProcessorHost> createProcessor = Mono.defer(() -> {
+        final Mono<EventProcessorHost> createProcessor = Mono.fromCallable(() -> {
             final ConnectionStringBuilder connectionStringBuilder = getConnectionStringBuilder();
             final EventProcessorHost.EventProcessorHostBuilder.OptionalStep builder =
                 EventProcessorHost.EventProcessorHostBuilder.newBuilder(
@@ -127,19 +129,23 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
                     .useEventHubConnectionString(connectionStringBuilder.toString())
                     .setExecutor(getScheduler());
 
-            final EventProcessorHost processor = builder.build();
-            return Mono.fromCompletionStage(processor.registerEventProcessorFactory(processorFactory))
-                .thenReturn(processor)
-                .doFinally(signal -> this.startTime = System.nanoTime());
+            return builder.build();
         });
 
         final Mono<Long> timeout = Mono.delay(testDuration);
         return Mono.usingWhen(
             createProcessor,
-            processor -> Mono.when(timeout),
             processor -> {
-                System.out.println("Stopping and cleaning up up processor.");
-                this.endTime = System.nanoTime();
+                startTime = System.nanoTime();
+
+                return Mono.fromCompletionStage(
+                    processor.registerEventProcessorFactory(processorFactory))
+                    .then(Mono.when(timeout));
+            },
+            processor -> {
+                endTime = System.nanoTime();
+
+                System.out.println("Completed run.");
                 return Mono.fromCompletionStage(processor.unregisterEventProcessor());
             })
             .doFinally(signal -> System.out.println("Finished cleaning up processor resources."));
@@ -147,7 +153,7 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
 
     @Override
     public Mono<Void> globalCleanupAsync() {
-        System.out.println("Cleaning up and writing results.");
+        System.out.println("Cleaning up.");
 
         CloudBlockBlob blob = null;
         try {

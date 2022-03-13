@@ -70,7 +70,7 @@ public final class ManageVirtualMachineExtension {
         final String windowsCustomScriptExtensionTypeName = "CustomScriptExtension";
         final String windowsCustomScriptExtensionVersionName = "1.7";
 
-        final String mySqlWindowsInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/installMySQL.ps1";
+        final String mySqlWindowsInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/installMySQL.ps1";
         final String installMySQLWindowsCommand = "powershell.exe -ExecutionPolicy Unrestricted -File installMySQL.ps1";
         final List<String> windowsScriptFileUris = new ArrayList<>();
         windowsScriptFileUris.add(mySqlWindowsInstallScript);

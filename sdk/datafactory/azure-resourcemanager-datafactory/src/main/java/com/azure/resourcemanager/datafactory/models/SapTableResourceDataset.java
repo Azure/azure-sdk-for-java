@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.SapTableResourceDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,36 +17,23 @@ import java.util.Map;
 /** SAP Table Resource properties. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SapTableResource")
-@JsonFlatten
 @Fluent
-public class SapTableResourceDataset extends Dataset {
+public final class SapTableResourceDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SapTableResourceDataset.class);
 
     /*
-     * The name of the SAP Table. Type: string (or Expression with resultType
-     * string).
+     * SAP Table Resource properties.
      */
-    @JsonProperty(value = "typeProperties.tableName", required = true)
-    private Object tableName;
+    @JsonProperty(value = "typeProperties", required = true)
+    private SapTableResourceDatasetTypeProperties innerTypeProperties = new SapTableResourceDatasetTypeProperties();
 
     /**
-     * Get the tableName property: The name of the SAP Table. Type: string (or Expression with resultType string).
+     * Get the innerTypeProperties property: SAP Table Resource properties.
      *
-     * @return the tableName value.
+     * @return the innerTypeProperties value.
      */
-    public Object tableName() {
-        return this.tableName;
-    }
-
-    /**
-     * Set the tableName property: The name of the SAP Table. Type: string (or Expression with resultType string).
-     *
-     * @param tableName the tableName value to set.
-     * @return the SapTableResourceDataset object itself.
-     */
-    public SapTableResourceDataset withTableName(Object tableName) {
-        this.tableName = tableName;
-        return this;
+    private SapTableResourceDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -99,6 +86,29 @@ public class SapTableResourceDataset extends Dataset {
     }
 
     /**
+     * Get the tableName property: The name of the SAP Table. Type: string (or Expression with resultType string).
+     *
+     * @return the tableName value.
+     */
+    public Object tableName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().tableName();
+    }
+
+    /**
+     * Set the tableName property: The name of the SAP Table. Type: string (or Expression with resultType string).
+     *
+     * @param tableName the tableName value to set.
+     * @return the SapTableResourceDataset object itself.
+     */
+    public SapTableResourceDataset withTableName(Object tableName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SapTableResourceDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withTableName(tableName);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -106,11 +116,13 @@ public class SapTableResourceDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
-        if (tableName() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property tableName in model SapTableResourceDataset"));
+                        "Missing required property innerTypeProperties in model SapTableResourceDataset"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

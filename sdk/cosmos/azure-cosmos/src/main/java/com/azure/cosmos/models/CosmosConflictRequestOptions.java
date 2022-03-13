@@ -12,8 +12,16 @@ public final class CosmosConflictRequestOptions {
     private String ifNoneMatchETag;
     private PartitionKey partitionKey;
 
+    /**
+     * Creates a new {@link CosmosConflictRequestOptions} object.
+     */
     public CosmosConflictRequestOptions() {}
 
+    /**
+     * Creates a new {@link CosmosConflictRequestOptions} object.
+     *
+     * @param partitionKey the partitionKey associated with the request.
+     */
     public CosmosConflictRequestOptions(PartitionKey partitionKey) {
         this.partitionKey = partitionKey;
     }

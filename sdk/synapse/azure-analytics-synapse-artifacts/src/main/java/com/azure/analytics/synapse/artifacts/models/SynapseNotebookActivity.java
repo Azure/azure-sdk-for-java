@@ -27,7 +27,7 @@ public class SynapseNotebookActivity extends ExecutionActivity {
      * Notebook parameters.
      */
     @JsonProperty(value = "typeProperties.parameters")
-    private Map<String, Object> parameters;
+    private Map<String, NotebookParameter> parameters;
 
     /**
      * Get the notebook property: Synapse notebook reference.
@@ -54,7 +54,7 @@ public class SynapseNotebookActivity extends ExecutionActivity {
      *
      * @return the parameters value.
      */
-    public Map<String, Object> getParameters() {
+    public Map<String, NotebookParameter> getParameters() {
         return this.parameters;
     }
 
@@ -64,7 +64,7 @@ public class SynapseNotebookActivity extends ExecutionActivity {
      * @param parameters the parameters value to set.
      * @return the SynapseNotebookActivity object itself.
      */
-    public SynapseNotebookActivity setParameters(Map<String, Object> parameters) {
+    public SynapseNotebookActivity setParameters(Map<String, NotebookParameter> parameters) {
         this.parameters = parameters;
         return this;
     }

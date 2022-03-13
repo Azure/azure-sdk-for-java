@@ -114,7 +114,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withoutPrimaryPublicIPAddress()
                 .withGeneralizedLinuxCustomImage(image.id())
                 .withRootUsername("javauser")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
@@ -217,7 +217,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withoutPrimaryPublicIPAddress()
                 .withLatestLinuxImage("Canonical", "UbuntuServer", "14.04.2-LTS")
                 .withRootUsername(uname)
-                .withRootPassword(password)
+                .withSsh(sshPublicKey())
                 .withUnmanagedDisks() /* UN-MANAGED OS and DATA DISKS */
                 .defineUnmanagedDataDisk("disk1")
                 .withNewVhd(100)
@@ -359,7 +359,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
                 .withPopularLinuxImage(linuxImage)
                 .withRootUsername(uname)
-                .withRootPassword(password)
+                .withSsh(sshPublicKey())
                 .withUnmanagedDisks()
                 .defineUnmanagedDataDisk("disk-1")
                 .withNewVhd(30)

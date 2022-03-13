@@ -5,7 +5,9 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.netapp.fluent.models.MountTargetProperties;
 import com.azure.resourcemanager.netapp.fluent.models.VolumeInner;
 import java.util.List;
 import java.util.Map;
@@ -48,43 +50,58 @@ public interface Volume {
     Map<String, String> tags();
 
     /**
-     * Gets the fileSystemId property: Unique FileSystem Identifier.
+     * Gets the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
+     * Gets the systemData property: The system meta data relating to this resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
+     * Gets the fileSystemId property: FileSystem ID Unique FileSystem Identifier.
      *
      * @return the fileSystemId value.
      */
     String fileSystemId();
 
     /**
-     * Gets the creationToken property: A unique file path for the volume. Used when creating mount targets.
+     * Gets the creationToken property: Creation Token or File Path A unique file path for the volume. Used when
+     * creating mount targets.
      *
      * @return the creationToken value.
      */
     String creationToken();
 
     /**
-     * Gets the serviceLevel property: The service level of the file system.
+     * Gets the serviceLevel property: serviceLevel The service level of the file system.
      *
      * @return the serviceLevel value.
      */
     ServiceLevel serviceLevel();
 
     /**
-     * Gets the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
-     * used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB. Specified in bytes.
+     * Gets the usageThreshold property: usageThreshold Maximum storage quota allowed for a file system in bytes. This
+     * is a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB. Specified in bytes.
      *
      * @return the usageThreshold value.
      */
     long usageThreshold();
 
     /**
-     * Gets the exportPolicy property: Set of export policy rules.
+     * Gets the exportPolicy property: exportPolicy Set of export policy rules.
      *
      * @return the exportPolicy value.
      */
     VolumePropertiesExportPolicy exportPolicy();
 
     /**
-     * Gets the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
+     * Gets the protocolTypes property: protocolTypes Set of protocol types, default NFSv3, CIFS for SMB protocol.
      *
      * @return the protocolTypes value.
      */
@@ -98,21 +115,21 @@ public interface Volume {
     String provisioningState();
 
     /**
-     * Gets the snapshotId property: UUID v4 or resource identifier used to identify the Snapshot.
+     * Gets the snapshotId property: Snapshot ID UUID v4 or resource identifier used to identify the Snapshot.
      *
      * @return the snapshotId value.
      */
     String snapshotId();
 
     /**
-     * Gets the backupId property: UUID v4 or resource identifier used to identify the Backup.
+     * Gets the backupId property: Backup ID UUID v4 or resource identifier used to identify the Backup.
      *
      * @return the backupId value.
      */
     String backupId();
 
     /**
-     * Gets the baremetalTenantId property: Unique Baremetal Tenant Identifier.
+     * Gets the baremetalTenantId property: Baremetal Tenant ID Unique Baremetal Tenant Identifier.
      *
      * @return the baremetalTenantId value.
      */
@@ -127,22 +144,46 @@ public interface Volume {
     String subnetId();
 
     /**
-     * Gets the mountTargets property: List of mount targets.
+     * Gets the networkFeatures property: Network features Basic network, or Standard features available to the volume.
+     *
+     * @return the networkFeatures value.
+     */
+    NetworkFeatures networkFeatures();
+
+    /**
+     * Gets the networkSiblingSetId property: Network Sibling Set ID Network Sibling Set ID for the the group of volumes
+     * sharing networking resources.
+     *
+     * @return the networkSiblingSetId value.
+     */
+    String networkSiblingSetId();
+
+    /**
+     * Gets the storageToNetworkProximity property: Storage to Network Proximity Provides storage to network proximity
+     * information for the volume.
+     *
+     * @return the storageToNetworkProximity value.
+     */
+    VolumeStorageToNetworkProximity storageToNetworkProximity();
+
+    /**
+     * Gets the mountTargets property: mountTargets List of mount targets.
      *
      * @return the mountTargets value.
      */
     List<MountTargetProperties> mountTargets();
 
     /**
-     * Gets the volumeType property: What type of volume is this.
+     * Gets the volumeType property: What type of volume is this. For destination volumes in Cross Region Replication,
+     * set type to DataProtection.
      *
      * @return the volumeType value.
      */
     String volumeType();
 
     /**
-     * Gets the dataProtection property: DataProtection type volumes include an object containing details of the
-     * replication.
+     * Gets the dataProtection property: DataProtection DataProtection type volumes include an object containing details
+     * of the replication.
      *
      * @return the dataProtection value.
      */
@@ -196,7 +237,8 @@ public interface Volume {
     Boolean smbContinuouslyAvailable();
 
     /**
-     * Gets the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume.
+     * Gets the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume and this will
+     * be accepted as input only for manual qosType volume.
      *
      * @return the throughputMibps value.
      */
@@ -241,6 +283,106 @@ public interface Volume {
      * @return the unixPermissions value.
      */
     String unixPermissions();
+
+    /**
+     * Gets the cloneProgress property: When a volume is being restored from another volume's snapshot, will show the
+     * percentage completion of this cloning process. When this value is empty/null there is no cloning process
+     * currently happening on this volume. This value will update every 5 minutes during cloning.
+     *
+     * @return the cloneProgress value.
+     */
+    Integer cloneProgress();
+
+    /**
+     * Gets the avsDataStore property: avsDataStore Specifies whether the volume is enabled for Azure VMware Solution
+     * (AVS) datastore purpose.
+     *
+     * @return the avsDataStore value.
+     */
+    AvsDataStore avsDataStore();
+
+    /**
+     * Gets the isDefaultQuotaEnabled property: Specifies if default quota is enabled for the volume.
+     *
+     * @return the isDefaultQuotaEnabled value.
+     */
+    Boolean isDefaultQuotaEnabled();
+
+    /**
+     * Gets the defaultUserQuotaInKiBs property: Default user quota for volume in KiBs. If isDefaultQuotaEnabled is set,
+     * the minimum value of 4 KiBs applies .
+     *
+     * @return the defaultUserQuotaInKiBs value.
+     */
+    Long defaultUserQuotaInKiBs();
+
+    /**
+     * Gets the defaultGroupQuotaInKiBs property: Default group quota for volume in KiBs. If isDefaultQuotaEnabled is
+     * set, the minimum value of 4 KiBs applies.
+     *
+     * @return the defaultGroupQuotaInKiBs value.
+     */
+    Long defaultGroupQuotaInKiBs();
+
+    /**
+     * Gets the maximumNumberOfFiles property: Maximum number of files allowed. Needs a service request in order to be
+     * changed. Only allowed to be changed if volume quota is more than 4TiB.
+     *
+     * @return the maximumNumberOfFiles value.
+     */
+    Long maximumNumberOfFiles();
+
+    /**
+     * Gets the volumeGroupName property: Volume Group Name.
+     *
+     * @return the volumeGroupName value.
+     */
+    String volumeGroupName();
+
+    /**
+     * Gets the capacityPoolResourceId property: Pool Resource Id used in case of creating a volume through volume
+     * group.
+     *
+     * @return the capacityPoolResourceId value.
+     */
+    String capacityPoolResourceId();
+
+    /**
+     * Gets the proximityPlacementGroup property: Proximity placement group associated with the volume.
+     *
+     * @return the proximityPlacementGroup value.
+     */
+    String proximityPlacementGroup();
+
+    /**
+     * Gets the t2Network property: T2 network information.
+     *
+     * @return the t2Network value.
+     */
+    String t2Network();
+
+    /**
+     * Gets the volumeSpecName property: Volume spec name is the application specific designation or identifier for the
+     * particular volume in a volume group for e.g. data, log.
+     *
+     * @return the volumeSpecName value.
+     */
+    String volumeSpecName();
+
+    /**
+     * Gets the placementRules property: Volume placement rules Application specific placement rules for the particular
+     * volume.
+     *
+     * @return the placementRules value.
+     */
+    List<PlacementKeyValuePairs> placementRules();
+
+    /**
+     * Gets the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume.
+     *
+     * @return the enableSubvolumes value.
+     */
+    EnableSubvolumes enableSubvolumes();
 
     /**
      * Gets the region of the resource.
@@ -311,10 +453,11 @@ public interface Volume {
         /** The stage of the Volume definition allowing to specify creationToken. */
         interface WithCreationToken {
             /**
-             * Specifies the creationToken property: A unique file path for the volume. Used when creating mount
-             * targets.
+             * Specifies the creationToken property: Creation Token or File Path A unique file path for the volume. Used
+             * when creating mount targets.
              *
-             * @param creationToken A unique file path for the volume. Used when creating mount targets.
+             * @param creationToken Creation Token or File Path A unique file path for the volume. Used when creating
+             *     mount targets.
              * @return the next definition stage.
              */
             WithUsageThreshold withCreationToken(String creationToken);
@@ -322,11 +465,13 @@ public interface Volume {
         /** The stage of the Volume definition allowing to specify usageThreshold. */
         interface WithUsageThreshold {
             /**
-             * Specifies the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is
-             * a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB. Specified in bytes..
+             * Specifies the usageThreshold property: usageThreshold Maximum storage quota allowed for a file system in
+             * bytes. This is a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB.
+             * Specified in bytes..
              *
-             * @param usageThreshold Maximum storage quota allowed for a file system in bytes. This is a soft quota used
-             *     for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB. Specified in bytes.
+             * @param usageThreshold usageThreshold Maximum storage quota allowed for a file system in bytes. This is a
+             *     soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB. Specified in
+             *     bytes.
              * @return the next definition stage.
              */
             WithSubnetId withUsageThreshold(long usageThreshold);
@@ -354,6 +499,7 @@ public interface Volume {
                 DefinitionStages.WithProtocolTypes,
                 DefinitionStages.WithSnapshotId,
                 DefinitionStages.WithBackupId,
+                DefinitionStages.WithNetworkFeatures,
                 DefinitionStages.WithVolumeType,
                 DefinitionStages.WithDataProtection,
                 DefinitionStages.WithIsRestoring,
@@ -367,7 +513,16 @@ public interface Volume {
                 DefinitionStages.WithLdapEnabled,
                 DefinitionStages.WithCoolAccess,
                 DefinitionStages.WithCoolnessPeriod,
-                DefinitionStages.WithUnixPermissions {
+                DefinitionStages.WithUnixPermissions,
+                DefinitionStages.WithAvsDataStore,
+                DefinitionStages.WithIsDefaultQuotaEnabled,
+                DefinitionStages.WithDefaultUserQuotaInKiBs,
+                DefinitionStages.WithDefaultGroupQuotaInKiBs,
+                DefinitionStages.WithCapacityPoolResourceId,
+                DefinitionStages.WithProximityPlacementGroup,
+                DefinitionStages.WithVolumeSpecName,
+                DefinitionStages.WithPlacementRules,
+                DefinitionStages.WithEnableSubvolumes {
             /**
              * Executes the create request.
              *
@@ -396,9 +551,9 @@ public interface Volume {
         /** The stage of the Volume definition allowing to specify serviceLevel. */
         interface WithServiceLevel {
             /**
-             * Specifies the serviceLevel property: The service level of the file system.
+             * Specifies the serviceLevel property: serviceLevel The service level of the file system.
              *
-             * @param serviceLevel The service level of the file system.
+             * @param serviceLevel serviceLevel The service level of the file system.
              * @return the next definition stage.
              */
             WithCreate withServiceLevel(ServiceLevel serviceLevel);
@@ -406,9 +561,9 @@ public interface Volume {
         /** The stage of the Volume definition allowing to specify exportPolicy. */
         interface WithExportPolicy {
             /**
-             * Specifies the exportPolicy property: Set of export policy rules.
+             * Specifies the exportPolicy property: exportPolicy Set of export policy rules.
              *
-             * @param exportPolicy Set of export policy rules.
+             * @param exportPolicy exportPolicy Set of export policy rules.
              * @return the next definition stage.
              */
             WithCreate withExportPolicy(VolumePropertiesExportPolicy exportPolicy);
@@ -416,9 +571,10 @@ public interface Volume {
         /** The stage of the Volume definition allowing to specify protocolTypes. */
         interface WithProtocolTypes {
             /**
-             * Specifies the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
+             * Specifies the protocolTypes property: protocolTypes Set of protocol types, default NFSv3, CIFS for SMB
+             * protocol.
              *
-             * @param protocolTypes Set of protocol types, default NFSv3, CIFS for SMB protocol.
+             * @param protocolTypes protocolTypes Set of protocol types, default NFSv3, CIFS for SMB protocol.
              * @return the next definition stage.
              */
             WithCreate withProtocolTypes(List<String> protocolTypes);
@@ -426,9 +582,10 @@ public interface Volume {
         /** The stage of the Volume definition allowing to specify snapshotId. */
         interface WithSnapshotId {
             /**
-             * Specifies the snapshotId property: UUID v4 or resource identifier used to identify the Snapshot..
+             * Specifies the snapshotId property: Snapshot ID UUID v4 or resource identifier used to identify the
+             * Snapshot..
              *
-             * @param snapshotId UUID v4 or resource identifier used to identify the Snapshot.
+             * @param snapshotId Snapshot ID UUID v4 or resource identifier used to identify the Snapshot.
              * @return the next definition stage.
              */
             WithCreate withSnapshotId(String snapshotId);
@@ -436,19 +593,32 @@ public interface Volume {
         /** The stage of the Volume definition allowing to specify backupId. */
         interface WithBackupId {
             /**
-             * Specifies the backupId property: UUID v4 or resource identifier used to identify the Backup..
+             * Specifies the backupId property: Backup ID UUID v4 or resource identifier used to identify the Backup..
              *
-             * @param backupId UUID v4 or resource identifier used to identify the Backup.
+             * @param backupId Backup ID UUID v4 or resource identifier used to identify the Backup.
              * @return the next definition stage.
              */
             WithCreate withBackupId(String backupId);
         }
+        /** The stage of the Volume definition allowing to specify networkFeatures. */
+        interface WithNetworkFeatures {
+            /**
+             * Specifies the networkFeatures property: Network features Basic network, or Standard features available to
+             * the volume..
+             *
+             * @param networkFeatures Network features Basic network, or Standard features available to the volume.
+             * @return the next definition stage.
+             */
+            WithCreate withNetworkFeatures(NetworkFeatures networkFeatures);
+        }
         /** The stage of the Volume definition allowing to specify volumeType. */
         interface WithVolumeType {
             /**
-             * Specifies the volumeType property: What type of volume is this.
+             * Specifies the volumeType property: What type of volume is this. For destination volumes in Cross Region
+             * Replication, set type to DataProtection.
              *
-             * @param volumeType What type of volume is this.
+             * @param volumeType What type of volume is this. For destination volumes in Cross Region Replication, set
+             *     type to DataProtection.
              * @return the next definition stage.
              */
             WithCreate withVolumeType(String volumeType);
@@ -456,11 +626,11 @@ public interface Volume {
         /** The stage of the Volume definition allowing to specify dataProtection. */
         interface WithDataProtection {
             /**
-             * Specifies the dataProtection property: DataProtection type volumes include an object containing details
-             * of the replication.
+             * Specifies the dataProtection property: DataProtection DataProtection type volumes include an object
+             * containing details of the replication.
              *
-             * @param dataProtection DataProtection type volumes include an object containing details of the
-             *     replication.
+             * @param dataProtection DataProtection DataProtection type volumes include an object containing details of
+             *     the replication.
              * @return the next definition stage.
              */
             WithCreate withDataProtection(VolumePropertiesDataProtection dataProtection);
@@ -538,9 +708,11 @@ public interface Volume {
         /** The stage of the Volume definition allowing to specify throughputMibps. */
         interface WithThroughputMibps {
             /**
-             * Specifies the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume.
+             * Specifies the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume
+             * and this will be accepted as input only for manual qosType volume.
              *
-             * @param throughputMibps Maximum throughput in Mibps that can be achieved by this volume.
+             * @param throughputMibps Maximum throughput in Mibps that can be achieved by this volume and this will be
+             *     accepted as input only for manual qosType volume.
              * @return the next definition stage.
              */
             WithCreate withThroughputMibps(Float throughputMibps);
@@ -606,6 +778,108 @@ public interface Volume {
              */
             WithCreate withUnixPermissions(String unixPermissions);
         }
+        /** The stage of the Volume definition allowing to specify avsDataStore. */
+        interface WithAvsDataStore {
+            /**
+             * Specifies the avsDataStore property: avsDataStore Specifies whether the volume is enabled for Azure
+             * VMware Solution (AVS) datastore purpose.
+             *
+             * @param avsDataStore avsDataStore Specifies whether the volume is enabled for Azure VMware Solution (AVS)
+             *     datastore purpose.
+             * @return the next definition stage.
+             */
+            WithCreate withAvsDataStore(AvsDataStore avsDataStore);
+        }
+        /** The stage of the Volume definition allowing to specify isDefaultQuotaEnabled. */
+        interface WithIsDefaultQuotaEnabled {
+            /**
+             * Specifies the isDefaultQuotaEnabled property: Specifies if default quota is enabled for the volume..
+             *
+             * @param isDefaultQuotaEnabled Specifies if default quota is enabled for the volume.
+             * @return the next definition stage.
+             */
+            WithCreate withIsDefaultQuotaEnabled(Boolean isDefaultQuotaEnabled);
+        }
+        /** The stage of the Volume definition allowing to specify defaultUserQuotaInKiBs. */
+        interface WithDefaultUserQuotaInKiBs {
+            /**
+             * Specifies the defaultUserQuotaInKiBs property: Default user quota for volume in KiBs. If
+             * isDefaultQuotaEnabled is set, the minimum value of 4 KiBs applies ..
+             *
+             * @param defaultUserQuotaInKiBs Default user quota for volume in KiBs. If isDefaultQuotaEnabled is set, the
+             *     minimum value of 4 KiBs applies .
+             * @return the next definition stage.
+             */
+            WithCreate withDefaultUserQuotaInKiBs(Long defaultUserQuotaInKiBs);
+        }
+        /** The stage of the Volume definition allowing to specify defaultGroupQuotaInKiBs. */
+        interface WithDefaultGroupQuotaInKiBs {
+            /**
+             * Specifies the defaultGroupQuotaInKiBs property: Default group quota for volume in KiBs. If
+             * isDefaultQuotaEnabled is set, the minimum value of 4 KiBs applies..
+             *
+             * @param defaultGroupQuotaInKiBs Default group quota for volume in KiBs. If isDefaultQuotaEnabled is set,
+             *     the minimum value of 4 KiBs applies.
+             * @return the next definition stage.
+             */
+            WithCreate withDefaultGroupQuotaInKiBs(Long defaultGroupQuotaInKiBs);
+        }
+        /** The stage of the Volume definition allowing to specify capacityPoolResourceId. */
+        interface WithCapacityPoolResourceId {
+            /**
+             * Specifies the capacityPoolResourceId property: Pool Resource Id used in case of creating a volume through
+             * volume group.
+             *
+             * @param capacityPoolResourceId Pool Resource Id used in case of creating a volume through volume group.
+             * @return the next definition stage.
+             */
+            WithCreate withCapacityPoolResourceId(String capacityPoolResourceId);
+        }
+        /** The stage of the Volume definition allowing to specify proximityPlacementGroup. */
+        interface WithProximityPlacementGroup {
+            /**
+             * Specifies the proximityPlacementGroup property: Proximity placement group associated with the volume.
+             *
+             * @param proximityPlacementGroup Proximity placement group associated with the volume.
+             * @return the next definition stage.
+             */
+            WithCreate withProximityPlacementGroup(String proximityPlacementGroup);
+        }
+        /** The stage of the Volume definition allowing to specify volumeSpecName. */
+        interface WithVolumeSpecName {
+            /**
+             * Specifies the volumeSpecName property: Volume spec name is the application specific designation or
+             * identifier for the particular volume in a volume group for e.g. data, log.
+             *
+             * @param volumeSpecName Volume spec name is the application specific designation or identifier for the
+             *     particular volume in a volume group for e.g. data, log.
+             * @return the next definition stage.
+             */
+            WithCreate withVolumeSpecName(String volumeSpecName);
+        }
+        /** The stage of the Volume definition allowing to specify placementRules. */
+        interface WithPlacementRules {
+            /**
+             * Specifies the placementRules property: Volume placement rules Application specific placement rules for
+             * the particular volume.
+             *
+             * @param placementRules Volume placement rules Application specific placement rules for the particular
+             *     volume.
+             * @return the next definition stage.
+             */
+            WithCreate withPlacementRules(List<PlacementKeyValuePairs> placementRules);
+        }
+        /** The stage of the Volume definition allowing to specify enableSubvolumes. */
+        interface WithEnableSubvolumes {
+            /**
+             * Specifies the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the
+             * volume.
+             *
+             * @param enableSubvolumes Flag indicating whether subvolume operations are enabled on the volume.
+             * @return the next definition stage.
+             */
+            WithCreate withEnableSubvolumes(EnableSubvolumes enableSubvolumes);
+        }
     }
     /**
      * Begins update for the Volume resource.
@@ -621,7 +895,11 @@ public interface Volume {
             UpdateStages.WithUsageThreshold,
             UpdateStages.WithExportPolicy,
             UpdateStages.WithThroughputMibps,
-            UpdateStages.WithDataProtection {
+            UpdateStages.WithDataProtection,
+            UpdateStages.WithIsDefaultQuotaEnabled,
+            UpdateStages.WithDefaultUserQuotaInKiBs,
+            UpdateStages.WithDefaultGroupQuotaInKiBs,
+            UpdateStages.WithUnixPermissions {
         /**
          * Executes the update request.
          *
@@ -652,9 +930,9 @@ public interface Volume {
         /** The stage of the Volume update allowing to specify serviceLevel. */
         interface WithServiceLevel {
             /**
-             * Specifies the serviceLevel property: The service level of the file system.
+             * Specifies the serviceLevel property: serviceLevel The service level of the file system.
              *
-             * @param serviceLevel The service level of the file system.
+             * @param serviceLevel serviceLevel The service level of the file system.
              * @return the next definition stage.
              */
             Update withServiceLevel(ServiceLevel serviceLevel);
@@ -662,11 +940,13 @@ public interface Volume {
         /** The stage of the Volume update allowing to specify usageThreshold. */
         interface WithUsageThreshold {
             /**
-             * Specifies the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is
-             * a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB. Specified in bytes..
+             * Specifies the usageThreshold property: usageThreshold Maximum storage quota allowed for a file system in
+             * bytes. This is a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB.
+             * Specified in bytes..
              *
-             * @param usageThreshold Maximum storage quota allowed for a file system in bytes. This is a soft quota used
-             *     for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB. Specified in bytes.
+             * @param usageThreshold usageThreshold Maximum storage quota allowed for a file system in bytes. This is a
+             *     soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB. Specified in
+             *     bytes.
              * @return the next definition stage.
              */
             Update withUsageThreshold(Long usageThreshold);
@@ -674,9 +954,9 @@ public interface Volume {
         /** The stage of the Volume update allowing to specify exportPolicy. */
         interface WithExportPolicy {
             /**
-             * Specifies the exportPolicy property: Set of export policy rules.
+             * Specifies the exportPolicy property: exportPolicy Set of export policy rules.
              *
-             * @param exportPolicy Set of export policy rules.
+             * @param exportPolicy exportPolicy Set of export policy rules.
              * @return the next definition stage.
              */
             Update withExportPolicy(VolumePatchPropertiesExportPolicy exportPolicy);
@@ -684,9 +964,11 @@ public interface Volume {
         /** The stage of the Volume update allowing to specify throughputMibps. */
         interface WithThroughputMibps {
             /**
-             * Specifies the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume.
+             * Specifies the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume
+             * and this will be accepted as input only for manual qosType volume.
              *
-             * @param throughputMibps Maximum throughput in Mibps that can be achieved by this volume.
+             * @param throughputMibps Maximum throughput in Mibps that can be achieved by this volume and this will be
+             *     accepted as input only for manual qosType volume.
              * @return the next definition stage.
              */
             Update withThroughputMibps(Float throughputMibps);
@@ -694,14 +976,66 @@ public interface Volume {
         /** The stage of the Volume update allowing to specify dataProtection. */
         interface WithDataProtection {
             /**
-             * Specifies the dataProtection property: DataProtection type volumes include an object containing details
-             * of the replication.
+             * Specifies the dataProtection property: DataProtection DataProtection type volumes include an object
+             * containing details of the replication.
              *
-             * @param dataProtection DataProtection type volumes include an object containing details of the
-             *     replication.
+             * @param dataProtection DataProtection DataProtection type volumes include an object containing details of
+             *     the replication.
              * @return the next definition stage.
              */
             Update withDataProtection(VolumePatchPropertiesDataProtection dataProtection);
+        }
+        /** The stage of the Volume update allowing to specify isDefaultQuotaEnabled. */
+        interface WithIsDefaultQuotaEnabled {
+            /**
+             * Specifies the isDefaultQuotaEnabled property: Specifies if default quota is enabled for the volume..
+             *
+             * @param isDefaultQuotaEnabled Specifies if default quota is enabled for the volume.
+             * @return the next definition stage.
+             */
+            Update withIsDefaultQuotaEnabled(Boolean isDefaultQuotaEnabled);
+        }
+        /** The stage of the Volume update allowing to specify defaultUserQuotaInKiBs. */
+        interface WithDefaultUserQuotaInKiBs {
+            /**
+             * Specifies the defaultUserQuotaInKiBs property: Default user quota for volume in KiBs. If
+             * isDefaultQuotaEnabled is set, the minimum value of 4 KiBs applies ..
+             *
+             * @param defaultUserQuotaInKiBs Default user quota for volume in KiBs. If isDefaultQuotaEnabled is set, the
+             *     minimum value of 4 KiBs applies .
+             * @return the next definition stage.
+             */
+            Update withDefaultUserQuotaInKiBs(Long defaultUserQuotaInKiBs);
+        }
+        /** The stage of the Volume update allowing to specify defaultGroupQuotaInKiBs. */
+        interface WithDefaultGroupQuotaInKiBs {
+            /**
+             * Specifies the defaultGroupQuotaInKiBs property: Default group quota for volume in KiBs. If
+             * isDefaultQuotaEnabled is set, the minimum value of 4 KiBs applies..
+             *
+             * @param defaultGroupQuotaInKiBs Default group quota for volume in KiBs. If isDefaultQuotaEnabled is set,
+             *     the minimum value of 4 KiBs applies.
+             * @return the next definition stage.
+             */
+            Update withDefaultGroupQuotaInKiBs(Long defaultGroupQuotaInKiBs);
+        }
+        /** The stage of the Volume update allowing to specify unixPermissions. */
+        interface WithUnixPermissions {
+            /**
+             * Specifies the unixPermissions property: UNIX permissions for NFS volume accepted in octal 4 digit format.
+             * First digit selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects
+             * permission for the owner of the file: read (4), write (2) and execute (1). Third selects permissions for
+             * other users in the same group. the fourth for other users not in the group. 0755 - gives
+             * read/write/execute permissions to owner and read/execute to group and other users..
+             *
+             * @param unixPermissions UNIX permissions for NFS volume accepted in octal 4 digit format. First digit
+             *     selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects
+             *     permission for the owner of the file: read (4), write (2) and execute (1). Third selects permissions
+             *     for other users in the same group. the fourth for other users not in the group. 0755 - gives
+             *     read/write/execute permissions to owner and read/execute to group and other users.
+             * @return the next definition stage.
+             */
+            Update withUnixPermissions(String unixPermissions);
         }
     }
     /**

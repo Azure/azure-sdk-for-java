@@ -4,9 +4,13 @@
 
 package com.azure.resourcemanager.servicefabric.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicefabric.fluent.models.ClusterInner;
+import com.azure.resourcemanager.servicefabric.fluent.models.ClusterVersionDetails;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -46,6 +50,20 @@ public interface Cluster {
      * @return the tags value.
      */
     Map<String, String> tags();
+
+    /**
+     * Gets the etag property: Azure resource etag.
+     *
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the addOnFeatures property: The list of add-on features to enable in the cluster.
@@ -230,13 +248,16 @@ public interface Cluster {
      * Gets the upgradeMode property: The upgrade mode of the cluster when new Service Fabric runtime version is
      * available.
      *
-     * <p>- Automatic - The cluster will be automatically upgraded to the latest Service Fabric runtime version as soon
-     * as it is available. - Manual - The cluster will not be automatically upgraded to the latest Service Fabric
-     * runtime version. The cluster is upgraded by setting the **clusterCodeVersion** property in the cluster resource.
-     *
      * @return the upgradeMode value.
      */
     UpgradeMode upgradeMode();
+
+    /**
+     * Gets the applicationTypeVersionsCleanupPolicy property: The policy used to clean up unused versions.
+     *
+     * @return the applicationTypeVersionsCleanupPolicy value.
+     */
+    ApplicationTypeVersionsCleanupPolicy applicationTypeVersionsCleanupPolicy();
 
     /**
      * Gets the vmImage property: The VM image VMSS has been configured with. Generic names such as Windows or Linux can
@@ -247,11 +268,66 @@ public interface Cluster {
     String vmImage();
 
     /**
-     * Gets the etag property: Azure resource etag.
+     * Gets the sfZonalUpgradeMode property: This property controls the logical grouping of VMs in upgrade domains
+     * (UDs). This property can't be modified if a node type with multiple Availability Zones is already present in the
+     * cluster.
      *
-     * @return the etag value.
+     * @return the sfZonalUpgradeMode value.
      */
-    String etag();
+    SfZonalUpgradeMode sfZonalUpgradeMode();
+
+    /**
+     * Gets the vmssZonalUpgradeMode property: This property defines the upgrade mode for the virtual machine scale set,
+     * it is mandatory if a node type with multiple Availability Zones is added.
+     *
+     * @return the vmssZonalUpgradeMode value.
+     */
+    VmssZonalUpgradeMode vmssZonalUpgradeMode();
+
+    /**
+     * Gets the infrastructureServiceManager property: Indicates if infrastructure service manager is enabled.
+     *
+     * @return the infrastructureServiceManager value.
+     */
+    Boolean infrastructureServiceManager();
+
+    /**
+     * Gets the upgradeWave property: Indicates when new cluster runtime version upgrades will be applied after they are
+     * released. By default is Wave0. Only applies when **upgradeMode** is set to 'Automatic'.
+     *
+     * @return the upgradeWave value.
+     */
+    ClusterUpgradeCadence upgradeWave();
+
+    /**
+     * Gets the upgradePauseStartTimestampUtc property: Indicates the start date and time to pause automatic runtime
+     * version upgrades on the cluster for an specific period of time on the cluster (UTC).
+     *
+     * @return the upgradePauseStartTimestampUtc value.
+     */
+    OffsetDateTime upgradePauseStartTimestampUtc();
+
+    /**
+     * Gets the upgradePauseEndTimestampUtc property: Indicates the end date and time to pause automatic runtime version
+     * upgrades on the cluster for an specific period of time on the cluster (UTC).
+     *
+     * @return the upgradePauseEndTimestampUtc value.
+     */
+    OffsetDateTime upgradePauseEndTimestampUtc();
+
+    /**
+     * Gets the waveUpgradePaused property: Boolean to pause automatic runtime version upgrades to the cluster.
+     *
+     * @return the waveUpgradePaused value.
+     */
+    Boolean waveUpgradePaused();
+
+    /**
+     * Gets the notifications property: Indicates a list of notification channels for cluster events.
+     *
+     * @return the notifications value.
+     */
+    List<Notification> notifications();
 
     /**
      * Gets the region of the resource.
@@ -337,7 +413,16 @@ public interface Cluster {
                 DefinitionStages.WithReverseProxyCertificateCommonNames,
                 DefinitionStages.WithUpgradeDescription,
                 DefinitionStages.WithUpgradeMode,
-                DefinitionStages.WithVmImage {
+                DefinitionStages.WithApplicationTypeVersionsCleanupPolicy,
+                DefinitionStages.WithVmImage,
+                DefinitionStages.WithSfZonalUpgradeMode,
+                DefinitionStages.WithVmssZonalUpgradeMode,
+                DefinitionStages.WithInfrastructureServiceManager,
+                DefinitionStages.WithUpgradeWave,
+                DefinitionStages.WithUpgradePauseStartTimestampUtc,
+                DefinitionStages.WithUpgradePauseEndTimestampUtc,
+                DefinitionStages.WithWaveUpgradePaused,
+                DefinitionStages.WithNotifications {
             /**
              * Executes the create request.
              *
@@ -563,21 +648,24 @@ public interface Cluster {
         interface WithUpgradeMode {
             /**
              * Specifies the upgradeMode property: The upgrade mode of the cluster when new Service Fabric runtime
-             * version is available.
-             *
-             * <p>- Automatic - The cluster will be automatically upgraded to the latest Service Fabric runtime version
-             * as soon as it is available. - Manual - The cluster will not be automatically upgraded to the latest
-             * Service Fabric runtime version. The cluster is upgraded by setting the **clusterCodeVersion** property in
-             * the cluster resource. .
+             * version is available..
              *
              * @param upgradeMode The upgrade mode of the cluster when new Service Fabric runtime version is available.
-             *     <p>- Automatic - The cluster will be automatically upgraded to the latest Service Fabric runtime
-             *     version as soon as it is available. - Manual - The cluster will not be automatically upgraded to the
-             *     latest Service Fabric runtime version. The cluster is upgraded by setting the **clusterCodeVersion**
-             *     property in the cluster resource.
              * @return the next definition stage.
              */
             WithCreate withUpgradeMode(UpgradeMode upgradeMode);
+        }
+        /** The stage of the Cluster definition allowing to specify applicationTypeVersionsCleanupPolicy. */
+        interface WithApplicationTypeVersionsCleanupPolicy {
+            /**
+             * Specifies the applicationTypeVersionsCleanupPolicy property: The policy used to clean up unused
+             * versions..
+             *
+             * @param applicationTypeVersionsCleanupPolicy The policy used to clean up unused versions.
+             * @return the next definition stage.
+             */
+            WithCreate withApplicationTypeVersionsCleanupPolicy(
+                ApplicationTypeVersionsCleanupPolicy applicationTypeVersionsCleanupPolicy);
         }
         /** The stage of the Cluster definition allowing to specify vmImage. */
         interface WithVmImage {
@@ -590,6 +678,100 @@ public interface Cluster {
              * @return the next definition stage.
              */
             WithCreate withVmImage(String vmImage);
+        }
+        /** The stage of the Cluster definition allowing to specify sfZonalUpgradeMode. */
+        interface WithSfZonalUpgradeMode {
+            /**
+             * Specifies the sfZonalUpgradeMode property: This property controls the logical grouping of VMs in upgrade
+             * domains (UDs). This property can't be modified if a node type with multiple Availability Zones is already
+             * present in the cluster..
+             *
+             * @param sfZonalUpgradeMode This property controls the logical grouping of VMs in upgrade domains (UDs).
+             *     This property can't be modified if a node type with multiple Availability Zones is already present in
+             *     the cluster.
+             * @return the next definition stage.
+             */
+            WithCreate withSfZonalUpgradeMode(SfZonalUpgradeMode sfZonalUpgradeMode);
+        }
+        /** The stage of the Cluster definition allowing to specify vmssZonalUpgradeMode. */
+        interface WithVmssZonalUpgradeMode {
+            /**
+             * Specifies the vmssZonalUpgradeMode property: This property defines the upgrade mode for the virtual
+             * machine scale set, it is mandatory if a node type with multiple Availability Zones is added..
+             *
+             * @param vmssZonalUpgradeMode This property defines the upgrade mode for the virtual machine scale set, it
+             *     is mandatory if a node type with multiple Availability Zones is added.
+             * @return the next definition stage.
+             */
+            WithCreate withVmssZonalUpgradeMode(VmssZonalUpgradeMode vmssZonalUpgradeMode);
+        }
+        /** The stage of the Cluster definition allowing to specify infrastructureServiceManager. */
+        interface WithInfrastructureServiceManager {
+            /**
+             * Specifies the infrastructureServiceManager property: Indicates if infrastructure service manager is
+             * enabled..
+             *
+             * @param infrastructureServiceManager Indicates if infrastructure service manager is enabled.
+             * @return the next definition stage.
+             */
+            WithCreate withInfrastructureServiceManager(Boolean infrastructureServiceManager);
+        }
+        /** The stage of the Cluster definition allowing to specify upgradeWave. */
+        interface WithUpgradeWave {
+            /**
+             * Specifies the upgradeWave property: Indicates when new cluster runtime version upgrades will be applied
+             * after they are released. By default is Wave0. Only applies when **upgradeMode** is set to 'Automatic'..
+             *
+             * @param upgradeWave Indicates when new cluster runtime version upgrades will be applied after they are
+             *     released. By default is Wave0. Only applies when **upgradeMode** is set to 'Automatic'.
+             * @return the next definition stage.
+             */
+            WithCreate withUpgradeWave(ClusterUpgradeCadence upgradeWave);
+        }
+        /** The stage of the Cluster definition allowing to specify upgradePauseStartTimestampUtc. */
+        interface WithUpgradePauseStartTimestampUtc {
+            /**
+             * Specifies the upgradePauseStartTimestampUtc property: Indicates the start date and time to pause
+             * automatic runtime version upgrades on the cluster for an specific period of time on the cluster (UTC)..
+             *
+             * @param upgradePauseStartTimestampUtc Indicates the start date and time to pause automatic runtime version
+             *     upgrades on the cluster for an specific period of time on the cluster (UTC).
+             * @return the next definition stage.
+             */
+            WithCreate withUpgradePauseStartTimestampUtc(OffsetDateTime upgradePauseStartTimestampUtc);
+        }
+        /** The stage of the Cluster definition allowing to specify upgradePauseEndTimestampUtc. */
+        interface WithUpgradePauseEndTimestampUtc {
+            /**
+             * Specifies the upgradePauseEndTimestampUtc property: Indicates the end date and time to pause automatic
+             * runtime version upgrades on the cluster for an specific period of time on the cluster (UTC)..
+             *
+             * @param upgradePauseEndTimestampUtc Indicates the end date and time to pause automatic runtime version
+             *     upgrades on the cluster for an specific period of time on the cluster (UTC).
+             * @return the next definition stage.
+             */
+            WithCreate withUpgradePauseEndTimestampUtc(OffsetDateTime upgradePauseEndTimestampUtc);
+        }
+        /** The stage of the Cluster definition allowing to specify waveUpgradePaused. */
+        interface WithWaveUpgradePaused {
+            /**
+             * Specifies the waveUpgradePaused property: Boolean to pause automatic runtime version upgrades to the
+             * cluster..
+             *
+             * @param waveUpgradePaused Boolean to pause automatic runtime version upgrades to the cluster.
+             * @return the next definition stage.
+             */
+            WithCreate withWaveUpgradePaused(Boolean waveUpgradePaused);
+        }
+        /** The stage of the Cluster definition allowing to specify notifications. */
+        interface WithNotifications {
+            /**
+             * Specifies the notifications property: Indicates a list of notification channels for cluster events..
+             *
+             * @param notifications Indicates a list of notification channels for cluster events.
+             * @return the next definition stage.
+             */
+            WithCreate withNotifications(List<Notification> notifications);
         }
     }
     /**
@@ -614,7 +796,16 @@ public interface Cluster {
             UpdateStages.WithReliabilityLevel,
             UpdateStages.WithReverseProxyCertificate,
             UpdateStages.WithUpgradeDescription,
-            UpdateStages.WithUpgradeMode {
+            UpdateStages.WithApplicationTypeVersionsCleanupPolicy,
+            UpdateStages.WithUpgradeMode,
+            UpdateStages.WithSfZonalUpgradeMode,
+            UpdateStages.WithVmssZonalUpgradeMode,
+            UpdateStages.WithInfrastructureServiceManager,
+            UpdateStages.WithUpgradeWave,
+            UpdateStages.WithUpgradePauseStartTimestampUtc,
+            UpdateStages.WithUpgradePauseEndTimestampUtc,
+            UpdateStages.WithWaveUpgradePaused,
+            UpdateStages.WithNotifications {
         /**
          * Executes the update request.
          *
@@ -795,25 +986,122 @@ public interface Cluster {
              */
             Update withUpgradeDescription(ClusterUpgradePolicy upgradeDescription);
         }
+        /** The stage of the Cluster update allowing to specify applicationTypeVersionsCleanupPolicy. */
+        interface WithApplicationTypeVersionsCleanupPolicy {
+            /**
+             * Specifies the applicationTypeVersionsCleanupPolicy property: The policy used to clean up unused
+             * versions..
+             *
+             * @param applicationTypeVersionsCleanupPolicy The policy used to clean up unused versions.
+             * @return the next definition stage.
+             */
+            Update withApplicationTypeVersionsCleanupPolicy(
+                ApplicationTypeVersionsCleanupPolicy applicationTypeVersionsCleanupPolicy);
+        }
         /** The stage of the Cluster update allowing to specify upgradeMode. */
         interface WithUpgradeMode {
             /**
              * Specifies the upgradeMode property: The upgrade mode of the cluster when new Service Fabric runtime
-             * version is available.
-             *
-             * <p>- Automatic - The cluster will be automatically upgraded to the latest Service Fabric runtime version
-             * as soon as it is available. - Manual - The cluster will not be automatically upgraded to the latest
-             * Service Fabric runtime version. The cluster is upgraded by setting the **clusterCodeVersion** property in
-             * the cluster resource. .
+             * version is available..
              *
              * @param upgradeMode The upgrade mode of the cluster when new Service Fabric runtime version is available.
-             *     <p>- Automatic - The cluster will be automatically upgraded to the latest Service Fabric runtime
-             *     version as soon as it is available. - Manual - The cluster will not be automatically upgraded to the
-             *     latest Service Fabric runtime version. The cluster is upgraded by setting the **clusterCodeVersion**
-             *     property in the cluster resource.
              * @return the next definition stage.
              */
             Update withUpgradeMode(UpgradeMode upgradeMode);
+        }
+        /** The stage of the Cluster update allowing to specify sfZonalUpgradeMode. */
+        interface WithSfZonalUpgradeMode {
+            /**
+             * Specifies the sfZonalUpgradeMode property: This property controls the logical grouping of VMs in upgrade
+             * domains (UDs). This property can't be modified if a node type with multiple Availability Zones is already
+             * present in the cluster..
+             *
+             * @param sfZonalUpgradeMode This property controls the logical grouping of VMs in upgrade domains (UDs).
+             *     This property can't be modified if a node type with multiple Availability Zones is already present in
+             *     the cluster.
+             * @return the next definition stage.
+             */
+            Update withSfZonalUpgradeMode(SfZonalUpgradeMode sfZonalUpgradeMode);
+        }
+        /** The stage of the Cluster update allowing to specify vmssZonalUpgradeMode. */
+        interface WithVmssZonalUpgradeMode {
+            /**
+             * Specifies the vmssZonalUpgradeMode property: This property defines the upgrade mode for the virtual
+             * machine scale set, it is mandatory if a node type with multiple Availability Zones is added..
+             *
+             * @param vmssZonalUpgradeMode This property defines the upgrade mode for the virtual machine scale set, it
+             *     is mandatory if a node type with multiple Availability Zones is added.
+             * @return the next definition stage.
+             */
+            Update withVmssZonalUpgradeMode(VmssZonalUpgradeMode vmssZonalUpgradeMode);
+        }
+        /** The stage of the Cluster update allowing to specify infrastructureServiceManager. */
+        interface WithInfrastructureServiceManager {
+            /**
+             * Specifies the infrastructureServiceManager property: Indicates if infrastructure service manager is
+             * enabled..
+             *
+             * @param infrastructureServiceManager Indicates if infrastructure service manager is enabled.
+             * @return the next definition stage.
+             */
+            Update withInfrastructureServiceManager(Boolean infrastructureServiceManager);
+        }
+        /** The stage of the Cluster update allowing to specify upgradeWave. */
+        interface WithUpgradeWave {
+            /**
+             * Specifies the upgradeWave property: Indicates when new cluster runtime version upgrades will be applied
+             * after they are released. By default is Wave0. Only applies when **upgradeMode** is set to 'Automatic'..
+             *
+             * @param upgradeWave Indicates when new cluster runtime version upgrades will be applied after they are
+             *     released. By default is Wave0. Only applies when **upgradeMode** is set to 'Automatic'.
+             * @return the next definition stage.
+             */
+            Update withUpgradeWave(ClusterUpgradeCadence upgradeWave);
+        }
+        /** The stage of the Cluster update allowing to specify upgradePauseStartTimestampUtc. */
+        interface WithUpgradePauseStartTimestampUtc {
+            /**
+             * Specifies the upgradePauseStartTimestampUtc property: The start timestamp to pause runtime version
+             * upgrades on the cluster (UTC)..
+             *
+             * @param upgradePauseStartTimestampUtc The start timestamp to pause runtime version upgrades on the cluster
+             *     (UTC).
+             * @return the next definition stage.
+             */
+            Update withUpgradePauseStartTimestampUtc(OffsetDateTime upgradePauseStartTimestampUtc);
+        }
+        /** The stage of the Cluster update allowing to specify upgradePauseEndTimestampUtc. */
+        interface WithUpgradePauseEndTimestampUtc {
+            /**
+             * Specifies the upgradePauseEndTimestampUtc property: The end timestamp of pause runtime version upgrades
+             * on the cluster (UTC)..
+             *
+             * @param upgradePauseEndTimestampUtc The end timestamp of pause runtime version upgrades on the cluster
+             *     (UTC).
+             * @return the next definition stage.
+             */
+            Update withUpgradePauseEndTimestampUtc(OffsetDateTime upgradePauseEndTimestampUtc);
+        }
+        /** The stage of the Cluster update allowing to specify waveUpgradePaused. */
+        interface WithWaveUpgradePaused {
+            /**
+             * Specifies the waveUpgradePaused property: Boolean to pause automatic runtime version upgrades to the
+             * cluster..
+             *
+             * @param waveUpgradePaused Boolean to pause automatic runtime version upgrades to the cluster.
+             * @return the next definition stage.
+             */
+            Update withWaveUpgradePaused(Boolean waveUpgradePaused);
+        }
+        /** The stage of the Cluster update allowing to specify notifications. */
+        interface WithNotifications {
+            /**
+             * Specifies the notifications property: Indicates a list of notification channels for cluster events..
+             *
+             * @param notifications Indicates a list of notification channels for cluster events.
+             * @return the next definition stage.
+             */
+            Update withNotifications(List<Notification> notifications);
         }
     }
     /**
@@ -830,4 +1118,30 @@ public interface Cluster {
      * @return the refreshed resource.
      */
     Cluster refresh(Context context);
+
+    /**
+     * If a target is not provided, it will get the minimum and maximum versions available from the current cluster
+     * version. If a target is given, it will provide the required path to get from the current cluster version to the
+     * target version.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of intermediate cluster code versions for an upgrade or downgrade.
+     */
+    UpgradableVersionPathResult listUpgradableVersions();
+
+    /**
+     * If a target is not provided, it will get the minimum and maximum versions available from the current cluster
+     * version. If a target is given, it will provide the required path to get from the current cluster version to the
+     * target version.
+     *
+     * @param versionsDescription The upgrade path description with target version.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of intermediate cluster code versions for an upgrade or downgrade.
+     */
+    Response<UpgradableVersionPathResult> listUpgradableVersionsWithResponse(
+        UpgradableVersionsDescription versionsDescription, Context context);
 }

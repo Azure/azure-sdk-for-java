@@ -12,7 +12,7 @@ public interface Locations {
     /**
      * Checks whether the Video Analyzer resource name is available.
      *
-     * @param locationName The name of the location.
+     * @param locationName Location Name.
      * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -24,7 +24,7 @@ public interface Locations {
     /**
      * Checks whether the Video Analyzer resource name is available.
      *
-     * @param locationName The name of the location.
+     * @param locationName Location Name.
      * @param parameters The request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

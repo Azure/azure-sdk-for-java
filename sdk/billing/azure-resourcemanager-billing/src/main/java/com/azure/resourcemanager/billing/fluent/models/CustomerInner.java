@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.AzurePlan;
@@ -15,41 +14,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A partner's customer. */
-@JsonFlatten
 @Fluent
-public class CustomerInner extends ProxyResource {
+public final class CustomerInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomerInner.class);
 
     /*
-     * The ID of the billing profile for the invoice section.
+     * The customer.
      */
-    @JsonProperty(value = "properties.billingProfileId", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingProfileId;
+    @JsonProperty(value = "properties")
+    private CustomerProperties innerProperties;
 
-    /*
-     * The name of the billing profile for the invoice section.
+    /**
+     * Get the innerProperties property: The customer.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.billingProfileDisplayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingProfileDisplayName;
-
-    /*
-     * The name of the customer.
-     */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
-
-    /*
-     * Azure plans enabled for the customer.
-     */
-    @JsonProperty(value = "properties.enabledAzurePlans")
-    private List<AzurePlan> enabledAzurePlans;
-
-    /*
-     * The list of resellers for which an Azure plan is enabled for the
-     * customer.
-     */
-    @JsonProperty(value = "properties.resellers")
-    private List<Reseller> resellers;
+    private CustomerProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the billingProfileId property: The ID of the billing profile for the invoice section.
@@ -57,7 +39,7 @@ public class CustomerInner extends ProxyResource {
      * @return the billingProfileId value.
      */
     public String billingProfileId() {
-        return this.billingProfileId;
+        return this.innerProperties() == null ? null : this.innerProperties().billingProfileId();
     }
 
     /**
@@ -66,7 +48,7 @@ public class CustomerInner extends ProxyResource {
      * @return the billingProfileDisplayName value.
      */
     public String billingProfileDisplayName() {
-        return this.billingProfileDisplayName;
+        return this.innerProperties() == null ? null : this.innerProperties().billingProfileDisplayName();
     }
 
     /**
@@ -75,7 +57,7 @@ public class CustomerInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -85,7 +67,10 @@ public class CustomerInner extends ProxyResource {
      * @return the CustomerInner object itself.
      */
     public CustomerInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CustomerProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -95,7 +80,7 @@ public class CustomerInner extends ProxyResource {
      * @return the enabledAzurePlans value.
      */
     public List<AzurePlan> enabledAzurePlans() {
-        return this.enabledAzurePlans;
+        return this.innerProperties() == null ? null : this.innerProperties().enabledAzurePlans();
     }
 
     /**
@@ -105,7 +90,10 @@ public class CustomerInner extends ProxyResource {
      * @return the CustomerInner object itself.
      */
     public CustomerInner withEnabledAzurePlans(List<AzurePlan> enabledAzurePlans) {
-        this.enabledAzurePlans = enabledAzurePlans;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CustomerProperties();
+        }
+        this.innerProperties().withEnabledAzurePlans(enabledAzurePlans);
         return this;
     }
 
@@ -115,7 +103,7 @@ public class CustomerInner extends ProxyResource {
      * @return the resellers value.
      */
     public List<Reseller> resellers() {
-        return this.resellers;
+        return this.innerProperties() == null ? null : this.innerProperties().resellers();
     }
 
     /**
@@ -125,7 +113,10 @@ public class CustomerInner extends ProxyResource {
      * @return the CustomerInner object itself.
      */
     public CustomerInner withResellers(List<Reseller> resellers) {
-        this.resellers = resellers;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CustomerProperties();
+        }
+        this.innerProperties().withResellers(resellers);
         return this;
     }
 
@@ -135,11 +126,8 @@ public class CustomerInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (enabledAzurePlans() != null) {
-            enabledAzurePlans().forEach(e -> e.validate());
-        }
-        if (resellers() != null) {
-            resellers().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

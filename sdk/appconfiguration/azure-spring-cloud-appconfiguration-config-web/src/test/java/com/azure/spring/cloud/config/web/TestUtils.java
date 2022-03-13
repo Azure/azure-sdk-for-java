@@ -4,8 +4,10 @@ package com.azure.spring.cloud.config.web;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
+import com.azure.spring.cloud.config.properties.AppConfigurationStoreSelects;
 import com.azure.spring.cloud.config.properties.ConfigStore;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,7 +42,10 @@ public final class TestUtils {
         ConfigStore store = new ConfigStore();
         store.setConnectionString(connectionString);
         store.setEndpoint(storeEndpoint);
-        store.setLabel(label);
+        AppConfigurationStoreSelects selectedKeys = new AppConfigurationStoreSelects().setKeyFilter("/application/").setLabelFilter(label);
+        List<AppConfigurationStoreSelects> selects = new ArrayList<>();
+        selects.add(selectedKeys);
+        store.setSelects(selects);
         stores.add(store);
         properties.setStores(stores);
     }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,16 +12,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Tenant Settings. */
-@JsonFlatten
 @Fluent
-public class TenantSettingsContractInner extends ProxyResource {
+public final class TenantSettingsContractInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TenantSettingsContractInner.class);
 
     /*
-     * Tenant settings
+     * TenantSettings entity contract properties.
      */
-    @JsonProperty(value = "properties.settings")
-    private Map<String, String> settings;
+    @JsonProperty(value = "properties")
+    private TenantSettingsContractProperties innerProperties;
+
+    /**
+     * Get the innerProperties property: TenantSettings entity contract properties.
+     *
+     * @return the innerProperties value.
+     */
+    private TenantSettingsContractProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the settings property: Tenant settings.
@@ -30,7 +37,7 @@ public class TenantSettingsContractInner extends ProxyResource {
      * @return the settings value.
      */
     public Map<String, String> settings() {
-        return this.settings;
+        return this.innerProperties() == null ? null : this.innerProperties().settings();
     }
 
     /**
@@ -40,7 +47,10 @@ public class TenantSettingsContractInner extends ProxyResource {
      * @return the TenantSettingsContractInner object itself.
      */
     public TenantSettingsContractInner withSettings(Map<String, String> settings) {
-        this.settings = settings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TenantSettingsContractProperties();
+        }
+        this.innerProperties().withSettings(settings);
         return this;
     }
 
@@ -50,5 +60,8 @@ public class TenantSettingsContractInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

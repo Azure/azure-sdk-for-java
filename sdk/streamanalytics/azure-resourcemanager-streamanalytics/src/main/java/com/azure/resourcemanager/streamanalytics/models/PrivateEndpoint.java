@@ -6,6 +6,7 @@ package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.streamanalytics.fluent.models.PrivateEndpointInner;
+import java.util.List;
 
 /** An immutable client-side representation of PrivateEndpoint. */
 public interface PrivateEndpoint {
@@ -31,13 +32,6 @@ public interface PrivateEndpoint {
     String type();
 
     /**
-     * Gets the properties property: The properties associated with a private endpoint.
-     *
-     * @return the properties value.
-     */
-    PrivateEndpointProperties properties();
-
-    /**
      * Gets the etag property: Unique opaque string (generally a GUID) that represents the metadata state of the
      * resource (private endpoint) and changes whenever the resource is updated. Required on PUT (CreateOrUpdate)
      * requests.
@@ -45,6 +39,21 @@ public interface PrivateEndpoint {
      * @return the etag value.
      */
     String etag();
+
+    /**
+     * Gets the createdDate property: The date when this private endpoint was created.
+     *
+     * @return the createdDate value.
+     */
+    String createdDate();
+
+    /**
+     * Gets the manualPrivateLinkServiceConnections property: A list of connections to the remote resource. Immutable
+     * after it is set.
+     *
+     * @return the manualPrivateLinkServiceConnections value.
+     */
+    List<PrivateLinkServiceConnection> manualPrivateLinkServiceConnections();
 
     /**
      * Gets the inner com.azure.resourcemanager.streamanalytics.fluent.models.PrivateEndpointInner object.
@@ -78,7 +87,9 @@ public interface PrivateEndpoint {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithProperties, DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
+            extends DefinitionStages.WithManualPrivateLinkServiceConnections,
+                DefinitionStages.WithIfMatch,
+                DefinitionStages.WithIfNoneMatch {
             /**
              * Executes the create request.
              *
@@ -94,15 +105,18 @@ public interface PrivateEndpoint {
              */
             PrivateEndpoint create(Context context);
         }
-        /** The stage of the PrivateEndpoint definition allowing to specify properties. */
-        interface WithProperties {
+        /** The stage of the PrivateEndpoint definition allowing to specify manualPrivateLinkServiceConnections. */
+        interface WithManualPrivateLinkServiceConnections {
             /**
-             * Specifies the properties property: The properties associated with a private endpoint..
+             * Specifies the manualPrivateLinkServiceConnections property: A list of connections to the remote resource.
+             * Immutable after it is set..
              *
-             * @param properties The properties associated with a private endpoint.
+             * @param manualPrivateLinkServiceConnections A list of connections to the remote resource. Immutable after
+             *     it is set.
              * @return the next definition stage.
              */
-            WithCreate withProperties(PrivateEndpointProperties properties);
+            WithCreate withManualPrivateLinkServiceConnections(
+                List<PrivateLinkServiceConnection> manualPrivateLinkServiceConnections);
         }
         /** The stage of the PrivateEndpoint definition allowing to specify ifMatch. */
         interface WithIfMatch {
@@ -137,7 +151,10 @@ public interface PrivateEndpoint {
     PrivateEndpoint.Update update();
 
     /** The template for PrivateEndpoint update. */
-    interface Update extends UpdateStages.WithProperties, UpdateStages.WithifMatch, UpdateStages.WithifNoneMatch {
+    interface Update
+        extends UpdateStages.WithManualPrivateLinkServiceConnections,
+            UpdateStages.WithIfMatch,
+            UpdateStages.WithIfNoneMatch {
         /**
          * Executes the update request.
          *
@@ -155,18 +172,21 @@ public interface PrivateEndpoint {
     }
     /** The PrivateEndpoint update stages. */
     interface UpdateStages {
-        /** The stage of the PrivateEndpoint update allowing to specify properties. */
-        interface WithProperties {
+        /** The stage of the PrivateEndpoint update allowing to specify manualPrivateLinkServiceConnections. */
+        interface WithManualPrivateLinkServiceConnections {
             /**
-             * Specifies the properties property: The properties associated with a private endpoint..
+             * Specifies the manualPrivateLinkServiceConnections property: A list of connections to the remote resource.
+             * Immutable after it is set..
              *
-             * @param properties The properties associated with a private endpoint.
+             * @param manualPrivateLinkServiceConnections A list of connections to the remote resource. Immutable after
+             *     it is set.
              * @return the next definition stage.
              */
-            Update withProperties(PrivateEndpointProperties properties);
+            Update withManualPrivateLinkServiceConnections(
+                List<PrivateLinkServiceConnection> manualPrivateLinkServiceConnections);
         }
         /** The stage of the PrivateEndpoint update allowing to specify ifMatch. */
-        interface WithifMatch {
+        interface WithIfMatch {
             /**
              * Specifies the ifMatch property: The ETag of the resource. Omit this value to always overwrite the current
              * record set. Specify the last-seen ETag value to prevent accidentally overwriting concurrent changes..
@@ -175,10 +195,10 @@ public interface PrivateEndpoint {
              *     Specify the last-seen ETag value to prevent accidentally overwriting concurrent changes.
              * @return the next definition stage.
              */
-            Update ifMatch(String ifMatch);
+            Update withIfMatch(String ifMatch);
         }
         /** The stage of the PrivateEndpoint update allowing to specify ifNoneMatch. */
-        interface WithifNoneMatch {
+        interface WithIfNoneMatch {
             /**
              * Specifies the ifNoneMatch property: Set to '*' to allow a new resource to be created, but to prevent
              * updating an existing record set. Other values will result in a 412 Pre-condition Failed response..
@@ -187,7 +207,7 @@ public interface PrivateEndpoint {
              *     record set. Other values will result in a 412 Pre-condition Failed response.
              * @return the next definition stage.
              */
-            Update ifNoneMatch(String ifNoneMatch);
+            Update withIfNoneMatch(String ifNoneMatch);
         }
     }
     /**

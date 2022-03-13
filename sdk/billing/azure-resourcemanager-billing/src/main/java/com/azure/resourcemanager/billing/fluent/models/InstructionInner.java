@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,34 +12,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** An instruction. */
-@JsonFlatten
 @Fluent
-public class InstructionInner extends ProxyResource {
+public final class InstructionInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(InstructionInner.class);
 
     /*
-     * The amount budgeted for this billing instruction.
+     * A billing instruction used during invoice generation.
      */
-    @JsonProperty(value = "properties.amount")
-    private Float amount;
+    @JsonProperty(value = "properties")
+    private InstructionProperties innerProperties;
 
-    /*
-     * The date this billing instruction goes into effect.
+    /**
+     * Get the innerProperties property: A billing instruction used during invoice generation.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.startDate")
-    private OffsetDateTime startDate;
-
-    /*
-     * The date this billing instruction is no longer in effect.
-     */
-    @JsonProperty(value = "properties.endDate")
-    private OffsetDateTime endDate;
-
-    /*
-     * The date this billing instruction was created.
-     */
-    @JsonProperty(value = "properties.creationDate")
-    private OffsetDateTime creationDate;
+    private InstructionProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the amount property: The amount budgeted for this billing instruction.
@@ -48,7 +37,7 @@ public class InstructionInner extends ProxyResource {
      * @return the amount value.
      */
     public Float amount() {
-        return this.amount;
+        return this.innerProperties() == null ? null : this.innerProperties().amount();
     }
 
     /**
@@ -58,7 +47,10 @@ public class InstructionInner extends ProxyResource {
      * @return the InstructionInner object itself.
      */
     public InstructionInner withAmount(Float amount) {
-        this.amount = amount;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InstructionProperties();
+        }
+        this.innerProperties().withAmount(amount);
         return this;
     }
 
@@ -68,7 +60,7 @@ public class InstructionInner extends ProxyResource {
      * @return the startDate value.
      */
     public OffsetDateTime startDate() {
-        return this.startDate;
+        return this.innerProperties() == null ? null : this.innerProperties().startDate();
     }
 
     /**
@@ -78,7 +70,10 @@ public class InstructionInner extends ProxyResource {
      * @return the InstructionInner object itself.
      */
     public InstructionInner withStartDate(OffsetDateTime startDate) {
-        this.startDate = startDate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InstructionProperties();
+        }
+        this.innerProperties().withStartDate(startDate);
         return this;
     }
 
@@ -88,7 +83,7 @@ public class InstructionInner extends ProxyResource {
      * @return the endDate value.
      */
     public OffsetDateTime endDate() {
-        return this.endDate;
+        return this.innerProperties() == null ? null : this.innerProperties().endDate();
     }
 
     /**
@@ -98,7 +93,10 @@ public class InstructionInner extends ProxyResource {
      * @return the InstructionInner object itself.
      */
     public InstructionInner withEndDate(OffsetDateTime endDate) {
-        this.endDate = endDate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InstructionProperties();
+        }
+        this.innerProperties().withEndDate(endDate);
         return this;
     }
 
@@ -108,7 +106,7 @@ public class InstructionInner extends ProxyResource {
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
-        return this.creationDate;
+        return this.innerProperties() == null ? null : this.innerProperties().creationDate();
     }
 
     /**
@@ -118,7 +116,10 @@ public class InstructionInner extends ProxyResource {
      * @return the InstructionInner object itself.
      */
     public InstructionInner withCreationDate(OffsetDateTime creationDate) {
-        this.creationDate = creationDate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InstructionProperties();
+        }
+        this.innerProperties().withCreationDate(creationDate);
         return this;
     }
 
@@ -128,5 +129,8 @@ public class InstructionInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

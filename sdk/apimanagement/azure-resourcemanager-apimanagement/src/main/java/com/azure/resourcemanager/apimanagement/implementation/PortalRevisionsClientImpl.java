@@ -167,7 +167,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     }
 
     /**
-     * Lists a collection of developer portal revision entities.
+     * Lists developer portal's revisions.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -233,7 +233,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     }
 
     /**
-     * Lists a collection of developer portal revision entities.
+     * Lists developer portal's revisions.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -297,7 +297,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     }
 
     /**
-     * Lists a collection of developer portal revision entities.
+     * Lists developer portal's revisions.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -321,7 +321,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     }
 
     /**
-     * Lists a collection of developer portal revision entities.
+     * Lists developer portal's revisions.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -341,7 +341,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     }
 
     /**
-     * Lists a collection of developer portal revision entities.
+     * Lists developer portal's revisions.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -366,7 +366,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     }
 
     /**
-     * Lists a collection of developer portal revision entities.
+     * Lists developer portal's revisions.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -384,7 +384,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     }
 
     /**
-     * Lists a collection of developer portal revision entities.
+     * Lists developer portal's revisions.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -407,7 +407,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     }
 
     /**
-     * Gets developer portal revision specified by its identifier.
+     * Gets the developer portal revision specified by its identifier.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -416,7 +416,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer portal revision specified by its identifier.
+     * @return the developer portal revision specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PortalRevisionsGetEntityTagResponse> getEntityTagWithResponseAsync(
@@ -462,7 +462,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     }
 
     /**
-     * Gets developer portal revision specified by its identifier.
+     * Gets the developer portal revision specified by its identifier.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -472,7 +472,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer portal revision specified by its identifier.
+     * @return the developer portal revision specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PortalRevisionsGetEntityTagResponse> getEntityTagWithResponseAsync(
@@ -515,7 +515,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     }
 
     /**
-     * Gets developer portal revision specified by its identifier.
+     * Gets the developer portal revision specified by its identifier.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -524,7 +524,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer portal revision specified by its identifier.
+     * @return the developer portal revision specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getEntityTagAsync(String resourceGroupName, String serviceName, String portalRevisionId) {
@@ -533,7 +533,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     }
 
     /**
-     * Gets developer portal revision specified by its identifier.
+     * Gets the developer portal revision specified by its identifier.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -549,7 +549,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     }
 
     /**
-     * Gets developer portal revision specified by its identifier.
+     * Gets the developer portal revision specified by its identifier.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -559,7 +559,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer portal revision specified by its identifier.
+     * @return the developer portal revision specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PortalRevisionsGetEntityTagResponse getEntityTagWithResponse(
@@ -568,7 +568,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     }
 
     /**
-     * Gets developer portal revision specified by its identifier.
+     * Gets the developer portal's revision specified by its identifier.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -577,7 +577,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer portal revision specified by its identifier.
+     * @return the developer portal's revision specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PortalRevisionsGetResponse> getWithResponseAsync(
@@ -623,7 +623,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     }
 
     /**
-     * Gets developer portal revision specified by its identifier.
+     * Gets the developer portal's revision specified by its identifier.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -633,7 +633,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer portal revision specified by its identifier.
+     * @return the developer portal's revision specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PortalRevisionsGetResponse> getWithResponseAsync(
@@ -676,7 +676,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     }
 
     /**
-     * Gets developer portal revision specified by its identifier.
+     * Gets the developer portal's revision specified by its identifier.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -685,7 +685,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer portal revision specified by its identifier.
+     * @return the developer portal's revision specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PortalRevisionContractInner> getAsync(
@@ -702,7 +702,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     }
 
     /**
-     * Gets developer portal revision specified by its identifier.
+     * Gets the developer portal's revision specified by its identifier.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -711,7 +711,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer portal revision specified by its identifier.
+     * @return the developer portal's revision specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PortalRevisionContractInner get(String resourceGroupName, String serviceName, String portalRevisionId) {
@@ -719,7 +719,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     }
 
     /**
-     * Gets developer portal revision specified by its identifier.
+     * Gets the developer portal's revision specified by its identifier.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -729,7 +729,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer portal revision specified by its identifier.
+     * @return the developer portal's revision specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PortalRevisionsGetResponse getWithResponse(
@@ -738,7 +738,8 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     }
 
     /**
-     * Creates a new developer portal revision.
+     * Creates a new developer portal's revision by running the portal's publishing. The `isCurrent` property indicates
+     * if the revision is publicly accessible.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -800,7 +801,8 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     }
 
     /**
-     * Creates a new developer portal revision.
+     * Creates a new developer portal's revision by running the portal's publishing. The `isCurrent` property indicates
+     * if the revision is publicly accessible.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -864,7 +866,8 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     }
 
     /**
-     * Creates a new developer portal revision.
+     * Creates a new developer portal's revision by running the portal's publishing. The `isCurrent` property indicates
+     * if the revision is publicly accessible.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -892,7 +895,8 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     }
 
     /**
-     * Creates a new developer portal revision.
+     * Creates a new developer portal's revision by running the portal's publishing. The `isCurrent` property indicates
+     * if the revision is publicly accessible.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -926,7 +930,8 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     }
 
     /**
-     * Creates a new developer portal revision.
+     * Creates a new developer portal's revision by running the portal's publishing. The `isCurrent` property indicates
+     * if the revision is publicly accessible.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -945,7 +950,8 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     }
 
     /**
-     * Creates a new developer portal revision.
+     * Creates a new developer portal's revision by running the portal's publishing. The `isCurrent` property indicates
+     * if the revision is publicly accessible.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -970,7 +976,8 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     }
 
     /**
-     * Creates a new developer portal revision.
+     * Creates a new developer portal's revision by running the portal's publishing. The `isCurrent` property indicates
+     * if the revision is publicly accessible.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -991,7 +998,8 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     }
 
     /**
-     * Creates a new developer portal revision.
+     * Creates a new developer portal's revision by running the portal's publishing. The `isCurrent` property indicates
+     * if the revision is publicly accessible.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -1017,7 +1025,8 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     }
 
     /**
-     * Creates a new developer portal revision.
+     * Creates a new developer portal's revision by running the portal's publishing. The `isCurrent` property indicates
+     * if the revision is publicly accessible.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -1036,7 +1045,8 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     }
 
     /**
-     * Creates a new developer portal revision.
+     * Creates a new developer portal's revision by running the portal's publishing. The `isCurrent` property indicates
+     * if the revision is publicly accessible.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.

@@ -81,6 +81,22 @@ public final class PrivateCloudsImpl implements PrivateClouds {
         this.serviceClient().delete(resourceGroupName, privateCloudName, context);
     }
 
+    public void rotateVcenterPassword(String resourceGroupName, String privateCloudName) {
+        this.serviceClient().rotateVcenterPassword(resourceGroupName, privateCloudName);
+    }
+
+    public void rotateVcenterPassword(String resourceGroupName, String privateCloudName, Context context) {
+        this.serviceClient().rotateVcenterPassword(resourceGroupName, privateCloudName, context);
+    }
+
+    public void rotateNsxtPassword(String resourceGroupName, String privateCloudName) {
+        this.serviceClient().rotateNsxtPassword(resourceGroupName, privateCloudName);
+    }
+
+    public void rotateNsxtPassword(String resourceGroupName, String privateCloudName, Context context) {
+        this.serviceClient().rotateNsxtPassword(resourceGroupName, privateCloudName, context);
+    }
+
     public AdminCredentials listAdminCredentials(String resourceGroupName, String privateCloudName) {
         AdminCredentialsInner inner = this.serviceClient().listAdminCredentials(resourceGroupName, privateCloudName);
         if (inner != null) {

@@ -33,7 +33,7 @@ import com.azure.storage.file.datalake.implementation.models.FileSystemsSetPrope
 import com.azure.storage.file.datalake.implementation.models.ListBlobsIncludeItem;
 import com.azure.storage.file.datalake.implementation.models.ListBlobsShowOnly;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
-import com.azure.storage.file.datalake.implementation.models.StorageErrorException;
+import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import reactor.core.publisher.Mono;
@@ -66,9 +66,10 @@ public final class FileSystemsImpl {
     public interface FileSystemsService {
         @Put("/{filesystem}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<FileSystemsCreateResponse> create(
                 @HostParam("url") String url,
+                @PathParam("filesystem") String fileSystem,
                 @QueryParam("resource") String resource,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @QueryParam("timeout") Integer timeout,
@@ -79,9 +80,10 @@ public final class FileSystemsImpl {
 
         @Patch("/{filesystem}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<FileSystemsSetPropertiesResponse> setProperties(
                 @HostParam("url") String url,
+                @PathParam("filesystem") String fileSystem,
                 @QueryParam("resource") String resource,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @QueryParam("timeout") Integer timeout,
@@ -94,9 +96,10 @@ public final class FileSystemsImpl {
 
         @Head("/{filesystem}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<FileSystemsGetPropertiesResponse> getProperties(
                 @HostParam("url") String url,
+                @PathParam("filesystem") String fileSystem,
                 @QueryParam("resource") String resource,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @QueryParam("timeout") Integer timeout,
@@ -106,9 +109,10 @@ public final class FileSystemsImpl {
 
         @Delete("/{filesystem}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<FileSystemsDeleteResponse> delete(
                 @HostParam("url") String url,
+                @PathParam("filesystem") String fileSystem,
                 @QueryParam("resource") String resource,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @QueryParam("timeout") Integer timeout,
@@ -120,7 +124,7 @@ public final class FileSystemsImpl {
 
         @Get("/{filesystem}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<FileSystemsListPathsResponse> listPaths(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
@@ -138,12 +142,12 @@ public final class FileSystemsImpl {
 
         @Get("/{filesystem}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<FileSystemsListBlobHierarchySegmentResponse> listBlobHierarchySegment(
                 @HostParam("url") String url,
+                @PathParam("filesystem") String fileSystem,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
-                @PathParam("filesystem") String fileSystem,
                 @QueryParam("prefix") String prefix,
                 @QueryParam("delimiter") String delimiter,
                 @QueryParam("marker") String marker,
@@ -174,7 +178,7 @@ public final class FileSystemsImpl {
      *     E-Tag, then make a conditional request with the E-Tag and include values for all properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -184,6 +188,7 @@ public final class FileSystemsImpl {
         final String accept = "application/json";
         return service.create(
                 this.client.getUrl(),
+                this.client.getFileSystem(),
                 this.client.getResource(),
                 requestId,
                 timeout,
@@ -212,7 +217,7 @@ public final class FileSystemsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -240,6 +245,7 @@ public final class FileSystemsImpl {
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.setProperties(
                 this.client.getUrl(),
+                this.client.getFileSystem(),
                 this.client.getResource(),
                 requestId,
                 timeout,
@@ -261,7 +267,7 @@ public final class FileSystemsImpl {
      *     Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -271,6 +277,7 @@ public final class FileSystemsImpl {
         final String accept = "application/json";
         return service.getProperties(
                 this.client.getUrl(),
+                this.client.getFileSystem(),
                 this.client.getResource(),
                 requestId,
                 timeout,
@@ -297,7 +304,7 @@ public final class FileSystemsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -321,6 +328,7 @@ public final class FileSystemsImpl {
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.delete(
                 this.client.getUrl(),
+                this.client.getFileSystem(),
                 this.client.getResource(),
                 requestId,
                 timeout,
@@ -355,7 +363,7 @@ public final class FileSystemsImpl {
      *     not translated because they do not have unique friendly names.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -409,7 +417,7 @@ public final class FileSystemsImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of blobs.
      */
@@ -431,9 +439,9 @@ public final class FileSystemsImpl {
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(include, CollectionFormat.CSV);
         return service.listBlobHierarchySegment(
                 this.client.getUrl(),
+                this.client.getFileSystem(),
                 restype,
                 comp,
-                this.client.getFileSystem(),
                 prefix,
                 delimiter,
                 marker,

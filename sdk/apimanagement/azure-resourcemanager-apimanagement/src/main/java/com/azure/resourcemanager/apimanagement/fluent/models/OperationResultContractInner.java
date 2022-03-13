@@ -5,77 +5,43 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.ProxyResource;
+import com.azure.core.management.exception.ManagementError;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.AsyncOperationStatus;
-import com.azure.resourcemanager.apimanagement.models.ErrorResponseBody;
 import com.azure.resourcemanager.apimanagement.models.OperationResultLogItemContract;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Operation Result. */
+/** Long Running Git Operation Results. */
 @Fluent
-public final class OperationResultContractInner {
+public final class OperationResultContractInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationResultContractInner.class);
 
     /*
-     * Operation result identifier.
+     * Properties of the Operation Contract.
      */
-    @JsonProperty(value = "id")
-    private String id;
+    @JsonProperty(value = "properties")
+    private OperationResultContractProperties innerProperties;
 
-    /*
-     * Status of an async operation.
-     */
-    @JsonProperty(value = "status")
-    private AsyncOperationStatus status;
-
-    /*
-     * Start time of an async operation. The date conforms to the following
-     * format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
+    /**
+     * Get the innerProperties property: Properties of the Operation Contract.
      *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "started")
-    private OffsetDateTime started;
-
-    /*
-     * Last update time of an async operation. The date conforms to the
-     * following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601
-     * standard.
-     *
-     */
-    @JsonProperty(value = "updated")
-    private OffsetDateTime updated;
-
-    /*
-     * Optional result info.
-     */
-    @JsonProperty(value = "resultInfo")
-    private String resultInfo;
-
-    /*
-     * Error Body Contract
-     */
-    @JsonProperty(value = "error")
-    private ErrorResponseBody error;
-
-    /*
-     * This property if only provided as part of the
-     * TenantConfiguration_Validate operation. It contains the log the entities
-     * which will be updated/created/deleted as part of the
-     * TenantConfiguration_Deploy operation.
-     */
-    @JsonProperty(value = "actionLog", access = JsonProperty.Access.WRITE_ONLY)
-    private List<OperationResultLogItemContract> actionLog;
+    private OperationResultContractProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the id property: Operation result identifier.
      *
      * @return the id value.
      */
-    public String id() {
-        return this.id;
+    public String idPropertiesId() {
+        return this.innerProperties() == null ? null : this.innerProperties().id();
     }
 
     /**
@@ -84,8 +50,11 @@ public final class OperationResultContractInner {
      * @param id the id value to set.
      * @return the OperationResultContractInner object itself.
      */
-    public OperationResultContractInner withId(String id) {
-        this.id = id;
+    public OperationResultContractInner withIdPropertiesId(String id) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OperationResultContractProperties();
+        }
+        this.innerProperties().withId(id);
         return this;
     }
 
@@ -95,7 +64,7 @@ public final class OperationResultContractInner {
      * @return the status value.
      */
     public AsyncOperationStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -105,7 +74,10 @@ public final class OperationResultContractInner {
      * @return the OperationResultContractInner object itself.
      */
     public OperationResultContractInner withStatus(AsyncOperationStatus status) {
-        this.status = status;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OperationResultContractProperties();
+        }
+        this.innerProperties().withStatus(status);
         return this;
     }
 
@@ -116,7 +88,7 @@ public final class OperationResultContractInner {
      * @return the started value.
      */
     public OffsetDateTime started() {
-        return this.started;
+        return this.innerProperties() == null ? null : this.innerProperties().started();
     }
 
     /**
@@ -127,7 +99,10 @@ public final class OperationResultContractInner {
      * @return the OperationResultContractInner object itself.
      */
     public OperationResultContractInner withStarted(OffsetDateTime started) {
-        this.started = started;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OperationResultContractProperties();
+        }
+        this.innerProperties().withStarted(started);
         return this;
     }
 
@@ -138,7 +113,7 @@ public final class OperationResultContractInner {
      * @return the updated value.
      */
     public OffsetDateTime updated() {
-        return this.updated;
+        return this.innerProperties() == null ? null : this.innerProperties().updated();
     }
 
     /**
@@ -149,7 +124,10 @@ public final class OperationResultContractInner {
      * @return the OperationResultContractInner object itself.
      */
     public OperationResultContractInner withUpdated(OffsetDateTime updated) {
-        this.updated = updated;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OperationResultContractProperties();
+        }
+        this.innerProperties().withUpdated(updated);
         return this;
     }
 
@@ -159,7 +137,7 @@ public final class OperationResultContractInner {
      * @return the resultInfo value.
      */
     public String resultInfo() {
-        return this.resultInfo;
+        return this.innerProperties() == null ? null : this.innerProperties().resultInfo();
     }
 
     /**
@@ -169,7 +147,10 @@ public final class OperationResultContractInner {
      * @return the OperationResultContractInner object itself.
      */
     public OperationResultContractInner withResultInfo(String resultInfo) {
-        this.resultInfo = resultInfo;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OperationResultContractProperties();
+        }
+        this.innerProperties().withResultInfo(resultInfo);
         return this;
     }
 
@@ -178,8 +159,8 @@ public final class OperationResultContractInner {
      *
      * @return the error value.
      */
-    public ErrorResponseBody error() {
-        return this.error;
+    public ManagementError error() {
+        return this.innerProperties() == null ? null : this.innerProperties().error();
     }
 
     /**
@@ -188,8 +169,11 @@ public final class OperationResultContractInner {
      * @param error the error value to set.
      * @return the OperationResultContractInner object itself.
      */
-    public OperationResultContractInner withError(ErrorResponseBody error) {
-        this.error = error;
+    public OperationResultContractInner withError(ManagementError error) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OperationResultContractProperties();
+        }
+        this.innerProperties().withError(error);
         return this;
     }
 
@@ -201,7 +185,7 @@ public final class OperationResultContractInner {
      * @return the actionLog value.
      */
     public List<OperationResultLogItemContract> actionLog() {
-        return this.actionLog;
+        return this.innerProperties() == null ? null : this.innerProperties().actionLog();
     }
 
     /**
@@ -210,11 +194,8 @@ public final class OperationResultContractInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (error() != null) {
-            error().validate();
-        }
-        if (actionLog() != null) {
-            actionLog().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

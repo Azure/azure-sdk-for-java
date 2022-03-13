@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.AzureMLBatchExecutionActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,108 +17,24 @@ import java.util.Map;
 /** Azure ML Batch Execution activity. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureMLBatchExecution")
-@JsonFlatten
 @Fluent
-public class AzureMLBatchExecutionActivity extends ExecutionActivity {
+public final class AzureMLBatchExecutionActivity extends ExecutionActivity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureMLBatchExecutionActivity.class);
 
     /*
-     * Key,Value pairs to be passed to the Azure ML Batch Execution Service
-     * endpoint. Keys must match the names of web service parameters defined in
-     * the published Azure ML web service. Values will be passed in the
-     * GlobalParameters property of the Azure ML batch execution request.
+     * Azure ML Batch Execution activity properties.
      */
-    @JsonProperty(value = "typeProperties.globalParameters")
-    private Map<String, Object> globalParameters;
-
-    /*
-     * Key,Value pairs, mapping the names of Azure ML endpoint's Web Service
-     * Outputs to AzureMLWebServiceFile objects specifying the output Blob
-     * locations. This information will be passed in the WebServiceOutputs
-     * property of the Azure ML batch execution request.
-     */
-    @JsonProperty(value = "typeProperties.webServiceOutputs")
-    private Map<String, AzureMLWebServiceFile> webServiceOutputs;
-
-    /*
-     * Key,Value pairs, mapping the names of Azure ML endpoint's Web Service
-     * Inputs to AzureMLWebServiceFile objects specifying the input Blob
-     * locations.. This information will be passed in the WebServiceInputs
-     * property of the Azure ML batch execution request.
-     */
-    @JsonProperty(value = "typeProperties.webServiceInputs")
-    private Map<String, AzureMLWebServiceFile> webServiceInputs;
+    @JsonProperty(value = "typeProperties", required = true)
+    private AzureMLBatchExecutionActivityTypeProperties innerTypeProperties =
+        new AzureMLBatchExecutionActivityTypeProperties();
 
     /**
-     * Get the globalParameters property: Key,Value pairs to be passed to the Azure ML Batch Execution Service endpoint.
-     * Keys must match the names of web service parameters defined in the published Azure ML web service. Values will be
-     * passed in the GlobalParameters property of the Azure ML batch execution request.
+     * Get the innerTypeProperties property: Azure ML Batch Execution activity properties.
      *
-     * @return the globalParameters value.
+     * @return the innerTypeProperties value.
      */
-    public Map<String, Object> globalParameters() {
-        return this.globalParameters;
-    }
-
-    /**
-     * Set the globalParameters property: Key,Value pairs to be passed to the Azure ML Batch Execution Service endpoint.
-     * Keys must match the names of web service parameters defined in the published Azure ML web service. Values will be
-     * passed in the GlobalParameters property of the Azure ML batch execution request.
-     *
-     * @param globalParameters the globalParameters value to set.
-     * @return the AzureMLBatchExecutionActivity object itself.
-     */
-    public AzureMLBatchExecutionActivity withGlobalParameters(Map<String, Object> globalParameters) {
-        this.globalParameters = globalParameters;
-        return this;
-    }
-
-    /**
-     * Get the webServiceOutputs property: Key,Value pairs, mapping the names of Azure ML endpoint's Web Service Outputs
-     * to AzureMLWebServiceFile objects specifying the output Blob locations. This information will be passed in the
-     * WebServiceOutputs property of the Azure ML batch execution request.
-     *
-     * @return the webServiceOutputs value.
-     */
-    public Map<String, AzureMLWebServiceFile> webServiceOutputs() {
-        return this.webServiceOutputs;
-    }
-
-    /**
-     * Set the webServiceOutputs property: Key,Value pairs, mapping the names of Azure ML endpoint's Web Service Outputs
-     * to AzureMLWebServiceFile objects specifying the output Blob locations. This information will be passed in the
-     * WebServiceOutputs property of the Azure ML batch execution request.
-     *
-     * @param webServiceOutputs the webServiceOutputs value to set.
-     * @return the AzureMLBatchExecutionActivity object itself.
-     */
-    public AzureMLBatchExecutionActivity withWebServiceOutputs(Map<String, AzureMLWebServiceFile> webServiceOutputs) {
-        this.webServiceOutputs = webServiceOutputs;
-        return this;
-    }
-
-    /**
-     * Get the webServiceInputs property: Key,Value pairs, mapping the names of Azure ML endpoint's Web Service Inputs
-     * to AzureMLWebServiceFile objects specifying the input Blob locations.. This information will be passed in the
-     * WebServiceInputs property of the Azure ML batch execution request.
-     *
-     * @return the webServiceInputs value.
-     */
-    public Map<String, AzureMLWebServiceFile> webServiceInputs() {
-        return this.webServiceInputs;
-    }
-
-    /**
-     * Set the webServiceInputs property: Key,Value pairs, mapping the names of Azure ML endpoint's Web Service Inputs
-     * to AzureMLWebServiceFile objects specifying the input Blob locations.. This information will be passed in the
-     * WebServiceInputs property of the Azure ML batch execution request.
-     *
-     * @param webServiceInputs the webServiceInputs value to set.
-     * @return the AzureMLBatchExecutionActivity object itself.
-     */
-    public AzureMLBatchExecutionActivity withWebServiceInputs(Map<String, AzureMLWebServiceFile> webServiceInputs) {
-        this.webServiceInputs = webServiceInputs;
-        return this;
+    private AzureMLBatchExecutionActivityTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -164,6 +80,87 @@ public class AzureMLBatchExecutionActivity extends ExecutionActivity {
     }
 
     /**
+     * Get the globalParameters property: Key,Value pairs to be passed to the Azure ML Batch Execution Service endpoint.
+     * Keys must match the names of web service parameters defined in the published Azure ML web service. Values will be
+     * passed in the GlobalParameters property of the Azure ML batch execution request.
+     *
+     * @return the globalParameters value.
+     */
+    public Map<String, Object> globalParameters() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().globalParameters();
+    }
+
+    /**
+     * Set the globalParameters property: Key,Value pairs to be passed to the Azure ML Batch Execution Service endpoint.
+     * Keys must match the names of web service parameters defined in the published Azure ML web service. Values will be
+     * passed in the GlobalParameters property of the Azure ML batch execution request.
+     *
+     * @param globalParameters the globalParameters value to set.
+     * @return the AzureMLBatchExecutionActivity object itself.
+     */
+    public AzureMLBatchExecutionActivity withGlobalParameters(Map<String, Object> globalParameters) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureMLBatchExecutionActivityTypeProperties();
+        }
+        this.innerTypeProperties().withGlobalParameters(globalParameters);
+        return this;
+    }
+
+    /**
+     * Get the webServiceOutputs property: Key,Value pairs, mapping the names of Azure ML endpoint's Web Service Outputs
+     * to AzureMLWebServiceFile objects specifying the output Blob locations. This information will be passed in the
+     * WebServiceOutputs property of the Azure ML batch execution request.
+     *
+     * @return the webServiceOutputs value.
+     */
+    public Map<String, AzureMLWebServiceFile> webServiceOutputs() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().webServiceOutputs();
+    }
+
+    /**
+     * Set the webServiceOutputs property: Key,Value pairs, mapping the names of Azure ML endpoint's Web Service Outputs
+     * to AzureMLWebServiceFile objects specifying the output Blob locations. This information will be passed in the
+     * WebServiceOutputs property of the Azure ML batch execution request.
+     *
+     * @param webServiceOutputs the webServiceOutputs value to set.
+     * @return the AzureMLBatchExecutionActivity object itself.
+     */
+    public AzureMLBatchExecutionActivity withWebServiceOutputs(Map<String, AzureMLWebServiceFile> webServiceOutputs) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureMLBatchExecutionActivityTypeProperties();
+        }
+        this.innerTypeProperties().withWebServiceOutputs(webServiceOutputs);
+        return this;
+    }
+
+    /**
+     * Get the webServiceInputs property: Key,Value pairs, mapping the names of Azure ML endpoint's Web Service Inputs
+     * to AzureMLWebServiceFile objects specifying the input Blob locations.. This information will be passed in the
+     * WebServiceInputs property of the Azure ML batch execution request.
+     *
+     * @return the webServiceInputs value.
+     */
+    public Map<String, AzureMLWebServiceFile> webServiceInputs() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().webServiceInputs();
+    }
+
+    /**
+     * Set the webServiceInputs property: Key,Value pairs, mapping the names of Azure ML endpoint's Web Service Inputs
+     * to AzureMLWebServiceFile objects specifying the input Blob locations.. This information will be passed in the
+     * WebServiceInputs property of the Azure ML batch execution request.
+     *
+     * @param webServiceInputs the webServiceInputs value to set.
+     * @return the AzureMLBatchExecutionActivity object itself.
+     */
+    public AzureMLBatchExecutionActivity withWebServiceInputs(Map<String, AzureMLWebServiceFile> webServiceInputs) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureMLBatchExecutionActivityTypeProperties();
+        }
+        this.innerTypeProperties().withWebServiceInputs(webServiceInputs);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -171,25 +168,13 @@ public class AzureMLBatchExecutionActivity extends ExecutionActivity {
     @Override
     public void validate() {
         super.validate();
-        if (webServiceOutputs() != null) {
-            webServiceOutputs()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
-        }
-        if (webServiceInputs() != null) {
-            webServiceInputs()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+        if (innerTypeProperties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model AzureMLBatchExecutionActivity"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

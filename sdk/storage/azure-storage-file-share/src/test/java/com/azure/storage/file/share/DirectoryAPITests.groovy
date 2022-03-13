@@ -6,16 +6,22 @@ package com.azure.storage.file.share
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
+
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.NtfsFileAttributes
+import com.azure.storage.file.share.models.ShareFileItem
+import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.models.ShareSnapshotInfo
 import com.azure.storage.file.share.models.ShareStorageException
+import com.azure.storage.file.share.options.ShareFileRenameOptions
+import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
+import java.util.stream.Collectors
 
 class DirectoryAPITests extends APISpec {
     ShareDirectoryClient primaryDirectoryClient
@@ -38,7 +44,7 @@ class DirectoryAPITests extends APISpec {
 
     def "Get directory URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, directoryPath)
 
         when:
@@ -50,7 +56,7 @@ class DirectoryAPITests extends APISpec {
 
     def "Get share snapshot URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, directoryPath)
 
         when:
@@ -65,7 +71,7 @@ class DirectoryAPITests extends APISpec {
 
         when:
         def snapshotEndpoint = String.format("https://%s.file.core.windows.net/%s/%s?sharesnapshot=%s", accountName, shareName, directoryPath, shareSnapshotInfo.getSnapshot())
-        ShareDirectoryClient client = getDirectoryClient(StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString), snapshotEndpoint)
+        ShareDirectoryClient client = getDirectoryClient(StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString), snapshotEndpoint)
 
         then:
         client.getDirectoryUrl() == snapshotEndpoint
@@ -376,6 +382,7 @@ class DirectoryAPITests extends APISpec {
      *                               -> listOp6 (file)
      *              -> listOp2 (file)
      */
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_10_02")
     @Unroll
     def "List files and directories args"() {
         given:
@@ -409,6 +416,101 @@ class DirectoryAPITests extends APISpec {
         ""            | null       | 3
         ""            | 1          | 3
         "noOp"        | 3          | 0
+    }
+
+    @Unroll
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_10_02")
+    def "List files and directories extended info args"() {
+        given:
+        primaryDirectoryClient.create()
+        def nameList = [] as List<String>
+        def dirPrefix = namer.getRandomName(60)
+        for (int i = 0; i < 2; i++) {
+            def subDirClient = primaryDirectoryClient.getSubdirectoryClient(dirPrefix + i)
+            subDirClient.create()
+            for (int j = 0; j < 2; j++) {
+                def num = i * 2 + j + 3
+                subDirClient.createFile(dirPrefix + num, 1024)
+            }
+        }
+        primaryDirectoryClient.createFile(dirPrefix + 2, 1024)
+        for (int i = 0; i < 3; i++) {
+            nameList << (dirPrefix + i)
+        }
+
+        when:
+        def options = new ShareListFilesAndDirectoriesOptions()
+            .setPrefix(namer.getResourcePrefix())
+            .setIncludeExtendedInfo(true)
+            .setIncludeTimestamps(timestamps)
+            .setIncludeETag(etag)
+            .setIncludeAttributes(attributes)
+            .setIncludePermissionKey(permissionKey)
+        def returnedFileList = primaryDirectoryClient.listFilesAndDirectories(options, null, null).collect()
+
+        then:
+        nameList == returnedFileList*.getName()
+
+        where:
+        timestamps | etag  | attributes | permissionKey
+        false      | false | false      | false
+        true       | false | false      | false
+        false      | true  | false      | false
+        false      | false | true       | false
+        false      | false | false      | true
+        true       | true  | true       | true
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_10_02")
+    def "List files and directories extended info results"() {
+        given:
+        def parentDir = primaryDirectoryClient
+        parentDir.create()
+        def file = parentDir.createFile(namer.getRandomName(60), 1024)
+        def dir = parentDir.createSubdirectory(namer.getRandomName(60))
+
+        when:
+        def listResults = parentDir.listFilesAndDirectories(
+            new ShareListFilesAndDirectoriesOptions()
+                .setIncludeExtendedInfo(true).setIncludeTimestamps(true).setIncludePermissionKey(true).setIncludeETag(true)
+                .setIncludeAttributes(true),
+            null, null)
+            .stream().collect(Collectors.toList())
+
+        then:
+        ShareFileItem dirListItem
+        ShareFileItem fileListItem
+        if (listResults[0].isDirectory()) {
+            dirListItem = listResults[0]
+            fileListItem = listResults[1]
+        } else {
+            dirListItem = listResults[1]
+            fileListItem = listResults[0]
+        }
+
+        new File(dir.getDirectoryPath()).getName() == dirListItem.getName()
+        dirListItem.isDirectory()
+        dirListItem.getId() && !dirListItem.getId().allWhitespace
+        EnumSet.of(NtfsFileAttributes.DIRECTORY) == dirListItem.fileAttributes
+        dirListItem.getPermissionKey() && !dirListItem.getPermissionKey().allWhitespace
+        dirListItem.getProperties().getCreatedOn()
+        dirListItem.getProperties().getLastAccessedOn()
+        dirListItem.getProperties().getLastWrittenOn()
+        dirListItem.getProperties().getChangedOn()
+        dirListItem.getProperties().getLastModified()
+        dirListItem.getProperties().getETag() && !dirListItem.getProperties().getETag().allWhitespace
+
+        new File(file.getFilePath()).getName() == fileListItem.getName()
+        !fileListItem.isDirectory()
+        fileListItem.getId() && !fileListItem.getId().allWhitespace
+        EnumSet.of(NtfsFileAttributes.ARCHIVE) == fileListItem.fileAttributes
+        fileListItem.getPermissionKey() && !fileListItem.getPermissionKey().allWhitespace
+        fileListItem.getProperties().getCreatedOn()
+        fileListItem.getProperties().getLastAccessedOn()
+        fileListItem.getProperties().getLastWrittenOn()
+        fileListItem.getProperties().getChangedOn()
+        fileListItem.getProperties().getLastModified()
+        fileListItem.getProperties().getETag() && !fileListItem.getProperties().getETag().allWhitespace
     }
 
     def "List max results by page"() {
@@ -500,6 +602,237 @@ class DirectoryAPITests extends APISpec {
         notThrown(ShareStorageException)
         handlesClosedInfo.getClosedHandles() == 0
         handlesClosedInfo.getFailedHandles() == 0
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Rename min"() {
+        setup:
+        primaryDirectoryClient.create()
+
+        when:
+        primaryDirectoryClient.rename(generatePathName())
+
+        then:
+        notThrown(ShareStorageException)
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Rename with response"() {
+        setup:
+        primaryDirectoryClient.create()
+
+        when:
+        def resp = primaryDirectoryClient.renameWithResponse(new ShareFileRenameOptions(generatePathName()), null, null)
+
+        def renamedClient = resp.getValue()
+        renamedClient.getProperties()
+
+        then:
+        notThrown(ShareStorageException)
+
+        when:
+        primaryDirectoryClient.getProperties()
+
+        then:
+        thrown(ShareStorageException)
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Rename different directory"() {
+        setup:
+        primaryDirectoryClient.create()
+        def dc = shareClient.getDirectoryClient(generatePathName())
+        dc.create()
+        def destinationPath = dc.getFileClient(generatePathName())
+
+        when:
+        def resultClient = primaryDirectoryClient.rename(destinationPath.getFilePath())
+
+        then:
+        resultClient.exists()
+        !primaryDirectoryClient.exists()
+        destinationPath.getFilePath() == resultClient.getDirectoryPath()
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    @Unroll
+    def "Rename replace if exists"() {
+        setup:
+        primaryDirectoryClient.create()
+        def destination = shareClient.getFileClient(generatePathName())
+        destination.create(512)
+        def exception = false
+
+        when:
+        try {
+            primaryDirectoryClient.renameWithResponse(new ShareFileRenameOptions(destination.getFilePath())
+                .setReplaceIfExists(replaceIfExists), null, null)
+        } catch (ShareStorageException ignored) {
+            exception = true
+        }
+
+        then:
+        replaceIfExists == !exception
+
+        where:
+        replaceIfExists | _
+        true            | _
+        false           | _
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    @Unroll
+    def "Rename ignore read only"() {
+        setup:
+        primaryDirectoryClient.create()
+        FileSmbProperties props = new FileSmbProperties()
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+        def destinationFile = shareClient.getFileClient(generatePathName())
+        destinationFile.createWithResponse(512L, null, props, null, null, null, null, null)
+        def exception = false
+
+        when:
+        try {
+            primaryDirectoryClient.renameWithResponse(new ShareFileRenameOptions(destinationFile.getFilePath())
+                .setIgnoreReadOnly(ignoreReadOnly).setReplaceIfExists(true), null, null)
+        } catch (ShareStorageException ignored) {
+            exception = true
+        }
+
+        then:
+        exception == !ignoreReadOnly
+
+        where:
+        ignoreReadOnly  | _
+        true            | _
+        false           | _
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Rename file permission"() {
+        setup:
+        primaryDirectoryClient.create()
+        def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)"
+
+        when:
+        def destClient = primaryDirectoryClient.renameWithResponse(new ShareFileRenameOptions(generatePathName())
+            .setFilePermission(filePermission), null, null).getValue()
+
+        then:
+        destClient.getProperties().getSmbProperties().getFilePermissionKey() != null
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Rename file permission and key set"() {
+        setup:
+        primaryDirectoryClient.create()
+        def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)"
+
+        when:
+        def destClient = primaryDirectoryClient.renameWithResponse(new ShareFileRenameOptions(generatePathName())
+            .setFilePermission(filePermission)
+            .setSmbProperties(new FileSmbProperties().setFilePermissionKey("filePermissionkey")), null, null).getValue()
+
+        then:
+        thrown(ShareStorageException) // permission and key cannot both be set
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Rename file smbProperties"() {
+        setup:
+        primaryDirectoryClient.create()
+        def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)"
+        def permissionKey = shareClient.createPermission(filePermission)
+        def smbProperties = new FileSmbProperties()
+            .setFilePermissionKey(permissionKey)
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.DIRECTORY))
+            .setFileCreationTime(namer.getUtcNow().minusDays(5))
+            .setFileLastWriteTime(namer.getUtcNow().minusYears(2))
+
+        when:
+        def destClient = primaryDirectoryClient.renameWithResponse(new ShareFileRenameOptions(generatePathName())
+            .setSmbProperties(smbProperties), null, null).getValue()
+        def destProperties = destClient.getProperties()
+
+        then:
+        destProperties.getSmbProperties().getNtfsFileAttributes() == EnumSet.of(NtfsFileAttributes.DIRECTORY)
+        destProperties.getSmbProperties().getFileCreationTime()
+        destProperties.getSmbProperties().getFileLastWriteTime()
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Rename metadata"() {
+        given:
+        primaryDirectoryClient.create()
+        def updatedMetadata = Collections.singletonMap("update", "value")
+
+        when:
+        def resp = primaryDirectoryClient.renameWithResponse(new ShareFileRenameOptions(generatePathName())
+            .setMetadata(updatedMetadata), null, null)
+
+        def renamedClient = resp.getValue()
+        def getPropertiesAfter = renamedClient.getProperties()
+
+
+        then:
+        updatedMetadata == getPropertiesAfter.getMetadata()
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Rename error"() {
+        setup:
+        primaryDirectoryClient = shareClient.getDirectoryClient(generatePathName())
+
+        when:
+        primaryDirectoryClient.rename(generatePathName())
+
+        then:
+        thrown(ShareStorageException)
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    @Unroll
+    def "Rename dest AC"() {
+        setup:
+        primaryDirectoryClient.create()
+        def pathName = generatePathName()
+        def destFile = shareClient.getFileClient(pathName)
+        destFile.create(512)
+        leaseID = setupFileLeaseCondition(destFile, leaseID)
+        def src = new ShareRequestConditions()
+            .setLeaseId(leaseID)
+
+        expect:
+        primaryDirectoryClient.renameWithResponse(new ShareFileRenameOptions(pathName)
+            .setDestinationRequestConditions(src).setReplaceIfExists(true), null, null).getStatusCode() == 200
+
+        where:
+        leaseID         | _
+        receivedLeaseID | _
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    @Unroll
+    def "Rename dest AC fail"() {
+        setup:
+        primaryDirectoryClient.create()
+        def pathName = generatePathName()
+        def destFile = shareClient.getFileClient(pathName)
+        destFile.create(512)
+        setupFileLeaseCondition(destFile, leaseID)
+        def src = new ShareRequestConditions()
+            .setLeaseId(leaseID)
+
+        when:
+        primaryDirectoryClient.renameWithResponse(new ShareFileRenameOptions(pathName)
+            .setDestinationRequestConditions(src).setReplaceIfExists(true), null, null)
+
+        then:
+        thrown(ShareStorageException)
+
+        where:
+        leaseID        | _
+        garbageLeaseID | _
     }
 
     def "Create sub directory"() {

@@ -5,37 +5,36 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The OpenIdConnectRegistration model. */
-@JsonFlatten
+/** The configuration settings of the app registration for the custom Open ID Connect provider. */
 @Fluent
-public class OpenIdConnectRegistration extends ProxyOnlyResource {
+public final class OpenIdConnectRegistration {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OpenIdConnectRegistration.class);
 
     /*
-     * The clientId property.
+     * The client id of the custom Open ID Connect provider.
      */
-    @JsonProperty(value = "properties.clientId")
+    @JsonProperty(value = "clientId")
     private String clientId;
 
     /*
-     * The clientCredential property.
+     * The authentication credentials of the custom Open ID Connect provider.
      */
-    @JsonProperty(value = "properties.clientCredential")
+    @JsonProperty(value = "clientCredential")
     private OpenIdConnectClientCredential clientCredential;
 
     /*
-     * The openIdConnectConfiguration property.
+     * The configuration settings of the endpoints used for the custom Open ID
+     * Connect provider.
      */
-    @JsonProperty(value = "properties.openIdConnectConfiguration")
+    @JsonProperty(value = "openIdConnectConfiguration")
     private OpenIdConnectConfig openIdConnectConfiguration;
 
     /**
-     * Get the clientId property: The clientId property.
+     * Get the clientId property: The client id of the custom Open ID Connect provider.
      *
      * @return the clientId value.
      */
@@ -44,7 +43,7 @@ public class OpenIdConnectRegistration extends ProxyOnlyResource {
     }
 
     /**
-     * Set the clientId property: The clientId property.
+     * Set the clientId property: The client id of the custom Open ID Connect provider.
      *
      * @param clientId the clientId value to set.
      * @return the OpenIdConnectRegistration object itself.
@@ -55,7 +54,7 @@ public class OpenIdConnectRegistration extends ProxyOnlyResource {
     }
 
     /**
-     * Get the clientCredential property: The clientCredential property.
+     * Get the clientCredential property: The authentication credentials of the custom Open ID Connect provider.
      *
      * @return the clientCredential value.
      */
@@ -64,7 +63,7 @@ public class OpenIdConnectRegistration extends ProxyOnlyResource {
     }
 
     /**
-     * Set the clientCredential property: The clientCredential property.
+     * Set the clientCredential property: The authentication credentials of the custom Open ID Connect provider.
      *
      * @param clientCredential the clientCredential value to set.
      * @return the OpenIdConnectRegistration object itself.
@@ -75,7 +74,8 @@ public class OpenIdConnectRegistration extends ProxyOnlyResource {
     }
 
     /**
-     * Get the openIdConnectConfiguration property: The openIdConnectConfiguration property.
+     * Get the openIdConnectConfiguration property: The configuration settings of the endpoints used for the custom Open
+     * ID Connect provider.
      *
      * @return the openIdConnectConfiguration value.
      */
@@ -84,7 +84,8 @@ public class OpenIdConnectRegistration extends ProxyOnlyResource {
     }
 
     /**
-     * Set the openIdConnectConfiguration property: The openIdConnectConfiguration property.
+     * Set the openIdConnectConfiguration property: The configuration settings of the endpoints used for the custom Open
+     * ID Connect provider.
      *
      * @param openIdConnectConfiguration the openIdConnectConfiguration value to set.
      * @return the OpenIdConnectRegistration object itself.
@@ -94,21 +95,12 @@ public class OpenIdConnectRegistration extends ProxyOnlyResource {
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public OpenIdConnectRegistration withKind(String kind) {
-        super.withKind(kind);
-        return this;
-    }
-
     /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
         if (clientCredential() != null) {
             clientCredential().validate();
         }

@@ -13,8 +13,6 @@ import java.util.Properties;
 public class PropertyLoader {
     private static final String PROJECT_PROPERTY_FILE = "/META-INF/project.properties";
 
-    private static final String TELEMETRY_CONFIG_FILE = "/telemetry.config";
-
     /**
      * To load a property value from the file.
      * @param file The source file to load properties from.
@@ -36,11 +34,12 @@ public class PropertyLoader {
         return "unknown";
     }
 
+    /**
+     * Gets the project version.
+     *
+     * @return the project version
+     */
     public static String getProjectVersion() {
         return getProperty(PROJECT_PROPERTY_FILE, "project.version");
-    }
-
-    public static String getTelemetryInstrumentationKey() {
-        return getProperty(TELEMETRY_CONFIG_FILE, "telemetry.instrumentationKey");
     }
 }

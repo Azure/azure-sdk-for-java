@@ -30,7 +30,6 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-import javax.xml.bind.DatatypeConverter;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -231,7 +230,7 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
         KeyStore store = KeyStore.getInstance("PKCS12");
         store.load(new ByteArrayInputStream(certificate), cerPassword.toCharArray());
         String alias = Collections.list(store.aliases()).get(0);
-        String thumbprint = DatatypeConverter.printHexBinary(MessageDigest.getInstance("SHA-1").digest(store.getCertificate(alias).getEncoded()));
+        String thumbprint = printHexBinary(MessageDigest.getInstance("SHA-1").digest(store.getCertificate(alias).getEncoded()));
 
         SpringService service = appPlatformManager.springServices().define(serviceName)
             .withRegion(region)
@@ -374,7 +373,7 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
             result = br.readLine();
             process.waitFor();
             error = ebr.readLine();
-            if (error != null && (!error.equals(""))) {
+            if (error != null && (!"".equals(error))) {
                 // To do - Log error message
 
                 if (!ignoreErrorStream) {
@@ -404,5 +403,16 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
         SSLContext sslContext = SSLContext.getInstance("SSL");
         sslContext.init(null, trustAllCerts, new SecureRandom());
         HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
+    }
+
+    private static final char[] HEX_CODE = "0123456789ABCDEF".toCharArray();
+
+    private static String printHexBinary(byte[] data) {
+        StringBuilder r = new StringBuilder(data.length * 2);
+        for (byte b : data) {
+            r.append(HEX_CODE[(b >> 4) & 0xF]);
+            r.append(HEX_CODE[(b & 0xF)]);
+        }
+        return r.toString();
     }
 }

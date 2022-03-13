@@ -4,6 +4,7 @@
 package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.util.ValidationUtil;
 
@@ -13,9 +14,12 @@ import com.azure.identity.implementation.util.ValidationUtil;
  * @see InteractiveBrowserCredential
  */
 public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBase<InteractiveBrowserCredentialBuilder> {
+    private static final ClientLogger LOGGER = new ClientLogger(InteractiveBrowserCredentialBuilder.class);
+
     private Integer port;
     private boolean automaticAuthentication = true;
     private String redirectUrl;
+    private String loginHint;
 
     /**
      * Sets the port for the local HTTP server, for which {@code http://localhost:{port}} must be
@@ -114,15 +118,28 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
     }
 
     /**
+     * Sets the username suggestion to pre-fill the login page's username/email address field. A user may still log in
+     * with a different username.
+     *
+     * @param loginHint the username suggestion to pre-fill the login page's username/email address field.
+     *
+     * @return An updated instance of this builder with login hint configured.
+     */
+    public InteractiveBrowserCredentialBuilder loginHint(String loginHint) {
+        this.loginHint = loginHint;
+        return this;
+    }
+
+    /**
      * Creates a new {@link InteractiveBrowserCredential} with the current configurations.
      *
      * @return a {@link InteractiveBrowserCredential} with the current configurations.
      */
     public InteractiveBrowserCredential build() {
-        ValidationUtil.validateInteractiveBrowserRedirectUrlSetup(getClass().getSimpleName(), port, redirectUrl);
+        ValidationUtil.validateInteractiveBrowserRedirectUrlSetup(port, redirectUrl, LOGGER);
 
         String clientId = this.clientId != null ? this.clientId : IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID;
         return new InteractiveBrowserCredential(clientId, tenantId, port, redirectUrl, automaticAuthentication,
-            identityClientOptions);
+            loginHint, identityClientOptions);
     }
 }

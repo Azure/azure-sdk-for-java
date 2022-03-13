@@ -6,7 +6,9 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.FactoryUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -19,6 +21,7 @@ public final class FactoryUpdateParameters {
      * The resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
@@ -26,6 +29,12 @@ public final class FactoryUpdateParameters {
      */
     @JsonProperty(value = "identity")
     private FactoryIdentity identity;
+
+    /*
+     * Properties of update the factory.
+     */
+    @JsonProperty(value = "properties")
+    private FactoryUpdateProperties innerProperties;
 
     /**
      * Get the tags property: The resource tags.
@@ -68,6 +77,38 @@ public final class FactoryUpdateParameters {
     }
 
     /**
+     * Get the innerProperties property: Properties of update the factory.
+     *
+     * @return the innerProperties value.
+     */
+    private FactoryUpdateProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Whether or not public network access is allowed for the data factory.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Whether or not public network access is allowed for the data factory.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the FactoryUpdateParameters object itself.
+     */
+    public FactoryUpdateParameters withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FactoryUpdateProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -75,6 +116,9 @@ public final class FactoryUpdateParameters {
     public void validate() {
         if (identity() != null) {
             identity().validate();
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

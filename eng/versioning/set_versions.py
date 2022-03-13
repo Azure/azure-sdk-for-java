@@ -46,7 +46,7 @@ from utils import prerelease_data_version_regex
 from utils import prerelease_version_regex_with_name
 
 # some things that should not be updated for devops builds, in the case where everything is being updated in one call
-items_we_should_not_update = ['com.azure:azure-sdk-all', 'com.azure:azure-sdk-parent', 'com.azure:azure-client-sdk-parent', 'azure-data-sdk-parent']
+items_we_should_not_update = ['com.azure:azure-sdk-all', 'com.azure:azure-sdk-parent', 'com.azure:azure-client-sdk-parent', 'com.azure:azure-data-sdk-parent', 'com.azure:azure-perf-test-parent']
 
 # The regex string we want should be the anchored one since the entire string is what's being matched
 version_regex_named = re.compile(version_regex_str_with_names_anchored)
@@ -267,7 +267,7 @@ def increment_or_set_library_version(build_type, artifact_id, group_id, new_vers
                 # Tick up the version here. If the version is already a pre-release
                 # version then just increment the revision. Otherwise increment the
                 # minor version, zero the patch and add "-beta.1" to the end
-                # https://github.com/Azure/azure-sdk/blob/master/docs/policies/releases.md#java
+                # https://github.com/Azure/azure-sdk/blob/main/docs/policies/releases.md#java
                 if module.name == library_to_update and hasattr(module, 'current'):
                     artifact_found = True
                     if new_version is None:

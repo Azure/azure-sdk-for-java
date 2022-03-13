@@ -41,18 +41,18 @@ class APISpec extends StorageSpec {
     }
 
     def setup() {
-        primaryBlobServiceClient = getServiceClient(env.primaryAccount)
-        primaryBlobServiceAsyncClient = getServiceAsyncClient(env.primaryAccount)
+        primaryBlobServiceClient = getServiceClient(environment.primaryAccount)
+        primaryBlobServiceAsyncClient = getServiceAsyncClient(environment.primaryAccount)
 
         containerName = generateContainerName()
     }
 
     def cleanup() {
-        if (env.testMode != TestMode.PLAYBACK) {
+        if (environment.testMode != TestMode.PLAYBACK) {
             def cleanupClient = new BlobServiceClientBuilder()
                 .httpClient(getHttpClient())
-                .credential(env.primaryAccount.credential)
-                .endpoint(env.primaryAccount.blobEndpoint)
+                .credential(environment.primaryAccount.credential)
+                .endpoint(environment.primaryAccount.blobEndpoint)
                 .buildClient()
             def options = new ListBlobContainersOptions().setPrefix(namer.getResourcePrefix())
             for (BlobContainerItem container : cleanupClient.listBlobContainers(options, Duration.ofSeconds(120))) {

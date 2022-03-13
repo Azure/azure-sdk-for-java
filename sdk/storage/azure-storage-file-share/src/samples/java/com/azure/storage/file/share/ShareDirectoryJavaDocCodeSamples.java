@@ -13,6 +13,8 @@ import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareRequestConditions;
+import com.azure.storage.file.share.options.ShareFileRenameOptions;
+import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 
@@ -35,6 +37,8 @@ public class ShareDirectoryJavaDocCodeSamples {
     private String leaseId = "leaseId";
     ShareDirectoryClient client = createClientWithSASToken();
     private Duration timeout = Duration.ofSeconds(30);
+
+    private String destinationPath = "destinationPath";
 
     /**
      * Generates code sample for {@link ShareDirectoryClient} instantiation.
@@ -263,6 +267,20 @@ public class ShareDirectoryJavaDocCodeSamples {
                     fileRef.isDirectory(), fileRef.getName())
         );
         // END: com.azure.storage.file.share.ShareDirectoryClient.listFilesAndDirectories#string-integer-duration-context
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareDirectoryClient#listFilesAndDirectories(
+     * ShareListFilesAndDirectoriesOptions, Duration, Context)}
+     */
+    public void listDirectoriesAndFilesOptionsBagOverload() {
+        ShareDirectoryClient shareDirectoryClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.listFilesAndDirectories#ShareListFilesAndDirectoriesOptions-duration-context
+        shareDirectoryClient.listFilesAndDirectories(new ShareListFilesAndDirectoriesOptions()
+                .setPrefix("subdir").setMaxResultsPerPage(10), Duration.ofSeconds(1), new Context(key1, value1))
+            .forEach(fileRef -> System.out.printf("Is the resource a directory? %b. The resource name is: %s.",
+                fileRef.isDirectory(), fileRef.getName()));
+        // END: com.azure.storage.file.share.ShareDirectoryClient.listFilesAndDirectories#ShareListFilesAndDirectoriesOptions-duration-context
     }
 
     /**
@@ -497,6 +515,36 @@ public class ShareDirectoryJavaDocCodeSamples {
         System.out.printf("Closed %d open handles on the directory%n", closeHandlesInfo.getClosedHandles());
         System.out.printf("Failed to close %d open handles on the directory%n", closeHandlesInfo.getFailedHandles());
         // END: com.azure.storage.file.share.ShareDirectoryClient.forceCloseAllHandles#boolean-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link ShareDirectoryClient#rename(String)} and
+     * {@link ShareDirectoryClient#renameWithResponse(com.azure.storage.file.share.options.ShareFileRenameOptions, Duration, Context)}
+     */
+    public void renameCodeSnippets() {
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.rename#String
+        ShareDirectoryClient renamedClient = client.rename(destinationPath);
+        System.out.println("Directory Client has been renamed");
+        // END: com.azure.storage.file.share.ShareDirectoryClient.rename#String
+
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.renameWithResponse#ShareFileRenameOptions-Duration-Context
+        FileSmbProperties smbProperties = new FileSmbProperties()
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .setFileCreationTime(OffsetDateTime.now())
+            .setFileLastWriteTime(OffsetDateTime.now())
+            .setFilePermissionKey("filePermissionKey");
+        ShareFileRenameOptions options = new ShareFileRenameOptions(destinationPath)
+            .setDestinationRequestConditions(new ShareRequestConditions().setLeaseId(leaseId))
+            .setSourceRequestConditions(new ShareRequestConditions().setLeaseId(leaseId))
+            .setIgnoreReadOnly(false)
+            .setReplaceIfExists(false)
+            .setFilePermission("filePermission")
+            .setSmbProperties(smbProperties);
+
+        ShareDirectoryClient newRenamedClient = client.renameWithResponse(options, timeout,
+            new Context(key1, value1)).getValue();
+        System.out.println("Directory Client has been renamed");
+        // END: com.azure.storage.file.share.ShareDirectoryClient.renameWithResponse#ShareFileRenameOptions-Duration-Context
     }
 
     /**

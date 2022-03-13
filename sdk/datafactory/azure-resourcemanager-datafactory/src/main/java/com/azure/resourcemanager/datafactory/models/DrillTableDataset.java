@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.DrillDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,94 +17,23 @@ import java.util.Map;
 /** Drill server dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("DrillTable")
-@JsonFlatten
 @Fluent
-public class DrillTableDataset extends Dataset {
+public final class DrillTableDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DrillTableDataset.class);
 
     /*
-     * This property will be retired. Please consider using schema + table
-     * properties instead.
+     * Properties specific to this dataset type.
      */
-    @JsonProperty(value = "typeProperties.tableName")
-    private Object tableName;
-
-    /*
-     * The table name of the Drill. Type: string (or Expression with resultType
-     * string).
-     */
-    @JsonProperty(value = "typeProperties.table")
-    private Object table;
-
-    /*
-     * The schema name of the Drill. Type: string (or Expression with
-     * resultType string).
-     */
-    @JsonProperty(value = "typeProperties.schema")
-    private Object schemaTypePropertiesSchema;
+    @JsonProperty(value = "typeProperties")
+    private DrillDatasetTypeProperties innerTypeProperties;
 
     /**
-     * Get the tableName property: This property will be retired. Please consider using schema + table properties
-     * instead.
+     * Get the innerTypeProperties property: Properties specific to this dataset type.
      *
-     * @return the tableName value.
+     * @return the innerTypeProperties value.
      */
-    public Object tableName() {
-        return this.tableName;
-    }
-
-    /**
-     * Set the tableName property: This property will be retired. Please consider using schema + table properties
-     * instead.
-     *
-     * @param tableName the tableName value to set.
-     * @return the DrillTableDataset object itself.
-     */
-    public DrillTableDataset withTableName(Object tableName) {
-        this.tableName = tableName;
-        return this;
-    }
-
-    /**
-     * Get the table property: The table name of the Drill. Type: string (or Expression with resultType string).
-     *
-     * @return the table value.
-     */
-    public Object table() {
-        return this.table;
-    }
-
-    /**
-     * Set the table property: The table name of the Drill. Type: string (or Expression with resultType string).
-     *
-     * @param table the table value to set.
-     * @return the DrillTableDataset object itself.
-     */
-    public DrillTableDataset withTable(Object table) {
-        this.table = table;
-        return this;
-    }
-
-    /**
-     * Get the schemaTypePropertiesSchema property: The schema name of the Drill. Type: string (or Expression with
-     * resultType string).
-     *
-     * @return the schemaTypePropertiesSchema value.
-     */
-    public Object schemaTypePropertiesSchema() {
-        return this.schemaTypePropertiesSchema;
-    }
-
-    /**
-     * Set the schemaTypePropertiesSchema property: The schema name of the Drill. Type: string (or Expression with
-     * resultType string).
-     *
-     * @param schemaTypePropertiesSchema the schemaTypePropertiesSchema value to set.
-     * @return the DrillTableDataset object itself.
-     */
-    public DrillTableDataset withSchemaTypePropertiesSchema(Object schemaTypePropertiesSchema) {
-        this.schemaTypePropertiesSchema = schemaTypePropertiesSchema;
-        return this;
+    private DrillDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -157,6 +86,77 @@ public class DrillTableDataset extends Dataset {
     }
 
     /**
+     * Get the tableName property: This property will be retired. Please consider using schema + table properties
+     * instead.
+     *
+     * @return the tableName value.
+     */
+    public Object tableName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().tableName();
+    }
+
+    /**
+     * Set the tableName property: This property will be retired. Please consider using schema + table properties
+     * instead.
+     *
+     * @param tableName the tableName value to set.
+     * @return the DrillTableDataset object itself.
+     */
+    public DrillTableDataset withTableName(Object tableName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new DrillDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withTableName(tableName);
+        return this;
+    }
+
+    /**
+     * Get the table property: The table name of the Drill. Type: string (or Expression with resultType string).
+     *
+     * @return the table value.
+     */
+    public Object table() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().table();
+    }
+
+    /**
+     * Set the table property: The table name of the Drill. Type: string (or Expression with resultType string).
+     *
+     * @param table the table value to set.
+     * @return the DrillTableDataset object itself.
+     */
+    public DrillTableDataset withTable(Object table) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new DrillDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withTable(table);
+        return this;
+    }
+
+    /**
+     * Get the schema property: The schema name of the Drill. Type: string (or Expression with resultType string).
+     *
+     * @return the schema value.
+     */
+    public Object schemaTypePropertiesSchema() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().schema();
+    }
+
+    /**
+     * Set the schema property: The schema name of the Drill. Type: string (or Expression with resultType string).
+     *
+     * @param schema the schema value to set.
+     * @return the DrillTableDataset object itself.
+     */
+    public DrillTableDataset withSchemaTypePropertiesSchema(Object schema) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new DrillDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withSchema(schema);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -164,5 +164,8 @@ public class DrillTableDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
+        if (innerTypeProperties() != null) {
+            innerTypeProperties().validate();
+        }
     }
 }

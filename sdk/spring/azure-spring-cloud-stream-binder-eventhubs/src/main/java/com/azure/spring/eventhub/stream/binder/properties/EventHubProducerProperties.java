@@ -12,7 +12,7 @@ public class EventHubProducerProperties {
      * If true, the producer will wait for a response from Event Hub after a send operation before sending next message.
      * If false, the producer will keep sending without waiting response
      * <p>
-     * Default: true
+     * Default: false
      */
     private boolean sync;
 

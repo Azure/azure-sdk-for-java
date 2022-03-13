@@ -107,19 +107,19 @@ $env:AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE='xxxxxxxx'
 ## Run AAD integration test by maven.
 azure-spring-boot-test-aad:
 ```
-mvn -f .\sdk\spring\azure-spring-boot-test-aad\pom.xml --fail-at-end "-Dmaven.javadoc.skip=true" "-Drevapi.skip=true" "-DskipSpringITs=false" verify
+mvn -f .\sdk\spring\azure-spring-boot-test-aad\pom.xml --fail-at-end "-Dmaven.javadoc.skip=true" "-Dcodesnippet.skip=true" "-Drevapi.skip=true" "-DskipSpringITs=false" verify
 ```
-azure-spring-boot-test-aad-obo:
+azure-spring-boot-test-aad-webapp-and-resource-server-with-obo:
 ```
-mvn -f .\sdk\spring\azure-spring-boot-test-aad-obo\pom.xml --fail-at-end "-Dmaven.javadoc.skip=true" "-Drevapi.skip=true" "-DskipSpringITs=false" verify
+mvn -f .\sdk\spring\azure-spring-boot-test-aad-webapp-and-resource-server-with-obo\pom.xml --fail-at-end "-Dmaven.javadoc.skip=true" "-Dcodesnippet.skip=true" "-Drevapi.skip=true" "-DskipSpringITs=false" verify
 ```
 azure-spring-boot-test-aad-resource-server:
 ```
-mvn -f .\sdk\spring\azure-spring-boot-test-aad-resource-server\pom.xml --fail-at-end "-Dmaven.javadoc.skip=true" "-Drevapi.skip=true" "-DskipSpringITs=false" verify
+mvn -f .\sdk\spring\azure-spring-boot-test-aad-resource-server\pom.xml --fail-at-end "-Dmaven.javadoc.skip=true" "-Dcodesnippet.skip=true" "-Drevapi.skip=true" "-DskipSpringITs=false" verify
 ```
 azure-spring-boot-test-aad-resource-server-by-filter:
 ```
-mvn -f .\sdk\spring\azure-spring-boot-test-aad-resource-server-by-filter\pom.xml --fail-at-end "-Dmaven.javadoc.skip=true" "-Drevapi.skip=true" "-DskipSpringITs=false" verify
+mvn -f .\sdk\spring\azure-spring-boot-test-aad-resource-server-by-filter\pom.xml --fail-at-end "-Dmaven.javadoc.skip=true" "-Dcodesnippet.skip=true" "-Drevapi.skip=true" "-DskipSpringITs=false" verify
 ```
 
 

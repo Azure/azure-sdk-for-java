@@ -13,12 +13,14 @@ import com.azure.resourcemanager.signalr.fluent.SignalRsClient;
 import com.azure.resourcemanager.signalr.fluent.models.NameAvailabilityInner;
 import com.azure.resourcemanager.signalr.fluent.models.SignalRKeysInner;
 import com.azure.resourcemanager.signalr.fluent.models.SignalRResourceInner;
+import com.azure.resourcemanager.signalr.fluent.models.SkuListInner;
 import com.azure.resourcemanager.signalr.models.NameAvailability;
 import com.azure.resourcemanager.signalr.models.NameAvailabilityParameters;
 import com.azure.resourcemanager.signalr.models.RegenerateKeyParameters;
 import com.azure.resourcemanager.signalr.models.SignalRKeys;
 import com.azure.resourcemanager.signalr.models.SignalRResource;
 import com.azure.resourcemanager.signalr.models.SignalRs;
+import com.azure.resourcemanager.signalr.models.SkuList;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SignalRsImpl implements SignalRs {
@@ -160,6 +162,29 @@ public final class SignalRsImpl implements SignalRs {
 
     public void restart(String resourceGroupName, String resourceName, Context context) {
         this.serviceClient().restart(resourceGroupName, resourceName, context);
+    }
+
+    public SkuList listSkus(String resourceGroupName, String resourceName) {
+        SkuListInner inner = this.serviceClient().listSkus(resourceGroupName, resourceName);
+        if (inner != null) {
+            return new SkuListImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<SkuList> listSkusWithResponse(String resourceGroupName, String resourceName, Context context) {
+        Response<SkuListInner> inner =
+            this.serviceClient().listSkusWithResponse(resourceGroupName, resourceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new SkuListImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public SignalRResource getById(String id) {

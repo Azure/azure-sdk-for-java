@@ -33,7 +33,14 @@ import java.util.Map;
  *
  * <p><strong>Instantiating an Synchronous Queue Client</strong></p>
  *
- * {@codesnippet com.azure.storage.queue.queueClient.instantiation}
+ * <!-- src_embed com.azure.storage.queue.queueClient.instantiation -->
+ * <pre>
+ * QueueClient client = new QueueClientBuilder&#40;&#41;
+ *     .connectionString&#40;&quot;connectionstring&quot;&#41;
+ *     .endpoint&#40;&quot;endpoint&quot;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.queue.queueClient.instantiation -->
  *
  * <p>View {@link QueueClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -95,7 +102,12 @@ public final class QueueClient {
      *
      * <p>Create a queue</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.create}
+     * <!-- src_embed com.azure.storage.queue.queueClient.create -->
+     * <pre>
+     * client.create&#40;&#41;;
+     * System.out.println&#40;&quot;Complete creating queue.&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueClient.create -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-queue4">Azure Docs</a>.</p>
@@ -114,7 +126,13 @@ public final class QueueClient {
      *
      * <p>Create a queue with metadata "queue:metadataMap"</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.createWithResponse#map-duration-context}
+     * <!-- src_embed com.azure.storage.queue.queueClient.createWithResponse#map-duration-context -->
+     * <pre>
+     * Response&lt;Void&gt; response = client.createWithResponse&#40;Collections.singletonMap&#40;&quot;queue&quot;, &quot;metadataMap&quot;&#41;,
+     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
+     * System.out.println&#40;&quot;Complete creating queue with status code: &quot; + response.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueClient.createWithResponse#map-duration-context -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-queue4">Azure Docs</a>.</p>
@@ -142,7 +160,12 @@ public final class QueueClient {
      *
      * <p>Delete a queue</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.delete}
+     * <!-- src_embed com.azure.storage.queue.queueClient.delete -->
+     * <pre>
+     * client.delete&#40;&#41;;
+     * System.out.println&#40;&quot;Complete deleting the queue.&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueClient.delete -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-queue3">Azure Docs</a>.</p>
@@ -161,7 +184,12 @@ public final class QueueClient {
      *
      * <p>Delete a queue</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.deleteWithResponse#duration-context}
+     * <!-- src_embed com.azure.storage.queue.queueClient.deleteWithResponse#duration-context -->
+     * <pre>
+     * Response&lt;Void&gt; response = client.deleteWithResponse&#40;Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
+     * System.out.println&#40;&quot;Complete deleting the queue with status code: &quot; + response.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueClient.deleteWithResponse#duration-context -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-queue3">Azure Docs</a>.</p>
@@ -186,7 +214,13 @@ public final class QueueClient {
      *
      * <p>Get the properties of the queue</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.getProperties}
+     * <!-- src_embed com.azure.storage.queue.queueClient.getProperties -->
+     * <pre>
+     * QueueProperties properties = client.getProperties&#40;&#41;;
+     * System.out.printf&#40;&quot;Metadata: %s, Approximate message count: %d&quot;, properties.getMetadata&#40;&#41;,
+     *     properties.getApproximateMessagesCount&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueClient.getProperties -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-queue-metadata">Azure Docs</a>.</p>
@@ -207,7 +241,14 @@ public final class QueueClient {
      *
      * <p>Get the properties of the queue</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.getPropertiesWithResponse#duration-context}
+     * <!-- src_embed com.azure.storage.queue.queueClient.getPropertiesWithResponse#duration-context -->
+     * <pre>
+     * QueueProperties properties = client.getPropertiesWithResponse&#40;Duration.ofSeconds&#40;1&#41;,
+     *     new Context&#40;key1, value1&#41;&#41;.getValue&#40;&#41;;
+     * System.out.printf&#40;&quot;Metadata: %s, Approximate message count: %d&quot;, properties.getMetadata&#40;&#41;,
+     *     properties.getApproximateMessagesCount&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueClient.getPropertiesWithResponse#duration-context -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-queue-metadata">Azure Docs</a>.</p>
@@ -235,11 +276,21 @@ public final class QueueClient {
      *
      * <p>Set the queue's metadata to "queue:metadataMap"</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.setMetadata#map}
+     * <!-- src_embed com.azure.storage.queue.queueClient.setMetadata#map -->
+     * <pre>
+     * client.setMetadata&#40;Collections.singletonMap&#40;&quot;queue&quot;, &quot;metadataMap&quot;&#41;&#41;;
+     * System.out.println&#40;&quot;Setting metadata completed.&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueClient.setMetadata#map -->
      *
      * <p>Clear the queue's metadata</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.clearMetadata#map}
+     * <!-- src_embed com.azure.storage.queue.queueClient.clearMetadata#map -->
+     * <pre>
+     * client.setMetadata&#40;null&#41;;
+     * System.out.println&#40;&quot;Clearing metadata completed.&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueClient.clearMetadata#map -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-queue-metadata">Azure Docs</a>.</p>
@@ -261,11 +312,23 @@ public final class QueueClient {
      *
      * <p>Set the queue's metadata to "queue:metadataMap"</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.setMetadataWithResponse#map-duration-context}
+     * <!-- src_embed com.azure.storage.queue.queueClient.setMetadataWithResponse#map-duration-context -->
+     * <pre>
+     * client.setMetadataWithResponse&#40;Collections.singletonMap&#40;&quot;queue&quot;, &quot;metadataMap&quot;&#41;,
+     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
+     * System.out.println&#40;&quot;Setting metadata completed.&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueClient.setMetadataWithResponse#map-duration-context -->
      *
      * <p>Clear the queue's metadata</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.clearMetadataWithResponse#map-duration-context}
+     * <!-- src_embed com.azure.storage.queue.queueClient.clearMetadataWithResponse#map-duration-context -->
+     * <pre>
+     * Response&lt;Void&gt; response = client.setMetadataWithResponse&#40;null, Duration.ofSeconds&#40;1&#41;,
+     *     new Context&#40;key1, value1&#41;&#41;;
+     * System.out.printf&#40;&quot;Clearing metadata completed with status code %d&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueClient.clearMetadataWithResponse#map-duration-context -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-queue-metadata">Azure Docs</a>.</p>
@@ -291,7 +354,14 @@ public final class QueueClient {
      *
      * <p>List the stored access policies</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.getAccessPolicy}
+     * <!-- src_embed com.azure.storage.queue.queueClient.getAccessPolicy -->
+     * <pre>
+     * for &#40;QueueSignedIdentifier permission : client.getAccessPolicy&#40;&#41;&#41; &#123;
+     *     System.out.printf&#40;&quot;Access policy %s allows these permissions: %s&quot;, permission.getId&#40;&#41;,
+     *         permission.getAccessPolicy&#40;&#41;.getPermissions&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueClient.getAccessPolicy -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-queue-acl">Azure Docs</a>.</p>
@@ -311,7 +381,16 @@ public final class QueueClient {
      *
      * <p>Set a read only stored access policy</p>
      *
-     * {@codesnippet com.azure.storage.queue.QueueClient.setAccessPolicy#List}
+     * <!-- src_embed com.azure.storage.queue.QueueClient.setAccessPolicy#List -->
+     * <pre>
+     * QueueAccessPolicy accessPolicy = new QueueAccessPolicy&#40;&#41;.setPermissions&#40;&quot;r&quot;&#41;
+     *     .setStartsOn&#40;OffsetDateTime.now&#40;ZoneOffset.UTC&#41;&#41;
+     *     .setExpiresOn&#40;OffsetDateTime.now&#40;ZoneOffset.UTC&#41;.plusDays&#40;10&#41;&#41;;
+     * QueueSignedIdentifier permission = new QueueSignedIdentifier&#40;&#41;.setId&#40;&quot;mypolicy&quot;&#41;.setAccessPolicy&#40;accessPolicy&#41;;
+     * client.setAccessPolicy&#40;Collections.singletonList&#40;permission&#41;&#41;;
+     * System.out.println&#40;&quot;Setting access policies completed.&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.QueueClient.setAccessPolicy#List -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-queue-acl">Azure Docs</a>.</p>
@@ -332,7 +411,17 @@ public final class QueueClient {
      *
      * <p>Set a read only stored access policy</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.setAccessPolicyWithResponse#List-Duration-Context}
+     * <!-- src_embed com.azure.storage.queue.queueClient.setAccessPolicyWithResponse#List-Duration-Context -->
+     * <pre>
+     * QueueAccessPolicy accessPolicy = new QueueAccessPolicy&#40;&#41;.setPermissions&#40;&quot;r&quot;&#41;
+     *     .setStartsOn&#40;OffsetDateTime.now&#40;ZoneOffset.UTC&#41;&#41;
+     *     .setExpiresOn&#40;OffsetDateTime.now&#40;ZoneOffset.UTC&#41;.plusDays&#40;10&#41;&#41;;
+     * QueueSignedIdentifier permission = new QueueSignedIdentifier&#40;&#41;.setId&#40;&quot;mypolicy&quot;&#41;.setAccessPolicy&#40;accessPolicy&#41;;
+     * Response&lt;Void&gt; response = client.setAccessPolicyWithResponse&#40;Collections.singletonList&#40;permission&#41;,
+     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
+     * System.out.printf&#40;&quot;Setting access policies completed with status code %d&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueClient.setAccessPolicyWithResponse#List-Duration-Context -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-queue-acl">Azure Docs</a>.</p>
@@ -360,7 +449,12 @@ public final class QueueClient {
      *
      * <p>Clear the messages</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.clearMessages}
+     * <!-- src_embed com.azure.storage.queue.queueClient.clearMessages -->
+     * <pre>
+     * client.clearMessages&#40;&#41;;
+     * System.out.println&#40;&quot;Clearing messages completed.&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueClient.clearMessages -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/clear-messages">Azure Docs</a>.</p>
@@ -379,7 +473,12 @@ public final class QueueClient {
      *
      * <p>Clear the messages</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.clearMessagesWithResponse#duration-context}
+     * <!-- src_embed com.azure.storage.queue.queueClient.clearMessagesWithResponse#duration-context -->
+     * <pre>
+     * Response&lt;Void&gt; response = client.clearMessagesWithResponse&#40;Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
+     * System.out.printf&#40;&quot;Clearing messages completed with status code %d&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueClient.clearMessagesWithResponse#duration-context -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/clear-messages">Azure Docs</a>.</p>
@@ -404,7 +503,12 @@ public final class QueueClient {
      *
      * <p>Sends a message of "Hello, Azure"</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.sendMessage#string}
+     * <!-- src_embed com.azure.storage.queue.queueClient.sendMessage#string -->
+     * <pre>
+     * SendMessageResult response = client.sendMessage&#40;&quot;hello msg&quot;&#41;;
+     * System.out.println&#40;&quot;Complete enqueuing the message with message Id&quot; + response.getMessageId&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueClient.sendMessage#string -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-message">Azure Docs</a>.</p>
@@ -427,7 +531,12 @@ public final class QueueClient {
      *
      * <p>Sends a message of "Hello, Azure"</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.sendMessage#BinaryData}
+     * <!-- src_embed com.azure.storage.queue.queueClient.sendMessage#BinaryData -->
+     * <pre>
+     * SendMessageResult response = client.sendMessage&#40;BinaryData.fromString&#40;&quot;Hello msg&quot;&#41;&#41;;
+     * System.out.println&#40;&quot;Complete enqueuing the message with message Id&quot; + response.getMessageId&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueClient.sendMessage#BinaryData -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-message">Azure Docs</a>.</p>
@@ -450,11 +559,25 @@ public final class QueueClient {
      *
      * <p>Add a message of "Hello, Azure" that has a timeout of 5 seconds</p>
      *
-     * {@codesnippet com.azure.storage.queue.QueueClient.sendMessageWithResponse#String-Duration-Duration-Duration-Context1}
+     * <!-- src_embed com.azure.storage.queue.QueueClient.sendMessageWithResponse#String-Duration-Duration-Duration-Context1 -->
+     * <pre>
+     * SendMessageResult sentMessageItem = client.sendMessageWithResponse&#40;&quot;Hello, Azure&quot;,
+     *     Duration.ofSeconds&#40;5&#41;, null, Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;.getValue&#40;&#41;;
+     * System.out.printf&#40;&quot;Message %s expires at %s&quot;, sentMessageItem.getMessageId&#40;&#41;,
+     *     sentMessageItem.getExpirationTime&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.QueueClient.sendMessageWithResponse#String-Duration-Duration-Duration-Context1 -->
      *
      * <p>Add a message of "Goodbye, Azure" that has a time to live of 5 seconds</p>
      *
-     * {@codesnippet com.azure.storage.queue.QueueClient.sendMessageWithResponse#String-Duration-Duration-Duration-Context2}
+     * <!-- src_embed com.azure.storage.queue.QueueClient.sendMessageWithResponse#String-Duration-Duration-Duration-Context2 -->
+     * <pre>
+     * SendMessageResult enqueuedMessage = client.sendMessageWithResponse&#40;&quot;Goodbye, Azure&quot;,
+     *     null, Duration.ofSeconds&#40;5&#41;, Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;.getValue&#40;&#41;;
+     * System.out.printf&#40;&quot;Message %s expires at %s&quot;, enqueuedMessage.getMessageId&#40;&#41;,
+     *     enqueuedMessage.getExpirationTime&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.QueueClient.sendMessageWithResponse#String-Duration-Duration-Duration-Context2 -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-message">Azure Docs</a>.</p>
@@ -492,11 +615,25 @@ public final class QueueClient {
      *
      * <p>Add a message of "Hello, Azure" that has a timeout of 5 seconds</p>
      *
-     * {@codesnippet com.azure.storage.queue.QueueClient.sendMessageWithResponse#BinaryData-Duration-Duration-Duration-Context1}
+     * <!-- src_embed com.azure.storage.queue.QueueClient.sendMessageWithResponse#BinaryData-Duration-Duration-Duration-Context1 -->
+     * <pre>
+     * SendMessageResult sentMessageItem = client.sendMessageWithResponse&#40;BinaryData.fromString&#40;&quot;Hello, Azure&quot;&#41;,
+     *     Duration.ofSeconds&#40;5&#41;, null, Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;.getValue&#40;&#41;;
+     * System.out.printf&#40;&quot;Message %s expires at %s&quot;, sentMessageItem.getMessageId&#40;&#41;,
+     *     sentMessageItem.getExpirationTime&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.QueueClient.sendMessageWithResponse#BinaryData-Duration-Duration-Duration-Context1 -->
      *
      * <p>Add a message of "Goodbye, Azure" that has a time to live of 5 seconds</p>
      *
-     * {@codesnippet com.azure.storage.queue.QueueClient.sendMessageWithResponse#BinaryData-Duration-Duration-Duration-Context2}
+     * <!-- src_embed com.azure.storage.queue.QueueClient.sendMessageWithResponse#BinaryData-Duration-Duration-Duration-Context2 -->
+     * <pre>
+     * SendMessageResult enqueuedMessage = client.sendMessageWithResponse&#40;BinaryData.fromString&#40;&quot;Goodbye, Azure&quot;&#41;,
+     *     null, Duration.ofSeconds&#40;5&#41;, Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;.getValue&#40;&#41;;
+     * System.out.printf&#40;&quot;Message %s expires at %s&quot;, enqueuedMessage.getMessageId&#40;&#41;,
+     *     enqueuedMessage.getExpirationTime&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.QueueClient.sendMessageWithResponse#BinaryData-Duration-Duration-Duration-Context2 -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-message">Azure Docs</a>.</p>
@@ -534,7 +671,12 @@ public final class QueueClient {
      *
      * <p>Receive a message</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.receiveMessage}
+     * <!-- src_embed com.azure.storage.queue.queueClient.receiveMessage -->
+     * <pre>
+     * QueueMessageItem queueMessageItem = client.receiveMessage&#40;&#41;;
+     * System.out.println&#40;&quot;Complete receiving the message: &quot; + queueMessageItem.getMessageId&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueClient.receiveMessage -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-messages">Azure Docs</a>.</p>
@@ -558,7 +700,14 @@ public final class QueueClient {
      *
      * <p>Receive up to 5 messages</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.receiveMessages#integer}
+     * <!-- src_embed com.azure.storage.queue.queueClient.receiveMessages#integer -->
+     * <pre>
+     * for &#40;QueueMessageItem message : client.receiveMessages&#40;5&#41;&#41; &#123;
+     *     System.out.printf&#40;&quot;Received %s and it becomes visible at %s&quot;,
+     *         message.getMessageId&#40;&#41;, message.getTimeNextVisible&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueClient.receiveMessages#integer -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-messages">Azure Docs</a>.</p>
@@ -585,7 +734,15 @@ public final class QueueClient {
      *
      * <p>Receive up to 5 messages and give them a 60 second timeout period</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.receiveMessages#integer-duration-duration-context}
+     * <!-- src_embed com.azure.storage.queue.queueClient.receiveMessages#integer-duration-duration-context -->
+     * <pre>
+     * for &#40;QueueMessageItem message : client.receiveMessages&#40;5, Duration.ofSeconds&#40;60&#41;,
+     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;&#41; &#123;
+     *     System.out.printf&#40;&quot;Received %s and it becomes visible at %s&quot;,
+     *         message.getMessageId&#40;&#41;, message.getTimeNextVisible&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueClient.receiveMessages#integer-duration-duration-context -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-messages">Azure Docs</a>.</p>
@@ -623,7 +780,12 @@ public final class QueueClient {
      *
      * <p>Peek the first message</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.peekMessage}
+     * <!-- src_embed com.azure.storage.queue.queueClient.peekMessage -->
+     * <pre>
+     * PeekedMessageItem peekedMessageItem = client.peekMessage&#40;&#41;;
+     * System.out.println&#40;&quot;Complete peeking the message: &quot; + peekedMessageItem.getBody&#40;&#41;.toString&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueClient.peekMessage -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/peek-messages">Azure Docs</a>.</p>
@@ -645,7 +807,14 @@ public final class QueueClient {
      *
      * <p>Peek up to the first five messages</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.peekMessages#integer-duration-context}
+     * <!-- src_embed com.azure.storage.queue.queueClient.peekMessages#integer-duration-context -->
+     * <pre>
+     * client.peekMessages&#40;5, Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;.forEach&#40;
+     *     peekMessage -&gt; System.out.printf&#40;&quot;Peeked message %s has been received %d times&quot;,
+     *         peekMessage.getMessageId&#40;&#41;, peekMessage.getDequeueCount&#40;&#41;&#41;
+     * &#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueClient.peekMessages#integer-duration-context -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/peek-messages">Azure Docs</a>.</p>
@@ -673,7 +842,14 @@ public final class QueueClient {
      *
      * <p>Dequeue the first message and update it to "Hello again, Azure" and hide it for 5 seconds</p>
      *
-     * {@codesnippet com.azure.storage.queue.QueueClient.updateMessage#String-String-String-Duration}
+     * <!-- src_embed com.azure.storage.queue.QueueClient.updateMessage#String-String-String-Duration -->
+     * <pre>
+     * QueueMessageItem queueMessageItem = client.receiveMessage&#40;&#41;;
+     * UpdateMessageResult result = client.updateMessage&#40;queueMessageItem.getMessageId&#40;&#41;,
+     *     queueMessageItem.getPopReceipt&#40;&#41;, &quot;newText&quot;, null&#41;;
+     * System.out.println&#40;&quot;Complete updating the message with the receipt &quot; + result.getPopReceipt&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.QueueClient.updateMessage#String-String-String-Duration -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/update-message">Azure Docs</a>.</p>
@@ -703,7 +879,15 @@ public final class QueueClient {
      *
      * <p>Dequeue the first message and update it to "Hello again, Azure" and hide it for 5 seconds</p>
      *
-     * {@codesnippet com.azure.storage.queue.QueueClient.updateMessageWithResponse#String-String-String-Duration-Duration-Context}
+     * <!-- src_embed com.azure.storage.queue.QueueClient.updateMessageWithResponse#String-String-String-Duration-Duration-Context -->
+     * <pre>
+     * QueueMessageItem queueMessageItem = client.receiveMessage&#40;&#41;;
+     * Response&lt;UpdateMessageResult&gt; response = client.updateMessageWithResponse&#40;queueMessageItem.getMessageId&#40;&#41;,
+     *     queueMessageItem.getPopReceipt&#40;&#41;, &quot;newText&quot;, null, Duration.ofSeconds&#40;1&#41;,
+     *     new Context&#40;key1, value1&#41;&#41;;
+     * System.out.println&#40;&quot;Complete updating the message with status code &quot; + response.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.QueueClient.updateMessageWithResponse#String-String-String-Duration-Duration-Context -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/update-message">Azure Docs</a>.</p>
@@ -738,7 +922,13 @@ public final class QueueClient {
      *
      * <p>Delete the first message</p>
      *
-     * {@codesnippet com.azure.storage.queue.QueueClient.deleteMessage#String-String}
+     * <!-- src_embed com.azure.storage.queue.QueueClient.deleteMessage#String-String -->
+     * <pre>
+     * QueueMessageItem queueMessageItem = client.receiveMessage&#40;&#41;;
+     * client.deleteMessage&#40;queueMessageItem.getMessageId&#40;&#41;, queueMessageItem.getPopReceipt&#40;&#41;&#41;;
+     * System.out.println&#40;&quot;Complete deleting the message.&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.QueueClient.deleteMessage#String-String -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-message2">Azure Docs</a>.</p>
@@ -760,7 +950,14 @@ public final class QueueClient {
      *
      * <p>Delete the first message</p>
      *
-     * {@codesnippet com.azure.storage.queue.QueueClient.deleteMessageWithResponse#String-String-Duration-Context}
+     * <!-- src_embed com.azure.storage.queue.QueueClient.deleteMessageWithResponse#String-String-Duration-Context -->
+     * <pre>
+     * QueueMessageItem queueMessageItem = client.receiveMessage&#40;&#41;;
+     * Response&lt;Void&gt; response = client.deleteMessageWithResponse&#40;queueMessageItem.getMessageId&#40;&#41;,
+     *     queueMessageItem.getPopReceipt&#40;&#41;, Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
+     * System.out.println&#40;&quot;Complete deleting the message with status code &quot; + response.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.QueueClient.deleteMessageWithResponse#String-String-Duration-Context -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-message2">Azure Docs</a>.</p>
@@ -787,7 +984,12 @@ public final class QueueClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.getQueueName}
+     * <!-- src_embed com.azure.storage.queue.queueClient.getQueueName -->
+     * <pre>
+     * String queueName = client.getQueueName&#40;&#41;;
+     * System.out.println&#40;&quot;The name of the queue is &quot; + queueName&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueClient.getQueueName -->
      *
      * @return The name of the queue.
      */
@@ -812,7 +1014,17 @@ public final class QueueClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.queue.QueueClient.generateSas#QueueServiceSasSignatureValues}
+     * <!-- src_embed com.azure.storage.queue.QueueClient.generateSas#QueueServiceSasSignatureValues -->
+     * <pre>
+     * OffsetDateTime expiryTime = OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;;
+     * QueueSasPermission permission = new QueueSasPermission&#40;&#41;.setReadPermission&#40;true&#41;;
+     *
+     * QueueServiceSasSignatureValues values = new QueueServiceSasSignatureValues&#40;expiryTime, permission&#41;
+     *     .setStartTime&#40;OffsetDateTime.now&#40;&#41;&#41;;
+     *
+     * client.generateSas&#40;values&#41;; &#47;&#47; Client must be authenticated via StorageSharedKeyCredential
+     * </pre>
+     * <!-- end com.azure.storage.queue.QueueClient.generateSas#QueueServiceSasSignatureValues -->
      *
      * @param queueServiceSasSignatureValues {@link QueueServiceSasSignatureValues}
      *
@@ -829,7 +1041,18 @@ public final class QueueClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.queue.QueueClient.generateSas#QueueServiceSasSignatureValues-Context}
+     * <!-- src_embed com.azure.storage.queue.QueueClient.generateSas#QueueServiceSasSignatureValues-Context -->
+     * <pre>
+     * OffsetDateTime expiryTime = OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;;
+     * QueueSasPermission permission = new QueueSasPermission&#40;&#41;.setReadPermission&#40;true&#41;;
+     *
+     * QueueServiceSasSignatureValues values = new QueueServiceSasSignatureValues&#40;expiryTime, permission&#41;
+     *     .setStartTime&#40;OffsetDateTime.now&#40;&#41;&#41;;
+     *
+     * &#47;&#47; Client must be authenticated via StorageSharedKeyCredential
+     * client.generateSas&#40;values, new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.QueueClient.generateSas#QueueServiceSasSignatureValues-Context -->
      *
      * @param queueServiceSasSignatureValues {@link QueueServiceSasSignatureValues}
      * @param context Additional context that is passed through the code when generating a SAS.

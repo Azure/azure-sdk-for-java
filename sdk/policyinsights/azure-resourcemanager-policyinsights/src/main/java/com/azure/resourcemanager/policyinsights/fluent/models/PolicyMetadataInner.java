@@ -4,17 +4,21 @@
 
 package com.azure.resourcemanager.policyinsights.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Policy metadata resource definition. */
-@JsonFlatten
-@Immutable
-public class PolicyMetadataInner {
+@Fluent
+public final class PolicyMetadataInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyMetadataInner.class);
+
+    /*
+     * Properties of the policy metadata.
+     */
+    @JsonProperty(value = "properties")
+    private PolicyMetadataProperties innerProperties;
 
     /*
      * The ID of the policy metadata.
@@ -34,53 +38,14 @@ public class PolicyMetadataInner {
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
-    /*
-     * The policy metadata identifier.
+    /**
+     * Get the innerProperties property: Properties of the policy metadata.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.metadataId", access = JsonProperty.Access.WRITE_ONLY)
-    private String metadataId;
-
-    /*
-     * The category of the policy metadata.
-     */
-    @JsonProperty(value = "properties.category", access = JsonProperty.Access.WRITE_ONLY)
-    private String category;
-
-    /*
-     * The title of the policy metadata.
-     */
-    @JsonProperty(value = "properties.title", access = JsonProperty.Access.WRITE_ONLY)
-    private String title;
-
-    /*
-     * The owner of the policy metadata.
-     */
-    @JsonProperty(value = "properties.owner", access = JsonProperty.Access.WRITE_ONLY)
-    private String owner;
-
-    /*
-     * Url for getting additional content about the resource metadata.
-     */
-    @JsonProperty(value = "properties.additionalContentUrl", access = JsonProperty.Access.WRITE_ONLY)
-    private String additionalContentUrl;
-
-    /*
-     * Additional metadata.
-     */
-    @JsonProperty(value = "properties.metadata", access = JsonProperty.Access.WRITE_ONLY)
-    private Object metadata;
-
-    /*
-     * The description of the policy metadata.
-     */
-    @JsonProperty(value = "properties.description", access = JsonProperty.Access.WRITE_ONLY)
-    private String description;
-
-    /*
-     * The requirements of the policy metadata.
-     */
-    @JsonProperty(value = "properties.requirements", access = JsonProperty.Access.WRITE_ONLY)
-    private String requirements;
+    private PolicyMetadataProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the id property: The ID of the policy metadata.
@@ -110,66 +75,12 @@ public class PolicyMetadataInner {
     }
 
     /**
-     * Get the metadataId property: The policy metadata identifier.
-     *
-     * @return the metadataId value.
-     */
-    public String metadataId() {
-        return this.metadataId;
-    }
-
-    /**
-     * Get the category property: The category of the policy metadata.
-     *
-     * @return the category value.
-     */
-    public String category() {
-        return this.category;
-    }
-
-    /**
-     * Get the title property: The title of the policy metadata.
-     *
-     * @return the title value.
-     */
-    public String title() {
-        return this.title;
-    }
-
-    /**
-     * Get the owner property: The owner of the policy metadata.
-     *
-     * @return the owner value.
-     */
-    public String owner() {
-        return this.owner;
-    }
-
-    /**
-     * Get the additionalContentUrl property: Url for getting additional content about the resource metadata.
-     *
-     * @return the additionalContentUrl value.
-     */
-    public String additionalContentUrl() {
-        return this.additionalContentUrl;
-    }
-
-    /**
-     * Get the metadata property: Additional metadata.
-     *
-     * @return the metadata value.
-     */
-    public Object metadata() {
-        return this.metadata;
-    }
-
-    /**
      * Get the description property: The description of the policy metadata.
      *
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -178,7 +89,61 @@ public class PolicyMetadataInner {
      * @return the requirements value.
      */
     public String requirements() {
-        return this.requirements;
+        return this.innerProperties() == null ? null : this.innerProperties().requirements();
+    }
+
+    /**
+     * Get the metadataId property: The policy metadata identifier.
+     *
+     * @return the metadataId value.
+     */
+    public String metadataId() {
+        return this.innerProperties() == null ? null : this.innerProperties().metadataId();
+    }
+
+    /**
+     * Get the category property: The category of the policy metadata.
+     *
+     * @return the category value.
+     */
+    public String category() {
+        return this.innerProperties() == null ? null : this.innerProperties().category();
+    }
+
+    /**
+     * Get the title property: The title of the policy metadata.
+     *
+     * @return the title value.
+     */
+    public String title() {
+        return this.innerProperties() == null ? null : this.innerProperties().title();
+    }
+
+    /**
+     * Get the owner property: The owner of the policy metadata.
+     *
+     * @return the owner value.
+     */
+    public String owner() {
+        return this.innerProperties() == null ? null : this.innerProperties().owner();
+    }
+
+    /**
+     * Get the additionalContentUrl property: Url for getting additional content about the resource metadata.
+     *
+     * @return the additionalContentUrl value.
+     */
+    public String additionalContentUrl() {
+        return this.innerProperties() == null ? null : this.innerProperties().additionalContentUrl();
+    }
+
+    /**
+     * Get the metadata property: Additional metadata.
+     *
+     * @return the metadata value.
+     */
+    public Object metadata() {
+        return this.innerProperties() == null ? null : this.innerProperties().metadata();
     }
 
     /**
@@ -187,5 +152,8 @@ public class PolicyMetadataInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

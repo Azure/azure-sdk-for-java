@@ -14,6 +14,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.signalr.fluent.models.NameAvailabilityInner;
 import com.azure.resourcemanager.signalr.fluent.models.SignalRKeysInner;
 import com.azure.resourcemanager.signalr.fluent.models.SignalRResourceInner;
+import com.azure.resourcemanager.signalr.fluent.models.SkuListInner;
 import com.azure.resourcemanager.signalr.models.NameAvailabilityParameters;
 import com.azure.resourcemanager.signalr.models.RegenerateKeyParameters;
 
@@ -138,7 +139,7 @@ public interface SignalRsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a class represent a resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SignalRResourceInner>, SignalRResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, SignalRResourceInner parameters);
 
@@ -155,7 +156,7 @@ public interface SignalRsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a class represent a resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SignalRResourceInner>, SignalRResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, SignalRResourceInner parameters, Context context);
 
@@ -202,7 +203,7 @@ public interface SignalRsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName);
 
     /**
@@ -217,7 +218,7 @@ public interface SignalRsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, Context context);
 
     /**
@@ -259,7 +260,7 @@ public interface SignalRsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a class represent a resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SignalRResourceInner>, SignalRResourceInner> beginUpdate(
         String resourceGroupName, String resourceName, SignalRResourceInner parameters);
 
@@ -276,7 +277,7 @@ public interface SignalRsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a class represent a resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SignalRResourceInner>, SignalRResourceInner> beginUpdate(
         String resourceGroupName, String resourceName, SignalRResourceInner parameters, Context context);
 
@@ -353,7 +354,7 @@ public interface SignalRsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a class represents the access keys of the resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SignalRKeysInner>, SignalRKeysInner> beginRegenerateKey(
         String resourceGroupName, String resourceName, RegenerateKeyParameters parameters);
 
@@ -370,7 +371,7 @@ public interface SignalRsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a class represents the access keys of the resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SignalRKeysInner>, SignalRKeysInner> beginRegenerateKey(
         String resourceGroupName, String resourceName, RegenerateKeyParameters parameters, Context context);
 
@@ -417,7 +418,7 @@ public interface SignalRsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String resourceName);
 
     /**
@@ -432,7 +433,7 @@ public interface SignalRsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String resourceName, Context context);
 
     /**
@@ -461,4 +462,33 @@ public interface SignalRsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void restart(String resourceGroupName, String resourceName, Context context);
+
+    /**
+     * List all available skus of the resource.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list skus operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SkuListInner listSkus(String resourceGroupName, String resourceName);
+
+    /**
+     * List all available skus of the resource.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list skus operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SkuListInner> listSkusWithResponse(String resourceGroupName, String resourceName, Context context);
 }

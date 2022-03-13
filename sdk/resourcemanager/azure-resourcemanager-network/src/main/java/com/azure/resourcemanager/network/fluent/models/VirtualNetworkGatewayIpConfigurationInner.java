@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
@@ -14,10 +13,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** IP configuration for virtual network gateway. */
-@JsonFlatten
 @Fluent
-public class VirtualNetworkGatewayIpConfigurationInner extends SubResource {
+public final class VirtualNetworkGatewayIpConfigurationInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkGatewayIpConfigurationInner.class);
+
+    /*
+     * Properties of the virtual network gateway ip configuration.
+     */
+    @JsonProperty(value = "properties")
+    private VirtualNetworkGatewayIpConfigurationPropertiesFormat innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This
@@ -32,36 +36,14 @@ public class VirtualNetworkGatewayIpConfigurationInner extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /*
-     * The private IP address allocation method.
+    /**
+     * Get the innerProperties property: Properties of the virtual network gateway ip configuration.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.privateIPAllocationMethod")
-    private IpAllocationMethod privateIpAllocationMethod;
-
-    /*
-     * The reference to the subnet resource.
-     */
-    @JsonProperty(value = "properties.subnet")
-    private SubResource subnet;
-
-    /*
-     * The reference to the public IP resource.
-     */
-    @JsonProperty(value = "properties.publicIPAddress")
-    private SubResource publicIpAddress;
-
-    /*
-     * Private IP Address for this gateway.
-     */
-    @JsonProperty(value = "properties.privateIPAddress", access = JsonProperty.Access.WRITE_ONLY)
-    private String privateIpAddress;
-
-    /*
-     * The provisioning state of the virtual network gateway IP configuration
-     * resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private VirtualNetworkGatewayIpConfigurationPropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
@@ -94,13 +76,20 @@ public class VirtualNetworkGatewayIpConfigurationInner extends SubResource {
         return this.etag;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public VirtualNetworkGatewayIpConfigurationInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the privateIpAllocationMethod property: The private IP address allocation method.
      *
      * @return the privateIpAllocationMethod value.
      */
     public IpAllocationMethod privateIpAllocationMethod() {
-        return this.privateIpAllocationMethod;
+        return this.innerProperties() == null ? null : this.innerProperties().privateIpAllocationMethod();
     }
 
     /**
@@ -111,7 +100,10 @@ public class VirtualNetworkGatewayIpConfigurationInner extends SubResource {
      */
     public VirtualNetworkGatewayIpConfigurationInner withPrivateIpAllocationMethod(
         IpAllocationMethod privateIpAllocationMethod) {
-        this.privateIpAllocationMethod = privateIpAllocationMethod;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkGatewayIpConfigurationPropertiesFormat();
+        }
+        this.innerProperties().withPrivateIpAllocationMethod(privateIpAllocationMethod);
         return this;
     }
 
@@ -121,7 +113,7 @@ public class VirtualNetworkGatewayIpConfigurationInner extends SubResource {
      * @return the subnet value.
      */
     public SubResource subnet() {
-        return this.subnet;
+        return this.innerProperties() == null ? null : this.innerProperties().subnet();
     }
 
     /**
@@ -131,7 +123,10 @@ public class VirtualNetworkGatewayIpConfigurationInner extends SubResource {
      * @return the VirtualNetworkGatewayIpConfigurationInner object itself.
      */
     public VirtualNetworkGatewayIpConfigurationInner withSubnet(SubResource subnet) {
-        this.subnet = subnet;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkGatewayIpConfigurationPropertiesFormat();
+        }
+        this.innerProperties().withSubnet(subnet);
         return this;
     }
 
@@ -141,7 +136,7 @@ public class VirtualNetworkGatewayIpConfigurationInner extends SubResource {
      * @return the publicIpAddress value.
      */
     public SubResource publicIpAddress() {
-        return this.publicIpAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().publicIpAddress();
     }
 
     /**
@@ -151,7 +146,10 @@ public class VirtualNetworkGatewayIpConfigurationInner extends SubResource {
      * @return the VirtualNetworkGatewayIpConfigurationInner object itself.
      */
     public VirtualNetworkGatewayIpConfigurationInner withPublicIpAddress(SubResource publicIpAddress) {
-        this.publicIpAddress = publicIpAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkGatewayIpConfigurationPropertiesFormat();
+        }
+        this.innerProperties().withPublicIpAddress(publicIpAddress);
         return this;
     }
 
@@ -161,7 +159,7 @@ public class VirtualNetworkGatewayIpConfigurationInner extends SubResource {
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
-        return this.privateIpAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().privateIpAddress();
     }
 
     /**
@@ -171,14 +169,7 @@ public class VirtualNetworkGatewayIpConfigurationInner extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public VirtualNetworkGatewayIpConfigurationInner withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -187,5 +178,8 @@ public class VirtualNetworkGatewayIpConfigurationInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

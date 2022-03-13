@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.EnvironmentVariableSetupTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -15,22 +15,24 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** The custom setup of setting environment variable. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("EnvironmentVariableSetup")
-@JsonFlatten
 @Fluent
-public class EnvironmentVariableSetup extends CustomSetupBase {
+public final class EnvironmentVariableSetup extends CustomSetupBase {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EnvironmentVariableSetup.class);
 
     /*
-     * The name of the environment variable.
+     * Add environment variable type properties.
      */
-    @JsonProperty(value = "typeProperties.variableName", required = true)
-    private String variableName;
+    @JsonProperty(value = "typeProperties", required = true)
+    private EnvironmentVariableSetupTypeProperties innerTypeProperties = new EnvironmentVariableSetupTypeProperties();
 
-    /*
-     * The value of the environment variable.
+    /**
+     * Get the innerTypeProperties property: Add environment variable type properties.
+     *
+     * @return the innerTypeProperties value.
      */
-    @JsonProperty(value = "typeProperties.variableValue", required = true)
-    private String variableValue;
+    private EnvironmentVariableSetupTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
+    }
 
     /**
      * Get the variableName property: The name of the environment variable.
@@ -38,7 +40,7 @@ public class EnvironmentVariableSetup extends CustomSetupBase {
      * @return the variableName value.
      */
     public String variableName() {
-        return this.variableName;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().variableName();
     }
 
     /**
@@ -48,7 +50,10 @@ public class EnvironmentVariableSetup extends CustomSetupBase {
      * @return the EnvironmentVariableSetup object itself.
      */
     public EnvironmentVariableSetup withVariableName(String variableName) {
-        this.variableName = variableName;
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new EnvironmentVariableSetupTypeProperties();
+        }
+        this.innerTypeProperties().withVariableName(variableName);
         return this;
     }
 
@@ -58,7 +63,7 @@ public class EnvironmentVariableSetup extends CustomSetupBase {
      * @return the variableValue value.
      */
     public String variableValue() {
-        return this.variableValue;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().variableValue();
     }
 
     /**
@@ -68,7 +73,10 @@ public class EnvironmentVariableSetup extends CustomSetupBase {
      * @return the EnvironmentVariableSetup object itself.
      */
     public EnvironmentVariableSetup withVariableValue(String variableValue) {
-        this.variableValue = variableValue;
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new EnvironmentVariableSetupTypeProperties();
+        }
+        this.innerTypeProperties().withVariableValue(variableValue);
         return this;
     }
 
@@ -80,17 +88,13 @@ public class EnvironmentVariableSetup extends CustomSetupBase {
     @Override
     public void validate() {
         super.validate();
-        if (variableName() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property variableName in model EnvironmentVariableSetup"));
-        }
-        if (variableValue() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property variableValue in model EnvironmentVariableSetup"));
+                        "Missing required property innerTypeProperties in model EnvironmentVariableSetup"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

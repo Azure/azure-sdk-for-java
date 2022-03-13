@@ -45,6 +45,11 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+    <javaModulesSurefireArgLine>
+      --add-exports com.azure.core.serializer.avro.jackson/com.azure.core.serializer.avro.jackson.generatedtestsources=com.fasterxml.jackson.databind
+      --add-opens com.azure.core.serializer.avro.jackson/com.azure.core.serializer.avro.jackson=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
+    <checkstyle.excludes>**/generatedtestsources/**/*.java</checkstyle.excludes>
   </properties>
 
   <developers>
@@ -58,42 +63,42 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.18.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.27.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-experimental</artifactId>
-      <version>1.0.0-beta.15</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
+      <version>1.0.0-beta.26</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-avro</artifactId>
-      <version>2.12.3</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-avro;external_dependency} -->
+      <version>2.13.1</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-avro;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.6</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.14</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <version>5.8.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.8.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
-      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <version>5.8.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -108,7 +113,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-avro:[2.12.3]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-avro;external_dependency} -->
+                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-avro:[2.13.1]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-avro;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -137,28 +142,4 @@
       </plugin>
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <id>java-lts</id>
-      <activation>
-        <jdk>[11,)</jdk>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <argLine>
-                --add-exports com.azure.core.serializer.avro.jackson/com.azure.core.serializer.avro.jackson.generatedtestsources=com.fasterxml.jackson.databind
-                --add-opens com.azure.core.serializer.avro.jackson/com.azure.core.serializer.avro.jackson=ALL-UNNAMED
-              </argLine>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 </project>

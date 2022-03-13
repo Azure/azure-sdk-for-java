@@ -93,7 +93,7 @@ public final class LibrariesOperationsClientImpl implements LibrariesOperationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Library resources.
+     * @return a list of Library resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LibraryResourceInner>> listByWorkspaceSinglePageAsync(
@@ -117,6 +117,7 @@ public final class LibrariesOperationsClientImpl implements LibrariesOperationsC
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -124,7 +125,7 @@ public final class LibrariesOperationsClientImpl implements LibrariesOperationsC
                     service
                         .listByWorkspace(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -151,7 +152,7 @@ public final class LibrariesOperationsClientImpl implements LibrariesOperationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Library resources.
+     * @return a list of Library resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LibraryResourceInner>> listByWorkspaceSinglePageAsync(
@@ -175,12 +176,13 @@ public final class LibrariesOperationsClientImpl implements LibrariesOperationsC
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByWorkspace(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -272,7 +274,7 @@ public final class LibrariesOperationsClientImpl implements LibrariesOperationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Library resources.
+     * @return a list of Library resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LibraryResourceInner>> listByWorkspaceNextSinglePageAsync(String nextLink) {
@@ -308,7 +310,7 @@ public final class LibrariesOperationsClientImpl implements LibrariesOperationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Library resources.
+     * @return a list of Library resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LibraryResourceInner>> listByWorkspaceNextSinglePageAsync(

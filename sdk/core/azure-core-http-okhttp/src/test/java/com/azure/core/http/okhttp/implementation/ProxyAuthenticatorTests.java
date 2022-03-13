@@ -66,7 +66,7 @@ public class ProxyAuthenticatorTests {
 
     @AfterEach
     public void cleanupInlineMocks() {
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
     }
 
     /**

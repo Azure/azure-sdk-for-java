@@ -10,7 +10,9 @@ import rx.Observable;
  * Operations for subscribing to a destination in reactive way.
  *
  * @author Warren Zhu
+ * @deprecated {@link SubscribeOperation} will be dropped in version 4.x and use com.azure.spring.servicebus.core.ServiceBusProcessorContainer instead.
  */
+@Deprecated
 public interface RxSubscribeOperation {
 
     /**
@@ -18,8 +20,14 @@ public interface RxSubscribeOperation {
      * @param destination destination
      * @param messagePayloadType message payload type
      * @return {@code Observable<Message<?>>}
+     *
+     * @deprecated {@link rx} API will be dropped in version 4.0.0, please migrate to reactor API in
+     * {@link SubscribeOperation}. From version 4.0.0, the reactor API support will be moved to
+     * com.azure.spring.messaging.core.SubscribeOperation.
      */
+    @Deprecated
     Observable<Message<?>> subscribe(String destination, Class<?> messagePayloadType);
 
+    @Deprecated
     void setCheckpointMode(CheckpointMode checkpointMode);
 }

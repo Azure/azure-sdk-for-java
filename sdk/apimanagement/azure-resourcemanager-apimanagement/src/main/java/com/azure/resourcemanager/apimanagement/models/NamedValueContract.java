@@ -33,21 +33,6 @@ public interface NamedValueContract {
     String type();
 
     /**
-     * Gets the tags property: Optional tags that when provided can be used to filter the NamedValue list.
-     *
-     * @return the tags value.
-     */
-    List<String> tags();
-
-    /**
-     * Gets the secret property: Determines whether the value is a secret and should be encrypted or not. Default value
-     * is false.
-     *
-     * @return the secret value.
-     */
-    Boolean secret();
-
-    /**
      * Gets the displayName property: Unique name of NamedValue. It may contain only letters, digits, period, dash, and
      * underscore characters.
      *
@@ -70,6 +55,21 @@ public interface NamedValueContract {
      * @return the keyVault value.
      */
     KeyVaultContractProperties keyVault();
+
+    /**
+     * Gets the tags property: Optional tags that when provided can be used to filter the NamedValue list.
+     *
+     * @return the tags value.
+     */
+    List<String> tags();
+
+    /**
+     * Gets the secret property: Determines whether the value is a secret and should be encrypted or not. Default value
+     * is false.
+     *
+     * @return the secret value.
+     */
+    Boolean secret();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.NamedValueContractInner object.
@@ -104,10 +104,10 @@ public interface NamedValueContract {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
-                DefinitionStages.WithSecret,
                 DefinitionStages.WithDisplayName,
                 DefinitionStages.WithValue,
                 DefinitionStages.WithKeyVault,
+                DefinitionStages.WithSecret,
                 DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
@@ -133,18 +133,6 @@ public interface NamedValueContract {
              * @return the next definition stage.
              */
             WithCreate withTags(List<String> tags);
-        }
-        /** The stage of the NamedValueContract definition allowing to specify secret. */
-        interface WithSecret {
-            /**
-             * Specifies the secret property: Determines whether the value is a secret and should be encrypted or not.
-             * Default value is false..
-             *
-             * @param secret Determines whether the value is a secret and should be encrypted or not. Default value is
-             *     false.
-             * @return the next definition stage.
-             */
-            WithCreate withSecret(Boolean secret);
         }
         /** The stage of the NamedValueContract definition allowing to specify displayName. */
         interface WithDisplayName {
@@ -182,6 +170,18 @@ public interface NamedValueContract {
              */
             WithCreate withKeyVault(KeyVaultContractCreateProperties keyVault);
         }
+        /** The stage of the NamedValueContract definition allowing to specify secret. */
+        interface WithSecret {
+            /**
+             * Specifies the secret property: Determines whether the value is a secret and should be encrypted or not.
+             * Default value is false..
+             *
+             * @param secret Determines whether the value is a secret and should be encrypted or not. Default value is
+             *     false.
+             * @return the next definition stage.
+             */
+            WithCreate withSecret(Boolean secret);
+        }
         /** The stage of the NamedValueContract definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -205,10 +205,10 @@ public interface NamedValueContract {
     /** The template for NamedValueContract update. */
     interface Update
         extends UpdateStages.WithTags,
-            UpdateStages.WithSecret,
             UpdateStages.WithDisplayName,
             UpdateStages.WithValue,
             UpdateStages.WithKeyVault,
+            UpdateStages.WithSecret,
             UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
@@ -236,18 +236,6 @@ public interface NamedValueContract {
              * @return the next definition stage.
              */
             Update withTags(List<String> tags);
-        }
-        /** The stage of the NamedValueContract update allowing to specify secret. */
-        interface WithSecret {
-            /**
-             * Specifies the secret property: Determines whether the value is a secret and should be encrypted or not.
-             * Default value is false..
-             *
-             * @param secret Determines whether the value is a secret and should be encrypted or not. Default value is
-             *     false.
-             * @return the next definition stage.
-             */
-            Update withSecret(Boolean secret);
         }
         /** The stage of the NamedValueContract update allowing to specify displayName. */
         interface WithDisplayName {
@@ -282,6 +270,18 @@ public interface NamedValueContract {
              * @return the next definition stage.
              */
             Update withKeyVault(KeyVaultContractCreateProperties keyVault);
+        }
+        /** The stage of the NamedValueContract update allowing to specify secret. */
+        interface WithSecret {
+            /**
+             * Specifies the secret property: Determines whether the value is a secret and should be encrypted or not.
+             * Default value is false..
+             *
+             * @param secret Determines whether the value is a secret and should be encrypted or not. Default value is
+             *     false.
+             * @return the next definition stage.
+             */
+            Update withSecret(Boolean secret);
         }
         /** The stage of the NamedValueContract update allowing to specify ifMatch. */
         interface WithIfMatch {

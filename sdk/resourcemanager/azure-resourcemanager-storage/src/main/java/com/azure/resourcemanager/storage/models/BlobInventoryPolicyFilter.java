@@ -10,7 +10,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An object that defines the blob inventory rule filter conditions. */
+/**
+ * An object that defines the blob inventory rule filter conditions. For 'Blob' definition.objectType all filter
+ * properties are applicable, 'blobTypes' is required and others are optional. For 'Container' definition.objectType
+ * only prefixMatch is applicable and is optional.
+ */
 @Fluent
 public final class BlobInventoryPolicyFilter {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobInventoryPolicyFilter.class);
@@ -23,19 +27,24 @@ public final class BlobInventoryPolicyFilter {
 
     /*
      * An array of predefined enum values. Valid values include blockBlob,
-     * appendBlob, pageBlob. Hns accounts does not support pageBlobs.
+     * appendBlob, pageBlob. Hns accounts does not support pageBlobs. This
+     * field is required when definition.objectType property is set to 'Blob'.
      */
-    @JsonProperty(value = "blobTypes", required = true)
+    @JsonProperty(value = "blobTypes")
     private List<String> blobTypes;
 
     /*
-     * Includes blob versions in blob inventory when value set to true.
+     * Includes blob versions in blob inventory when value is set to true. The
+     * definition.schemaFields values 'VersionId and IsCurrentVersion' are
+     * required if this property is set to true, else they must be excluded.
      */
     @JsonProperty(value = "includeBlobVersions")
     private Boolean includeBlobVersions;
 
     /*
-     * Includes blob snapshots in blob inventory when value set to true.
+     * Includes blob snapshots in blob inventory when value is set to true. The
+     * definition.schemaFields value 'Snapshot' is required if this property is
+     * set to true, else it must be excluded.
      */
     @JsonProperty(value = "includeSnapshots")
     private Boolean includeSnapshots;
@@ -62,7 +71,8 @@ public final class BlobInventoryPolicyFilter {
 
     /**
      * Get the blobTypes property: An array of predefined enum values. Valid values include blockBlob, appendBlob,
-     * pageBlob. Hns accounts does not support pageBlobs.
+     * pageBlob. Hns accounts does not support pageBlobs. This field is required when definition.objectType property is
+     * set to 'Blob'.
      *
      * @return the blobTypes value.
      */
@@ -72,7 +82,8 @@ public final class BlobInventoryPolicyFilter {
 
     /**
      * Set the blobTypes property: An array of predefined enum values. Valid values include blockBlob, appendBlob,
-     * pageBlob. Hns accounts does not support pageBlobs.
+     * pageBlob. Hns accounts does not support pageBlobs. This field is required when definition.objectType property is
+     * set to 'Blob'.
      *
      * @param blobTypes the blobTypes value to set.
      * @return the BlobInventoryPolicyFilter object itself.
@@ -83,7 +94,9 @@ public final class BlobInventoryPolicyFilter {
     }
 
     /**
-     * Get the includeBlobVersions property: Includes blob versions in blob inventory when value set to true.
+     * Get the includeBlobVersions property: Includes blob versions in blob inventory when value is set to true. The
+     * definition.schemaFields values 'VersionId and IsCurrentVersion' are required if this property is set to true,
+     * else they must be excluded.
      *
      * @return the includeBlobVersions value.
      */
@@ -92,7 +105,9 @@ public final class BlobInventoryPolicyFilter {
     }
 
     /**
-     * Set the includeBlobVersions property: Includes blob versions in blob inventory when value set to true.
+     * Set the includeBlobVersions property: Includes blob versions in blob inventory when value is set to true. The
+     * definition.schemaFields values 'VersionId and IsCurrentVersion' are required if this property is set to true,
+     * else they must be excluded.
      *
      * @param includeBlobVersions the includeBlobVersions value to set.
      * @return the BlobInventoryPolicyFilter object itself.
@@ -103,7 +118,8 @@ public final class BlobInventoryPolicyFilter {
     }
 
     /**
-     * Get the includeSnapshots property: Includes blob snapshots in blob inventory when value set to true.
+     * Get the includeSnapshots property: Includes blob snapshots in blob inventory when value is set to true. The
+     * definition.schemaFields value 'Snapshot' is required if this property is set to true, else it must be excluded.
      *
      * @return the includeSnapshots value.
      */
@@ -112,7 +128,8 @@ public final class BlobInventoryPolicyFilter {
     }
 
     /**
-     * Set the includeSnapshots property: Includes blob snapshots in blob inventory when value set to true.
+     * Set the includeSnapshots property: Includes blob snapshots in blob inventory when value is set to true. The
+     * definition.schemaFields value 'Snapshot' is required if this property is set to true, else it must be excluded.
      *
      * @param includeSnapshots the includeSnapshots value to set.
      * @return the BlobInventoryPolicyFilter object itself.
@@ -128,11 +145,5 @@ public final class BlobInventoryPolicyFilter {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (blobTypes() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property blobTypes in model BlobInventoryPolicyFilter"));
-        }
     }
 }

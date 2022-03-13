@@ -11,7 +11,8 @@ import com.azure.spring.integration.core.api.StartPosition;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import com.azure.spring.integration.eventhub.support.EventHubTestOperation;
 import com.azure.spring.servicebus.stream.binder.test.AzurePartitionBinderTests;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
@@ -22,14 +23,11 @@ import reactor.core.publisher.Mono;
 import static org.mockito.Mockito.when;
 
 /**
- * Test cases are defined in super class
- *
- * @author Warren Zhu
+ * Azure EventHubs Binder test
  */
 public class EventHubPartitionBinderTests extends
     AzurePartitionBinderTests<EventHubTestBinder, ExtendedConsumerProperties<EventHubConsumerProperties>,
         ExtendedProducerProperties<EventHubProducerProperties>> {
-    //TODO (Xiaobing Zhu): It is currently impossible to upgrade JUnit 4 to JUnit 5 due to the inheritance of Spring unit tests.
 
     @Mock
     EventHubClientFactory clientFactory;
@@ -42,7 +40,7 @@ public class EventHubPartitionBinderTests extends
 
     private EventHubTestBinder binder;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
         when(this.eventContext.updateCheckpointAsync()).thenReturn(Mono.empty());
@@ -72,7 +70,7 @@ public class EventHubPartitionBinderTests extends
     }
 
     @Override
-    protected ExtendedProducerProperties<EventHubProducerProperties> createProducerProperties() {
+    protected ExtendedProducerProperties<EventHubProducerProperties> createProducerProperties(TestInfo testInfo) {
         ExtendedProducerProperties<EventHubProducerProperties> properties =
             new ExtendedProducerProperties<>(new EventHubProducerProperties());
         properties.setHeaderMode(HeaderMode.embeddedHeaders);

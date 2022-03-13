@@ -25,7 +25,7 @@ public final class RegistryNameCheckRequest {
      * 'Microsoft.ContainerRegistry/registries'.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "Microsoft.ContainerRegistry/registries";
 
     /** Creates an instance of RegistryNameCheckRequest class. */
     public RegistryNameCheckRequest() {

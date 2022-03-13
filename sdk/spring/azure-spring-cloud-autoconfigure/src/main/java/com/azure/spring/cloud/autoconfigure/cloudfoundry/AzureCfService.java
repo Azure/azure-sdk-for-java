@@ -3,19 +3,19 @@
 
 package com.azure.spring.cloud.autoconfigure.cloudfoundry;
 
-import com.google.common.collect.ImmutableMap;
-
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 enum AzureCfService {
 
-    SERVICEBUS("servicebus", "azure-servicebus", ImmutableMap.of("connectionString", "connection-string")),
-    EVENTHUB("eventhub", "azure-eventhubs", ImmutableMap.of("connectionString", "connection-string")),
-    STORAGE("storage", "azure-storage", ImmutableMap.of("storageAccountName", "account", "accessKey", "access-key")),
+    SERVICEBUS("servicebus", "azure-servicebus", getImmutableMap("connectionString", "connection-string")),
+    EVENTHUB("eventhub", "azure-eventhubs", getImmutableMap("connectionString", "connection-string")),
+    STORAGE("storage", "azure-storage", getImmutableMap("storageAccountName", "account", "accessKey", "access-key")),
     STORAGE_EVENTHUB("eventhub", "azure-storage",
-        ImmutableMap.of("storageAccountName", "checkpoint-storage-account", "accessKey", "checkpoint-access-key")),
-    REDIS("spring.redis", "azure-rediscache", ImmutableMap.of("host", "host", "password", "password", "port", "port"),
+        getImmutableMap("storageAccountName", "checkpoint-storage-account", "accessKey", "checkpoint-access-key")),
+    REDIS("spring.redis", "azure-rediscache", getImmutableMap("host", "host", "password", "password", "port", "port"),
         false);
 
     private static final String SPRING_CLOUD_AZURE_PROPERTY_PREFIX = "spring.cloud.azure.";
@@ -73,5 +73,18 @@ enum AzureCfService {
         }
 
         return this.azureServiceName + ".";
+    }
+
+    private static Map<String, String> getImmutableMap(String... values) {
+        int pairs = values.length / 2;
+        Map<String, String> output = new HashMap<>(pairs);
+
+        for (int i = 0; i < pairs; i++) {
+            String key = values[2 * i];
+            String value = values[(2 * i) + 1];
+            output.put(key, value);
+        }
+
+        return Collections.unmodifiableMap(output);
     }
 }

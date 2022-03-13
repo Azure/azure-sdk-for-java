@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.imagebuilder.fluent.models.ImageTemplateInner;
 import java.util.List;
@@ -53,6 +54,13 @@ public interface ImageTemplate {
      * @return the identity value.
      */
     ImageTemplateIdentity identity();
+
+    /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the source property: Specifies the properties used to describe the source image.
@@ -340,8 +348,7 @@ public interface ImageTemplate {
     /**
      * Create artifacts from a existing image template.
      *
-     * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void run();
@@ -351,8 +358,7 @@ public interface ImageTemplate {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void run(Context context);
@@ -360,8 +366,7 @@ public interface ImageTemplate {
     /**
      * Cancel the long running image build based on the image template.
      *
-     * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void cancel();
@@ -371,8 +376,7 @@ public interface ImageTemplate {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void cancel(Context context);

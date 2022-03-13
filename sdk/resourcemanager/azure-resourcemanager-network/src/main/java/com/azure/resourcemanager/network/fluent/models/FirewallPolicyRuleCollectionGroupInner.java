@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.FirewallPolicyRuleCollection;
@@ -15,10 +14,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Rule Collection Group resource. */
-@JsonFlatten
 @Fluent
-public class FirewallPolicyRuleCollectionGroupInner extends SubResource {
+public final class FirewallPolicyRuleCollectionGroupInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallPolicyRuleCollectionGroupInner.class);
+
+    /*
+     * The properties of the firewall policy rule collection group.
+     */
+    @JsonProperty(value = "properties")
+    private FirewallPolicyRuleCollectionGroupProperties innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This
@@ -39,24 +43,14 @@ public class FirewallPolicyRuleCollectionGroupInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * Priority of the Firewall Policy Rule Collection Group resource.
+    /**
+     * Get the innerProperties property: The properties of the firewall policy rule collection group.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.priority")
-    private Integer priority;
-
-    /*
-     * Group of Firewall Policy rule collections.
-     */
-    @JsonProperty(value = "properties.ruleCollections")
-    private List<FirewallPolicyRuleCollection> ruleCollections;
-
-    /*
-     * The provisioning state of the firewall policy rule collection group
-     * resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private FirewallPolicyRuleCollectionGroupProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
@@ -98,13 +92,20 @@ public class FirewallPolicyRuleCollectionGroupInner extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public FirewallPolicyRuleCollectionGroupInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the priority property: Priority of the Firewall Policy Rule Collection Group resource.
      *
      * @return the priority value.
      */
     public Integer priority() {
-        return this.priority;
+        return this.innerProperties() == null ? null : this.innerProperties().priority();
     }
 
     /**
@@ -114,7 +115,10 @@ public class FirewallPolicyRuleCollectionGroupInner extends SubResource {
      * @return the FirewallPolicyRuleCollectionGroupInner object itself.
      */
     public FirewallPolicyRuleCollectionGroupInner withPriority(Integer priority) {
-        this.priority = priority;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FirewallPolicyRuleCollectionGroupProperties();
+        }
+        this.innerProperties().withPriority(priority);
         return this;
     }
 
@@ -124,7 +128,7 @@ public class FirewallPolicyRuleCollectionGroupInner extends SubResource {
      * @return the ruleCollections value.
      */
     public List<FirewallPolicyRuleCollection> ruleCollections() {
-        return this.ruleCollections;
+        return this.innerProperties() == null ? null : this.innerProperties().ruleCollections();
     }
 
     /**
@@ -135,7 +139,10 @@ public class FirewallPolicyRuleCollectionGroupInner extends SubResource {
      */
     public FirewallPolicyRuleCollectionGroupInner withRuleCollections(
         List<FirewallPolicyRuleCollection> ruleCollections) {
-        this.ruleCollections = ruleCollections;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FirewallPolicyRuleCollectionGroupProperties();
+        }
+        this.innerProperties().withRuleCollections(ruleCollections);
         return this;
     }
 
@@ -145,14 +152,7 @@ public class FirewallPolicyRuleCollectionGroupInner extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public FirewallPolicyRuleCollectionGroupInner withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -161,8 +161,8 @@ public class FirewallPolicyRuleCollectionGroupInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (ruleCollections() != null) {
-            ruleCollections().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

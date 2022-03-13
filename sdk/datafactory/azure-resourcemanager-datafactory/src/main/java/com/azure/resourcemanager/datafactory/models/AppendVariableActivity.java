@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.AppendVariableActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -16,61 +16,23 @@ import java.util.List;
 /** Append value for a Variable of type Array. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AppendVariable")
-@JsonFlatten
 @Fluent
-public class AppendVariableActivity extends ControlActivity {
+public final class AppendVariableActivity extends ControlActivity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AppendVariableActivity.class);
 
     /*
-     * Name of the variable whose value needs to be appended to.
+     * Append Variable activity properties.
      */
-    @JsonProperty(value = "typeProperties.variableName")
-    private String variableName;
-
-    /*
-     * Value to be appended. Could be a static value or Expression
-     */
-    @JsonProperty(value = "typeProperties.value")
-    private Object value;
+    @JsonProperty(value = "typeProperties", required = true)
+    private AppendVariableActivityTypeProperties innerTypeProperties = new AppendVariableActivityTypeProperties();
 
     /**
-     * Get the variableName property: Name of the variable whose value needs to be appended to.
+     * Get the innerTypeProperties property: Append Variable activity properties.
      *
-     * @return the variableName value.
+     * @return the innerTypeProperties value.
      */
-    public String variableName() {
-        return this.variableName;
-    }
-
-    /**
-     * Set the variableName property: Name of the variable whose value needs to be appended to.
-     *
-     * @param variableName the variableName value to set.
-     * @return the AppendVariableActivity object itself.
-     */
-    public AppendVariableActivity withVariableName(String variableName) {
-        this.variableName = variableName;
-        return this;
-    }
-
-    /**
-     * Get the value property: Value to be appended. Could be a static value or Expression.
-     *
-     * @return the value value.
-     */
-    public Object value() {
-        return this.value;
-    }
-
-    /**
-     * Set the value property: Value to be appended. Could be a static value or Expression.
-     *
-     * @param value the value value to set.
-     * @return the AppendVariableActivity object itself.
-     */
-    public AppendVariableActivity withValue(Object value) {
-        this.value = value;
-        return this;
+    private AppendVariableActivityTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -102,6 +64,52 @@ public class AppendVariableActivity extends ControlActivity {
     }
 
     /**
+     * Get the variableName property: Name of the variable whose value needs to be appended to.
+     *
+     * @return the variableName value.
+     */
+    public String variableName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().variableName();
+    }
+
+    /**
+     * Set the variableName property: Name of the variable whose value needs to be appended to.
+     *
+     * @param variableName the variableName value to set.
+     * @return the AppendVariableActivity object itself.
+     */
+    public AppendVariableActivity withVariableName(String variableName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AppendVariableActivityTypeProperties();
+        }
+        this.innerTypeProperties().withVariableName(variableName);
+        return this;
+    }
+
+    /**
+     * Get the value property: Value to be appended. Could be a static value or Expression.
+     *
+     * @return the value value.
+     */
+    public Object value() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().value();
+    }
+
+    /**
+     * Set the value property: Value to be appended. Could be a static value or Expression.
+     *
+     * @param value the value value to set.
+     * @return the AppendVariableActivity object itself.
+     */
+    public AppendVariableActivity withValue(Object value) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AppendVariableActivityTypeProperties();
+        }
+        this.innerTypeProperties().withValue(value);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -109,5 +117,13 @@ public class AppendVariableActivity extends ControlActivity {
     @Override
     public void validate() {
         super.validate();
+        if (innerTypeProperties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model AppendVariableActivity"));
+        } else {
+            innerTypeProperties().validate();
+        }
     }
 }

@@ -28,7 +28,8 @@ class ServiceAPITest extends APISpec {
     }
 
     def cleanup() {
-        Assume.assumeTrue("The test only runs in Live mode.", testMode.equalsIgnoreCase("RECORD"));
+        Assume.assumeTrue("The test only runs in Live mode.",
+            testMode.equalsIgnoreCase("RECORD") || testMode.equalsIgnoreCase("LIVE"));
         RetentionPolicy disabled = new RetentionPolicy().withEnabled(false)
         primaryServiceURL.setProperties(new StorageServiceProperties()
                 .withStaticWebsite(new StaticWebsite().withEnabled(false))

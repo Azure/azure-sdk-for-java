@@ -21,13 +21,13 @@ public final class CallRecordingStateChangeEventInternal {
     /*
      * The state of the recording
      */
-    @JsonProperty(value = "state")
+    @JsonProperty(value = "state", required = true)
     private CallRecordingState state;
 
     /*
      * The time of the recording started
      */
-    @JsonProperty(value = "startDateTime")
+    @JsonProperty(value = "startDateTime", required = true)
     private OffsetDateTime startDateTime;
 
     /*

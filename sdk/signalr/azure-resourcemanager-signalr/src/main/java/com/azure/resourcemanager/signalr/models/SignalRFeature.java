@@ -7,10 +7,11 @@ package com.azure.resourcemanager.signalr.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Feature of a SignalR resource, which controls the SignalR runtime behavior. */
+/** Feature of a resource, which controls the runtime behavior. */
 @Fluent
 public final class SignalRFeature {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SignalRFeature.class);
@@ -47,6 +48,7 @@ public final class SignalRFeature {
      * Optional properties related to this feature.
      */
     @JsonProperty(value = "properties")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> properties;
 
     /**

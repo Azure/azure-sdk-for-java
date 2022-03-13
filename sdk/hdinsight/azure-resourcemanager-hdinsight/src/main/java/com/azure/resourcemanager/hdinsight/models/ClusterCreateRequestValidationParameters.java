@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
 
 /** The cluster create request specification. */
@@ -130,6 +131,13 @@ public final class ClusterCreateRequestValidationParameters extends ClusterCreat
     @Override
     public ClusterCreateRequestValidationParameters withTags(Map<String, String> tags) {
         super.withTags(tags);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ClusterCreateRequestValidationParameters withZones(List<String> zones) {
+        super.withZones(zones);
         return this;
     }
 

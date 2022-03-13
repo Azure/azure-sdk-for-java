@@ -47,7 +47,7 @@ public final class AzureLogAnalyticsDataFeedSource extends DataFeedSource {
     /*
      * The authentication type to access the data source.
      */
-    private final DatasourceAuthenticationType authType;
+    private final DataSourceAuthenticationType authType;
 
     static {
         AzureLogAnalyticsDataFeedSourceAccessor.setAccessor(
@@ -65,7 +65,7 @@ public final class AzureLogAnalyticsDataFeedSource extends DataFeedSource {
                                            final String workspaceId,
                                            final String query,
                                            final String credentialId,
-                                           final DatasourceAuthenticationType authType) {
+                                           final DataSourceAuthenticationType authType) {
         this.tenantId = tenantId;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
@@ -99,12 +99,12 @@ public final class AzureLogAnalyticsDataFeedSource extends DataFeedSource {
             workspaceId,
             query,
             null,
-            DatasourceAuthenticationType.BASIC);
+            DataSourceAuthenticationType.BASIC);
     }
 
     /**
      * Create a AzureLogAnalyticsDataFeedSource with the {@code credentialId} identifying
-     * a credential entity of type {@link DatasourceServicePrincipal}, the entity
+     * a credential entity of type {@link DataSourceServicePrincipal}, the entity
      * contains details of the KeyVault holding the Service Principal to access the Data Lake storage.
      *
      * @param workspaceId the query script.
@@ -122,12 +122,12 @@ public final class AzureLogAnalyticsDataFeedSource extends DataFeedSource {
             workspaceId,
             query,
             credentialId,
-            DatasourceAuthenticationType.SERVICE_PRINCIPAL);
+            DataSourceAuthenticationType.SERVICE_PRINCIPAL);
     }
 
     /**
      * Create a AzureLogAnalyticsDataFeedSource with the {@code credentialId} identifying
-     * a credential entity of type {@link DatasourceServicePrincipalInKeyVault}, the entity
+     * a credential entity of type {@link DataSourceServicePrincipalInKeyVault}, the entity
      * contains details of the KeyVault holding the Service Principal to access the Data Lake storage.
      *
      * @param workspaceId the query script.
@@ -146,7 +146,7 @@ public final class AzureLogAnalyticsDataFeedSource extends DataFeedSource {
             workspaceId,
             query,
             credentialId,
-            DatasourceAuthenticationType.SERVICE_PRINCIPAL_IN_KV);
+            DataSourceAuthenticationType.SERVICE_PRINCIPAL_IN_KV);
     }
 
     /**
@@ -186,7 +186,7 @@ public final class AzureLogAnalyticsDataFeedSource extends DataFeedSource {
     }
 
     /**
-     * Gets the id of the {@link DatasourceCredentialEntity credential resource} to authenticate the data source.
+     * Gets the id of the {@link DataSourceCredentialEntity credential resource} to authenticate the data source.
      *
      * @return The credential resource id.
      */
@@ -199,7 +199,7 @@ public final class AzureLogAnalyticsDataFeedSource extends DataFeedSource {
      *
      * @return The authentication type.
      */
-    public DatasourceAuthenticationType getAuthenticationType() {
+    public DataSourceAuthenticationType getAuthenticationType() {
         return this.authType;
     }
 

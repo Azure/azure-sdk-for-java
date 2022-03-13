@@ -3,15 +3,15 @@
 
 package com.azure.storage.blob
 
-import com.azure.core.http.rest.PagedIterable
-import com.azure.core.http.rest.PagedResponse
+
 import com.azure.core.http.rest.Response
+import com.azure.core.util.Context
+import com.azure.core.util.paging.ContinuablePage
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.AppendBlobItem
 import com.azure.storage.blob.models.BlobAccessPolicy
 import com.azure.storage.blob.models.BlobErrorCode
-import com.azure.storage.blob.models.BlobItem
 import com.azure.storage.blob.models.BlobListDetails
 import com.azure.storage.blob.models.BlobProperties
 import com.azure.storage.blob.models.BlobRequestConditions
@@ -27,18 +27,16 @@ import com.azure.storage.blob.models.ObjectReplicationPolicy
 import com.azure.storage.blob.models.ObjectReplicationStatus
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.RehydratePriority
+import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.options.BlobSetAccessTierOptions
+import com.azure.storage.blob.options.FindBlobsOptions
 import com.azure.storage.blob.options.PageBlobCreateOptions
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
-import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.Utility
-import com.azure.storage.common.implementation.StorageImplUtils
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import reactor.test.StepVerifier
-import spock.lang.Requires
-import spock.lang.ResourceLock
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -47,6 +45,14 @@ import java.time.ZoneId
 import java.util.stream.Collectors
 
 class ContainerAPITest extends APISpec {
+
+    String tagKey
+    String tagValue
+
+    def setup() {
+        tagKey = namer.getRandomName(20)
+        tagValue = namer.getRandomName(20)
+    }
 
     def "Create all null"() {
         setup:
@@ -732,7 +738,7 @@ class ContainerAPITest extends APISpec {
 
         def tagsBlob = cc.getBlobClient(tagsName).getPageBlobClient()
         def tags = new HashMap<String, String>()
-        tags.put("tag", "value")
+        tags.put(tagKey, tagValue)
         tagsBlob.createWithResponse(new PageBlobCreateOptions(512).setTags(tags), null, null)
 
         def uncommittedBlob = cc.getBlobClient(uncommittedName).getBlockBlobClient()
@@ -819,7 +825,7 @@ class ContainerAPITest extends APISpec {
         blobs.get(1).getProperties().getCopyCompletionTime() == null
         blobs.get(2).getName() == metadataName
         blobs.get(2).getMetadata() == null
-        blobs.get(3).getTags().get("tag") == "value"
+        blobs.get(3).getTags().get(tagKey) == tagValue
         blobs.get(3).getProperties().getTagCount() == 1
         blobs.size() == 4 // Normal, copy, metadata, tags
     }
@@ -919,6 +925,34 @@ class ContainerAPITest extends APISpec {
         StepVerifier.create(ccAsync.listBlobs(options).byPage(PAGE_SIZE).limitRequest(1))
             .assertNext({ assert it.getValue().size() == PAGE_SIZE })
             .verifyComplete()
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
+    def "list blobs flat options deleted with versions"() {
+        setup:
+        def versionedCC = versionedBlobServiceClient.getBlobContainerClient(getContainerName())
+        versionedCC.create()
+        def blobName = generateBlobName()
+        def blob = versionedCC.getBlobClient(blobName).getAppendBlobClient()
+        blob.create()
+        def metadata = new HashMap<String, String>()
+        metadata.put("foo", "bar")
+        blob.setMetadata(metadata)
+        blob.delete()
+        def options = new ListBlobsOptions().setPrefix(blobName)
+            .setDetails(new BlobListDetails().setRetrieveDeletedBlobsWithVersions(true))
+
+        when:
+        def blobs = versionedCC.listBlobs(options, null).iterator()
+
+        then:
+        def b = blobs.next()
+        !blobs.hasNext()
+        b.getName() == blobName
+        b.hasVersionsOnly()
+
+        cleanup:
+        versionedCC.delete()
     }
 
     def "List blobs prefix with comma"() {
@@ -1037,6 +1071,19 @@ class ContainerAPITest extends APISpec {
         RehydratePriority.HIGH     || _
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_02_12")
+    def "List blobs flat invalid xml"() {
+        setup:
+        def blobName = "dir1/dir2/file\uFFFE.blob";
+        cc.getBlobClient(blobName).getAppendBlobClient().create()
+
+        when:
+        def blobItem = cc.listBlobs().iterator().next()
+
+        then:
+        blobItem.getName() == blobName
+    }
+
     def "List blobs flat error"() {
         setup:
         cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
@@ -1090,6 +1137,7 @@ class ContainerAPITest extends APISpec {
     This test requires two accounts that are configured in a very specific way. It is not feasible to setup that
     relationship programmatically, so we have recorded a successful interaction and only test recordings.
     */
+
     @PlaybackOnly
     def "List blobs flat ORS"() {
         setup:
@@ -1224,7 +1272,7 @@ class ContainerAPITest extends APISpec {
         blobs.get(1).getProperties().getCopyCompletionTime() == null
         blobs.get(2).getName() == metadataName
         blobs.get(2).getMetadata() == null
-        blobs.get(3).getTags().get("tag") == "value"
+        blobs.get(3).getTags().get(tagKey) == tagValue
         blobs.get(3).getProperties().getTagCount() == 1
         blobs.size() == 4 // Normal, copy, metadata, tags
     }
@@ -1303,6 +1351,34 @@ class ContainerAPITest extends APISpec {
         }
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
+    def "list blobs hier options deleted with versions"() {
+        setup:
+        def versionedCC = versionedBlobServiceClient.getBlobContainerClient(getContainerName())
+        versionedCC.create()
+        def blobName = generateBlobName()
+        def blob = versionedCC.getBlobClient(blobName).getAppendBlobClient()
+        blob.create()
+        def metadata = new HashMap<String, String>()
+        metadata.put("foo", "bar")
+        blob.setMetadata(metadata)
+        blob.delete()
+        def options = new ListBlobsOptions().setPrefix(blobName)
+            .setDetails(new BlobListDetails().setRetrieveDeletedBlobsWithVersions(true))
+
+        when:
+        def blobs = versionedCC.listBlobsByHierarchy("", options, null).iterator()
+
+        then:
+        def b = blobs.next()
+        !blobs.hasNext()
+        b.getName() == blobName
+        b.hasVersionsOnly()
+
+        cleanup:
+        versionedCC.delete()
+    }
+
     @Unroll
     def "List blobs hier options fail"() {
         when:
@@ -1378,6 +1454,7 @@ class ContainerAPITest extends APISpec {
     This test requires two accounts that are configured in a very specific way. It is not feasible to setup that
     relationship programmatically, so we have recorded a successful interaction and only test recordings.
     */
+
     @PlaybackOnly
     def "List blobs hier ORS"() {
         setup:
@@ -1488,6 +1565,30 @@ class ContainerAPITest extends APISpec {
         blob.getProperties().isSealed()
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_02_12")
+    def "List blobs hier invalid xml"() {
+        setup:
+        def blobName = 'dir1/dir2/file\uFFFE.blob';
+        cc.getBlobClient(blobName).getAppendBlobClient().create()
+
+        when:
+        def blobItem
+        if (!delimiter) {
+            blobItem = cc.listBlobsByHierarchy("", null, null).iterator().next()
+        } else {
+            blobItem = cc.listBlobsByHierarchy(".b", null, null).iterator().next()
+        }
+
+        then:
+        blobItem.getName() == (delimiter ? "dir1/dir2/file\uFFFE.b" : blobName)
+        blobItem.isPrefix() == (delimiter ? true : null)
+
+        where:
+        delimiter | _
+        false     | _
+        true      | _
+    }
+
     def "List blobs hier error"() {
         setup:
         cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
@@ -1497,6 +1598,137 @@ class ContainerAPITest extends APISpec {
 
         then:
         thrown(BlobStorageException)
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
+    def "Find blobs min"() {
+        when:
+        cc.findBlobsByTags("\"key\"='value'").iterator().hasNext()
+
+        then:
+        notThrown(BlobStorageException)
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
+    def "Find blobs query"() {
+        setup:
+        def blobClient = cc.getBlobClient(generateBlobName())
+        blobClient.uploadWithResponse(new BlobParallelUploadOptions(data.defaultInputStream, data.defaultDataSize)
+            .setTags(Collections.singletonMap("key", "value")), null, null)
+        blobClient = cc.getBlobClient(generateBlobName())
+        blobClient.uploadWithResponse(new BlobParallelUploadOptions(data.defaultInputStream, data.defaultDataSize)
+            .setTags(Collections.singletonMap("bar", "foo")), null, null)
+        blobClient = cc.getBlobClient(generateBlobName())
+        blobClient.upload(data.defaultInputStream, data.defaultDataSize)
+
+        sleepIfRecord(10 * 1000) // To allow tags to index
+
+        when:
+        def results = cc.findBlobsByTags(String.format("\"bar\"='foo'",
+            cc.getBlobContainerName()))
+
+        then:
+        results.size() == 1
+        def tags = results.first().getTags()
+        tags.size() == 1
+        tags.get("bar") == "foo"
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
+    def "Find blobs marker"() {
+        setup:
+        def tags = Collections.singletonMap(tagKey, tagValue)
+        for (int i = 0; i < 10; i++) {
+            cc.getBlobClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(data.defaultInputStream, data.defaultDataSize).setTags(tags), null, null)
+        }
+
+        sleepIfRecord(10 * 1000) // To allow tags to index
+
+        def firstPage = cc.findBlobsByTags(new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue))
+            .setMaxResultsPerPage(5), null, Context.NONE)
+            .iterableByPage().iterator().next()
+        def marker = firstPage.getContinuationToken()
+        def firstBlobName = firstPage.getValue().first().getName()
+
+        def secondPage = cc.findBlobsByTags(
+            new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(5), null, Context.NONE)
+            .iterableByPage(marker).iterator().next()
+
+        expect:
+        // Assert that the second segment is indeed after the first alphabetically
+        firstBlobName < secondPage.getValue().first().getName()
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
+    def "Find blobs maxResults"() {
+        setup:
+        def NUM_BLOBS = 7
+        def PAGE_RESULTS = 3
+        def tags = Collections.singletonMap(tagKey, tagValue)
+
+        for (i in (1..NUM_BLOBS)) {
+            cc.getBlobClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(data.defaultInputStream, data.defaultDataSize).setTags(tags), null, null)
+        }
+
+        expect:
+        for (ContinuablePage page :
+            cc.findBlobsByTags(
+                new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(PAGE_RESULTS), null, Context.NONE)
+                .iterableByPage()) {
+            assert page.iterator().size() <= PAGE_RESULTS
+        }
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
+    def "Find blobs maxResults by page"() {
+        setup:
+        def NUM_BLOBS = 7
+        def PAGE_RESULTS = 3
+        def tags = Collections.singletonMap(tagKey, tagValue)
+
+        for (i in (1..NUM_BLOBS)) {
+            cc.getBlobClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(data.defaultInputStream, data.defaultDataSize).setTags(tags), null, null)
+        }
+
+        expect:
+        for (ContinuablePage page :
+            cc.findBlobsByTags(
+                new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)), null, Context.NONE)
+                .iterableByPage(PAGE_RESULTS)) {
+            assert page.iterator().size() <= PAGE_RESULTS
+        }
+    }
+
+    def "Find blobs error"() {
+        when:
+        cc.findBlobsByTags("garbageTag").streamByPage().count()
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
+    def "Find blobs with timeout still backed by PagedFlux"() {
+        setup:
+        def NUM_BLOBS = 5
+        def PAGE_RESULTS = 3
+        def tags = Collections.singletonMap(tagKey, tagValue)
+
+        for (i in (1..NUM_BLOBS)) {
+            cc.getBlobClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(data.defaultInputStream, data.defaultDataSize).setTags(tags), null, null)
+        }
+
+        when: "Consume results by page"
+        cc.findBlobsByTags(new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue))
+            .setMaxResultsPerPage(PAGE_RESULTS), Duration.ofSeconds(10), Context.NONE)
+            .streamByPage().count()
+
+        then: "Still have paging functionality"
+        notThrown(Exception)
     }
 
     @Unroll
@@ -1525,7 +1757,7 @@ class ContainerAPITest extends APISpec {
 
         where:
         name                  | _
-        "中文"                | _
+        "中文"                  | _
         "az[]"                | _
         "hello world"         | _
         "hello/world"         | _
@@ -1610,8 +1842,8 @@ class ContainerAPITest extends APISpec {
         }
 
         AppendBlobClient bc = instrument(new BlobClientBuilder()
-            .credential(env.primaryAccount.credential)
-            .endpoint(env.primaryAccount.blobEndpoint)
+            .credential(environment.primaryAccount.credential)
+            .endpoint(environment.primaryAccount.blobEndpoint)
             .blobName("rootblob"))
             .buildClient().getAppendBlobClient()
 
@@ -1636,8 +1868,8 @@ class ContainerAPITest extends APISpec {
 
         when:
         cc = instrument(new BlobContainerClientBuilder()
-            .credential(env.primaryAccount.credential)
-            .endpoint(env.primaryAccount.blobEndpoint)
+            .credential(environment.primaryAccount.credential)
+            .endpoint(environment.primaryAccount.blobEndpoint)
             .containerName(null))
             .buildClient()
 
@@ -1740,7 +1972,7 @@ class ContainerAPITest extends APISpec {
     def "Per call policy"() {
         setup:
         def cc = getContainerClientBuilder(cc.getBlobContainerUrl())
-            .credential(env.primaryAccount.credential)
+            .credential(environment.primaryAccount.credential)
             .addPolicy(getPerCallVersionPolicy())
             .buildClient()
 

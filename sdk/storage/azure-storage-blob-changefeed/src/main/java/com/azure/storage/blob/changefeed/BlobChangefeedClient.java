@@ -42,7 +42,12 @@ public class BlobChangefeedClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.changefeed.BlobChangefeedClient.getEvents}
+     * <!-- src_embed com.azure.storage.blob.changefeed.BlobChangefeedClient.getEvents -->
+     * <pre>
+     * client.getEvents&#40;&#41;.forEach&#40;event -&gt;
+     *     System.out.printf&#40;&quot;Topic: %s, Subject: %s%n&quot;, event.getTopic&#40;&#41;, event.getSubject&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.changefeed.BlobChangefeedClient.getEvents -->
      *
      * @return The changefeed events.
      */
@@ -64,7 +69,15 @@ public class BlobChangefeedClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.changefeed.BlobChangefeedClient.getEvents#OffsetDateTime-OffsetDateTime}
+     * <!-- src_embed com.azure.storage.blob.changefeed.BlobChangefeedClient.getEvents#OffsetDateTime-OffsetDateTime -->
+     * <pre>
+     * OffsetDateTime startTime = OffsetDateTime.MIN;
+     * OffsetDateTime endTime = OffsetDateTime.now&#40;&#41;;
+     *
+     * client.getEvents&#40;startTime, endTime&#41;.forEach&#40;event -&gt;
+     *     System.out.printf&#40;&quot;Topic: %s, Subject: %s%n&quot;, event.getTopic&#40;&#41;, event.getSubject&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.changefeed.BlobChangefeedClient.getEvents#OffsetDateTime-OffsetDateTime -->
      *
      * @param startTime Filters the results to return events approximately after the start time. Note: A few events
      * belonging to the previous hour can also be returned. A few events belonging to this hour can be missing; to
@@ -92,7 +105,15 @@ public class BlobChangefeedClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.changefeed.BlobChangefeedClient.getEvents#OffsetDateTime-OffsetDateTime-Context}
+     * <!-- src_embed com.azure.storage.blob.changefeed.BlobChangefeedClient.getEvents#OffsetDateTime-OffsetDateTime-Context -->
+     * <pre>
+     * OffsetDateTime startTime = OffsetDateTime.MIN;
+     * OffsetDateTime endTime = OffsetDateTime.now&#40;&#41;;
+     *
+     * client.getEvents&#40;startTime, endTime, new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;&#41;.forEach&#40;event -&gt;
+     *     System.out.printf&#40;&quot;Topic: %s, Subject: %s%n&quot;, event.getTopic&#40;&#41;, event.getSubject&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.changefeed.BlobChangefeedClient.getEvents#OffsetDateTime-OffsetDateTime-Context -->
      *
      * @param startTime Filters the results to return events approximately after the start time. Note: A few events
      * belonging to the previous hour can also be returned. A few events belonging to this hour can be missing; to
@@ -121,7 +142,14 @@ public class BlobChangefeedClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.changefeed.BlobChangefeedClient.getEvents#String}
+     * <!-- src_embed com.azure.storage.blob.changefeed.BlobChangefeedClient.getEvents#String -->
+     * <pre>
+     * String cursor = &quot;cursor&quot;;
+     *
+     * client.getEvents&#40;cursor&#41;.forEach&#40;event -&gt;
+     *     System.out.printf&#40;&quot;Topic: %s, Subject: %s%n&quot;, event.getTopic&#40;&#41;, event.getSubject&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.changefeed.BlobChangefeedClient.getEvents#String -->
      *
      * @param cursor Identifies the portion of the events to be returned with the next get operation. Events that
      * take place after the event identified by the cursor will be returned.
@@ -145,7 +173,14 @@ public class BlobChangefeedClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.changefeed.BlobChangefeedClient.getEvents#String-Context}
+     * <!-- src_embed com.azure.storage.blob.changefeed.BlobChangefeedClient.getEvents#String-Context -->
+     * <pre>
+     * String cursor = &quot;cursor&quot;;
+     *
+     * client.getEvents&#40;cursor, new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;&#41;.forEach&#40;event -&gt;
+     *     System.out.printf&#40;&quot;Topic: %s, Subject: %s%n&quot;, event.getTopic&#40;&#41;, event.getSubject&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.changefeed.BlobChangefeedClient.getEvents#String-Context -->
      *
      * @param cursor Identifies the portion of the events to be returned with the next get operation. Events that
      * take place after the event identified by the cursor will be returned.

@@ -4,8 +4,7 @@
 
 package com.azure.resourcemanager.synapse.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.ReplicationRole;
@@ -15,9 +14,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Represents a Sql pool replication link. */
-@JsonFlatten
-@Immutable
-public class ReplicationLinkInner extends ProxyResource {
+@Fluent
+public final class ReplicationLinkInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ReplicationLinkInner.class);
 
     /*
@@ -27,65 +25,10 @@ public class ReplicationLinkInner extends ProxyResource {
     private String location;
 
     /*
-     * Legacy value indicating whether termination is allowed.  Currently
-     * always returns true.
+     * The properties representing the resource.
      */
-    @JsonProperty(value = "properties.isTerminationAllowed", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean isTerminationAllowed;
-
-    /*
-     * Replication mode of this replication link.
-     */
-    @JsonProperty(value = "properties.replicationMode", access = JsonProperty.Access.WRITE_ONLY)
-    private String replicationMode;
-
-    /*
-     * The name of the workspace hosting the partner Sql pool.
-     */
-    @JsonProperty(value = "properties.partnerServer", access = JsonProperty.Access.WRITE_ONLY)
-    private String partnerServer;
-
-    /*
-     * The name of the partner Sql pool.
-     */
-    @JsonProperty(value = "properties.partnerDatabase", access = JsonProperty.Access.WRITE_ONLY)
-    private String partnerDatabase;
-
-    /*
-     * The Azure Region of the partner Sql pool.
-     */
-    @JsonProperty(value = "properties.partnerLocation", access = JsonProperty.Access.WRITE_ONLY)
-    private String partnerLocation;
-
-    /*
-     * The role of the Sql pool in the replication link.
-     */
-    @JsonProperty(value = "properties.role", access = JsonProperty.Access.WRITE_ONLY)
-    private ReplicationRole role;
-
-    /*
-     * The role of the partner Sql pool in the replication link.
-     */
-    @JsonProperty(value = "properties.partnerRole", access = JsonProperty.Access.WRITE_ONLY)
-    private ReplicationRole partnerRole;
-
-    /*
-     * The start time for the replication link.
-     */
-    @JsonProperty(value = "properties.startTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime startTime;
-
-    /*
-     * The percentage of seeding complete for the replication link.
-     */
-    @JsonProperty(value = "properties.percentComplete", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer percentComplete;
-
-    /*
-     * The replication state for the replication link.
-     */
-    @JsonProperty(value = "properties.replicationState", access = JsonProperty.Access.WRITE_ONLY)
-    private ReplicationState replicationState;
+    @JsonProperty(value = "properties")
+    private ReplicationLinkProperties innerProperties;
 
     /**
      * Get the location property: Location of the workspace that contains this firewall rule.
@@ -97,13 +40,22 @@ public class ReplicationLinkInner extends ProxyResource {
     }
 
     /**
+     * Get the innerProperties property: The properties representing the resource.
+     *
+     * @return the innerProperties value.
+     */
+    private ReplicationLinkProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the isTerminationAllowed property: Legacy value indicating whether termination is allowed. Currently always
      * returns true.
      *
      * @return the isTerminationAllowed value.
      */
     public Boolean isTerminationAllowed() {
-        return this.isTerminationAllowed;
+        return this.innerProperties() == null ? null : this.innerProperties().isTerminationAllowed();
     }
 
     /**
@@ -112,7 +64,7 @@ public class ReplicationLinkInner extends ProxyResource {
      * @return the replicationMode value.
      */
     public String replicationMode() {
-        return this.replicationMode;
+        return this.innerProperties() == null ? null : this.innerProperties().replicationMode();
     }
 
     /**
@@ -121,7 +73,7 @@ public class ReplicationLinkInner extends ProxyResource {
      * @return the partnerServer value.
      */
     public String partnerServer() {
-        return this.partnerServer;
+        return this.innerProperties() == null ? null : this.innerProperties().partnerServer();
     }
 
     /**
@@ -130,7 +82,7 @@ public class ReplicationLinkInner extends ProxyResource {
      * @return the partnerDatabase value.
      */
     public String partnerDatabase() {
-        return this.partnerDatabase;
+        return this.innerProperties() == null ? null : this.innerProperties().partnerDatabase();
     }
 
     /**
@@ -139,7 +91,7 @@ public class ReplicationLinkInner extends ProxyResource {
      * @return the partnerLocation value.
      */
     public String partnerLocation() {
-        return this.partnerLocation;
+        return this.innerProperties() == null ? null : this.innerProperties().partnerLocation();
     }
 
     /**
@@ -148,7 +100,7 @@ public class ReplicationLinkInner extends ProxyResource {
      * @return the role value.
      */
     public ReplicationRole role() {
-        return this.role;
+        return this.innerProperties() == null ? null : this.innerProperties().role();
     }
 
     /**
@@ -157,7 +109,7 @@ public class ReplicationLinkInner extends ProxyResource {
      * @return the partnerRole value.
      */
     public ReplicationRole partnerRole() {
-        return this.partnerRole;
+        return this.innerProperties() == null ? null : this.innerProperties().partnerRole();
     }
 
     /**
@@ -166,7 +118,7 @@ public class ReplicationLinkInner extends ProxyResource {
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
-        return this.startTime;
+        return this.innerProperties() == null ? null : this.innerProperties().startTime();
     }
 
     /**
@@ -175,7 +127,7 @@ public class ReplicationLinkInner extends ProxyResource {
      * @return the percentComplete value.
      */
     public Integer percentComplete() {
-        return this.percentComplete;
+        return this.innerProperties() == null ? null : this.innerProperties().percentComplete();
     }
 
     /**
@@ -184,7 +136,7 @@ public class ReplicationLinkInner extends ProxyResource {
      * @return the replicationState value.
      */
     public ReplicationState replicationState() {
-        return this.replicationState;
+        return this.innerProperties() == null ? null : this.innerProperties().replicationState();
     }
 
     /**
@@ -193,5 +145,8 @@ public class ReplicationLinkInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

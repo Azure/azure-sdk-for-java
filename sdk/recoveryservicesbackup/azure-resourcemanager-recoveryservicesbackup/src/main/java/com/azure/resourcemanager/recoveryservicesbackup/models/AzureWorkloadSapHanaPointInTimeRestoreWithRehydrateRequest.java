@@ -92,6 +92,14 @@ public final class AzureWorkloadSapHanaPointInTimeRestoreWithRehydrateRequest
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureWorkloadSapHanaPointInTimeRestoreWithRehydrateRequest withTargetVirtualMachineId(
+        String targetVirtualMachineId) {
+        super.withTargetVirtualMachineId(targetVirtualMachineId);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

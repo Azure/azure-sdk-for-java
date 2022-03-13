@@ -1,6 +1,69 @@
 # Release History
 
-## 2.6.0-beta.1 (Unreleased)
+## 2.13.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.12.0 (2022-02-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources
+
+## 2.11.0 (2022-01-17)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources
+
+## 2.10.0 (2021-11-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources
+
+## 2.9.0 (2021-10-21)
+
+### Features Added
+
+- Added support for `validateMoveResources` in `GenericResources`.
+
+## 2.8.0 (2021-09-15)
+
+### Dependency Updates
+
+- Updated `api-version` of policy to `2021-06-01`.
+
+### Other Changes
+
+- Updated to use `PATCH` HTTP method for the update flow of `GenericResource`. For tagging resource, it is advised to use `TagOperations` instead.
+
+## 2.7.0 (2021-08-12)
+
+### Dependency Updates
+
+- Updated `api-version` of features to `2021-07-01`.
+
+### Features Added
+
+- Added overload of `create(Context)` for `Creatable`.
+- Added overload of `apply(Context)` for `Appliable`.
+- Added overload of `beginCreate(Context)` for the definition flow of `Deployment`.
+- Added support for `resourceProviderName` and `featureName` in `Feature`.
+
+## 2.6.0 (2021-06-18)
 
 - Added support for Challenge Based Authentication in `AuthenticationPolicy`.
 - Added support for `parameters` in `PolicyDefinition` and `PolicyAssignment`.

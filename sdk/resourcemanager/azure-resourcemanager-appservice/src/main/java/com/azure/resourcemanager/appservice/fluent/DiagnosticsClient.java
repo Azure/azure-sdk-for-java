@@ -11,7 +11,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.fluent.models.AnalysisDefinitionInner;
-import com.azure.resourcemanager.appservice.fluent.models.DetectorDefinitionInner;
+import com.azure.resourcemanager.appservice.fluent.models.DetectorDefinitionResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.DetectorResponseInner;
 import com.azure.resourcemanager.appservice.fluent.models.DiagnosticAnalysisInner;
 import com.azure.resourcemanager.appservice.fluent.models.DiagnosticCategoryInner;
@@ -30,7 +30,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of detector responses.
+     * @return collection of detector responses as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DetectorResponseInner> listHostingEnvironmentDetectorResponsesAsync(
@@ -45,7 +45,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of detector responses.
+     * @return collection of detector responses as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DetectorResponseInner> listHostingEnvironmentDetectorResponses(String resourceGroupName, String name);
@@ -60,7 +60,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of detector responses.
+     * @return collection of detector responses as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DetectorResponseInner> listHostingEnvironmentDetectorResponses(
@@ -79,7 +79,8 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Response from Detector.
+     * @return class representing Response from Detector along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DetectorResponseInner>> getHostingEnvironmentDetectorResponseWithResponseAsync(
@@ -103,7 +104,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Response from Detector.
+     * @return class representing Response from Detector on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DetectorResponseInner> getHostingEnvironmentDetectorResponseAsync(
@@ -124,7 +125,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Response from Detector.
+     * @return class representing Response from Detector on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DetectorResponseInner> getHostingEnvironmentDetectorResponseAsync(
@@ -160,7 +161,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Response from Detector.
+     * @return class representing Response from Detector along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DetectorResponseInner> getHostingEnvironmentDetectorResponseWithResponse(
@@ -181,7 +182,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of detector responses.
+     * @return collection of detector responses as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DetectorResponseInner> listSiteDetectorResponsesAsync(String resourceGroupName, String siteName);
@@ -195,7 +196,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of detector responses.
+     * @return collection of detector responses as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DetectorResponseInner> listSiteDetectorResponses(String resourceGroupName, String siteName);
@@ -210,7 +211,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of detector responses.
+     * @return collection of detector responses as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DetectorResponseInner> listSiteDetectorResponses(
@@ -229,7 +230,8 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Response from Detector.
+     * @return class representing Response from Detector along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DetectorResponseInner>> getSiteDetectorResponseWithResponseAsync(
@@ -253,7 +255,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Response from Detector.
+     * @return class representing Response from Detector on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DetectorResponseInner> getSiteDetectorResponseAsync(
@@ -274,7 +276,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Response from Detector.
+     * @return class representing Response from Detector on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DetectorResponseInner> getSiteDetectorResponseAsync(
@@ -309,7 +311,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Response from Detector.
+     * @return class representing Response from Detector along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DetectorResponseInner> getSiteDetectorResponseWithResponse(
@@ -330,7 +332,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Categories.
+     * @return collection of Diagnostic Categories as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DiagnosticCategoryInner> listSiteDiagnosticCategoriesAsync(String resourceGroupName, String siteName);
@@ -344,7 +346,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Categories.
+     * @return collection of Diagnostic Categories as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DiagnosticCategoryInner> listSiteDiagnosticCategories(String resourceGroupName, String siteName);
@@ -359,7 +361,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Categories.
+     * @return collection of Diagnostic Categories as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DiagnosticCategoryInner> listSiteDiagnosticCategories(
@@ -375,7 +377,8 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing detector definition.
+     * @return class representing detector definition along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DiagnosticCategoryInner>> getSiteDiagnosticCategoryWithResponseAsync(
@@ -391,7 +394,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing detector definition.
+     * @return class representing detector definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DiagnosticCategoryInner> getSiteDiagnosticCategoryAsync(
@@ -424,7 +427,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing detector definition.
+     * @return class representing detector definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DiagnosticCategoryInner> getSiteDiagnosticCategoryWithResponse(
@@ -440,7 +443,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Analyses.
+     * @return collection of Diagnostic Analyses as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<AnalysisDefinitionInner> listSiteAnalysesAsync(
@@ -456,7 +459,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Analyses.
+     * @return collection of Diagnostic Analyses as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AnalysisDefinitionInner> listSiteAnalyses(
@@ -473,7 +476,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Analyses.
+     * @return collection of Diagnostic Analyses as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AnalysisDefinitionInner> listSiteAnalyses(
@@ -490,7 +493,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of Analysis.
+     * @return definition of Analysis along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<AnalysisDefinitionInner>> getSiteAnalysisWithResponseAsync(
@@ -507,7 +510,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of Analysis.
+     * @return definition of Analysis on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<AnalysisDefinitionInner> getSiteAnalysisAsync(
@@ -542,7 +545,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of Analysis.
+     * @return definition of Analysis along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AnalysisDefinitionInner> getSiteAnalysisWithResponse(
@@ -562,7 +565,8 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a diagnostic analysis done on an application.
+     * @return class representing a diagnostic analysis done on an application along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DiagnosticAnalysisInner>> executeSiteAnalysisWithResponseAsync(
@@ -588,7 +592,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a diagnostic analysis done on an application.
+     * @return class representing a diagnostic analysis done on an application on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DiagnosticAnalysisInner> executeSiteAnalysisAsync(
@@ -611,7 +615,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a diagnostic analysis done on an application.
+     * @return class representing a diagnostic analysis done on an application on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DiagnosticAnalysisInner> executeSiteAnalysisAsync(
@@ -649,7 +653,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a diagnostic analysis done on an application.
+     * @return class representing a diagnostic analysis done on an application along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DiagnosticAnalysisInner> executeSiteAnalysisWithResponse(
@@ -672,10 +676,10 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Detectors.
+     * @return collection of Diagnostic Detectors as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<DetectorDefinitionInner> listSiteDetectorsAsync(
+    PagedFlux<DetectorDefinitionResourceInner> listSiteDetectorsAsync(
         String resourceGroupName, String siteName, String diagnosticCategory);
 
     /**
@@ -688,10 +692,10 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Detectors.
+     * @return collection of Diagnostic Detectors as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DetectorDefinitionInner> listSiteDetectors(
+    PagedIterable<DetectorDefinitionResourceInner> listSiteDetectors(
         String resourceGroupName, String siteName, String diagnosticCategory);
 
     /**
@@ -705,10 +709,10 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Detectors.
+     * @return collection of Diagnostic Detectors as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DetectorDefinitionInner> listSiteDetectors(
+    PagedIterable<DetectorDefinitionResourceInner> listSiteDetectors(
         String resourceGroupName, String siteName, String diagnosticCategory, Context context);
 
     /**
@@ -722,10 +726,11 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing detector definition.
+     * @return aRM resource for a detector definition along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DetectorDefinitionInner>> getSiteDetectorWithResponseAsync(
+    Mono<Response<DetectorDefinitionResourceInner>> getSiteDetectorWithResponseAsync(
         String resourceGroupName, String siteName, String diagnosticCategory, String detectorName);
 
     /**
@@ -739,10 +744,10 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing detector definition.
+     * @return aRM resource for a detector definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DetectorDefinitionInner> getSiteDetectorAsync(
+    Mono<DetectorDefinitionResourceInner> getSiteDetectorAsync(
         String resourceGroupName, String siteName, String diagnosticCategory, String detectorName);
 
     /**
@@ -756,10 +761,10 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing detector definition.
+     * @return aRM resource for a detector definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DetectorDefinitionInner getSiteDetector(
+    DetectorDefinitionResourceInner getSiteDetector(
         String resourceGroupName, String siteName, String diagnosticCategory, String detectorName);
 
     /**
@@ -774,10 +779,10 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing detector definition.
+     * @return aRM resource for a detector definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DetectorDefinitionInner> getSiteDetectorWithResponse(
+    Response<DetectorDefinitionResourceInner> getSiteDetectorWithResponse(
         String resourceGroupName, String siteName, String diagnosticCategory, String detectorName, Context context);
 
     /**
@@ -794,7 +799,8 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Response from Diagnostic Detectors.
+     * @return class representing Response from Diagnostic Detectors along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DiagnosticDetectorResponseInner>> executeSiteDetectorWithResponseAsync(
@@ -820,7 +826,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Response from Diagnostic Detectors.
+     * @return class representing Response from Diagnostic Detectors on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DiagnosticDetectorResponseInner> executeSiteDetectorAsync(
@@ -843,7 +849,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Response from Diagnostic Detectors.
+     * @return class representing Response from Diagnostic Detectors on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DiagnosticDetectorResponseInner> executeSiteDetectorAsync(
@@ -881,7 +887,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Response from Diagnostic Detectors.
+     * @return class representing Response from Diagnostic Detectors along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DiagnosticDetectorResponseInner> executeSiteDetectorWithResponse(
@@ -904,7 +910,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of detector responses.
+     * @return collection of detector responses as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DetectorResponseInner> listSiteDetectorResponsesSlotAsync(
@@ -920,7 +926,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of detector responses.
+     * @return collection of detector responses as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DetectorResponseInner> listSiteDetectorResponsesSlot(
@@ -937,7 +943,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of detector responses.
+     * @return collection of detector responses as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DetectorResponseInner> listSiteDetectorResponsesSlot(
@@ -957,7 +963,8 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Response from Detector.
+     * @return class representing Response from Detector along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DetectorResponseInner>> getSiteDetectorResponseSlotWithResponseAsync(
@@ -983,7 +990,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Response from Detector.
+     * @return class representing Response from Detector on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DetectorResponseInner> getSiteDetectorResponseSlotAsync(
@@ -1006,7 +1013,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Response from Detector.
+     * @return class representing Response from Detector on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DetectorResponseInner> getSiteDetectorResponseSlotAsync(
@@ -1044,7 +1051,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Response from Detector.
+     * @return class representing Response from Detector along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DetectorResponseInner> getSiteDetectorResponseSlotWithResponse(
@@ -1067,7 +1074,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Categories.
+     * @return collection of Diagnostic Categories as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DiagnosticCategoryInner> listSiteDiagnosticCategoriesSlotAsync(
@@ -1083,7 +1090,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Categories.
+     * @return collection of Diagnostic Categories as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DiagnosticCategoryInner> listSiteDiagnosticCategoriesSlot(
@@ -1100,7 +1107,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Categories.
+     * @return collection of Diagnostic Categories as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DiagnosticCategoryInner> listSiteDiagnosticCategoriesSlot(
@@ -1117,7 +1124,8 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing detector definition.
+     * @return class representing detector definition along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DiagnosticCategoryInner>> getSiteDiagnosticCategorySlotWithResponseAsync(
@@ -1134,7 +1142,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing detector definition.
+     * @return class representing detector definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DiagnosticCategoryInner> getSiteDiagnosticCategorySlotAsync(
@@ -1169,7 +1177,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing detector definition.
+     * @return class representing detector definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DiagnosticCategoryInner> getSiteDiagnosticCategorySlotWithResponse(
@@ -1186,7 +1194,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Analyses.
+     * @return collection of Diagnostic Analyses as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<AnalysisDefinitionInner> listSiteAnalysesSlotAsync(
@@ -1203,7 +1211,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Analyses.
+     * @return collection of Diagnostic Analyses as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AnalysisDefinitionInner> listSiteAnalysesSlot(
@@ -1221,7 +1229,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Analyses.
+     * @return collection of Diagnostic Analyses as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AnalysisDefinitionInner> listSiteAnalysesSlot(
@@ -1239,7 +1247,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of Analysis.
+     * @return definition of Analysis along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<AnalysisDefinitionInner>> getSiteAnalysisSlotWithResponseAsync(
@@ -1257,7 +1265,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of Analysis.
+     * @return definition of Analysis on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<AnalysisDefinitionInner> getSiteAnalysisSlotAsync(
@@ -1294,7 +1302,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of Analysis.
+     * @return definition of Analysis along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AnalysisDefinitionInner> getSiteAnalysisSlotWithResponse(
@@ -1320,7 +1328,8 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a diagnostic analysis done on an application.
+     * @return class representing a diagnostic analysis done on an application along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DiagnosticAnalysisInner>> executeSiteAnalysisSlotWithResponseAsync(
@@ -1348,7 +1357,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a diagnostic analysis done on an application.
+     * @return class representing a diagnostic analysis done on an application on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DiagnosticAnalysisInner> executeSiteAnalysisSlotAsync(
@@ -1373,7 +1382,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a diagnostic analysis done on an application.
+     * @return class representing a diagnostic analysis done on an application on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DiagnosticAnalysisInner> executeSiteAnalysisSlotAsync(
@@ -1413,7 +1422,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a diagnostic analysis done on an application.
+     * @return class representing a diagnostic analysis done on an application along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DiagnosticAnalysisInner> executeSiteAnalysisSlotWithResponse(
@@ -1438,10 +1447,10 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Detectors.
+     * @return collection of Diagnostic Detectors as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<DetectorDefinitionInner> listSiteDetectorsSlotAsync(
+    PagedFlux<DetectorDefinitionResourceInner> listSiteDetectorsSlotAsync(
         String resourceGroupName, String siteName, String diagnosticCategory, String slot);
 
     /**
@@ -1455,10 +1464,10 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Detectors.
+     * @return collection of Diagnostic Detectors as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DetectorDefinitionInner> listSiteDetectorsSlot(
+    PagedIterable<DetectorDefinitionResourceInner> listSiteDetectorsSlot(
         String resourceGroupName, String siteName, String diagnosticCategory, String slot);
 
     /**
@@ -1473,10 +1482,10 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Detectors.
+     * @return collection of Diagnostic Detectors as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DetectorDefinitionInner> listSiteDetectorsSlot(
+    PagedIterable<DetectorDefinitionResourceInner> listSiteDetectorsSlot(
         String resourceGroupName, String siteName, String diagnosticCategory, String slot, Context context);
 
     /**
@@ -1491,10 +1500,11 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing detector definition.
+     * @return aRM resource for a detector definition along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DetectorDefinitionInner>> getSiteDetectorSlotWithResponseAsync(
+    Mono<Response<DetectorDefinitionResourceInner>> getSiteDetectorSlotWithResponseAsync(
         String resourceGroupName, String siteName, String diagnosticCategory, String detectorName, String slot);
 
     /**
@@ -1509,10 +1519,10 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing detector definition.
+     * @return aRM resource for a detector definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DetectorDefinitionInner> getSiteDetectorSlotAsync(
+    Mono<DetectorDefinitionResourceInner> getSiteDetectorSlotAsync(
         String resourceGroupName, String siteName, String diagnosticCategory, String detectorName, String slot);
 
     /**
@@ -1527,10 +1537,10 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing detector definition.
+     * @return aRM resource for a detector definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DetectorDefinitionInner getSiteDetectorSlot(
+    DetectorDefinitionResourceInner getSiteDetectorSlot(
         String resourceGroupName, String siteName, String diagnosticCategory, String detectorName, String slot);
 
     /**
@@ -1546,10 +1556,10 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing detector definition.
+     * @return aRM resource for a detector definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DetectorDefinitionInner> getSiteDetectorSlotWithResponse(
+    Response<DetectorDefinitionResourceInner> getSiteDetectorSlotWithResponse(
         String resourceGroupName,
         String siteName,
         String diagnosticCategory,
@@ -1572,7 +1582,8 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Response from Diagnostic Detectors.
+     * @return class representing Response from Diagnostic Detectors along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DiagnosticDetectorResponseInner>> executeSiteDetectorSlotWithResponseAsync(
@@ -1600,7 +1611,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Response from Diagnostic Detectors.
+     * @return class representing Response from Diagnostic Detectors on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DiagnosticDetectorResponseInner> executeSiteDetectorSlotAsync(
@@ -1625,7 +1636,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Response from Diagnostic Detectors.
+     * @return class representing Response from Diagnostic Detectors on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DiagnosticDetectorResponseInner> executeSiteDetectorSlotAsync(
@@ -1665,7 +1676,7 @@ public interface DiagnosticsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Response from Diagnostic Detectors.
+     * @return class representing Response from Diagnostic Detectors along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DiagnosticDetectorResponseInner> executeSiteDetectorSlotWithResponse(

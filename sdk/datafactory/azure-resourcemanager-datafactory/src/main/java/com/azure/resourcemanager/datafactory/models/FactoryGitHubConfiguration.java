@@ -24,6 +24,18 @@ public final class FactoryGitHubConfiguration extends FactoryRepoConfiguration {
     @JsonProperty(value = "hostName")
     private String hostname;
 
+    /*
+     * GitHub bring your own app client id.
+     */
+    @JsonProperty(value = "clientId")
+    private String clientId;
+
+    /*
+     * GitHub bring your own app client secret information.
+     */
+    @JsonProperty(value = "clientSecret")
+    private GitHubClientSecret clientSecret;
+
     /**
      * Get the hostname property: GitHub Enterprise host name. For example: https://github.mydomain.com.
      *
@@ -41,6 +53,46 @@ public final class FactoryGitHubConfiguration extends FactoryRepoConfiguration {
      */
     public FactoryGitHubConfiguration withHostname(String hostname) {
         this.hostname = hostname;
+        return this;
+    }
+
+    /**
+     * Get the clientId property: GitHub bring your own app client id.
+     *
+     * @return the clientId value.
+     */
+    public String clientId() {
+        return this.clientId;
+    }
+
+    /**
+     * Set the clientId property: GitHub bring your own app client id.
+     *
+     * @param clientId the clientId value to set.
+     * @return the FactoryGitHubConfiguration object itself.
+     */
+    public FactoryGitHubConfiguration withClientId(String clientId) {
+        this.clientId = clientId;
+        return this;
+    }
+
+    /**
+     * Get the clientSecret property: GitHub bring your own app client secret information.
+     *
+     * @return the clientSecret value.
+     */
+    public GitHubClientSecret clientSecret() {
+        return this.clientSecret;
+    }
+
+    /**
+     * Set the clientSecret property: GitHub bring your own app client secret information.
+     *
+     * @param clientSecret the clientSecret value to set.
+     * @return the FactoryGitHubConfiguration object itself.
+     */
+    public FactoryGitHubConfiguration withClientSecret(GitHubClientSecret clientSecret) {
+        this.clientSecret = clientSecret;
         return this;
     }
 
@@ -87,5 +139,8 @@ public final class FactoryGitHubConfiguration extends FactoryRepoConfiguration {
     @Override
     public void validate() {
         super.validate();
+        if (clientSecret() != null) {
+            clientSecret().validate();
+        }
     }
 }

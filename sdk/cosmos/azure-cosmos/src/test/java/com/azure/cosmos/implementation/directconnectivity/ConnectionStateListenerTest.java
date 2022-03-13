@@ -27,12 +27,14 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 
 public class ConnectionStateListenerTest {
     private static final Logger logger = LoggerFactory.getLogger(ConnectionStateListenerTest.class);
 
+    private static final AtomicInteger randomPort = new AtomicInteger(1000);
     private static int port = 8082;
     private static String serverAddressPrefix = "rntbd://localhost:";
     private static Random random = new Random();
@@ -55,7 +57,7 @@ public class ConnectionStateListenerTest {
         int times) throws ExecutionException, InterruptedException {
 
         // using a random generated server port
-        int serverPort = port + random.nextInt(1000);
+        int serverPort = port + randomPort.getAndIncrement();
         TcpServer server = TcpServerFactory.startNewRntbdServer(serverPort);
         // Inject fake response
         server.injectServerResponse(responseType);
@@ -74,7 +76,8 @@ public class ConnectionStateListenerTest {
             config,
             connectionPolicy,
             new UserAgentContainer(),
-            addressResolver);
+            addressResolver,
+            null);
 
         RxDocumentServiceRequest req =
             RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document,

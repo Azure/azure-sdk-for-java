@@ -5,12 +5,16 @@ package com.azure.storage.file.share
 
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.util.Context
+import com.azure.core.util.CoreUtils
 import com.azure.core.util.polling.SyncPoller
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
+import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy
+import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy
+import com.azure.storage.file.share.models.DownloadRetryOptions
 import com.azure.storage.file.share.models.NtfsFileAttributes
 import com.azure.storage.file.share.models.PermissionCopyModeType
 import com.azure.storage.file.share.models.ShareErrorCode
@@ -22,11 +26,12 @@ import com.azure.storage.file.share.models.ShareFileUploadRangeOptions
 import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.models.ShareSnapshotInfo
 import com.azure.storage.file.share.models.ShareStorageException
+import com.azure.storage.file.share.options.ShareFileDownloadOptions
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions
+import com.azure.storage.file.share.options.ShareFileRenameOptions
 import com.azure.storage.file.share.sas.ShareFileSasPermission
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues
 import spock.lang.Ignore
-import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.charset.StandardCharsets
@@ -70,7 +75,7 @@ class FileAPITests extends APISpec {
 
     def "Get file URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, filePath)
 
         when:
@@ -82,7 +87,7 @@ class FileAPITests extends APISpec {
 
     def "Get share snapshot URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, filePath)
 
         when:
@@ -97,7 +102,7 @@ class FileAPITests extends APISpec {
 
         when:
         def snapshotEndpoint = String.format("https://%s.file.core.windows.net/%s/%s?sharesnapshot=%s", accountName, shareName, filePath, shareSnapshotInfo.getSnapshot())
-        ShareFileClient client = getFileClient(StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString), snapshotEndpoint)
+        ShareFileClient client = getFileClient(StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString), snapshotEndpoint)
 
         then:
         client.getFileUrl() == snapshotEndpoint
@@ -224,7 +229,7 @@ class FileAPITests extends APISpec {
 
         then:
         assertResponseStatusCode(uploadResponse, 201)
-        assertResponseStatusCode(downloadResponse, 200)
+        assertResponseStatusCode(downloadResponse, 200, 206)
         headers.getContentLength() == data.defaultDataSizeLong
         headers.getETag()
         headers.getLastModified()
@@ -269,7 +274,7 @@ class FileAPITests extends APISpec {
 
         then:
         assertResponseStatusCode(uploadResponse, 201)
-        assertResponseStatusCode(downloadResponse, 200)
+        assertResponseStatusCode(downloadResponse, 200, 206)
         headers.getContentLength() == data.defaultDataSizeLong
         headers.getETag()
         headers.getLastModified()
@@ -302,6 +307,52 @@ class FileAPITests extends APISpec {
         data.defaultBytes == stream.toByteArray()
     }
 
+    def "Parallel Upload InputStream no length"() {
+        when:
+        primaryFileClient.create(data.defaultDataSize)
+        primaryFileClient.uploadWithResponse(new ShareFileUploadOptions(data.defaultInputStream), null, null)
+
+        then:
+        notThrown(Exception)
+        ByteArrayOutputStream os = new ByteArrayOutputStream()
+        primaryFileClient.download(os)
+        os.toByteArray() == data.defaultBytes
+    }
+
+    def "Parallel Upload InputStream bad length"() {
+        when:
+        primaryFileClient.create(data.defaultDataSize)
+        primaryFileClient.uploadWithResponse(new ShareFileUploadOptions(data.defaultInputStream, length), null, null)
+
+        then:
+        thrown(Exception)
+
+        where:
+        _ | length
+        _ | 0
+        _ | -100
+        _ | data.defaultDataSize - 1
+        _ | data.defaultDataSize + 1
+    }
+
+    def "Upload successful retry"() {
+        given:
+        primaryFileClient.create(data.defaultDataSize)
+        def clientWithFailure = getFileClient(
+            environment.primaryAccount.credential,
+            primaryFileClient.getFileUrl(),
+            new TransientFailureInjectingHttpPipelinePolicy())
+
+        when:
+        clientWithFailure.uploadWithResponse(new ShareFileUploadOptions(data.defaultInputStream), null, null)
+
+        then:
+        notThrown(Exception)
+        ByteArrayOutputStream os = new ByteArrayOutputStream()
+        primaryFileClient.download(os)
+        os.toByteArray() == data.defaultBytes
+    }
+
     def "Upload range and download data"() {
         given:
         primaryFileClient.create(data.defaultDataSizeLong)
@@ -315,7 +366,7 @@ class FileAPITests extends APISpec {
 
         then:
         assertResponseStatusCode(uploadResponse, 201)
-        assertResponseStatusCode(downloadResponse, 200)
+        assertResponseStatusCode(downloadResponse, 200, 206)
         headers.getContentLength() == data.defaultDataSizeLong
         headers.getETag()
         headers.getLastModified()
@@ -346,6 +397,100 @@ class FileAPITests extends APISpec {
         downloadResponse.getDeserializedHeaders().getContentLength() == (long) data.defaultDataSizeLong
 
         data.defaultBytes == stream.toByteArray()
+    }
+
+    def "Download all null"() {
+        given:
+        primaryFileClient.create(data.defaultDataSizeLong)
+        primaryFileClient.upload(data.defaultInputStream, data.defaultDataSizeLong)
+
+        when:
+        def stream = new ByteArrayOutputStream()
+        def response = primaryFileClient.downloadWithResponse(stream, null, null, null)
+        def body = stream.toByteArray()
+        def headers = response.getDeserializedHeaders()
+
+        then:
+        body == data.defaultBytes
+        CoreUtils.isNullOrEmpty(headers.getMetadata())
+        headers.getContentLength() != null
+        headers.getContentType() != null
+        headers.getContentMd5() == null
+        headers.getContentEncoding() == null
+        headers.getCacheControl() == null
+        headers.getContentDisposition() == null
+        headers.getContentLanguage() == null
+    }
+
+    @Unroll
+    def "Download empty file"() {
+        setup:
+        primaryFileClient.create(fileSize)
+
+        when:
+        def outStream = new ByteArrayOutputStream()
+        primaryFileClient.download(outStream)
+        def result = outStream.toByteArray()
+
+        then:
+        notThrown(ShareStorageException)
+        result.length == fileSize
+        if (fileSize > 0) {
+            assert !result[0]
+        }
+
+        where:
+        fileSize | _
+        0        | _
+        1        | _
+    }
+
+    /*
+    This is to test the appropriate integration of DownloadResponse, including setting the correct range values on
+    HttpGetterInfo.
+     */
+
+    def "Download with retry range"() {
+        /*
+        We are going to make a request for some range on a blob. The Flux returned will throw an exception, forcing
+        a retry per the DownloadRetryOptions. The next request should have the same range header, which was generated
+        from the count and offset values in HttpGetterInfo that was constructed on the initial call to download. We
+        don't need to check the data here, but we want to ensure that the correct range is set each time. This will
+        test the correction of a bug that was found which caused HttpGetterInfo to have an incorrect offset when it was
+        constructed in FileClient.download().
+         */
+        setup:
+        primaryFileClient.create(data.defaultDataSizeLong)
+        primaryFileClient.upload(data.defaultInputStream, data.defaultDataSizeLong)
+        def fc2 = getFileClient(environment.primaryAccount.credential, primaryFileClient.getFileUrl(), new MockRetryRangeResponsePolicy("bytes=2-6"))
+
+        when:
+        def range = new ShareFileRange(2, 6L)
+        def options = new DownloadRetryOptions().setMaxRetryRequests(3)
+        fc2.downloadWithResponse(new ByteArrayOutputStream(), new ShareFileDownloadOptions().setRange(range).setRetryOptions(options), null, null)
+
+        then:
+        /*
+        Because the dummy Flux always throws an error. This will also validate that an IllegalArgumentException is
+        NOT thrown because the types would not match.
+         */
+        def e = thrown(RuntimeException)
+        e.getCause() instanceof IOException
+    }
+
+    def "Download retry default"() {
+        setup:
+        primaryFileClient.create(data.defaultDataSizeLong)
+        primaryFileClient.upload(data.defaultInputStream, data.defaultDataSizeLong)
+        def failureClient = getFileClient(environment.primaryAccount.credential, primaryFileClient.getFileUrl(), new MockFailureResponsePolicy(5))
+
+        when:
+        def outStream = new ByteArrayOutputStream()
+        failureClient.download(outStream)
+        String bodyStr = outStream.toString()
+
+        then:
+        bodyStr == data.defaultText
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
@@ -456,7 +601,7 @@ class FileAPITests extends APISpec {
     def "Upload data retry on transient failure"() {
         setup:
         def clientWithFailure = getFileClient(
-            env.primaryAccount.credential,
+            environment.primaryAccount.credential,
             primaryFileClient.getFileUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         )
@@ -629,7 +774,7 @@ class FileAPITests extends APISpec {
     def "Download file buffer copy"() {
         setup:
         def shareServiceClient = new ShareServiceClientBuilder()
-            .connectionString(env.primaryAccount.connectionString)
+            .connectionString(environment.primaryAccount.connectionString)
             .buildClient()
 
         def fileClient = shareServiceClient.getShareClient(shareName)
@@ -720,7 +865,7 @@ class FileAPITests extends APISpec {
         def destinationOffset = 0
 
         primaryFileClient.upload(getInputStream(data.getBytes()), data.length())
-        def credential = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString)
         def sasToken = new ShareServiceSasSignatureValues()
             .setExpiryTime(namer.getUtcNow().plusDays(1))
             .setPermissions(new ShareFileSasPermission().setReadPermission(true))
@@ -1232,6 +1377,277 @@ class FileAPITests extends APISpec {
         notThrown(ShareStorageException)
         handlesClosedInfo.getClosedHandles() == 0
         handlesClosedInfo.getFailedHandles() == 0
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Rename min"() {
+        setup:
+        primaryFileClient.create(512)
+
+        when:
+        primaryFileClient.rename(generatePathName())
+
+        then:
+        notThrown(ShareStorageException)
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Rename with response"() {
+        setup:
+        primaryFileClient.create(512)
+
+        when:
+        def resp = primaryFileClient.renameWithResponse(new ShareFileRenameOptions(generatePathName()), null, null)
+
+        def renamedClient = resp.getValue()
+        renamedClient.getProperties()
+
+        then:
+        notThrown(ShareStorageException)
+
+        when:
+        primaryFileClient.getProperties()
+
+        then:
+        thrown(ShareStorageException)
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Rename different directory"() {
+        setup:
+        primaryFileClient.create(512)
+        def dc = shareClient.getDirectoryClient(generatePathName())
+        dc.create()
+        def destinationPath = dc.getFileClient(generatePathName())
+
+        when:
+        def resultClient = primaryFileClient.rename(destinationPath.getFilePath())
+
+        then:
+        destinationPath.exists()
+        destinationPath.getFilePath() == resultClient.getFilePath()
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    @Unroll
+    def "Rename replace if exists"() {
+        setup:
+        primaryFileClient.create(512)
+        def destination = shareClient.getFileClient(generatePathName())
+        destination.create(512)
+        def exception = false
+
+        when:
+        try {
+            primaryFileClient.renameWithResponse(new ShareFileRenameOptions(destination.getFilePath())
+                .setReplaceIfExists(replaceIfExists), null, null)
+        } catch (ShareStorageException ignored) {
+            exception = true
+        }
+
+        then:
+        replaceIfExists == !exception
+
+        where:
+        replaceIfExists | _
+        true            | _
+        false           | _
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    @Unroll
+    def "Rename ignore read only"() {
+        setup:
+        primaryFileClient.create(512)
+        FileSmbProperties props = new FileSmbProperties()
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+        def destinationFile = shareClient.getFileClient(generatePathName())
+        destinationFile.createWithResponse(512L, null, props, null, null, null, null, null)
+        def exception = false
+
+        when:
+        try {
+            primaryFileClient.renameWithResponse(new ShareFileRenameOptions(destinationFile.getFilePath())
+                .setIgnoreReadOnly(ignoreReadOnly).setReplaceIfExists(true), null, null)
+        } catch (ShareStorageException ignored) {
+            exception = true
+        }
+
+        then:
+        exception == !ignoreReadOnly
+
+        where:
+        ignoreReadOnly  | _
+        true            | _
+        false           | _
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Rename file permission"() {
+        setup:
+        primaryFileClient.create(512)
+        def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)"
+
+        when:
+        def destClient = primaryFileClient.renameWithResponse(new ShareFileRenameOptions(generatePathName())
+            .setFilePermission(filePermission), null, null).getValue()
+
+        then:
+        destClient.getProperties().getSmbProperties().getFilePermissionKey() != null
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Rename file permission and key set"() {
+        setup:
+        primaryFileClient.create(512)
+        def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)"
+
+        when:
+        def destClient = primaryFileClient.renameWithResponse(new ShareFileRenameOptions(generatePathName())
+            .setFilePermission(filePermission)
+            .setSmbProperties(new FileSmbProperties().setFilePermissionKey("filePermissionkey")), null, null).getValue()
+
+        then:
+        thrown(ShareStorageException) // permission and key cannot both be set
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Rename file smbProperties"() {
+        setup:
+        primaryFileClient.create(512)
+        def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)"
+        def permissionKey = shareClient.createPermission(filePermission)
+        def fileCreationTime = namer.getUtcNow().minusDays(5)
+        def fileLastWriteTime = namer.getUtcNow().minusYears(2)
+        def smbProperties = new FileSmbProperties()
+            .setFilePermissionKey(permissionKey)
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.ARCHIVE, NtfsFileAttributes.READ_ONLY))
+            .setFileCreationTime(fileCreationTime)
+            .setFileLastWriteTime(fileLastWriteTime)
+
+        when:
+        def destClient = primaryFileClient.renameWithResponse(new ShareFileRenameOptions(generatePathName())
+            .setSmbProperties(smbProperties), null, null).getValue()
+        def destProperties = destClient.getProperties()
+
+        then:
+        destProperties.getSmbProperties().getNtfsFileAttributes() == EnumSet.of(NtfsFileAttributes.ARCHIVE, NtfsFileAttributes.READ_ONLY)
+        destProperties.getSmbProperties().getFileCreationTime()
+        destProperties.getSmbProperties().getFileLastWriteTime()
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Rename metadata"() {
+        given:
+        primaryFileClient.create(512)
+        def updatedMetadata = Collections.singletonMap("update", "value")
+
+        when:
+        def resp = primaryFileClient.renameWithResponse(new ShareFileRenameOptions(generatePathName())
+            .setMetadata(updatedMetadata), null, null)
+
+        def renamedClient = resp.getValue()
+        def getPropertiesAfter = renamedClient.getProperties()
+
+
+        then:
+        updatedMetadata == getPropertiesAfter.getMetadata()
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    def "Rename error"() {
+        setup:
+        primaryFileClient = shareClient.getFileClient(generatePathName())
+
+        when:
+        primaryFileClient.rename(generatePathName())
+
+        then:
+        thrown(ShareStorageException)
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    @Unroll
+    def "Rename source AC"() {
+        setup:
+        primaryFileClient.create(512)
+        leaseID = setupFileLeaseCondition(primaryFileClient, leaseID)
+        def src = new ShareRequestConditions()
+            .setLeaseId(leaseID)
+
+        expect:
+        primaryFileClient.renameWithResponse(new ShareFileRenameOptions(generatePathName())
+            .setSourceRequestConditions(src), null, null).getStatusCode() == 200
+
+        where:
+        leaseID         | _
+        receivedLeaseID | _
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    @Unroll
+    def "Rename source AC fail"() {
+        setup:
+        primaryFileClient.create(512)
+        setupFileLeaseCondition(primaryFileClient, leaseID)
+        def src = new ShareRequestConditions()
+            .setLeaseId(leaseID)
+
+        when:
+        primaryFileClient.renameWithResponse(new ShareFileRenameOptions(generatePathName())
+            .setSourceRequestConditions(src), null, null)
+
+        then:
+        thrown(ShareStorageException)
+
+        where:
+         leaseID        | _
+         garbageLeaseID | _
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    @Unroll
+    def "Rename dest AC"() {
+        setup:
+        primaryFileClient.create(512)
+        def pathName = generatePathName()
+        def destFile = shareClient.getFileClient(pathName)
+        destFile.create(512)
+        leaseID = setupFileLeaseCondition(destFile, leaseID)
+        def src = new ShareRequestConditions()
+            .setLeaseId(leaseID)
+
+        expect:
+        primaryFileClient.renameWithResponse(new ShareFileRenameOptions(pathName)
+            .setDestinationRequestConditions(src).setReplaceIfExists(true), null, null).getStatusCode() == 200
+
+        where:
+        leaseID         | _
+        receivedLeaseID | _
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    @Unroll
+    def "Rename dest AC fail"() {
+        setup:
+        primaryFileClient.create(512)
+        def pathName = generatePathName()
+        def destFile = shareClient.getFileClient(pathName)
+        destFile.create(512)
+        setupFileLeaseCondition(destFile, leaseID)
+        def src = new ShareRequestConditions()
+            .setLeaseId(leaseID)
+
+        when:
+        primaryFileClient.renameWithResponse(new ShareFileRenameOptions(pathName)
+            .setDestinationRequestConditions(src).setReplaceIfExists(true), null, null)
+
+        then:
+        thrown(ShareStorageException)
+
+        where:
+        leaseID        | _
+        garbageLeaseID | _
     }
 
     def "Get snapshot id"() {

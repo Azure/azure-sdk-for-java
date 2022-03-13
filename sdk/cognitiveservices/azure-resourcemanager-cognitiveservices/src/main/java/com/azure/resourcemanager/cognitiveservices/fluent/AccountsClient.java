@@ -32,7 +32,7 @@ public interface AccountsClient {
      * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
      *     and SKU.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AccountInner>, AccountInner> beginCreate(
         String resourceGroupName, String accountName, AccountInner account);
 
@@ -50,7 +50,7 @@ public interface AccountsClient {
      * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
      *     and SKU.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AccountInner>, AccountInner> beginCreate(
         String resourceGroupName, String accountName, AccountInner account, Context context);
 
@@ -99,7 +99,7 @@ public interface AccountsClient {
      * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
      *     and SKU.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AccountInner>, AccountInner> beginUpdate(
         String resourceGroupName, String accountName, AccountInner account);
 
@@ -116,7 +116,7 @@ public interface AccountsClient {
      * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
      *     and SKU.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AccountInner>, AccountInner> beginUpdate(
         String resourceGroupName, String accountName, AccountInner account, Context context);
 
@@ -161,7 +161,7 @@ public interface AccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName);
 
     /**
@@ -175,7 +175,7 @@ public interface AccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, Context context);
 
     /**

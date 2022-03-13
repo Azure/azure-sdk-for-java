@@ -5,18 +5,23 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayRewriteRuleSetPropertiesFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Rewrite rule set of an application gateway. */
-@JsonFlatten
 @Fluent
-public class ApplicationGatewayRewriteRuleSet extends SubResource {
+public final class ApplicationGatewayRewriteRuleSet extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayRewriteRuleSet.class);
+
+    /*
+     * Properties of the application gateway rewrite rule set.
+     */
+    @JsonProperty(value = "properties")
+    private ApplicationGatewayRewriteRuleSetPropertiesFormat innerProperties;
 
     /*
      * Name of the rewrite rule set that is unique within an Application
@@ -31,17 +36,14 @@ public class ApplicationGatewayRewriteRuleSet extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /*
-     * Rewrite rules in the rewrite rule set.
+    /**
+     * Get the innerProperties property: Properties of the application gateway rewrite rule set.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.rewriteRules")
-    private List<ApplicationGatewayRewriteRule> rewriteRules;
-
-    /*
-     * The provisioning state of the rewrite rule set resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private ApplicationGatewayRewriteRuleSetPropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Name of the rewrite rule set that is unique within an Application Gateway.
@@ -72,13 +74,20 @@ public class ApplicationGatewayRewriteRuleSet extends SubResource {
         return this.etag;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayRewriteRuleSet withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the rewriteRules property: Rewrite rules in the rewrite rule set.
      *
      * @return the rewriteRules value.
      */
     public List<ApplicationGatewayRewriteRule> rewriteRules() {
-        return this.rewriteRules;
+        return this.innerProperties() == null ? null : this.innerProperties().rewriteRules();
     }
 
     /**
@@ -88,7 +97,10 @@ public class ApplicationGatewayRewriteRuleSet extends SubResource {
      * @return the ApplicationGatewayRewriteRuleSet object itself.
      */
     public ApplicationGatewayRewriteRuleSet withRewriteRules(List<ApplicationGatewayRewriteRule> rewriteRules) {
-        this.rewriteRules = rewriteRules;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayRewriteRuleSetPropertiesFormat();
+        }
+        this.innerProperties().withRewriteRules(rewriteRules);
         return this;
     }
 
@@ -98,14 +110,7 @@ public class ApplicationGatewayRewriteRuleSet extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ApplicationGatewayRewriteRuleSet withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -114,8 +119,8 @@ public class ApplicationGatewayRewriteRuleSet extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (rewriteRules() != null) {
-            rewriteRules().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

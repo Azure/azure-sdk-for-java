@@ -156,7 +156,7 @@ public class TableSasGenerator {
      */
     private String getCanonicalName(String account) {
         // Table: "/table/account/tablename"
-        return String.join("", new String[]{"/table/", account, "/", tableName});
+        return String.join("/", new String[]{"/table", account, tableName});
     }
 
     private String stringToSign(String canonicalName) {

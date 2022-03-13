@@ -12,7 +12,7 @@ import com.azure.resourcemanager.kusto.fluent.models.DatabaseInner;
 /** Resource collection API of Databases. */
 public interface Databases {
     /**
-     * Checks that the database name is valid and is not already in use.
+     * Checks that the databases resource name is valid and is not already in use.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
@@ -25,7 +25,7 @@ public interface Databases {
     CheckNameResult checkNameAvailability(String resourceGroupName, String clusterName, CheckNameRequest resourceName);
 
     /**
-     * Checks that the database name is valid and is not already in use.
+     * Checks that the databases resource name is valid and is not already in use.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
@@ -34,7 +34,7 @@ public interface Databases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result returned from a check name availability request.
+     * @return the result returned from a check name availability request along with {@link Response}.
      */
     Response<CheckNameResult> checkNameAvailabilityWithResponse(
         String resourceGroupName, String clusterName, CheckNameRequest resourceName, Context context);
@@ -47,7 +47,7 @@ public interface Databases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto databases operation response.
+     * @return the list Kusto databases operation response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Database> listByCluster(String resourceGroupName, String clusterName);
 
@@ -60,7 +60,7 @@ public interface Databases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto databases operation response.
+     * @return the list Kusto databases operation response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Database> listByCluster(String resourceGroupName, String clusterName, Context context);
 
@@ -87,7 +87,7 @@ public interface Databases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Kusto database.
+     * @return class representing a Kusto database along with {@link Response}.
      */
     Response<Database> getWithResponse(
         String resourceGroupName, String clusterName, String databaseName, Context context);
@@ -187,7 +187,7 @@ public interface Databases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto database principals operation response.
+     * @return the list Kusto database principals operation response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DatabasePrincipal> listPrincipals(String resourceGroupName, String clusterName, String databaseName);
 
@@ -201,7 +201,7 @@ public interface Databases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto database principals operation response.
+     * @return the list Kusto database principals operation response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DatabasePrincipal> listPrincipals(
         String resourceGroupName, String clusterName, String databaseName, Context context);
@@ -235,7 +235,7 @@ public interface Databases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto database principals operation response.
+     * @return the list Kusto database principals operation response along with {@link Response}.
      */
     Response<DatabasePrincipalListResult> addPrincipalsWithResponse(
         String resourceGroupName,
@@ -273,7 +273,7 @@ public interface Databases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto database principals operation response.
+     * @return the list Kusto database principals operation response along with {@link Response}.
      */
     Response<DatabasePrincipalListResult> removePrincipalsWithResponse(
         String resourceGroupName,

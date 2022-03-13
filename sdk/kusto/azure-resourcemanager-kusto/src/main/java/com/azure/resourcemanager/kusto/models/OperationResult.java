@@ -52,6 +52,27 @@ public interface OperationResult {
     Double percentComplete();
 
     /**
+     * Gets the operationKind property: The kind of the operation.
+     *
+     * @return the operationKind value.
+     */
+    String operationKind();
+
+    /**
+     * Gets the provisioningState property: The provisioned state of the resource.
+     *
+     * @return the provisioningState value.
+     */
+    ProvisioningState provisioningState();
+
+    /**
+     * Gets the operationState property: The state of the operation.
+     *
+     * @return the operationState value.
+     */
+    String operationState();
+
+    /**
      * Gets the code property: The code of the error.
      *
      * @return the code value.
@@ -64,20 +85,6 @@ public interface OperationResult {
      * @return the message value.
      */
     String message();
-
-    /**
-     * Gets the operationKind property: The kind of the operation.
-     *
-     * @return the operationKind value.
-     */
-    String operationKind();
-
-    /**
-     * Gets the operationState property: The state of the operation.
-     *
-     * @return the operationState value.
-     */
-    String operationState();
 
     /**
      * Gets the inner com.azure.resourcemanager.kusto.fluent.models.OperationResultInner object.

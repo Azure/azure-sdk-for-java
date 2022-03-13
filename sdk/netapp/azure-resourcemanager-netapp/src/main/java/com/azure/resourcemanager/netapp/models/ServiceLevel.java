@@ -19,6 +19,9 @@ public final class ServiceLevel extends ExpandableStringEnum<ServiceLevel> {
     /** Static value Ultra for ServiceLevel. */
     public static final ServiceLevel ULTRA = fromString("Ultra");
 
+    /** Static value StandardZRS for ServiceLevel. */
+    public static final ServiceLevel STANDARD_ZRS = fromString("StandardZRS");
+
     /**
      * Creates or finds a ServiceLevel from its string representation.
      *

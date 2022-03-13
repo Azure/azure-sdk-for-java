@@ -3,7 +3,7 @@
 package com.azure.spring.aad;
 
 
-import com.azure.spring.autoconfigure.aad.AADTokenClaim;
+import com.azure.spring.aad.implementation.constants.AADTokenClaim;
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.KeySourceException;
 import com.nimbusds.jose.jwk.source.JWKSource;
@@ -37,7 +37,16 @@ public class AADIssuerJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<
 
     private final Map<String, JWSKeySelector<SecurityContext>> selectors = new ConcurrentHashMap<>();
 
-    public AADIssuerJWSKeySelector(AADTrustedIssuerRepository trustedIssuerRepo, int connectTimeout,
+    /**
+     * Creates a new instance of {@link AADIssuerJWSKeySelector}.
+     *
+     * @param trustedIssuerRepo the AAD trusted issuer repository
+     * @param connectTimeout the connect timeout
+     * @param readTimeout the read timeout
+     * @param sizeLimit te size limit
+     */
+    public AADIssuerJWSKeySelector(AADTrustedIssuerRepository trustedIssuerRepo,
+                                   int connectTimeout,
                                    int readTimeout, int sizeLimit) {
         this.trustedIssuerRepo = trustedIssuerRepo;
         this.connectTimeout = connectTimeout;
@@ -60,8 +69,8 @@ public class AADIssuerJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<
         Map<String, Object> configurationForOidcIssuerLocation = AADJwtDecoderProviderConfiguration
             .getConfigurationForOidcIssuerLocation(getOidcIssuerLocation(issuer));
         String uri = configurationForOidcIssuerLocation.get("jwks_uri").toString();
-        DefaultResourceRetriever jwkSetRetriever = new DefaultResourceRetriever(connectTimeout, readTimeout,
-            sizeLimit);
+        DefaultResourceRetriever jwkSetRetriever =
+            new DefaultResourceRetriever(connectTimeout, readTimeout, sizeLimit);
         try {
             JWKSource<SecurityContext> jwkSource = new RemoteJWKSet<>(new URL(uri), jwkSetRetriever);
             return JWSAlgorithmFamilyJWSKeySelector.fromJWKSource(jwkSource);

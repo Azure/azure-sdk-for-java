@@ -5,18 +5,49 @@ package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.engine.EndpointState;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+/**
+ * Tests {@link Handler}.
+ */
 public class HandlerTest {
     private Handler handler;
 
     @BeforeEach
     public void setup() {
         handler = new TestHandler();
+    }
+
+    @AfterEach
+    public void teardown() {
+        if (handler != null) {
+            handler.close();
+        }
+
+        Mockito.framework().clearInlineMock(this);
+    }
+
+    @Test
+    public void constructor() {
+        // Arrange
+        final String connectionId = "id";
+        final String hostname = "hostname";
+
+        // Act
+        assertThrows(NullPointerException.class, () -> new TestHandler(null, hostname));
+        assertThrows(NullPointerException.class, () -> new TestHandler(connectionId, null));
     }
 
     @Test
@@ -27,6 +58,28 @@ public class HandlerTest {
             .then(handler::close)
             .expectNext(EndpointState.CLOSED)
             .verifyComplete();
+
+        assertEquals(TestHandler.CONNECTION_ID, handler.getConnectionId());
+        assertEquals(TestHandler.HOSTNAME, handler.getHostname());
+    }
+
+    @Test
+    public void propagatesDistinctStates() {
+        // Act & Assert
+        StepVerifier.create(handler.getEndpointStates())
+            .expectNext(EndpointState.UNINITIALIZED)
+            .then(() -> {
+                // Verify that it only propagates the UNINITIALIZED state once.
+                // In previous incarnation of distinct, it hashed all the previous values and would only push values
+                // that were not seen yet.
+                handler.onNext(EndpointState.ACTIVE);
+                handler.onNext(EndpointState.UNINITIALIZED);
+                handler.onNext(EndpointState.UNINITIALIZED);
+                handler.onNext(EndpointState.CLOSED);
+            })
+            .expectNext(EndpointState.ACTIVE, EndpointState.UNINITIALIZED, EndpointState.CLOSED)
+            .then(handler::close)
+            .verifyComplete();
     }
 
     @Test
@@ -35,6 +88,7 @@ public class HandlerTest {
         StepVerifier.create(handler.getEndpointStates())
             .expectNext(EndpointState.UNINITIALIZED)
             .then(() -> {
+                // Verify that it only propagates the active state once.
                 handler.onNext(EndpointState.ACTIVE);
                 handler.onNext(EndpointState.ACTIVE);
             })
@@ -100,10 +154,62 @@ public class HandlerTest {
             .verify();
     }
 
+    /**
+     * Test that we are handling signals serially. Otherwise, we get an exception:
+     * EmissionException: Spec. Rule 1.3 encountered when trying to recover receiver.
+     *
+     * @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/24762">#24762</a>
+     */
+    @Test
+    public void serialSignalling() {
+        final int parallelism = Runtime.getRuntime().availableProcessors();
+        final Disposable subscription = handler.getEndpointStates().subscribe();
+
+        Flux.range(0, 500)
+            .parallel(parallelism)
+            .runOn(Schedulers.parallel())
+            .flatMap(index -> {
+                final EndpointState state;
+                final int current = index % 3;
+
+                switch (current) {
+                    case 0:
+                        state = EndpointState.ACTIVE;
+                        break;
+                    case 1:
+                        state = EndpointState.CLOSED;
+                        break;
+                    case 2:
+                        state = EndpointState.UNINITIALIZED;
+                        break;
+                    default:
+                        throw new IllegalStateException("This shouldn't have happened. value:" + index);
+                }
+
+                if (index == 500) {
+                    handler.onError(new RuntimeException("Test Error."));
+                } else {
+                    handler.onNext(state);
+                }
+
+                return Mono.empty();
+            })
+            .then()
+            .block();
+
+        subscription.dispose();
+    }
+
     private static class TestHandler extends Handler {
+        static final String CONNECTION_ID = "test-connection-id";
+        static final String HOSTNAME = "test-hostname";
+
         TestHandler() {
-            super("test-connection-id", "test-hostname",
-                new ClientLogger(TestHandler.class));
+            super(CONNECTION_ID, HOSTNAME);
+        }
+
+        TestHandler(String connectionId, String hostname) {
+            super(connectionId, hostname);
         }
     }
 }

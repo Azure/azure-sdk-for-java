@@ -24,7 +24,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Azure Resource sample for deploying resources using an ARM template.
@@ -85,10 +87,10 @@ public final class DeployUsingARMTemplateWithTags {
             System.out.println("Resource created during deployment: " + deploymentName);
             for (GenericResource genericResource : genericResources) {
                 System.out.println(genericResource.resourceProviderNamespace() + "/" + genericResource.resourceType() + ": " + genericResource.name());
+                Map<String, String> tags = new HashMap<>(genericResource.tags());
+                tags.put("label", "deploy1");
                 // Tag resource
-                genericResource.update()
-                        .withTag("label", "deploy1")
-                        .apply();
+                azureResourceManager.tagOperations().updateTags(genericResource, tags);
             }
 
             PagedIterable<GenericResource> listResources = azureResourceManager.genericResources().listByTag(rgName, "label", "deploy1");

@@ -103,7 +103,8 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted sql pool that can be restored.
+     * @return a deleted sql pool that can be restored along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RestorableDroppedSqlPoolInner>> getWithResponseAsync(
@@ -133,6 +134,7 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
                     new IllegalArgumentException(
                         "Parameter restorableDroppedSqlPoolId is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -140,7 +142,7 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -161,7 +163,8 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted sql pool that can be restored.
+     * @return a deleted sql pool that can be restored along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RestorableDroppedSqlPoolInner>> getWithResponseAsync(
@@ -191,12 +194,13 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
                     new IllegalArgumentException(
                         "Parameter restorableDroppedSqlPoolId is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -215,7 +219,7 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted sql pool that can be restored.
+     * @return a deleted sql pool that can be restored on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RestorableDroppedSqlPoolInner> getAsync(
@@ -260,7 +264,7 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted sql pool that can be restored.
+     * @return a deleted sql pool that can be restored along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RestorableDroppedSqlPoolInner> getWithResponse(
@@ -276,7 +280,8 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of deleted Sql pools that can be restored.
+     * @return a list of deleted Sql pools that can be restored along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RestorableDroppedSqlPoolInner>> listByWorkspaceSinglePageAsync(
@@ -300,6 +305,7 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -307,7 +313,7 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
                     service
                         .listByWorkspace(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -329,7 +335,8 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of deleted Sql pools that can be restored.
+     * @return a list of deleted Sql pools that can be restored along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RestorableDroppedSqlPoolInner>> listByWorkspaceSinglePageAsync(
@@ -353,12 +360,13 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByWorkspace(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,

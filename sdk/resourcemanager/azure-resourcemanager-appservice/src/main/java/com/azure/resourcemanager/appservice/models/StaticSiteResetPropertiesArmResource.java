@@ -5,29 +5,37 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.fluent.models.StaticSiteResetPropertiesArmResourceProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Static Site Reset Properties ARM resource. */
-@JsonFlatten
 @Fluent
-public class StaticSiteResetPropertiesArmResource extends ProxyOnlyResource {
+public final class StaticSiteResetPropertiesArmResource extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(StaticSiteResetPropertiesArmResource.class);
 
     /*
-     * The token which proves admin privileges to the repository.
+     * StaticSiteResetPropertiesARMResource resource specific properties
      */
-    @JsonProperty(value = "properties.repositoryToken")
-    private String repositoryToken;
+    @JsonProperty(value = "properties")
+    private StaticSiteResetPropertiesArmResourceProperties innerProperties;
 
-    /*
-     * Determines whether the repository should be updated with the new
-     * properties.
+    /**
+     * Get the innerProperties property: StaticSiteResetPropertiesARMResource resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.shouldUpdateRepository")
-    private Boolean shouldUpdateRepository;
+    private StaticSiteResetPropertiesArmResourceProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public StaticSiteResetPropertiesArmResource withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the repositoryToken property: The token which proves admin privileges to the repository.
@@ -35,7 +43,7 @@ public class StaticSiteResetPropertiesArmResource extends ProxyOnlyResource {
      * @return the repositoryToken value.
      */
     public String repositoryToken() {
-        return this.repositoryToken;
+        return this.innerProperties() == null ? null : this.innerProperties().repositoryToken();
     }
 
     /**
@@ -45,7 +53,10 @@ public class StaticSiteResetPropertiesArmResource extends ProxyOnlyResource {
      * @return the StaticSiteResetPropertiesArmResource object itself.
      */
     public StaticSiteResetPropertiesArmResource withRepositoryToken(String repositoryToken) {
-        this.repositoryToken = repositoryToken;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StaticSiteResetPropertiesArmResourceProperties();
+        }
+        this.innerProperties().withRepositoryToken(repositoryToken);
         return this;
     }
 
@@ -56,7 +67,7 @@ public class StaticSiteResetPropertiesArmResource extends ProxyOnlyResource {
      * @return the shouldUpdateRepository value.
      */
     public Boolean shouldUpdateRepository() {
-        return this.shouldUpdateRepository;
+        return this.innerProperties() == null ? null : this.innerProperties().shouldUpdateRepository();
     }
 
     /**
@@ -67,14 +78,10 @@ public class StaticSiteResetPropertiesArmResource extends ProxyOnlyResource {
      * @return the StaticSiteResetPropertiesArmResource object itself.
      */
     public StaticSiteResetPropertiesArmResource withShouldUpdateRepository(Boolean shouldUpdateRepository) {
-        this.shouldUpdateRepository = shouldUpdateRepository;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public StaticSiteResetPropertiesArmResource withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StaticSiteResetPropertiesArmResourceProperties();
+        }
+        this.innerProperties().withShouldUpdateRepository(shouldUpdateRepository);
         return this;
     }
 
@@ -86,5 +93,8 @@ public class StaticSiteResetPropertiesArmResource extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

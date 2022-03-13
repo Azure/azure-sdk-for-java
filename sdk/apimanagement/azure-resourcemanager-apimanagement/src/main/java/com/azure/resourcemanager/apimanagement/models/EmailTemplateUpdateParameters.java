@@ -5,47 +5,31 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.apimanagement.fluent.models.EmailTemplateUpdateParameterProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Email Template update Parameters. */
-@JsonFlatten
 @Fluent
-public class EmailTemplateUpdateParameters {
+public final class EmailTemplateUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EmailTemplateUpdateParameters.class);
 
     /*
-     * Subject of the Template.
+     * Email Template Update contract properties.
      */
-    @JsonProperty(value = "properties.subject")
-    private String subject;
+    @JsonProperty(value = "properties")
+    private EmailTemplateUpdateParameterProperties innerProperties;
 
-    /*
-     * Title of the Template.
+    /**
+     * Get the innerProperties property: Email Template Update contract properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.title")
-    private String title;
-
-    /*
-     * Description of the Email Template.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * Email Template Body. This should be a valid XDocument
-     */
-    @JsonProperty(value = "properties.body")
-    private String body;
-
-    /*
-     * Email Template Parameter values.
-     */
-    @JsonProperty(value = "properties.parameters")
-    private List<EmailTemplateParametersContractProperties> parameters;
+    private EmailTemplateUpdateParameterProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the subject property: Subject of the Template.
@@ -53,7 +37,7 @@ public class EmailTemplateUpdateParameters {
      * @return the subject value.
      */
     public String subject() {
-        return this.subject;
+        return this.innerProperties() == null ? null : this.innerProperties().subject();
     }
 
     /**
@@ -63,7 +47,10 @@ public class EmailTemplateUpdateParameters {
      * @return the EmailTemplateUpdateParameters object itself.
      */
     public EmailTemplateUpdateParameters withSubject(String subject) {
-        this.subject = subject;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EmailTemplateUpdateParameterProperties();
+        }
+        this.innerProperties().withSubject(subject);
         return this;
     }
 
@@ -73,7 +60,7 @@ public class EmailTemplateUpdateParameters {
      * @return the title value.
      */
     public String title() {
-        return this.title;
+        return this.innerProperties() == null ? null : this.innerProperties().title();
     }
 
     /**
@@ -83,7 +70,10 @@ public class EmailTemplateUpdateParameters {
      * @return the EmailTemplateUpdateParameters object itself.
      */
     public EmailTemplateUpdateParameters withTitle(String title) {
-        this.title = title;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EmailTemplateUpdateParameterProperties();
+        }
+        this.innerProperties().withTitle(title);
         return this;
     }
 
@@ -93,7 +83,7 @@ public class EmailTemplateUpdateParameters {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -103,7 +93,10 @@ public class EmailTemplateUpdateParameters {
      * @return the EmailTemplateUpdateParameters object itself.
      */
     public EmailTemplateUpdateParameters withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EmailTemplateUpdateParameterProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -113,7 +106,7 @@ public class EmailTemplateUpdateParameters {
      * @return the body value.
      */
     public String body() {
-        return this.body;
+        return this.innerProperties() == null ? null : this.innerProperties().body();
     }
 
     /**
@@ -123,7 +116,10 @@ public class EmailTemplateUpdateParameters {
      * @return the EmailTemplateUpdateParameters object itself.
      */
     public EmailTemplateUpdateParameters withBody(String body) {
-        this.body = body;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EmailTemplateUpdateParameterProperties();
+        }
+        this.innerProperties().withBody(body);
         return this;
     }
 
@@ -133,7 +129,7 @@ public class EmailTemplateUpdateParameters {
      * @return the parameters value.
      */
     public List<EmailTemplateParametersContractProperties> parameters() {
-        return this.parameters;
+        return this.innerProperties() == null ? null : this.innerProperties().parameters();
     }
 
     /**
@@ -143,7 +139,10 @@ public class EmailTemplateUpdateParameters {
      * @return the EmailTemplateUpdateParameters object itself.
      */
     public EmailTemplateUpdateParameters withParameters(List<EmailTemplateParametersContractProperties> parameters) {
-        this.parameters = parameters;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EmailTemplateUpdateParameterProperties();
+        }
+        this.innerProperties().withParameters(parameters);
         return this;
     }
 
@@ -153,8 +152,8 @@ public class EmailTemplateUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (parameters() != null) {
-            parameters().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

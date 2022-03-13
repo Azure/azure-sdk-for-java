@@ -12,8 +12,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.redis.fluent.models.RedisPatchScheduleInner;
 import com.azure.resourcemanager.redis.models.DefaultName;
-import com.azure.resourcemanager.redis.models.ScheduleEntry;
-import java.util.List;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PatchSchedulesClient. */
@@ -26,7 +24,8 @@ public interface PatchSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all patch schedules in the specified redis cache (there is only one).
+     * @return all patch schedules in the specified redis cache (there is only one) as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<RedisPatchScheduleInner> listByRedisResourceAsync(String resourceGroupName, String cacheName);
@@ -39,7 +38,8 @@ public interface PatchSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all patch schedules in the specified redis cache (there is only one).
+     * @return all patch schedules in the specified redis cache (there is only one) as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RedisPatchScheduleInner> listByRedisResource(String resourceGroupName, String cacheName);
@@ -53,7 +53,8 @@ public interface PatchSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all patch schedules in the specified redis cache (there is only one).
+     * @return all patch schedules in the specified redis cache (there is only one) as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RedisPatchScheduleInner> listByRedisResource(
@@ -65,15 +66,16 @@ public interface PatchSchedulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
-     * @param scheduleEntries List of patch schedules for a Redis cache.
+     * @param parameters Parameters to set the patching schedule for Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to put/get patch schedules for Redis cache.
+     * @return response to put/get patch schedules for Redis cache along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<RedisPatchScheduleInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String name, DefaultName defaultParameter, List<ScheduleEntry> scheduleEntries);
+        String resourceGroupName, String name, DefaultName defaultParameter, RedisPatchScheduleInner parameters);
 
     /**
      * Create or replace the patching schedule for Redis cache.
@@ -81,15 +83,15 @@ public interface PatchSchedulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
-     * @param scheduleEntries List of patch schedules for a Redis cache.
+     * @param parameters Parameters to set the patching schedule for Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to put/get patch schedules for Redis cache.
+     * @return response to put/get patch schedules for Redis cache on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RedisPatchScheduleInner> createOrUpdateAsync(
-        String resourceGroupName, String name, DefaultName defaultParameter, List<ScheduleEntry> scheduleEntries);
+        String resourceGroupName, String name, DefaultName defaultParameter, RedisPatchScheduleInner parameters);
 
     /**
      * Create or replace the patching schedule for Redis cache.
@@ -97,7 +99,7 @@ public interface PatchSchedulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
-     * @param scheduleEntries List of patch schedules for a Redis cache.
+     * @param parameters Parameters to set the patching schedule for Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -105,7 +107,7 @@ public interface PatchSchedulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     RedisPatchScheduleInner createOrUpdate(
-        String resourceGroupName, String name, DefaultName defaultParameter, List<ScheduleEntry> scheduleEntries);
+        String resourceGroupName, String name, DefaultName defaultParameter, RedisPatchScheduleInner parameters);
 
     /**
      * Create or replace the patching schedule for Redis cache.
@@ -113,19 +115,19 @@ public interface PatchSchedulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
-     * @param scheduleEntries List of patch schedules for a Redis cache.
+     * @param parameters Parameters to set the patching schedule for Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to put/get patch schedules for Redis cache.
+     * @return response to put/get patch schedules for Redis cache along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RedisPatchScheduleInner> createOrUpdateWithResponse(
         String resourceGroupName,
         String name,
         DefaultName defaultParameter,
-        List<ScheduleEntry> scheduleEntries,
+        RedisPatchScheduleInner parameters,
         Context context);
 
     /**
@@ -137,7 +139,7 @@ public interface PatchSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String name, DefaultName defaultParameter);
@@ -151,7 +153,7 @@ public interface PatchSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String name, DefaultName defaultParameter);
@@ -179,7 +181,7 @@ public interface PatchSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
@@ -194,7 +196,8 @@ public interface PatchSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the patching schedule of a redis cache.
+     * @return the patching schedule of a redis cache along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<RedisPatchScheduleInner>> getWithResponseAsync(
@@ -209,7 +212,7 @@ public interface PatchSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the patching schedule of a redis cache.
+     * @return the patching schedule of a redis cache on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RedisPatchScheduleInner> getAsync(String resourceGroupName, String name, DefaultName defaultParameter);
@@ -238,7 +241,7 @@ public interface PatchSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the patching schedule of a redis cache.
+     * @return the patching schedule of a redis cache along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RedisPatchScheduleInner> getWithResponse(

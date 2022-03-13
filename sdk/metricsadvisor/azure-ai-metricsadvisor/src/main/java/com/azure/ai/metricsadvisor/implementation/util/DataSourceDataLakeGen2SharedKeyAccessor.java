@@ -3,7 +3,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
-import com.azure.ai.metricsadvisor.administration.models.DatasourceDataLakeGen2SharedKey;
+import com.azure.ai.metricsadvisor.administration.models.DataSourceDataLakeGen2SharedKey;
 
 public final class DataSourceDataLakeGen2SharedKeyAccessor {
     private static Accessor accessor;
@@ -13,15 +13,15 @@ public final class DataSourceDataLakeGen2SharedKeyAccessor {
 
     /**
      * Type defining the methods to set the non-public properties of
-     * an {@link DatasourceDataLakeGen2SharedKey} instance.
+     * an {@link DataSourceDataLakeGen2SharedKey} instance.
      */
     public interface Accessor {
-        void setId(DatasourceDataLakeGen2SharedKey entity, String id);
-        String getSharedKey(DatasourceDataLakeGen2SharedKey entity);
+        void setId(DataSourceDataLakeGen2SharedKey entity, String id);
+        String getSharedKey(DataSourceDataLakeGen2SharedKey entity);
     }
 
     /**
-     * The method called from {@link DatasourceDataLakeGen2SharedKey} to set it's accessor.
+     * The method called from {@link DataSourceDataLakeGen2SharedKey} to set it's accessor.
      *
      * @param accessor The accessor.
      */
@@ -29,11 +29,11 @@ public final class DataSourceDataLakeGen2SharedKeyAccessor {
         DataSourceDataLakeGen2SharedKeyAccessor.accessor = accessor;
     }
 
-    public static void setId(DatasourceDataLakeGen2SharedKey entity, String id) {
+    public static void setId(DataSourceDataLakeGen2SharedKey entity, String id) {
         accessor.setId(entity, id);
     }
 
-    public static String getSharedKey(DatasourceDataLakeGen2SharedKey entity) {
+    public static String getSharedKey(DataSourceDataLakeGen2SharedKey entity) {
         return accessor.getSharedKey(entity);
     }
 }

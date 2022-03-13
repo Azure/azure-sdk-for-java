@@ -7,6 +7,7 @@ import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -28,29 +29,12 @@ import java.util.Locale;
 public final class Utility {
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
     private static final String UTF8_CHARSET = "UTF-8";
-    private static final String INVALID_DATE_STRING = "Invalid Date String: %s.";
 
-    // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
-    // for more information on Azure resource provider namespaces.
+    /**
+     * Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
+     * for more information on Azure resource provider namespaces.
+      */
     public static final String STORAGE_TRACING_NAMESPACE_VALUE = "Microsoft.Storage";
-
-    /**
-     * Stores a reference to the date/time pattern with the greatest precision Java.util.Date is capable of expressing.
-     */
-    private static final String MAX_PRECISION_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS";
-    /**
-     * Stores a reference to the ISO8601 date/time pattern.
-     */
-    private static final String ISO8601_PATTERN = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-    /**
-     * Stores a reference to the ISO8601 date/time pattern.
-     */
-    private static final String ISO8601_PATTERN_NO_SECONDS = "yyyy-MM-dd'T'HH:mm'Z'";
-    /**
-     * The length of a datestring that matches the MAX_PRECISION_PATTERN.
-     */
-    private static final int MAX_PRECISION_DATESTRING_LENGTH = MAX_PRECISION_PATTERN.replaceAll("'", "")
-            .length();
 
 
     /**
@@ -180,33 +164,35 @@ public final class Utility {
      * @param dateString the {@code String} to be interpreted as a <code>Date</code>
      * @return the corresponding <code>Date</code> object
      * @throws IllegalArgumentException If {@code dateString} doesn't match an ISO8601 pattern
+     * @deprecated Use {@link StorageImplUtils#parseDateAndFormat(String)}
      */
+    @Deprecated
     public static OffsetDateTime parseDate(String dateString) {
-        String pattern = MAX_PRECISION_PATTERN;
+        String pattern = StorageImplUtils.MAX_PRECISION_PATTERN;
         switch (dateString.length()) {
             case 28: // "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'"-> [2012-01-04T23:21:59.1234567Z] length = 28
             case 27: // "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'"-> [2012-01-04T23:21:59.123456Z] length = 27
             case 26: // "yyyy-MM-dd'T'HH:mm:ss.SSSSS'Z'"-> [2012-01-04T23:21:59.12345Z] length = 26
             case 25: // "yyyy-MM-dd'T'HH:mm:ss.SSSS'Z'"-> [2012-01-04T23:21:59.1234Z] length = 25
             case 24: // "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"-> [2012-01-04T23:21:59.123Z] length = 24
-                dateString = dateString.substring(0, MAX_PRECISION_DATESTRING_LENGTH);
+                dateString = dateString.substring(0, StorageImplUtils.MAX_PRECISION_DATESTRING_LENGTH);
                 break;
             case 23: // "yyyy-MM-dd'T'HH:mm:ss.SS'Z'"-> [2012-01-04T23:21:59.12Z] length = 23
                 // SS is assumed to be milliseconds, so a trailing 0 is necessary
-                dateString = dateString.replace("Z", "0");
+                dateString = StorageImplUtils.Z_PATTERN.matcher(dateString).replaceAll("0");
                 break;
             case 22: // "yyyy-MM-dd'T'HH:mm:ss.S'Z'"-> [2012-01-04T23:21:59.1Z] length = 22
                 // S is assumed to be milliseconds, so trailing 0's are necessary
-                dateString = dateString.replace("Z", "00");
+                dateString = StorageImplUtils.Z_PATTERN.matcher(dateString).replaceAll("00");
                 break;
             case 20: // "yyyy-MM-dd'T'HH:mm:ss'Z'"-> [2012-01-04T23:21:59Z] length = 20
-                pattern = Utility.ISO8601_PATTERN;
+                pattern = StorageImplUtils.ISO8601_PATTERN;
                 break;
             case 17: // "yyyy-MM-dd'T'HH:mm'Z'"-> [2012-01-04T23:21Z] length = 17
-                pattern = Utility.ISO8601_PATTERN_NO_SECONDS;
+                pattern = StorageImplUtils.ISO8601_PATTERN_NO_SECONDS;
                 break;
             default:
-                throw new IllegalArgumentException(String.format(Locale.ROOT, INVALID_DATE_STRING, dateString));
+                throw new IllegalArgumentException(String.format(Locale.ROOT, StorageImplUtils.INVALID_DATE_STRING, dateString));
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, Locale.ROOT);
@@ -232,6 +218,11 @@ public final class Utility {
      * A utility method for converting the input stream to Flux of ByteBuffer. Will check the equality of entity length
      * and the input length.
      *
+     * Using markAndReset=true to force a seekable stream implies a buffering strategy is not being used, in which case
+     * length is still needed for whatever underlying REST call is being streamed to. If markAndReset=false and data is
+     * being buffered, consider using {@link com.azure.core.util.FluxUtil#toFluxByteBuffer(InputStream, int)} which
+     * does not require a data length.
+     *
      * @param data The input data which needs to convert to ByteBuffer.
      * @param length The expected input data length.
      * @param blockSize The size of each ByteBuffer.
@@ -246,6 +237,18 @@ public final class Utility {
                                                              boolean markAndReset) {
         if (markAndReset) {
             data.mark(Integer.MAX_VALUE);
+        }
+        if (length == 0) {
+            try {
+                if (data.read() != -1) {
+                    long totalLength = 1 + data.available();
+                    throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
+                        String.format("Request body emitted %d bytes, more than the expected %d bytes.",
+                            totalLength, length), totalLength, length));
+                }
+            } catch (IOException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException("I/O errors occurred", e));
+            }
         }
         return Flux.defer(() -> {
             /*
@@ -282,25 +285,27 @@ public final class Utility {
                             String.format("Request body emitted %d bytes, less than the expected %d bytes.",
                                 currentTotalLength[0], length), currentTotalLength[0], length));
                     }
-                    return ByteBuffer.wrap(cache);
-                }))
-                .doOnComplete(() -> {
-                    try {
-                        if (data.read() != -1) {
-                            long totalLength = currentTotalLength[0] + data.available();
-                            throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
-                                String.format("Request body emitted %d bytes, more than the expected %d bytes.",
-                                    totalLength, length), totalLength, length));
-                        } else if (currentTotalLength[0] > length) {
-                            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                                String.format("Read more data than was requested. Size of data read: %d. Size of data"
-                                    + " requested: %d", currentTotalLength[0], length)));
+
+                    // Validate that stream isn't longer.
+                    if (currentTotalLength[0] >= length) {
+                        try {
+                            if (data.read() != -1) {
+                                long totalLength = 1 + currentTotalLength[0] + data.available();
+                                throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
+                                    String.format("Request body emitted %d bytes, more than the expected %d bytes.",
+                                        totalLength, length), totalLength, length));
+                            } else if (currentTotalLength[0] > length) {
+                                throw LOGGER.logExceptionAsError(new IllegalStateException(
+                                    String.format("Read more data than was requested. Size of data read: %d. Size of data"
+                                        + " requested: %d", currentTotalLength[0], length)));
+                            }
+                        } catch (IOException e) {
+                            throw LOGGER.logExceptionAsError(new RuntimeException("I/O errors occurred", e));
                         }
-                    } catch (IOException e) {
-                        throw LOGGER.logExceptionAsError(new RuntimeException("I/O errors occurs. Error details: "
-                            + e.getMessage()));
                     }
-                });
+
+                    return ByteBuffer.wrap(cache, 0, offset);
+                }));
         });
     }
 

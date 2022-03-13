@@ -207,6 +207,8 @@ import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -214,10 +216,16 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.interfaces.RSAPublicKey;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -231,10 +239,13 @@ import java.util.stream.Collectors;
 /**
  * Common utils for Azure management samples.
  */
-
 public final class Utils {
 
+    // IMPORTANT: do not use SSHShell in Utils
+
     private static final ClientLogger LOGGER = new ClientLogger(Utils.class);
+
+    private static String sshPublicKey;
 
     private Utils() {
     }
@@ -244,6 +255,35 @@ public final class Utils {
         String password = new ResourceManagerUtils.InternalRuntimeContext().randomResourceName("Pa5$", 12);
         System.out.printf("Password: %s%n", password);
         return password;
+    }
+
+    /**
+     * @return an SSH public key
+     */
+    public static String sshPublicKey() {
+        if (sshPublicKey == null) {
+            try {
+                KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+                keyGen.initialize(1024);
+                KeyPair pair = keyGen.generateKeyPair();
+                PublicKey publicKey = pair.getPublic();
+
+                RSAPublicKey rsaPublicKey = (RSAPublicKey) publicKey;
+                ByteArrayOutputStream byteOs = new ByteArrayOutputStream();
+                DataOutputStream dos = new DataOutputStream(byteOs);
+                dos.writeInt("ssh-rsa".getBytes(StandardCharsets.US_ASCII).length);
+                dos.write("ssh-rsa".getBytes(StandardCharsets.US_ASCII));
+                dos.writeInt(rsaPublicKey.getPublicExponent().toByteArray().length);
+                dos.write(rsaPublicKey.getPublicExponent().toByteArray());
+                dos.writeInt(rsaPublicKey.getModulus().toByteArray().length);
+                dos.write(rsaPublicKey.getModulus().toByteArray());
+                String publicKeyEncoded = new String(Base64.getEncoder().encode(byteOs.toByteArray()), StandardCharsets.US_ASCII);
+                sshPublicKey = "ssh-rsa " + publicKeyEncoded;
+            } catch (NoSuchAlgorithmException | IOException e) {
+                throw LOGGER.logExceptionAsError(new IllegalStateException("failed to generate ssh key", e));
+            }
+        }
+        return sshPublicKey;
     }
 
     /**
@@ -1730,7 +1770,7 @@ public final class Utils {
             result = br.readLine();
             process.waitFor();
             error = ebr.readLine();
-            if (error != null && (!error.equals(""))) {
+            if (error != null && (!"".equals(error))) {
                 // To do - Log error message
 
                 if (!ignoreErrorStream) {

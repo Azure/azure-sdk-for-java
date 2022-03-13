@@ -41,7 +41,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -194,7 +193,7 @@ public final class CustomIpPrefixesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -219,7 +218,7 @@ public final class CustomIpPrefixesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -245,7 +244,7 @@ public final class CustomIpPrefixesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -270,7 +269,7 @@ public final class CustomIpPrefixesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -292,14 +291,15 @@ public final class CustomIpPrefixesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String customIpPrefixName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, customIpPrefixName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -311,9 +311,9 @@ public final class CustomIpPrefixesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String customIpPrefixName, Context context) {
         context = this.client.mergeContext(context);
@@ -331,9 +331,9 @@ public final class CustomIpPrefixesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String customIpPrefixName) {
         return beginDeleteAsync(resourceGroupName, customIpPrefixName).getSyncPoller();
     }
@@ -347,9 +347,9 @@ public final class CustomIpPrefixesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String customIpPrefixName, Context context) {
         return beginDeleteAsync(resourceGroupName, customIpPrefixName, context).getSyncPoller();
@@ -363,7 +363,7 @@ public final class CustomIpPrefixesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String customIpPrefixName) {
@@ -381,7 +381,7 @@ public final class CustomIpPrefixesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String customIpPrefixName, Context context) {
@@ -428,7 +428,8 @@ public final class CustomIpPrefixesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified custom IP prefix in a specified resource group.
+     * @return the specified custom IP prefix in a specified resource group along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CustomIpPrefixInner>> getByResourceGroupWithResponseAsync(
@@ -453,7 +454,7 @@ public final class CustomIpPrefixesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -481,7 +482,8 @@ public final class CustomIpPrefixesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified custom IP prefix in a specified resource group.
+     * @return the specified custom IP prefix in a specified resource group along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CustomIpPrefixInner>> getByResourceGroupWithResponseAsync(
@@ -506,7 +508,7 @@ public final class CustomIpPrefixesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -530,7 +532,7 @@ public final class CustomIpPrefixesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified custom IP prefix in a specified resource group.
+     * @return the specified custom IP prefix in a specified resource group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CustomIpPrefixInner> getByResourceGroupAsync(
@@ -554,7 +556,7 @@ public final class CustomIpPrefixesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified custom IP prefix in a specified resource group.
+     * @return the specified custom IP prefix in a specified resource group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CustomIpPrefixInner> getByResourceGroupAsync(String resourceGroupName, String customIpPrefixName) {
@@ -596,7 +598,7 @@ public final class CustomIpPrefixesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified custom IP prefix in a specified resource group.
+     * @return the specified custom IP prefix in a specified resource group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CustomIpPrefixInner> getByResourceGroupWithResponse(
@@ -613,7 +615,7 @@ public final class CustomIpPrefixesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom IP prefix resource.
+     * @return custom IP prefix resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -643,7 +645,7 @@ public final class CustomIpPrefixesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -671,7 +673,7 @@ public final class CustomIpPrefixesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom IP prefix resource.
+     * @return custom IP prefix resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -701,7 +703,7 @@ public final class CustomIpPrefixesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -725,9 +727,9 @@ public final class CustomIpPrefixesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom IP prefix resource.
+     * @return the {@link PollerFlux} for polling of custom IP prefix resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<CustomIpPrefixInner>, CustomIpPrefixInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String customIpPrefixName, CustomIpPrefixInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -739,7 +741,7 @@ public final class CustomIpPrefixesClientImpl
                 this.client.getHttpPipeline(),
                 CustomIpPrefixInner.class,
                 CustomIpPrefixInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -752,9 +754,9 @@ public final class CustomIpPrefixesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom IP prefix resource.
+     * @return the {@link PollerFlux} for polling of custom IP prefix resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CustomIpPrefixInner>, CustomIpPrefixInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String customIpPrefixName, CustomIpPrefixInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -775,9 +777,9 @@ public final class CustomIpPrefixesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom IP prefix resource.
+     * @return the {@link SyncPoller} for polling of custom IP prefix resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomIpPrefixInner>, CustomIpPrefixInner> beginCreateOrUpdate(
         String resourceGroupName, String customIpPrefixName, CustomIpPrefixInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, customIpPrefixName, parameters).getSyncPoller();
@@ -793,9 +795,9 @@ public final class CustomIpPrefixesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom IP prefix resource.
+     * @return the {@link SyncPoller} for polling of custom IP prefix resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomIpPrefixInner>, CustomIpPrefixInner> beginCreateOrUpdate(
         String resourceGroupName, String customIpPrefixName, CustomIpPrefixInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, customIpPrefixName, parameters, context).getSyncPoller();
@@ -810,7 +812,7 @@ public final class CustomIpPrefixesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom IP prefix resource.
+     * @return custom IP prefix resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CustomIpPrefixInner> createOrUpdateAsync(
@@ -830,7 +832,7 @@ public final class CustomIpPrefixesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom IP prefix resource.
+     * @return custom IP prefix resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CustomIpPrefixInner> createOrUpdateAsync(
@@ -880,15 +882,15 @@ public final class CustomIpPrefixesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update custom IP prefix tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom IP prefix resource.
+     * @return custom IP prefix resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CustomIpPrefixInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String customIpPrefixName, Map<String, String> tags) {
+        String resourceGroupName, String customIpPrefixName, TagsObject parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -909,10 +911,13 @@ public final class CustomIpPrefixesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
         return FluxUtil
             .withContext(
                 context ->
@@ -934,16 +939,16 @@ public final class CustomIpPrefixesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update custom IP prefix tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom IP prefix resource.
+     * @return custom IP prefix resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CustomIpPrefixInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String customIpPrefixName, Map<String, String> tags, Context context) {
+        String resourceGroupName, String customIpPrefixName, TagsObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -964,10 +969,13 @@ public final class CustomIpPrefixesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
         context = this.client.mergeContext(context);
         return service
             .updateTags(
@@ -986,16 +994,16 @@ public final class CustomIpPrefixesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update custom IP prefix tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom IP prefix resource.
+     * @return custom IP prefix resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CustomIpPrefixInner> updateTagsAsync(
-        String resourceGroupName, String customIpPrefixName, Map<String, String> tags) {
-        return updateTagsWithResponseAsync(resourceGroupName, customIpPrefixName, tags)
+        String resourceGroupName, String customIpPrefixName, TagsObject parameters) {
+        return updateTagsWithResponseAsync(resourceGroupName, customIpPrefixName, parameters)
             .flatMap(
                 (Response<CustomIpPrefixInner> res) -> {
                     if (res.getValue() != null) {
@@ -1011,23 +1019,15 @@ public final class CustomIpPrefixesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
+     * @param parameters Parameters supplied to update custom IP prefix tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return custom IP prefix resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CustomIpPrefixInner> updateTagsAsync(String resourceGroupName, String customIpPrefixName) {
-        final Map<String, String> tags = null;
-        return updateTagsWithResponseAsync(resourceGroupName, customIpPrefixName, tags)
-            .flatMap(
-                (Response<CustomIpPrefixInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public CustomIpPrefixInner updateTags(String resourceGroupName, String customIpPrefixName, TagsObject parameters) {
+        return updateTagsAsync(resourceGroupName, customIpPrefixName, parameters).block();
     }
 
     /**
@@ -1035,33 +1035,17 @@ public final class CustomIpPrefixesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom IP prefix resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CustomIpPrefixInner updateTags(String resourceGroupName, String customIpPrefixName) {
-        final Map<String, String> tags = null;
-        return updateTagsAsync(resourceGroupName, customIpPrefixName, tags).block();
-    }
-
-    /**
-     * Updates custom IP prefix tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param customIpPrefixName The name of the custom IP prefix.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update custom IP prefix tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom IP prefix resource.
+     * @return custom IP prefix resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CustomIpPrefixInner> updateTagsWithResponse(
-        String resourceGroupName, String customIpPrefixName, Map<String, String> tags, Context context) {
-        return updateTagsWithResponseAsync(resourceGroupName, customIpPrefixName, tags, context).block();
+        String resourceGroupName, String customIpPrefixName, TagsObject parameters, Context context) {
+        return updateTagsWithResponseAsync(resourceGroupName, customIpPrefixName, parameters, context).block();
     }
 
     /**
@@ -1069,7 +1053,8 @@ public final class CustomIpPrefixesClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the custom IP prefixes in a subscription.
+     * @return all the custom IP prefixes in a subscription along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomIpPrefixInner>> listSinglePageAsync() {
@@ -1085,7 +1070,7 @@ public final class CustomIpPrefixesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1111,7 +1096,8 @@ public final class CustomIpPrefixesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the custom IP prefixes in a subscription.
+     * @return all the custom IP prefixes in a subscription along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomIpPrefixInner>> listSinglePageAsync(Context context) {
@@ -1127,7 +1113,7 @@ public final class CustomIpPrefixesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1148,7 +1134,7 @@ public final class CustomIpPrefixesClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the custom IP prefixes in a subscription.
+     * @return all the custom IP prefixes in a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CustomIpPrefixInner> listAsync() {
@@ -1162,7 +1148,7 @@ public final class CustomIpPrefixesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the custom IP prefixes in a subscription.
+     * @return all the custom IP prefixes in a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CustomIpPrefixInner> listAsync(Context context) {
@@ -1175,7 +1161,7 @@ public final class CustomIpPrefixesClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the custom IP prefixes in a subscription.
+     * @return all the custom IP prefixes in a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CustomIpPrefixInner> list() {
@@ -1189,7 +1175,7 @@ public final class CustomIpPrefixesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the custom IP prefixes in a subscription.
+     * @return all the custom IP prefixes in a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CustomIpPrefixInner> list(Context context) {
@@ -1203,7 +1189,8 @@ public final class CustomIpPrefixesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all custom IP prefixes in a resource group.
+     * @return all custom IP prefixes in a resource group along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomIpPrefixInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -1223,7 +1210,7 @@ public final class CustomIpPrefixesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1256,7 +1243,8 @@ public final class CustomIpPrefixesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all custom IP prefixes in a resource group.
+     * @return all custom IP prefixes in a resource group along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomIpPrefixInner>> listByResourceGroupSinglePageAsync(
@@ -1277,7 +1265,7 @@ public final class CustomIpPrefixesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1306,7 +1294,7 @@ public final class CustomIpPrefixesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all custom IP prefixes in a resource group.
+     * @return all custom IP prefixes in a resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CustomIpPrefixInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1322,7 +1310,7 @@ public final class CustomIpPrefixesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all custom IP prefixes in a resource group.
+     * @return all custom IP prefixes in a resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CustomIpPrefixInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1338,7 +1326,7 @@ public final class CustomIpPrefixesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all custom IP prefixes in a resource group.
+     * @return all custom IP prefixes in a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CustomIpPrefixInner> listByResourceGroup(String resourceGroupName) {
@@ -1353,7 +1341,7 @@ public final class CustomIpPrefixesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all custom IP prefixes in a resource group.
+     * @return all custom IP prefixes in a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CustomIpPrefixInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1367,7 +1355,8 @@ public final class CustomIpPrefixesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListCustomIpPrefixes API service call.
+     * @return response for ListCustomIpPrefixes API service call along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomIpPrefixInner>> listAllNextSinglePageAsync(String nextLink) {
@@ -1403,7 +1392,8 @@ public final class CustomIpPrefixesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListCustomIpPrefixes API service call.
+     * @return response for ListCustomIpPrefixes API service call along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomIpPrefixInner>> listAllNextSinglePageAsync(String nextLink, Context context) {
@@ -1438,7 +1428,8 @@ public final class CustomIpPrefixesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListCustomIpPrefixes API service call.
+     * @return response for ListCustomIpPrefixes API service call along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomIpPrefixInner>> listNextSinglePageAsync(String nextLink) {
@@ -1474,7 +1465,8 @@ public final class CustomIpPrefixesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListCustomIpPrefixes API service call.
+     * @return response for ListCustomIpPrefixes API service call along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomIpPrefixInner>> listNextSinglePageAsync(String nextLink, Context context) {

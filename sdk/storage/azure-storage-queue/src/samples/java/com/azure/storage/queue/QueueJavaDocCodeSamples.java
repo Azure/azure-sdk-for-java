@@ -213,7 +213,7 @@ public class QueueJavaDocCodeSamples {
     public void sendMessageBinaryData() {
 
         // BEGIN: com.azure.storage.queue.queueClient.sendMessage#BinaryData
-        SendMessageResult response = client.sendMessage(BinaryData.fromString("hello msg"));
+        SendMessageResult response = client.sendMessage(BinaryData.fromString("Hello msg"));
         System.out.println("Complete enqueuing the message with message Id" + response.getMessageId());
         // END: com.azure.storage.queue.queueClient.sendMessage#BinaryData
     }

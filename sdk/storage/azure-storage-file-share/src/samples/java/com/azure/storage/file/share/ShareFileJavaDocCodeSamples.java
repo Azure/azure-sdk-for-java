@@ -8,6 +8,7 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
+import com.azure.storage.file.share.models.DownloadRetryOptions;
 import com.azure.storage.file.share.models.FileRange;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
@@ -23,7 +24,10 @@ import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareRequestConditions;
+import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
+import com.azure.storage.file.share.options.ShareFileRenameOptions;
+import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 
@@ -52,6 +56,7 @@ public class ShareFileJavaDocCodeSamples {
     private String leaseId = "leaseId";
     ShareFileClient client = createClientWithSASToken();
     private Duration timeout = Duration.ofSeconds(30);
+    private String destinationPath = "destinationPath";
 
     /**
      * Generates code sample for {@link ShareFileClient} instantiation.
@@ -506,6 +511,33 @@ public class ShareFileJavaDocCodeSamples {
     }
 
     /**
+     * Generates a code sample for using {@link ShareFileClient#downloadWithResponse(OutputStream, ShareFileDownloadOptions, Duration, Context)}
+     */
+    public void downloadWithOptions() {
+        ShareFileClient fileClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.downloadWithResponse#OutputStream-ShareFileDownloadOptions-Duration-Context
+        try {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+            ShareFileRange range = new ShareFileRange(1024, 2047L);
+            DownloadRetryOptions retryOptions = new DownloadRetryOptions().setMaxRetryRequests(3);
+            ShareFileDownloadOptions options = new ShareFileDownloadOptions().setRange(range)
+                .setRequestConditions(requestConditions)
+                .setRangeContentMd5Requested(false)
+                .setRetryOptions(retryOptions);
+            Response<Void> response = fileClient.downloadWithResponse(stream, options, Duration.ofSeconds(30),
+                new Context(key1, value1));
+
+            System.out.printf("Completed downloading file with status code %d%n", response.getStatusCode());
+            System.out.printf("Content of the file is: %n%s%n",
+                new String(stream.toByteArray(), StandardCharsets.UTF_8));
+        } catch (Throwable throwable) {
+            System.err.printf("Downloading failed with exception. Message: %s%n", throwable.getMessage());
+        }
+        // END: com.azure.storage.file.share.ShareFileClient.downloadWithResponse#OutputStream-ShareFileDownloadOptions-Duration-Context
+    }
+
+    /**
      * Generates a code sample for using {@link ShareFileClient#downloadToFile(String)}
      */
     public void downloadFile() {
@@ -573,6 +605,20 @@ public class ShareFileJavaDocCodeSamples {
             fileClient.uploadRangeFromUrlWithResponse(6, 8, 0, "sourceUrl", Duration.ofSeconds(1), Context.NONE);
         System.out.println("Completed upload range from url!");
         // END: com.azure.storage.file.share.ShareFileClient.uploadRangeFromUrlWithResponse#long-long-long-String-Duration-Context
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareFileClient#uploadRangeFromUrlWithResponse(ShareFileUploadRangeFromUrlOptions,
+     * Duration, Context)}
+     */
+    public void uploadFileFromURLOptionsBagWithResponseAsync() {
+        ShareFileClient fileClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.uploadRangeFromUrlWithResponse#ShareFileUploadRangeFromUrlOptions-Duration-Context
+        Response<ShareFileUploadRangeFromUrlInfo> response =
+            fileClient.uploadRangeFromUrlWithResponse(new ShareFileUploadRangeFromUrlOptions(6, "sourceUrl")
+                .setDestinationOffset(8), Duration.ofSeconds(1), Context.NONE);
+        System.out.println("Completed upload range from url!");
+        // END: com.azure.storage.file.share.ShareFileClient.uploadRangeFromUrlWithResponse#ShareFileUploadRangeFromUrlOptions-Duration-Context
     }
 
     /**
@@ -984,6 +1030,36 @@ public class ShareFileJavaDocCodeSamples {
         System.out.printf("Closed %d open handles on the file%n", closeHandlesInfo.getClosedHandles());
         System.out.printf("Failed to close %d open handles on the file%n", closeHandlesInfo.getFailedHandles());
         // END: com.azure.storage.file.share.ShareFileClient.forceCloseAllHandles#Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link ShareFileClient#rename(String)} and
+     * {@link ShareFileClient#renameWithResponse(com.azure.storage.file.share.options.ShareFileRenameOptions, Duration, Context)}
+     */
+    public void renameCodeSnippets() {
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.rename#String
+        ShareFileClient renamedClient = client.rename(destinationPath);
+        System.out.println("File Client has been renamed");
+        // END: com.azure.storage.file.share.ShareFileClient.rename#String
+
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.renameWithResponse#ShareFileRenameOptions-Duration-Context
+        FileSmbProperties smbProperties = new FileSmbProperties()
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .setFileCreationTime(OffsetDateTime.now())
+            .setFileLastWriteTime(OffsetDateTime.now())
+            .setFilePermissionKey("filePermissionKey");
+        ShareFileRenameOptions options = new ShareFileRenameOptions(destinationPath)
+            .setDestinationRequestConditions(new ShareRequestConditions().setLeaseId(leaseId))
+            .setSourceRequestConditions(new ShareRequestConditions().setLeaseId(leaseId))
+            .setIgnoreReadOnly(false)
+            .setReplaceIfExists(false)
+            .setFilePermission("filePermission")
+            .setSmbProperties(smbProperties);
+
+        ShareFileClient newRenamedClient = client.renameWithResponse(options, timeout, new Context(key1, value1))
+            .getValue();
+        System.out.println("File Client has been renamed");
+        // END: com.azure.storage.file.share.ShareFileClient.renameWithResponse#ShareFileRenameOptions-Duration-Context
     }
 
     /**

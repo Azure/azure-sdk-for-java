@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.ResourceSkusClient;
 import com.azure.resourcemanager.compute.fluent.models.ResourceSkuInner;
 import com.azure.resourcemanager.compute.models.ResourceSkusResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ResourceSkusClient. */
 public final class ResourceSkusClientImpl implements ResourceSkusClient {
-    private final ClientLogger logger = new ClientLogger(ResourceSkusClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ResourceSkusService service;
 
@@ -68,6 +65,7 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("$filter") String filter,
+            @QueryParam("includeExtendedLocations") String includeExtendedLocations,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -86,13 +84,15 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
      * Gets the list of Microsoft.Compute SKUs available for your Subscription.
      *
      * @param filter The filter to apply on the operation. Only **location** filter is supported currently.
+     * @param includeExtendedLocations To Include Extended Locations information or not in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Microsoft.
+     * @return the list of Microsoft.Compute SKUs available for your Subscription along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ResourceSkuInner>> listSinglePageAsync(String filter) {
+    private Mono<PagedResponse<ResourceSkuInner>> listSinglePageAsync(String filter, String includeExtendedLocations) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -105,7 +105,7 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -116,6 +116,7 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
                             apiVersion,
                             this.client.getSubscriptionId(),
                             filter,
+                            includeExtendedLocations,
                             accept,
                             context))
             .<PagedResponse<ResourceSkuInner>>map(
@@ -134,14 +135,17 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
      * Gets the list of Microsoft.Compute SKUs available for your Subscription.
      *
      * @param filter The filter to apply on the operation. Only **location** filter is supported currently.
+     * @param includeExtendedLocations To Include Extended Locations information or not in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Microsoft.
+     * @return the list of Microsoft.Compute SKUs available for your Subscription along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ResourceSkuInner>> listSinglePageAsync(String filter, Context context) {
+    private Mono<PagedResponse<ResourceSkuInner>> listSinglePageAsync(
+        String filter, String includeExtendedLocations, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -154,11 +158,18 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), filter, accept, context)
+            .list(
+                this.client.getEndpoint(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                filter,
+                includeExtendedLocations,
+                accept,
+                context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -174,14 +185,17 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
      * Gets the list of Microsoft.Compute SKUs available for your Subscription.
      *
      * @param filter The filter to apply on the operation. Only **location** filter is supported currently.
+     * @param includeExtendedLocations To Include Extended Locations information or not in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Microsoft.
+     * @return the list of Microsoft.Compute SKUs available for your Subscription as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ResourceSkuInner> listAsync(String filter) {
-        return new PagedFlux<>(() -> listSinglePageAsync(filter), nextLink -> listNextSinglePageAsync(nextLink));
+    public PagedFlux<ResourceSkuInner> listAsync(String filter, String includeExtendedLocations) {
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(filter, includeExtendedLocations), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -189,28 +203,34 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Microsoft.
+     * @return the list of Microsoft.Compute SKUs available for your Subscription as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ResourceSkuInner> listAsync() {
         final String filter = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(filter), nextLink -> listNextSinglePageAsync(nextLink));
+        final String includeExtendedLocations = null;
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(filter, includeExtendedLocations), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets the list of Microsoft.Compute SKUs available for your Subscription.
      *
      * @param filter The filter to apply on the operation. Only **location** filter is supported currently.
+     * @param includeExtendedLocations To Include Extended Locations information or not in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Microsoft.
+     * @return the list of Microsoft.Compute SKUs available for your Subscription as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ResourceSkuInner> listAsync(String filter, Context context) {
+    private PagedFlux<ResourceSkuInner> listAsync(String filter, String includeExtendedLocations, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, context), nextLink -> listNextSinglePageAsync(nextLink, context));
+            () -> listSinglePageAsync(filter, includeExtendedLocations, context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -218,27 +238,31 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Microsoft.
+     * @return the list of Microsoft.Compute SKUs available for your Subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceSkuInner> list() {
         final String filter = null;
-        return new PagedIterable<>(listAsync(filter));
+        final String includeExtendedLocations = null;
+        return new PagedIterable<>(listAsync(filter, includeExtendedLocations));
     }
 
     /**
      * Gets the list of Microsoft.Compute SKUs available for your Subscription.
      *
      * @param filter The filter to apply on the operation. Only **location** filter is supported currently.
+     * @param includeExtendedLocations To Include Extended Locations information or not in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Microsoft.
+     * @return the list of Microsoft.Compute SKUs available for your Subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ResourceSkuInner> list(String filter, Context context) {
-        return new PagedIterable<>(listAsync(filter, context));
+    public PagedIterable<ResourceSkuInner> list(String filter, String includeExtendedLocations, Context context) {
+        return new PagedIterable<>(listAsync(filter, includeExtendedLocations, context));
     }
 
     /**
@@ -248,7 +272,8 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Resource Skus operation response.
+     * @return the List Resource Skus operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceSkuInner>> listNextSinglePageAsync(String nextLink) {
@@ -284,7 +309,8 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Resource Skus operation response.
+     * @return the List Resource Skus operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceSkuInner>> listNextSinglePageAsync(String nextLink, Context context) {

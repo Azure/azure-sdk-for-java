@@ -5,67 +5,32 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.billing.fluent.models.EnrollmentAccountProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** An enrollment account. */
-@JsonFlatten
 @Fluent
-public class EnrollmentAccount extends ProxyResource {
+public final class EnrollmentAccount extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EnrollmentAccount.class);
 
     /*
-     * The name of the enrollment account.
+     * The properties of an enrollment account.
      */
-    @JsonProperty(value = "properties.accountName")
-    private String accountName;
+    @JsonProperty(value = "properties")
+    private EnrollmentAccountProperties innerProperties;
 
-    /*
-     * The cost center associated with the enrollment account.
+    /**
+     * Get the innerProperties property: The properties of an enrollment account.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.costCenter")
-    private String costCenter;
-
-    /*
-     * The owner of the enrollment account.
-     */
-    @JsonProperty(value = "properties.accountOwner")
-    private String accountOwner;
-
-    /*
-     * The enrollment account owner email address.
-     */
-    @JsonProperty(value = "properties.accountOwnerEmail")
-    private String accountOwnerEmail;
-
-    /*
-     * The status of the enrollment account.
-     */
-    @JsonProperty(value = "properties.status")
-    private String status;
-
-    /*
-     * The start date of the enrollment account.
-     */
-    @JsonProperty(value = "properties.startDate")
-    private OffsetDateTime startDate;
-
-    /*
-     * The end date of the enrollment account.
-     */
-    @JsonProperty(value = "properties.endDate")
-    private OffsetDateTime endDate;
-
-    /*
-     * Associated department. By default this is not populated, unless it's
-     * specified in $expand.
-     */
-    @JsonProperty(value = "properties.department")
-    private Department department;
+    private EnrollmentAccountProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the accountName property: The name of the enrollment account.
@@ -73,7 +38,7 @@ public class EnrollmentAccount extends ProxyResource {
      * @return the accountName value.
      */
     public String accountName() {
-        return this.accountName;
+        return this.innerProperties() == null ? null : this.innerProperties().accountName();
     }
 
     /**
@@ -83,7 +48,10 @@ public class EnrollmentAccount extends ProxyResource {
      * @return the EnrollmentAccount object itself.
      */
     public EnrollmentAccount withAccountName(String accountName) {
-        this.accountName = accountName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EnrollmentAccountProperties();
+        }
+        this.innerProperties().withAccountName(accountName);
         return this;
     }
 
@@ -93,7 +61,7 @@ public class EnrollmentAccount extends ProxyResource {
      * @return the costCenter value.
      */
     public String costCenter() {
-        return this.costCenter;
+        return this.innerProperties() == null ? null : this.innerProperties().costCenter();
     }
 
     /**
@@ -103,7 +71,10 @@ public class EnrollmentAccount extends ProxyResource {
      * @return the EnrollmentAccount object itself.
      */
     public EnrollmentAccount withCostCenter(String costCenter) {
-        this.costCenter = costCenter;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EnrollmentAccountProperties();
+        }
+        this.innerProperties().withCostCenter(costCenter);
         return this;
     }
 
@@ -113,7 +84,7 @@ public class EnrollmentAccount extends ProxyResource {
      * @return the accountOwner value.
      */
     public String accountOwner() {
-        return this.accountOwner;
+        return this.innerProperties() == null ? null : this.innerProperties().accountOwner();
     }
 
     /**
@@ -123,7 +94,10 @@ public class EnrollmentAccount extends ProxyResource {
      * @return the EnrollmentAccount object itself.
      */
     public EnrollmentAccount withAccountOwner(String accountOwner) {
-        this.accountOwner = accountOwner;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EnrollmentAccountProperties();
+        }
+        this.innerProperties().withAccountOwner(accountOwner);
         return this;
     }
 
@@ -133,7 +107,7 @@ public class EnrollmentAccount extends ProxyResource {
      * @return the accountOwnerEmail value.
      */
     public String accountOwnerEmail() {
-        return this.accountOwnerEmail;
+        return this.innerProperties() == null ? null : this.innerProperties().accountOwnerEmail();
     }
 
     /**
@@ -143,7 +117,10 @@ public class EnrollmentAccount extends ProxyResource {
      * @return the EnrollmentAccount object itself.
      */
     public EnrollmentAccount withAccountOwnerEmail(String accountOwnerEmail) {
-        this.accountOwnerEmail = accountOwnerEmail;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EnrollmentAccountProperties();
+        }
+        this.innerProperties().withAccountOwnerEmail(accountOwnerEmail);
         return this;
     }
 
@@ -153,7 +130,7 @@ public class EnrollmentAccount extends ProxyResource {
      * @return the status value.
      */
     public String status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -163,7 +140,10 @@ public class EnrollmentAccount extends ProxyResource {
      * @return the EnrollmentAccount object itself.
      */
     public EnrollmentAccount withStatus(String status) {
-        this.status = status;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EnrollmentAccountProperties();
+        }
+        this.innerProperties().withStatus(status);
         return this;
     }
 
@@ -173,7 +153,7 @@ public class EnrollmentAccount extends ProxyResource {
      * @return the startDate value.
      */
     public OffsetDateTime startDate() {
-        return this.startDate;
+        return this.innerProperties() == null ? null : this.innerProperties().startDate();
     }
 
     /**
@@ -183,7 +163,10 @@ public class EnrollmentAccount extends ProxyResource {
      * @return the EnrollmentAccount object itself.
      */
     public EnrollmentAccount withStartDate(OffsetDateTime startDate) {
-        this.startDate = startDate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EnrollmentAccountProperties();
+        }
+        this.innerProperties().withStartDate(startDate);
         return this;
     }
 
@@ -193,7 +176,7 @@ public class EnrollmentAccount extends ProxyResource {
      * @return the endDate value.
      */
     public OffsetDateTime endDate() {
-        return this.endDate;
+        return this.innerProperties() == null ? null : this.innerProperties().endDate();
     }
 
     /**
@@ -203,7 +186,10 @@ public class EnrollmentAccount extends ProxyResource {
      * @return the EnrollmentAccount object itself.
      */
     public EnrollmentAccount withEndDate(OffsetDateTime endDate) {
-        this.endDate = endDate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EnrollmentAccountProperties();
+        }
+        this.innerProperties().withEndDate(endDate);
         return this;
     }
 
@@ -214,7 +200,7 @@ public class EnrollmentAccount extends ProxyResource {
      * @return the department value.
      */
     public Department department() {
-        return this.department;
+        return this.innerProperties() == null ? null : this.innerProperties().department();
     }
 
     /**
@@ -225,7 +211,10 @@ public class EnrollmentAccount extends ProxyResource {
      * @return the EnrollmentAccount object itself.
      */
     public EnrollmentAccount withDepartment(Department department) {
-        this.department = department;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EnrollmentAccountProperties();
+        }
+        this.innerProperties().withDepartment(department);
         return this;
     }
 
@@ -235,8 +224,8 @@ public class EnrollmentAccount extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (department() != null) {
-            department().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

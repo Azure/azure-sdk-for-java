@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.AzureSearchIndexDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,38 +17,23 @@ import java.util.Map;
 /** The Azure Search Index. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureSearchIndex")
-@JsonFlatten
 @Fluent
-public class AzureSearchIndexDataset extends Dataset {
+public final class AzureSearchIndexDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureSearchIndexDataset.class);
 
     /*
-     * The name of the Azure Search Index. Type: string (or Expression with
-     * resultType string).
+     * Properties specific to this dataset type.
      */
-    @JsonProperty(value = "typeProperties.indexName", required = true)
-    private Object indexName;
+    @JsonProperty(value = "typeProperties", required = true)
+    private AzureSearchIndexDatasetTypeProperties innerTypeProperties = new AzureSearchIndexDatasetTypeProperties();
 
     /**
-     * Get the indexName property: The name of the Azure Search Index. Type: string (or Expression with resultType
-     * string).
+     * Get the innerTypeProperties property: Properties specific to this dataset type.
      *
-     * @return the indexName value.
+     * @return the innerTypeProperties value.
      */
-    public Object indexName() {
-        return this.indexName;
-    }
-
-    /**
-     * Set the indexName property: The name of the Azure Search Index. Type: string (or Expression with resultType
-     * string).
-     *
-     * @param indexName the indexName value to set.
-     * @return the AzureSearchIndexDataset object itself.
-     */
-    public AzureSearchIndexDataset withIndexName(Object indexName) {
-        this.indexName = indexName;
-        return this;
+    private AzureSearchIndexDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -101,6 +86,31 @@ public class AzureSearchIndexDataset extends Dataset {
     }
 
     /**
+     * Get the indexName property: The name of the Azure Search Index. Type: string (or Expression with resultType
+     * string).
+     *
+     * @return the indexName value.
+     */
+    public Object indexName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().indexName();
+    }
+
+    /**
+     * Set the indexName property: The name of the Azure Search Index. Type: string (or Expression with resultType
+     * string).
+     *
+     * @param indexName the indexName value to set.
+     * @return the AzureSearchIndexDataset object itself.
+     */
+    public AzureSearchIndexDataset withIndexName(Object indexName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureSearchIndexDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withIndexName(indexName);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -108,11 +118,13 @@ public class AzureSearchIndexDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
-        if (indexName() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property indexName in model AzureSearchIndexDataset"));
+                        "Missing required property innerTypeProperties in model AzureSearchIndexDataset"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

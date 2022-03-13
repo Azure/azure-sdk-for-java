@@ -10,20 +10,20 @@ import java.util.Collection;
 
 /** Defines values for State. */
 public final class State extends ExpandableStringEnum<State> {
-    /** Static value provisioning for State. */
-    public static final State PROVISIONING = fromString("provisioning");
+    /** Static value Provisioning for State. */
+    public static final State PROVISIONING = fromString("Provisioning");
 
-    /** Static value deprovisioning for State. */
-    public static final State DEPROVISIONING = fromString("deprovisioning");
+    /** Static value Deprovisioning for State. */
+    public static final State DEPROVISIONING = fromString("Deprovisioning");
 
-    /** Static value succeeded for State. */
-    public static final State SUCCEEDED = fromString("succeeded");
+    /** Static value Succeeded for State. */
+    public static final State SUCCEEDED = fromString("Succeeded");
 
-    /** Static value failed for State. */
-    public static final State FAILED = fromString("failed");
+    /** Static value Failed for State. */
+    public static final State FAILED = fromString("Failed");
 
-    /** Static value networkSourceDeleted for State. */
-    public static final State NETWORK_SOURCE_DELETED = fromString("networkSourceDeleted");
+    /** Static value NetworkSourceDeleted for State. */
+    public static final State NETWORK_SOURCE_DELETED = fromString("NetworkSourceDeleted");
 
     /**
      * Creates or finds a State from its string representation.

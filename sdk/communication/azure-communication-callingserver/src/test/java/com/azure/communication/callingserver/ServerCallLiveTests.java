@@ -13,7 +13,6 @@ import com.azure.communication.callingserver.models.MediaType;
 import com.azure.communication.callingserver.models.PlayAudioOptions;
 import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.communication.callingserver.models.StartCallRecordingResult;
-import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.HttpClient;
@@ -24,6 +23,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,15 +36,29 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ServerCallLiveTests extends CallingServerTestBase {
 
-    private final String fromUser = getNewUserId();
-    private final String toUser = getNewUserId();
+    private final String fromUser = getRandomUserId();
+    private final String toUser = getRandomUserId();
+
+    
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void runAllClientFunctionsForConnectionStringClient(HttpClient httpClient) {
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
+        CallingServerClient connectionStringClient = setupClient(builder, "runAllClientFunctionsForConnectionStringClient");
+        String groupId = getGroupId("runAllClientFunctionsForConnectionStringClient");
+        runAllClientFunctions(groupId, connectionStringClient);
+    }    
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void runAllClientFunctions(HttpClient httpClient) {
-        String groupId = getGroupId("runAllClientFunctions");
-        CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
-        CallingServerClient callingServerClient = setupClient(builder, "runAllClientFunctions");
+    public void runAllClientFunctionsForTokenCredentialClient(HttpClient httpClient) {
+        CallingServerClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
+        CallingServerClient connectionStringClient = setupClient(builder, "runAllClientFunctionsForTokenCredentialClient");
+        String groupId = getGroupId("runAllClientFunctionsForTokenCredentialClient");
+        runAllClientFunctions(groupId, connectionStringClient);
+    }
+
+    private void runAllClientFunctions(String groupId, CallingServerClient callingServerClient) {
         String recordingId = "";
         List<CallConnection> callConnections = new ArrayList<>();
         ServerCall serverCall = null;
@@ -82,7 +96,7 @@ public class ServerCallLiveTests extends CallingServerTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runAllClientFunctionsWithResponse(HttpClient httpClient) {
         String groupId = getGroupId("runAllClientFunctionsWithResponse");
-        CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runAllClientFunctionsWithResponse");
         String recordingId = "";
         List<CallConnection> callConnections = new ArrayList<>();
@@ -93,7 +107,7 @@ public class ServerCallLiveTests extends CallingServerTestBase {
             serverCall = callingServerClient.initializeServerCall(groupId);
 
             Response<StartCallRecordingResult> startRecordingResponse =
-                serverCall.startRecordingWithResponse(CALLBACK_URI, null);
+                serverCall.startRecordingWithResponse(CALLBACK_URI, null, null);
             assertEquals(startRecordingResponse.getStatusCode(), 200);
             StartCallRecordingResult startCallRecordingResult = startRecordingResponse.getValue();
             recordingId = startCallRecordingResult.getRecordingId();
@@ -127,7 +141,7 @@ public class ServerCallLiveTests extends CallingServerTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runPlayAudioFunction(HttpClient httpClient) {
         String groupId = getGroupId("runPlayAudioFunction");
-        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runPlayAudioFunction");
         ServerCall serverCall;
 
@@ -158,7 +172,7 @@ public class ServerCallLiveTests extends CallingServerTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runPlayAudioFunctionWithResponse(HttpClient httpClient) {
         String groupId = getGroupId("runPlayAudioFunctionWithResponse");
-        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runPlayAudioFunctionWithResponse");
         ServerCall serverCall;
 
@@ -167,13 +181,16 @@ public class ServerCallLiveTests extends CallingServerTestBase {
 
         try {
             callConnections = createCall(callingServerClient, groupId, fromUser, toUser, CALLBACK_URI);
+            PlayAudioOptions playAudioOptions =
+                new PlayAudioOptions()
+                    .setLoop(false)
+                    .setAudioFileId(UUID.randomUUID().toString())
+                    .setCallbackUri(CALLBACK_URI)
+                    .setOperationContext(operationContext);
             serverCall = callingServerClient.initializeServerCall(groupId);
 
             Response<PlayAudioResult> playAudioResult =
-                serverCall.playAudioWithResponse(
-                    AUDIO_FILE_URI, operationContext,
-                    CALLBACK_URI, operationContext,
-                    Context.NONE);
+                serverCall.playAudioWithResponse(AUDIO_FILE_URI, playAudioOptions, Context.NONE);
             validatePlayAudioResponse(playAudioResult);
 
         } catch (Exception e) {
@@ -187,14 +204,14 @@ public class ServerCallLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void startRecordingFails(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "startRecordingFails");
         String invalidServerCallId = "aHR0cHM6Ly9jb252LXVzd2UtMDkuY29udi5za3lwZS5jb20vY29udi9EZVF2WEJGVVlFV1NNZkFXYno2azN3P2k9MTEmZT02Mzc1NzIyMjk0Mjc0NTI4Nzk=";
         ServerCall serverCall = callingServerClient.initializeServerCall(invalidServerCallId);
 
         try {
             Response<StartCallRecordingResult> response =
-                serverCall.startRecordingWithResponse(CALLBACK_URI, Context.NONE);
+                serverCall.startRecordingWithResponse(CALLBACK_URI, null, Context.NONE);
             assertEquals(response.getStatusCode(), 400);
         } catch (CallingServerErrorException e) {
             assertEquals(e.getResponse().getStatusCode(), 400);
@@ -204,24 +221,24 @@ public class ServerCallLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
-        named = "RUN_CALLINGSERVER_TEST_RECORD",
+        named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void runAddRemoveScenario(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runAddRemoveScenario");
         try {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
                 CALLBACK_URI,
-                new MediaType[] { MediaType.AUDIO },
-                new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
+                Collections.singletonList(MediaType.AUDIO),
+                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
 
             CallConnection callConnection = callingServerClient.createCallConnection(
                 new CommunicationUserIdentifier(fromUser),
-                new CommunicationIdentifier[] { new PhoneNumberIdentifier(TO_PHONE_NUMBER) },
+                Collections.singletonList(new PhoneNumberIdentifier(TO_PHONE_NUMBER)),
                 options);
 
             validateCallConnection(callConnection);
@@ -257,25 +274,25 @@ public class ServerCallLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
-        named = "RUN_CALLINGSERVER_TEST_RECORD",
+        named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void runAddRemoveScenarioWithResponse(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runAddRemoveScenarioWithResponse");
 
         try {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
                 CALLBACK_URI,
-                new MediaType[] { MediaType.AUDIO },
-                new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
+                Collections.singletonList(MediaType.AUDIO),
+                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
 
             CallConnection callConnection = callingServerClient.createCallConnection(
                 new CommunicationUserIdentifier(fromUser),
-                new CommunicationIdentifier[] { new PhoneNumberIdentifier(TO_PHONE_NUMBER) },
+                Collections.singletonList(new PhoneNumberIdentifier(TO_PHONE_NUMBER)),
                 options);
 
             validateCallConnection(callConnection);

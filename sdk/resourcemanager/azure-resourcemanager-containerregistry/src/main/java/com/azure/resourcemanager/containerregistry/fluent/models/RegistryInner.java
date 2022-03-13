@@ -5,23 +5,28 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.containerregistry.models.EncryptionProperty;
+import com.azure.resourcemanager.containerregistry.models.IdentityProperties;
+import com.azure.resourcemanager.containerregistry.models.NetworkRuleBypassOptions;
 import com.azure.resourcemanager.containerregistry.models.NetworkRuleSet;
 import com.azure.resourcemanager.containerregistry.models.Policies;
 import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
+import com.azure.resourcemanager.containerregistry.models.PublicNetworkAccess;
 import com.azure.resourcemanager.containerregistry.models.Sku;
 import com.azure.resourcemanager.containerregistry.models.Status;
-import com.azure.resourcemanager.containerregistry.models.StorageAccountProperties;
+import com.azure.resourcemanager.containerregistry.models.ZoneRedundancy;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Map;
 
 /** An object that represents a container registry. */
-@JsonFlatten
 @Fluent
-public class RegistryInner extends Resource {
+public final class RegistryInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RegistryInner.class);
 
     /*
@@ -31,55 +36,22 @@ public class RegistryInner extends Resource {
     private Sku sku;
 
     /*
-     * The URL that can be used to log into the container registry.
+     * The identity of the container registry.
      */
-    @JsonProperty(value = "properties.loginServer", access = JsonProperty.Access.WRITE_ONLY)
-    private String loginServer;
+    @JsonProperty(value = "identity")
+    private IdentityProperties identity;
 
     /*
-     * The creation date of the container registry in ISO8601 format.
+     * The properties of the container registry.
      */
-    @JsonProperty(value = "properties.creationDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationDate;
+    @JsonProperty(value = "properties")
+    private RegistryProperties innerProperties;
 
     /*
-     * The provisioning state of the container registry at the time the
-     * operation was called.
+     * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The status of the container registry at the time the operation was
-     * called.
-     */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private Status status;
-
-    /*
-     * The value that indicates whether the admin user is enabled.
-     */
-    @JsonProperty(value = "properties.adminUserEnabled")
-    private Boolean adminUserEnabled;
-
-    /*
-     * The properties of the storage account for the container registry. Only
-     * applicable to Classic SKU.
-     */
-    @JsonProperty(value = "properties.storageAccount")
-    private StorageAccountProperties storageAccount;
-
-    /*
-     * The network rule set for a container registry.
-     */
-    @JsonProperty(value = "properties.networkRuleSet")
-    private NetworkRuleSet networkRuleSet;
-
-    /*
-     * The policies for a container registry.
-     */
-    @JsonProperty(value = "properties.policies")
-    private Policies policies;
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /**
      * Get the sku property: The SKU of the container registry.
@@ -102,12 +74,64 @@ public class RegistryInner extends Resource {
     }
 
     /**
+     * Get the identity property: The identity of the container registry.
+     *
+     * @return the identity value.
+     */
+    public IdentityProperties identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity of the container registry.
+     *
+     * @param identity the identity value to set.
+     * @return the RegistryInner object itself.
+     */
+    public RegistryInner withIdentity(IdentityProperties identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the innerProperties property: The properties of the container registry.
+     *
+     * @return the innerProperties value.
+     */
+    private RegistryProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RegistryInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RegistryInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
      * Get the loginServer property: The URL that can be used to log into the container registry.
      *
      * @return the loginServer value.
      */
     public String loginServer() {
-        return this.loginServer;
+        return this.innerProperties() == null ? null : this.innerProperties().loginServer();
     }
 
     /**
@@ -116,7 +140,7 @@ public class RegistryInner extends Resource {
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
-        return this.creationDate;
+        return this.innerProperties() == null ? null : this.innerProperties().creationDate();
     }
 
     /**
@@ -126,7 +150,7 @@ public class RegistryInner extends Resource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -135,7 +159,7 @@ public class RegistryInner extends Resource {
      * @return the status value.
      */
     public Status status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -144,7 +168,7 @@ public class RegistryInner extends Resource {
      * @return the adminUserEnabled value.
      */
     public Boolean adminUserEnabled() {
-        return this.adminUserEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().adminUserEnabled();
     }
 
     /**
@@ -154,29 +178,10 @@ public class RegistryInner extends Resource {
      * @return the RegistryInner object itself.
      */
     public RegistryInner withAdminUserEnabled(Boolean adminUserEnabled) {
-        this.adminUserEnabled = adminUserEnabled;
-        return this;
-    }
-
-    /**
-     * Get the storageAccount property: The properties of the storage account for the container registry. Only
-     * applicable to Classic SKU.
-     *
-     * @return the storageAccount value.
-     */
-    public StorageAccountProperties storageAccount() {
-        return this.storageAccount;
-    }
-
-    /**
-     * Set the storageAccount property: The properties of the storage account for the container registry. Only
-     * applicable to Classic SKU.
-     *
-     * @param storageAccount the storageAccount value to set.
-     * @return the RegistryInner object itself.
-     */
-    public RegistryInner withStorageAccount(StorageAccountProperties storageAccount) {
-        this.storageAccount = storageAccount;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegistryProperties();
+        }
+        this.innerProperties().withAdminUserEnabled(adminUserEnabled);
         return this;
     }
 
@@ -186,7 +191,7 @@ public class RegistryInner extends Resource {
      * @return the networkRuleSet value.
      */
     public NetworkRuleSet networkRuleSet() {
-        return this.networkRuleSet;
+        return this.innerProperties() == null ? null : this.innerProperties().networkRuleSet();
     }
 
     /**
@@ -196,7 +201,10 @@ public class RegistryInner extends Resource {
      * @return the RegistryInner object itself.
      */
     public RegistryInner withNetworkRuleSet(NetworkRuleSet networkRuleSet) {
-        this.networkRuleSet = networkRuleSet;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegistryProperties();
+        }
+        this.innerProperties().withNetworkRuleSet(networkRuleSet);
         return this;
     }
 
@@ -206,7 +214,7 @@ public class RegistryInner extends Resource {
      * @return the policies value.
      */
     public Policies policies() {
-        return this.policies;
+        return this.innerProperties() == null ? null : this.innerProperties().policies();
     }
 
     /**
@@ -216,7 +224,145 @@ public class RegistryInner extends Resource {
      * @return the RegistryInner object itself.
      */
     public RegistryInner withPolicies(Policies policies) {
-        this.policies = policies;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegistryProperties();
+        }
+        this.innerProperties().withPolicies(policies);
+        return this;
+    }
+
+    /**
+     * Get the encryption property: The encryption settings of container registry.
+     *
+     * @return the encryption value.
+     */
+    public EncryptionProperty encryption() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
+    }
+
+    /**
+     * Set the encryption property: The encryption settings of container registry.
+     *
+     * @param encryption the encryption value to set.
+     * @return the RegistryInner object itself.
+     */
+    public RegistryInner withEncryption(EncryptionProperty encryption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegistryProperties();
+        }
+        this.innerProperties().withEncryption(encryption);
+        return this;
+    }
+
+    /**
+     * Get the dataEndpointEnabled property: Enable a single data endpoint per region for serving data.
+     *
+     * @return the dataEndpointEnabled value.
+     */
+    public Boolean dataEndpointEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataEndpointEnabled();
+    }
+
+    /**
+     * Set the dataEndpointEnabled property: Enable a single data endpoint per region for serving data.
+     *
+     * @param dataEndpointEnabled the dataEndpointEnabled value to set.
+     * @return the RegistryInner object itself.
+     */
+    public RegistryInner withDataEndpointEnabled(Boolean dataEndpointEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegistryProperties();
+        }
+        this.innerProperties().withDataEndpointEnabled(dataEndpointEnabled);
+        return this;
+    }
+
+    /**
+     * Get the dataEndpointHostNames property: List of host names that will serve data when dataEndpointEnabled is true.
+     *
+     * @return the dataEndpointHostNames value.
+     */
+    public List<String> dataEndpointHostNames() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataEndpointHostNames();
+    }
+
+    /**
+     * Get the privateEndpointConnections property: List of private endpoint connections for a container registry.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Whether or not public network access is allowed for the container registry.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Whether or not public network access is allowed for the container registry.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the RegistryInner object itself.
+     */
+    public RegistryInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegistryProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network restricted
+     * registry.
+     *
+     * @return the networkRuleBypassOptions value.
+     */
+    public NetworkRuleBypassOptions networkRuleBypassOptions() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkRuleBypassOptions();
+    }
+
+    /**
+     * Set the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network restricted
+     * registry.
+     *
+     * @param networkRuleBypassOptions the networkRuleBypassOptions value to set.
+     * @return the RegistryInner object itself.
+     */
+    public RegistryInner withNetworkRuleBypassOptions(NetworkRuleBypassOptions networkRuleBypassOptions) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegistryProperties();
+        }
+        this.innerProperties().withNetworkRuleBypassOptions(networkRuleBypassOptions);
+        return this;
+    }
+
+    /**
+     * Get the zoneRedundancy property: Whether or not zone redundancy is enabled for this container registry.
+     *
+     * @return the zoneRedundancy value.
+     */
+    public ZoneRedundancy zoneRedundancy() {
+        return this.innerProperties() == null ? null : this.innerProperties().zoneRedundancy();
+    }
+
+    /**
+     * Set the zoneRedundancy property: Whether or not zone redundancy is enabled for this container registry.
+     *
+     * @param zoneRedundancy the zoneRedundancy value to set.
+     * @return the RegistryInner object itself.
+     */
+    public RegistryInner withZoneRedundancy(ZoneRedundancy zoneRedundancy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegistryProperties();
+        }
+        this.innerProperties().withZoneRedundancy(zoneRedundancy);
         return this;
     }
 
@@ -233,17 +379,11 @@ public class RegistryInner extends Resource {
         } else {
             sku().validate();
         }
-        if (status() != null) {
-            status().validate();
+        if (identity() != null) {
+            identity().validate();
         }
-        if (storageAccount() != null) {
-            storageAccount().validate();
-        }
-        if (networkRuleSet() != null) {
-            networkRuleSet().validate();
-        }
-        if (policies() != null) {
-            policies().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

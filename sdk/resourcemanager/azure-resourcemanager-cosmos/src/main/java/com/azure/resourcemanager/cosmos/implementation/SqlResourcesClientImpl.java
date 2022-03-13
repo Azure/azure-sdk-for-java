@@ -1210,7 +1210,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB SQL database.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<SqlDatabaseGetResultsInner>, SqlDatabaseGetResultsInner>
         beginCreateUpdateSqlDatabaseAsync(
             String resourceGroupName,
@@ -1227,7 +1227,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 this.client.getHttpPipeline(),
                 SqlDatabaseGetResultsInner.class,
                 SqlDatabaseGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1243,7 +1243,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB SQL database.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SqlDatabaseGetResultsInner>, SqlDatabaseGetResultsInner>
         beginCreateUpdateSqlDatabaseAsync(
             String resourceGroupName,
@@ -1277,7 +1277,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB SQL database.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SqlDatabaseGetResultsInner>, SqlDatabaseGetResultsInner> beginCreateUpdateSqlDatabase(
         String resourceGroupName,
         String accountName,
@@ -1301,7 +1301,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB SQL database.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SqlDatabaseGetResultsInner>, SqlDatabaseGetResultsInner> beginCreateUpdateSqlDatabase(
         String resourceGroupName,
         String accountName,
@@ -1522,14 +1522,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteSqlDatabaseAsync(
         String resourceGroupName, String accountName, String databaseName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteSqlDatabaseWithResponseAsync(resourceGroupName, accountName, databaseName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1544,7 +1545,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteSqlDatabaseAsync(
         String resourceGroupName, String accountName, String databaseName, Context context) {
         context = this.client.mergeContext(context);
@@ -1566,7 +1567,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSqlDatabase(
         String resourceGroupName, String accountName, String databaseName) {
         return beginDeleteSqlDatabaseAsync(resourceGroupName, accountName, databaseName).getSyncPoller();
@@ -1584,7 +1585,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSqlDatabase(
         String resourceGroupName, String accountName, String databaseName, Context context) {
         return beginDeleteSqlDatabaseAsync(resourceGroupName, accountName, databaseName, context).getSyncPoller();
@@ -1976,7 +1977,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateSqlDatabaseThroughputAsync(
             String resourceGroupName,
@@ -1993,7 +1994,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2009,7 +2010,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateSqlDatabaseThroughputAsync(
             String resourceGroupName,
@@ -2043,7 +2044,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateSqlDatabaseThroughput(
             String resourceGroupName,
@@ -2068,7 +2069,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateSqlDatabaseThroughput(
             String resourceGroupName,
@@ -2294,7 +2295,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateSqlDatabaseToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -2306,7 +2307,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2321,7 +2322,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateSqlDatabaseToAutoscaleAsync(
             String resourceGroupName, String accountName, String databaseName, Context context) {
@@ -2349,7 +2350,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateSqlDatabaseToAutoscale(String resourceGroupName, String accountName, String databaseName) {
         return beginMigrateSqlDatabaseToAutoscaleAsync(resourceGroupName, accountName, databaseName).getSyncPoller();
@@ -2367,7 +2368,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateSqlDatabaseToAutoscale(
             String resourceGroupName, String accountName, String databaseName, Context context) {
@@ -2564,7 +2565,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateSqlDatabaseToManualThroughputAsync(
             String resourceGroupName, String accountName, String databaseName) {
@@ -2577,7 +2578,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2592,7 +2593,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateSqlDatabaseToManualThroughputAsync(
             String resourceGroupName, String accountName, String databaseName, Context context) {
@@ -2621,7 +2622,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateSqlDatabaseToManualThroughput(String resourceGroupName, String accountName, String databaseName) {
         return beginMigrateSqlDatabaseToManualThroughputAsync(resourceGroupName, accountName, databaseName)
@@ -2640,7 +2641,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateSqlDatabaseToManualThroughput(
             String resourceGroupName, String accountName, String databaseName, Context context) {
@@ -3239,7 +3240,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB container.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner>
         beginCreateUpdateSqlContainerAsync(
             String resourceGroupName,
@@ -3257,7 +3258,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 this.client.getHttpPipeline(),
                 SqlContainerGetResultsInner.class,
                 SqlContainerGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -3274,7 +3275,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB container.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner>
         beginCreateUpdateSqlContainerAsync(
             String resourceGroupName,
@@ -3315,7 +3316,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB container.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner>
         beginCreateUpdateSqlContainer(
             String resourceGroupName,
@@ -3342,7 +3343,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB container.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner>
         beginCreateUpdateSqlContainer(
             String resourceGroupName,
@@ -3599,14 +3600,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteSqlContainerAsync(
         String resourceGroupName, String accountName, String databaseName, String containerName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteSqlContainerWithResponseAsync(resourceGroupName, accountName, databaseName, containerName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -3622,7 +3624,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteSqlContainerAsync(
         String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
         context = this.client.mergeContext(context);
@@ -3645,7 +3647,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSqlContainer(
         String resourceGroupName, String accountName, String databaseName, String containerName) {
         return beginDeleteSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName)
@@ -3665,7 +3667,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSqlContainer(
         String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
         return beginDeleteSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName, context)
@@ -4083,7 +4085,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateSqlContainerThroughputAsync(
             String resourceGroupName,
@@ -4101,7 +4103,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -4118,7 +4120,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateSqlContainerThroughputAsync(
             String resourceGroupName,
@@ -4154,7 +4156,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateSqlContainerThroughput(
             String resourceGroupName,
@@ -4181,7 +4183,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateSqlContainerThroughput(
             String resourceGroupName,
@@ -4427,7 +4429,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateSqlContainerToAutoscaleAsync(
             String resourceGroupName, String accountName, String databaseName, String containerName) {
@@ -4441,7 +4443,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -4457,7 +4459,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateSqlContainerToAutoscaleAsync(
             String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
@@ -4487,7 +4489,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateSqlContainerToAutoscale(
             String resourceGroupName, String accountName, String databaseName, String containerName) {
@@ -4508,7 +4510,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateSqlContainerToAutoscale(
             String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
@@ -4723,7 +4725,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateSqlContainerToManualThroughputAsync(
             String resourceGroupName, String accountName, String databaseName, String containerName) {
@@ -4737,7 +4739,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -4753,7 +4755,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateSqlContainerToManualThroughputAsync(
             String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
@@ -4783,7 +4785,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateSqlContainerToManualThroughput(
             String resourceGroupName, String accountName, String databaseName, String containerName) {
@@ -4805,7 +4807,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateSqlContainerToManualThroughput(
             String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
@@ -5489,7 +5491,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB storedProcedure.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<SqlStoredProcedureGetResultsInner>, SqlStoredProcedureGetResultsInner>
         beginCreateUpdateSqlStoredProcedureAsync(
             String resourceGroupName,
@@ -5513,7 +5515,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 this.client.getHttpPipeline(),
                 SqlStoredProcedureGetResultsInner.class,
                 SqlStoredProcedureGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -5531,7 +5533,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB storedProcedure.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SqlStoredProcedureGetResultsInner>, SqlStoredProcedureGetResultsInner>
         beginCreateUpdateSqlStoredProcedureAsync(
             String resourceGroupName,
@@ -5575,7 +5577,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB storedProcedure.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SqlStoredProcedureGetResultsInner>, SqlStoredProcedureGetResultsInner>
         beginCreateUpdateSqlStoredProcedure(
             String resourceGroupName,
@@ -5609,7 +5611,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB storedProcedure.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SqlStoredProcedureGetResultsInner>, SqlStoredProcedureGetResultsInner>
         beginCreateUpdateSqlStoredProcedure(
             String resourceGroupName,
@@ -5910,7 +5912,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteSqlStoredProcedureAsync(
         String resourceGroupName,
         String accountName,
@@ -5922,7 +5924,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 resourceGroupName, accountName, databaseName, containerName, storedProcedureName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -5939,7 +5942,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteSqlStoredProcedureAsync(
         String resourceGroupName,
         String accountName,
@@ -5969,7 +5972,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSqlStoredProcedure(
         String resourceGroupName,
         String accountName,
@@ -5995,7 +5998,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSqlStoredProcedure(
         String resourceGroupName,
         String accountName,
@@ -6712,7 +6715,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB userDefinedFunction.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<SqlUserDefinedFunctionGetResultsInner>, SqlUserDefinedFunctionGetResultsInner>
         beginCreateUpdateSqlUserDefinedFunctionAsync(
             String resourceGroupName,
@@ -6736,7 +6739,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 this.client.getHttpPipeline(),
                 SqlUserDefinedFunctionGetResultsInner.class,
                 SqlUserDefinedFunctionGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -6755,7 +6758,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB userDefinedFunction.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SqlUserDefinedFunctionGetResultsInner>, SqlUserDefinedFunctionGetResultsInner>
         beginCreateUpdateSqlUserDefinedFunctionAsync(
             String resourceGroupName,
@@ -6800,7 +6803,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB userDefinedFunction.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SqlUserDefinedFunctionGetResultsInner>, SqlUserDefinedFunctionGetResultsInner>
         beginCreateUpdateSqlUserDefinedFunction(
             String resourceGroupName,
@@ -6835,7 +6838,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB userDefinedFunction.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SqlUserDefinedFunctionGetResultsInner>, SqlUserDefinedFunctionGetResultsInner>
         beginCreateUpdateSqlUserDefinedFunction(
             String resourceGroupName,
@@ -7142,7 +7145,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteSqlUserDefinedFunctionAsync(
         String resourceGroupName,
         String accountName,
@@ -7154,7 +7157,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -7171,7 +7175,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteSqlUserDefinedFunctionAsync(
         String resourceGroupName,
         String accountName,
@@ -7201,7 +7205,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSqlUserDefinedFunction(
         String resourceGroupName,
         String accountName,
@@ -7227,7 +7231,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSqlUserDefinedFunction(
         String resourceGroupName,
         String accountName,
@@ -7914,7 +7918,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB trigger.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<SqlTriggerGetResultsInner>, SqlTriggerGetResultsInner>
         beginCreateUpdateSqlTriggerAsync(
             String resourceGroupName,
@@ -7938,7 +7942,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 this.client.getHttpPipeline(),
                 SqlTriggerGetResultsInner.class,
                 SqlTriggerGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -7956,7 +7960,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB trigger.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SqlTriggerGetResultsInner>, SqlTriggerGetResultsInner>
         beginCreateUpdateSqlTriggerAsync(
             String resourceGroupName,
@@ -8000,7 +8004,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB trigger.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SqlTriggerGetResultsInner>, SqlTriggerGetResultsInner> beginCreateUpdateSqlTrigger(
         String resourceGroupName,
         String accountName,
@@ -8033,7 +8037,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB trigger.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SqlTriggerGetResultsInner>, SqlTriggerGetResultsInner> beginCreateUpdateSqlTrigger(
         String resourceGroupName,
         String accountName,
@@ -8327,14 +8331,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteSqlTriggerAsync(
         String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteSqlTriggerWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, triggerName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -8351,7 +8356,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteSqlTriggerAsync(
         String resourceGroupName,
         String accountName,
@@ -8381,7 +8386,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSqlTrigger(
         String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName) {
         return beginDeleteSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName)
@@ -8402,7 +8407,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSqlTrigger(
         String resourceGroupName,
         String accountName,
@@ -8818,7 +8823,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB SQL Role Definition.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<SqlRoleDefinitionGetResultsInner>, SqlRoleDefinitionGetResultsInner>
         beginCreateUpdateSqlRoleDefinitionAsync(
             String roleDefinitionId,
@@ -8835,7 +8840,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 this.client.getHttpPipeline(),
                 SqlRoleDefinitionGetResultsInner.class,
                 SqlRoleDefinitionGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -8851,7 +8856,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB SQL Role Definition.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SqlRoleDefinitionGetResultsInner>, SqlRoleDefinitionGetResultsInner>
         beginCreateUpdateSqlRoleDefinitionAsync(
             String roleDefinitionId,
@@ -8885,7 +8890,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB SQL Role Definition.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SqlRoleDefinitionGetResultsInner>, SqlRoleDefinitionGetResultsInner>
         beginCreateUpdateSqlRoleDefinition(
             String roleDefinitionId,
@@ -8910,7 +8915,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB SQL Role Definition.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SqlRoleDefinitionGetResultsInner>, SqlRoleDefinitionGetResultsInner>
         beginCreateUpdateSqlRoleDefinition(
             String roleDefinitionId,
@@ -9138,14 +9143,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteSqlRoleDefinitionAsync(
         String roleDefinitionId, String resourceGroupName, String accountName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteSqlRoleDefinitionWithResponseAsync(roleDefinitionId, resourceGroupName, accountName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -9160,7 +9166,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteSqlRoleDefinitionAsync(
         String roleDefinitionId, String resourceGroupName, String accountName, Context context) {
         context = this.client.mergeContext(context);
@@ -9182,7 +9188,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSqlRoleDefinition(
         String roleDefinitionId, String resourceGroupName, String accountName) {
         return beginDeleteSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName).getSyncPoller();
@@ -9200,7 +9206,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSqlRoleDefinition(
         String roleDefinitionId, String resourceGroupName, String accountName, Context context) {
         return beginDeleteSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName, context)
@@ -9757,7 +9763,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB Role Assignment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<SqlRoleAssignmentGetResultsInner>, SqlRoleAssignmentGetResultsInner>
         beginCreateUpdateSqlRoleAssignmentAsync(
             String roleAssignmentId,
@@ -9774,7 +9780,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 this.client.getHttpPipeline(),
                 SqlRoleAssignmentGetResultsInner.class,
                 SqlRoleAssignmentGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -9790,7 +9796,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB Role Assignment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SqlRoleAssignmentGetResultsInner>, SqlRoleAssignmentGetResultsInner>
         beginCreateUpdateSqlRoleAssignmentAsync(
             String roleAssignmentId,
@@ -9824,7 +9830,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB Role Assignment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SqlRoleAssignmentGetResultsInner>, SqlRoleAssignmentGetResultsInner>
         beginCreateUpdateSqlRoleAssignment(
             String roleAssignmentId,
@@ -9849,7 +9855,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB Role Assignment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SqlRoleAssignmentGetResultsInner>, SqlRoleAssignmentGetResultsInner>
         beginCreateUpdateSqlRoleAssignment(
             String roleAssignmentId,
@@ -10077,14 +10083,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteSqlRoleAssignmentAsync(
         String roleAssignmentId, String resourceGroupName, String accountName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteSqlRoleAssignmentWithResponseAsync(roleAssignmentId, resourceGroupName, accountName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -10099,7 +10106,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteSqlRoleAssignmentAsync(
         String roleAssignmentId, String resourceGroupName, String accountName, Context context) {
         context = this.client.mergeContext(context);
@@ -10121,7 +10128,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSqlRoleAssignment(
         String roleAssignmentId, String resourceGroupName, String accountName) {
         return beginDeleteSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName).getSyncPoller();
@@ -10139,7 +10146,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSqlRoleAssignment(
         String roleAssignmentId, String resourceGroupName, String accountName, Context context) {
         return beginDeleteSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName, context)
@@ -10535,7 +10542,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return backup information of a resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<BackupInformationInner>, BackupInformationInner>
         beginRetrieveContinuousBackupInformationAsync(
             String resourceGroupName,
@@ -10553,7 +10560,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
                 this.client.getHttpPipeline(),
                 BackupInformationInner.class,
                 BackupInformationInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -10570,7 +10577,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return backup information of a resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BackupInformationInner>, BackupInformationInner>
         beginRetrieveContinuousBackupInformationAsync(
             String resourceGroupName,
@@ -10606,7 +10613,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return backup information of a resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner>
         beginRetrieveContinuousBackupInformation(
             String resourceGroupName,
@@ -10633,7 +10640,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return backup information of a resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner>
         beginRetrieveContinuousBackupInformation(
             String resourceGroupName,

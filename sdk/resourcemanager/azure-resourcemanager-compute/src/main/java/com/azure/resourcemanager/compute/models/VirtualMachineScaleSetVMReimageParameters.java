@@ -4,15 +4,11 @@
 
 package com.azure.resourcemanager.compute.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 
 /** Describes a Virtual Machine Scale Set VM Reimage Parameters. */
-@Immutable
+@Fluent
 public class VirtualMachineScaleSetVMReimageParameters extends VirtualMachineReimageParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetVMReimageParameters.class);
-
     /** {@inheritDoc} */
     @Override
     public VirtualMachineScaleSetVMReimageParameters withTempDisk(Boolean tempDisk) {

@@ -5,7 +5,6 @@ package com.azure.communication.callingserver;
 import com.azure.communication.callingserver.implementation.Constants;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.ParallelDownloadOptions;
-import com.azure.communication.callingserver.models.ProgressReporter;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRange;
@@ -16,7 +15,6 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
@@ -55,15 +53,9 @@ class ContentDownloader {
         HttpRange httpRange,
         Context context) {
         return downloadStreamWithResponse(sourceEndpoint, httpRange, context)
-            .flatMap(response -> response.getValue().reduce(destinationStream, (outputStream, buffer) -> {
-                try {
-                    outputStream.write(FluxUtil.byteBufferToArray(buffer));
-                    return outputStream;
-                } catch (IOException ex) {
-                    throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));
-                }
-            }).thenReturn(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), null)));
+            .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), destinationStream)
+                .thenReturn(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), null)));
     }
 
     Mono<Response<Flux<ByteBuffer>>> downloadStreamWithResponse(
@@ -92,7 +84,7 @@ class ContentDownloader {
         return downloadFirstChunk(parallelDownloadOptions, downloadFunc)
             .flatMap(setupTuple2 -> {
                 long newCount = setupTuple2.getT1();
-                int numChunks = calculateNumBlocks(newCount, parallelDownloadOptions.getBlockSizeLong());
+                int numChunks = calculateNumBlocks(newCount, parallelDownloadOptions.getBlockSize());
 
                 // In case it is an empty blob, this ensures we still actually perform a download operation.
                 numChunks = numChunks == 0 ? 1 : numChunks;
@@ -205,7 +197,7 @@ class ContentDownloader {
     private Mono<Tuple2<Long, Response<Flux<ByteBuffer>>>> downloadFirstChunk(
         ParallelDownloadOptions parallelDownloadOptions,
         Function<HttpRange, Mono<Response<Flux<ByteBuffer>>>> downloader) {
-        return downloader.apply(new HttpRange(0, parallelDownloadOptions.getBlockSizeLong()))
+        return downloader.apply(new HttpRange(0, parallelDownloadOptions.getBlockSize()))
             .subscribeOn(Schedulers.boundedElastic())
             .flatMap(response -> {
                 // Extract the total length of the blob from the contentRange header. e.g. "bytes 1-6/7"
@@ -243,8 +235,8 @@ class ContentDownloader {
         }
 
         // Calculate whether we need a full chunk or something smaller because we are at the end.
-        long modifier = chunkNum.longValue() * parallelDownloadOptions.getBlockSizeLong();
-        long chunkSizeActual = Math.min(parallelDownloadOptions.getBlockSizeLong(),
+        long modifier = chunkNum.longValue() * parallelDownloadOptions.getBlockSize();
+        long chunkSizeActual = Math.min(parallelDownloadOptions.getBlockSize(),
             newCount - modifier);
         HttpRange chunkRange = new HttpRange(modifier, chunkSizeActual);
 
@@ -269,7 +261,7 @@ class ContentDownloader {
             parallelDownloadOptions.getProgressReceiver(), progressLock, totalProgress);
 
         // Write to the file.
-        return FluxUtil.writeFile(data, file, chunkNum * parallelDownloadOptions.getBlockSizeLong());
+        return FluxUtil.writeFile(data, file, chunkNum * parallelDownloadOptions.getBlockSize());
     }
 
     void downloadToFileCleanup(AsynchronousFileChannel channel, Path filePath, SignalType signalType) {

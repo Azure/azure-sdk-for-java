@@ -9,6 +9,11 @@ import com.azure.core.credential.TokenCredential;
  */
 public interface KeyVaultCredentialProvider {
 
+    /**
+     * Returns a credential for a Key Vault given it's uri.
+     * @param uri URI to a key vault
+     * @return Token Credential
+     */
     TokenCredential getKeyVaultCredential(String uri);
 
 }

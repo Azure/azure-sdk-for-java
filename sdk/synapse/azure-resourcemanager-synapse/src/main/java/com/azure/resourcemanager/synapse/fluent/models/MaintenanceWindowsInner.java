@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.MaintenanceWindowTimeRange;
@@ -14,16 +13,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Maintenance windows. */
-@JsonFlatten
 @Fluent
-public class MaintenanceWindowsInner extends ProxyResource {
+public final class MaintenanceWindowsInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MaintenanceWindowsInner.class);
 
     /*
-     * The timeRanges property.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.timeRanges")
-    private List<MaintenanceWindowTimeRange> timeRanges;
+    @JsonProperty(value = "properties")
+    private MaintenanceWindowsProperties innerProperties;
+
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
+     */
+    private MaintenanceWindowsProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the timeRanges property: The timeRanges property.
@@ -31,7 +38,7 @@ public class MaintenanceWindowsInner extends ProxyResource {
      * @return the timeRanges value.
      */
     public List<MaintenanceWindowTimeRange> timeRanges() {
-        return this.timeRanges;
+        return this.innerProperties() == null ? null : this.innerProperties().timeRanges();
     }
 
     /**
@@ -41,7 +48,10 @@ public class MaintenanceWindowsInner extends ProxyResource {
      * @return the MaintenanceWindowsInner object itself.
      */
     public MaintenanceWindowsInner withTimeRanges(List<MaintenanceWindowTimeRange> timeRanges) {
-        this.timeRanges = timeRanges;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MaintenanceWindowsProperties();
+        }
+        this.innerProperties().withTimeRanges(timeRanges);
         return this;
     }
 
@@ -51,8 +61,8 @@ public class MaintenanceWindowsInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (timeRanges() != null) {
-            timeRanges().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

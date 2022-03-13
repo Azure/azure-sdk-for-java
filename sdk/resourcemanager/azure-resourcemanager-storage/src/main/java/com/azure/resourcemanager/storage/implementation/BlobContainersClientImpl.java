@@ -28,9 +28,12 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.storage.fluent.BlobContainersClient;
 import com.azure.resourcemanager.storage.fluent.models.BlobContainerInner;
 import com.azure.resourcemanager.storage.fluent.models.ImmutabilityPolicyInner;
@@ -45,7 +48,8 @@ import com.azure.resourcemanager.storage.models.BlobContainersLockImmutabilityPo
 import com.azure.resourcemanager.storage.models.LeaseContainerRequest;
 import com.azure.resourcemanager.storage.models.ListContainerItems;
 import com.azure.resourcemanager.storage.models.ListContainersInclude;
-import java.util.List;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BlobContainersClient. */
@@ -306,6 +310,22 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             Context context);
 
         @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
+                + "/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/migrate")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> objectLevelWorm(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("containerName") String containerName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -330,7 +350,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response schema.
+     * @return response schema along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ListContainerItemInner>> listSinglePageAsync(
@@ -401,7 +421,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response schema.
+     * @return response schema along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ListContainerItemInner>> listSinglePageAsync(
@@ -469,7 +489,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response schema.
+     * @return response schema as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ListContainerItemInner> listAsync(
@@ -494,7 +514,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response schema.
+     * @return response schema as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ListContainerItemInner> listAsync(String resourceGroupName, String accountName) {
@@ -521,7 +541,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response schema.
+     * @return response schema as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ListContainerItemInner> listAsync(
@@ -547,7 +567,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response schema.
+     * @return response schema as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ListContainerItemInner> list(String resourceGroupName, String accountName) {
@@ -572,7 +592,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response schema.
+     * @return response schema as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ListContainerItemInner> list(
@@ -600,7 +620,8 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the blob container, including Id, resource name, resource type, Etag.
+     * @return properties of the blob container, including Id, resource name, resource type, Etag along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlobContainerInner>> createWithResponseAsync(
@@ -666,7 +687,8 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the blob container, including Id, resource name, resource type, Etag.
+     * @return properties of the blob container, including Id, resource name, resource type, Etag along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BlobContainerInner>> createWithResponseAsync(
@@ -732,7 +754,8 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the blob container, including Id, resource name, resource type, Etag.
+     * @return properties of the blob container, including Id, resource name, resource type, Etag on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobContainerInner> createAsync(
@@ -787,7 +810,8 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the blob container, including Id, resource name, resource type, Etag.
+     * @return properties of the blob container, including Id, resource name, resource type, Etag along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlobContainerInner> createWithResponse(
@@ -814,7 +838,8 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the blob container, including Id, resource name, resource type, Etag.
+     * @return properties of the blob container, including Id, resource name, resource type, Etag along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlobContainerInner>> updateWithResponseAsync(
@@ -880,7 +905,8 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the blob container, including Id, resource name, resource type, Etag.
+     * @return properties of the blob container, including Id, resource name, resource type, Etag along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BlobContainerInner>> updateWithResponseAsync(
@@ -946,7 +972,8 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the blob container, including Id, resource name, resource type, Etag.
+     * @return properties of the blob container, including Id, resource name, resource type, Etag on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobContainerInner> updateAsync(
@@ -1001,7 +1028,8 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the blob container, including Id, resource name, resource type, Etag.
+     * @return properties of the blob container, including Id, resource name, resource type, Etag along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlobContainerInner> updateWithResponse(
@@ -1026,7 +1054,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a specified container.
+     * @return properties of a specified container along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlobContainerInner>> getWithResponseAsync(
@@ -1084,7 +1112,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a specified container.
+     * @return properties of a specified container along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BlobContainerInner>> getWithResponseAsync(
@@ -1138,7 +1166,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a specified container.
+     * @return properties of a specified container on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobContainerInner> getAsync(String resourceGroupName, String accountName, String containerName) {
@@ -1187,7 +1215,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a specified container.
+     * @return properties of a specified container along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlobContainerInner> getWithResponse(
@@ -1208,7 +1236,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
@@ -1264,7 +1292,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1316,7 +1344,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String accountName, String containerName) {
@@ -1357,7 +1385,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -1376,15 +1404,16 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param tags Each tag should be 3 to 23 alphanumeric characters and is normalized to lower case at SRP.
+     * @param legalHold The LegalHold property that will be set to a blob container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the LegalHold property of a blob container.
+     * @return the LegalHold property of a blob container along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LegalHoldInner>> setLegalHoldWithResponseAsync(
-        String resourceGroupName, String accountName, String containerName, List<String> tags) {
+        String resourceGroupName, String accountName, String containerName, LegalHoldInner legalHold) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1407,12 +1436,12 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (tags == null) {
-            return Mono.error(new IllegalArgumentException("Parameter tags is required and cannot be null."));
+        if (legalHold == null) {
+            return Mono.error(new IllegalArgumentException("Parameter legalHold is required and cannot be null."));
+        } else {
+            legalHold.validate();
         }
         final String accept = "application/json";
-        LegalHoldInner legalHold = new LegalHoldInner();
-        legalHold.withTags(tags);
         return FluxUtil
             .withContext(
                 context ->
@@ -1441,16 +1470,17 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param tags Each tag should be 3 to 23 alphanumeric characters and is normalized to lower case at SRP.
+     * @param legalHold The LegalHold property that will be set to a blob container.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the LegalHold property of a blob container.
+     * @return the LegalHold property of a blob container along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LegalHoldInner>> setLegalHoldWithResponseAsync(
-        String resourceGroupName, String accountName, String containerName, List<String> tags, Context context) {
+        String resourceGroupName, String accountName, String containerName, LegalHoldInner legalHold, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1473,12 +1503,12 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (tags == null) {
-            return Mono.error(new IllegalArgumentException("Parameter tags is required and cannot be null."));
+        if (legalHold == null) {
+            return Mono.error(new IllegalArgumentException("Parameter legalHold is required and cannot be null."));
+        } else {
+            legalHold.validate();
         }
         final String accept = "application/json";
-        LegalHoldInner legalHold = new LegalHoldInner();
-        legalHold.withTags(tags);
         context = this.client.mergeContext(context);
         return service
             .setLegalHold(
@@ -1504,16 +1534,16 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param tags Each tag should be 3 to 23 alphanumeric characters and is normalized to lower case at SRP.
+     * @param legalHold The LegalHold property that will be set to a blob container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the LegalHold property of a blob container.
+     * @return the LegalHold property of a blob container on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LegalHoldInner> setLegalHoldAsync(
-        String resourceGroupName, String accountName, String containerName, List<String> tags) {
-        return setLegalHoldWithResponseAsync(resourceGroupName, accountName, containerName, tags)
+        String resourceGroupName, String accountName, String containerName, LegalHoldInner legalHold) {
+        return setLegalHoldWithResponseAsync(resourceGroupName, accountName, containerName, legalHold)
             .flatMap(
                 (Response<LegalHoldInner> res) -> {
                     if (res.getValue() != null) {
@@ -1535,7 +1565,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param tags Each tag should be 3 to 23 alphanumeric characters and is normalized to lower case at SRP.
+     * @param legalHold The LegalHold property that will be set to a blob container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1543,8 +1573,8 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LegalHoldInner setLegalHold(
-        String resourceGroupName, String accountName, String containerName, List<String> tags) {
-        return setLegalHoldAsync(resourceGroupName, accountName, containerName, tags).block();
+        String resourceGroupName, String accountName, String containerName, LegalHoldInner legalHold) {
+        return setLegalHoldAsync(resourceGroupName, accountName, containerName, legalHold).block();
     }
 
     /**
@@ -1558,17 +1588,17 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param tags Each tag should be 3 to 23 alphanumeric characters and is normalized to lower case at SRP.
+     * @param legalHold The LegalHold property that will be set to a blob container.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the LegalHold property of a blob container.
+     * @return the LegalHold property of a blob container along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LegalHoldInner> setLegalHoldWithResponse(
-        String resourceGroupName, String accountName, String containerName, List<String> tags, Context context) {
-        return setLegalHoldWithResponseAsync(resourceGroupName, accountName, containerName, tags, context).block();
+        String resourceGroupName, String accountName, String containerName, LegalHoldInner legalHold, Context context) {
+        return setLegalHoldWithResponseAsync(resourceGroupName, accountName, containerName, legalHold, context).block();
     }
 
     /**
@@ -1582,15 +1612,16 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param tags Each tag should be 3 to 23 alphanumeric characters and is normalized to lower case at SRP.
+     * @param legalHold The LegalHold property that will be clear from a blob container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the LegalHold property of a blob container.
+     * @return the LegalHold property of a blob container along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LegalHoldInner>> clearLegalHoldWithResponseAsync(
-        String resourceGroupName, String accountName, String containerName, List<String> tags) {
+        String resourceGroupName, String accountName, String containerName, LegalHoldInner legalHold) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1613,12 +1644,12 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (tags == null) {
-            return Mono.error(new IllegalArgumentException("Parameter tags is required and cannot be null."));
+        if (legalHold == null) {
+            return Mono.error(new IllegalArgumentException("Parameter legalHold is required and cannot be null."));
+        } else {
+            legalHold.validate();
         }
         final String accept = "application/json";
-        LegalHoldInner legalHold = new LegalHoldInner();
-        legalHold.withTags(tags);
         return FluxUtil
             .withContext(
                 context ->
@@ -1647,16 +1678,17 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param tags Each tag should be 3 to 23 alphanumeric characters and is normalized to lower case at SRP.
+     * @param legalHold The LegalHold property that will be clear from a blob container.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the LegalHold property of a blob container.
+     * @return the LegalHold property of a blob container along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LegalHoldInner>> clearLegalHoldWithResponseAsync(
-        String resourceGroupName, String accountName, String containerName, List<String> tags, Context context) {
+        String resourceGroupName, String accountName, String containerName, LegalHoldInner legalHold, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1679,12 +1711,12 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (tags == null) {
-            return Mono.error(new IllegalArgumentException("Parameter tags is required and cannot be null."));
+        if (legalHold == null) {
+            return Mono.error(new IllegalArgumentException("Parameter legalHold is required and cannot be null."));
+        } else {
+            legalHold.validate();
         }
         final String accept = "application/json";
-        LegalHoldInner legalHold = new LegalHoldInner();
-        legalHold.withTags(tags);
         context = this.client.mergeContext(context);
         return service
             .clearLegalHold(
@@ -1710,16 +1742,16 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param tags Each tag should be 3 to 23 alphanumeric characters and is normalized to lower case at SRP.
+     * @param legalHold The LegalHold property that will be clear from a blob container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the LegalHold property of a blob container.
+     * @return the LegalHold property of a blob container on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LegalHoldInner> clearLegalHoldAsync(
-        String resourceGroupName, String accountName, String containerName, List<String> tags) {
-        return clearLegalHoldWithResponseAsync(resourceGroupName, accountName, containerName, tags)
+        String resourceGroupName, String accountName, String containerName, LegalHoldInner legalHold) {
+        return clearLegalHoldWithResponseAsync(resourceGroupName, accountName, containerName, legalHold)
             .flatMap(
                 (Response<LegalHoldInner> res) -> {
                     if (res.getValue() != null) {
@@ -1741,7 +1773,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param tags Each tag should be 3 to 23 alphanumeric characters and is normalized to lower case at SRP.
+     * @param legalHold The LegalHold property that will be clear from a blob container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1749,8 +1781,8 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LegalHoldInner clearLegalHold(
-        String resourceGroupName, String accountName, String containerName, List<String> tags) {
-        return clearLegalHoldAsync(resourceGroupName, accountName, containerName, tags).block();
+        String resourceGroupName, String accountName, String containerName, LegalHoldInner legalHold) {
+        return clearLegalHoldAsync(resourceGroupName, accountName, containerName, legalHold).block();
     }
 
     /**
@@ -1764,17 +1796,18 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
      *     dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param tags Each tag should be 3 to 23 alphanumeric characters and is normalized to lower case at SRP.
+     * @param legalHold The LegalHold property that will be clear from a blob container.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the LegalHold property of a blob container.
+     * @return the LegalHold property of a blob container along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LegalHoldInner> clearLegalHoldWithResponse(
-        String resourceGroupName, String accountName, String containerName, List<String> tags, Context context) {
-        return clearLegalHoldWithResponseAsync(resourceGroupName, accountName, containerName, tags, context).block();
+        String resourceGroupName, String accountName, String containerName, LegalHoldInner legalHold, Context context) {
+        return clearLegalHoldWithResponseAsync(resourceGroupName, accountName, containerName, legalHold, context)
+            .block();
     }
 
     /**
@@ -1791,16 +1824,12 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used
      *     to apply the operation only if the immutability policy already exists. If omitted, this operation will always
      *     be applied.
-     * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the
-     *     policy creation, in days.
-     * @param allowProtectedAppendWrites This property can only be changed for unlocked time-based retention policies.
-     *     When enabled, new blocks can be written to an append blob while maintaining immutability protection and
-     *     compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property
-     *     cannot be changed with ExtendImmutabilityPolicy API.
+     * @param parameters The ImmutabilityPolicy Properties that will be created or updated to a blob container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
+     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobContainersCreateOrUpdateImmutabilityPolicyResponse>
@@ -1809,8 +1838,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             String accountName,
             String containerName,
             String ifMatch,
-            Integer immutabilityPeriodSinceCreationInDays,
-            Boolean allowProtectedAppendWrites) {
+            ImmutabilityPolicyInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1833,15 +1861,11 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (parameters != null) {
+            parameters.validate();
+        }
         final String immutabilityPolicyName = "default";
         final String accept = "application/json";
-        ImmutabilityPolicyInner parametersInternal = null;
-        if (immutabilityPeriodSinceCreationInDays != null || allowProtectedAppendWrites != null) {
-            parametersInternal = new ImmutabilityPolicyInner();
-            parametersInternal.withImmutabilityPeriodSinceCreationInDays(immutabilityPeriodSinceCreationInDays);
-            parametersInternal.withAllowProtectedAppendWrites(allowProtectedAppendWrites);
-        }
-        ImmutabilityPolicyInner parameters = parametersInternal;
         return FluxUtil
             .withContext(
                 context ->
@@ -1875,17 +1899,13 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used
      *     to apply the operation only if the immutability policy already exists. If omitted, this operation will always
      *     be applied.
-     * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the
-     *     policy creation, in days.
-     * @param allowProtectedAppendWrites This property can only be changed for unlocked time-based retention policies.
-     *     When enabled, new blocks can be written to an append blob while maintaining immutability protection and
-     *     compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property
-     *     cannot be changed with ExtendImmutabilityPolicy API.
+     * @param parameters The ImmutabilityPolicy Properties that will be created or updated to a blob container.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
+     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BlobContainersCreateOrUpdateImmutabilityPolicyResponse>
@@ -1894,8 +1914,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
             String accountName,
             String containerName,
             String ifMatch,
-            Integer immutabilityPeriodSinceCreationInDays,
-            Boolean allowProtectedAppendWrites,
+            ImmutabilityPolicyInner parameters,
             Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1919,15 +1938,11 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (parameters != null) {
+            parameters.validate();
+        }
         final String immutabilityPolicyName = "default";
         final String accept = "application/json";
-        ImmutabilityPolicyInner parametersInternal = null;
-        if (immutabilityPeriodSinceCreationInDays != null || allowProtectedAppendWrites != null) {
-            parametersInternal = new ImmutabilityPolicyInner();
-            parametersInternal.withImmutabilityPeriodSinceCreationInDays(immutabilityPeriodSinceCreationInDays);
-            parametersInternal.withAllowProtectedAppendWrites(allowProtectedAppendWrites);
-        }
-        ImmutabilityPolicyInner parameters = parametersInternal;
         context = this.client.mergeContext(context);
         return service
             .createOrUpdateImmutabilityPolicy(
@@ -1958,16 +1973,12 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used
      *     to apply the operation only if the immutability policy already exists. If omitted, this operation will always
      *     be applied.
-     * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the
-     *     policy creation, in days.
-     * @param allowProtectedAppendWrites This property can only be changed for unlocked time-based retention policies.
-     *     When enabled, new blocks can be written to an append blob while maintaining immutability protection and
-     *     compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property
-     *     cannot be changed with ExtendImmutabilityPolicy API.
+     * @param parameters The ImmutabilityPolicy Properties that will be created or updated to a blob container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
+     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImmutabilityPolicyInner> createOrUpdateImmutabilityPolicyAsync(
@@ -1975,15 +1986,9 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
         String accountName,
         String containerName,
         String ifMatch,
-        Integer immutabilityPeriodSinceCreationInDays,
-        Boolean allowProtectedAppendWrites) {
+        ImmutabilityPolicyInner parameters) {
         return createOrUpdateImmutabilityPolicyWithResponseAsync(
-                resourceGroupName,
-                accountName,
-                containerName,
-                ifMatch,
-                immutabilityPeriodSinceCreationInDays,
-                allowProtectedAppendWrites)
+                resourceGroupName, accountName, containerName, ifMatch, parameters)
             .flatMap(
                 (BlobContainersCreateOrUpdateImmutabilityPolicyResponse res) -> {
                     if (res.getValue() != null) {
@@ -2008,21 +2013,16 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
+     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImmutabilityPolicyInner> createOrUpdateImmutabilityPolicyAsync(
         String resourceGroupName, String accountName, String containerName) {
         final String ifMatch = null;
-        final Integer immutabilityPeriodSinceCreationInDays = null;
-        final Boolean allowProtectedAppendWrites = null;
+        final ImmutabilityPolicyInner parameters = null;
         return createOrUpdateImmutabilityPolicyWithResponseAsync(
-                resourceGroupName,
-                accountName,
-                containerName,
-                ifMatch,
-                immutabilityPeriodSinceCreationInDays,
-                allowProtectedAppendWrites)
+                resourceGroupName, accountName, containerName, ifMatch, parameters)
             .flatMap(
                 (BlobContainersCreateOrUpdateImmutabilityPolicyResponse res) -> {
                     if (res.getValue() != null) {
@@ -2053,15 +2053,8 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     public ImmutabilityPolicyInner createOrUpdateImmutabilityPolicy(
         String resourceGroupName, String accountName, String containerName) {
         final String ifMatch = null;
-        final Integer immutabilityPeriodSinceCreationInDays = null;
-        final Boolean allowProtectedAppendWrites = null;
-        return createOrUpdateImmutabilityPolicyAsync(
-                resourceGroupName,
-                accountName,
-                containerName,
-                ifMatch,
-                immutabilityPeriodSinceCreationInDays,
-                allowProtectedAppendWrites)
+        final ImmutabilityPolicyInner parameters = null;
+        return createOrUpdateImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, ifMatch, parameters)
             .block();
     }
 
@@ -2079,12 +2072,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used
      *     to apply the operation only if the immutability policy already exists. If omitted, this operation will always
      *     be applied.
-     * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the
-     *     policy creation, in days.
-     * @param allowProtectedAppendWrites This property can only be changed for unlocked time-based retention policies.
-     *     When enabled, new blocks can be written to an append blob while maintaining immutability protection and
-     *     compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property
-     *     cannot be changed with ExtendImmutabilityPolicy API.
+     * @param parameters The ImmutabilityPolicy Properties that will be created or updated to a blob container.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2097,17 +2085,10 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
         String accountName,
         String containerName,
         String ifMatch,
-        Integer immutabilityPeriodSinceCreationInDays,
-        Boolean allowProtectedAppendWrites,
+        ImmutabilityPolicyInner parameters,
         Context context) {
         return createOrUpdateImmutabilityPolicyWithResponseAsync(
-                resourceGroupName,
-                accountName,
-                containerName,
-                ifMatch,
-                immutabilityPeriodSinceCreationInDays,
-                allowProtectedAppendWrites,
-                context)
+                resourceGroupName, accountName, containerName, ifMatch, parameters, context)
             .block();
     }
 
@@ -2127,7 +2108,8 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the existing immutability policy along with the corresponding ETag in response headers and body.
+     * @return the existing immutability policy along with the corresponding ETag in response headers and body on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobContainersGetImmutabilityPolicyResponse> getImmutabilityPolicyWithResponseAsync(
@@ -2191,7 +2173,8 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the existing immutability policy along with the corresponding ETag in response headers and body.
+     * @return the existing immutability policy along with the corresponding ETag in response headers and body on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BlobContainersGetImmutabilityPolicyResponse> getImmutabilityPolicyWithResponseAsync(
@@ -2251,7 +2234,8 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the existing immutability policy along with the corresponding ETag in response headers and body.
+     * @return the existing immutability policy along with the corresponding ETag in response headers and body on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImmutabilityPolicyInner> getImmutabilityPolicyAsync(
@@ -2280,7 +2264,8 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the existing immutability policy along with the corresponding ETag in response headers and body.
+     * @return the existing immutability policy along with the corresponding ETag in response headers and body on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImmutabilityPolicyInner> getImmutabilityPolicyAsync(
@@ -2363,7 +2348,8 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
+     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobContainersDeleteImmutabilityPolicyResponse> deleteImmutabilityPolicyWithResponseAsync(
@@ -2432,7 +2418,8 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
+     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BlobContainersDeleteImmutabilityPolicyResponse> deleteImmutabilityPolicyWithResponseAsync(
@@ -2497,7 +2484,8 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
+     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImmutabilityPolicyInner> deleteImmutabilityPolicyAsync(
@@ -2585,7 +2573,8 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
+     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobContainersLockImmutabilityPolicyResponse> lockImmutabilityPolicyWithResponseAsync(
@@ -2651,7 +2640,8 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
+     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BlobContainersLockImmutabilityPolicyResponse> lockImmutabilityPolicyWithResponseAsync(
@@ -2713,7 +2703,8 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
+     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImmutabilityPolicyInner> lockImmutabilityPolicyAsync(
@@ -2795,16 +2786,12 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used
      *     to apply the operation only if the immutability policy already exists. If omitted, this operation will always
      *     be applied.
-     * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the
-     *     policy creation, in days.
-     * @param allowProtectedAppendWrites This property can only be changed for unlocked time-based retention policies.
-     *     When enabled, new blocks can be written to an append blob while maintaining immutability protection and
-     *     compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property
-     *     cannot be changed with ExtendImmutabilityPolicy API.
+     * @param parameters The ImmutabilityPolicy Properties that will be extended for a blob container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
+     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobContainersExtendImmutabilityPolicyResponse> extendImmutabilityPolicyWithResponseAsync(
@@ -2812,8 +2799,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
         String accountName,
         String containerName,
         String ifMatch,
-        Integer immutabilityPeriodSinceCreationInDays,
-        Boolean allowProtectedAppendWrites) {
+        ImmutabilityPolicyInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -2839,14 +2825,10 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
         if (ifMatch == null) {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
-        final String accept = "application/json";
-        ImmutabilityPolicyInner parametersInternal = null;
-        if (immutabilityPeriodSinceCreationInDays != null || allowProtectedAppendWrites != null) {
-            parametersInternal = new ImmutabilityPolicyInner();
-            parametersInternal.withImmutabilityPeriodSinceCreationInDays(immutabilityPeriodSinceCreationInDays);
-            parametersInternal.withAllowProtectedAppendWrites(allowProtectedAppendWrites);
+        if (parameters != null) {
+            parameters.validate();
         }
-        ImmutabilityPolicyInner parameters = parametersInternal;
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2879,17 +2861,13 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used
      *     to apply the operation only if the immutability policy already exists. If omitted, this operation will always
      *     be applied.
-     * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the
-     *     policy creation, in days.
-     * @param allowProtectedAppendWrites This property can only be changed for unlocked time-based retention policies.
-     *     When enabled, new blocks can be written to an append blob while maintaining immutability protection and
-     *     compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property
-     *     cannot be changed with ExtendImmutabilityPolicy API.
+     * @param parameters The ImmutabilityPolicy Properties that will be extended for a blob container.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
+     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BlobContainersExtendImmutabilityPolicyResponse> extendImmutabilityPolicyWithResponseAsync(
@@ -2897,8 +2875,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
         String accountName,
         String containerName,
         String ifMatch,
-        Integer immutabilityPeriodSinceCreationInDays,
-        Boolean allowProtectedAppendWrites,
+        ImmutabilityPolicyInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -2925,14 +2902,10 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
         if (ifMatch == null) {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
-        final String accept = "application/json";
-        ImmutabilityPolicyInner parametersInternal = null;
-        if (immutabilityPeriodSinceCreationInDays != null || allowProtectedAppendWrites != null) {
-            parametersInternal = new ImmutabilityPolicyInner();
-            parametersInternal.withImmutabilityPeriodSinceCreationInDays(immutabilityPeriodSinceCreationInDays);
-            parametersInternal.withAllowProtectedAppendWrites(allowProtectedAppendWrites);
+        if (parameters != null) {
+            parameters.validate();
         }
-        ImmutabilityPolicyInner parameters = parametersInternal;
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .extendImmutabilityPolicy(
@@ -2962,16 +2935,12 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used
      *     to apply the operation only if the immutability policy already exists. If omitted, this operation will always
      *     be applied.
-     * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the
-     *     policy creation, in days.
-     * @param allowProtectedAppendWrites This property can only be changed for unlocked time-based retention policies.
-     *     When enabled, new blocks can be written to an append blob while maintaining immutability protection and
-     *     compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property
-     *     cannot be changed with ExtendImmutabilityPolicy API.
+     * @param parameters The ImmutabilityPolicy Properties that will be extended for a blob container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
+     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImmutabilityPolicyInner> extendImmutabilityPolicyAsync(
@@ -2979,15 +2948,9 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
         String accountName,
         String containerName,
         String ifMatch,
-        Integer immutabilityPeriodSinceCreationInDays,
-        Boolean allowProtectedAppendWrites) {
+        ImmutabilityPolicyInner parameters) {
         return extendImmutabilityPolicyWithResponseAsync(
-                resourceGroupName,
-                accountName,
-                containerName,
-                ifMatch,
-                immutabilityPeriodSinceCreationInDays,
-                allowProtectedAppendWrites)
+                resourceGroupName, accountName, containerName, ifMatch, parameters)
             .flatMap(
                 (BlobContainersExtendImmutabilityPolicyResponse res) -> {
                     if (res.getValue() != null) {
@@ -3015,20 +2978,15 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
+     * @return the ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImmutabilityPolicyInner> extendImmutabilityPolicyAsync(
         String resourceGroupName, String accountName, String containerName, String ifMatch) {
-        final Integer immutabilityPeriodSinceCreationInDays = null;
-        final Boolean allowProtectedAppendWrites = null;
+        final ImmutabilityPolicyInner parameters = null;
         return extendImmutabilityPolicyWithResponseAsync(
-                resourceGroupName,
-                accountName,
-                containerName,
-                ifMatch,
-                immutabilityPeriodSinceCreationInDays,
-                allowProtectedAppendWrites)
+                resourceGroupName, accountName, containerName, ifMatch, parameters)
             .flatMap(
                 (BlobContainersExtendImmutabilityPolicyResponse res) -> {
                     if (res.getValue() != null) {
@@ -3061,15 +3019,8 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImmutabilityPolicyInner extendImmutabilityPolicy(
         String resourceGroupName, String accountName, String containerName, String ifMatch) {
-        final Integer immutabilityPeriodSinceCreationInDays = null;
-        final Boolean allowProtectedAppendWrites = null;
-        return extendImmutabilityPolicyAsync(
-                resourceGroupName,
-                accountName,
-                containerName,
-                ifMatch,
-                immutabilityPeriodSinceCreationInDays,
-                allowProtectedAppendWrites)
+        final ImmutabilityPolicyInner parameters = null;
+        return extendImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, ifMatch, parameters)
             .block();
     }
 
@@ -3087,12 +3038,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used
      *     to apply the operation only if the immutability policy already exists. If omitted, this operation will always
      *     be applied.
-     * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the
-     *     policy creation, in days.
-     * @param allowProtectedAppendWrites This property can only be changed for unlocked time-based retention policies.
-     *     When enabled, new blocks can be written to an append blob while maintaining immutability protection and
-     *     compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property
-     *     cannot be changed with ExtendImmutabilityPolicy API.
+     * @param parameters The ImmutabilityPolicy Properties that will be extended for a blob container.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3105,17 +3051,10 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
         String accountName,
         String containerName,
         String ifMatch,
-        Integer immutabilityPeriodSinceCreationInDays,
-        Boolean allowProtectedAppendWrites,
+        ImmutabilityPolicyInner parameters,
         Context context) {
         return extendImmutabilityPolicyWithResponseAsync(
-                resourceGroupName,
-                accountName,
-                containerName,
-                ifMatch,
-                immutabilityPeriodSinceCreationInDays,
-                allowProtectedAppendWrites,
-                context)
+                resourceGroupName, accountName, containerName, ifMatch, parameters, context)
             .block();
     }
 
@@ -3134,7 +3073,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return lease Container response schema.
+     * @return lease Container response schema along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LeaseContainerResponseInner>> leaseWithResponseAsync(
@@ -3198,7 +3137,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return lease Container response schema.
+     * @return lease Container response schema along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LeaseContainerResponseInner>> leaseWithResponseAsync(
@@ -3262,7 +3201,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return lease Container response schema.
+     * @return lease Container response schema on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LeaseContainerResponseInner> leaseAsync(
@@ -3292,7 +3231,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return lease Container response schema.
+     * @return lease Container response schema on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LeaseContainerResponseInner> leaseAsync(
@@ -3347,7 +3286,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return lease Container response schema.
+     * @return lease Container response schema along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LeaseContainerResponseInner> leaseWithResponse(
@@ -3360,13 +3299,326 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     }
 
     /**
+     * This operation migrates a blob container from container level WORM to object level immutability enabled
+     * container. Prerequisites require a container level immutability policy either in locked or unlocked state,
+     * Account level versioning must be enabled and there should be no Legal hold on the container.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names
+     *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+     *     dash (-) character must be immediately preceded and followed by a letter or number.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> objectLevelWormWithResponseAsync(
+        String resourceGroupName, String accountName, String containerName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .objectLevelWorm(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            accountName,
+                            containerName,
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * This operation migrates a blob container from container level WORM to object level immutability enabled
+     * container. Prerequisites require a container level immutability policy either in locked or unlocked state,
+     * Account level versioning must be enabled and there should be no Legal hold on the container.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names
+     *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+     *     dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> objectLevelWormWithResponseAsync(
+        String resourceGroupName, String accountName, String containerName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .objectLevelWorm(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                accountName,
+                containerName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                accept,
+                context);
+    }
+
+    /**
+     * This operation migrates a blob container from container level WORM to object level immutability enabled
+     * container. Prerequisites require a container level immutability policy either in locked or unlocked state,
+     * Account level versioning must be enabled and there should be no Legal hold on the container.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names
+     *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+     *     dash (-) character must be immediately preceded and followed by a letter or number.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginObjectLevelWormAsync(
+        String resourceGroupName, String accountName, String containerName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            objectLevelWormWithResponseAsync(resourceGroupName, accountName, containerName);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * This operation migrates a blob container from container level WORM to object level immutability enabled
+     * container. Prerequisites require a container level immutability policy either in locked or unlocked state,
+     * Account level versioning must be enabled and there should be no Legal hold on the container.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names
+     *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+     *     dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginObjectLevelWormAsync(
+        String resourceGroupName, String accountName, String containerName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            objectLevelWormWithResponseAsync(resourceGroupName, accountName, containerName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * This operation migrates a blob container from container level WORM to object level immutability enabled
+     * container. Prerequisites require a container level immutability policy either in locked or unlocked state,
+     * Account level versioning must be enabled and there should be no Legal hold on the container.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names
+     *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+     *     dash (-) character must be immediately preceded and followed by a letter or number.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginObjectLevelWorm(
+        String resourceGroupName, String accountName, String containerName) {
+        return beginObjectLevelWormAsync(resourceGroupName, accountName, containerName).getSyncPoller();
+    }
+
+    /**
+     * This operation migrates a blob container from container level WORM to object level immutability enabled
+     * container. Prerequisites require a container level immutability policy either in locked or unlocked state,
+     * Account level versioning must be enabled and there should be no Legal hold on the container.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names
+     *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+     *     dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginObjectLevelWorm(
+        String resourceGroupName, String accountName, String containerName, Context context) {
+        return beginObjectLevelWormAsync(resourceGroupName, accountName, containerName, context).getSyncPoller();
+    }
+
+    /**
+     * This operation migrates a blob container from container level WORM to object level immutability enabled
+     * container. Prerequisites require a container level immutability policy either in locked or unlocked state,
+     * Account level versioning must be enabled and there should be no Legal hold on the container.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names
+     *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+     *     dash (-) character must be immediately preceded and followed by a letter or number.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> objectLevelWormAsync(String resourceGroupName, String accountName, String containerName) {
+        return beginObjectLevelWormAsync(resourceGroupName, accountName, containerName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * This operation migrates a blob container from container level WORM to object level immutability enabled
+     * container. Prerequisites require a container level immutability policy either in locked or unlocked state,
+     * Account level versioning must be enabled and there should be no Legal hold on the container.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names
+     *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+     *     dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> objectLevelWormAsync(
+        String resourceGroupName, String accountName, String containerName, Context context) {
+        return beginObjectLevelWormAsync(resourceGroupName, accountName, containerName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * This operation migrates a blob container from container level WORM to object level immutability enabled
+     * container. Prerequisites require a container level immutability policy either in locked or unlocked state,
+     * Account level versioning must be enabled and there should be no Legal hold on the container.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names
+     *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+     *     dash (-) character must be immediately preceded and followed by a letter or number.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void objectLevelWorm(String resourceGroupName, String accountName, String containerName) {
+        objectLevelWormAsync(resourceGroupName, accountName, containerName).block();
+    }
+
+    /**
+     * This operation migrates a blob container from container level WORM to object level immutability enabled
+     * container. Prerequisites require a container level immutability policy either in locked or unlocked state,
+     * Account level versioning must be enabled and there should be no Legal hold on the container.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names
+     *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+     *     dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void objectLevelWorm(String resourceGroupName, String accountName, String containerName, Context context) {
+        objectLevelWormAsync(resourceGroupName, accountName, containerName, context).block();
+    }
+
+    /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response schema.
+     * @return response schema along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ListContainerItemInner>> listNextSinglePageAsync(String nextLink) {
@@ -3402,7 +3654,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response schema.
+     * @return response schema along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ListContainerItemInner>> listNextSinglePageAsync(String nextLink, Context context) {

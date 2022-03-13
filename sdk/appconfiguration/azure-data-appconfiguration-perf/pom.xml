@@ -6,9 +6,9 @@
 
   <parent>
     <groupId>com.azure</groupId>
-    <artifactId>azure-client-sdk-parent</artifactId>
-    <version>1.7.0</version><!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
-    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
+    <artifactId>azure-perf-test-parent</artifactId>
+    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-perf-test-parent;current} -->
+    <relativePath>../../parents/azure-perf-test-parent</relativePath>
   </parent>
 
   <groupId>com.azure</groupId>
@@ -17,6 +17,13 @@
   <packaging>jar</packaging>
 
   <name>Microsoft Azure client library for App Configuration performance tests</name>
+
+  <properties>
+    <perf.test.mainClass>com.azure.data.appconfiguration.perf.App</perf.test.mainClass>
+
+    <!-- TODO: Remove this once all Javadoc warnings and errors are resolved -->
+    <doclint>all,-missing</doclint>
+  </properties>
 
   <dependencies>
     <dependency>
@@ -27,37 +34,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-appconfiguration</artifactId>
-      <version>1.2.0-beta.2</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;current} -->
+      <version>1.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;current} -->
     </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <version>3.2.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-assembly-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
-            <configuration>
-              <archive>
-                <manifest>
-                  <mainClass>
-                    com.azure.data.appconfiguration.perf.App
-                  </mainClass>
-                </manifest>
-              </archive>
-              <descriptorRefs>
-                <descriptorRef>jar-with-dependencies</descriptorRef>
-              </descriptorRefs>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
 </project>

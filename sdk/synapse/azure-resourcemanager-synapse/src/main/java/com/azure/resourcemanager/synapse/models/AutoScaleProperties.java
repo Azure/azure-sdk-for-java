@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Auto-scaling properties of a Big Data pool powered by Apache Spark. */
+/** Spark pool auto-scaling properties Auto-scaling properties of a Big Data pool powered by Apache Spark. */
 @Fluent
 public final class AutoScaleProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoScaleProperties.class);

@@ -20,6 +20,11 @@ public class FileStorageHealthIndicator implements HealthIndicator {
 
     private final ShareServiceAsyncClient internalClient;
 
+    /**
+     * Creates a new instance of {@link FileStorageHealthIndicator}.
+     *
+     * @param shareServiceClientBuilder the ShareServiceClientBuilder
+     */
     public FileStorageHealthIndicator(ShareServiceClientBuilder shareServiceClientBuilder) {
         internalClient = shareServiceClientBuilder == null ? null : shareServiceClientBuilder.buildAsyncClient();
     }

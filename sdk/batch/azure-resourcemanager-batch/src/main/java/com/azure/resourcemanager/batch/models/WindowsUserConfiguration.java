@@ -15,16 +15,16 @@ public final class WindowsUserConfiguration {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WindowsUserConfiguration.class);
 
     /*
-     * Specifies login mode for the user. The default value for
-     * VirtualMachineConfiguration pools is interactive mode and for
+     * Login mode for user Specifies login mode for the user. The default value
+     * for VirtualMachineConfiguration pools is interactive mode and for
      * CloudServiceConfiguration pools is batch mode.
      */
     @JsonProperty(value = "loginMode")
     private LoginMode loginMode;
 
     /**
-     * Get the loginMode property: Specifies login mode for the user. The default value for VirtualMachineConfiguration
-     * pools is interactive mode and for CloudServiceConfiguration pools is batch mode.
+     * Get the loginMode property: Login mode for user Specifies login mode for the user. The default value for
+     * VirtualMachineConfiguration pools is interactive mode and for CloudServiceConfiguration pools is batch mode.
      *
      * @return the loginMode value.
      */
@@ -33,8 +33,8 @@ public final class WindowsUserConfiguration {
     }
 
     /**
-     * Set the loginMode property: Specifies login mode for the user. The default value for VirtualMachineConfiguration
-     * pools is interactive mode and for CloudServiceConfiguration pools is batch mode.
+     * Set the loginMode property: Login mode for user Specifies login mode for the user. The default value for
+     * VirtualMachineConfiguration pools is interactive mode and for CloudServiceConfiguration pools is batch mode.
      *
      * @param loginMode the loginMode value to set.
      * @return the WindowsUserConfiguration object itself.

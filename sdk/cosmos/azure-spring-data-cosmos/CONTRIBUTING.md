@@ -10,8 +10,8 @@ To build the project, run maven commands.
 
 ```bash
 git clone https://github.com/Azure/azure-sdk-for-java.git 
-cd sdk/cosmos/azure-spring-data-cosmos-core
-mvnw clean install
+cd sdk/cosmos/azure-spring-data-cosmos
+mvn clean install
 ```
 
 ## Test
@@ -66,4 +66,4 @@ mvn clean install -Dgpg.skip-DskipTests
 Developing version naming convention is like `0.1.2-beta.1`. Release version naming convention is like `0.1.2`. 
 
 ## Contribute to code
-Contribution is welcome. Please follow [this instruction](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md) to contribute code.
+Contribution is welcome. Please follow [this instruction](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md) to contribute code.

@@ -28,21 +28,23 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * This scenario assumes an existing search solution and uses a pre-population data source with sample data set
- * For more information visit Azure Cognitive Search Sample Data:
- * https://docs.microsoft.com/en-us/samples/azure-samples/azure-search-sample-data/azure-search-sample-data/
+ * This scenario assumes an existing search solution and uses a pre-population data source with sample data set For more
+ * information visit Azure Cognitive Search Sample Data: https://docs.microsoft.com/en-us/samples/azure-samples/azure-search-sample-data/azure-search-sample-data/
  */
 public class LifecycleSetupExample {
     /**
-     * From the Azure portal, get your Azure Cognitive Search service URL and API admin key,
-     * and set the values of these environment variables:
+     * From the Azure portal, get your Azure Cognitive Search service URL and API admin key, and set the values of these
+     * environment variables:
      */
-    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ENDPOINT");
-    private static final String ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ADMIN_KEY");
+    private static final String ENDPOINT = Configuration.getGlobalConfiguration()
+        .get("AZURE_COGNITIVE_SEARCH_ENDPOINT");
+    private static final String ADMIN_KEY = Configuration.getGlobalConfiguration()
+        .get("AZURE_COGNITIVE_SEARCH_ADMIN_KEY");
 
     // Using hard coded connection string to pre-populated Cosmos DB database with sample data set
-    // For more information visit https://docs.microsoft.com/en-us/samples/azure-samples/azure-search-sample-data/azure-search-sample-data/
-    private static final String COSMOS_CONNECTION_STRING = "AccountEndpoint=https://hotels-docbb.documents.azure.com:443/;AccountKey=4UPsNZyFAjgZ1tzHPGZaxS09XcwLrIawbXBWk6IixcxJoSePTcjBn0mi53XiKWu8MaUgowUhIovOv7kjksqAug==;Database=SampleData";
+    // For more information visit https://github.com/Azure-Samples/azure-search-sample-data
+    private static final String COSMOS_CONNECTION_STRING = Configuration.getGlobalConfiguration()
+        .get("AZURE_COSMOS_CONNECTION_STRING");
     private static final String COSMOS_COLLECTION_NAME = "hotels";
 
     private static final String INDEX_NAME = "hotels-sample-index1";

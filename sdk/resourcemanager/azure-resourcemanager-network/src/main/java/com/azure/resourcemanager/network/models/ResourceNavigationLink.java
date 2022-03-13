@@ -5,17 +5,22 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.fluent.models.ResourceNavigationLinkFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** ResourceNavigationLink resource. */
-@JsonFlatten
 @Fluent
-public class ResourceNavigationLink extends SubResource {
+public final class ResourceNavigationLink extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceNavigationLink.class);
+
+    /*
+     * Resource navigation link properties format.
+     */
+    @JsonProperty(value = "properties")
+    private ResourceNavigationLinkFormat innerProperties;
 
     /*
      * Name of the resource that is unique within a resource group. This name
@@ -36,23 +41,14 @@ public class ResourceNavigationLink extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * Resource type of the linked resource.
+    /**
+     * Get the innerProperties property: Resource navigation link properties format.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.linkedResourceType")
-    private String linkedResourceType;
-
-    /*
-     * Link to the external resource.
-     */
-    @JsonProperty(value = "properties.link")
-    private String link;
-
-    /*
-     * The provisioning state of the resource navigation link resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private ResourceNavigationLinkFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Name of the resource that is unique within a resource group. This name can be used to
@@ -94,13 +90,20 @@ public class ResourceNavigationLink extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ResourceNavigationLink withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the linkedResourceType property: Resource type of the linked resource.
      *
      * @return the linkedResourceType value.
      */
     public String linkedResourceType() {
-        return this.linkedResourceType;
+        return this.innerProperties() == null ? null : this.innerProperties().linkedResourceType();
     }
 
     /**
@@ -110,7 +113,10 @@ public class ResourceNavigationLink extends SubResource {
      * @return the ResourceNavigationLink object itself.
      */
     public ResourceNavigationLink withLinkedResourceType(String linkedResourceType) {
-        this.linkedResourceType = linkedResourceType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ResourceNavigationLinkFormat();
+        }
+        this.innerProperties().withLinkedResourceType(linkedResourceType);
         return this;
     }
 
@@ -120,7 +126,7 @@ public class ResourceNavigationLink extends SubResource {
      * @return the link value.
      */
     public String link() {
-        return this.link;
+        return this.innerProperties() == null ? null : this.innerProperties().link();
     }
 
     /**
@@ -130,7 +136,10 @@ public class ResourceNavigationLink extends SubResource {
      * @return the ResourceNavigationLink object itself.
      */
     public ResourceNavigationLink withLink(String link) {
-        this.link = link;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ResourceNavigationLinkFormat();
+        }
+        this.innerProperties().withLink(link);
         return this;
     }
 
@@ -140,14 +149,7 @@ public class ResourceNavigationLink extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ResourceNavigationLink withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -156,5 +158,8 @@ public class ResourceNavigationLink extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

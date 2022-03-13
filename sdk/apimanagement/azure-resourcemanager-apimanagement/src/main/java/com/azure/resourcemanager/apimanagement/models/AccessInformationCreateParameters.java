@@ -5,42 +5,30 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.apimanagement.fluent.models.AccessInformationCreateParameterProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Tenant access information update parameters. */
-@JsonFlatten
 @Fluent
-public class AccessInformationCreateParameters {
+public final class AccessInformationCreateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AccessInformationCreateParameters.class);
 
     /*
-     * Principal (User) Identifier.
+     * Tenant access information update parameter properties.
      */
-    @JsonProperty(value = "properties.principalId")
-    private String principalId;
+    @JsonProperty(value = "properties")
+    private AccessInformationCreateParameterProperties innerProperties;
 
-    /*
-     * Primary access key. This property will not be filled on 'GET'
-     * operations! Use '/listSecrets' POST request to get the value.
+    /**
+     * Get the innerProperties property: Tenant access information update parameter properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.primaryKey")
-    private String primaryKey;
-
-    /*
-     * Secondary access key. This property will not be filled on 'GET'
-     * operations! Use '/listSecrets' POST request to get the value.
-     */
-    @JsonProperty(value = "properties.secondaryKey")
-    private String secondaryKey;
-
-    /*
-     * Determines whether direct access is enabled.
-     */
-    @JsonProperty(value = "properties.enabled")
-    private Boolean enabled;
+    private AccessInformationCreateParameterProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the principalId property: Principal (User) Identifier.
@@ -48,7 +36,7 @@ public class AccessInformationCreateParameters {
      * @return the principalId value.
      */
     public String principalId() {
-        return this.principalId;
+        return this.innerProperties() == null ? null : this.innerProperties().principalId();
     }
 
     /**
@@ -58,7 +46,10 @@ public class AccessInformationCreateParameters {
      * @return the AccessInformationCreateParameters object itself.
      */
     public AccessInformationCreateParameters withPrincipalId(String principalId) {
-        this.principalId = principalId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccessInformationCreateParameterProperties();
+        }
+        this.innerProperties().withPrincipalId(principalId);
         return this;
     }
 
@@ -69,7 +60,7 @@ public class AccessInformationCreateParameters {
      * @return the primaryKey value.
      */
     public String primaryKey() {
-        return this.primaryKey;
+        return this.innerProperties() == null ? null : this.innerProperties().primaryKey();
     }
 
     /**
@@ -80,7 +71,10 @@ public class AccessInformationCreateParameters {
      * @return the AccessInformationCreateParameters object itself.
      */
     public AccessInformationCreateParameters withPrimaryKey(String primaryKey) {
-        this.primaryKey = primaryKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccessInformationCreateParameterProperties();
+        }
+        this.innerProperties().withPrimaryKey(primaryKey);
         return this;
     }
 
@@ -91,7 +85,7 @@ public class AccessInformationCreateParameters {
      * @return the secondaryKey value.
      */
     public String secondaryKey() {
-        return this.secondaryKey;
+        return this.innerProperties() == null ? null : this.innerProperties().secondaryKey();
     }
 
     /**
@@ -102,7 +96,10 @@ public class AccessInformationCreateParameters {
      * @return the AccessInformationCreateParameters object itself.
      */
     public AccessInformationCreateParameters withSecondaryKey(String secondaryKey) {
-        this.secondaryKey = secondaryKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccessInformationCreateParameterProperties();
+        }
+        this.innerProperties().withSecondaryKey(secondaryKey);
         return this;
     }
 
@@ -112,7 +109,7 @@ public class AccessInformationCreateParameters {
      * @return the enabled value.
      */
     public Boolean enabled() {
-        return this.enabled;
+        return this.innerProperties() == null ? null : this.innerProperties().enabled();
     }
 
     /**
@@ -122,7 +119,10 @@ public class AccessInformationCreateParameters {
      * @return the AccessInformationCreateParameters object itself.
      */
     public AccessInformationCreateParameters withEnabled(Boolean enabled) {
-        this.enabled = enabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccessInformationCreateParameterProperties();
+        }
+        this.innerProperties().withEnabled(enabled);
         return this;
     }
 
@@ -132,5 +132,8 @@ public class AccessInformationCreateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

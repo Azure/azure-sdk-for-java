@@ -5,18 +5,23 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayPrivateLinkConfigurationProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Private Link Configuration on an application gateway. */
-@JsonFlatten
 @Fluent
-public class ApplicationGatewayPrivateLinkConfiguration extends SubResource {
+public final class ApplicationGatewayPrivateLinkConfiguration extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayPrivateLinkConfiguration.class);
+
+    /*
+     * Properties of the application gateway private link configuration.
+     */
+    @JsonProperty(value = "properties")
+    private ApplicationGatewayPrivateLinkConfigurationProperties innerProperties;
 
     /*
      * Name of the private link configuration that is unique within an
@@ -37,18 +42,14 @@ public class ApplicationGatewayPrivateLinkConfiguration extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * An array of application gateway private link ip configurations.
+    /**
+     * Get the innerProperties property: Properties of the application gateway private link configuration.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.ipConfigurations")
-    private List<ApplicationGatewayPrivateLinkIpConfiguration> ipConfigurations;
-
-    /*
-     * The provisioning state of the application gateway private link
-     * configuration.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private ApplicationGatewayPrivateLinkConfigurationProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Name of the private link configuration that is unique within an Application Gateway.
@@ -88,13 +89,20 @@ public class ApplicationGatewayPrivateLinkConfiguration extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayPrivateLinkConfiguration withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the ipConfigurations property: An array of application gateway private link ip configurations.
      *
      * @return the ipConfigurations value.
      */
     public List<ApplicationGatewayPrivateLinkIpConfiguration> ipConfigurations() {
-        return this.ipConfigurations;
+        return this.innerProperties() == null ? null : this.innerProperties().ipConfigurations();
     }
 
     /**
@@ -105,7 +113,10 @@ public class ApplicationGatewayPrivateLinkConfiguration extends SubResource {
      */
     public ApplicationGatewayPrivateLinkConfiguration withIpConfigurations(
         List<ApplicationGatewayPrivateLinkIpConfiguration> ipConfigurations) {
-        this.ipConfigurations = ipConfigurations;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayPrivateLinkConfigurationProperties();
+        }
+        this.innerProperties().withIpConfigurations(ipConfigurations);
         return this;
     }
 
@@ -115,14 +126,7 @@ public class ApplicationGatewayPrivateLinkConfiguration extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ApplicationGatewayPrivateLinkConfiguration withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -131,8 +135,8 @@ public class ApplicationGatewayPrivateLinkConfiguration extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (ipConfigurations() != null) {
-            ipConfigurations().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The BackupResourceEncryptionConfig model. */
 @Fluent
-public final class BackupResourceEncryptionConfig {
+public class BackupResourceEncryptionConfig {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupResourceEncryptionConfig.class);
 
     /*

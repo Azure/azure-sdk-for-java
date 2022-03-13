@@ -4,11 +4,13 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesResultPropertiesHelper;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
  * The {@link AnalyzeHealthcareEntitiesResult} model.
  */
+@Immutable
 public final class AnalyzeHealthcareEntitiesResult extends TextAnalyticsResult {
     private IterableStream<TextAnalyticsWarning> warnings;
     private IterableStream<HealthcareEntity> entities;
@@ -50,7 +52,7 @@ public final class AnalyzeHealthcareEntitiesResult extends TextAnalyticsResult {
     }
 
     /**
-     * Get an {@link IterableStream} of {@link HealthcareEntity}.
+     * Gets an {@link IterableStream} of {@link HealthcareEntity}.
      *
      * @return An {@link IterableStream} of {@link HealthcareEntity}.
      *
@@ -63,7 +65,7 @@ public final class AnalyzeHealthcareEntitiesResult extends TextAnalyticsResult {
     }
 
     /**
-     * Get the {@link IterableStream} of {@link TextAnalyticsWarning Text Analytics warnings}.
+     * Gets the {@link IterableStream} of {@link TextAnalyticsWarning Text Analytics warnings}.
      *
      * @return {@link IterableStream} of {@link TextAnalyticsWarning}.
      */
@@ -72,9 +74,9 @@ public final class AnalyzeHealthcareEntitiesResult extends TextAnalyticsResult {
     }
 
     /**
-     * Get the {@link IterableStream} of {@link HealthcareEntityRelation}.
+     * Gets the {@link IterableStream} of {@link HealthcareEntityRelation}.
      *
-     * @return the {@link IterableStream} of {@link HealthcareEntityRelation}.
+     * @return The {@link IterableStream} of {@link HealthcareEntityRelation}.
      */
     public IterableStream<HealthcareEntityRelation> getEntityRelations() {
         return this.entityRelations;

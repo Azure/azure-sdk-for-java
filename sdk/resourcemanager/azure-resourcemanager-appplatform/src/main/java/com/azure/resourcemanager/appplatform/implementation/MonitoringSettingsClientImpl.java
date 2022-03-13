@@ -398,7 +398,7 @@ public final class MonitoringSettingsClientImpl implements MonitoringSettingsCli
                 this.client.getHttpPipeline(),
                 MonitoringSettingResourceInner.class,
                 MonitoringSettingResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -715,7 +715,7 @@ public final class MonitoringSettingsClientImpl implements MonitoringSettingsCli
                 this.client.getHttpPipeline(),
                 MonitoringSettingResourceInner.class,
                 MonitoringSettingResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

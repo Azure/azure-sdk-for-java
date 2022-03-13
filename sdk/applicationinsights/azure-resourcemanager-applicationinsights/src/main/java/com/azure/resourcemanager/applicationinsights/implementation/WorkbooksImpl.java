@@ -93,6 +93,41 @@ public final class WorkbooksImpl implements Workbooks {
         return this.serviceClient().deleteWithResponse(resourceGroupName, resourceName, context);
     }
 
+    public PagedIterable<Workbook> revisionsList(String resourceGroupName, String resourceName) {
+        PagedIterable<WorkbookInner> inner = this.serviceClient().revisionsList(resourceGroupName, resourceName);
+        return Utils.mapPage(inner, inner1 -> new WorkbookImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<Workbook> revisionsList(String resourceGroupName, String resourceName, Context context) {
+        PagedIterable<WorkbookInner> inner =
+            this.serviceClient().revisionsList(resourceGroupName, resourceName, context);
+        return Utils.mapPage(inner, inner1 -> new WorkbookImpl(inner1, this.manager()));
+    }
+
+    public Workbook revisionGet(String resourceGroupName, String resourceName, String revisionId) {
+        WorkbookInner inner = this.serviceClient().revisionGet(resourceGroupName, resourceName, revisionId);
+        if (inner != null) {
+            return new WorkbookImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<Workbook> revisionGetWithResponse(
+        String resourceGroupName, String resourceName, String revisionId, Context context) {
+        Response<WorkbookInner> inner =
+            this.serviceClient().revisionGetWithResponse(resourceGroupName, resourceName, revisionId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new WorkbookImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
     public Workbook getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
@@ -147,7 +182,7 @@ public final class WorkbooksImpl implements Workbooks {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workbooks'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, resourceName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {

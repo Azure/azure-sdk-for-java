@@ -615,11 +615,11 @@ public final class RntbdTransportClientTest {
     public void verifyGoneResponseMapsToGoneException() throws Exception {
 
         ConnectionPolicy connectionPolicy = ConnectionPolicy.getDefaultPolicy();
-        connectionPolicy.setRequestTimeout(requestTimeout);
+        connectionPolicy.setTcpNetworkRequestTimeout(requestTimeout);
         final RntbdTransportClient.Options options = new RntbdTransportClient.Options.Builder(connectionPolicy).build();
         final SslContext sslContext = SslContextBuilder.forClient().build();
 
-        try (final RntbdTransportClient transportClient = new RntbdTransportClient(options, sslContext, null)) {
+        try (final RntbdTransportClient transportClient = new RntbdTransportClient(options, sslContext, null, null)) {
 
             final BaseAuthorizationTokenProvider authorizationTokenProvider = new BaseAuthorizationTokenProvider(
                 new AzureKeyCredential(RntbdTestConfiguration.AccountKey)
@@ -703,7 +703,7 @@ public final class RntbdTransportClientTest {
     ) {
         final UserAgentContainer userAgent = new UserAgentContainer();
         ConnectionPolicy connectionPolicy = ConnectionPolicy.getDefaultPolicy();
-        connectionPolicy.setRequestTimeout(Duration.ofMillis(1000));
+        connectionPolicy.setTcpNetworkRequestTimeout(Duration.ofMillis(1000));
 
         try (final RntbdTransportClient client = getRntbdTransportClientUnderTest(userAgent, connectionPolicy, response)) {
 
@@ -978,7 +978,7 @@ public final class RntbdTransportClientTest {
             Provider(RntbdTransportClient.Options options, SslContext sslContext, RntbdResponse expected, IAddressResolver addressResolver) {
                 this.config = new Config(options, sslContext, LogLevel.WARN);
                 this.timer = new RntbdRequestTimer(
-                    config.requestTimeoutInNanos(),
+                    config.tcpNetworkRequestTimeoutInNanos(),
                     config.requestTimerResolutionInNanos());
                 this.expected = expected;
                 this.addressResolver = addressResolver;

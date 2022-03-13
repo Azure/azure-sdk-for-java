@@ -19,10 +19,12 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.StringJoiner;
@@ -41,9 +43,12 @@ public class CallingServerTestBase extends TestBase {
         .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING",
             "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
 
-    protected static final String RESOURCE_IDENTIFIER = Configuration.getGlobalConfiguration()
+    protected static final String ENDPOINT = Configuration.getGlobalConfiguration().get("COMMUNICATION_LIVETEST_STATIC_ENDPOINT",
+        "https://REDACTED.communication.azure.com/");
+
+    protected static final String AZURE_TENANT_ID = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_LIVETEST_STATIC_RESOURCE_IDENTIFIER",
-            "016a7064-0581-40b9-be73-6dde64d69d72");
+            "016a7064-0581-40b9-be73-6dde64d69d72");          
 
     protected static final String FROM_PHONE_NUMBER = Configuration.getGlobalConfiguration()
         .get("AZURE_PHONE_NUMBER", "+15551234567");
@@ -74,7 +79,39 @@ public class CallingServerTestBase extends TestBase {
         = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT),
         Pattern.CASE_INSENSITIVE);
 
-    protected CallingServerClientBuilder getCallClientUsingConnectionString(HttpClient httpClient) {
+    protected String getNewUserId() {
+        if (getTestMode() == TestMode.LIVE) {
+            CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder()
+                .connectionString(CONNECTION_STRING)
+                .buildClient();
+            CommunicationUserIdentifier user = communicationIdentityClient.createUser();
+            return user.getId();
+        }
+        return getRandomUserId();
+    }
+
+    protected String getRandomUserId() {
+        return "8:acs:" + AZURE_TENANT_ID + "_" + UUID.randomUUID();
+    }
+
+    protected String getGroupId(String testName) {
+        /*
+          If tests are running in live mode, we want them to all
+          have unique groupId's so they do not conflict with other
+          recording tests running in live mode.
+         */
+        if (getTestMode() == TestMode.LIVE) {        
+            return UUID.randomUUID().toString();
+        }
+
+        /*
+          For recording tests we need to make sure the groupId
+          matches the recorded groupId, or the call will fail.
+         */
+        return UUID.nameUUIDFromBytes(testName.getBytes()).toString();
+    }
+
+    protected CallingServerClientBuilder getCallingServerClientUsingConnectionString(HttpClient httpClient) {
         CallingServerClientBuilder builder = new CallingServerClientBuilder()
             .connectionString(CONNECTION_STRING)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
@@ -87,41 +124,12 @@ public class CallingServerTestBase extends TestBase {
         return builder;
     }
 
-    protected String getNewUserId() {
-        if (getTestMode() == TestMode.LIVE) {
-            CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder()
-                .connectionString(CONNECTION_STRING)
-                .buildClient();
-            CommunicationUserIdentifier user = communicationIdentityClient.createUser();
-            return user.getId();
-        }
-        return getRandomUserId();
-    }
+    protected CallingServerClientBuilder getCallingServerClientUsingTokenCredential(HttpClient httpClient) {
+        TokenCredential tokenCredential = getTestMode() == TestMode.PLAYBACK ? new FakeCredentials() : new DefaultAzureCredentialBuilder().build();
 
-    private String getRandomUserId() {
-        return "8:acs:" + RESOURCE_IDENTIFIER + "_" + UUID.randomUUID();
-    }
-
-    protected String getGroupId(String testName) {
-        /*
-          If tests are running in live mode, we want them to all
-          have unique groupId's so they do not conflict with other
-          recording tests running in live mode.
-         */
-        if (getTestMode() == TestMode.LIVE) {
-            return UUID.randomUUID().toString();
-        }
-
-        /*
-          For recording tests we need to make sure the groupId
-          matches the recorded groupId, or the call will fail.
-         */
-        return UUID.nameUUIDFromBytes(testName.getBytes()).toString();
-    }
-
-    protected CallingServerClientBuilder getConversationClientUsingConnectionString(HttpClient httpClient) {
         CallingServerClientBuilder builder = new CallingServerClientBuilder()
-            .connectionString(CONNECTION_STRING)
+            .endpoint(ENDPOINT)
+            .credential(tokenCredential)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
@@ -176,18 +184,18 @@ public class CallingServerTestBase extends TestBase {
 
             JoinCallOptions fromCallOptions = new JoinCallOptions(
                 callBackUri,
-                new MediaType[] { MediaType.AUDIO },
-                new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
-            fromCallConnection = callingServerClient.join(groupId, fromParticipant, fromCallOptions);
+                Collections.singletonList(MediaType.AUDIO),
+                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
+            fromCallConnection = callingServerClient.joinCall(groupId, fromParticipant, fromCallOptions);
             sleepIfRunningAgainstService(1000);
             CallingServerTestUtils.validateCallConnection(fromCallConnection);
 
             JoinCallOptions joinCallOptions = new JoinCallOptions(
                 callBackUri,
-                new MediaType[] { MediaType.AUDIO },
-                new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
+                Collections.singletonList(MediaType.AUDIO),
+                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
 
-            toCallConnection = callingServerClient.join(groupId, toParticipant, joinCallOptions);
+            toCallConnection = callingServerClient.joinCall(groupId, toParticipant, joinCallOptions);
             sleepIfRunningAgainstService(1000);
             CallingServerTestUtils.validateCallConnection(toCallConnection);
 
@@ -221,18 +229,18 @@ public class CallingServerTestBase extends TestBase {
 
             JoinCallOptions fromCallOptions = new JoinCallOptions(
                 callBackUri,
-                new MediaType[] { MediaType.AUDIO },
-                new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
-            fromCallConnection = callingServerClient.join(groupId, fromParticipant, fromCallOptions).block();
+                Collections.singletonList(MediaType.AUDIO),
+                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
+            fromCallConnection = callingServerClient.joinCall(groupId, fromParticipant, fromCallOptions).block();
             sleepIfRunningAgainstService(1000);
             CallingServerTestUtils.validateCallConnectionAsync(fromCallConnection);
 
             JoinCallOptions joinCallOptions = new JoinCallOptions(
                 callBackUri,
-                new MediaType[] { MediaType.AUDIO },
-                new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
+                Collections.singletonList(MediaType.AUDIO),
+                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
 
-            toCallConnection = callingServerClient.join(groupId, toParticipant, joinCallOptions).block();
+            toCallConnection = callingServerClient.joinCall(groupId, toParticipant, joinCallOptions).block();
             sleepIfRunningAgainstService(1000);
             CallingServerTestUtils.validateCallConnectionAsync(toCallConnection);
 

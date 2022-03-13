@@ -5,31 +5,35 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TwitterRegistration model. */
-@JsonFlatten
+/** The configuration settings of the app registration for the Twitter provider. */
 @Fluent
-public class TwitterRegistration extends ProxyOnlyResource {
+public final class TwitterRegistration {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TwitterRegistration.class);
 
     /*
-     * The consumerKey property.
+     * The OAuth 1.0a consumer key of the Twitter application used for sign-in.
+     * This setting is required for enabling Twitter Sign-In.
+     * Twitter Sign-In documentation: https://dev.twitter.com/web/sign-in
      */
-    @JsonProperty(value = "properties.consumerKey")
+    @JsonProperty(value = "consumerKey")
     private String consumerKey;
 
     /*
-     * The consumerSecretSettingName property.
+     * The app setting name that contains the OAuth 1.0a consumer secret of the
+     * Twitter
+     * application used for sign-in.
      */
-    @JsonProperty(value = "properties.consumerSecretSettingName")
+    @JsonProperty(value = "consumerSecretSettingName")
     private String consumerSecretSettingName;
 
     /**
-     * Get the consumerKey property: The consumerKey property.
+     * Get the consumerKey property: The OAuth 1.0a consumer key of the Twitter application used for sign-in. This
+     * setting is required for enabling Twitter Sign-In. Twitter Sign-In documentation:
+     * https://dev.twitter.com/web/sign-in.
      *
      * @return the consumerKey value.
      */
@@ -38,7 +42,9 @@ public class TwitterRegistration extends ProxyOnlyResource {
     }
 
     /**
-     * Set the consumerKey property: The consumerKey property.
+     * Set the consumerKey property: The OAuth 1.0a consumer key of the Twitter application used for sign-in. This
+     * setting is required for enabling Twitter Sign-In. Twitter Sign-In documentation:
+     * https://dev.twitter.com/web/sign-in.
      *
      * @param consumerKey the consumerKey value to set.
      * @return the TwitterRegistration object itself.
@@ -49,7 +55,8 @@ public class TwitterRegistration extends ProxyOnlyResource {
     }
 
     /**
-     * Get the consumerSecretSettingName property: The consumerSecretSettingName property.
+     * Get the consumerSecretSettingName property: The app setting name that contains the OAuth 1.0a consumer secret of
+     * the Twitter application used for sign-in.
      *
      * @return the consumerSecretSettingName value.
      */
@@ -58,7 +65,8 @@ public class TwitterRegistration extends ProxyOnlyResource {
     }
 
     /**
-     * Set the consumerSecretSettingName property: The consumerSecretSettingName property.
+     * Set the consumerSecretSettingName property: The app setting name that contains the OAuth 1.0a consumer secret of
+     * the Twitter application used for sign-in.
      *
      * @param consumerSecretSettingName the consumerSecretSettingName value to set.
      * @return the TwitterRegistration object itself.
@@ -68,20 +76,11 @@ public class TwitterRegistration extends ProxyOnlyResource {
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public TwitterRegistration withKind(String kind) {
-        super.withKind(kind);
-        return this;
-    }
-
     /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
     }
 }

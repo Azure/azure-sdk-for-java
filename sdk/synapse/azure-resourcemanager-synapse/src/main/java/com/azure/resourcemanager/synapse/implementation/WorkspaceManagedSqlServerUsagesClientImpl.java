@@ -97,7 +97,8 @@ public final class WorkspaceManagedSqlServerUsagesClientImpl implements Workspac
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of server usages metric for workspace managed sql server.
+     * @return list of server usages metric for workspace managed sql server along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerUsageInner>> listSinglePageAsync(String resourceGroupName, String workspaceName) {
@@ -120,6 +121,7 @@ public final class WorkspaceManagedSqlServerUsagesClientImpl implements Workspac
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -127,7 +129,7 @@ public final class WorkspaceManagedSqlServerUsagesClientImpl implements Workspac
                     service
                         .list(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -154,7 +156,8 @@ public final class WorkspaceManagedSqlServerUsagesClientImpl implements Workspac
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of server usages metric for workspace managed sql server.
+     * @return list of server usages metric for workspace managed sql server along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerUsageInner>> listSinglePageAsync(
@@ -178,12 +181,13 @@ public final class WorkspaceManagedSqlServerUsagesClientImpl implements Workspac
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -272,7 +276,8 @@ public final class WorkspaceManagedSqlServerUsagesClientImpl implements Workspac
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list server metrics request.
+     * @return represents the response to a list server metrics request along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerUsageInner>> listNextSinglePageAsync(String nextLink) {
@@ -308,7 +313,8 @@ public final class WorkspaceManagedSqlServerUsagesClientImpl implements Workspac
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list server metrics request.
+     * @return represents the response to a list server metrics request along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerUsageInner>> listNextSinglePageAsync(String nextLink, Context context) {

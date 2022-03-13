@@ -82,18 +82,18 @@ class ServiceBusReceiverClientTest {
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
         when(asyncClient.getReceiverOptions()).thenReturn(new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
         when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
-        client = new ServiceBusReceiverClient(asyncClient, OPERATION_TIMEOUT);
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
     }
 
     @AfterEach
     void teardown() {
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
     }
 
     @Test
     void nullConstructor() {
-        assertThrows(NullPointerException.class, () -> new ServiceBusReceiverClient(null, OPERATION_TIMEOUT));
-        assertThrows(NullPointerException.class, () -> new ServiceBusReceiverClient(asyncClient, null));
+        assertThrows(NullPointerException.class, () -> new ServiceBusReceiverClient(null, false, OPERATION_TIMEOUT));
+        assertThrows(NullPointerException.class, () -> new ServiceBusReceiverClient(asyncClient, false, null));
     }
 
     @Test
@@ -678,9 +678,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         final int maxMessages = 10;
         final int numberToEmit = maxMessages + 5;
+        final AtomicInteger emittedMessages = new AtomicInteger();
+
         Flux<ServiceBusReceivedMessage> messageSink = Flux.create(sink -> {
             sink.onRequest(e -> {
-                final AtomicInteger emittedMessages = new AtomicInteger();
                 if (emittedMessages.get() >= numberToEmit) {
                     logger.info("Cannot emit more. Reached max already. Emitted: {}. Max: {}",
                         emittedMessages.get(), numberToEmit);

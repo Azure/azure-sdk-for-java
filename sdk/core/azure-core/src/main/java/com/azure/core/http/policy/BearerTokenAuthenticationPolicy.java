@@ -92,7 +92,7 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
      * Authorizes the request with the bearer token acquired using the specified {@code tokenRequestContext}
      *
      * @param context the HTTP pipeline context.
-     * @param tokenRequestContext the token request conext to be used for token acquisition.
+     * @param tokenRequestContext the token request context to be used for token acquisition.
      * @return a {@link Mono} containing {@link Void}
      */
     public Mono<Void> setAuthorizationHeader(HttpPipelineCallContext context, TokenRequestContext tokenRequestContext) {

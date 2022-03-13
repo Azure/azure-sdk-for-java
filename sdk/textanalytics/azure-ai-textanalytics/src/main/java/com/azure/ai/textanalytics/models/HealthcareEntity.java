@@ -4,15 +4,17 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.HealthcareEntityPropertiesHelper;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
  * The {@link HealthcareEntity} model.
  */
+@Immutable
 public final class HealthcareEntity {
     private String text;
     private String normalizedText;
-    private String category;
+    private HealthcareEntityCategory category;
     private String subcategory;
     private double confidenceScore;
     private int offset;
@@ -33,7 +35,7 @@ public final class HealthcareEntity {
             }
 
             @Override
-            public void setCategory(HealthcareEntity healthcareEntity, String category) {
+            public void setCategory(HealthcareEntity healthcareEntity, HealthcareEntityCategory category) {
                 healthcareEntity.setCategory(category);
             }
 
@@ -71,7 +73,7 @@ public final class HealthcareEntity {
     }
 
     /**
-     * Get the text property: Healthcare entity text as appears in the request.
+     * Gets the text property: Healthcare entity text as appears in the request.
      *
      * @return The text value.
      */
@@ -80,7 +82,7 @@ public final class HealthcareEntity {
     }
 
     /**
-     * Get the normalized text property: The normalized text is preferred name for the entity.
+     * Gets the normalized text property: The normalized text is preferred name for the entity.
      * Example: 'histologically' would have a 'name' of 'histologic'.
      *
      * @return The normalized text value.
@@ -90,16 +92,16 @@ public final class HealthcareEntity {
     }
 
     /**
-     * Get the category property: Healthcare entity category, such as Person/Location/Org/SSN etc.
+     * Gets the category property: Healthcare entity category, such as Person/Location/Org/SSN etc.
      *
      * @return The category value.
      */
-    public String getCategory() {
+    public HealthcareEntityCategory getCategory() {
         return this.category;
     }
 
     /**
-     * Get the subcategory property: Healthcare entity subcategory, such as DateTime etc.
+     * Gets the subcategory property: Healthcare entity subcategory, such as DateTime etc.
      *
      * @return The subcategory value.
      */
@@ -108,7 +110,7 @@ public final class HealthcareEntity {
     }
 
     /**
-     * Get the score property: If a well-known item is recognized, a decimal
+     * Gets the score property: If a well-known item is recognized, a decimal
      * number denoting the confidence level between 0 and 1 will be returned.
      *
      * @return The score value.
@@ -118,7 +120,7 @@ public final class HealthcareEntity {
     }
 
     /**
-     * Get the offset of entity text. The start position for the entity text in a document.
+     * Gets the offset of entity text. The start position for the entity text in a document.
      *
      * @return The offset of entity text.
      */
@@ -127,7 +129,7 @@ public final class HealthcareEntity {
     }
 
     /**
-     * Get the length of entity text.
+     * Gets the length of entity text.
      *
      * @return The length of entity text.
      */
@@ -136,7 +138,7 @@ public final class HealthcareEntity {
     }
 
     /**
-     * Get the healthcare entity data sources property: Entity references in known data sources.
+     * Gets the healthcare entity data sources property: Entity references in known data sources.
      *
      * @return the dataSources value.
      */
@@ -145,7 +147,7 @@ public final class HealthcareEntity {
     }
 
     /**
-     * Get the assertion property.
+     * Gets the assertion property.
      *
      * @return the assertion property.
      */
@@ -161,7 +163,7 @@ public final class HealthcareEntity {
         this.normalizedText = normalizedText;
     }
 
-    private void setCategory(String category) {
+    private void setCategory(HealthcareEntityCategory category) {
         this.category = category;
     }
 

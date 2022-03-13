@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Main {
-    private final static String BREAKING_CHANGE_TITLE = "### Breaking Change\n\n";
-    private final static String NEW_FEATURE_TITLE = "### New Feature\n\n";
+    private final static String BREAKING_CHANGE_TITLE = "### Breaking Changes\n\n";
+    private final static String NEW_FEATURE_TITLE = "### Features Added\n\n";
 
     public static void main(String[] args) throws Exception {
         String oldJar = System.getProperty("OLD_JAR");

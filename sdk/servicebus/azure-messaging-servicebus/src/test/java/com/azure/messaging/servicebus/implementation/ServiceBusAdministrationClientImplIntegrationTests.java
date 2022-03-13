@@ -17,6 +17,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.ServiceBusServiceVersion;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.implementation.models.CreateQueueBody;
@@ -260,7 +261,7 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestBase {
         return new ServiceBusManagementClientImplBuilder()
             .serializerAdapter(serializer)
             .endpoint(properties.getEndpoint().getHost())
-            .apiVersion("2017-04")
+            .apiVersion(ServiceBusServiceVersion.getLatest().getVersion())
             .pipeline(pipeline)
             .buildClient();
     }

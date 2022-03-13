@@ -33,7 +33,7 @@ public final class SqlPoolsClient {
      *
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pools.
+     * @return sQL pool collection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SqlPoolInfoListResult list() {
@@ -47,7 +47,7 @@ public final class SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pools.
+     * @return sQL pool collection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SqlPoolInfoListResult> listWithResponse(Context context) {

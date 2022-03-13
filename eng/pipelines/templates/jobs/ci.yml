@@ -28,6 +28,30 @@ parameters:
   - name: MatrixReplace
     type: object
     default: []
+  - name: SkipAggregateReports
+    type: boolean
+    default: false
+  - name: PreBuildSteps
+    type: object
+    default: []
+  - name: AdditionalLintingOptions
+    type: string
+    default: ''
+  - name: BuildParallelization
+    type: string
+    default: '2C'
+  - name: TestGoals
+    type: string
+    default: $(TestGoals)
+  - name: TestOptions
+    type: string
+    default: $(TestOptions)
+  - name: AdditionalBuildOptions
+    type: string
+    default: $(AdditionalBuildOptions)
+  - name: TestParallelization
+    type: string
+    default: '1C'
 
 jobs:
   - job: 'Build'
@@ -36,7 +60,7 @@ jobs:
       - template: ../variables/globals.yml
 
     pool:
-      name: azsdk-pool-mms-ubuntu-1804-general
+      name: azsdk-pool-mms-ubuntu-2004-general
 
     strategy:
       matrix:
@@ -44,14 +68,17 @@ jobs:
           ArtifactName: 'packages'
 
     steps:
-      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-        parameters:
-          Paths:
-            - 'sdk/${{ parameters.ServiceDirectory }}'
-            - '**/*.xml'
-            - '**/*.md'
-            - '!sdk/**/test-recordings'
-            - '!sdk/**/session-records'
+      # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
+      # as we require the github service connection to be loaded.
+      - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
+        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+          parameters:
+            Paths:
+              - 'sdk/${{ parameters.ServiceDirectory }}'
+              - '**/*.xml'
+              - '**/*.md'
+              - '!sdk/**/test-recordings'
+              - '!sdk/**/session-records'
 
       - template: ../steps/generate-project-list.yml
         parameters:
@@ -66,6 +93,8 @@ jobs:
         inputs:
           versionSpec: '3.6'
 
+      - ${{ parameters.PreBuildSteps }}
+
       # This step needs to run before we update to using dev versions otherwise dependency
       # check in the script will not fully work because the versions will mismatch
       - task: PythonScript@0
@@ -75,15 +104,18 @@ jobs:
           arguments: '--set-pipeline-variable CheckoutDirectories --project-list $(ProjectList)'
           workingDirectory: '$(System.DefaultWorkingDirectory)'
 
-      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-        parameters:
-          Paths: $(CheckoutDirectories)
-          SkipDefaultCheckout: true
+      # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
+      # as we require the github service connection to be loaded.
+      - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
+        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+          parameters:
+            Paths: $(CheckoutDirectories)
+            SkipDefaultCheckout: true
 
       - script: |
           echo "##vso[build.addbuildtag]Scheduled"
         displayName: 'Tag scheduled builds'
-        condition: and(succeeded(), eq(variables['Build.SourceBranchName'],'master'),eq(variables['Build.Reason'],'Schedule'))
+        condition: and(succeeded(), eq(variables['Build.SourceBranchName'],'main'),eq(variables['Build.Reason'],'Schedule'))
 
       - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
         parameters:
@@ -112,6 +144,19 @@ jobs:
         condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
         displayName: Setup Dev versioning
 
+      - ${{if ne(parameters.ServiceDirectory, '')}}:
+        - task: Powershell@2
+          inputs:
+            filePath: $(Build.SourcesDirectory)/eng/common/scripts/Save-Package-Properties.ps1
+            arguments: >
+              -ServiceDirectory ${{parameters.ServiceDirectory}}
+              -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo
+              -AddDevVersion
+            pwsh: true
+            workingDirectory: $(Pipeline.Workspace)
+          displayName: Update package properties with dev version
+          condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
+
       - script: |
           pip install markdown2 BeautifulSoup4
         displayName: 'pip install markdown2 and BeautifulSoup4'
@@ -121,7 +166,7 @@ jobs:
         inputs:
           mavenPomFile: pom.xml
           goals: 'deploy'
-          options: '$(DefaultOptions) -T 1C -DskipTests -Dinject-codesnippets -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module so we ensure it always builds in CI
+          options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} ${{parameters.AdditionalBuildOptions}} -DskipTests -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaBuildVersion)
@@ -148,6 +193,21 @@ jobs:
           ArtifactPath: $(Build.ArtifactStagingDirectory)
           ArtifactName: '$(ArtifactName)'
 
+      - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
+        displayName: 'Generate SBOM'
+        condition: succeededOrFailed()
+        inputs:
+          BuildDropPath: $(Build.ArtifactStagingDirectory)
+
+      - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+        parameters:
+          ArtifactPath: '$(Build.ArtifactStagingDirectory)/_manifest'
+          ArtifactName: 'manifest'
+
+      - template: /eng/common/pipelines/templates/steps/detect-api-changes.yml
+        parameters:
+          Artifacts: ${{parameters.Artifacts}}
+
       - template: ../steps/upload-repository-on-failure.yml
 
   - job: 'Analyze'
@@ -157,8 +217,8 @@ jobs:
       - template: ../variables/globals.yml
 
     pool:
-      name: azsdk-pool-mms-ubuntu-1804-general
-      vmImage: MMSUbuntu18.04
+      name: azsdk-pool-mms-ubuntu-2004-general
+      vmImage: MMSUbuntu20.04
 
     steps:
       - task: UsePythonVersion@0
@@ -214,11 +274,9 @@ jobs:
           ServiceDirectory: "template"
           TestPipeline: ${{ parameters.TestPipeline }}
 
-      - script: |
-          pip install setuptools wheel
-          pip install doc-warden==$(DocWardenVersion)
-          ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml
-        displayName: 'Verify Readmes'
+      - template: /eng/common/pipelines/templates/steps/verify-readme.yml
+        parameters:
+          ScanPath: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
 
       - template: /eng/common/pipelines/templates/steps/verify-links.yml
         parameters:
@@ -257,7 +315,7 @@ jobs:
         inputs:
           mavenPomFile: pom.xml
           goals: 'install'
-          options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
+          options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} ${{parameters.AdditionalBuildOptions}} -DskipTests $(DefaultSkipOptions) -pl $(ProjectList) -am'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaBuildVersion)
@@ -268,7 +326,7 @@ jobs:
         displayName: 'Run SpotBugs, Checkstyle, RevApi, and Javadoc'
         inputs:
           mavenPomFile: pom.xml
-          options: '$(DefaultOptions) --no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme -pl $(ProjectList)'
+          options: '$(DefaultOptions) --no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme -DskipCompile=true -DskipTestCompile=true ${{ parameters.AdditionalLintingOptions }} -pl $(ProjectList)'
           mavenOptions: '$(MemoryOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaBuildVersion)
@@ -279,6 +337,16 @@ jobs:
       - template: ../steps/upload-repository-on-failure.yml
 
       - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
+
+  - job: Compliance
+    pool:
+      name: azsdk-pool-mms-win-2019-general
+      vmImage: MMS2019
+    steps:
+      - template: /eng/common/pipelines/templates/steps/credscan.yml
+        parameters:
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          BaselineFilePath: $(Build.SourcesDirectory)\eng\java.gdnbaselines
 
   - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
     parameters:
@@ -295,3 +363,10 @@ jobs:
         Artifacts: ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}
         PreTestSteps: ${{ parameters.PreTestSteps }}
+        SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
+        PreBuildSteps: ${{ parameters.PreBuildSteps }}
+        TestGoals: ${{ parameters.TestGoals }}
+        TestOptions: ${{ parameters.TestOptions }}
+        AdditionalBuildOptions: ${{ parameters.AdditionalBuildOptions }}
+        TestParallelization: ${{ parameters.TestParallelization }}
+        BuildParallelization: ${{ parameters.BuildParallelization }}

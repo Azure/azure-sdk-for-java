@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.models.AmqpMessageBody;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
@@ -444,7 +445,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         final int maxMessages = 2;
         for (int i = 0; i < maxMessages; ++i) {
-            ServiceBusMessage message = getMessage(payload, "" + i, isSessionEnabled);
+            ServiceBusMessage message = getMessage("" + i, isSessionEnabled, AmqpMessageBody.fromData(payload));
             sendMessage(message);
         }
         setReceiver(entityType, TestUtils.USE_CASE_PEEK_BATCH, isSessionEnabled);
@@ -793,13 +794,6 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
             }
         }
         receiver.complete(receivedMessage);
-    }
-
-    /**
-     * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
-     */
-    private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled) {
-        setSenderAndReceiver(entityType, entityIndex, isSessionEnabled, false);
     }
 
     private void setReceiver(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled) {

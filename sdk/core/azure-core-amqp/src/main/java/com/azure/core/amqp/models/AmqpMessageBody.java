@@ -8,30 +8,58 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
  * This class encapsulates the body of a message. The {@link AmqpMessageBodyType} map to an AMQP specification message
- * body types. Current implementation only support {@link AmqpMessageBodyType#DATA DATA} AMQP data type. Track this
- * <a href="https://github.com/Azure/azure-sdk-for-java/issues/17614" target="_blank">issue</a> to find out support for
- * other AMQP types.
+ * body types. Current implementation support {@link AmqpMessageBodyType#DATA DATA} AMQP data type.
  *
  * <p><b>Client should test for {@link AmqpMessageBodyType} before calling corresponding get method. Get methods not
  * corresponding to the type of the body throws exception.</b></p>
  *
  * <p><strong>How to check for {@link AmqpMessageBodyType}</strong></p>
- * {@codesnippet com.azure.core.amqp.models.AmqpBodyType.checkBodyType}
+ * <!-- src_embed com.azure.core.amqp.models.AmqpBodyType.checkBodyType -->
+ * <pre>
+ * Object amqpValue;
+ * AmqpMessageBodyType bodyType = amqpAnnotatedMessage.getBody&#40;&#41;.getBodyType&#40;&#41;;
+ *
+ * switch &#40;bodyType&#41; &#123;
+ *     case DATA:
+ *         byte[] payload = amqpAnnotatedMessage.getBody&#40;&#41;.getFirstData&#40;&#41;;
+ *         System.out.println&#40;new String&#40;payload&#41;&#41;;
+ *         break;
+ *     case SEQUENCE:
+ *         List&lt;Object&gt; sequenceData = amqpAnnotatedMessage.getBody&#40;&#41;.getSequence&#40;&#41;;
+ *         sequenceData.forEach&#40;System.out::println&#41;;
+ *         break;
+ *     case VALUE:
+ *         amqpValue = amqpAnnotatedMessage.getBody&#40;&#41;.getValue&#40;&#41;;
+ *         System.out.println&#40;amqpValue&#41;;
+ *         break;
+ *     default:
+ *         throw new RuntimeException&#40;String.format&#40;Locale.US, &quot;Body type [%s] is not valid.&quot;, bodyType&#41;&#41;;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.core.amqp.models.AmqpBodyType.checkBodyType -->
  *
  * @see AmqpMessageBodyType
+ * @see <a href="https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-types-v1.0-os.html#section-primitive-type-definitions" target="_blank">
+ *     Amqp primitive data type.</a>
+ * @see <a href="https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format" target="_blank">
+ *     Amqp message format.</a>
+ *
  */
 public final class AmqpMessageBody {
-    private final ClientLogger logger = new ClientLogger(AmqpMessageBody.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AmqpMessageBody.class);
     private AmqpMessageBodyType bodyType;
 
     // We expect user to call `getFirstData()` more because we support one byte[] as present.
     // This the priority here to store payload as `byte[] data` and
     private byte[] data;
     private List<byte[]> dataList;
+    private Object value;
+    private List<Object> sequence;
 
     private AmqpMessageBody() {
         // private constructor so no one outside can create instance of this except classes im this package.
@@ -55,9 +83,72 @@ public final class AmqpMessageBody {
     }
 
     /**
+     * Creates an instance of {@link AmqpMessageBody} with the given {@link List sequence}. It supports only one
+     * {@code sequence} at present.
+     *
+     * @param sequence used to create an instance of {@link AmqpMessageBody}. A sequence can be {@link List} of
+     * {@link Object objects}. The {@link Object object} can be any of the AMQP supported primitive data type.
+     *
+     * @return newly created instance of {@link AmqpMessageBody}.
+     *
+     * @throws NullPointerException if {@code sequence} is null.
+     * @see <a href="https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-types-v1.0-os.html#section-primitive-type-definitions" target="_blank">
+     *     Amqp primitive data type.</a>
+     */
+    public static AmqpMessageBody fromSequence(List<Object> sequence) {
+        Objects.requireNonNull(sequence, "'sequence' cannot be null.");
+        AmqpMessageBody body = new AmqpMessageBody();
+        body.bodyType = AmqpMessageBodyType.SEQUENCE;
+        body.sequence = sequence;
+        return body;
+    }
+
+    /**
+     * Creates an instance of {@link AmqpMessageBody} with the given {@link Object value}. A value can be any of the
+     * AMQP supported primitive data type.
+     *
+     * @param value used to create an instance of {@link AmqpMessageBody}.
+     *
+     * @return newly created instance of {@link AmqpMessageBody}.
+     *
+     * @throws NullPointerException if {@code value} is null.
+     * @see <a href="https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-types-v1.0-os.html#section-primitive-type-definitions" target="_blank">
+     *     Amqp primitive data type.</a>
+     */
+    public static AmqpMessageBody fromValue(Object value) {
+        Objects.requireNonNull(value, "'value' cannot be null.");
+        AmqpMessageBody body = new AmqpMessageBody();
+        body.bodyType = AmqpMessageBodyType.VALUE;
+        body.value = value;
+        return body;
+    }
+
+    /**
      * Gets the {@link AmqpMessageBodyType} of the message.
      * <p><strong>How to check for {@link AmqpMessageBodyType}</strong></p>
-     * {@codesnippet com.azure.core.amqp.models.AmqpBodyType.checkBodyType}
+     * <!-- src_embed com.azure.core.amqp.models.AmqpBodyType.checkBodyType -->
+     * <pre>
+     * Object amqpValue;
+     * AmqpMessageBodyType bodyType = amqpAnnotatedMessage.getBody&#40;&#41;.getBodyType&#40;&#41;;
+     *
+     * switch &#40;bodyType&#41; &#123;
+     *     case DATA:
+     *         byte[] payload = amqpAnnotatedMessage.getBody&#40;&#41;.getFirstData&#40;&#41;;
+     *         System.out.println&#40;new String&#40;payload&#41;&#41;;
+     *         break;
+     *     case SEQUENCE:
+     *         List&lt;Object&gt; sequenceData = amqpAnnotatedMessage.getBody&#40;&#41;.getSequence&#40;&#41;;
+     *         sequenceData.forEach&#40;System.out::println&#41;;
+     *         break;
+     *     case VALUE:
+     *         amqpValue = amqpAnnotatedMessage.getBody&#40;&#41;.getValue&#40;&#41;;
+     *         System.out.println&#40;amqpValue&#41;;
+     *         break;
+     *     default:
+     *         throw new RuntimeException&#40;String.format&#40;Locale.US, &quot;Body type [%s] is not valid.&quot;, bodyType&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.core.amqp.models.AmqpBodyType.checkBodyType -->
      * @return AmqpBodyType type of the message.
      */
     public AmqpMessageBodyType getBodyType() {
@@ -72,17 +163,37 @@ public final class AmqpMessageBody {
      * corresponding to the type of the body throws exception.</b></p>
      *
      * <p><strong>How to check for {@link AmqpMessageBodyType}</strong></p>
-     * {@codesnippet com.azure.core.amqp.models.AmqpBodyType.checkBodyType}
+     * <!-- src_embed com.azure.core.amqp.models.AmqpBodyType.checkBodyType -->
+     * <pre>
+     * Object amqpValue;
+     * AmqpMessageBodyType bodyType = amqpAnnotatedMessage.getBody&#40;&#41;.getBodyType&#40;&#41;;
+     *
+     * switch &#40;bodyType&#41; &#123;
+     *     case DATA:
+     *         byte[] payload = amqpAnnotatedMessage.getBody&#40;&#41;.getFirstData&#40;&#41;;
+     *         System.out.println&#40;new String&#40;payload&#41;&#41;;
+     *         break;
+     *     case SEQUENCE:
+     *         List&lt;Object&gt; sequenceData = amqpAnnotatedMessage.getBody&#40;&#41;.getSequence&#40;&#41;;
+     *         sequenceData.forEach&#40;System.out::println&#41;;
+     *         break;
+     *     case VALUE:
+     *         amqpValue = amqpAnnotatedMessage.getBody&#40;&#41;.getValue&#40;&#41;;
+     *         System.out.println&#40;amqpValue&#41;;
+     *         break;
+     *     default:
+     *         throw new RuntimeException&#40;String.format&#40;Locale.US, &quot;Body type [%s] is not valid.&quot;, bodyType&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.core.amqp.models.AmqpBodyType.checkBodyType -->
      * @return data set on {@link AmqpMessageBody}.
      *
      * @throws IllegalArgumentException If {@link AmqpMessageBodyType} is not {@link AmqpMessageBodyType#DATA DATA}.
      */
     public IterableStream<byte[]> getData() {
         if (bodyType != AmqpMessageBodyType.DATA) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "This method can only be called for AMQP Data body type at present. Track this issue, "
-                    + "https://github.com/Azure/azure-sdk-for-java/issues/17614 for other body type support in "
-                    + "future."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "This method can only be called if AMQP Message body type is 'DATA'."));
         }
         if (dataList ==  null) {
             dataList = Collections.singletonList(data);
@@ -97,7 +208,29 @@ public final class AmqpMessageBody {
      * corresponding to the type of the body throws exception.</b></p>
      *
      * <p><strong>How to check for {@link AmqpMessageBodyType}</strong></p>
-     * {@codesnippet com.azure.core.amqp.models.AmqpBodyType.checkBodyType}
+     * <!-- src_embed com.azure.core.amqp.models.AmqpBodyType.checkBodyType -->
+     * <pre>
+     * Object amqpValue;
+     * AmqpMessageBodyType bodyType = amqpAnnotatedMessage.getBody&#40;&#41;.getBodyType&#40;&#41;;
+     *
+     * switch &#40;bodyType&#41; &#123;
+     *     case DATA:
+     *         byte[] payload = amqpAnnotatedMessage.getBody&#40;&#41;.getFirstData&#40;&#41;;
+     *         System.out.println&#40;new String&#40;payload&#41;&#41;;
+     *         break;
+     *     case SEQUENCE:
+     *         List&lt;Object&gt; sequenceData = amqpAnnotatedMessage.getBody&#40;&#41;.getSequence&#40;&#41;;
+     *         sequenceData.forEach&#40;System.out::println&#41;;
+     *         break;
+     *     case VALUE:
+     *         amqpValue = amqpAnnotatedMessage.getBody&#40;&#41;.getValue&#40;&#41;;
+     *         System.out.println&#40;amqpValue&#41;;
+     *         break;
+     *     default:
+     *         throw new RuntimeException&#40;String.format&#40;Locale.US, &quot;Body type [%s] is not valid.&quot;, bodyType&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.core.amqp.models.AmqpBodyType.checkBodyType -->
      * @return data set on {@link AmqpMessageBody}.
      *
      * @throws IllegalArgumentException If {@link AmqpMessageBodyType} is not {@link AmqpMessageBodyType#DATA DATA}.
@@ -106,11 +239,107 @@ public final class AmqpMessageBody {
      */
     public byte[] getFirstData() {
         if (bodyType != AmqpMessageBodyType.DATA) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "This method can only be called for AMQP Data body type at present. Track this issue, "
-                    + "https://github.com/Azure/azure-sdk-for-java/issues/17614 for other body type support in "
-                    + "future."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format(Locale.US, "This method can be called if AMQP Message body type is 'DATA'. "
+                    + "The actual type is [%s].", bodyType)));
         }
         return data;
+    }
+
+    /**
+     * Gets the unmodifiable AMQP Sequence set on this {@link AmqpMessageBody}. It support only one {@code sequence} at
+     * present.
+     *
+     * <p><b>Client should test for {@link AmqpMessageBodyType} before calling corresponding get method. Get methods not
+     * corresponding to the type of the body throws exception.</b></p>
+     *
+     * <p><strong>How to check for {@link AmqpMessageBodyType}</strong></p>
+     * <!-- src_embed com.azure.core.amqp.models.AmqpBodyType.checkBodyType -->
+     * <pre>
+     * Object amqpValue;
+     * AmqpMessageBodyType bodyType = amqpAnnotatedMessage.getBody&#40;&#41;.getBodyType&#40;&#41;;
+     *
+     * switch &#40;bodyType&#41; &#123;
+     *     case DATA:
+     *         byte[] payload = amqpAnnotatedMessage.getBody&#40;&#41;.getFirstData&#40;&#41;;
+     *         System.out.println&#40;new String&#40;payload&#41;&#41;;
+     *         break;
+     *     case SEQUENCE:
+     *         List&lt;Object&gt; sequenceData = amqpAnnotatedMessage.getBody&#40;&#41;.getSequence&#40;&#41;;
+     *         sequenceData.forEach&#40;System.out::println&#41;;
+     *         break;
+     *     case VALUE:
+     *         amqpValue = amqpAnnotatedMessage.getBody&#40;&#41;.getValue&#40;&#41;;
+     *         System.out.println&#40;amqpValue&#41;;
+     *         break;
+     *     default:
+     *         throw new RuntimeException&#40;String.format&#40;Locale.US, &quot;Body type [%s] is not valid.&quot;, bodyType&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.core.amqp.models.AmqpBodyType.checkBodyType -->
+     * @return sequence of this {@link AmqpMessageBody} instance.
+     *
+     * @throws IllegalArgumentException If {@link AmqpMessageBodyType} is not
+     *         {@link AmqpMessageBodyType#SEQUENCE SEQUENCE}.
+     * @see <a href="https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-types-v1.0-os.html#section-primitive-type-definitions" target="_blank">
+     *     Amqp primitive data type.</a>
+     * @see <a href="https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format" target="_blank">
+     *     Amqp message format.</a>
+     */
+    public List<Object> getSequence() {
+        if (bodyType != AmqpMessageBodyType.SEQUENCE) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format(Locale.US, "This method can be called if AMQP Message body type is 'SEQUENCE'. "
+                    + "The actual type is [%s].", bodyType)));
+        }
+
+        return Collections.unmodifiableList(sequence);
+    }
+
+    /**
+     * Gets the AMQP value set on this {@link AmqpMessageBody} instance. It can be any of the primitive AMQP data type.
+     *
+     * <p><b>Client should test for {@link AmqpMessageBodyType} before calling corresponding get method. The 'Get'
+     * methods not corresponding to the type of the body throws exception.</b></p>
+     *
+     * <p><strong>How to check for {@link AmqpMessageBodyType}</strong></p>
+     * <!-- src_embed com.azure.core.amqp.models.AmqpBodyType.checkBodyType -->
+     * <pre>
+     * Object amqpValue;
+     * AmqpMessageBodyType bodyType = amqpAnnotatedMessage.getBody&#40;&#41;.getBodyType&#40;&#41;;
+     *
+     * switch &#40;bodyType&#41; &#123;
+     *     case DATA:
+     *         byte[] payload = amqpAnnotatedMessage.getBody&#40;&#41;.getFirstData&#40;&#41;;
+     *         System.out.println&#40;new String&#40;payload&#41;&#41;;
+     *         break;
+     *     case SEQUENCE:
+     *         List&lt;Object&gt; sequenceData = amqpAnnotatedMessage.getBody&#40;&#41;.getSequence&#40;&#41;;
+     *         sequenceData.forEach&#40;System.out::println&#41;;
+     *         break;
+     *     case VALUE:
+     *         amqpValue = amqpAnnotatedMessage.getBody&#40;&#41;.getValue&#40;&#41;;
+     *         System.out.println&#40;amqpValue&#41;;
+     *         break;
+     *     default:
+     *         throw new RuntimeException&#40;String.format&#40;Locale.US, &quot;Body type [%s] is not valid.&quot;, bodyType&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.core.amqp.models.AmqpBodyType.checkBodyType -->
+     * @return value of this {@link AmqpMessageBody} instance.
+     *
+     * @throws IllegalArgumentException If {@link AmqpMessageBodyType} is not {@link AmqpMessageBodyType#VALUE VALUE}.
+     * @see <a href="https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-types-v1.0-os.html#section-primitive-type-definitions" target="_blank">
+     *     Amqp primitive data type.</a>
+     * @see <a href="https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format" target="_blank">
+     *     Amqp message format.</a>
+     */
+    public Object getValue() {
+        if (bodyType != AmqpMessageBodyType.VALUE) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format(Locale.US, "This method can be called if AMQP Message body type is 'VALUE'. "
+                    + "The actual type is [%s].", bodyType)));
+        }
+        return value;
     }
 }

@@ -28,7 +28,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.ManagementPoliciesClient;
 import com.azure.resourcemanager.storage.fluent.models.ManagementPolicyInner;
 import com.azure.resourcemanager.storage.models.ManagementPolicyName;
-import com.azure.resourcemanager.storage.models.ManagementPolicySchema;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ManagementPoliciesClient. */
@@ -119,7 +118,8 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managementpolicy associated with the specified storage account.
+     * @return the managementpolicy associated with the specified storage account along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagementPolicyInner>> getWithResponseAsync(
@@ -176,7 +176,8 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managementpolicy associated with the specified storage account.
+     * @return the managementpolicy associated with the specified storage account along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ManagementPolicyInner>> getWithResponseAsync(
@@ -229,7 +230,8 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managementpolicy associated with the specified storage account.
+     * @return the managementpolicy associated with the specified storage account on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagementPolicyInner> getAsync(
@@ -276,7 +278,7 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managementpolicy associated with the specified storage account.
+     * @return the managementpolicy associated with the specified storage account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagementPolicyInner> getWithResponse(
@@ -292,19 +294,19 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
-     * @param policy The Storage Account ManagementPolicy, in JSON format. See more details in:
-     *     https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
+     * @param properties The ManagementPolicy set to a storage account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Get Storage Account ManagementPolicies operation response.
+     * @return the Get Storage Account ManagementPolicies operation response along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagementPolicyInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String accountName,
         ManagementPolicyName managementPolicyName,
-        ManagementPolicySchema policy) {
+        ManagementPolicyInner properties) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -328,12 +330,12 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter managementPolicyName is required and cannot be null."));
         }
-        if (policy != null) {
-            policy.validate();
+        if (properties == null) {
+            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        } else {
+            properties.validate();
         }
         final String accept = "application/json";
-        ManagementPolicyInner properties = new ManagementPolicyInner();
-        properties.withPolicy(policy);
         return FluxUtil
             .withContext(
                 context ->
@@ -359,20 +361,20 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
-     * @param policy The Storage Account ManagementPolicy, in JSON format. See more details in:
-     *     https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
+     * @param properties The ManagementPolicy set to a storage account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Get Storage Account ManagementPolicies operation response.
+     * @return the Get Storage Account ManagementPolicies operation response along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ManagementPolicyInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String accountName,
         ManagementPolicyName managementPolicyName,
-        ManagementPolicySchema policy,
+        ManagementPolicyInner properties,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -397,12 +399,12 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter managementPolicyName is required and cannot be null."));
         }
-        if (policy != null) {
-            policy.validate();
+        if (properties == null) {
+            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        } else {
+            properties.validate();
         }
         final String accept = "application/json";
-        ManagementPolicyInner properties = new ManagementPolicyInner();
-        properties.withPolicy(policy);
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -425,20 +427,19 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
-     * @param policy The Storage Account ManagementPolicy, in JSON format. See more details in:
-     *     https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
+     * @param properties The ManagementPolicy set to a storage account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Get Storage Account ManagementPolicies operation response.
+     * @return the Get Storage Account ManagementPolicies operation response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagementPolicyInner> createOrUpdateAsync(
         String resourceGroupName,
         String accountName,
         ManagementPolicyName managementPolicyName,
-        ManagementPolicySchema policy) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, managementPolicyName, policy)
+        ManagementPolicyInner properties) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, managementPolicyName, properties)
             .flatMap(
                 (Response<ManagementPolicyInner> res) -> {
                     if (res.getValue() != null) {
@@ -457,34 +458,7 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Get Storage Account ManagementPolicies operation response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagementPolicyInner> createOrUpdateAsync(
-        String resourceGroupName, String accountName, ManagementPolicyName managementPolicyName) {
-        final ManagementPolicySchema policy = null;
-        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, managementPolicyName, policy)
-            .flatMap(
-                (Response<ManagementPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Sets the managementpolicy to the specified storage account.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
+     * @param properties The ManagementPolicy set to a storage account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -492,9 +466,11 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagementPolicyInner createOrUpdate(
-        String resourceGroupName, String accountName, ManagementPolicyName managementPolicyName) {
-        final ManagementPolicySchema policy = null;
-        return createOrUpdateAsync(resourceGroupName, accountName, managementPolicyName, policy).block();
+        String resourceGroupName,
+        String accountName,
+        ManagementPolicyName managementPolicyName,
+        ManagementPolicyInner properties) {
+        return createOrUpdateAsync(resourceGroupName, accountName, managementPolicyName, properties).block();
     }
 
     /**
@@ -505,22 +481,22 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
-     * @param policy The Storage Account ManagementPolicy, in JSON format. See more details in:
-     *     https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
+     * @param properties The ManagementPolicy set to a storage account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Get Storage Account ManagementPolicies operation response.
+     * @return the Get Storage Account ManagementPolicies operation response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagementPolicyInner> createOrUpdateWithResponse(
         String resourceGroupName,
         String accountName,
         ManagementPolicyName managementPolicyName,
-        ManagementPolicySchema policy,
+        ManagementPolicyInner properties,
         Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, managementPolicyName, policy, context)
+        return createOrUpdateWithResponseAsync(
+                resourceGroupName, accountName, managementPolicyName, properties, context)
             .block();
     }
 
@@ -535,7 +511,7 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
@@ -590,7 +566,7 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -641,7 +617,7 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
@@ -679,7 +655,7 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(

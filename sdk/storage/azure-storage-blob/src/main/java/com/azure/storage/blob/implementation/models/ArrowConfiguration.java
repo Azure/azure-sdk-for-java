@@ -12,7 +12,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
-/** arrow configuration. */
+/** Groups the settings used for formatting the response if the response should be Arrow formatted. */
 @JacksonXmlRootElement(localName = "ArrowConfiguration")
 @Fluent
 public final class ArrowConfiguration {

@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.AvroDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,87 +17,23 @@ import java.util.Map;
 /** Avro dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Avro")
-@JsonFlatten
 @Fluent
-public class AvroDataset extends Dataset {
+public final class AvroDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AvroDataset.class);
 
     /*
-     * The location of the avro storage.
+     * Avro dataset properties.
      */
-    @JsonProperty(value = "typeProperties.location")
-    private DatasetLocation location;
-
-    /*
-     * The avroCompressionCodec property.
-     */
-    @JsonProperty(value = "typeProperties.avroCompressionCodec")
-    private AvroCompressionCodec avroCompressionCodec;
-
-    /*
-     * The avroCompressionLevel property.
-     */
-    @JsonProperty(value = "typeProperties.avroCompressionLevel")
-    private Integer avroCompressionLevel;
+    @JsonProperty(value = "typeProperties")
+    private AvroDatasetTypeProperties innerTypeProperties;
 
     /**
-     * Get the location property: The location of the avro storage.
+     * Get the innerTypeProperties property: Avro dataset properties.
      *
-     * @return the location value.
+     * @return the innerTypeProperties value.
      */
-    public DatasetLocation location() {
-        return this.location;
-    }
-
-    /**
-     * Set the location property: The location of the avro storage.
-     *
-     * @param location the location value to set.
-     * @return the AvroDataset object itself.
-     */
-    public AvroDataset withLocation(DatasetLocation location) {
-        this.location = location;
-        return this;
-    }
-
-    /**
-     * Get the avroCompressionCodec property: The avroCompressionCodec property.
-     *
-     * @return the avroCompressionCodec value.
-     */
-    public AvroCompressionCodec avroCompressionCodec() {
-        return this.avroCompressionCodec;
-    }
-
-    /**
-     * Set the avroCompressionCodec property: The avroCompressionCodec property.
-     *
-     * @param avroCompressionCodec the avroCompressionCodec value to set.
-     * @return the AvroDataset object itself.
-     */
-    public AvroDataset withAvroCompressionCodec(AvroCompressionCodec avroCompressionCodec) {
-        this.avroCompressionCodec = avroCompressionCodec;
-        return this;
-    }
-
-    /**
-     * Get the avroCompressionLevel property: The avroCompressionLevel property.
-     *
-     * @return the avroCompressionLevel value.
-     */
-    public Integer avroCompressionLevel() {
-        return this.avroCompressionLevel;
-    }
-
-    /**
-     * Set the avroCompressionLevel property: The avroCompressionLevel property.
-     *
-     * @param avroCompressionLevel the avroCompressionLevel value to set.
-     * @return the AvroDataset object itself.
-     */
-    public AvroDataset withAvroCompressionLevel(Integer avroCompressionLevel) {
-        this.avroCompressionLevel = avroCompressionLevel;
-        return this;
+    private AvroDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -150,6 +86,77 @@ public class AvroDataset extends Dataset {
     }
 
     /**
+     * Get the location property: The location of the avro storage.
+     *
+     * @return the location value.
+     */
+    public DatasetLocation location() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().location();
+    }
+
+    /**
+     * Set the location property: The location of the avro storage.
+     *
+     * @param location the location value to set.
+     * @return the AvroDataset object itself.
+     */
+    public AvroDataset withLocation(DatasetLocation location) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AvroDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withLocation(location);
+        return this;
+    }
+
+    /**
+     * Get the avroCompressionCodec property: The data avroCompressionCodec. Type: string (or Expression with resultType
+     * string).
+     *
+     * @return the avroCompressionCodec value.
+     */
+    public Object avroCompressionCodec() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().avroCompressionCodec();
+    }
+
+    /**
+     * Set the avroCompressionCodec property: The data avroCompressionCodec. Type: string (or Expression with resultType
+     * string).
+     *
+     * @param avroCompressionCodec the avroCompressionCodec value to set.
+     * @return the AvroDataset object itself.
+     */
+    public AvroDataset withAvroCompressionCodec(Object avroCompressionCodec) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AvroDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withAvroCompressionCodec(avroCompressionCodec);
+        return this;
+    }
+
+    /**
+     * Get the avroCompressionLevel property: The avroCompressionLevel property.
+     *
+     * @return the avroCompressionLevel value.
+     */
+    public Integer avroCompressionLevel() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().avroCompressionLevel();
+    }
+
+    /**
+     * Set the avroCompressionLevel property: The avroCompressionLevel property.
+     *
+     * @param avroCompressionLevel the avroCompressionLevel value to set.
+     * @return the AvroDataset object itself.
+     */
+    public AvroDataset withAvroCompressionLevel(Integer avroCompressionLevel) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AvroDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withAvroCompressionLevel(avroCompressionLevel);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -157,8 +164,8 @@ public class AvroDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
-        if (location() != null) {
-            location().validate();
+        if (innerTypeProperties() != null) {
+            innerTypeProperties().validate();
         }
     }
 }

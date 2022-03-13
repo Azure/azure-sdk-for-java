@@ -28,7 +28,7 @@ public final class RecognizeLinkedEntitiesResult extends TextAnalyticsResult {
     }
 
     /**
-     * Get an {@link IterableStream} of {@link LinkedEntity}.
+     * Gets an {@link IterableStream} of {@link LinkedEntity}.
      *
      * @return An {@link IterableStream} of {@link LinkedEntity}.
      *

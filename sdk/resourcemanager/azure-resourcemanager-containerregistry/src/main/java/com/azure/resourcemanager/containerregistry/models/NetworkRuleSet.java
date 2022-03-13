@@ -22,12 +22,6 @@ public final class NetworkRuleSet {
     private DefaultAction defaultAction;
 
     /*
-     * The virtual network rules.
-     */
-    @JsonProperty(value = "virtualNetworkRules")
-    private List<VirtualNetworkRule> virtualNetworkRules;
-
-    /*
      * The IP ACL rules.
      */
     @JsonProperty(value = "ipRules")
@@ -50,26 +44,6 @@ public final class NetworkRuleSet {
      */
     public NetworkRuleSet withDefaultAction(DefaultAction defaultAction) {
         this.defaultAction = defaultAction;
-        return this;
-    }
-
-    /**
-     * Get the virtualNetworkRules property: The virtual network rules.
-     *
-     * @return the virtualNetworkRules value.
-     */
-    public List<VirtualNetworkRule> virtualNetworkRules() {
-        return this.virtualNetworkRules;
-    }
-
-    /**
-     * Set the virtualNetworkRules property: The virtual network rules.
-     *
-     * @param virtualNetworkRules the virtualNetworkRules value to set.
-     * @return the NetworkRuleSet object itself.
-     */
-    public NetworkRuleSet withVirtualNetworkRules(List<VirtualNetworkRule> virtualNetworkRules) {
-        this.virtualNetworkRules = virtualNetworkRules;
         return this;
     }
 
@@ -103,9 +77,6 @@ public final class NetworkRuleSet {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property defaultAction in model NetworkRuleSet"));
-        }
-        if (virtualNetworkRules() != null) {
-            virtualNetworkRules().forEach(e -> e.validate());
         }
         if (ipRules() != null) {
             ipRules().forEach(e -> e.validate());

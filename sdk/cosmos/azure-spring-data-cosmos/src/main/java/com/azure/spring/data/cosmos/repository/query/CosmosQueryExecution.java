@@ -35,6 +35,11 @@ public interface CosmosQueryExecution {
 
         private final CosmosOperations operations;
 
+        /**
+         * Creates a new instance of container execution.
+         *
+         * @param operations the Cosmos operations
+         */
         public ContainerExecution(CosmosOperations operations) {
             this.operations = operations;
         }
@@ -52,6 +57,11 @@ public interface CosmosQueryExecution {
 
         private final CosmosOperations operations;
 
+        /**
+         * Creates a new instance of multi-entity execution.
+         *
+         * @param operations the Cosmos operations
+         */
         public MultiEntityExecution(CosmosOperations operations) {
             this.operations = operations;
         }
@@ -70,6 +80,12 @@ public interface CosmosQueryExecution {
         private final CosmosOperations operations;
         private final ReturnedType returnedType;
 
+        /**
+         * Creates a new instance of single-entity execution.
+         *
+         * @param operations the Cosmos operations
+         * @param returnedType the returned type
+         */
         public SingleEntityExecution(CosmosOperations operations, ReturnedType returnedType) {
             this.operations = operations;
             this.returnedType = returnedType;
@@ -108,6 +124,11 @@ public interface CosmosQueryExecution {
 
         private final CosmosOperations operations;
 
+        /**
+         * Creates a new instance of exists execution.
+         *
+         * @param operations the Cosmos operations
+         */
         public ExistsExecution(CosmosOperations operations) {
             this.operations = operations;
         }
@@ -125,6 +146,11 @@ public interface CosmosQueryExecution {
 
         private final CosmosOperations operations;
 
+        /**
+         * Creates a new instance of delete execution.
+         *
+         * @param operations the Cosmos operations
+         */
         public DeleteExecution(CosmosOperations operations) {
             this.operations = operations;
         }
@@ -142,6 +168,12 @@ public interface CosmosQueryExecution {
         private final CosmosOperations operations;
         private final Pageable pageable;
 
+        /**
+         * Creates a new instance of paged execution.
+         *
+         * @param operations the Cosmos operations
+         * @param pageable the pageable
+         */
         public PagedExecution(CosmosOperations operations, Pageable pageable) {
             this.operations = operations;
             this.pageable = pageable;
@@ -168,6 +200,12 @@ public interface CosmosQueryExecution {
         private final CosmosOperations operations;
         private final Pageable pageable;
 
+        /**
+         * Creates a new instance of slice execution.
+         *
+         * @param operations the Cosmos operations
+         * @param pageable the pageable
+         */
         public SliceExecution(CosmosOperations operations, Pageable pageable) {
             this.operations = operations;
             this.pageable = pageable;
@@ -194,6 +232,11 @@ public interface CosmosQueryExecution {
 
         private final CosmosOperations operations;
 
+        /**
+         * Creates a new instance of count execution.
+         *
+         * @param operations the Cosmos operations
+         */
         public CountExecution(CosmosOperations operations) {
             this.operations = operations;
         }

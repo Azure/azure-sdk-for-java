@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Set of export policy rules. */
+/** exportPolicy Set of export policy rules. */
 @Fluent
 public final class VolumePatchPropertiesExportPolicy {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VolumePatchPropertiesExportPolicy.class);

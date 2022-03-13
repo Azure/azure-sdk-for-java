@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of Big Data pool information. */
+/** Collection of Big Data pools Collection of Big Data pool information. */
 @Fluent
 public final class BigDataPoolResourceInfoListResult {
     /*

@@ -4,8 +4,9 @@ package com.azure.spring.cloud.config.stores;
 
 import static com.azure.spring.cloud.config.TestConstants.TEST_CONN_STRING;
 import static com.azure.spring.cloud.config.TestConstants.TEST_ENDPOINT;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
@@ -13,16 +14,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.function.Supplier;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
+import org.mockito.MockitoAnnotations;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpHeaders;
@@ -30,9 +29,10 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
-import com.azure.data.appconfiguration.ConfigurationAsyncClient;
+import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
@@ -47,26 +47,33 @@ import reactor.core.publisher.Mono;
 public class ClientStoreTest {
 
     static TokenCredential tokenCredential;
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+
     private ClientStore clientStore;
+
     @Mock
     private ConfigurationClientBuilder builderMock;
+
     @Mock
-    private ConfigurationAsyncClient clientMock;
+    private ConfigurationClient clientMock;
+
     @Mock
     private TokenCredential credentialMock;
-    private List<PagedResponse<ConfigurationSetting>> pagedResponses;
 
     private AppConfigurationProviderProperties appProperties;
 
     private ConnectionPool pool;
 
-    @Before
-    public void init() {
+    @BeforeEach
+    public void setup() {
+        MockitoAnnotations.openMocks(this);
         appProperties = new AppConfigurationProviderProperties();
         appProperties.setMaxRetries(0);
         pool = new ConnectionPool();
+    }
+
+    @AfterEach
+    public void cleanup() throws Exception {
+        MockitoAnnotations.openMocks(this).close();
     }
 
     @Test
@@ -75,7 +82,7 @@ public class ClientStoreTest {
 
         SettingSelector selector = new SettingSelector();
 
-        clientStore = new ClientStore(appProperties, pool, null, null);
+        clientStore = new ClientStore(appProperties, pool, null, null, false, false);
         ClientStore test = Mockito.spy(clientStore);
         Mockito.doReturn(builderMock).when(test).getBuilder();
 
@@ -83,12 +90,12 @@ public class ClientStoreTest {
         when(builderMock.retryPolicy(Mockito.any(RetryPolicy.class))).thenReturn(builderMock);
 
         when(builderMock.endpoint(Mockito.eq(TEST_ENDPOINT))).thenReturn(builderMock);
-        when(builderMock.buildAsyncClient()).thenReturn(clientMock);
+        when(builderMock.buildClient()).thenReturn(clientMock);
 
         when(clientMock.listConfigurationSettings(Mockito.any(SettingSelector.class)))
-            .thenReturn(getConfigurationPagedFlux(1));
+                .thenReturn(getConfigurationPagedFlux(1));
 
-        assertEquals(test.listSettings(selector, TEST_ENDPOINT).size(), 1);
+        assertEquals(1, test.listSettings(selector, TEST_ENDPOINT).stream().count());
     }
 
     @Test
@@ -97,7 +104,7 @@ public class ClientStoreTest {
 
         SettingSelector selector = new SettingSelector();
 
-        clientStore = new ClientStore(appProperties, pool, null, null);
+        clientStore = new ClientStore(appProperties, pool, null, null, false, false);
         ClientStore test = Mockito.spy(clientStore);
         Mockito.doReturn(builderMock).when(test).getBuilder();
 
@@ -105,12 +112,12 @@ public class ClientStoreTest {
         when(builderMock.retryPolicy(Mockito.any(RetryPolicy.class))).thenReturn(builderMock);
 
         when(builderMock.endpoint(Mockito.eq(TEST_ENDPOINT))).thenReturn(builderMock);
-        when(builderMock.buildAsyncClient()).thenReturn(clientMock);
+        when(builderMock.buildClient()).thenReturn(clientMock);
 
         when(clientMock.listConfigurationSettings(Mockito.any(SettingSelector.class)))
-            .thenReturn(getConfigurationPagedFlux(1));
+                .thenReturn(getConfigurationPagedFlux(1));
 
-        assertEquals(test.listSettings(selector, TEST_ENDPOINT).size(), 1);
+        assertEquals(1, test.listSettings(selector, TEST_ENDPOINT).stream().count());
     }
 
     @Test
@@ -119,7 +126,7 @@ public class ClientStoreTest {
 
         SettingSelector selector = new SettingSelector();
 
-        clientStore = new ClientStore(appProperties, pool, null, null);
+        clientStore = new ClientStore(appProperties, pool, null, null, false, false);
         ClientStore test = Mockito.spy(clientStore);
         Mockito.doReturn(builderMock).when(test).getBuilder();
 
@@ -127,28 +134,17 @@ public class ClientStoreTest {
         when(builderMock.retryPolicy(Mockito.any(RetryPolicy.class))).thenReturn(builderMock);
 
         when(builderMock.endpoint(Mockito.eq(TEST_ENDPOINT))).thenReturn(builderMock);
-        when(builderMock.buildAsyncClient()).thenReturn(clientMock);
+        when(builderMock.buildClient()).thenReturn(clientMock);
 
-        when(clientMock.listConfigurationSettings(Mockito.any(SettingSelector.class)))
-            .thenReturn(getConfigurationPagedFlux(1));
+        when(clientMock.getConfigurationSetting(Mockito.any(), Mockito.any()))
+                .thenReturn(new ConfigurationSetting());
 
-        assertTrue(test.getWatchKey(selector, TEST_ENDPOINT) != null);
+        assertTrue(test.getWatchKey(selector.getKeyFilter(), selector.getLabelFilter(), TEST_ENDPOINT) != null);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void noIdentityTest() throws IOException {
-        pool.put(TEST_ENDPOINT, new Connection(null));
-
-        SettingSelector selector = new SettingSelector();
-
-        clientStore = new ClientStore(appProperties, pool, null, null);
-        ClientStore test = Mockito.spy(clientStore);
-        Mockito.doReturn(builderMock).when(test).getBuilder();
-
-        when(builderMock.addPolicy(Mockito.any(BaseAppConfigurationPolicy.class))).thenReturn(builderMock);
-        when(builderMock.retryPolicy(Mockito.any(RetryPolicy.class))).thenReturn(builderMock);
-
-        test.getWatchKey(selector, TEST_ENDPOINT);
+        assertThrows(IllegalArgumentException.class, () -> pool.put(TEST_ENDPOINT, new Connection(null)));
     }
 
     @Test
@@ -165,7 +161,7 @@ public class ClientStoreTest {
             }
         };
 
-        clientStore = new ClientStore(appProperties, pool, provider, null);
+        clientStore = new ClientStore(appProperties, pool, provider, null, false, false);
         ClientStore test = Mockito.spy(clientStore);
         Mockito.doReturn(builderMock).when(test).getBuilder();
 
@@ -173,15 +169,15 @@ public class ClientStoreTest {
         when(builderMock.retryPolicy(Mockito.any(RetryPolicy.class))).thenReturn(builderMock);
 
         when(builderMock.endpoint(Mockito.eq(TEST_ENDPOINT))).thenReturn(builderMock);
-        when(builderMock.buildAsyncClient()).thenReturn(clientMock);
-
+        when(builderMock.buildClient()).thenReturn(clientMock);
+        
         when(clientMock.listConfigurationSettings(Mockito.any(SettingSelector.class)))
             .thenReturn(getConfigurationPagedFlux(1));
 
-        assertEquals(test.listSettings(selector, TEST_ENDPOINT).size(), 1);
+        assertEquals(1, test.listSettings(selector, TEST_ENDPOINT).stream().count());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void multipleArgumentsClientIdProvider() throws IOException {
         pool.put(TEST_ENDPOINT, new Connection(TEST_ENDPOINT, "testclientid"));
 
@@ -195,17 +191,17 @@ public class ClientStoreTest {
             }
         };
 
-        clientStore = new ClientStore(appProperties, pool, provider, null);
+        clientStore = new ClientStore(appProperties, pool, provider, null, false, false);
         ClientStore test = Mockito.spy(clientStore);
         Mockito.doReturn(builderMock).when(test).getBuilder();
 
         when(builderMock.addPolicy(Mockito.any(BaseAppConfigurationPolicy.class))).thenReturn(builderMock);
         when(builderMock.retryPolicy(Mockito.any(RetryPolicy.class))).thenReturn(builderMock);
 
-        assertEquals(test.listSettings(selector, TEST_ENDPOINT).size(), 1);
+        assertThrows(IllegalArgumentException.class, () -> test.listSettings(selector, TEST_ENDPOINT).stream().count());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void multipleArgumentsConnectionStringProvider() throws IOException {
         pool.put(TEST_ENDPOINT, new Connection(TEST_CONN_STRING));
 
@@ -219,53 +215,40 @@ public class ClientStoreTest {
             }
         };
 
-        clientStore = new ClientStore(appProperties, pool, provider, null);
+        clientStore = new ClientStore(appProperties, pool, provider, null, false, false);
         ClientStore test = Mockito.spy(clientStore);
         Mockito.doReturn(builderMock).when(test).getBuilder();
 
         when(builderMock.addPolicy(Mockito.any(BaseAppConfigurationPolicy.class))).thenReturn(builderMock);
         when(builderMock.retryPolicy(Mockito.any(RetryPolicy.class))).thenReturn(builderMock);
 
-        assertEquals(test.listSettings(selector, TEST_ENDPOINT).size(), 1);
+        assertThrows(IllegalArgumentException.class, () -> test.listSettings(selector, TEST_ENDPOINT).stream().count());
     }
 
-    private PagedFlux<ConfigurationSetting> getConfigurationPagedFlux(int noOfPages) throws MalformedURLException {
-        HttpHeaders httpHeaders = new HttpHeaders().put("header1", "value1")
-            .put("header2", "value2");
+    private PagedIterable<ConfigurationSetting> getConfigurationPagedFlux(int noOfPages) throws MalformedURLException {
+        HttpHeaders httpHeaders = new HttpHeaders().set("header1", "value1").set("header2", "value2");
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
 
         String deserializedHeaders = "header1,value1,header2,value2";
 
-        pagedResponses = IntStream.range(0, noOfPages)
-            .boxed()
-            .map(i -> createPagedResponse(httpRequest, httpHeaders, deserializedHeaders, i, noOfPages))
-            .collect(Collectors.toList());
+        Supplier<Mono<PagedResponse<ConfigurationSetting>>> s = () -> Mono
+                .just(createPagedResponse(httpRequest, httpHeaders, deserializedHeaders, noOfPages, noOfPages));
 
-        return new PagedFlux<ConfigurationSetting>(
-            () -> pagedResponses.isEmpty() ? Mono.empty() : Mono.just(pagedResponses.get(0)),
-            continuationToken -> getNextPage(continuationToken, pagedResponses));
+        PagedFlux<ConfigurationSetting> page = new PagedFlux<ConfigurationSetting>(s);
+
+        PagedIterable<ConfigurationSetting> settings = new PagedIterable<ConfigurationSetting>(page);
+        return settings;
     }
 
     private PagedResponseBase<String, ConfigurationSetting> createPagedResponse(HttpRequest httpRequest,
-        HttpHeaders httpHeaders, String deserializedHeaders, int i, int noOfPages) {
-        return new PagedResponseBase<>(httpRequest, 200,
-            httpHeaders,
-            getItems(i),
-            i < noOfPages - 1 ? String.valueOf(i + 1) : null,
-            deserializedHeaders);
-    }
-
-    private Mono<PagedResponse<ConfigurationSetting>> getNextPage(String continuationToken,
-        List<PagedResponse<ConfigurationSetting>> pagedResponses) {
-        if (continuationToken == null || continuationToken.isEmpty()) {
-            return Mono.empty();
-        }
-        return Mono.just(pagedResponses.get(Integer.valueOf(continuationToken)));
+            HttpHeaders httpHeaders, String deserializedHeaders, int i, int noOfPages) {
+        return new PagedResponseBase<>(httpRequest, 200, httpHeaders, getItems(i),
+                i < noOfPages - 1 ? String.valueOf(i + 1) : null, deserializedHeaders);
     }
 
     private List<ConfigurationSetting> getItems(int i) {
         ArrayList<ConfigurationSetting> lst = new ArrayList<ConfigurationSetting>();
-        lst.add(new ConfigurationSetting());
+        lst.add(new ConfigurationSetting().setKey("testKey").setLabel("\0"));
         return lst;
     }
 

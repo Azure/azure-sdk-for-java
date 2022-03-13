@@ -10,6 +10,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClientResponse;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
@@ -42,6 +44,11 @@ public final class NettyAsyncHttpBufferedResponse extends NettyAsyncHttpResponse
     @Override
     public Mono<String> getBodyAsString(Charset charset) {
         return Mono.defer(() -> Mono.just(new String(body, charset)));
+    }
+
+    @Override
+    public Mono<InputStream> getBodyAsInputStream() {
+        return Mono.defer(() -> Mono.just(new ByteArrayInputStream(body)));
     }
 
     @Override

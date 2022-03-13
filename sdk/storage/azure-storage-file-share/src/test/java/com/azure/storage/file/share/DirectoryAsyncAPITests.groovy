@@ -39,7 +39,7 @@ class DirectoryAsyncAPITests extends APISpec {
 
     def "Get directory URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, directoryPath)
         when:
         def directoryURL = primaryDirectoryAsyncClient.getDirectoryUrl()
@@ -303,6 +303,7 @@ class DirectoryAsyncAPITests extends APISpec {
      *                               -> listOp6 (file)
      *              -> listOp2 (file)
      */
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_10_02")
     @Unroll
     def "List files and directories args"() {
         given:

@@ -3,26 +3,31 @@
 
 package com.azure.messaging.servicebus;
 
-import static com.azure.core.amqp.AmqpMessageConstant.SCHEDULED_ENQUEUE_UTC_TIME_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseUtils;
 import com.azure.core.amqp.models.AmqpAddress;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
+import com.azure.core.amqp.models.AmqpMessageBody;
+import com.azure.core.amqp.models.AmqpMessageBodyType;
 import com.azure.core.amqp.models.AmqpMessageHeader;
 import com.azure.core.amqp.models.AmqpMessageId;
 import com.azure.core.amqp.models.AmqpMessageProperties;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.DurationDescribedType;
 import com.azure.messaging.servicebus.implementation.ManagementConstants;
+import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.implementation.MessageWithLockToken;
 import com.azure.messaging.servicebus.implementation.Messages;
+import com.azure.messaging.servicebus.implementation.OffsetDateTimeDescribedType;
+import com.azure.messaging.servicebus.implementation.ServiceBusDescribedType;
+import com.azure.messaging.servicebus.implementation.UriDescribedType;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Decimal128;
 import org.apache.qpid.proton.amqp.Decimal32;
 import org.apache.qpid.proton.amqp.Decimal64;
+import org.apache.qpid.proton.amqp.DescribedType;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.UnsignedByte;
 import org.apache.qpid.proton.amqp.UnsignedInteger;
@@ -42,6 +47,7 @@ import org.apache.qpid.proton.amqp.transaction.Discharge;
 import org.apache.qpid.proton.message.Message;
 
 import java.lang.reflect.Array;
+import java.net.URI;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -56,6 +62,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.SCHEDULED_ENQUEUE_UTC_TIME_NAME;
 
 /**
  * Deserializes and serializes messages to and from Azure Service Bus.
@@ -123,14 +132,25 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         }
 
         final ServiceBusMessage brokeredMessage = (ServiceBusMessage) object;
+        AmqpMessageBodyType brokeredBodyType = brokeredMessage.getRawAmqpMessage().getBody().getBodyType();
         final Message amqpMessage = Proton.message();
-        final byte[] body = brokeredMessage.getBody().toBytes();
 
-        //TODO (conniey): support AMQP sequence and AMQP value.
-        amqpMessage.setBody(new Data(new Binary(body)));
+        byte[] body;
+
+        if (brokeredBodyType == AmqpMessageBodyType.DATA || brokeredBodyType == null) {
+            body = brokeredMessage.getBody().toBytes();
+            amqpMessage.setBody(new Data(new Binary(body)));
+        } else if (brokeredBodyType == AmqpMessageBodyType.SEQUENCE) {
+            List<Object> sequenceList = brokeredMessage.getRawAmqpMessage().getBody().getSequence();
+            amqpMessage.setBody(new AmqpSequence(sequenceList));
+        } else if (brokeredBodyType == AmqpMessageBodyType.VALUE) {
+            amqpMessage.setBody(new AmqpValue(brokeredMessage.getRawAmqpMessage().getBody().getValue()));
+        }
 
         if (brokeredMessage.getApplicationProperties() != null) {
-            amqpMessage.setApplicationProperties(new ApplicationProperties(brokeredMessage.getApplicationProperties()));
+            // Check if there are OffsetDateTime, Duration and URI in the map, convert them to a DescribedType.
+            Map<String, Object> describedTypeMap = convertToDescribedType(brokeredMessage.getApplicationProperties());
+            amqpMessage.setApplicationProperties(new ApplicationProperties(describedTypeMap));
         }
 
         if (brokeredMessage.getTimeToLive() != null) {
@@ -212,6 +232,40 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         amqpMessage.setDeliveryAnnotations(new DeliveryAnnotations(deliveryAnnotationsMap));
 
         return amqpMessage;
+    }
+
+    /**
+     * Convert specific type to described type for sending on the wire.
+     * @param propertiesValue application properties set by user which may contain specific type.
+     * @return Map only contains primitive type and described type.
+     */
+    private static Map<String, Object> convertToDescribedType(Map<String, Object> propertiesValue) {
+        for (Map.Entry<String, Object> entry : propertiesValue.entrySet()) {
+            Object value = entry.getValue();
+            if (value instanceof URI) {
+                entry.setValue(new UriDescribedType((URI) value));
+            } else if (value instanceof OffsetDateTime) {
+                entry.setValue(new OffsetDateTimeDescribedType((OffsetDateTime) value));
+            } else if (value instanceof Duration) {
+                entry.setValue(new DurationDescribedType((Duration) value));
+            }
+        }
+        return propertiesValue;
+    }
+
+    /**
+     * Convert described type to origin type.
+     * @param propertiesValue application properties from amqp message may contain described type.
+     * @return Map without described type.
+     */
+    private static Map<String, Object> convertToOriginType(Map<String, Object> propertiesValue) {
+        for (Map.Entry<String, Object> entry : propertiesValue.entrySet()) {
+            Object value = entry.getValue();
+            if (value instanceof DescribedType) {
+                entry.setValue(MessageUtils.describedToOrigin((DescribedType) value));
+            }
+        }
+        return propertiesValue;
     }
 
     @SuppressWarnings("unchecked")
@@ -339,28 +393,35 @@ class ServiceBusMessageSerializer implements MessageSerializer {
     }
 
     private ServiceBusReceivedMessage deserializeMessage(Message amqpMessage) {
-        final byte[] bytes;
         final Section body = amqpMessage.getBody();
+        AmqpMessageBody amqpMessageBody;
         if (body != null) {
-            //TODO (conniey): Support other AMQP types like AmqpValue and AmqpSequence.
             if (body instanceof Data) {
                 final Binary messageData = ((Data) body).getValue();
-                bytes = messageData.getArray();
+                amqpMessageBody = AmqpMessageBody.fromData(messageData.getArray());
+            } else if (body instanceof AmqpValue) {
+                amqpMessageBody = AmqpMessageBody.fromValue(((AmqpValue) body).getValue());
+            } else if (body instanceof AmqpSequence) {
+                @SuppressWarnings("unchecked")
+                List<Object> messageData = ((AmqpSequence) body).getValue();
+                amqpMessageBody = AmqpMessageBody.fromSequence(messageData);
+
             } else {
                 logger.warning(String.format(Messages.MESSAGE_NOT_OF_TYPE, body.getType()));
-                bytes = EMPTY_BYTE_ARRAY;
+                amqpMessageBody = AmqpMessageBody.fromData(EMPTY_BYTE_ARRAY);
             }
         } else {
             logger.warning(String.format(Messages.MESSAGE_NOT_OF_TYPE, "null"));
-            bytes = EMPTY_BYTE_ARRAY;
+            amqpMessageBody = AmqpMessageBody.fromData(EMPTY_BYTE_ARRAY);
         }
-        final ServiceBusReceivedMessage brokeredMessage = new ServiceBusReceivedMessage(BinaryData.fromBytes(bytes));
+
+        final ServiceBusReceivedMessage brokeredMessage = new ServiceBusReceivedMessage(amqpMessageBody);
         AmqpAnnotatedMessage brokeredAmqpAnnotatedMessage = brokeredMessage.getRawAmqpMessage();
 
         // Application properties
         ApplicationProperties applicationProperties = amqpMessage.getApplicationProperties();
         if (applicationProperties != null) {
-            final Map<String, Object> propertiesValue = applicationProperties.getValue();
+            final Map<String, Object> propertiesValue = convertToOriginType(applicationProperties.getValue());
             brokeredAmqpAnnotatedMessage.getApplicationProperties().putAll(propertiesValue);
         }
 
@@ -543,6 +604,11 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         if (obj instanceof Discharge) {
             Discharge discharge = (Discharge) obj;
             return 12 + discharge.getTxnId().getLength();
+        }
+
+        if (obj instanceof ServiceBusDescribedType) {
+            ServiceBusDescribedType describedType = (ServiceBusDescribedType) obj;
+            return describedType.size();
         }
 
         if (obj instanceof Map) {

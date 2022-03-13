@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ArmIdWrapper;
 import com.azure.resourcemanager.appservice.models.PrivateLinkConnectionState;
@@ -15,35 +14,32 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Remote Private Endpoint Connection ARM resource. */
-@JsonFlatten
 @Fluent
-public class RemotePrivateEndpointConnectionArmResourceInner extends ProxyOnlyResource {
+public final class RemotePrivateEndpointConnectionArmResourceInner extends ProxyOnlyResource {
     @JsonIgnore
     private final ClientLogger logger = new ClientLogger(RemotePrivateEndpointConnectionArmResourceInner.class);
 
     /*
-     * The provisioningState property.
+     * RemotePrivateEndpointConnectionARMResource resource specific properties
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    @JsonProperty(value = "properties")
+    private RemotePrivateEndpointConnectionArmResourceProperties innerProperties;
 
-    /*
-     * PrivateEndpoint of a remote private endpoint connection
+    /**
+     * Get the innerProperties property: RemotePrivateEndpointConnectionARMResource resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.privateEndpoint")
-    private ArmIdWrapper privateEndpoint;
+    private RemotePrivateEndpointConnectionArmResourceProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * The state of a private link connection
-     */
-    @JsonProperty(value = "properties.privateLinkServiceConnectionState")
-    private PrivateLinkConnectionState privateLinkServiceConnectionState;
-
-    /*
-     * Private IPAddresses mapped to the remote private endpoint
-     */
-    @JsonProperty(value = "properties.ipAddresses")
-    private List<String> ipAddresses;
+    /** {@inheritDoc} */
+    @Override
+    public RemotePrivateEndpointConnectionArmResourceInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the provisioningState property: The provisioningState property.
@@ -51,7 +47,7 @@ public class RemotePrivateEndpointConnectionArmResourceInner extends ProxyOnlyRe
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -60,7 +56,7 @@ public class RemotePrivateEndpointConnectionArmResourceInner extends ProxyOnlyRe
      * @return the privateEndpoint value.
      */
     public ArmIdWrapper privateEndpoint() {
-        return this.privateEndpoint;
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpoint();
     }
 
     /**
@@ -70,7 +66,10 @@ public class RemotePrivateEndpointConnectionArmResourceInner extends ProxyOnlyRe
      * @return the RemotePrivateEndpointConnectionArmResourceInner object itself.
      */
     public RemotePrivateEndpointConnectionArmResourceInner withPrivateEndpoint(ArmIdWrapper privateEndpoint) {
-        this.privateEndpoint = privateEndpoint;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RemotePrivateEndpointConnectionArmResourceProperties();
+        }
+        this.innerProperties().withPrivateEndpoint(privateEndpoint);
         return this;
     }
 
@@ -80,7 +79,7 @@ public class RemotePrivateEndpointConnectionArmResourceInner extends ProxyOnlyRe
      * @return the privateLinkServiceConnectionState value.
      */
     public PrivateLinkConnectionState privateLinkServiceConnectionState() {
-        return this.privateLinkServiceConnectionState;
+        return this.innerProperties() == null ? null : this.innerProperties().privateLinkServiceConnectionState();
     }
 
     /**
@@ -91,7 +90,10 @@ public class RemotePrivateEndpointConnectionArmResourceInner extends ProxyOnlyRe
      */
     public RemotePrivateEndpointConnectionArmResourceInner withPrivateLinkServiceConnectionState(
         PrivateLinkConnectionState privateLinkServiceConnectionState) {
-        this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RemotePrivateEndpointConnectionArmResourceProperties();
+        }
+        this.innerProperties().withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
         return this;
     }
 
@@ -101,7 +103,7 @@ public class RemotePrivateEndpointConnectionArmResourceInner extends ProxyOnlyRe
      * @return the ipAddresses value.
      */
     public List<String> ipAddresses() {
-        return this.ipAddresses;
+        return this.innerProperties() == null ? null : this.innerProperties().ipAddresses();
     }
 
     /**
@@ -111,14 +113,10 @@ public class RemotePrivateEndpointConnectionArmResourceInner extends ProxyOnlyRe
      * @return the RemotePrivateEndpointConnectionArmResourceInner object itself.
      */
     public RemotePrivateEndpointConnectionArmResourceInner withIpAddresses(List<String> ipAddresses) {
-        this.ipAddresses = ipAddresses;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public RemotePrivateEndpointConnectionArmResourceInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RemotePrivateEndpointConnectionArmResourceProperties();
+        }
+        this.innerProperties().withIpAddresses(ipAddresses);
         return this;
     }
 
@@ -130,11 +128,8 @@ public class RemotePrivateEndpointConnectionArmResourceInner extends ProxyOnlyRe
     @Override
     public void validate() {
         super.validate();
-        if (privateEndpoint() != null) {
-            privateEndpoint().validate();
-        }
-        if (privateLinkServiceConnectionState() != null) {
-            privateLinkServiceConnectionState().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

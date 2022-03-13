@@ -1,5 +1,133 @@
 # Release History
 
+## 4.0.0-beta.5 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 4.0.0-beta.4 (2022-02-10)
+
+### Features Added
+- Added interfaces from `com.azure.core.client.traits` to `DocumentAnalysisClientBuilder`
+  and `DocumentModelAdministrationClientBuilder`
+- Added support for currency type field value.
+- Added support for users to optionally specify tags when building, copying 
+or creating a composed a model using `tags` attribute on `BuildModelOptions`, `CreateComposedModelOptions`
+and `CopyAuthorizationOptions` model.
+- Added `languages` property on `AnalyzeResult`.
+- Added model `DocumentLanguage` that includes information about the detected languages found in a document.
+
+### Breaking Changes
+- Added `DocumentBuildMode` on `beginBuildModel` APIs to support building models with techniques for diverse templates.
+
+## 4.0.0-beta.3 (2022-01-13)
+### Bugs Fixed
+- Fixed confidence value returned on fields.
+
+### Other Changes
+#### Dependency Updates
+- Updated `azure-core` to `1.24.1`.
+- Updated `azure-core-http-netty` to `1.11.6`.
+
+## 3.1.7 (2022-01-13)
+### Other Changes
+#### Dependency Updates
+- Updated `azure-core` to `1.24.1`.
+- Updated `azure-core-http-netty` to `1.11.6`.
+
+## 4.0.0-beta.2 (2021-11-10)
+
+### Features Added
+- Update `HttpResponseException` to use azure-core `ResponseError`.
+- Added client validation to check for empty modelId passed by the user for `beginAnalyzeDocument` methods.
+
+### Breaking Changes
+- Rename `DocumentAnalysisException`, `FormRecognizerError`, `InnerError` to 
+`DocumentModelOperationException`, `DocumentModelOperationError`, `DocumentModelOperationInnerError` respectively.
+
+### Other Changes
+#### Dependency Updates
+- Updated `azure-core` to `1.22.0`.
+- Updated `azure-core-http-netty` to `1.11.2`.
+
+## 3.1.6 (2021-11-10)
+### Other Changes
+#### Dependency Updates
+- Updated `azure-core` to `1.22.0`.
+- Updated `azure-core-http-netty` to `1.11.2`.
+
+## 4.0.0-beta.1 (2021-10-07)
+This version of the SDK defaults to the latest supported API version, which currently is 2021-09-30-preview.
+
+> Note: Starting with version 2021-09-30-preview, a new set of clients were introduced to leverage the newest features 
+of the Form Recognizer service. Please see the 
+[Migration Guide](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/migration-guide.md) 
+for detailed instructions on how to update application code from client library version 3.1.X or lower to the latest version. 
+Also, please refer to the [README](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/README.md) for more information about the library.
+
+### Features Added
+- Added new DocumentAnalysisClient with beginAnalyzeDocument and beginAnalyzeDocumentFromUrl methods. 
+Use these methods with the latest Form Recognizer API version to analyze documents, with prebuilt and custom models.
+- Added new models to use with the new DocumentAnalysisClient: AnalyzeResult, AnalyzedDocument, BoundingRegion, DocumentElement, 
+DocumentEntity, DocumentField, DocumentKeyValuePair, DocumentKeyValueElement, DocumentLine, DocumentPage, DocumentSelectionMark,
+DocumentSpan, DocumentStyle, DocumentTable, DocumentTableCell, DocumentWord, DocumentOperationResult.
+- Added a new model `DocumentAnalysisServiceVersion` that supports Azure Form Recognizer service version "2021-09-30-preview" and onwards.
+- Added new `DocumentModelAdministrationClient` and `DocumentModelAdministrationAsyncClient` with methods: beginBuildModel, beginCreateComposedModel, getCopyAuthorization,
+deleteModel, getAccountProperties, beginCopyModel, listModels, getModel, getOperation, listOperations.
+- Added new models to use with the new `DocumentModelAdministrationClient`: DocumentModel, DocTypeInfo, DocumentFieldSchema, 
+AccountProperties, CopyAuthorization, BuildModelOptions, CopyAuthorizationOptions, CreateComposedModelOptions, DocumentAnalysisException, FormRecognizerError, InnerError,
+DocumentModelInfo, ModelOperation, ModelOperationInfo, ModelOperationStatus, ModelOperationKind.
+
+### Breaking Changes
+- This package targets Azure Form Recognizer service API version 2021-09-30-preview and newer. It is not compatible with the older Form Recognizer service API versions (2.0 and 2.1). 
+To continue to use Form Recognizer API version 2.1, please use major version 3 of the client package (azure-ai-form-recognizer 3.1.X).
+- `FormRecognizerClient` and `FormRecognizerAsyncClient` has been replaced by `DocumentAnalysisClient` and `DocumentAnalysisAsyncClient` respectively.
+- `FormTrainingClient` and `FormTrainingAsyncClient` has been replaced by `DocumentModelAdministrationClient` and `DocumentModelAdministrationAsyncClient` respectively.
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` dependency to 1.21.0
+- Upgraded `azure-identity` dependency to 1.3.7
+
+## 3.1.5 (2021-10-05)
+### Other Changes
+#### Dependency Updates
+- Updated `azure-core` to `1.21.0`.
+- Updated `azure-core-http-netty` to `1.11.1`.
+
+## 3.1.4 (2021-09-09)
+### Other Changes
+#### Dependency Updates
+- Updated `azure-core` to `1.12.0`.
+- Updated `azure-core-http-netty` to `1.11.0`.
+
+## 3.1.3 (2021-08-11)
+### Dependency Updates
+- Updated `azure-core` to `1.19.0`.
+- Updated `azure-core-http-netty` to `1.10.2`.
+
+## 3.1.2 (2021-07-08)
+### Other changes
+- Updated test infrastructure to remove dependency on network call recorded data.
+
+#### Dependency Updates
+- Updated `azure-core` to `1.18.0`.
+- Updated `azure-core-http-netty` to `1.10.1`.
+
+## 3.1.1 (2021-06-09)
+
+### Bug Fixes
+
+- Fixed invoices and other recognition operations to avoid Null Pointer Exception when data returned with no
+  sub-line item fields detected.
+- Fixed invoices and other recognition operations that return a `FormField` with `text`
+  and no `boundingBox` or `page` information.
+
 ## 3.1.0 (2021-05-26)
 ### Features Added
 - This General Availability (GA) release marks the stability of the changes introduced in package versions `3.1.0-beta.1` through `3.1.0-beta.3`.
@@ -139,7 +267,7 @@ respectively
 ## 1.0.0-beta.4 (2020-07-07)
 ### Breaking Changes
 - `beginRecognizeReceipt` APIs now return a `RecognizedForm` model instead of a `RecognizedReceipt`. See
-[this](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/StronglyTypedRecognizedForm.java)
+[this](https://github.com/Azure/azure-sdk-for-java/blob/azure-ai-formrecognizer_1.0.0-beta.4/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/StronglyTypedRecognizedForm.java)
 suggested approach for extracting information from receipts.
 - Methods returning `textContent` have been renamed to `fieldElements` on `FieldData` and `FormTableCell`
 - Renamed `FormContent` to `FormElement`

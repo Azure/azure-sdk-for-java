@@ -26,6 +26,11 @@ import org.springframework.context.annotation.Configuration;
 public class CosmosAutoConfiguration extends AbstractCosmosConfiguration {
     private final CosmosProperties properties;
 
+    /**
+     * Creates a new instance of {@link CosmosAutoConfiguration}.
+     *
+     * @param properties the Cosmos properties
+     */
     public CosmosAutoConfiguration(CosmosProperties properties) {
         this.properties = properties;
     }
@@ -35,11 +40,22 @@ public class CosmosAutoConfiguration extends AbstractCosmosConfiguration {
         return properties.getDatabase();
     }
 
+    /**
+     * Declqre AzureKeyCredential bean.
+     *
+     * @return AzureKeyCredential bean
+     */
     @Bean
     public AzureKeyCredential azureKeyCredential() {
         return new AzureKeyCredential(properties.getKey());
     }
 
+    /**
+     * Declare CosmosClientBuilder bean.
+     *
+     * @param azureKeyCredential the Azure key credential
+     * @return CosmosClientBuilder bean
+     */
     @Bean
     public CosmosClientBuilder cosmosClientBuilder(AzureKeyCredential azureKeyCredential) {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder();

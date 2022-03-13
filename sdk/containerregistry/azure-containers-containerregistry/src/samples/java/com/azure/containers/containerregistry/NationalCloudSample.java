@@ -3,6 +3,7 @@
 
 package com.azure.containers.containerregistry;
 
+import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
@@ -21,7 +22,7 @@ public class NationalCloudSample {
         ContainerRegistryAsyncClient asyncClient = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
             .credential(credentials)
-            .authenticationScope(authenticationScope)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_CHINA)
             .buildAsyncClient();
 
         asyncClient.listRepositoryNames().subscribe(name -> System.out.println(name));

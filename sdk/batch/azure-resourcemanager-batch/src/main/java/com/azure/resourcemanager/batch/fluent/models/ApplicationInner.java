@@ -5,38 +5,21 @@
 package com.azure.resourcemanager.batch.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Contains information about an application in a Batch account. */
-@JsonFlatten
 @Fluent
-public class ApplicationInner extends ProxyResource {
+public final class ApplicationInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationInner.class);
 
     /*
-     * The display name for the application.
+     * The properties associated with the Application.
      */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
-
-    /*
-     * A value indicating whether packages within the application may be
-     * overwritten using the same version string.
-     */
-    @JsonProperty(value = "properties.allowUpdates")
-    private Boolean allowUpdates;
-
-    /*
-     * The package to use if a client requests the application but does not
-     * specify a version. This property can only be set to the name of an
-     * existing package.
-     */
-    @JsonProperty(value = "properties.defaultVersion")
-    private String defaultVersion;
+    @JsonProperty(value = "properties")
+    private ApplicationProperties innerProperties;
 
     /*
      * The ETag of the resource, used for concurrency statements.
@@ -45,67 +28,12 @@ public class ApplicationInner extends ProxyResource {
     private String etag;
 
     /**
-     * Get the displayName property: The display name for the application.
+     * Get the innerProperties property: The properties associated with the Application.
      *
-     * @return the displayName value.
+     * @return the innerProperties value.
      */
-    public String displayName() {
-        return this.displayName;
-    }
-
-    /**
-     * Set the displayName property: The display name for the application.
-     *
-     * @param displayName the displayName value to set.
-     * @return the ApplicationInner object itself.
-     */
-    public ApplicationInner withDisplayName(String displayName) {
-        this.displayName = displayName;
-        return this;
-    }
-
-    /**
-     * Get the allowUpdates property: A value indicating whether packages within the application may be overwritten
-     * using the same version string.
-     *
-     * @return the allowUpdates value.
-     */
-    public Boolean allowUpdates() {
-        return this.allowUpdates;
-    }
-
-    /**
-     * Set the allowUpdates property: A value indicating whether packages within the application may be overwritten
-     * using the same version string.
-     *
-     * @param allowUpdates the allowUpdates value to set.
-     * @return the ApplicationInner object itself.
-     */
-    public ApplicationInner withAllowUpdates(Boolean allowUpdates) {
-        this.allowUpdates = allowUpdates;
-        return this;
-    }
-
-    /**
-     * Get the defaultVersion property: The package to use if a client requests the application but does not specify a
-     * version. This property can only be set to the name of an existing package.
-     *
-     * @return the defaultVersion value.
-     */
-    public String defaultVersion() {
-        return this.defaultVersion;
-    }
-
-    /**
-     * Set the defaultVersion property: The package to use if a client requests the application but does not specify a
-     * version. This property can only be set to the name of an existing package.
-     *
-     * @param defaultVersion the defaultVersion value to set.
-     * @return the ApplicationInner object itself.
-     */
-    public ApplicationInner withDefaultVersion(String defaultVersion) {
-        this.defaultVersion = defaultVersion;
-        return this;
+    private ApplicationProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -118,10 +46,86 @@ public class ApplicationInner extends ProxyResource {
     }
 
     /**
+     * Get the displayName property: The display name for the application.
+     *
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
+    }
+
+    /**
+     * Set the displayName property: The display name for the application.
+     *
+     * @param displayName the displayName value to set.
+     * @return the ApplicationInner object itself.
+     */
+    public ApplicationInner withDisplayName(String displayName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
+        return this;
+    }
+
+    /**
+     * Get the allowUpdates property: A value indicating whether packages within the application may be overwritten
+     * using the same version string.
+     *
+     * @return the allowUpdates value.
+     */
+    public Boolean allowUpdates() {
+        return this.innerProperties() == null ? null : this.innerProperties().allowUpdates();
+    }
+
+    /**
+     * Set the allowUpdates property: A value indicating whether packages within the application may be overwritten
+     * using the same version string.
+     *
+     * @param allowUpdates the allowUpdates value to set.
+     * @return the ApplicationInner object itself.
+     */
+    public ApplicationInner withAllowUpdates(Boolean allowUpdates) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationProperties();
+        }
+        this.innerProperties().withAllowUpdates(allowUpdates);
+        return this;
+    }
+
+    /**
+     * Get the defaultVersion property: The package to use if a client requests the application but does not specify a
+     * version. This property can only be set to the name of an existing package.
+     *
+     * @return the defaultVersion value.
+     */
+    public String defaultVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().defaultVersion();
+    }
+
+    /**
+     * Set the defaultVersion property: The package to use if a client requests the application but does not specify a
+     * version. This property can only be set to the name of an existing package.
+     *
+     * @param defaultVersion the defaultVersion value to set.
+     * @return the ApplicationInner object itself.
+     */
+    public ApplicationInner withDefaultVersion(String defaultVersion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationProperties();
+        }
+        this.innerProperties().withDefaultVersion(defaultVersion);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

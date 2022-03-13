@@ -6,11 +6,17 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 
+/**
+ * App Configuration Feature defines the feature name and a Map of FeatureFilterEvaluationContexts.
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Feature {
 
     @JsonProperty("key")
     private String key;
+
+    @JsonProperty("evaluate")
+    private Boolean evaluate = true;
 
     @JsonProperty("enabled-for")
     private HashMap<Integer, FeatureFilterEvaluationContext> enabledFor;
@@ -27,6 +33,20 @@ public class Feature {
      */
     public void setKey(String key) {
         this.key = key;
+    }
+
+    /**
+     * @return the evaluate
+     */
+    public Boolean getEvaluate() {
+        return evaluate;
+    }
+
+    /**
+     * @param evaluate the evaluate to set
+     */
+    public void setEvaluate(Boolean evaluate) {
+        this.evaluate = evaluate;
     }
 
     /**

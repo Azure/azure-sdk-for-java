@@ -3,7 +3,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
-import com.azure.ai.metricsadvisor.administration.models.DatasourceSqlServerConnectionString;
+import com.azure.ai.metricsadvisor.administration.models.DataSourceSqlServerConnectionString;
 
 public final class DataSourceSqlServerConnectionStringAccessor {
     private static Accessor accessor;
@@ -13,15 +13,15 @@ public final class DataSourceSqlServerConnectionStringAccessor {
 
     /**
      * Type defining the methods to set the non-public properties of
-     * an {@link DatasourceSqlServerConnectionString} instance.
+     * an {@link DataSourceSqlServerConnectionString} instance.
      */
     public interface Accessor {
-        void setId(DatasourceSqlServerConnectionString entity, String id);
-        String getConnectionString(DatasourceSqlServerConnectionString entity);
+        void setId(DataSourceSqlServerConnectionString entity, String id);
+        String getConnectionString(DataSourceSqlServerConnectionString entity);
     }
 
     /**
-     * The method called from {@link DatasourceSqlServerConnectionString} to set it's accessor.
+     * The method called from {@link DataSourceSqlServerConnectionString} to set it's accessor.
      *
      * @param accessor The accessor.
      */
@@ -29,11 +29,11 @@ public final class DataSourceSqlServerConnectionStringAccessor {
         DataSourceSqlServerConnectionStringAccessor.accessor = accessor;
     }
 
-    public static void setId(DatasourceSqlServerConnectionString entity, String id) {
+    public static void setId(DataSourceSqlServerConnectionString entity, String id) {
         accessor.setId(entity, id);
     }
 
-    public static String getConnectionString(DatasourceSqlServerConnectionString entity) {
+    public static String getConnectionString(DataSourceSqlServerConnectionString entity) {
         return accessor.getConnectionString(entity);
     }
 }

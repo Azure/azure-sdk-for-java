@@ -95,14 +95,28 @@ public class ServiceBusMessage {
     }
 
     /**
+     * This constructor provides an easy way to create {@link ServiceBusMessage} with message body as AMQP Data types
+     * {@code SEQUENCE} and {@code VALUE}.
+     * In case of {@code SEQUENCE}, tt support sending and receiving of only one AMQP Sequence at present.
+     * If you are sending message with single byte array or String data, you can also use other constructor.
+     *
+     * @param amqpMessageBody amqp message body.
+     *
+     * @throws NullPointerException if {@code amqpMessageBody} is {@code null}.
+     */
+    public ServiceBusMessage(AmqpMessageBody amqpMessageBody) {
+        Objects.requireNonNull(amqpMessageBody, "'body' cannot be null.");
+        this.context = Context.NONE;
+        this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(amqpMessageBody);
+    }
+
+    /**
      * Creates a {@link ServiceBusMessage} using properties from {@code receivedMessage}. This is normally used when a
      * {@link ServiceBusReceivedMessage} needs to be sent to another entity.
      *
      * @param receivedMessage The received message to create new message from.
      *
      * @throws NullPointerException if {@code receivedMessage} is {@code null}.
-     * @throws UnsupportedOperationException if {@link AmqpMessageBodyType} is {@link AmqpMessageBodyType#SEQUENCE}
-     *     or {@link AmqpMessageBodyType#VALUE}.
      * @throws IllegalStateException for invalid {@link AmqpMessageBodyType}.
      */
     public ServiceBusMessage(ServiceBusReceivedMessage receivedMessage) {
@@ -116,12 +130,13 @@ public class ServiceBusMessage {
                     .getFirstData());
                 break;
             case SEQUENCE:
+                amqpMessageBody = AmqpMessageBody.fromSequence(receivedMessage.getRawAmqpMessage().getBody()
+                    .getSequence());
+                break;
             case VALUE:
-                // This should not happen because we will not create `ServiceBusReceivedMessage` with these types.
-                throw logger.logExceptionAsError(new UnsupportedOperationException(
-                    "This constructor only supports the AMQP Data body type at present. Track this issue, "
-                        + "https://github.com/Azure/azure-sdk-for-java/issues/17614 for other body type support in "
-                        + "future."));
+                amqpMessageBody = AmqpMessageBody.fromValue(receivedMessage.getRawAmqpMessage().getBody()
+                    .getValue());
+                break;
             default:
                 throw logger.logExceptionAsError(new IllegalStateException("Body type not valid "
                     + bodyType.toString()));
@@ -225,6 +240,7 @@ public class ServiceBusMessage {
      * of {@link #getApplicationProperties()} when creating the event, to associate serialization hints as an aid to
      * consumers who wish to deserialize the binary data.</p>
      *
+     * @throws IllegalStateException if called for the messages which are not of binary data type.
      * @return Binary data representing the payload.
      */
     public BinaryData getBody() {
@@ -234,8 +250,8 @@ public class ServiceBusMessage {
                 return BinaryData.fromBytes(amqpAnnotatedMessage.getBody().getFirstData());
             case SEQUENCE:
             case VALUE:
-                throw logger.logExceptionAsError(new UnsupportedOperationException("Not supported AmqpBodyType: "
-                    + type.toString()));
+                throw logger.logExceptionAsError(new IllegalStateException("Message  body type is not DATA, instead "
+                    + "it is: " + type.toString()));
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException("Unknown AmqpBodyType: "
                     + type.toString()));

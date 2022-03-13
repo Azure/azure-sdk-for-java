@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.share
 
+
 import com.azure.core.http.HttpHeaders
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
@@ -56,20 +57,20 @@ class APISpec extends StorageSpec {
      * Setup the File service clients commonly used for the API tests.
      */
     def setup() {
-        primaryFileServiceClient = getServiceClient(env.primaryAccount)
-        primaryFileServiceAsyncClient = getServiceAsyncClient(env.primaryAccount)
+        primaryFileServiceClient = getServiceClient(environment.primaryAccount)
+        primaryFileServiceAsyncClient = getServiceAsyncClient(environment.primaryAccount)
 
-        premiumFileServiceClient = getServiceClient(env.premiumFileAccount)
-        premiumFileServiceAsyncClient = getServiceAsyncClient(env.premiumFileAccount)
+        premiumFileServiceClient = getServiceClient(environment.premiumFileAccount)
+        premiumFileServiceAsyncClient = getServiceAsyncClient(environment.premiumFileAccount)
     }
 
     /**
      * Clean up the test shares, directories and files for the account.
      */
     def cleanup() {
-        if (env.testMode != TestMode.PLAYBACK) {
+        if (environment.testMode != TestMode.PLAYBACK) {
             def cleanupFileServiceClient = new ShareServiceClientBuilder()
-                .connectionString(env.primaryAccount.connectionString)
+                .connectionString(environment.primaryAccount.connectionString)
                 .buildClient()
             for (def share : cleanupFileServiceClient.listShares(new ListSharesOptions().setPrefix(namer.getResourcePrefix()), null, Context.NONE)) {
                 def shareClient = cleanupFileServiceClient.getShareClient(share.getName())
@@ -116,7 +117,7 @@ class APISpec extends StorageSpec {
     def fileServiceBuilderHelper() {
         ShareServiceClientBuilder shareServiceClientBuilder = instrument(new ShareServiceClientBuilder())
         return shareServiceClientBuilder
-            .connectionString(env.primaryAccount.connectionString)
+            .connectionString(environment.primaryAccount.connectionString)
     }
 
     ShareServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential, String endpoint,
@@ -152,14 +153,14 @@ class APISpec extends StorageSpec {
 
     def shareBuilderHelper(final String shareName, final String snapshot) {
         ShareClientBuilder builder = instrument(new ShareClientBuilder())
-        return builder.connectionString(env.primaryAccount.connectionString)
+        return builder.connectionString(environment.primaryAccount.connectionString)
             .shareName(shareName)
             .snapshot(snapshot)
     }
 
     def directoryBuilderHelper(final String shareName, final String directoryPath) {
         ShareFileClientBuilder builder = instrument(new ShareFileClientBuilder())
-        return builder.connectionString(env.primaryAccount.connectionString)
+        return builder.connectionString(environment.primaryAccount.connectionString)
             .shareName(shareName)
             .resourcePath(directoryPath)
     }
@@ -184,7 +185,7 @@ class APISpec extends StorageSpec {
     def fileBuilderHelper(final String shareName, final String filePath) {
         ShareFileClientBuilder builder = instrument(new ShareFileClientBuilder())
         return builder
-            .connectionString(env.primaryAccount.connectionString)
+            .connectionString(environment.primaryAccount.connectionString)
             .shareName(shareName)
             .resourcePath(filePath)
     }
@@ -281,7 +282,7 @@ class APISpec extends StorageSpec {
     }
 
     void sleepIfLive(long milliseconds) {
-        if (env.testMode == TestMode.PLAYBACK) {
+        if (environment.testMode == TestMode.PLAYBACK) {
             return
         }
 
@@ -290,13 +291,13 @@ class APISpec extends StorageSpec {
 
     // Only sleep if test is running in live or record mode
     def sleepIfRecord(long milliseconds) {
-        if (env.testMode != TestMode.PLAYBACK) {
+        if (environment.testMode != TestMode.PLAYBACK) {
             sleep(milliseconds)
         }
     }
 
     def getPollingDuration(long liveTestDurationInMillis) {
-        return (env.testMode == TestMode.PLAYBACK) ? Duration.ofMillis(10) : Duration.ofMillis(liveTestDurationInMillis)
+        return (environment.testMode == TestMode.PLAYBACK) ? Duration.ofMillis(10) : Duration.ofMillis(liveTestDurationInMillis)
     }
 
     /**

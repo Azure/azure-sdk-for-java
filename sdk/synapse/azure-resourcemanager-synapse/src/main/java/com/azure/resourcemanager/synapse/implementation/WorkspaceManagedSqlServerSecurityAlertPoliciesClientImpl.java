@@ -144,7 +144,8 @@ public final class WorkspaceManagedSqlServerSecurityAlertPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace managed sql server's security alert policy.
+     * @return a workspace managed sql server's security alert policy along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServerSecurityAlertPolicyInner>> getWithResponseAsync(
@@ -173,6 +174,7 @@ public final class WorkspaceManagedSqlServerSecurityAlertPoliciesClientImpl
                 .error(
                     new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -180,7 +182,7 @@ public final class WorkspaceManagedSqlServerSecurityAlertPoliciesClientImpl
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -200,7 +202,8 @@ public final class WorkspaceManagedSqlServerSecurityAlertPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace managed sql server's security alert policy.
+     * @return a workspace managed sql server's security alert policy along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServerSecurityAlertPolicyInner>> getWithResponseAsync(
@@ -232,12 +235,13 @@ public final class WorkspaceManagedSqlServerSecurityAlertPoliciesClientImpl
                 .error(
                     new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -255,7 +259,7 @@ public final class WorkspaceManagedSqlServerSecurityAlertPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace managed sql server's security alert policy.
+     * @return a workspace managed sql server's security alert policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ServerSecurityAlertPolicyInner> getAsync(
@@ -298,7 +302,7 @@ public final class WorkspaceManagedSqlServerSecurityAlertPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace managed sql server's security alert policy.
+     * @return a workspace managed sql server's security alert policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServerSecurityAlertPolicyInner> getWithResponse(
@@ -319,7 +323,8 @@ public final class WorkspaceManagedSqlServerSecurityAlertPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace managed Sql server security alert policy.
+     * @return workspace managed Sql server security alert policy along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -356,6 +361,7 @@ public final class WorkspaceManagedSqlServerSecurityAlertPoliciesClientImpl
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -363,7 +369,7 @@ public final class WorkspaceManagedSqlServerSecurityAlertPoliciesClientImpl
                     service
                         .createOrUpdate(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -385,7 +391,8 @@ public final class WorkspaceManagedSqlServerSecurityAlertPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace managed Sql server security alert policy.
+     * @return workspace managed Sql server security alert policy along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -423,12 +430,13 @@ public final class WorkspaceManagedSqlServerSecurityAlertPoliciesClientImpl
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -448,9 +456,10 @@ public final class WorkspaceManagedSqlServerSecurityAlertPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace managed Sql server security alert policy.
+     * @return workspace managed Sql server security alert policy along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServerSecurityAlertPolicyInner>, ServerSecurityAlertPolicyInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -466,7 +475,7 @@ public final class WorkspaceManagedSqlServerSecurityAlertPoliciesClientImpl
                 this.client.getHttpPipeline(),
                 ServerSecurityAlertPolicyInner.class,
                 ServerSecurityAlertPolicyInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -480,9 +489,10 @@ public final class WorkspaceManagedSqlServerSecurityAlertPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace managed Sql server security alert policy.
+     * @return workspace managed Sql server security alert policy along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServerSecurityAlertPolicyInner>, ServerSecurityAlertPolicyInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -514,9 +524,10 @@ public final class WorkspaceManagedSqlServerSecurityAlertPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace managed Sql server security alert policy.
+     * @return workspace managed Sql server security alert policy along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerSecurityAlertPolicyInner>, ServerSecurityAlertPolicyInner> beginCreateOrUpdate(
         String resourceGroupName,
         String workspaceName,
@@ -537,9 +548,10 @@ public final class WorkspaceManagedSqlServerSecurityAlertPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace managed Sql server security alert policy.
+     * @return workspace managed Sql server security alert policy along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerSecurityAlertPolicyInner>, ServerSecurityAlertPolicyInner> beginCreateOrUpdate(
         String resourceGroupName,
         String workspaceName,
@@ -560,7 +572,7 @@ public final class WorkspaceManagedSqlServerSecurityAlertPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace managed Sql server security alert policy.
+     * @return workspace managed Sql server security alert policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ServerSecurityAlertPolicyInner> createOrUpdateAsync(
@@ -584,7 +596,7 @@ public final class WorkspaceManagedSqlServerSecurityAlertPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace managed Sql server security alert policy.
+     * @return workspace managed Sql server security alert policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ServerSecurityAlertPolicyInner> createOrUpdateAsync(
@@ -651,7 +663,8 @@ public final class WorkspaceManagedSqlServerSecurityAlertPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace managed sql server's threat detection policies.
+     * @return workspace managed sql server's threat detection policies along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerSecurityAlertPolicyInner>> listSinglePageAsync(
@@ -675,6 +688,7 @@ public final class WorkspaceManagedSqlServerSecurityAlertPoliciesClientImpl
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -682,7 +696,7 @@ public final class WorkspaceManagedSqlServerSecurityAlertPoliciesClientImpl
                     service
                         .list(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -709,7 +723,8 @@ public final class WorkspaceManagedSqlServerSecurityAlertPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace managed sql server's threat detection policies.
+     * @return workspace managed sql server's threat detection policies along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerSecurityAlertPolicyInner>> listSinglePageAsync(
@@ -733,12 +748,13 @@ public final class WorkspaceManagedSqlServerSecurityAlertPoliciesClientImpl
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -829,7 +845,8 @@ public final class WorkspaceManagedSqlServerSecurityAlertPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the workspace managed sql server's security alert policies.
+     * @return a list of the workspace managed sql server's security alert policies along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerSecurityAlertPolicyInner>> listNextSinglePageAsync(String nextLink) {
@@ -865,7 +882,8 @@ public final class WorkspaceManagedSqlServerSecurityAlertPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the workspace managed sql server's security alert policies.
+     * @return a list of the workspace managed sql server's security alert policies along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerSecurityAlertPolicyInner>> listNextSinglePageAsync(

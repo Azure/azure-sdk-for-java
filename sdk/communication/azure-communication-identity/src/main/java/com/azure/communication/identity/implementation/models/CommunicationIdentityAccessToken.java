@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The CommunicationIdentityAccessToken model. */
+/** An access token. */
 @Fluent
 public final class CommunicationIdentityAccessToken {
     /*

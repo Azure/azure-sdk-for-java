@@ -6,10 +6,12 @@ package com.azure.resourcemanager.batch.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.fluent.models.BatchLocationQuotaInner;
 import com.azure.resourcemanager.batch.fluent.models.CheckNameAvailabilityResultInner;
+import com.azure.resourcemanager.batch.fluent.models.SupportedSkuInner;
 import com.azure.resourcemanager.batch.models.CheckNameAvailabilityParameters;
 
 /** An instance of this class provides access to all the operations defined in LocationsClient. */
@@ -38,6 +40,62 @@ public interface LocationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BatchLocationQuotaInner> getQuotasWithResponse(String locationName, Context context);
+
+    /**
+     * Gets the list of Batch supported Virtual Machine VM sizes available at the given location.
+     *
+     * @param locationName The region for which to retrieve Batch service supported SKUs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of Batch supported Virtual Machine VM sizes available at the given location.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SupportedSkuInner> listSupportedVirtualMachineSkus(String locationName);
+
+    /**
+     * Gets the list of Batch supported Virtual Machine VM sizes available at the given location.
+     *
+     * @param locationName The region for which to retrieve Batch service supported SKUs.
+     * @param maxresults The maximum number of items to return in the response.
+     * @param filter OData filter expression. Valid properties for filtering are "familyName".
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of Batch supported Virtual Machine VM sizes available at the given location.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SupportedSkuInner> listSupportedVirtualMachineSkus(
+        String locationName, Integer maxresults, String filter, Context context);
+
+    /**
+     * Gets the list of Batch supported Cloud Service VM sizes available at the given location.
+     *
+     * @param locationName The region for which to retrieve Batch service supported SKUs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of Batch supported Cloud Service VM sizes available at the given location.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SupportedSkuInner> listSupportedCloudServiceSkus(String locationName);
+
+    /**
+     * Gets the list of Batch supported Cloud Service VM sizes available at the given location.
+     *
+     * @param locationName The region for which to retrieve Batch service supported SKUs.
+     * @param maxresults The maximum number of items to return in the response.
+     * @param filter OData filter expression. Valid properties for filtering are "familyName".
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of Batch supported Cloud Service VM sizes available at the given location.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SupportedSkuInner> listSupportedCloudServiceSkus(
+        String locationName, Integer maxresults, String filter, Context context);
 
     /**
      * Checks whether the Batch account name is available in the specified region.

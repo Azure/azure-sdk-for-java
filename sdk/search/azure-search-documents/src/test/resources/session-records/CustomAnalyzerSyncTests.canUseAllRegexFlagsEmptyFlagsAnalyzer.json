@@ -1,32 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes?api-version=2020-06-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/indexes?api-version=2021-04-30-Preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "6235ec5a-0d3e-44f7-aa56-ba74b9e47a72",
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6f4243a0-5478-4c8b-abcd-d8abc5369579",
       "Content-Type" : "application/json"
     },
     "Response" : {
+      "content-length" : "333",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "6235ec5a-0d3e-44f7-aa56-ba74b9e47a72",
+      "request-id" : "6f4243a0-5478-4c8b-abcd-d8abc5369579",
       "StatusCode" : "400",
-      "Date" : "Fri, 02 Apr 2021 22:35:20 GMT",
+      "Date" : "Tue, 13 Jul 2021 19:22:03 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "6235ec5a-0d3e-44f7-aa56-ba74b9e47a72",
-      "elapsed-time" : "23",
+      "client-request-id" : "6f4243a0-5478-4c8b-abcd-d8abc5369579",
+      "elapsed-time" : "5",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "333",
       "Body" : "{\"error\":{\"code\":\"\",\"message\":\"The request is invalid. Details: index.analyzers[0].flags : Values of property \\\"flags\\\" must belong to the set of allowed values (case-sensitive) or be in the pipe form of them (e.g. value1|value2|...): CANON_EQ, CASE_INSENSITIVE, COMMENTS, DOTALL, LITERAL, MULTILINE, UNICODE_CASE, UNIX_LINES.\\r\\n\"}}",
       "Content-Language" : "en",
-      "x-ms-client-request-id" : "6235ec5a-0d3e-44f7-aa56-ba74b9e47a72",
+      "x-ms-client-request-id" : "6f4243a0-5478-4c8b-abcd-d8abc5369579",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "hotelscanuseallregexflagsemptyflagsanalyzer95a18942449c13", "azsmnet970172421fd" ]
+  "variables" : [ "hotelscanuseallregexflagsemptyflagsanalyzer9ff1034643c66a", "azsmnet673576b45b9" ]
 }

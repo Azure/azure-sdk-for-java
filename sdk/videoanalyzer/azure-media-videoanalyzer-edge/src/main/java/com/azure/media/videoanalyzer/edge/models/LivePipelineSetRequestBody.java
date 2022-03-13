@@ -8,7 +8,10 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Live pipeline resource representation. */
+/**
+ * Live Pipeline represents an unique instance of a pipeline topology which is used for real-time content ingestion and
+ * analysis.
+ */
 @Fluent
 public final class LivePipelineSetRequestBody extends MethodRequest {
     /*

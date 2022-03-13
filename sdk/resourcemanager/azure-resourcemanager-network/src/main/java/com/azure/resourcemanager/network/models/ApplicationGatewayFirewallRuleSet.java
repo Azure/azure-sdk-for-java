@@ -5,43 +5,24 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayFirewallRuleSetPropertiesFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** A web application firewall rule set. */
-@JsonFlatten
 @Fluent
-public class ApplicationGatewayFirewallRuleSet extends Resource {
+public final class ApplicationGatewayFirewallRuleSet extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayFirewallRuleSet.class);
 
     /*
-     * The provisioning state of the web application firewall rule set.
+     * Properties of the application gateway firewall rule set.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The type of the web application firewall rule set.
-     */
-    @JsonProperty(value = "properties.ruleSetType")
-    private String ruleSetType;
-
-    /*
-     * The version of the web application firewall rule set type.
-     */
-    @JsonProperty(value = "properties.ruleSetVersion")
-    private String ruleSetVersion;
-
-    /*
-     * The rule groups of the web application firewall rule set.
-     */
-    @JsonProperty(value = "properties.ruleGroups")
-    private List<ApplicationGatewayFirewallRuleGroup> ruleGroups;
+    @JsonProperty(value = "properties")
+    private ApplicationGatewayFirewallRuleSetPropertiesFormat innerProperties;
 
     /*
      * Resource ID.
@@ -50,72 +31,12 @@ public class ApplicationGatewayFirewallRuleSet extends Resource {
     private String id;
 
     /**
-     * Get the provisioningState property: The provisioning state of the web application firewall rule set.
+     * Get the innerProperties property: Properties of the application gateway firewall rule set.
      *
-     * @return the provisioningState value.
+     * @return the innerProperties value.
      */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the ruleSetType property: The type of the web application firewall rule set.
-     *
-     * @return the ruleSetType value.
-     */
-    public String ruleSetType() {
-        return this.ruleSetType;
-    }
-
-    /**
-     * Set the ruleSetType property: The type of the web application firewall rule set.
-     *
-     * @param ruleSetType the ruleSetType value to set.
-     * @return the ApplicationGatewayFirewallRuleSet object itself.
-     */
-    public ApplicationGatewayFirewallRuleSet withRuleSetType(String ruleSetType) {
-        this.ruleSetType = ruleSetType;
-        return this;
-    }
-
-    /**
-     * Get the ruleSetVersion property: The version of the web application firewall rule set type.
-     *
-     * @return the ruleSetVersion value.
-     */
-    public String ruleSetVersion() {
-        return this.ruleSetVersion;
-    }
-
-    /**
-     * Set the ruleSetVersion property: The version of the web application firewall rule set type.
-     *
-     * @param ruleSetVersion the ruleSetVersion value to set.
-     * @return the ApplicationGatewayFirewallRuleSet object itself.
-     */
-    public ApplicationGatewayFirewallRuleSet withRuleSetVersion(String ruleSetVersion) {
-        this.ruleSetVersion = ruleSetVersion;
-        return this;
-    }
-
-    /**
-     * Get the ruleGroups property: The rule groups of the web application firewall rule set.
-     *
-     * @return the ruleGroups value.
-     */
-    public List<ApplicationGatewayFirewallRuleGroup> ruleGroups() {
-        return this.ruleGroups;
-    }
-
-    /**
-     * Set the ruleGroups property: The rule groups of the web application firewall rule set.
-     *
-     * @param ruleGroups the ruleGroups value to set.
-     * @return the ApplicationGatewayFirewallRuleSet object itself.
-     */
-    public ApplicationGatewayFirewallRuleSet withRuleGroups(List<ApplicationGatewayFirewallRuleGroup> ruleGroups) {
-        this.ruleGroups = ruleGroups;
-        return this;
+    private ApplicationGatewayFirewallRuleSetPropertiesFormat innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -153,13 +74,91 @@ public class ApplicationGatewayFirewallRuleSet extends Resource {
     }
 
     /**
+     * Get the provisioningState property: The provisioning state of the web application firewall rule set.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the ruleSetType property: The type of the web application firewall rule set.
+     *
+     * @return the ruleSetType value.
+     */
+    public String ruleSetType() {
+        return this.innerProperties() == null ? null : this.innerProperties().ruleSetType();
+    }
+
+    /**
+     * Set the ruleSetType property: The type of the web application firewall rule set.
+     *
+     * @param ruleSetType the ruleSetType value to set.
+     * @return the ApplicationGatewayFirewallRuleSet object itself.
+     */
+    public ApplicationGatewayFirewallRuleSet withRuleSetType(String ruleSetType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayFirewallRuleSetPropertiesFormat();
+        }
+        this.innerProperties().withRuleSetType(ruleSetType);
+        return this;
+    }
+
+    /**
+     * Get the ruleSetVersion property: The version of the web application firewall rule set type.
+     *
+     * @return the ruleSetVersion value.
+     */
+    public String ruleSetVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().ruleSetVersion();
+    }
+
+    /**
+     * Set the ruleSetVersion property: The version of the web application firewall rule set type.
+     *
+     * @param ruleSetVersion the ruleSetVersion value to set.
+     * @return the ApplicationGatewayFirewallRuleSet object itself.
+     */
+    public ApplicationGatewayFirewallRuleSet withRuleSetVersion(String ruleSetVersion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayFirewallRuleSetPropertiesFormat();
+        }
+        this.innerProperties().withRuleSetVersion(ruleSetVersion);
+        return this;
+    }
+
+    /**
+     * Get the ruleGroups property: The rule groups of the web application firewall rule set.
+     *
+     * @return the ruleGroups value.
+     */
+    public List<ApplicationGatewayFirewallRuleGroup> ruleGroups() {
+        return this.innerProperties() == null ? null : this.innerProperties().ruleGroups();
+    }
+
+    /**
+     * Set the ruleGroups property: The rule groups of the web application firewall rule set.
+     *
+     * @param ruleGroups the ruleGroups value to set.
+     * @return the ApplicationGatewayFirewallRuleSet object itself.
+     */
+    public ApplicationGatewayFirewallRuleSet withRuleGroups(List<ApplicationGatewayFirewallRuleGroup> ruleGroups) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayFirewallRuleSetPropertiesFormat();
+        }
+        this.innerProperties().withRuleGroups(ruleGroups);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (ruleGroups() != null) {
-            ruleGroups().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

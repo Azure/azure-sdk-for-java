@@ -11,14 +11,16 @@ import com.azure.spring.integration.servicebus.ServiceBusRuntimeException;
 import com.azure.spring.integration.servicebus.ServiceBusTemplate;
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
-import com.google.common.collect.Sets;
+import com.azure.spring.integration.servicebus.health.Instrumentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.messaging.Message;
 import org.springframework.util.Assert;
 
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 /**
@@ -36,7 +38,7 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
 
     private static final String MSG_SUCCESS_CHECKPOINT = "Consumer group '%s' of topic '%s' checkpointed %s in %s mode";
 
-    private final Set<Tuple<String, String>> nameAndConsumerGroups = Sets.newConcurrentHashSet();
+    private final Set<Tuple<String, String>> nameAndConsumerGroups = ConcurrentHashMap.newKeySet();
 
     public ServiceBusTopicTemplate(ServiceBusTopicClientFactory clientFactory) {
         super(clientFactory);
@@ -57,6 +59,12 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
                              String consumerGroup,
                              @NonNull Consumer<Message<?>> consumer,
                              Class<?> payloadType) {
+        return subscribe(destination, consumerGroup, consumer, null, payloadType);
+    }
+
+    @Override
+    public boolean subscribe(String destination, String consumerGroup, Consumer<Message<?>> consumer,
+                             @Nullable Consumer<Throwable> errorHandler, Class<?> messagePayloadType) {
         Assert.hasText(destination, "destination can't be null or empty");
 
         Tuple<String, String> nameAndConsumerGroup = Tuple.of(destination, consumerGroup);
@@ -67,15 +75,64 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
 
         this.nameAndConsumerGroups.add(nameAndConsumerGroup);
 
-        internalSubscribe(destination, consumerGroup, consumer, payloadType);
+        internalSubscribe(destination, consumerGroup, consumer, errorHandler, messagePayloadType);
         return true;
     }
 
     @Override
     public boolean unsubscribe(String destination, String consumerGroup) {
         // TODO: unregister message handler but service bus sdk unsupported
+        if (this.nameAndConsumerGroups.remove(Tuple.of(destination, consumerGroup))) {
+            this.clientFactory.removeProcessor(destination, consumerGroup).close();
+            return true;
+        }
+        LOGGER.warn("The topic %s and subscription %s have not been subscribed.", destination, consumerGroup);
+        return false;
+    }
 
-        return this.nameAndConsumerGroups.remove(Tuple.of(destination, consumerGroup));
+    /**
+     * Register a message handler to receive message from the topic. A session handler will be registered if session is
+     * enabled.
+     *
+     * @param name The topic name.
+     * @param consumerGroup The consumer group.
+     * @param consumer The consumer method.
+     * @param errorHandler The error handler method.
+     * @param payloadType The type of the message payload.
+     * @throws ServiceBusRuntimeException If fail to register the topic message handler.
+     */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    protected void internalSubscribe(String name,
+                                     String consumerGroup,
+                                     Consumer<Message<?>> consumer,
+                                     Consumer<Throwable> errorHandler,
+                                     Class<?> payloadType) {
+
+        final DefaultServiceBusMessageProcessor messageProcessor = new DefaultServiceBusMessageProcessor(
+            this.checkpointConfig, payloadType, consumer, errorHandler, this.messageConverter) {
+            @Override
+            protected String buildCheckpointFailMessage(Message<?> message) {
+                return String.format(MSG_FAIL_CHECKPOINT, consumer, name, message);
+            }
+
+            @Override
+            protected String buildCheckpointSuccessMessage(Message<?> message) {
+                return String.format(MSG_SUCCESS_CHECKPOINT, consumer, name, message,
+                    getCheckpointConfig().getCheckpointMode());
+            }
+        };
+        Instrumentation instrumentation = new Instrumentation(name + consumerGroup, Instrumentation.Type.CONSUME);
+        try {
+            instrumentationManager.addHealthInstrumentation(instrumentation);
+            ServiceBusProcessorClient processorClient = this.clientFactory.getOrCreateProcessor(name, consumerGroup,
+                this.clientConfig, messageProcessor);
+            processorClient.start();
+            instrumentationManager.getHealthInstrumentation(instrumentation).markStartedSuccessfully();
+        } catch (Exception e) {
+            instrumentationManager.getHealthInstrumentation(instrumentation).markStartFailed(e);
+            LOGGER.error("ServiceBus processorClient startup failed, Caused by " + e.getMessage());
+            throw new ServiceBusRuntimeException("ServiceBus processor client startup failed, Caused by " + e.getMessage(), e);
+        }
     }
 
     /**
@@ -93,25 +150,7 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
                                      String consumerGroup,
                                      Consumer<Message<?>> consumer,
                                      Class<?> payloadType) {
-
-        final DefaultServiceBusMessageProcessor messageProcessor = new DefaultServiceBusMessageProcessor(
-            this.checkpointConfig, payloadType, consumer, this.messageConverter) {
-            @Override
-            protected String buildCheckpointFailMessage(Message<?> message) {
-                return String.format(MSG_FAIL_CHECKPOINT, consumer, name, message);
-            }
-
-            @Override
-            protected String buildCheckpointSuccessMessage(Message<?> message) {
-                return String.format(MSG_SUCCESS_CHECKPOINT, consumer, name, message,
-                                     getCheckpointConfig().getCheckpointMode());
-            }
-        };
-        ServiceBusProcessorClient processorClient = this.clientFactory.getOrCreateProcessor(name, consumerGroup,
-                                                                                            this.clientConfig,
-                                                                                            messageProcessor);
-        processorClient.start();
+        internalSubscribe(name, consumerGroup, consumer, null, payloadType);
     }
-
 
 }

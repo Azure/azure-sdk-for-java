@@ -3,21 +3,17 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.util.Beta;
 
-import java.util.ArrayList;
-import java.util.List;
-
-@Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+/**
+ * Encapsulates options for {@link CosmosPatchOperations}
+ */
 public class CosmosPatchItemRequestOptions extends CosmosItemRequestOptions {
     private String filterPredicate;
 
     /**
      * copy constructor
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     CosmosPatchItemRequestOptions(CosmosPatchItemRequestOptions options) {
         super((CosmosItemRequestOptions) options);
         filterPredicate = options.filterPredicate;
@@ -26,7 +22,6 @@ public class CosmosPatchItemRequestOptions extends CosmosItemRequestOptions {
     /**
      * Constructor
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosPatchItemRequestOptions() {
         super();
     }
@@ -36,7 +31,6 @@ public class CosmosPatchItemRequestOptions extends CosmosItemRequestOptions {
      *
      * @return the FilterPredicate associated with the request.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getFilterPredicate() {
         return this.filterPredicate;
     }
@@ -47,7 +41,6 @@ public class CosmosPatchItemRequestOptions extends CosmosItemRequestOptions {
      * @param filterPredicate the filterPredicate associated with the request.
      * @return the current request options
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosPatchItemRequestOptions setFilterPredicate(String filterPredicate) {
         this.filterPredicate = filterPredicate;
         return this;

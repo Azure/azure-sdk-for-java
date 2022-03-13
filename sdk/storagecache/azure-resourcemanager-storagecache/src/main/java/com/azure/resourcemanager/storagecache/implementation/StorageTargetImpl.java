@@ -5,16 +5,17 @@
 package com.azure.resourcemanager.storagecache.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.storagecache.fluent.models.StorageTargetInner;
 import com.azure.resourcemanager.storagecache.models.BlobNfsTarget;
 import com.azure.resourcemanager.storagecache.models.ClfsTarget;
 import com.azure.resourcemanager.storagecache.models.NamespaceJunction;
 import com.azure.resourcemanager.storagecache.models.Nfs3Target;
+import com.azure.resourcemanager.storagecache.models.OperationalStateType;
 import com.azure.resourcemanager.storagecache.models.ProvisioningStateType;
 import com.azure.resourcemanager.storagecache.models.StorageTarget;
 import com.azure.resourcemanager.storagecache.models.StorageTargetType;
-import com.azure.resourcemanager.storagecache.models.SystemData;
 import com.azure.resourcemanager.storagecache.models.UnknownTarget;
 import java.util.Collections;
 import java.util.List;
@@ -59,6 +60,10 @@ public final class StorageTargetImpl implements StorageTarget, StorageTarget.Def
 
     public ProvisioningStateType provisioningState() {
         return this.innerModel().provisioningState();
+    }
+
+    public OperationalStateType state() {
+        return this.innerModel().state();
     }
 
     public Nfs3Target nfs3() {
@@ -198,8 +203,8 @@ public final class StorageTargetImpl implements StorageTarget, StorageTarget.Def
         return this;
     }
 
-    public StorageTargetImpl withProvisioningState(ProvisioningStateType provisioningState) {
-        this.innerModel().withProvisioningState(provisioningState);
+    public StorageTargetImpl withState(OperationalStateType state) {
+        this.innerModel().withState(state);
         return this;
     }
 

@@ -78,13 +78,14 @@ public final class WorkspaceGitRepoManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GitHubAccessTokenResponse>> getGitHubAccessTokenWithResponseAsync(
             GitHubAccessTokenRequest gitHubAccessTokenRequest, String clientRequestId) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getGitHubAccessToken(
                                 this.client.getEndpoint(),
                                 clientRequestId,
-                                this.client.getApiVersion(),
+                                apiVersion,
                                 gitHubAccessTokenRequest,
                                 accept,
                                 context));
@@ -104,14 +105,10 @@ public final class WorkspaceGitRepoManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GitHubAccessTokenResponse>> getGitHubAccessTokenWithResponseAsync(
             GitHubAccessTokenRequest gitHubAccessTokenRequest, String clientRequestId, Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return service.getGitHubAccessToken(
-                this.client.getEndpoint(),
-                clientRequestId,
-                this.client.getApiVersion(),
-                gitHubAccessTokenRequest,
-                accept,
-                context);
+                this.client.getEndpoint(), clientRequestId, apiVersion, gitHubAccessTokenRequest, accept, context);
     }
 
     /**

@@ -20,9 +20,9 @@ import com.azure.ai.metricsadvisor.administration.models.DataFeedRollupSettings;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedRollupType;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedSchema;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedStatus;
-import com.azure.ai.metricsadvisor.administration.models.DatasourceCredentialEntity;
-import com.azure.ai.metricsadvisor.administration.models.DatasourceServicePrincipalInKeyVault;
-import com.azure.ai.metricsadvisor.administration.models.DetectionConditionsOperator;
+import com.azure.ai.metricsadvisor.administration.models.DataSourceCredentialEntity;
+import com.azure.ai.metricsadvisor.administration.models.DataSourceServicePrincipalInKeyVault;
+import com.azure.ai.metricsadvisor.administration.models.DetectionConditionOperator;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.administration.models.EmailNotificationHook;
 import com.azure.ai.metricsadvisor.administration.models.HardThresholdCondition;
@@ -32,10 +32,10 @@ import com.azure.ai.metricsadvisor.administration.models.ListDataFeedFilter;
 import com.azure.ai.metricsadvisor.administration.models.ListDataFeedIngestionOptions;
 import com.azure.ai.metricsadvisor.administration.models.ListDataFeedOptions;
 import com.azure.ai.metricsadvisor.administration.models.ListHookOptions;
-import com.azure.ai.metricsadvisor.administration.models.ListMetricAnomalyDetectionConfigsOptions;
+import com.azure.ai.metricsadvisor.administration.models.ListDetectionConfigsOptions;
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConditions;
-import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConfiguration;
-import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConfigurationsOperator;
+import com.azure.ai.metricsadvisor.administration.models.MetricAlertConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.MetricAlertConfigurationsOperator;
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertScope;
 import com.azure.ai.metricsadvisor.administration.models.MetricSeriesGroupDetectionCondition;
 import com.azure.ai.metricsadvisor.administration.models.MetricSingleSeriesDetectionCondition;
@@ -52,6 +52,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.util.Context;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -107,12 +108,12 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
             .setSchema(new DataFeedSchema(
                 Arrays.asList(
-                    new DataFeedMetric().setName("cost"),
-                    new DataFeedMetric().setName("revenue")
+                    new DataFeedMetric("cost"),
+                    new DataFeedMetric("revenue")
                 )).setDimensions(
                     Arrays.asList(
-                        new DataFeedDimension().setName("city"),
-                        new DataFeedDimension().setName("category")
+                        new DataFeedDimension("city"),
+                        new DataFeedDimension("category")
                     ))
             )
             .setIngestionSettings(new DataFeedIngestionSettings(OffsetDateTime.parse("2020-01-01T00:00:00Z")))
@@ -142,8 +143,8 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
             .setSchema(new DataFeedSchema(
                 Arrays.asList(
-                    new DataFeedMetric().setName("metric1"),
-                    new DataFeedMetric().setName("metric2")
+                    new DataFeedMetric("metric1"),
+                    new DataFeedMetric("metric2")
                 )
             ))
             .setIngestionSettings(new DataFeedIngestionSettings(OffsetDateTime.parse("2020-01-01T00:00:00Z")))
@@ -309,7 +310,9 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createHook#NotificationHook
         NotificationHook emailNotificationHook = new EmailNotificationHook("email hook")
             .setDescription("my email hook")
-            .addEmailToAlert("alertme@alertme.com")
+            .setEmailsToAlert(new ArrayList<String>() {{
+                    add("alertme@alertme.com");
+                }})
             .setExternalLink("https://adwiki.azurewebsites.net/articles/howto/alerts/create-hooks.html");
 
         metricsAdvisorAdminAsyncClient.createHook(emailNotificationHook)
@@ -332,7 +335,9 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createHookWithResponse#NotificationHook
         NotificationHook emailNotificationHook = new EmailNotificationHook("email hook")
             .setDescription("my email hook")
-            .addEmailToAlert("alertme@alertme.com")
+            .setEmailsToAlert(new ArrayList<String>() {{
+                    add("alertme@alertme.com");
+                }})
             .setExternalLink("https://adwiki.azurewebsites.net/articles/howto/alerts/create-hooks.html");
 
         metricsAdvisorAdminAsyncClient.createHookWithResponse(emailNotificationHook)
@@ -417,10 +422,11 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
         metricsAdvisorAdminAsyncClient.getHook(emailHookId)
             .flatMap(hook -> {
                 EmailNotificationHook emailHook = (EmailNotificationHook) hook;
-                emailHook
-                    .removeEmailToAlert("alertme@alertme.com")
-                    .addEmailToAlert("alertme2@alertme.com")
-                    .addEmailToAlert("alertme3@alertme.com");
+                List<String> emailsToUpdate = new ArrayList<>(emailHook.getEmailsToAlert());
+                emailsToUpdate.remove("alertme@alertme.com");
+                emailsToUpdate.add("alertme2@alertme.com");
+                emailsToUpdate.add("alertme3@alertme.com");
+                emailHook.setEmailsToAlert(emailsToUpdate);
                 return metricsAdvisorAdminAsyncClient.updateHook(emailHook);
             })
             .subscribe(hook -> {
@@ -443,10 +449,11 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
         metricsAdvisorAdminAsyncClient.getHookWithResponse(emailHookId)
             .flatMap(response -> {
                 EmailNotificationHook emailHook = (EmailNotificationHook) response.getValue();
-                emailHook
-                    .removeEmailToAlert("alertme@alertme.com")
-                    .addEmailToAlert("alertme2@alertme.com")
-                    .addEmailToAlert("alertme3@alertme.com");
+                List<String> emailsToUpdate = new ArrayList<>(emailHook.getEmailsToAlert());
+                emailsToUpdate.remove("alertme@alertme.com");
+                emailsToUpdate.add("alertme2@alertme.com");
+                emailsToUpdate.add("alertme3@alertme.com");
+                emailHook.setEmailsToAlert(emailsToUpdate);
                 return metricsAdvisorAdminAsyncClient.updateHookWithResponse(emailHook);
             })
             .subscribe(response -> {
@@ -531,7 +538,7 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                         System.out.printf("Email Hook Description: %s%n", emailHook.getDescription());
                         System.out.printf("Email Hook External Link: %s%n", emailHook.getExternalLink());
                         System.out.printf("Email Hook Emails: %s%n", String.join(",", emailHook.getEmailsToAlert()));
-                        System.out.printf("Email Hook Admins: %s%n", String.join(",", emailHook.getAdminEmails()));
+                        System.out.printf("Email Hook Admins: %s%n", String.join(",", emailHook.getAdmins()));
                     } else if (notificationHook instanceof WebNotificationHook) {
                         WebNotificationHook webHook = (WebNotificationHook) notificationHook;
                         System.out.printf("Web Hook Id: %s%n", webHook.getId());
@@ -540,7 +547,7 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                         System.out.printf("Web Hook External Link: %s%n", webHook.getExternalLink());
                         System.out.printf("Web Hook Endpoint: %s%n", webHook.getEndpoint());
                         System.out.printf("Web Hook Headers: %s%n", webHook.getHttpHeaders());
-                        System.out.printf("Web Hook Admins: %s%n", String.join(",", webHook.getAdminEmails()));
+                        System.out.printf("Web Hook Admins: %s%n", String.join(",", webHook.getAdmins()));
                     }
                 }
             });
@@ -627,27 +634,27 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#createMetricAnomalyDetectionConfig(String, AnomalyDetectionConfiguration)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#createDetectionConfig(String, AnomalyDetectionConfiguration)}.
      */
     public void createDetectionConfiguration() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createMetricAnomalyDetectionConfig#String-AnomalyDetectionConfiguration
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDetectionConfig#String-AnomalyDetectionConfiguration
         final MetricWholeSeriesDetectionCondition wholeSeriesCondition = new MetricWholeSeriesDetectionCondition()
-            .setCrossConditionOperator(DetectionConditionsOperator.OR)
-            .setSmartDetectionCondition(new SmartDetectionCondition()
-                .setSensitivity(50)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(50).setMinRatio(50)))
-            .setHardThresholdCondition(new HardThresholdCondition()
+            .setConditionOperator(DetectionConditionOperator.OR)
+            .setSmartDetectionCondition(new SmartDetectionCondition(
+                50,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(50, 50)))
+            .setHardThresholdCondition(new HardThresholdCondition(
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(5, 5))
                 .setLowerBound(0.0)
-                .setUpperBound(100.0)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(5).setMinRatio(5)))
-            .setChangeThresholdCondition(new ChangeThresholdCondition()
-                .setChangePercentage(50)
-                .setShiftPoint(30)
-                .setWithinRange(true)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(2).setMinRatio(2)));
+                .setUpperBound(100.0))
+            .setChangeThresholdCondition(new ChangeThresholdCondition(
+                50,
+                30,
+                true,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(2, 2)));
 
         final String detectionConfigName = "my_detection_config";
         final String detectionConfigDescription = "anomaly detection config for metric";
@@ -658,38 +665,38 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
 
         final String metricId = "0b836da8-10e6-46cd-8f4f-28262e113a62";
         metricsAdvisorAdminAsyncClient
-            .createMetricAnomalyDetectionConfig(metricId, detectionConfig)
+            .createDetectionConfig(metricId, detectionConfig)
             .subscribe(createdDetectionConfig -> {
                 System.out.printf("Detection config Id: %s%n", createdDetectionConfig.getId());
                 System.out.printf("Name: %s%n", createdDetectionConfig.getName());
                 System.out.printf("Description: %s%n", createdDetectionConfig.getDescription());
                 System.out.printf("MetricId: %s%n", createdDetectionConfig.getMetricId());
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createMetricAnomalyDetectionConfig#String-AnomalyDetectionConfiguration
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDetectionConfig#String-AnomalyDetectionConfiguration
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#createMetricAnomalyDetectionConfigWithResponse(String, AnomalyDetectionConfiguration)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#createDetectionConfigWithResponse(String, AnomalyDetectionConfiguration)}.
      */
     public void createDetectionConfigurationWithResponse() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createMetricAnomalyDetectionConfigWithResponse#String-AnomalyDetectionConfiguration
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDetectionConfigWithResponse#String-AnomalyDetectionConfiguration
         final MetricWholeSeriesDetectionCondition wholeSeriesCondition = new MetricWholeSeriesDetectionCondition()
-            .setCrossConditionOperator(DetectionConditionsOperator.OR)
-            .setSmartDetectionCondition(new SmartDetectionCondition()
-                .setSensitivity(50)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(50).setMinRatio(50)))
-            .setHardThresholdCondition(new HardThresholdCondition()
+            .setConditionOperator(DetectionConditionOperator.OR)
+            .setSmartDetectionCondition(new SmartDetectionCondition(
+                50,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(50, 50)))
+            .setHardThresholdCondition(new HardThresholdCondition(
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(5, 5))
                 .setLowerBound(0.0)
-                .setUpperBound(100.0)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(5).setMinRatio(5)))
-            .setChangeThresholdCondition(new ChangeThresholdCondition()
-                .setChangePercentage(50)
-                .setShiftPoint(30)
-                .setWithinRange(true)
-                .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
-                .setSuppressCondition(new SuppressCondition().setMinNumber(2).setMinRatio(2)));
+                .setUpperBound(100.0))
+            .setChangeThresholdCondition(new ChangeThresholdCondition(
+                50,
+                30,
+                true,
+                AnomalyDetectorDirection.BOTH,
+                new SuppressCondition(2, 2)));
 
         final String detectionConfigName = "my_detection_config";
         final String detectionConfigDescription = "anomaly detection config for metric";
@@ -700,7 +707,7 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
 
         final String metricId = "0b836da8-10e6-46cd-8f4f-28262e113a62";
         metricsAdvisorAdminAsyncClient
-            .createMetricAnomalyDetectionConfigWithResponse(metricId, detectionConfig)
+            .createDetectionConfigWithResponse(metricId, detectionConfig)
             .subscribe(response -> {
                 System.out.printf("Response statusCode: %d%n", response.getStatusCode());
                 AnomalyDetectionConfiguration createdDetectionConfig = response.getValue();
@@ -709,17 +716,17 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Description: %s%n", createdDetectionConfig.getDescription());
                 System.out.printf("MetricId: %s%n", createdDetectionConfig.getMetricId());
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createMetricAnomalyDetectionConfigWithResponse#String-AnomalyDetectionConfiguration
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDetectionConfigWithResponse#String-AnomalyDetectionConfiguration
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#getMetricAnomalyDetectionConfig(String)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#getDetectionConfig(String)}.
      */
     public void getDetectionConfiguration() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getMetricAnomalyDetectionConfig#String
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDetectionConfig#String
         final String detectionConfigId = "7b8069a1-1564-46da-9f50-b5d0dd9129ab";
         metricsAdvisorAdminAsyncClient
-            .getMetricAnomalyDetectionConfig(detectionConfigId)
+            .getDetectionConfig(detectionConfigId)
             .subscribe(detectionConfig -> {
                 System.out.printf("Detection config Id: %s%n", detectionConfig.getId());
                 System.out.printf("Name: %s%n", detectionConfig.getName());
@@ -733,7 +740,7 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                     = detectionConfig.getWholeSeriesDetectionCondition();
 
                 System.out.printf("- Use %s operator for multiple detection conditions:%n",
-                    wholeSeriesDetectionCondition.getCrossConditionsOperator());
+                    wholeSeriesDetectionCondition.getConditionOperator());
 
                 System.out.printf("- Smart Detection Condition:%n");
                 System.out.printf(" - Sensitivity: %s%n",
@@ -784,9 +791,9 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                     DimensionKey seriesKey = seriesDetectionCondition.getSeriesKey();
                     final String seriesKeyStr
                         = Arrays.toString(seriesKey.asMap().entrySet().stream().toArray());
-                    System.out.printf("- Series Key:%n", seriesKeyStr);
+                    System.out.printf("- Series Key: %s%n", seriesKeyStr);
                     System.out.printf(" - Use %s operator for multiple detection conditions:%n",
-                        seriesDetectionCondition.getCrossConditionsOperator());
+                        seriesDetectionCondition.getConditionOperator());
 
                     System.out.printf(" - Smart Detection Condition:%n");
                     System.out.printf("  - Sensitivity: %s%n",
@@ -839,9 +846,9 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                     DimensionKey seriesGroupKey = seriesGroupDetectionCondition.getSeriesGroupKey();
                     final String seriesGroupKeyStr
                         = Arrays.toString(seriesGroupKey.asMap().entrySet().stream().toArray());
-                    System.out.printf("- Series Group Key:%n", seriesGroupKeyStr);
+                    System.out.printf("- Series Group Key: %s%n", seriesGroupKeyStr);
                     System.out.printf(" - Use %s operator for multiple detection conditions:%n",
-                        seriesGroupDetectionCondition.getCrossConditionsOperator());
+                        seriesGroupDetectionCondition.getConditionOperator());
 
                     System.out.printf(" - Smart Detection Condition:%n");
                     System.out.printf("  - Sensitivity: %s%n",
@@ -886,17 +893,17 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                             .getSuppressCondition().getMinRatio());
                 }
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getMetricAnomalyDetectionConfig#String
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDetectionConfig#String
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#getMetricAnomalyDetectionConfigWithResponse(String)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#getDetectionConfigWithResponse(String)}.
      */
     public void getDetectionConfigurationWithResponse() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getMetricAnomalyDetectionConfigWithResponse#String
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDetectionConfigWithResponse#String
         final String detectionConfigId = "7b8069a1-1564-46da-9f50-b5d0dd9129ab";
         metricsAdvisorAdminAsyncClient
-            .getMetricAnomalyDetectionConfigWithResponse(detectionConfigId)
+            .getDetectionConfigWithResponse(detectionConfigId)
             .subscribe(response -> {
                 System.out.printf("Response statusCode: %d%n", response.getStatusCode());
 
@@ -913,7 +920,7 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                     = detectionConfig.getWholeSeriesDetectionCondition();
 
                 System.out.printf("- Use %s operator for multiple detection conditions:%n",
-                    wholeSeriesDetectionCondition.getCrossConditionsOperator());
+                    wholeSeriesDetectionCondition.getConditionOperator());
 
                 System.out.printf("- Smart Detection Condition:%n");
                 System.out.printf(" - Sensitivity: %s%n",
@@ -964,9 +971,9 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                     DimensionKey seriesKey = seriesDetectionCondition.getSeriesKey();
                     final String seriesKeyStr
                         = Arrays.toString(seriesKey.asMap().entrySet().stream().toArray());
-                    System.out.printf("- Series Key:%n", seriesKeyStr);
+                    System.out.printf("- Series Key: %s%n", seriesKeyStr);
                     System.out.printf(" - Use %s operator for multiple detection conditions:%n",
-                        seriesDetectionCondition.getCrossConditionsOperator());
+                        seriesDetectionCondition.getConditionOperator());
 
                     System.out.printf(" - Smart Detection Condition:%n");
                     System.out.printf("  - Sensitivity: %s%n",
@@ -1019,9 +1026,9 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                     DimensionKey seriesGroupKey = seriesGroupDetectionCondition.getSeriesGroupKey();
                     final String seriesGroupKeyStr
                         = Arrays.toString(seriesGroupKey.asMap().entrySet().stream().toArray());
-                    System.out.printf("- Series Group Key:%n", seriesGroupKeyStr);
+                    System.out.printf("- Series Group Key: %s%n", seriesGroupKeyStr);
                     System.out.printf(" - Use %s operator for multiple detection conditions:%n",
-                        seriesGroupDetectionCondition.getCrossConditionsOperator());
+                        seriesGroupDetectionCondition.getConditionOperator());
 
                     System.out.printf(" - Smart Detection Condition:%n");
                     System.out.printf("  - Sensitivity: %s%n",
@@ -1066,47 +1073,47 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                             .getSuppressCondition().getMinRatio());
                 }
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getMetricAnomalyDetectionConfigWithResponse#String
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDetectionConfigWithResponse#String
     }
 
     public void listDetectionConfigurations() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listMetricAnomalyDetectionConfigs#String
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDetectionConfigs#String
         final String metricId = "0b836da8-10e6-46cd-8f4f-28262e113a62";
-        metricsAdvisorAdminAsyncClient.listMetricAnomalyDetectionConfigs(metricId)
+        metricsAdvisorAdminAsyncClient.listDetectionConfigs(metricId)
             .subscribe(detectionConfig -> {
                 System.out.printf("Detection config Id: %s%n", detectionConfig.getId());
                 System.out.printf("Name: %s%n", detectionConfig.getName());
                 System.out.printf("Description: %s%n", detectionConfig.getDescription());
                 System.out.printf("MetricId: %s%n", detectionConfig.getMetricId());
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listMetricAnomalyDetectionConfigs#String
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDetectionConfigs#String
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#listMetricAnomalyDetectionConfigs(String, ListMetricAnomalyDetectionConfigsOptions)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#listDetectionConfigs(String, ListDetectionConfigsOptions)}.
      */
     public void listDetectionConfigurationsWithOptions() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listMetricAnomalyDetectionConfigs#String-ListMetricAnomalyDetectionConfigsOptions
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDetectionConfigs#String-ListDetectionConfigsOptions
         final String metricId = "0b836da8-10e6-46cd-8f4f-28262e113a62";
-        metricsAdvisorAdminAsyncClient.listMetricAnomalyDetectionConfigs(metricId,
-            new ListMetricAnomalyDetectionConfigsOptions())
+        metricsAdvisorAdminAsyncClient.listDetectionConfigs(metricId,
+            new ListDetectionConfigsOptions())
             .subscribe(detectionConfig -> {
                 System.out.printf("Detection config Id: %s%n", detectionConfig.getId());
                 System.out.printf("Name: %s%n", detectionConfig.getName());
                 System.out.printf("Description: %s%n", detectionConfig.getDescription());
                 System.out.printf("MetricId: %s%n", detectionConfig.getMetricId());
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listMetricAnomalyDetectionConfigs#String-ListMetricAnomalyDetectionConfigsOptions
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDetectionConfigs#String-ListDetectionConfigsOptions
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#updateMetricAnomalyDetectionConfig(AnomalyDetectionConfiguration)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#updateDetectionConfig(AnomalyDetectionConfiguration)}.
      */
     public void updateDetectionConfiguration() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateMetricAnomalyDetectionConfig#AnomalyDetectionConfiguration
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDetectionConfig#AnomalyDetectionConfiguration
         final String detectionConfigId = "7b8069a1-1564-46da-9f50-b5d0dd9129ab";
         metricsAdvisorAdminAsyncClient
-            .getMetricAnomalyDetectionConfig(detectionConfigId)
+            .getDetectionConfig(detectionConfigId)
             .flatMap(detectionConfig -> {
                 detectionConfig.setName("updated config name");
                 detectionConfig.setDescription("updated with more detection conditions");
@@ -1115,12 +1122,12 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                     .put("city", "Seoul");
                 detectionConfig.addSeriesGroupDetectionCondition(
                     new MetricSeriesGroupDetectionCondition(seriesGroupKey)
-                        .setSmartDetectionCondition(new SmartDetectionCondition()
-                            .setSensitivity(10.0)
-                            .setAnomalyDetectorDirection(AnomalyDetectorDirection.UP)
-                            .setSuppressCondition(new SuppressCondition().setMinNumber(2).setMinRatio(2))));
+                        .setSmartDetectionCondition(new SmartDetectionCondition(
+                            10.0,
+                            AnomalyDetectorDirection.UP,
+                            new SuppressCondition(2, 2))));
                 return metricsAdvisorAdminAsyncClient
-                    .updateMetricAnomalyDetectionConfig(detectionConfig);
+                    .updateDetectionConfig(detectionConfig);
             })
             .subscribe(updatedDetectionConfig -> {
                 System.out.printf("Detection config Id: %s%n", updatedDetectionConfig.getId());
@@ -1128,17 +1135,17 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Description: %s%n", updatedDetectionConfig.getDescription());
                 System.out.printf("MetricId: %s%n", updatedDetectionConfig.getMetricId());
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateMetricAnomalyDetectionConfig#AnomalyDetectionConfiguration
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDetectionConfig#AnomalyDetectionConfiguration
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#updateMetricAnomalyDetectionConfigWithResponse(AnomalyDetectionConfiguration)}
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#updateDetectionConfigWithResponse(AnomalyDetectionConfiguration)}
      */
     public void updateDetectionConfigurationWithResponse() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateMetricAnomalyDetectionConfigWithResponse#AnomalyDetectionConfiguration
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDetectionConfigWithResponse#AnomalyDetectionConfiguration
         final String detectionConfigId = "7b8069a1-1564-46da-9f50-b5d0dd9129ab";
         metricsAdvisorAdminAsyncClient
-            .getMetricAnomalyDetectionConfigWithResponse(detectionConfigId)
+            .getDetectionConfigWithResponse(detectionConfigId)
             .flatMap(response -> {
                 AnomalyDetectionConfiguration detectionConfig = response.getValue();
                 detectionConfig.setName("updated config name");
@@ -1147,12 +1154,12 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                     .put("city", "Seoul");
                 detectionConfig.addSeriesGroupDetectionCondition(
                     new MetricSeriesGroupDetectionCondition(seriesGroupKey)
-                        .setSmartDetectionCondition(new SmartDetectionCondition()
-                            .setSensitivity(10.0)
-                            .setAnomalyDetectorDirection(AnomalyDetectorDirection.UP)
-                            .setSuppressCondition(new SuppressCondition().setMinNumber(2).setMinRatio(2))));
+                        .setSmartDetectionCondition(new SmartDetectionCondition(
+                            10.0,
+                            AnomalyDetectorDirection.UP,
+                            new SuppressCondition(2, 2))));
                 return metricsAdvisorAdminAsyncClient
-                    .updateMetricAnomalyDetectionConfigWithResponse(detectionConfig);
+                    .updateDetectionConfigWithResponse(detectionConfig);
             })
             .subscribe(response -> {
                 AnomalyDetectionConfiguration updatedDetectionConfig = response.getValue();
@@ -1161,91 +1168,91 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Description: %s%n", updatedDetectionConfig.getDescription());
                 System.out.printf("MetricId: %s%n", updatedDetectionConfig.getMetricId());
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateMetricAnomalyDetectionConfigWithResponse#AnomalyDetectionConfiguration
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDetectionConfigWithResponse#AnomalyDetectionConfiguration
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#deleteMetricAnomalyDetectionConfiguration(String)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#deleteDetectionConfig(String)}.
      */
     public void deleteDetectionConfiguration() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteMetricAnomalyDetectionConfig#String
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDetectionConfig#String
         final String detectionConfigId = "7b8069a1-1564-46da-9f50-b5d0dd9129ab";
         metricsAdvisorAdminAsyncClient
-            .deleteMetricAnomalyDetectionConfiguration(detectionConfigId)
+            .deleteDetectionConfig(detectionConfigId)
             .subscribe();
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteMetricAnomalyDetectionConfig#String
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDetectionConfig#String
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#deleteMetricAnomalyDetectionConfigWithResponse(String)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#deleteDetectionConfigWithResponse(String)}.
      */
     public void deleteDetectionConfigurationWithResponse() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteMetricAnomalyDetectionConfigWithResponse#String
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDetectionConfigWithResponse#String
         final String detectionConfigId = "7b8069a1-1564-46da-9f50-b5d0dd9129ab";
         metricsAdvisorAdminAsyncClient
-            .deleteMetricAnomalyDetectionConfigWithResponse(detectionConfigId)
+            .deleteDetectionConfigWithResponse(detectionConfigId)
             .subscribe(response ->
                 System.out.printf("Response statusCode: %d%n", response.getStatusCode()));
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteMetricAnomalyDetectionConfigWithResponse#String
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDetectionConfigWithResponse#String
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#createAnomalyAlertConfig(AnomalyAlertConfiguration)}
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#createAlertConfig(AnomalyAlertConfiguration)}
      */
     public void createAnomalyAlertConfiguration() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createAnomalyAlertConfig#AnomalyAlertConfiguration
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createAlertConfig#AnomalyAlertConfiguration
         String detectionConfigurationId1 = "9ol48er30-6e6e-4391-b78f-b00dfee1e6f5";
         String detectionConfigurationId2 = "3e58er30-6e6e-4391-b78f-b00dfee1e6f5";
         String hookId1 = "5f48er30-6e6e-4391-b78f-b00dfee1e6f5";
         String hookId2 = "8i48er30-6e6e-4391-b78f-b00dfee1e6f5";
 
-        metricsAdvisorAdminAsyncClient.createAnomalyAlertConfig(
+        metricsAdvisorAdminAsyncClient.createAlertConfig(
             new AnomalyAlertConfiguration("My AnomalyAlert config name")
                 .setDescription("alert config description")
                 .setMetricAlertConfigurations(Arrays.asList(
-                    new MetricAnomalyAlertConfiguration(detectionConfigurationId1,
+                    new MetricAlertConfiguration(detectionConfigurationId1,
                         MetricAnomalyAlertScope.forWholeSeries()),
-                    new MetricAnomalyAlertConfiguration(detectionConfigurationId2,
+                    new MetricAlertConfiguration(detectionConfigurationId2,
                         MetricAnomalyAlertScope.forWholeSeries())
                         .setAlertConditions(new MetricAnomalyAlertConditions()
-                            .setSeverityRangeCondition(new SeverityCondition().setMaxAlertSeverity(AnomalySeverity.HIGH)))))
-                .setCrossMetricsOperator(MetricAnomalyAlertConfigurationsOperator.AND)
-                .setIdOfHooksToAlert(Arrays.asList(hookId1, hookId2)))
+                            .setSeverityRangeCondition(new SeverityCondition(AnomalySeverity.HIGH, AnomalySeverity.HIGH)))))
+                .setCrossMetricsOperator(MetricAlertConfigurationsOperator.AND)
+                .setHookIdsToAlert(Arrays.asList(hookId1, hookId2)))
             .subscribe(anomalyAlertConfiguration -> {
                 System.out.printf("DataPoint Anomaly alert configuration Id: %s%n", anomalyAlertConfiguration.getId());
                 System.out.printf("DataPoint Anomaly alert configuration description: %s%n",
                     anomalyAlertConfiguration.getDescription());
                 System.out.printf("DataPoint Anomaly alert configuration hook ids: %s%n",
-                    anomalyAlertConfiguration.getIdOfHooksToAlert());
+                    anomalyAlertConfiguration.getHookIdsToAlert());
                 System.out.printf("DataPoint Anomaly alert configuration cross metrics operator: %s%n",
                     anomalyAlertConfiguration.getCrossMetricsOperator().toString());
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createAnomalyAlertConfig#AnomalyAlertConfiguration
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createAlertConfig#AnomalyAlertConfiguration
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#createAnomalyAlertConfigWithResponse(AnomalyAlertConfiguration)}
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#createAlertConfigWithResponse(AnomalyAlertConfiguration)}
      */
     public void createAnomalyAlertConfigurationWithResponse() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createAnomalyAlertConfigWithResponse#AnomalyAlertConfiguration
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createAlertConfigWithResponse#AnomalyAlertConfiguration
 
         String detectionConfigurationId1 = "9ol48er30-6e6e-4391-b78f-b00dfee1e6f5";
         String detectionConfigurationId2 = "3e58er30-6e6e-4391-b78f-b00dfee1e6f5";
         String hookId1 = "5f48er30-6e6e-4391-b78f-b00dfee1e6f5";
         String hookId2 = "8i48er30-6e6e-4391-b78f-b00dfee1e6f5";
 
-        metricsAdvisorAdminAsyncClient.createAnomalyAlertConfigWithResponse(
+        metricsAdvisorAdminAsyncClient.createAlertConfigWithResponse(
             new AnomalyAlertConfiguration("My AnomalyAlert config name")
                 .setDescription("alert config description")
                 .setMetricAlertConfigurations(Arrays.asList(
-                    new MetricAnomalyAlertConfiguration(detectionConfigurationId1,
+                    new MetricAlertConfiguration(detectionConfigurationId1,
                         MetricAnomalyAlertScope.forWholeSeries()),
-                    new MetricAnomalyAlertConfiguration(detectionConfigurationId2,
+                    new MetricAlertConfiguration(detectionConfigurationId2,
                         MetricAnomalyAlertScope.forWholeSeries())
                         .setAlertConditions(new MetricAnomalyAlertConditions()
-                            .setSeverityRangeCondition(new SeverityCondition().setMaxAlertSeverity(AnomalySeverity.HIGH)))))
-                .setCrossMetricsOperator(MetricAnomalyAlertConfigurationsOperator.AND)
-                .setIdOfHooksToAlert(Arrays.asList(hookId1, hookId2)))
+                            .setSeverityRangeCondition(new SeverityCondition(AnomalySeverity.HIGH, AnomalySeverity.HIGH)))))
+                .setCrossMetricsOperator(MetricAlertConfigurationsOperator.AND)
+                .setHookIdsToAlert(Arrays.asList(hookId1, hookId2)))
             .subscribe(alertConfigurationResponse -> {
                 System.out.printf("DataPoint Anomaly alert creation operation status: %s%n",
                     alertConfigurationResponse.getStatusCode());
@@ -1254,41 +1261,41 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                 System.out.printf("DataPoint Anomaly alert configuration description: %s%n",
                     anomalyAlertConfiguration.getDescription());
                 System.out.printf("DataPoint Anomaly alert configuration hook ids: %s%n",
-                    anomalyAlertConfiguration.getIdOfHooksToAlert());
+                    anomalyAlertConfiguration.getHookIdsToAlert());
                 System.out.printf("DataPoint Anomaly alert configuration cross metrics operator: %s%n",
                     anomalyAlertConfiguration.getCrossMetricsOperator().toString());
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createAnomalyAlertConfigWithResponse#AnomalyAlertConfiguration
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createAlertConfigWithResponse#AnomalyAlertConfiguration
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#getAnomalyAlertConfig(String)}
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#getAlertConfig(String)}
      */
     public void getAnomalyAlertConfiguration() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getAnomalyAlertConfig#String
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getAlertConfig#String
         String alertConfigId = "1p0f8er30-6e6e-4391-b78f-bpfdfee1e6f5";
 
-        metricsAdvisorAdminAsyncClient.getAnomalyAlertConfig(alertConfigId)
+        metricsAdvisorAdminAsyncClient.getAlertConfig(alertConfigId)
             .subscribe(anomalyAlertConfiguration -> {
                 System.out.printf("DataPoint Anomaly alert configuration Id: %s%n", anomalyAlertConfiguration.getId());
                 System.out.printf("DataPoint Anomaly alert configuration description: %s%n",
                     anomalyAlertConfiguration.getDescription());
                 System.out.printf("DataPoint Anomaly alert configuration hook ids: %s%n",
-                    anomalyAlertConfiguration.getIdOfHooksToAlert());
+                    anomalyAlertConfiguration.getHookIdsToAlert());
                 System.out.printf("DataPoint Anomaly alert configuration cross metrics operator: %s%n",
                     anomalyAlertConfiguration.getCrossMetricsOperator().toString());
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getAnomalyAlertConfig#String
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getAlertConfig#String
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#getAnomalyAlertConfigWithResponse(String)}
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#getAlertConfigWithResponse(String)}
      */
     public void getAnomalyAlertConfigurationWithResponse() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getAnomalyAlertConfigWithResponse#String
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getAlertConfigWithResponse#String
         String alertConfigId = "1p0f8er30-6e6e-4391-b78f-bpfdfee1e6f5";
 
-        metricsAdvisorAdminAsyncClient.getAnomalyAlertConfigWithResponse(alertConfigId)
+        metricsAdvisorAdminAsyncClient.getAlertConfigWithResponse(alertConfigId)
             .subscribe(alertConfigurationResponse -> {
                 System.out.printf("DataPointAnomaly alert creation operation status: %s%n",
                     alertConfigurationResponse.getStatusCode());
@@ -1297,27 +1304,29 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                 System.out.printf("DataPoint Anomaly alert configuration description: %s%n",
                     anomalyAlertConfiguration.getDescription());
                 System.out.printf("DataPoint Anomaly alert configuration hook ids: %s%n",
-                    anomalyAlertConfiguration.getIdOfHooksToAlert());
+                    anomalyAlertConfiguration.getHookIdsToAlert());
                 System.out.printf("DataPoint Anomaly alert configuration cross metrics operator: %s%n",
                     anomalyAlertConfiguration.getCrossMetricsOperator().toString());
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getAnomalyAlertConfigWithResponse#String
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getAlertConfigWithResponse#String
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#updateAnomalyAlertConfig(AnomalyAlertConfiguration)}
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#updateAlertConfig(AnomalyAlertConfiguration)}
      */
     public void updateAnomalyAlertConfiguration() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateAnomalyAlertConfig#AnomalyAlertConfiguration
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateAlertConfig#AnomalyAlertConfiguration
 
         String alertConfigId = "1p0f8er30-6e6e-4391-b78f-bpfdfee1e6f5";
         String additionalHookId = "2gh8er30-6e6e-4391-b78f-bpfdfee1e6f5";
 
-        metricsAdvisorAdminAsyncClient.getAnomalyAlertConfig(alertConfigId)
+        metricsAdvisorAdminAsyncClient.getAlertConfig(alertConfigId)
             .flatMap(existingAnomalyConfig -> {
-                return metricsAdvisorAdminAsyncClient.updateAnomalyAlertConfig(
+                List<String> hookIds = new ArrayList<>(existingAnomalyConfig.getHookIdsToAlert());
+                hookIds.add(additionalHookId);
+                return metricsAdvisorAdminAsyncClient.updateAlertConfig(
                     existingAnomalyConfig
-                        .addIdOfHookToAlert(additionalHookId)
+                        .setHookIdsToAlert(hookIds)
                         .setDescription("updated to add more hook ids"));
             }).subscribe(updateAnomalyAlertConfiguration -> {
                 System.out.printf("Updated anomaly alert configuration Id: %s%n",
@@ -1325,25 +1334,27 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Updated anomaly alert configuration description: %s%n",
                     updateAnomalyAlertConfiguration.getDescription());
                 System.out.printf("Updated anomaly alert configuration hook ids: %s%n",
-                    updateAnomalyAlertConfiguration.getIdOfHooksToAlert());
+                    updateAnomalyAlertConfiguration.getHookIdsToAlert());
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateAnomalyAlertConfig#AnomalyAlertConfiguration
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateAlertConfig#AnomalyAlertConfiguration
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#updateAnomalyAlertConfigWithResponse(AnomalyAlertConfiguration)}
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#updateAlertConfigWithResponse(AnomalyAlertConfiguration)}
      */
     public void updateAnomalyAlertConfigurationWithResponse() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateAnomalyAlertConfigWithResponse#AnomalyAlertConfiguration
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateAlertConfigWithResponse#AnomalyAlertConfiguration
 
         String alertConfigId = "1p0f8er30-6e6e-4391-b78f-bpfdfee1e6f5";
         String additionalHookId = "2gh8er30-6e6e-4391-b78f-bpfdfee1e6f5";
 
-        metricsAdvisorAdminAsyncClient.getAnomalyAlertConfig(alertConfigId)
+        metricsAdvisorAdminAsyncClient.getAlertConfig(alertConfigId)
             .flatMap(existingAnomalyConfig -> {
-                return metricsAdvisorAdminAsyncClient.updateAnomalyAlertConfigWithResponse(
+                List<String> hookIds = new ArrayList<>(existingAnomalyConfig.getHookIdsToAlert());
+                hookIds.add(additionalHookId);
+                return metricsAdvisorAdminAsyncClient.updateAlertConfigWithResponse(
                     existingAnomalyConfig
-                        .addIdOfHookToAlert(additionalHookId)
+                        .setHookIdsToAlert(hookIds)
                         .setDescription("updated to add more hook ids"));
             }).subscribe(alertConfigurationResponse -> {
                 System.out.printf("Update anomaly alert operation status: %s%n",
@@ -1354,312 +1365,312 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Updated anomaly alert configuration description: %s%n",
                     updatAnomalyAlertConfiguration.getDescription());
                 System.out.printf("Updated anomaly alert configuration hook ids: %s%n",
-                    updatAnomalyAlertConfiguration.getIdOfHooksToAlert());
+                    updatAnomalyAlertConfiguration.getHookIdsToAlert());
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateAnomalyAlertConfigWithResponse#AnomalyAlertConfiguration
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateAlertConfigWithResponse#AnomalyAlertConfiguration
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#deleteAnomalyAlertConfig(String)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#deleteAlertConfig(String)}.
      */
     public void deleteAnomalyAlertConfiguration() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteAnomalyAlertConfig#String
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteAlertConfig#String
         String alertConfigId = "1p0f8er30-6e6e-4391-b78f-bpfdfee1e6f5";
-        metricsAdvisorAdminAsyncClient.deleteAnomalyAlertConfig(alertConfigId);
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteAnomalyAlertConfig#String
+        metricsAdvisorAdminAsyncClient.deleteAlertConfig(alertConfigId);
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteAlertConfig#String
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#deleteAnomalyAlertConfigWithResponse(String)}
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#deleteAlertConfigWithResponse(String)}
      */
     public void deleteAnomalyAlertConfigurationWithResponse() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteAnomalyAlertConfigWithResponse#String
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteAlertConfigWithResponse#String
         String alertConfigId = "1p0f8er30-6e6e-4391-b78f-bpfdfee1e6f5";
 
-        metricsAdvisorAdminAsyncClient.deleteAnomalyAlertConfigWithResponse(alertConfigId)
+        metricsAdvisorAdminAsyncClient.deleteAlertConfigWithResponse(alertConfigId)
             .subscribe(response -> {
                 System.out.printf("DataPoint  Anomaly alert config delete operation status : %s%n",
                     response.getStatusCode());
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteAnomalyAlertConfigWithResponse#String
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteAlertConfigWithResponse#String
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#listAnomalyAlertConfigs(String,ListAnomalyAlertConfigsOptions)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#listAlertConfigs(String,ListAnomalyAlertConfigsOptions)}.
      */
     public void listAnomalyAlertConfigurations() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listAnomalyAlertConfigs#String-ListAnomalyAlertConfigsOptions
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listAlertConfigs#String-ListAnomalyAlertConfigsOptions
         String detectionConfigId = "3rt98er30-6e6e-4391-b78f-bpfdfee1e6f5";
-        metricsAdvisorAdminAsyncClient.listAnomalyAlertConfigs(detectionConfigId, new ListAnomalyAlertConfigsOptions())
+        metricsAdvisorAdminAsyncClient.listAlertConfigs(detectionConfigId, new ListAnomalyAlertConfigsOptions())
             .subscribe(anomalyAlertConfiguration -> {
                 System.out.printf("DataPoint Anomaly alert configuration Id: %s%n", anomalyAlertConfiguration.getId());
                 System.out.printf("DataPoint Anomaly alert configuration description: %s%n",
                     anomalyAlertConfiguration.getDescription());
                 System.out.printf("DataPoint Anomaly alert configuration hook ids: %s%n",
-                    anomalyAlertConfiguration.getIdOfHooksToAlert());
+                    anomalyAlertConfiguration.getHookIdsToAlert());
                 System.out.printf("DataPoint Anomaly alert configuration cross metrics operator: %s%n",
                     anomalyAlertConfiguration.getCrossMetricsOperator().toString());
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listAnomalyAlertConfigs#String-ListAnomalyAlertConfigsOptions
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listAlertConfigs#String-ListAnomalyAlertConfigsOptions
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#createDatasourceCredential(DatasourceCredentialEntity)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#createDataSourceCredential(DataSourceCredentialEntity)}.
      */
     public void createDatasourceCredential() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDatasourceCredential#DatasourceCredentialEntity
-        DatasourceCredentialEntity datasourceCredential;
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDataSourceCredential#DatasourceCredentialEntity
+        DataSourceCredentialEntity datasourceCredential;
         final String name = "sample_name" + UUID.randomUUID();
         final String cId = "f45668b2-bffa-11eb-8529-0246ac130003";
         final String tId = "67890ded-5e07-4e52-b225-4ae8f905afb5";
         final String mockSecr = "890hy69-5e07-4e52-b225-4ae8f905afb5";
 
-        datasourceCredential = new DatasourceServicePrincipalInKeyVault()
+        datasourceCredential = new DataSourceServicePrincipalInKeyVault()
             .setName(name)
-            .setKeyVaultForDatasourceSecrets("kv", cId, mockSecr)
+            .setKeyVaultForDataSourceSecrets("kv", cId, mockSecr)
             .setTenantId(tId)
-            .setSecretNameForDatasourceClientId("DSClientID_1")
-            .setSecretNameForDatasourceClientSecret("DSClientSer_1");
+            .setSecretNameForDataSourceClientId("DSClientID_1")
+            .setSecretNameForDataSourceClientSecret("DSClientSer_1");
 
-        metricsAdvisorAdminAsyncClient.createDatasourceCredential(datasourceCredential)
+        metricsAdvisorAdminAsyncClient.createDataSourceCredential(datasourceCredential)
             .subscribe(credentialEntity -> {
-                if (credentialEntity instanceof DatasourceServicePrincipalInKeyVault) {
-                    DatasourceServicePrincipalInKeyVault actualCredentialSPInKV
-                        = (DatasourceServicePrincipalInKeyVault) credentialEntity;
+                if (credentialEntity instanceof DataSourceServicePrincipalInKeyVault) {
+                    DataSourceServicePrincipalInKeyVault actualCredentialSPInKV
+                        = (DataSourceServicePrincipalInKeyVault) credentialEntity;
                     System.out
                         .printf("Actual credential entity key vault endpoint: %s%n",
                             actualCredentialSPInKV.getKeyVaultEndpoint());
                     System.out.printf("Actual credential entity key vault client Id: %s%n",
                         actualCredentialSPInKV.getKeyVaultClientId());
                     System.out.printf("Actual credential entity key vault secret name for data source: %s%n",
-                        actualCredentialSPInKV.getSecretNameForDatasourceClientId());
+                        actualCredentialSPInKV.getSecretNameForDataSourceClientId());
                     System.out.printf("Actual credential entity key vault secret for data source: %s%n",
-                        actualCredentialSPInKV.getSecretNameForDatasourceClientSecret());
+                        actualCredentialSPInKV.getSecretNameForDataSourceClientSecret());
                 }
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDatasourceCredential#DatasourceCredentialEntity
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDataSourceCredential#DatasourceCredentialEntity
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#createDatasourceCredentialWithResponse(DatasourceCredentialEntity)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#createDataSourceCredentialWithResponse(DataSourceCredentialEntity)}.
      */
     public void createDatasourceCredentialWithResponse() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDatasourceCredentialWithResponse#DatasourceCredentialEntity
-        DatasourceCredentialEntity datasourceCredential;
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDataSourceCredentialWithResponse#DatasourceCredentialEntity
+        DataSourceCredentialEntity datasourceCredential;
         final String name = "sample_name" + UUID.randomUUID();
         final String cId = "f45668b2-bffa-11eb-8529-0246ac130003";
         final String tId = "67890ded-5e07-4e52-b225-4ae8f905afb5";
         final String mockSecr = "890hy69-5e07-4e52-b225-4ae8f905afb5";
 
-        datasourceCredential = new DatasourceServicePrincipalInKeyVault()
+        datasourceCredential = new DataSourceServicePrincipalInKeyVault()
             .setName(name)
-            .setKeyVaultForDatasourceSecrets("kv", cId, mockSecr)
+            .setKeyVaultForDataSourceSecrets("kv", cId, mockSecr)
             .setTenantId(tId)
-            .setSecretNameForDatasourceClientId("DSClientID_1")
-            .setSecretNameForDatasourceClientSecret("DSClientSer_1");
+            .setSecretNameForDataSourceClientId("DSClientID_1")
+            .setSecretNameForDataSourceClientSecret("DSClientSer_1");
 
-        metricsAdvisorAdminAsyncClient.createDatasourceCredentialWithResponse(datasourceCredential)
+        metricsAdvisorAdminAsyncClient.createDataSourceCredentialWithResponse(datasourceCredential)
             .subscribe(credentialEntityWithResponse -> {
                 System.out.printf("Credential Entity creation operation status: %s%n",
                     credentialEntityWithResponse.getStatusCode());
-                if (credentialEntityWithResponse.getValue() instanceof DatasourceServicePrincipalInKeyVault) {
-                    DatasourceServicePrincipalInKeyVault actualCredentialSPInKV
-                        = (DatasourceServicePrincipalInKeyVault) credentialEntityWithResponse.getValue();
+                if (credentialEntityWithResponse.getValue() instanceof DataSourceServicePrincipalInKeyVault) {
+                    DataSourceServicePrincipalInKeyVault actualCredentialSPInKV
+                        = (DataSourceServicePrincipalInKeyVault) credentialEntityWithResponse.getValue();
                     System.out
                         .printf("Actual credential entity key vault endpoint: %s%n",
                             actualCredentialSPInKV.getKeyVaultEndpoint());
                     System.out.printf("Actual credential entity key vault client Id: %s%n",
                         actualCredentialSPInKV.getKeyVaultClientId());
                     System.out.printf("Actual credential entity key vault secret name for data source: %s%n",
-                        actualCredentialSPInKV.getSecretNameForDatasourceClientId());
+                        actualCredentialSPInKV.getSecretNameForDataSourceClientId());
                     System.out.printf("Actual credential entity key vault secret for data source: %s%n",
-                        actualCredentialSPInKV.getSecretNameForDatasourceClientSecret());
+                        actualCredentialSPInKV.getSecretNameForDataSourceClientSecret());
                 }
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDatasourceCredentialWithResponse#DatasourceCredentialEntity
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDataSourceCredentialWithResponse#DatasourceCredentialEntity
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#updateDatasourceCredential(DatasourceCredentialEntity)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#updateDataSourceCredential(DataSourceCredentialEntity)}.
      */
     public void updateDatasourceCredential() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDatasourceCredential#DatasourceCredentialEntity
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDataSourceCredential#DatasourceCredentialEntity
         String credentialId = "";
-        metricsAdvisorAdminAsyncClient.getDatasourceCredential(credentialId)
+        metricsAdvisorAdminAsyncClient.getDataSourceCredential(credentialId)
             .flatMap(existingDatasourceCredential -> {
-                DatasourceServicePrincipalInKeyVault actualCredentialSPInKV = null;
-                if (existingDatasourceCredential instanceof DatasourceServicePrincipalInKeyVault) {
-                    actualCredentialSPInKV  = (DatasourceServicePrincipalInKeyVault) existingDatasourceCredential;
+                DataSourceServicePrincipalInKeyVault actualCredentialSPInKV = null;
+                if (existingDatasourceCredential instanceof DataSourceServicePrincipalInKeyVault) {
+                    actualCredentialSPInKV  = (DataSourceServicePrincipalInKeyVault) existingDatasourceCredential;
                 }
-                return metricsAdvisorAdminAsyncClient.updateDatasourceCredential(
+                return metricsAdvisorAdminAsyncClient.updateDataSourceCredential(
                     actualCredentialSPInKV.setDescription("set updated description"));
             })
             .subscribe(credentialEntity -> {
-                if (credentialEntity instanceof DatasourceServicePrincipalInKeyVault) {
-                    DatasourceServicePrincipalInKeyVault actualCredentialSPInKV
-                        = (DatasourceServicePrincipalInKeyVault) credentialEntity;
+                if (credentialEntity instanceof DataSourceServicePrincipalInKeyVault) {
+                    DataSourceServicePrincipalInKeyVault actualCredentialSPInKV
+                        = (DataSourceServicePrincipalInKeyVault) credentialEntity;
                     System.out.printf("Actual credential entity key vault endpoint: %s%n",
                             actualCredentialSPInKV.getKeyVaultEndpoint());
                     System.out.printf("Actual credential entity key vault updated description: %s%n",
                         actualCredentialSPInKV.getDescription());
                 }
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDatasourceCredential#DatasourceCredentialEntity
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDataSourceCredential#DatasourceCredentialEntity
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#updateDatasourceCredentialWithResponse(DatasourceCredentialEntity)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#updateDataSourceCredentialWithResponse(DataSourceCredentialEntity)}.
      */
     public void updateDatasourceCredentialWithResponse() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDatasourceCredentialWithResponse#DatasourceCredentialEntity
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDataSourceCredentialWithResponse#DatasourceCredentialEntity
         String credentialId = "";
-        metricsAdvisorAdminAsyncClient.getDatasourceCredential(credentialId)
+        metricsAdvisorAdminAsyncClient.getDataSourceCredential(credentialId)
             .flatMap(existingDatasourceCredential -> {
-                DatasourceServicePrincipalInKeyVault actualCredentialSPInKV = null;
-                if (existingDatasourceCredential instanceof DatasourceServicePrincipalInKeyVault) {
-                    actualCredentialSPInKV  = (DatasourceServicePrincipalInKeyVault) existingDatasourceCredential;
+                DataSourceServicePrincipalInKeyVault actualCredentialSPInKV = null;
+                if (existingDatasourceCredential instanceof DataSourceServicePrincipalInKeyVault) {
+                    actualCredentialSPInKV  = (DataSourceServicePrincipalInKeyVault) existingDatasourceCredential;
                 }
-                return metricsAdvisorAdminAsyncClient.updateDatasourceCredentialWithResponse(
+                return metricsAdvisorAdminAsyncClient.updateDataSourceCredentialWithResponse(
                     actualCredentialSPInKV.setDescription("set updated description"));
             })
             .subscribe(credentialEntityWithResponse -> {
                 System.out.printf("Credential Entity creation operation status: %s%n",
                     credentialEntityWithResponse.getStatusCode());
-                if (credentialEntityWithResponse.getValue() instanceof DatasourceServicePrincipalInKeyVault) {
-                    DatasourceServicePrincipalInKeyVault actualCredentialSPInKV
-                        = (DatasourceServicePrincipalInKeyVault) credentialEntityWithResponse.getValue();
+                if (credentialEntityWithResponse.getValue() instanceof DataSourceServicePrincipalInKeyVault) {
+                    DataSourceServicePrincipalInKeyVault actualCredentialSPInKV
+                        = (DataSourceServicePrincipalInKeyVault) credentialEntityWithResponse.getValue();
                     System.out.printf("Actual credential entity key vault endpoint: %s%n",
                         actualCredentialSPInKV.getKeyVaultEndpoint());
                     System.out.printf("Actual credential entity key vault updated description: %s%n",
                         actualCredentialSPInKV.getDescription());
                 }
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDatasourceCredentialWithResponse#DatasourceCredentialEntity
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDataSourceCredentialWithResponse#DatasourceCredentialEntity
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#getDatasourceCredential(String)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#getDataSourceCredential(String)}.
      */
     public void getDatasourceCredential() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDatasourceCredential#String
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDataSourceCredential#String
         final String datasourceCredentialId = "f45668b2-bffa-11eb-8529-0246ac130003";
 
-        metricsAdvisorAdminAsyncClient.getDatasourceCredential(datasourceCredentialId)
+        metricsAdvisorAdminAsyncClient.getDataSourceCredential(datasourceCredentialId)
             .subscribe(credentialEntity -> {
-                if (credentialEntity instanceof DatasourceServicePrincipalInKeyVault) {
-                    DatasourceServicePrincipalInKeyVault actualCredentialSPInKV
-                        = (DatasourceServicePrincipalInKeyVault) credentialEntity;
+                if (credentialEntity instanceof DataSourceServicePrincipalInKeyVault) {
+                    DataSourceServicePrincipalInKeyVault actualCredentialSPInKV
+                        = (DataSourceServicePrincipalInKeyVault) credentialEntity;
                     System.out
                         .printf("Actual credential entity key vault endpoint: %s%n",
                             actualCredentialSPInKV.getKeyVaultEndpoint());
                     System.out.printf("Actual credential entity key vault client Id: %s%n",
                         actualCredentialSPInKV.getKeyVaultClientId());
                     System.out.printf("Actual credential entity key vault secret name for data source: %s%n",
-                        actualCredentialSPInKV.getSecretNameForDatasourceClientId());
+                        actualCredentialSPInKV.getSecretNameForDataSourceClientId());
                     System.out.printf("Actual credential entity key vault secret for data source: %s%n",
-                        actualCredentialSPInKV.getSecretNameForDatasourceClientSecret());
+                        actualCredentialSPInKV.getSecretNameForDataSourceClientSecret());
                 }
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDatasourceCredential#String
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDataSourceCredential#String
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#getDatasourceCredentialWithResponse(String)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#getDataSourceCredentialWithResponse(String)}.
      */
     public void getDatasourceCredentialWithResponse() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDatasourceCredentialWithResponse#String
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDataSourceCredentialWithResponse#String
         final String datasourceCredentialId = "f45668b2-bffa-11eb-8529-0246ac130003";
 
-        metricsAdvisorAdminAsyncClient.getDatasourceCredentialWithResponse(datasourceCredentialId)
+        metricsAdvisorAdminAsyncClient.getDataSourceCredentialWithResponse(datasourceCredentialId)
             .subscribe(credentialEntityWithResponse -> {
                 System.out.printf("Credential Entity creation operation status: %s%n",
                     credentialEntityWithResponse.getStatusCode());
-                if (credentialEntityWithResponse.getValue() instanceof DatasourceServicePrincipalInKeyVault) {
-                    DatasourceServicePrincipalInKeyVault actualCredentialSPInKV
-                        = (DatasourceServicePrincipalInKeyVault) credentialEntityWithResponse.getValue();
+                if (credentialEntityWithResponse.getValue() instanceof DataSourceServicePrincipalInKeyVault) {
+                    DataSourceServicePrincipalInKeyVault actualCredentialSPInKV
+                        = (DataSourceServicePrincipalInKeyVault) credentialEntityWithResponse.getValue();
                     System.out
                         .printf("Actual credential entity key vault endpoint: %s%n",
                             actualCredentialSPInKV.getKeyVaultEndpoint());
                     System.out.printf("Actual credential entity key vault client Id: %s%n",
                         actualCredentialSPInKV.getKeyVaultClientId());
                     System.out.printf("Actual credential entity key vault secret name for data source: %s%n",
-                        actualCredentialSPInKV.getSecretNameForDatasourceClientId());
+                        actualCredentialSPInKV.getSecretNameForDataSourceClientId());
                     System.out.printf("Actual credential entity key vault secret for data source: %s%n",
-                        actualCredentialSPInKV.getSecretNameForDatasourceClientSecret());
+                        actualCredentialSPInKV.getSecretNameForDataSourceClientSecret());
                 }
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDatasourceCredentialWithResponse#String
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDataSourceCredentialWithResponse#String
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#deleteDatasourceCredential(String)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#deleteDataSourceCredential(String)}.
      */
     public void deleteDatasourceCredential() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDatasourceCredential#String
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDataSourceCredential#String
         final String datasourceCredentialId = "t00853f1-9080-447f-bacf-8dccf2e86f";
         metricsAdvisorAdminAsyncClient.deleteDataFeed(datasourceCredentialId);
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDatasourceCredential#String
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDataSourceCredential#String
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#deleteDatasourceCredentialWithResponse(String)}
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#deleteDataSourceCredentialWithResponse(String)}
      */
     public void deleteDatasourceCredentialWithResponse() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDatasourceCredentialWithResponse#String
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDataSourceCredentialWithResponse#String
         final String datasourceCredentialId = "eh0854f1-8927-447f-bacf-8dccf2e86fwe";
-        metricsAdvisorAdminAsyncClient.deleteDatasourceCredentialWithResponse(datasourceCredentialId)
+        metricsAdvisorAdminAsyncClient.deleteDataSourceCredentialWithResponse(datasourceCredentialId)
             .subscribe(response ->
                 System.out.printf("Datasource credential delete operation status : %s%n", response.getStatusCode()));
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDatasourceCredentialWithResponse#String
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDataSourceCredentialWithResponse#String
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#listDatasourceCredentials()}
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#listDataSourceCredentials()}
      */
     public void listDatasourceCredentials() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDatasourceCredentials
-        metricsAdvisorAdminAsyncClient.listDatasourceCredentials()
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDataSourceCredentials
+        metricsAdvisorAdminAsyncClient.listDataSourceCredentials()
             .subscribe(datasourceCredentialEntity -> {
-                if (datasourceCredentialEntity instanceof DatasourceServicePrincipalInKeyVault) {
-                    DatasourceServicePrincipalInKeyVault actualCredentialSPInKV
-                        = (DatasourceServicePrincipalInKeyVault) datasourceCredentialEntity;
+                if (datasourceCredentialEntity instanceof DataSourceServicePrincipalInKeyVault) {
+                    DataSourceServicePrincipalInKeyVault actualCredentialSPInKV
+                        = (DataSourceServicePrincipalInKeyVault) datasourceCredentialEntity;
                     System.out
                         .printf("Actual credential entity key vault endpoint: %s%n",
                             actualCredentialSPInKV.getKeyVaultEndpoint());
                     System.out.printf("Actual credential entity key vault client Id: %s%n",
                         actualCredentialSPInKV.getKeyVaultClientId());
                     System.out.printf("Actual credential entity key vault secret name for data source: %s%n",
-                        actualCredentialSPInKV.getSecretNameForDatasourceClientId());
+                        actualCredentialSPInKV.getSecretNameForDataSourceClientId());
                     System.out.printf("Actual credential entity key vault secret for data source: %s%n",
-                        actualCredentialSPInKV.getSecretNameForDatasourceClientSecret());
+                        actualCredentialSPInKV.getSecretNameForDataSourceClientSecret());
                 }
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDatasourceCredentials
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDataSourceCredentials
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#listDatasourceCredentials(ListCredentialEntityOptions)} with options.
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#listDataSourceCredentials(ListCredentialEntityOptions)} with options.
      */
     public void listDatasourceCredentialsWithOptions() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDatasourceCredentials#ListCredentialEntityOptions
-        metricsAdvisorAdminAsyncClient.listDatasourceCredentials(
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDataSourceCredentials#ListCredentialEntityOptions
+        metricsAdvisorAdminAsyncClient.listDataSourceCredentials(
             new ListCredentialEntityOptions()
                 .setMaxPageSize(3))
             .subscribe(datasourceCredentialEntity -> {
-                if (datasourceCredentialEntity instanceof DatasourceServicePrincipalInKeyVault) {
-                    DatasourceServicePrincipalInKeyVault actualCredentialSPInKV
-                        = (DatasourceServicePrincipalInKeyVault) datasourceCredentialEntity;
+                if (datasourceCredentialEntity instanceof DataSourceServicePrincipalInKeyVault) {
+                    DataSourceServicePrincipalInKeyVault actualCredentialSPInKV
+                        = (DataSourceServicePrincipalInKeyVault) datasourceCredentialEntity;
                     System.out
                         .printf("Actual credential entity key vault endpoint: %s%n",
                             actualCredentialSPInKV.getKeyVaultEndpoint());
                     System.out.printf("Actual credential entity key vault client Id: %s%n",
                         actualCredentialSPInKV.getKeyVaultClientId());
                     System.out.printf("Actual credential entity key vault secret name for data source: %s%n",
-                        actualCredentialSPInKV.getSecretNameForDatasourceClientId());
+                        actualCredentialSPInKV.getSecretNameForDataSourceClientId());
                     System.out.printf("Actual credential entity key vault secret for data source: %s%n",
-                        actualCredentialSPInKV.getSecretNameForDatasourceClientSecret());
+                        actualCredentialSPInKV.getSecretNameForDataSourceClientSecret());
                 }
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDatasourceCredentials#ListCredentialEntityOptions
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDataSourceCredentials#ListCredentialEntityOptions
     }
 }

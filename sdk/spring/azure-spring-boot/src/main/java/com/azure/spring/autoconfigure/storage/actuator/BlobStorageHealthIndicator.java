@@ -20,6 +20,11 @@ public class BlobStorageHealthIndicator implements HealthIndicator {
 
     private final BlobServiceAsyncClient internalClient;
 
+    /**
+     * Creates a new instance of {@link BlobStorageHealthIndicator}.
+     *
+     * @param blobServiceClientBuilder the BlobServiceClientBuilder
+     */
     public BlobStorageHealthIndicator(BlobServiceClientBuilder blobServiceClientBuilder) {
         internalClient = blobServiceClientBuilder == null ? null : blobServiceClientBuilder.buildAsyncClient();
     }

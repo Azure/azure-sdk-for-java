@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -14,10 +13,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Azure Firewall FQDN Tag Resource. */
-@JsonFlatten
 @Fluent
-public class AzureFirewallFqdnTagInner extends Resource {
+public final class AzureFirewallFqdnTagInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallFqdnTagInner.class);
+
+    /*
+     * Properties of the azure firewall FQDN tag.
+     */
+    @JsonProperty(value = "properties")
+    private AzureFirewallFqdnTagPropertiesFormat innerProperties;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
@@ -26,22 +30,19 @@ public class AzureFirewallFqdnTagInner extends Resource {
     private String etag;
 
     /*
-     * The provisioning state of the Azure firewall FQDN tag resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The name of this FQDN Tag.
-     */
-    @JsonProperty(value = "properties.fqdnTagName", access = JsonProperty.Access.WRITE_ONLY)
-    private String fqdnTagName;
-
-    /*
      * Resource ID.
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /**
+     * Get the innerProperties property: Properties of the azure firewall FQDN tag.
+     *
+     * @return the innerProperties value.
+     */
+    private AzureFirewallFqdnTagPropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
@@ -50,24 +51,6 @@ public class AzureFirewallFqdnTagInner extends Resource {
      */
     public String etag() {
         return this.etag;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the Azure firewall FQDN tag resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the fqdnTagName property: The name of this FQDN Tag.
-     *
-     * @return the fqdnTagName value.
-     */
-    public String fqdnTagName() {
-        return this.fqdnTagName;
     }
 
     /**
@@ -105,10 +88,31 @@ public class AzureFirewallFqdnTagInner extends Resource {
     }
 
     /**
+     * Get the provisioningState property: The provisioning state of the Azure firewall FQDN tag resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the fqdnTagName property: The name of this FQDN Tag.
+     *
+     * @return the fqdnTagName value.
+     */
+    public String fqdnTagName() {
+        return this.innerProperties() == null ? null : this.innerProperties().fqdnTagName();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -8,8 +8,8 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -17,6 +17,7 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -25,17 +26,23 @@ import com.azure.resourcemanager.eventgrid.implementation.DomainTopicsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.DomainsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.EventGridManagementClientBuilder;
 import com.azure.resourcemanager.eventgrid.implementation.EventSubscriptionsImpl;
+import com.azure.resourcemanager.eventgrid.implementation.ExtensionTopicsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.OperationsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.PrivateLinkResourcesImpl;
+import com.azure.resourcemanager.eventgrid.implementation.SystemTopicEventSubscriptionsImpl;
+import com.azure.resourcemanager.eventgrid.implementation.SystemTopicsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.TopicTypesImpl;
 import com.azure.resourcemanager.eventgrid.implementation.TopicsImpl;
 import com.azure.resourcemanager.eventgrid.models.DomainTopics;
 import com.azure.resourcemanager.eventgrid.models.Domains;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptions;
+import com.azure.resourcemanager.eventgrid.models.ExtensionTopics;
 import com.azure.resourcemanager.eventgrid.models.Operations;
 import com.azure.resourcemanager.eventgrid.models.PrivateEndpointConnections;
 import com.azure.resourcemanager.eventgrid.models.PrivateLinkResources;
+import com.azure.resourcemanager.eventgrid.models.SystemTopicEventSubscriptions;
+import com.azure.resourcemanager.eventgrid.models.SystemTopics;
 import com.azure.resourcemanager.eventgrid.models.TopicTypes;
 import com.azure.resourcemanager.eventgrid.models.Topics;
 import java.time.Duration;
@@ -43,6 +50,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /** Entry point to EventGridManager. Azure EventGrid Management Client. */
 public final class EventGridManager {
@@ -52,6 +60,8 @@ public final class EventGridManager {
 
     private EventSubscriptions eventSubscriptions;
 
+    private SystemTopicEventSubscriptions systemTopicEventSubscriptions;
+
     private Operations operations;
 
     private Topics topics;
@@ -59,6 +69,10 @@ public final class EventGridManager {
     private PrivateEndpointConnections privateEndpointConnections;
 
     private PrivateLinkResources privateLinkResources;
+
+    private SystemTopics systemTopics;
+
+    private ExtensionTopics extensionTopics;
 
     private TopicTypes topicTypes;
 
@@ -105,6 +119,7 @@ public final class EventGridManager {
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
         private Duration defaultPollInterval;
 
@@ -141,6 +156,17 @@ public final class EventGridManager {
          */
         public Configurable withPolicy(HttpPipelinePolicy policy) {
             this.policies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
+            return this;
+        }
+
+        /**
+         * Adds the scope to permission sets.
+         *
+         * @param scope the scope.
+         * @return the configurable object itself.
+         */
+        public Configurable withScope(String scope) {
+            this.scopes.add(Objects.requireNonNull(scope, "'scope' cannot be null."));
             return this;
         }
 
@@ -186,7 +212,7 @@ public final class EventGridManager {
                 .append("-")
                 .append("com.azure.resourcemanager.eventgrid")
                 .append("/")
-                .append("1.0.0");
+                .append("1.1.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -200,20 +226,33 @@ public final class EventGridManager {
                 userAgentBuilder.append(" (auto-generated)");
             }
 
+            if (scopes.isEmpty()) {
+                scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
+            }
             if (retryPolicy == null) {
                 retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
             }
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new RequestIdPolicy());
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
+            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies
-                .add(
-                    new BearerTokenAuthenticationPolicy(
-                        credential, profile.getEnvironment().getManagementEndpoint() + "/.default"));
-            policies.addAll(this.policies);
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline =
@@ -249,6 +288,15 @@ public final class EventGridManager {
         return eventSubscriptions;
     }
 
+    /** @return Resource collection API of SystemTopicEventSubscriptions. */
+    public SystemTopicEventSubscriptions systemTopicEventSubscriptions() {
+        if (this.systemTopicEventSubscriptions == null) {
+            this.systemTopicEventSubscriptions =
+                new SystemTopicEventSubscriptionsImpl(clientObject.getSystemTopicEventSubscriptions(), this);
+        }
+        return systemTopicEventSubscriptions;
+    }
+
     /** @return Resource collection API of Operations. */
     public Operations operations() {
         if (this.operations == null) {
@@ -280,6 +328,22 @@ public final class EventGridManager {
             this.privateLinkResources = new PrivateLinkResourcesImpl(clientObject.getPrivateLinkResources(), this);
         }
         return privateLinkResources;
+    }
+
+    /** @return Resource collection API of SystemTopics. */
+    public SystemTopics systemTopics() {
+        if (this.systemTopics == null) {
+            this.systemTopics = new SystemTopicsImpl(clientObject.getSystemTopics(), this);
+        }
+        return systemTopics;
+    }
+
+    /** @return Resource collection API of ExtensionTopics. */
+    public ExtensionTopics extensionTopics() {
+        if (this.extensionTopics == null) {
+            this.extensionTopics = new ExtensionTopicsImpl(clientObject.getExtensionTopics(), this);
+        }
+        return extensionTopics;
     }
 
     /** @return Resource collection API of TopicTypes. */

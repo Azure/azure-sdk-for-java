@@ -4,22 +4,17 @@ package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
-import com.azure.containers.containerregistry.models.ArtifactManifestOrderBy;
+import com.azure.containers.containerregistry.models.ArtifactManifestOrder;
+import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
- * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
- * ARE USED TO EXTRACT APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING
- * LINE NUMBERS OF EXISTING CODE SAMPLES.
- * <p>
  * Code samples for the README.md
  *
  */
@@ -28,37 +23,48 @@ public class ReadmeSamples {
     private String endpoint = "endpoint";
 
     public void createClient() {
+        // BEGIN: readme-sample-createClient
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         ContainerRegistryClient client = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .credential(credential)
             .buildClient();
+        // END: readme-sample-createClient
     }
 
     public void createAsyncClient() {
+        // BEGIN: readme-sample-createAsyncClient
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         ContainerRegistryAsyncClient client = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .credential(credential)
             .buildAsyncClient();
+        // END: readme-sample-createAsyncClient
     }
 
     public void listRepositoryNamesSample() {
+        // BEGIN: readme-sample-listRepositoryNames
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         ContainerRegistryClient client = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .credential(credential)
             .buildClient();
 
         client.listRepositoryNames().forEach(repository -> System.out.println(repository));
+        // END: readme-sample-listRepositoryNames
     }
 
     private final String repositoryName = "repository";
 
     public void getPropertiesThrows() {
+        // BEGIN: readme-sample-getProperties
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         ContainerRepository containerRepository = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .credential(credential)
             .buildClient()
             .getRepository(repositoryName);
@@ -67,25 +73,34 @@ public class ReadmeSamples {
         } catch (HttpResponseException exception) {
             // Do something with the exception.
         }
+        // END: readme-sample-getProperties
     }
 
     public void createAnonymousAccessClient() {
+        // BEGIN: readme-sample-createAnonymousAccessClient
         ContainerRegistryClient client = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .buildClient();
+        // END: readme-sample-createAnonymousAccessClient
     }
 
     public void createAnonymousAccessAsyncClient() {
+        // BEGIN: readme-sample-createAnonymousAsyncAccessClient
         ContainerRegistryAsyncClient client = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .buildAsyncClient();
+        // END: readme-sample-createAnonymousAsyncAccessClient
     }
 
     public void deleteImages() {
+        // BEGIN: readme-sample-deleteImages
         TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
 
         ContainerRegistryClient client = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .credential(defaultCredential)
             .buildClient();
 
@@ -96,7 +111,7 @@ public class ReadmeSamples {
             // Obtain the images ordered from newest to oldest
             PagedIterable<ArtifactManifestProperties> imageManifests =
                 repository.listManifestProperties(
-                    ArtifactManifestOrderBy.LAST_UPDATED_ON_DESCENDING,
+                    ArtifactManifestOrder.LAST_UPDATED_ON_DESCENDING,
                     Context.NONE);
 
             imageManifests.stream().skip(imagesCountToKeep)
@@ -111,15 +126,18 @@ public class ReadmeSamples {
                     repository.getArtifact(imageManifest.getDigest()).delete();
                 });
         }
+        // END: readme-sample-deleteImages
     }
 
     private String tag = "tag";
 
     public void setArtifactProperties() {
+        // BEGIN: readme-sample-setArtifactProperties
         TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
 
         ContainerRegistryClient client = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .credential(defaultCredential)
             .buildClient();
 
@@ -130,6 +148,7 @@ public class ReadmeSamples {
             new ArtifactTagProperties()
                 .setWriteEnabled(false)
                 .setDeleteEnabled(false));
+        // END: readme-sample-setArtifactProperties
     }
 
     private final String architecture = "architecture";
@@ -137,8 +156,10 @@ public class ReadmeSamples {
     private final String digest = "digest";
 
     public void listTagProperties() {
+        // BEGIN: readme-sample-listTagProperties
         ContainerRegistryClient anonymousClient = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .buildClient();
 
         RegistryArtifact image = anonymousClient.getArtifact(repositoryName, digest);
@@ -149,14 +170,17 @@ public class ReadmeSamples {
         for (ArtifactTagProperties tag : tags) {
             System.out.printf(String.format("%s/%s:%s", anonymousClient.getEndpoint(), repositoryName, tag.getName()));
         }
+        // END: readme-sample-listTagProperties
     }
 
     public void anonymousClientThrows() {
+        // BEGIN: readme-sample-anonymousClientThrows
         final String endpoint = getEndpoint();
         final String repositoryName = getRepositoryName();
 
         ContainerRegistryClient anonymousClient = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .buildClient();
 
         try {
@@ -165,6 +189,7 @@ public class ReadmeSamples {
         } catch (ClientAuthenticationException ex) {
             System.out.println("Expected exception: Delete is not allowed on anonymous access");
         }
+        // END: readme-sample-anonymousClientThrows
     }
 
     private static String getEndpoint() {
@@ -179,22 +204,19 @@ public class ReadmeSamples {
         return null;
     }
 
-    public void authenticationScopeSample() {
-        AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE_US_GOVERNMENT);
-        TokenCredential credentials = new DefaultAzureCredentialBuilder()
-            .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
-            .build();
-
-        final String authenticationScope = "https://management.usgovcloudapi.net/.default";
+    private final TokenCredential credentials = null;
+    public void nationalCloudSample() {
+        // BEGIN: readme-sample-nationalCloudSample
         ContainerRegistryClient containerRegistryClient = new ContainerRegistryClientBuilder()
             .endpoint(getEndpoint())
             .credential(credentials)
-            .authenticationScope(authenticationScope)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_CHINA)
             .buildClient();
 
         containerRegistryClient
             .listRepositoryNames()
             .forEach(name -> System.out.println(name));
+        // END: readme-sample-nationalCloudSample
     }
 }
 

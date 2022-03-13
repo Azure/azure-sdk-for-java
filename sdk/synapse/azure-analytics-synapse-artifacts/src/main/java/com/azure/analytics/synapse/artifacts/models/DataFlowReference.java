@@ -34,6 +34,12 @@ public final class DataFlowReference {
     private Object datasetParameters;
 
     /*
+     * Data flow parameters
+     */
+    @JsonProperty(value = "parameters")
+    private Map<String, Object> parameters;
+
+    /*
      * Data flow reference type.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
@@ -95,6 +101,26 @@ public final class DataFlowReference {
      */
     public DataFlowReference setDatasetParameters(Object datasetParameters) {
         this.datasetParameters = datasetParameters;
+        return this;
+    }
+
+    /**
+     * Get the parameters property: Data flow parameters.
+     *
+     * @return the parameters value.
+     */
+    public Map<String, Object> getParameters() {
+        return this.parameters;
+    }
+
+    /**
+     * Set the parameters property: Data flow parameters.
+     *
+     * @param parameters the parameters value to set.
+     * @return the DataFlowReference object itself.
+     */
+    public DataFlowReference setParameters(Map<String, Object> parameters) {
+        this.parameters = parameters;
         return this;
     }
 

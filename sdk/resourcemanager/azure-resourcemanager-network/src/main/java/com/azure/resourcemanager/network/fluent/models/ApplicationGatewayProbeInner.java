@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayProbeHealthResponseMatch;
@@ -15,10 +14,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Probe of the application gateway. */
-@JsonFlatten
 @Fluent
-public class ApplicationGatewayProbeInner extends SubResource {
+public final class ApplicationGatewayProbeInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayProbeInner.class);
+
+    /*
+     * Properties of the application gateway probe.
+     */
+    @JsonProperty(value = "properties")
+    private ApplicationGatewayProbePropertiesFormat innerProperties;
 
     /*
      * Name of the probe that is unique within an Application Gateway.
@@ -38,83 +42,14 @@ public class ApplicationGatewayProbeInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * The protocol used for the probe.
+    /**
+     * Get the innerProperties property: Properties of the application gateway probe.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.protocol")
-    private ApplicationGatewayProtocol protocol;
-
-    /*
-     * Host name to send the probe to.
-     */
-    @JsonProperty(value = "properties.host")
-    private String host;
-
-    /*
-     * Relative path of probe. Valid path starts from '/'. Probe is sent to
-     * <Protocol>://<host>:<port><path>.
-     */
-    @JsonProperty(value = "properties.path")
-    private String path;
-
-    /*
-     * The probing interval in seconds. This is the time interval between two
-     * consecutive probes. Acceptable values are from 1 second to 86400
-     * seconds.
-     */
-    @JsonProperty(value = "properties.interval")
-    private Integer interval;
-
-    /*
-     * The probe timeout in seconds. Probe marked as failed if valid response
-     * is not received with this timeout period. Acceptable values are from 1
-     * second to 86400 seconds.
-     */
-    @JsonProperty(value = "properties.timeout")
-    private Integer timeout;
-
-    /*
-     * The probe retry count. Backend server is marked down after consecutive
-     * probe failure count reaches UnhealthyThreshold. Acceptable values are
-     * from 1 second to 20.
-     */
-    @JsonProperty(value = "properties.unhealthyThreshold")
-    private Integer unhealthyThreshold;
-
-    /*
-     * Whether the host header should be picked from the backend http settings.
-     * Default value is false.
-     */
-    @JsonProperty(value = "properties.pickHostNameFromBackendHttpSettings")
-    private Boolean pickHostnameFromBackendHttpSettings;
-
-    /*
-     * Minimum number of servers that are always marked healthy. Default value
-     * is 0.
-     */
-    @JsonProperty(value = "properties.minServers")
-    private Integer minServers;
-
-    /*
-     * Criterion for classifying a healthy probe response.
-     */
-    @JsonProperty(value = "properties.match")
-    private ApplicationGatewayProbeHealthResponseMatch match;
-
-    /*
-     * The provisioning state of the probe resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * Custom port which will be used for probing the backend servers. The
-     * valid value ranges from 1 to 65535. In case not set, port from http
-     * settings will be used. This property is valid for Standard_v2 and WAF_v2
-     * only.
-     */
-    @JsonProperty(value = "properties.port")
-    private Integer port;
+    private ApplicationGatewayProbePropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Name of the probe that is unique within an Application Gateway.
@@ -154,13 +89,20 @@ public class ApplicationGatewayProbeInner extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayProbeInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the protocol property: The protocol used for the probe.
      *
      * @return the protocol value.
      */
     public ApplicationGatewayProtocol protocol() {
-        return this.protocol;
+        return this.innerProperties() == null ? null : this.innerProperties().protocol();
     }
 
     /**
@@ -170,7 +112,10 @@ public class ApplicationGatewayProbeInner extends SubResource {
      * @return the ApplicationGatewayProbeInner object itself.
      */
     public ApplicationGatewayProbeInner withProtocol(ApplicationGatewayProtocol protocol) {
-        this.protocol = protocol;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayProbePropertiesFormat();
+        }
+        this.innerProperties().withProtocol(protocol);
         return this;
     }
 
@@ -180,7 +125,7 @@ public class ApplicationGatewayProbeInner extends SubResource {
      * @return the host value.
      */
     public String host() {
-        return this.host;
+        return this.innerProperties() == null ? null : this.innerProperties().host();
     }
 
     /**
@@ -190,7 +135,10 @@ public class ApplicationGatewayProbeInner extends SubResource {
      * @return the ApplicationGatewayProbeInner object itself.
      */
     public ApplicationGatewayProbeInner withHost(String host) {
-        this.host = host;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayProbePropertiesFormat();
+        }
+        this.innerProperties().withHost(host);
         return this;
     }
 
@@ -201,7 +149,7 @@ public class ApplicationGatewayProbeInner extends SubResource {
      * @return the path value.
      */
     public String path() {
-        return this.path;
+        return this.innerProperties() == null ? null : this.innerProperties().path();
     }
 
     /**
@@ -212,7 +160,10 @@ public class ApplicationGatewayProbeInner extends SubResource {
      * @return the ApplicationGatewayProbeInner object itself.
      */
     public ApplicationGatewayProbeInner withPath(String path) {
-        this.path = path;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayProbePropertiesFormat();
+        }
+        this.innerProperties().withPath(path);
         return this;
     }
 
@@ -223,7 +174,7 @@ public class ApplicationGatewayProbeInner extends SubResource {
      * @return the interval value.
      */
     public Integer interval() {
-        return this.interval;
+        return this.innerProperties() == null ? null : this.innerProperties().interval();
     }
 
     /**
@@ -234,7 +185,10 @@ public class ApplicationGatewayProbeInner extends SubResource {
      * @return the ApplicationGatewayProbeInner object itself.
      */
     public ApplicationGatewayProbeInner withInterval(Integer interval) {
-        this.interval = interval;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayProbePropertiesFormat();
+        }
+        this.innerProperties().withInterval(interval);
         return this;
     }
 
@@ -245,7 +199,7 @@ public class ApplicationGatewayProbeInner extends SubResource {
      * @return the timeout value.
      */
     public Integer timeout() {
-        return this.timeout;
+        return this.innerProperties() == null ? null : this.innerProperties().timeout();
     }
 
     /**
@@ -256,7 +210,10 @@ public class ApplicationGatewayProbeInner extends SubResource {
      * @return the ApplicationGatewayProbeInner object itself.
      */
     public ApplicationGatewayProbeInner withTimeout(Integer timeout) {
-        this.timeout = timeout;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayProbePropertiesFormat();
+        }
+        this.innerProperties().withTimeout(timeout);
         return this;
     }
 
@@ -267,7 +224,7 @@ public class ApplicationGatewayProbeInner extends SubResource {
      * @return the unhealthyThreshold value.
      */
     public Integer unhealthyThreshold() {
-        return this.unhealthyThreshold;
+        return this.innerProperties() == null ? null : this.innerProperties().unhealthyThreshold();
     }
 
     /**
@@ -278,7 +235,10 @@ public class ApplicationGatewayProbeInner extends SubResource {
      * @return the ApplicationGatewayProbeInner object itself.
      */
     public ApplicationGatewayProbeInner withUnhealthyThreshold(Integer unhealthyThreshold) {
-        this.unhealthyThreshold = unhealthyThreshold;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayProbePropertiesFormat();
+        }
+        this.innerProperties().withUnhealthyThreshold(unhealthyThreshold);
         return this;
     }
 
@@ -289,7 +249,7 @@ public class ApplicationGatewayProbeInner extends SubResource {
      * @return the pickHostnameFromBackendHttpSettings value.
      */
     public Boolean pickHostnameFromBackendHttpSettings() {
-        return this.pickHostnameFromBackendHttpSettings;
+        return this.innerProperties() == null ? null : this.innerProperties().pickHostnameFromBackendHttpSettings();
     }
 
     /**
@@ -301,7 +261,10 @@ public class ApplicationGatewayProbeInner extends SubResource {
      */
     public ApplicationGatewayProbeInner withPickHostnameFromBackendHttpSettings(
         Boolean pickHostnameFromBackendHttpSettings) {
-        this.pickHostnameFromBackendHttpSettings = pickHostnameFromBackendHttpSettings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayProbePropertiesFormat();
+        }
+        this.innerProperties().withPickHostnameFromBackendHttpSettings(pickHostnameFromBackendHttpSettings);
         return this;
     }
 
@@ -311,7 +274,7 @@ public class ApplicationGatewayProbeInner extends SubResource {
      * @return the minServers value.
      */
     public Integer minServers() {
-        return this.minServers;
+        return this.innerProperties() == null ? null : this.innerProperties().minServers();
     }
 
     /**
@@ -321,7 +284,10 @@ public class ApplicationGatewayProbeInner extends SubResource {
      * @return the ApplicationGatewayProbeInner object itself.
      */
     public ApplicationGatewayProbeInner withMinServers(Integer minServers) {
-        this.minServers = minServers;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayProbePropertiesFormat();
+        }
+        this.innerProperties().withMinServers(minServers);
         return this;
     }
 
@@ -331,7 +297,7 @@ public class ApplicationGatewayProbeInner extends SubResource {
      * @return the match value.
      */
     public ApplicationGatewayProbeHealthResponseMatch match() {
-        return this.match;
+        return this.innerProperties() == null ? null : this.innerProperties().match();
     }
 
     /**
@@ -341,7 +307,10 @@ public class ApplicationGatewayProbeInner extends SubResource {
      * @return the ApplicationGatewayProbeInner object itself.
      */
     public ApplicationGatewayProbeInner withMatch(ApplicationGatewayProbeHealthResponseMatch match) {
-        this.match = match;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayProbePropertiesFormat();
+        }
+        this.innerProperties().withMatch(match);
         return this;
     }
 
@@ -351,7 +320,7 @@ public class ApplicationGatewayProbeInner extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -362,7 +331,7 @@ public class ApplicationGatewayProbeInner extends SubResource {
      * @return the port value.
      */
     public Integer port() {
-        return this.port;
+        return this.innerProperties() == null ? null : this.innerProperties().port();
     }
 
     /**
@@ -374,14 +343,10 @@ public class ApplicationGatewayProbeInner extends SubResource {
      * @return the ApplicationGatewayProbeInner object itself.
      */
     public ApplicationGatewayProbeInner withPort(Integer port) {
-        this.port = port;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ApplicationGatewayProbeInner withId(String id) {
-        super.withId(id);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayProbePropertiesFormat();
+        }
+        this.innerProperties().withPort(port);
         return this;
     }
 
@@ -391,8 +356,8 @@ public class ApplicationGatewayProbeInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (match() != null) {
-            match().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

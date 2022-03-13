@@ -12,6 +12,10 @@ import java.util.Locale;
  */
 public class SessionErrorContext extends AmqpErrorContext {
     private static final long serialVersionUID = -6595933736672371232L;
+
+    /**
+     * Remote endpoint the AMQP connection was connected to when the error occurred.
+     */
     private final String entityPath;
 
     /**

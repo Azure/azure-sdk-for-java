@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.AddressDetails;
@@ -23,119 +22,24 @@ import java.util.List;
 import java.util.Map;
 
 /** A billing profile. */
-@JsonFlatten
 @Fluent
-public class BillingProfileInner extends ProxyResource {
+public final class BillingProfileInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingProfileInner.class);
 
     /*
-     * The name of the billing profile.
+     * The properties of the billing profile.
      */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
+    @JsonProperty(value = "properties")
+    private BillingProfileProperties innerProperties;
 
-    /*
-     * The purchase order name that will appear on the invoices generated for
-     * the billing profile.
+    /**
+     * Get the innerProperties property: The properties of the billing profile.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.poNumber")
-    private String poNumber;
-
-    /*
-     * Identifies which services and purchases are paid by a billing profile.
-     */
-    @JsonProperty(value = "properties.billingRelationshipType", access = JsonProperty.Access.WRITE_ONLY)
-    private BillingRelationshipType billingRelationshipType;
-
-    /*
-     * Billing address.
-     */
-    @JsonProperty(value = "properties.billTo")
-    private AddressDetails billTo;
-
-    /*
-     * Identifies the billing profile that is linked to another billing profile
-     * in indirect purchase motion.
-     */
-    @JsonProperty(value = "properties.indirectRelationshipInfo", access = JsonProperty.Access.WRITE_ONLY)
-    private IndirectRelationshipInfo indirectRelationshipInfo;
-
-    /*
-     * Flag controlling whether the invoices for the billing profile are sent
-     * through email.
-     */
-    @JsonProperty(value = "properties.invoiceEmailOptIn")
-    private Boolean invoiceEmailOptIn;
-
-    /*
-     * The day of the month when the invoice for the billing profile is
-     * generated.
-     */
-    @JsonProperty(value = "properties.invoiceDay", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer invoiceDay;
-
-    /*
-     * The currency in which the charges for the billing profile are billed.
-     */
-    @JsonProperty(value = "properties.currency", access = JsonProperty.Access.WRITE_ONLY)
-    private String currency;
-
-    /*
-     * Information about the enabled azure plans.
-     */
-    @JsonProperty(value = "properties.enabledAzurePlans")
-    private List<AzurePlan> enabledAzurePlans;
-
-    /*
-     * The invoice sections associated to the billing profile. By default this
-     * is not populated, unless it's specified in $expand.
-     */
-    @JsonProperty(value = "properties.invoiceSections")
-    private InvoiceSectionsOnExpand invoiceSections;
-
-    /*
-     * Indicates whether user has read access to the billing profile.
-     */
-    @JsonProperty(value = "properties.hasReadAccess", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean hasReadAccess;
-
-    /*
-     * The system generated unique identifier for a billing profile.
-     */
-    @JsonProperty(value = "properties.systemId", access = JsonProperty.Access.WRITE_ONLY)
-    private String systemId;
-
-    /*
-     * The status of the billing profile.
-     */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private BillingProfileStatus status;
-
-    /*
-     * Reason for the specified billing profile status.
-     */
-    @JsonProperty(value = "properties.statusReasonCode", access = JsonProperty.Access.WRITE_ONLY)
-    private StatusReasonCode statusReasonCode;
-
-    /*
-     * The billing profile spending limit.
-     */
-    @JsonProperty(value = "properties.spendingLimit", access = JsonProperty.Access.WRITE_ONLY)
-    private SpendingLimit spendingLimit;
-
-    /*
-     * Identifies the cloud environments that are associated with a billing
-     * profile. This is a system managed optional field and gets updated as the
-     * billing profile gets associated with accounts in various clouds.
-     */
-    @JsonProperty(value = "properties.targetClouds", access = JsonProperty.Access.WRITE_ONLY)
-    private List<TargetCloud> targetClouds;
-
-    /*
-     * Tags of billing profiles.
-     */
-    @JsonProperty(value = "properties.tags")
-    private Map<String, String> tags;
+    private BillingProfileProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the displayName property: The name of the billing profile.
@@ -143,7 +47,7 @@ public class BillingProfileInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -153,7 +57,10 @@ public class BillingProfileInner extends ProxyResource {
      * @return the BillingProfileInner object itself.
      */
     public BillingProfileInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingProfileProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -164,7 +71,7 @@ public class BillingProfileInner extends ProxyResource {
      * @return the poNumber value.
      */
     public String poNumber() {
-        return this.poNumber;
+        return this.innerProperties() == null ? null : this.innerProperties().poNumber();
     }
 
     /**
@@ -175,7 +82,10 @@ public class BillingProfileInner extends ProxyResource {
      * @return the BillingProfileInner object itself.
      */
     public BillingProfileInner withPoNumber(String poNumber) {
-        this.poNumber = poNumber;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingProfileProperties();
+        }
+        this.innerProperties().withPoNumber(poNumber);
         return this;
     }
 
@@ -185,7 +95,7 @@ public class BillingProfileInner extends ProxyResource {
      * @return the billingRelationshipType value.
      */
     public BillingRelationshipType billingRelationshipType() {
-        return this.billingRelationshipType;
+        return this.innerProperties() == null ? null : this.innerProperties().billingRelationshipType();
     }
 
     /**
@@ -194,7 +104,7 @@ public class BillingProfileInner extends ProxyResource {
      * @return the billTo value.
      */
     public AddressDetails billTo() {
-        return this.billTo;
+        return this.innerProperties() == null ? null : this.innerProperties().billTo();
     }
 
     /**
@@ -204,7 +114,10 @@ public class BillingProfileInner extends ProxyResource {
      * @return the BillingProfileInner object itself.
      */
     public BillingProfileInner withBillTo(AddressDetails billTo) {
-        this.billTo = billTo;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingProfileProperties();
+        }
+        this.innerProperties().withBillTo(billTo);
         return this;
     }
 
@@ -215,7 +128,7 @@ public class BillingProfileInner extends ProxyResource {
      * @return the indirectRelationshipInfo value.
      */
     public IndirectRelationshipInfo indirectRelationshipInfo() {
-        return this.indirectRelationshipInfo;
+        return this.innerProperties() == null ? null : this.innerProperties().indirectRelationshipInfo();
     }
 
     /**
@@ -225,7 +138,7 @@ public class BillingProfileInner extends ProxyResource {
      * @return the invoiceEmailOptIn value.
      */
     public Boolean invoiceEmailOptIn() {
-        return this.invoiceEmailOptIn;
+        return this.innerProperties() == null ? null : this.innerProperties().invoiceEmailOptIn();
     }
 
     /**
@@ -236,7 +149,10 @@ public class BillingProfileInner extends ProxyResource {
      * @return the BillingProfileInner object itself.
      */
     public BillingProfileInner withInvoiceEmailOptIn(Boolean invoiceEmailOptIn) {
-        this.invoiceEmailOptIn = invoiceEmailOptIn;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingProfileProperties();
+        }
+        this.innerProperties().withInvoiceEmailOptIn(invoiceEmailOptIn);
         return this;
     }
 
@@ -246,7 +162,7 @@ public class BillingProfileInner extends ProxyResource {
      * @return the invoiceDay value.
      */
     public Integer invoiceDay() {
-        return this.invoiceDay;
+        return this.innerProperties() == null ? null : this.innerProperties().invoiceDay();
     }
 
     /**
@@ -255,7 +171,7 @@ public class BillingProfileInner extends ProxyResource {
      * @return the currency value.
      */
     public String currency() {
-        return this.currency;
+        return this.innerProperties() == null ? null : this.innerProperties().currency();
     }
 
     /**
@@ -264,7 +180,7 @@ public class BillingProfileInner extends ProxyResource {
      * @return the enabledAzurePlans value.
      */
     public List<AzurePlan> enabledAzurePlans() {
-        return this.enabledAzurePlans;
+        return this.innerProperties() == null ? null : this.innerProperties().enabledAzurePlans();
     }
 
     /**
@@ -274,7 +190,10 @@ public class BillingProfileInner extends ProxyResource {
      * @return the BillingProfileInner object itself.
      */
     public BillingProfileInner withEnabledAzurePlans(List<AzurePlan> enabledAzurePlans) {
-        this.enabledAzurePlans = enabledAzurePlans;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingProfileProperties();
+        }
+        this.innerProperties().withEnabledAzurePlans(enabledAzurePlans);
         return this;
     }
 
@@ -285,7 +204,7 @@ public class BillingProfileInner extends ProxyResource {
      * @return the invoiceSections value.
      */
     public InvoiceSectionsOnExpand invoiceSections() {
-        return this.invoiceSections;
+        return this.innerProperties() == null ? null : this.innerProperties().invoiceSections();
     }
 
     /**
@@ -296,7 +215,10 @@ public class BillingProfileInner extends ProxyResource {
      * @return the BillingProfileInner object itself.
      */
     public BillingProfileInner withInvoiceSections(InvoiceSectionsOnExpand invoiceSections) {
-        this.invoiceSections = invoiceSections;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingProfileProperties();
+        }
+        this.innerProperties().withInvoiceSections(invoiceSections);
         return this;
     }
 
@@ -306,7 +228,7 @@ public class BillingProfileInner extends ProxyResource {
      * @return the hasReadAccess value.
      */
     public Boolean hasReadAccess() {
-        return this.hasReadAccess;
+        return this.innerProperties() == null ? null : this.innerProperties().hasReadAccess();
     }
 
     /**
@@ -315,7 +237,7 @@ public class BillingProfileInner extends ProxyResource {
      * @return the systemId value.
      */
     public String systemId() {
-        return this.systemId;
+        return this.innerProperties() == null ? null : this.innerProperties().systemId();
     }
 
     /**
@@ -324,7 +246,7 @@ public class BillingProfileInner extends ProxyResource {
      * @return the status value.
      */
     public BillingProfileStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -333,7 +255,7 @@ public class BillingProfileInner extends ProxyResource {
      * @return the statusReasonCode value.
      */
     public StatusReasonCode statusReasonCode() {
-        return this.statusReasonCode;
+        return this.innerProperties() == null ? null : this.innerProperties().statusReasonCode();
     }
 
     /**
@@ -342,7 +264,7 @@ public class BillingProfileInner extends ProxyResource {
      * @return the spendingLimit value.
      */
     public SpendingLimit spendingLimit() {
-        return this.spendingLimit;
+        return this.innerProperties() == null ? null : this.innerProperties().spendingLimit();
     }
 
     /**
@@ -353,7 +275,7 @@ public class BillingProfileInner extends ProxyResource {
      * @return the targetClouds value.
      */
     public List<TargetCloud> targetClouds() {
-        return this.targetClouds;
+        return this.innerProperties() == null ? null : this.innerProperties().targetClouds();
     }
 
     /**
@@ -362,7 +284,7 @@ public class BillingProfileInner extends ProxyResource {
      * @return the tags value.
      */
     public Map<String, String> tags() {
-        return this.tags;
+        return this.innerProperties() == null ? null : this.innerProperties().tags();
     }
 
     /**
@@ -372,7 +294,10 @@ public class BillingProfileInner extends ProxyResource {
      * @return the BillingProfileInner object itself.
      */
     public BillingProfileInner withTags(Map<String, String> tags) {
-        this.tags = tags;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingProfileProperties();
+        }
+        this.innerProperties().withTags(tags);
         return this;
     }
 
@@ -382,17 +307,8 @@ public class BillingProfileInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (billTo() != null) {
-            billTo().validate();
-        }
-        if (indirectRelationshipInfo() != null) {
-            indirectRelationshipInfo().validate();
-        }
-        if (enabledAzurePlans() != null) {
-            enabledAzurePlans().forEach(e -> e.validate());
-        }
-        if (invoiceSections() != null) {
-            invoiceSections().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

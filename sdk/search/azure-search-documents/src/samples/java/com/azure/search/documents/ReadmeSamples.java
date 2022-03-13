@@ -47,47 +47,59 @@ public class ReadmeSamples {
     private final SearchAsyncClient searchAsyncClient = new SearchClientBuilder().buildAsyncClient();
 
     public void createSearchClient() {
+        // BEGIN: readme-sample-createSearchClient
         SearchClient searchClient = new SearchClientBuilder()
             .endpoint(endpoint)
             .credential(new AzureKeyCredential(adminKey))
             .indexName(indexName)
             .buildClient();
+        // END: readme-sample-createSearchClient
     }
 
     public void createAsyncSearchClient() {
+        // BEGIN: readme-sample-createAsyncSearchClient
         SearchAsyncClient searchAsyncClient = new SearchClientBuilder()
             .endpoint(endpoint)
             .credential(new AzureKeyCredential(adminKey))
             .indexName(indexName)
             .buildAsyncClient();
+        // END: readme-sample-createAsyncSearchClient
     }
 
     public void createIndexClient() {
+        // BEGIN: readme-sample-createIndexClient
         SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
             .endpoint(endpoint)
             .credential(new AzureKeyCredential(apiKey))
             .buildClient();
+        // END: readme-sample-createIndexClient
     }
 
     public void createIndexAsyncClient() {
+        // BEGIN: readme-sample-createIndexAsyncClient
         SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder()
             .endpoint(endpoint)
             .credential(new AzureKeyCredential(apiKey))
             .buildAsyncClient();
+        // END: readme-sample-createIndexAsyncClient
     }
 
     public void createIndexerClient() {
+        // BEGIN: readme-sample-createIndexerClient
         SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder()
             .endpoint(endpoint)
             .credential(new AzureKeyCredential(apiKey))
             .buildClient();
+        // END: readme-sample-createIndexerClient
     }
 
     public void createIndexerAsyncClient() {
+        // BEGIN: readme-sample-createIndexerAsyncClient
         SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder()
             .endpoint(endpoint)
             .credential(new AzureKeyCredential(apiKey))
             .buildAsyncClient();
+        // END: readme-sample-createIndexerAsyncClient
     }
 
     public void customHeaders() {
@@ -107,6 +119,7 @@ public class ReadmeSamples {
     }
 
     public void handleErrorsWithSyncClient() {
+        // BEGIN: readme-sample-handleErrorsWithSyncClient
         try {
             Iterable<SearchResult> results = searchClient.search("hotel");
         } catch (HttpResponseException ex) {
@@ -116,17 +129,21 @@ public class ReadmeSamples {
             System.out.println("Status Code: " + response.getStatusCode());
             System.out.println("Message: " + ex.getMessage());
         }
+        // END: readme-sample-handleErrorsWithSyncClient
     }
 
     public void searchWithDynamicType() {
+        // BEGIN: readme-sample-searchWithDynamicType
         for (SearchResult searchResult : searchClient.search("luxury")) {
             SearchDocument doc = searchResult.getDocument(SearchDocument.class);
             String id = (String) doc.get("hotelId");
             String name = (String) doc.get("hotelName");
             System.out.printf("This is hotelId %s, and this is hotel name %s.%n", id, name);
         }
+        // END: readme-sample-searchWithDynamicType
     }
 
+    // BEGIN: readme-sample-hotelclass
     public class Hotel {
         private String id;
         private String name;
@@ -149,46 +166,58 @@ public class ReadmeSamples {
             return this;
         }
     }
+    // END: readme-sample-hotelclass
 
     public void searchWithStronglyType() {
+        // BEGIN: readme-sample-searchWithStronglyType
         for (SearchResult searchResult : searchClient.search("luxury")) {
             Hotel doc = searchResult.getDocument(Hotel.class);
             String id = doc.getId();
             String name = doc.getName();
             System.out.printf("This is hotelId %s, and this is hotel name %s.%n", id, name);
         }
+        // END: readme-sample-searchWithStronglyType
     }
 
     public void searchWithSearchOptions() {
+        // BEGIN: readme-sample-searchWithSearchOptions
         SearchOptions options = new SearchOptions()
             .setFilter("rating ge 4")
             .setOrderBy("rating desc")
             .setTop(5);
         SearchPagedIterable searchResultsIterable = searchClient.search("luxury", options, Context.NONE);
         // ...
+        // END: readme-sample-searchWithSearchOptions
     }
 
     public void searchWithAsyncClient() {
+        // BEGIN: readme-sample-searchWithAsyncClient
         searchAsyncClient.search("luxury")
             .subscribe(result -> {
                 Hotel hotel = result.getDocument(Hotel.class);
                 System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.getId(), hotel.getName());
             });
+        // END: readme-sample-searchWithAsyncClient
     }
 
     public void retrieveDocuments() {
+        // BEGIN: readme-sample-retrieveDocuments
         Hotel hotel = searchClient.getDocument("1", Hotel.class);
         System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.getId(), hotel.getName());
+        // END: readme-sample-retrieveDocuments
     }
 
     public void batchDocumentsOperations() {
+        // BEGIN: readme-sample-batchDocumentsOperations
         IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<>();
         batch.addUploadActions(Collections.singletonList(new Hotel().setId("783").setName("Upload Inn")));
         batch.addMergeActions(Collections.singletonList(new Hotel().setId("12").setName("Renovated Ranch")));
         searchClient.indexDocuments(batch);
+        // END: readme-sample-batchDocumentsOperations
     }
 
     public void createIndex() {
+        // BEGIN: readme-sample-createIndex
         List<SearchField> searchFieldList = new ArrayList<>();
         searchFieldList.add(new SearchField("hotelId", SearchFieldDataType.STRING)
             .setKey(true)
@@ -236,10 +265,13 @@ public class ReadmeSamples {
         SearchIndex index = new SearchIndex("hotels").setFields(searchFieldList).setSuggesters(suggester);
         // Create an index
         searchIndexClient.createIndex(index);
+        // END: readme-sample-createIndex
     }
 
     public void createIndexUseFieldBuilder() {
+        // BEGIN: readme-sample-createIndexUseFieldBuilder
         List<SearchField> searchFields = SearchIndexClient.buildSearchFields(Hotel.class, null);
         searchIndexClient.createIndex(new SearchIndex("index", searchFields));
+        // END: readme-sample-createIndexUseFieldBuilder
     }
 }

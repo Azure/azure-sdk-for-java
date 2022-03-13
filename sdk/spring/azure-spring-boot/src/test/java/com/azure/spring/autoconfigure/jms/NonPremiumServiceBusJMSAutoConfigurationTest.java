@@ -3,24 +3,28 @@
 
 package com.azure.spring.autoconfigure.jms;
 
+import java.util.logging.Logger;
 import org.apache.qpid.jms.JmsConnectionFactory;
+import org.apache.qpid.jms.policy.JmsDefaultPrefetchPolicy;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
-import org.springframework.jms.core.JmsTemplate;
-
-import javax.jms.ConnectionFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class NonPremiumServiceBusJMSAutoConfigurationTest {
+public class NonPremiumServiceBusJMSAutoConfigurationTest extends AbstractServiceBusJMSAutoConfigurationTest {
 
-    private static final String CONNECTION_STRING = "Endpoint=sb://host/;SharedAccessKeyName=sasKeyName;"
-        + "SharedAccessKey=sasKey";
+    private static final Logger LOGGER = Logger.getLogger(NonPremiumServiceBusJMSAutoConfigurationTest.class.getName());
+
+    @BeforeAll
+    public static void init() {
+        LOGGER.info("Starting NonPremiumServiceBusJMSAutoConfigurationTest");
+    }
 
     @Test
     public void testAzureServiceBusNonPremiumAutoConfiguration() {
@@ -35,13 +39,32 @@ public class NonPremiumServiceBusJMSAutoConfigurationTest {
                      .run(context -> assertThat(context).hasSingleBean(AzureServiceBusJMSProperties.class));
     }
 
+
     @Test
-    public void testAzureServiceBusJMSPropertiesConnectionStringValidation() {
+    public void testWithoutServiceBusJMSNamespace() {
         ApplicationContextRunner contextRunner = getEmptyContextRunner();
-        contextRunner.run(
-            context -> Assertions.assertThrows(IllegalStateException.class,
-                () -> context.getBean(AzureServiceBusJMSProperties.class)));
+        contextRunner.withClassLoader(new FilteredClassLoader(JmsConnectionFactory.class))
+                     .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusJMSProperties.class));
     }
+
+    @Test
+    public void testNonPreminumPrefetchPolicy() {
+        ApplicationContextRunner contextRunner = getContextRunnerWithProperties();
+        contextRunner.run(
+            context -> {
+                assertThat(context).hasBean("jmsConnectionFactory");
+                JmsConnectionFactory jmsConnectionFactory = (JmsConnectionFactory) context.getBean("jmsConnectionFactory");
+                assertNotNull(jmsConnectionFactory.getPrefetchPolicy());
+                assertThat(jmsConnectionFactory.getPrefetchPolicy() instanceof JmsDefaultPrefetchPolicy).isTrue();
+                JmsDefaultPrefetchPolicy policy = (JmsDefaultPrefetchPolicy) jmsConnectionFactory.getPrefetchPolicy();
+                assertThat(policy.getTopicPrefetch()).isEqualTo(12);
+                assertThat(policy.getDurableTopicPrefetch()).isEqualTo(999);
+                assertThat(policy.getQueuePrefetch()).isEqualTo(19);
+                assertThat(policy.getQueueBrowserPrefetch()).isEqualTo(21);
+            }
+        );
+    }
+
 
     @Test
     public void testAzureServiceBusJMSPropertiesPricingTireValidation() {
@@ -53,45 +76,8 @@ public class NonPremiumServiceBusJMSAutoConfigurationTest {
                          () -> context.getBean(AzureServiceBusJMSProperties.class)));
     }
 
-    @Test
-    public void testWithoutServiceBusJMSNamespace() {
-        ApplicationContextRunner contextRunner = getEmptyContextRunner();
-        contextRunner.withClassLoader(new FilteredClassLoader(JmsConnectionFactory.class))
-                     .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusJMSProperties.class));
-    }
-
-    @Test
-    public void testCachingConnectionFactoryIsAutowired() {
-
-        ApplicationContextRunner contextRunner = getContextRunnerWithProperties();
-
-        contextRunner.run(
-            context -> {
-                assertThat(context).hasSingleBean(ConnectionFactory.class);
-                assertThat(context).hasSingleBean(JmsTemplate.class);
-                ConnectionFactory connectionFactory = context.getBean(ConnectionFactory.class);
-                assertTrue(connectionFactory == context.getBean(JmsTemplate.class).getConnectionFactory());
-            }
-        );
-    }
-
-    @Test
-    public void testAzureServiceBusJMSPropertiesConfigured() {
-
-        ApplicationContextRunner contextRunner = getContextRunnerWithProperties();
-
-        contextRunner.run(
-            context -> {
-                assertThat(context).hasSingleBean(AzureServiceBusJMSProperties.class);
-                assertThat(context.getBean(AzureServiceBusJMSProperties.class).getConnectionString()).isEqualTo(
-                    CONNECTION_STRING);
-                assertThat(context.getBean(AzureServiceBusJMSProperties.class).getTopicClientId()).isEqualTo("cid");
-                assertThat(context.getBean(AzureServiceBusJMSProperties.class).getIdleTimeout()).isEqualTo(123);
-            }
-        );
-    }
-
-    private ApplicationContextRunner getEmptyContextRunner() {
+    @Override
+    protected ApplicationContextRunner getEmptyContextRunner() {
 
         return new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(NonPremiumServiceBusJMSAutoConfiguration.class,
@@ -101,16 +87,29 @@ public class NonPremiumServiceBusJMSAutoConfigurationTest {
             );
     }
 
-    private ApplicationContextRunner getContextRunnerWithProperties() {
+    @Override
+    protected ApplicationContextRunner getContextRunnerWithProperties() {
 
         return new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(NonPremiumServiceBusJMSAutoConfiguration.class,
                 JmsAutoConfiguration.class))
             .withPropertyValues(
+                "spring.jms.listener.autoStartup=false",
+                "spring.jms.listener.acknowledgeMode=client",
+                "spring.jms.listener.concurrency=2",
+                "spring.jms.listener.receiveTimeout=2s",
+                "spring.jms.listener.maxConcurrency=10",
                 "spring.jms.servicebus.connection-string=" + CONNECTION_STRING,
                 "spring.jms.servicebus.topic-client-id=cid",
                 "spring.jms.servicebus.idle-timeout=123",
-                "spring.jms.servicebus.pricing-tier=basic"
+                "spring.jms.servicebus.pricing-tier=basic",
+                "spring.jms.servicebus.listener.reply-pub-sub-domain=false",
+                "spring.jms.servicebus.listener.reply-qos-settings.priority=1",
+                "spring.jms.servicebus.prefetch-policy.all=5",
+                "spring.jms.servicebus.prefetch-policy.topic-prefetch=12",
+                "spring.jms.servicebus.prefetch-policy.durable-topic-prefetch=999",
+                "spring.jms.servicebus.prefetch-policy.queue-prefetch= 19",
+                "spring.jms.servicebus.prefetch-policy.queue-browser-prefetch= 21"
             );
     }
 }

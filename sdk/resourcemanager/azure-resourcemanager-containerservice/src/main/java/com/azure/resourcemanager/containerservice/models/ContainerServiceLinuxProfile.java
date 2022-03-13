@@ -6,14 +6,11 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Profile for Linux VMs in the container service cluster. */
 @Fluent
 public final class ContainerServiceLinuxProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerServiceLinuxProfile.class);
-
     /*
      * The administrator username to use for Linux VMs.
      */
@@ -21,7 +18,7 @@ public final class ContainerServiceLinuxProfile {
     private String adminUsername;
 
     /*
-     * SSH configuration for Linux-based VMs running on Azure.
+     * The SSH configuration for Linux-based VMs running on Azure.
      */
     @JsonProperty(value = "ssh", required = true)
     private ContainerServiceSshConfiguration ssh;
@@ -47,7 +44,7 @@ public final class ContainerServiceLinuxProfile {
     }
 
     /**
-     * Get the ssh property: SSH configuration for Linux-based VMs running on Azure.
+     * Get the ssh property: The SSH configuration for Linux-based VMs running on Azure.
      *
      * @return the ssh value.
      */
@@ -56,7 +53,7 @@ public final class ContainerServiceLinuxProfile {
     }
 
     /**
-     * Set the ssh property: SSH configuration for Linux-based VMs running on Azure.
+     * Set the ssh property: The SSH configuration for Linux-based VMs running on Azure.
      *
      * @param ssh the ssh value to set.
      * @return the ContainerServiceLinuxProfile object itself.
@@ -73,13 +70,13 @@ public final class ContainerServiceLinuxProfile {
      */
     public void validate() {
         if (adminUsername() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property adminUsername in model ContainerServiceLinuxProfile"));
         }
         if (ssh() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property ssh in model ContainerServiceLinuxProfile"));
@@ -87,4 +84,6 @@ public final class ContainerServiceLinuxProfile {
             ssh().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerServiceLinuxProfile.class);
 }

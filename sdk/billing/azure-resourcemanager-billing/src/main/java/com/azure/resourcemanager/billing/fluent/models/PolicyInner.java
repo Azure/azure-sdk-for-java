@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.MarketplacePurchasesPolicy;
@@ -15,31 +14,24 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A policy. */
-@JsonFlatten
 @Fluent
-public class PolicyInner extends ProxyResource {
+public final class PolicyInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyInner.class);
 
     /*
-     * The policy that controls whether Azure marketplace purchases are allowed
-     * for a billing profile.
+     * The properties of a policy.
      */
-    @JsonProperty(value = "properties.marketplacePurchases")
-    private MarketplacePurchasesPolicy marketplacePurchases;
+    @JsonProperty(value = "properties")
+    private PolicyProperties innerProperties;
 
-    /*
-     * The policy that controls whether Azure reservation purchases are allowed
-     * for a billing profile.
+    /**
+     * Get the innerProperties property: The properties of a policy.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.reservationPurchases")
-    private ReservationPurchasesPolicy reservationPurchases;
-
-    /*
-     * The policy that controls whether users with Azure RBAC access to a
-     * subscription can view its charges.
-     */
-    @JsonProperty(value = "properties.viewCharges")
-    private ViewChargesPolicy viewCharges;
+    private PolicyProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the marketplacePurchases property: The policy that controls whether Azure marketplace purchases are allowed
@@ -48,7 +40,7 @@ public class PolicyInner extends ProxyResource {
      * @return the marketplacePurchases value.
      */
     public MarketplacePurchasesPolicy marketplacePurchases() {
-        return this.marketplacePurchases;
+        return this.innerProperties() == null ? null : this.innerProperties().marketplacePurchases();
     }
 
     /**
@@ -59,7 +51,10 @@ public class PolicyInner extends ProxyResource {
      * @return the PolicyInner object itself.
      */
     public PolicyInner withMarketplacePurchases(MarketplacePurchasesPolicy marketplacePurchases) {
-        this.marketplacePurchases = marketplacePurchases;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyProperties();
+        }
+        this.innerProperties().withMarketplacePurchases(marketplacePurchases);
         return this;
     }
 
@@ -70,7 +65,7 @@ public class PolicyInner extends ProxyResource {
      * @return the reservationPurchases value.
      */
     public ReservationPurchasesPolicy reservationPurchases() {
-        return this.reservationPurchases;
+        return this.innerProperties() == null ? null : this.innerProperties().reservationPurchases();
     }
 
     /**
@@ -81,7 +76,10 @@ public class PolicyInner extends ProxyResource {
      * @return the PolicyInner object itself.
      */
     public PolicyInner withReservationPurchases(ReservationPurchasesPolicy reservationPurchases) {
-        this.reservationPurchases = reservationPurchases;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyProperties();
+        }
+        this.innerProperties().withReservationPurchases(reservationPurchases);
         return this;
     }
 
@@ -92,7 +90,7 @@ public class PolicyInner extends ProxyResource {
      * @return the viewCharges value.
      */
     public ViewChargesPolicy viewCharges() {
-        return this.viewCharges;
+        return this.innerProperties() == null ? null : this.innerProperties().viewCharges();
     }
 
     /**
@@ -103,7 +101,10 @@ public class PolicyInner extends ProxyResource {
      * @return the PolicyInner object itself.
      */
     public PolicyInner withViewCharges(ViewChargesPolicy viewCharges) {
-        this.viewCharges = viewCharges;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyProperties();
+        }
+        this.innerProperties().withViewCharges(viewCharges);
         return this;
     }
 
@@ -113,5 +114,8 @@ public class PolicyInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

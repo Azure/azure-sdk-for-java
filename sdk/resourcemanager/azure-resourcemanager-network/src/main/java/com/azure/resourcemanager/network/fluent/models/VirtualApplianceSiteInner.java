@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.Office365PolicyProperties;
@@ -14,10 +13,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Virtual Appliance Site resource. */
-@JsonFlatten
 @Fluent
-public class VirtualApplianceSiteInner extends SubResource {
+public final class VirtualApplianceSiteInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualApplianceSiteInner.class);
+
+    /*
+     * The properties of the Virtual Appliance Sites.
+     */
+    @JsonProperty(value = "properties")
+    private VirtualApplianceSiteProperties innerProperties;
 
     /*
      * Name of the virtual appliance site.
@@ -37,23 +41,14 @@ public class VirtualApplianceSiteInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * Address Prefix.
+    /**
+     * Get the innerProperties property: The properties of the Virtual Appliance Sites.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.addressPrefix")
-    private String addressPrefix;
-
-    /*
-     * Office 365 Policy.
-     */
-    @JsonProperty(value = "properties.o365Policy")
-    private Office365PolicyProperties o365Policy;
-
-    /*
-     * The provisioning state of the resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private VirtualApplianceSiteProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Name of the virtual appliance site.
@@ -93,13 +88,20 @@ public class VirtualApplianceSiteInner extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public VirtualApplianceSiteInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the addressPrefix property: Address Prefix.
      *
      * @return the addressPrefix value.
      */
     public String addressPrefix() {
-        return this.addressPrefix;
+        return this.innerProperties() == null ? null : this.innerProperties().addressPrefix();
     }
 
     /**
@@ -109,7 +111,10 @@ public class VirtualApplianceSiteInner extends SubResource {
      * @return the VirtualApplianceSiteInner object itself.
      */
     public VirtualApplianceSiteInner withAddressPrefix(String addressPrefix) {
-        this.addressPrefix = addressPrefix;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualApplianceSiteProperties();
+        }
+        this.innerProperties().withAddressPrefix(addressPrefix);
         return this;
     }
 
@@ -119,7 +124,7 @@ public class VirtualApplianceSiteInner extends SubResource {
      * @return the o365Policy value.
      */
     public Office365PolicyProperties o365Policy() {
-        return this.o365Policy;
+        return this.innerProperties() == null ? null : this.innerProperties().o365Policy();
     }
 
     /**
@@ -129,7 +134,10 @@ public class VirtualApplianceSiteInner extends SubResource {
      * @return the VirtualApplianceSiteInner object itself.
      */
     public VirtualApplianceSiteInner withO365Policy(Office365PolicyProperties o365Policy) {
-        this.o365Policy = o365Policy;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualApplianceSiteProperties();
+        }
+        this.innerProperties().withO365Policy(o365Policy);
         return this;
     }
 
@@ -139,14 +147,7 @@ public class VirtualApplianceSiteInner extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public VirtualApplianceSiteInner withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -155,8 +156,8 @@ public class VirtualApplianceSiteInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (o365Policy() != null) {
-            o365Policy().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -249,7 +249,7 @@ public final class BatchManagementImpl implements BatchManagement {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-01-01";
+        this.apiVersion = "2021-06-01";
         this.batchAccounts = new BatchAccountsClientImpl(this);
         this.applicationPackages = new ApplicationPackagesClientImpl(this);
         this.applications = new ApplicationsClientImpl(this);

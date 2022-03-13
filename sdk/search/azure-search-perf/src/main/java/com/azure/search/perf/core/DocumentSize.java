@@ -7,6 +7,13 @@ package com.azure.search.perf.core;
  * Represents the size of a document.
  */
 public enum DocumentSize {
+    /**
+     * Small document
+     */
     SMALL,
+
+    /**
+     * Large document
+     */
     LARGE
 }

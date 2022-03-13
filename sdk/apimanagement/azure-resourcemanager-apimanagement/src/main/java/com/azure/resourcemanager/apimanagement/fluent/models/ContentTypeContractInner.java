@@ -5,85 +5,74 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Content type contract details. */
-@JsonFlatten
 @Fluent
-public class ContentTypeContractInner extends ProxyResource {
+public final class ContentTypeContractInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ContentTypeContractInner.class);
 
     /*
-     * Content type identifier
+     * Properties of the content type.
      */
-    @JsonProperty(value = "properties.id")
-    private String idPropertiesId;
-
-    /*
-     * Content type name. Must be 1 to 250 characters long.
-     */
-    @JsonProperty(value = "properties.name")
-    private String namePropertiesName;
-
-    /*
-     * Content type description.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * Content type schema.
-     */
-    @JsonProperty(value = "properties.schema")
-    private Object schema;
-
-    /*
-     * Content type version.
-     */
-    @JsonProperty(value = "properties.version")
-    private String version;
+    @JsonProperty(value = "properties")
+    private ContentTypeContractProperties innerProperties;
 
     /**
-     * Get the idPropertiesId property: Content type identifier.
+     * Get the innerProperties property: Properties of the content type.
      *
-     * @return the idPropertiesId value.
+     * @return the innerProperties value.
      */
-    public String idPropertiesId() {
-        return this.idPropertiesId;
+    private ContentTypeContractProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Set the idPropertiesId property: Content type identifier.
+     * Get the id property: Content type identifier.
      *
-     * @param idPropertiesId the idPropertiesId value to set.
+     * @return the id value.
+     */
+    public String idPropertiesId() {
+        return this.innerProperties() == null ? null : this.innerProperties().id();
+    }
+
+    /**
+     * Set the id property: Content type identifier.
+     *
+     * @param id the id value to set.
      * @return the ContentTypeContractInner object itself.
      */
-    public ContentTypeContractInner withIdPropertiesId(String idPropertiesId) {
-        this.idPropertiesId = idPropertiesId;
+    public ContentTypeContractInner withIdPropertiesId(String id) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContentTypeContractProperties();
+        }
+        this.innerProperties().withId(id);
         return this;
     }
 
     /**
-     * Get the namePropertiesName property: Content type name. Must be 1 to 250 characters long.
+     * Get the name property: Content type name. Must be 1 to 250 characters long.
      *
-     * @return the namePropertiesName value.
+     * @return the name value.
      */
     public String namePropertiesName() {
-        return this.namePropertiesName;
+        return this.innerProperties() == null ? null : this.innerProperties().name();
     }
 
     /**
-     * Set the namePropertiesName property: Content type name. Must be 1 to 250 characters long.
+     * Set the name property: Content type name. Must be 1 to 250 characters long.
      *
-     * @param namePropertiesName the namePropertiesName value to set.
+     * @param name the name value to set.
      * @return the ContentTypeContractInner object itself.
      */
-    public ContentTypeContractInner withNamePropertiesName(String namePropertiesName) {
-        this.namePropertiesName = namePropertiesName;
+    public ContentTypeContractInner withNamePropertiesName(String name) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContentTypeContractProperties();
+        }
+        this.innerProperties().withName(name);
         return this;
     }
 
@@ -93,7 +82,7 @@ public class ContentTypeContractInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -103,7 +92,10 @@ public class ContentTypeContractInner extends ProxyResource {
      * @return the ContentTypeContractInner object itself.
      */
     public ContentTypeContractInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContentTypeContractProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -113,7 +105,7 @@ public class ContentTypeContractInner extends ProxyResource {
      * @return the schema value.
      */
     public Object schema() {
-        return this.schema;
+        return this.innerProperties() == null ? null : this.innerProperties().schema();
     }
 
     /**
@@ -123,7 +115,10 @@ public class ContentTypeContractInner extends ProxyResource {
      * @return the ContentTypeContractInner object itself.
      */
     public ContentTypeContractInner withSchema(Object schema) {
-        this.schema = schema;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContentTypeContractProperties();
+        }
+        this.innerProperties().withSchema(schema);
         return this;
     }
 
@@ -133,7 +128,7 @@ public class ContentTypeContractInner extends ProxyResource {
      * @return the version value.
      */
     public String version() {
-        return this.version;
+        return this.innerProperties() == null ? null : this.innerProperties().version();
     }
 
     /**
@@ -143,7 +138,10 @@ public class ContentTypeContractInner extends ProxyResource {
      * @return the ContentTypeContractInner object itself.
      */
     public ContentTypeContractInner withVersion(String version) {
-        this.version = version;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContentTypeContractProperties();
+        }
+        this.innerProperties().withVersion(version);
         return this;
     }
 
@@ -153,5 +151,8 @@ public class ContentTypeContractInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

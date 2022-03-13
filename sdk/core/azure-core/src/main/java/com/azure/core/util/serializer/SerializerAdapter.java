@@ -25,7 +25,7 @@ public interface SerializerAdapter {
      *
      * @param object The object to serialize.
      * @param encoding The serialization encoding.
-     * @return The object serialized as a string using the specified encoding. If the object is null null is returned.
+     * @return The object serialized as a string using the specified encoding. If the object is null, null is returned.
      * @throws IOException If an IO exception was thrown during serialization.
      */
     String serialize(Object object, SerializerEncoding encoding) throws IOException;
@@ -66,7 +66,7 @@ public interface SerializerAdapter {
      * Serializes an object into a raw string, leading and trailing quotes will be trimmed.
      *
      * @param object The object to serialize.
-     * @return The object serialized as a string. If the object is null null is returned.
+     * @return The object serialized as a string. If the object is null, null is returned.
      */
     String serializeRaw(Object object);
 
@@ -153,8 +153,8 @@ public interface SerializerAdapter {
         }
 
         /*
-         * Using ByteArrayOutputStream.toString is better as it won't duplicate the underlying buffer as toByteArray
-         * would but it doesn't have support for passing a Charset until Java 10.
+         * Using ByteArrayOutputStream.toString doesn't duplicate the underlying buffer as toByteArray does, but it
+         * doesn't have support for passing a Charset until Java 10.
          */
         return deserialize(converterStream.toString(StandardCharsets.UTF_8.name()), type, encoding);
     }
@@ -189,8 +189,8 @@ public interface SerializerAdapter {
      * @param headers the REST API returned headers
      * @param <T> the type of the deserialized object
      * @param type the type to deserialize
-     * @return instance of header entity type created based on provided {@code headers}, if header entity model does not
-     * not exists then return null
+     * @return instance of header entity type created based on provided {@code headers}, if header entity model does
+     * not exist then return null
      * @throws IOException If an I/O error occurs
      */
     <T> T deserialize(HttpHeaders headers, Type type) throws IOException;

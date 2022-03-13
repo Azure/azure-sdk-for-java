@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.fluent.models.DatabaseInner;
+import com.azure.resourcemanager.kusto.fluent.models.ReadOnlyFollowingDatabaseProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,127 +17,23 @@ import java.time.Duration;
 /** Class representing a read only following database. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("ReadOnlyFollowing")
-@JsonFlatten
 @Fluent
-public class ReadOnlyFollowingDatabase extends DatabaseInner {
+public final class ReadOnlyFollowingDatabase extends DatabaseInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ReadOnlyFollowingDatabase.class);
 
     /*
-     * The provisioned state of the resource.
+     * The database properties.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The time the data should be kept before it stops being accessible to
-     * queries in TimeSpan.
-     */
-    @JsonProperty(value = "properties.softDeletePeriod", access = JsonProperty.Access.WRITE_ONLY)
-    private Duration softDeletePeriod;
-
-    /*
-     * The time the data should be kept in cache for fast queries in TimeSpan.
-     */
-    @JsonProperty(value = "properties.hotCachePeriod")
-    private Duration hotCachePeriod;
-
-    /*
-     * The statistics of the database.
-     */
-    @JsonProperty(value = "properties.statistics", access = JsonProperty.Access.WRITE_ONLY)
-    private DatabaseStatistics statistics;
-
-    /*
-     * The name of the leader cluster
-     */
-    @JsonProperty(value = "properties.leaderClusterResourceId", access = JsonProperty.Access.WRITE_ONLY)
-    private String leaderClusterResourceId;
-
-    /*
-     * The name of the attached database configuration cluster
-     */
-    @JsonProperty(value = "properties.attachedDatabaseConfigurationName", access = JsonProperty.Access.WRITE_ONLY)
-    private String attachedDatabaseConfigurationName;
-
-    /*
-     * The principals modification kind of the database
-     */
-    @JsonProperty(value = "properties.principalsModificationKind", access = JsonProperty.Access.WRITE_ONLY)
-    private PrincipalsModificationKind principalsModificationKind;
+    @JsonProperty(value = "properties")
+    private ReadOnlyFollowingDatabaseProperties innerProperties;
 
     /**
-     * Get the provisioningState property: The provisioned state of the resource.
+     * Get the innerProperties property: The database properties.
      *
-     * @return the provisioningState value.
+     * @return the innerProperties value.
      */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the softDeletePeriod property: The time the data should be kept before it stops being accessible to queries
-     * in TimeSpan.
-     *
-     * @return the softDeletePeriod value.
-     */
-    public Duration softDeletePeriod() {
-        return this.softDeletePeriod;
-    }
-
-    /**
-     * Get the hotCachePeriod property: The time the data should be kept in cache for fast queries in TimeSpan.
-     *
-     * @return the hotCachePeriod value.
-     */
-    public Duration hotCachePeriod() {
-        return this.hotCachePeriod;
-    }
-
-    /**
-     * Set the hotCachePeriod property: The time the data should be kept in cache for fast queries in TimeSpan.
-     *
-     * @param hotCachePeriod the hotCachePeriod value to set.
-     * @return the ReadOnlyFollowingDatabase object itself.
-     */
-    public ReadOnlyFollowingDatabase withHotCachePeriod(Duration hotCachePeriod) {
-        this.hotCachePeriod = hotCachePeriod;
-        return this;
-    }
-
-    /**
-     * Get the statistics property: The statistics of the database.
-     *
-     * @return the statistics value.
-     */
-    public DatabaseStatistics statistics() {
-        return this.statistics;
-    }
-
-    /**
-     * Get the leaderClusterResourceId property: The name of the leader cluster.
-     *
-     * @return the leaderClusterResourceId value.
-     */
-    public String leaderClusterResourceId() {
-        return this.leaderClusterResourceId;
-    }
-
-    /**
-     * Get the attachedDatabaseConfigurationName property: The name of the attached database configuration cluster.
-     *
-     * @return the attachedDatabaseConfigurationName value.
-     */
-    public String attachedDatabaseConfigurationName() {
-        return this.attachedDatabaseConfigurationName;
-    }
-
-    /**
-     * Get the principalsModificationKind property: The principals modification kind of the database.
-     *
-     * @return the principalsModificationKind value.
-     */
-    public PrincipalsModificationKind principalsModificationKind() {
-        return this.principalsModificationKind;
+    private ReadOnlyFollowingDatabaseProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -148,6 +44,84 @@ public class ReadOnlyFollowingDatabase extends DatabaseInner {
     }
 
     /**
+     * Get the provisioningState property: The provisioned state of the resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the softDeletePeriod property: The time the data should be kept before it stops being accessible to queries
+     * in TimeSpan.
+     *
+     * @return the softDeletePeriod value.
+     */
+    public Duration softDeletePeriod() {
+        return this.innerProperties() == null ? null : this.innerProperties().softDeletePeriod();
+    }
+
+    /**
+     * Get the hotCachePeriod property: The time the data should be kept in cache for fast queries in TimeSpan.
+     *
+     * @return the hotCachePeriod value.
+     */
+    public Duration hotCachePeriod() {
+        return this.innerProperties() == null ? null : this.innerProperties().hotCachePeriod();
+    }
+
+    /**
+     * Set the hotCachePeriod property: The time the data should be kept in cache for fast queries in TimeSpan.
+     *
+     * @param hotCachePeriod the hotCachePeriod value to set.
+     * @return the ReadOnlyFollowingDatabase object itself.
+     */
+    public ReadOnlyFollowingDatabase withHotCachePeriod(Duration hotCachePeriod) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ReadOnlyFollowingDatabaseProperties();
+        }
+        this.innerProperties().withHotCachePeriod(hotCachePeriod);
+        return this;
+    }
+
+    /**
+     * Get the statistics property: The statistics of the database.
+     *
+     * @return the statistics value.
+     */
+    public DatabaseStatistics statistics() {
+        return this.innerProperties() == null ? null : this.innerProperties().statistics();
+    }
+
+    /**
+     * Get the leaderClusterResourceId property: The name of the leader cluster.
+     *
+     * @return the leaderClusterResourceId value.
+     */
+    public String leaderClusterResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().leaderClusterResourceId();
+    }
+
+    /**
+     * Get the attachedDatabaseConfigurationName property: The name of the attached database configuration cluster.
+     *
+     * @return the attachedDatabaseConfigurationName value.
+     */
+    public String attachedDatabaseConfigurationName() {
+        return this.innerProperties() == null ? null : this.innerProperties().attachedDatabaseConfigurationName();
+    }
+
+    /**
+     * Get the principalsModificationKind property: The principals modification kind of the database.
+     *
+     * @return the principalsModificationKind value.
+     */
+    public PrincipalsModificationKind principalsModificationKind() {
+        return this.innerProperties() == null ? null : this.innerProperties().principalsModificationKind();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -155,8 +129,8 @@ public class ReadOnlyFollowingDatabase extends DatabaseInner {
     @Override
     public void validate() {
         super.validate();
-        if (statistics() != null) {
-            statistics().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

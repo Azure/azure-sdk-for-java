@@ -102,7 +102,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataMaskingPolicyInner>> createOrUpdateWithResponseAsync(
@@ -134,6 +134,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String dataMaskingPolicyName = "Default";
         final String accept = "application/json";
         return FluxUtil
@@ -142,7 +143,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
                     service
                         .createOrUpdate(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -165,7 +166,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataMaskingPolicyInner>> createOrUpdateWithResponseAsync(
@@ -201,13 +202,14 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String dataMaskingPolicyName = "Default";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -228,7 +230,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DataMaskingPolicyInner> createOrUpdateAsync(
@@ -273,7 +275,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataMaskingPolicyInner> createOrUpdateWithResponse(
@@ -295,7 +297,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool data masking policy.
+     * @return a Sql pool data masking policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataMaskingPolicyInner>> getWithResponseAsync(
@@ -322,6 +324,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String dataMaskingPolicyName = "Default";
         final String accept = "application/json";
         return FluxUtil
@@ -330,7 +333,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -351,7 +354,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool data masking policy.
+     * @return a Sql pool data masking policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataMaskingPolicyInner>> getWithResponseAsync(
@@ -378,13 +381,14 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String dataMaskingPolicyName = "Default";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -403,7 +407,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool data masking policy.
+     * @return a Sql pool data masking policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DataMaskingPolicyInner> getAsync(String resourceGroupName, String workspaceName, String sqlPoolName) {
@@ -444,7 +448,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool data masking policy.
+     * @return a Sql pool data masking policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataMaskingPolicyInner> getWithResponse(

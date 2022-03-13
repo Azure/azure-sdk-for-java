@@ -28,20 +28,20 @@ public final class KeyVaultRoleDefinition {
      * @param name The name for this {@link KeyVaultRoleDefinition role definition}.
      * @param type The type of this {@link KeyVaultRoleDefinition role definition}.
      * @param roleName The name of the role.
-     * @param roleDescription The description of the role.
+     * @param description The description of this {@link KeyVaultRoleDefinition role definition}.
      * @param roleType The type of the role.
      * @param permissions The {@link KeyVaultPermission permissions} the {@link KeyVaultRoleDefinition role definition}
      * has.
      * @param assignableScopes The assignable scopes of the {@link KeyVaultRoleDefinition role definition}.
      */
     public KeyVaultRoleDefinition(String id, String name, KeyVaultRoleDefinitionType type, String roleName,
-                                  String roleDescription, KeyVaultRoleType roleType,
-                                  List<KeyVaultPermission> permissions, List<KeyVaultRoleScope> assignableScopes) {
+                                  String description, KeyVaultRoleType roleType, List<KeyVaultPermission> permissions,
+                                  List<KeyVaultRoleScope> assignableScopes) {
         this.id = id;
         this.name = name;
         this.type = type;
         this.roleName = roleName;
-        this.description = roleDescription;
+        this.description = description;
         this.roleType = roleType;
         this.permissions = permissions;
         this.assignableScopes = assignableScopes;

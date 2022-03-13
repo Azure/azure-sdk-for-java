@@ -55,6 +55,27 @@ class DtmiConventionTests {
 
     @ParameterizedTest
     @CsvSource({
+        "https://localhost/repository/, https://localhost/repository/metadata.json",
+        "https://localhost/REPOSITORY,  https://localhost/REPOSITORY/metadata.json",
+        "file:///path/to/repository/,   file:///path/to/repository/metadata.json",
+        "file://path/to/RepoSitory,     file://path/to/RepoSitory/metadata.json",
+        "C:/path/to/repository/,        C:/path/to/repository/metadata.json",
+        "//server//repository,          //server//repository/metadata.json"
+    })
+    public void getMetadataUriTests(String repository, String expectedUri) {
+        URI repositoryUri = TestHelper.convertToUri(repository);
+
+        if (expectedUri == null || expectedUri.isEmpty()) {
+            Assertions.assertThrows(IllegalArgumentException.class, () -> DtmiConventions.getMetadataUri(repositoryUri));
+            return;
+        }
+
+        URI metadataUri = DtmiConventions.getMetadataUri(repositoryUri);
+        Assertions.assertEquals(expectedUri, metadataUri.toString());
+    }
+
+    @ParameterizedTest
+    @CsvSource({
         "dtmi:com:example:Thermostat;1, true",
         "dtmi:contoso:scope:entity;2, true",
         "dtmi:com:example:Thermostat:1, false",

@@ -3,6 +3,7 @@
 
 package com.azure.core.util.serializer;
 
+import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.lang.reflect.ParameterizedType;
@@ -15,9 +16,22 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * <p><strong>Code sample</strong></p>
  *
- * {@codesnippet com.azure.core.util.serializer.constructor}
+ * <!-- src_embed com.azure.core.util.serializer.constructor -->
+ * <pre>
+ * &#47;&#47; Construct a TypeReference&lt;T&gt; for a Java generic type.
+ * &#47;&#47; This pattern should only be used for generic types, for classes use the createInstance factory method.
+ * TypeReference&lt;Map&lt;String, Object&gt;&gt; typeReference = new TypeReference&lt;Map&lt;String, Object&gt;&gt;&#40;&#41; &#123; &#125;;
+ * </pre>
+ * <!-- end com.azure.core.util.serializer.constructor -->
  *
- * {@codesnippet com.azure.core.util.serializer.createInstance#class}
+ * <!-- src_embed com.azure.core.util.serializer.createInstance#class -->
+ * <pre>
+ * &#47;&#47; Construct a TypeReference&lt;T&gt; for a Java class.
+ * &#47;&#47; This pattern should only be used for non-generic classes when possible, use the constructor for generic
+ * &#47;&#47; class when possible.
+ * TypeReference&lt;Integer&gt; typeReference = TypeReference.createInstance&#40;int.class&#41;;
+ * </pre>
+ * <!-- end com.azure.core.util.serializer.createInstance#class -->
  *
  * @param <T> The type being represented.
  */
@@ -28,12 +42,14 @@ public abstract class TypeReference<T> {
     private static final Map<Class<?>, TypeReference<?>> CACHE = new ConcurrentHashMap<>();
 
     private final Type javaType;
+    private final Class<T> clazz;
 
     /**
      * Constructs a new {@link TypeReference} which maintains generic information.
      *
      * @throws IllegalArgumentException If the reference is constructed without type information.
      */
+    @SuppressWarnings("unchecked")
     public TypeReference() {
         Type superClass = this.getClass().getGenericSuperclass();
         if (superClass instanceof Class) {
@@ -41,10 +57,12 @@ public abstract class TypeReference<T> {
         } else {
             this.javaType = ((ParameterizedType) superClass).getActualTypeArguments()[0];
         }
+        this.clazz = (Class<T>) TypeUtil.getRawClass(javaType);
     }
 
     private TypeReference(Class<T> clazz) {
         this.javaType = clazz;
+        this.clazz = clazz;
     }
 
     /**
@@ -74,5 +92,15 @@ public abstract class TypeReference<T> {
          * compute function wildcards to T type which causes the type system to breakdown.
          */
         return (TypeReference<T>) CACHE.computeIfAbsent(clazz, c -> new TypeReference<T>(clazz) { });
+    }
+
+    /**
+     * Returns the {@link Class} representing instance of the {@link TypeReference} created.
+     *
+     * @return The {@link Class} representing instance of the {@link TypeReference} created
+     * using the {@link TypeReference#createInstance(Class)}, otherwise returns {@code null}.
+     */
+    public Class<T> getJavaClass() {
+        return this.clazz;
     }
 }

@@ -12,7 +12,7 @@ import java.util.Objects;
  * An Azure Digital Twins Query Unit (QU) is a unit of on-demand computation that's used to execute your Azure Digital Twins queries.
  */
 public final class QueryChargeHelper {
-    private static final String queryChargeHeader = "query-charge";
+    private static final String QUERY_CHARGE_HEADER = "query-charge";
 
     /**
      * Extract the query-charge field from a page header.
@@ -23,8 +23,8 @@ public final class QueryChargeHelper {
     public static <T> Float getQueryCharge(PagedResponse<T> page) {
         Objects.requireNonNull(page, "'page' cannot be null");
 
-        String queryCharge = page.getHeaders().getValue(queryChargeHeader);
+        String queryCharge = page.getHeaders().getValue(QUERY_CHARGE_HEADER);
 
-        return queryCharge !=null ? Float.parseFloat(queryCharge) : null;
+        return queryCharge != null ? Float.parseFloat(queryCharge) : null;
     }
 }

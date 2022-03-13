@@ -35,6 +35,8 @@ public final class AccountSasPermission {
 
     private boolean deleteVersionPermission;
 
+    private boolean permanentDeletePermission;
+
     private boolean listPermission;
 
     private boolean updatePermission;
@@ -44,6 +46,8 @@ public final class AccountSasPermission {
     private boolean tagsPermission;
 
     private boolean filterTagsPermission;
+
+    private boolean immutabilityPolicyPermission;
 
     /**
      * Initializes an {@link AccountSasPermission} object with all fields set to false.
@@ -59,8 +63,8 @@ public final class AccountSasPermission {
      *
      * @return An {@link AccountSasPermission} object generated from the given {@link String}.
      *
-     * @throws IllegalArgumentException If {@code permissionString} contains a character other than r, w, d, x, l, a, c, u, p,
-     * t or f.
+     * @throws IllegalArgumentException If {@code permString} contains a character other than r, w, d, x, l, a, c, u, p,
+     * t, f or i.
      */
     public static AccountSasPermission parse(String permissionString) {
         AccountSasPermission permissions = new AccountSasPermission();
@@ -79,6 +83,9 @@ public final class AccountSasPermission {
                     break;
                 case 'x':
                     permissions.deleteVersionPermission = true;
+                    break;
+                case 'y':
+                    permissions.permanentDeletePermission = true;
                     break;
                 case 'l':
                     permissions.listPermission = true;
@@ -100,6 +107,9 @@ public final class AccountSasPermission {
                     break;
                 case 'f':
                     permissions.filterTagsPermission = true;
+                    break;
+                case 'i':
+                    permissions.immutabilityPolicyPermission = true;
                     break;
                 default:
                     throw new IllegalArgumentException(
@@ -225,6 +235,24 @@ public final class AccountSasPermission {
     }
 
     /**
+     * @return the permanent delete permission status.
+     */
+    public boolean hasPermanentDeletePermission() {
+        return permanentDeletePermission;
+    }
+
+    /**
+     * Sets the permanent delete permission status.
+     *
+     * @param permanentDeletePermission Permission status to set
+     * @return the updated AccountSasPermission object.
+     */
+    public AccountSasPermission setPermanentDeletePermission(boolean permanentDeletePermission) {
+        this.permanentDeletePermission = permanentDeletePermission;
+        return this;
+    }
+
+    /**
      * @return the list permission status
      */
     public boolean hasListPermission() {
@@ -304,7 +332,6 @@ public final class AccountSasPermission {
         return this;
     }
 
-
     /**
      * @return the filter tags permission status.
      */
@@ -320,6 +347,24 @@ public final class AccountSasPermission {
      */
     public AccountSasPermission setFilterTagsPermission(boolean filterTagsPermission) {
         this.filterTagsPermission = filterTagsPermission;
+        return this;
+    }
+
+    /**
+     * @return the set immutability policy permission status.
+     */
+    public boolean hasImmutabilityPolicyPermission() {
+        return immutabilityPolicyPermission;
+    }
+
+    /**
+     * Sets the set immutability policy permission status.
+     *
+     * @param immutabilityPolicyPermission Permission status to set
+     * @return the updated AccountSasPermission object.
+     */
+    public AccountSasPermission setImmutabilityPolicyPermission(boolean immutabilityPolicyPermission) {
+        this.immutabilityPolicyPermission = immutabilityPolicyPermission;
         return this;
     }
 
@@ -351,6 +396,10 @@ public final class AccountSasPermission {
             builder.append('x');
         }
 
+        if (this.permanentDeletePermission) {
+            builder.append('y');
+        }
+
         if (this.listPermission) {
             builder.append('l');
         }
@@ -377,6 +426,10 @@ public final class AccountSasPermission {
 
         if (this.filterTagsPermission) {
             builder.append('f');
+        }
+
+        if (this.immutabilityPolicyPermission) {
+            builder.append('i');
         }
 
         return builder.toString();

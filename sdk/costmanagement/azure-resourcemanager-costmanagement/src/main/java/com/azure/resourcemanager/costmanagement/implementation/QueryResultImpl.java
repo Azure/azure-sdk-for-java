@@ -46,6 +46,15 @@ public final class QueryResultImpl implements QueryResult {
         return this.innerModel().sku();
     }
 
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
+    }
+
     public String nextLink() {
         return this.innerModel().nextLink();
     }
@@ -65,15 +74,6 @@ public final class QueryResultImpl implements QueryResult {
             return Collections.unmodifiableList(inner);
         } else {
             return Collections.emptyList();
-        }
-    }
-
-    public Map<String, String> tags() {
-        Map<String, String> inner = this.innerModel().tags();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
         }
     }
 

@@ -5,7 +5,7 @@
 ### Setup
 ```ps
 Fork and clone https://github.com/Azure/autorest.java
-git checkout v4
+git checkout main
 git submodule update --init --recursive
 mvn package -Dlocal
 npm install
@@ -32,7 +32,7 @@ add-context-parameter: true
 models-subpackage: implementation.models
 context-client-method-parameter: true
 custom-types-subpackage: models
-custom-types: AnomalyDetectorDirection,AnomalyStatus,AnomalyValue,ChangePointValue,ChangeThresholdCondition,DataFeedIngestionProgress,DataFeedDimension,EnrichmentStatus,FeedbackType,HardThresholdCondition,AnomalyIncidentStatus,IngestionStatusType,DataFeedMetric,PeriodType,AnomalySeverity,SeverityCondition,SmartDetectionCondition,SnoozeScope,SuppressCondition,AlertQueryTimeMode,TopNGroupScope,DataFeedIngestionStatus,MetricAnomalyAlertSnoozeCondition,MetricSeriesDefinition,FeedbackQueryTimeMode,AnomalyAlert,DataFeedGranularityType,DataFeedRollupType,DataFeedAutoRollUpMethod,DataFeedStatus,MetricsAdvisorErrorCodeException,MetricsAdvisorErrorCode
+custom-types: AnomalyDetectorDirection,AnomalyStatus,AnomalyValue,ChangePointValue,DataFeedIngestionProgress,EnrichmentStatus,FeedbackType,AnomalyIncidentStatus,IngestionStatusType,PeriodType,AnomalySeverity,SnoozeScope,AlertQueryTimeMode,DataFeedIngestionStatus,MetricSeriesDefinition,FeedbackQueryTimeMode,AnomalyAlert,DataFeedGranularityType,DataFeedRollupType,DataFeedAutoRollUpMethod,DataFeedStatus,MetricsAdvisorErrorCodeException,MetricsAdvisorErrorCode
 ```
 
 ### Generated types renamed and moved to model

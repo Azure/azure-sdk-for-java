@@ -5,32 +5,56 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AzureActiveDirectoryLogin model. */
-@JsonFlatten
+/** The configuration settings of the Azure Active Directory login flow. */
 @Fluent
-public class AzureActiveDirectoryLogin extends ProxyOnlyResource {
+public final class AzureActiveDirectoryLogin {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureActiveDirectoryLogin.class);
 
     /*
-     * The disableWWWAuthenticate property.
+     * Login parameters to send to the OpenID Connect authorization endpoint
+     * when
+     * a user logs in. Each parameter must be in the form "key=value".
      */
-    @JsonProperty(value = "properties.disableWWWAuthenticate")
-    private Boolean disableWwwAuthenticate;
-
-    /*
-     * The loginParameters property.
-     */
-    @JsonProperty(value = "properties.loginParameters")
+    @JsonProperty(value = "loginParameters")
     private List<String> loginParameters;
 
+    /*
+     * <code>true</code> if the www-authenticate provider should be omitted
+     * from the request; otherwise, <code>false</code>.
+     */
+    @JsonProperty(value = "disableWWWAuthenticate")
+    private Boolean disableWwwAuthenticate;
+
     /**
-     * Get the disableWwwAuthenticate property: The disableWWWAuthenticate property.
+     * Get the loginParameters property: Login parameters to send to the OpenID Connect authorization endpoint when a
+     * user logs in. Each parameter must be in the form "key=value".
+     *
+     * @return the loginParameters value.
+     */
+    public List<String> loginParameters() {
+        return this.loginParameters;
+    }
+
+    /**
+     * Set the loginParameters property: Login parameters to send to the OpenID Connect authorization endpoint when a
+     * user logs in. Each parameter must be in the form "key=value".
+     *
+     * @param loginParameters the loginParameters value to set.
+     * @return the AzureActiveDirectoryLogin object itself.
+     */
+    public AzureActiveDirectoryLogin withLoginParameters(List<String> loginParameters) {
+        this.loginParameters = loginParameters;
+        return this;
+    }
+
+    /**
+     * Get the disableWwwAuthenticate property: &lt;code&gt;true&lt;/code&gt; if the www-authenticate provider should be
+     * omitted from the request; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the disableWwwAuthenticate value.
      */
@@ -39,7 +63,8 @@ public class AzureActiveDirectoryLogin extends ProxyOnlyResource {
     }
 
     /**
-     * Set the disableWwwAuthenticate property: The disableWWWAuthenticate property.
+     * Set the disableWwwAuthenticate property: &lt;code&gt;true&lt;/code&gt; if the www-authenticate provider should be
+     * omitted from the request; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @param disableWwwAuthenticate the disableWwwAuthenticate value to set.
      * @return the AzureActiveDirectoryLogin object itself.
@@ -50,39 +75,10 @@ public class AzureActiveDirectoryLogin extends ProxyOnlyResource {
     }
 
     /**
-     * Get the loginParameters property: The loginParameters property.
-     *
-     * @return the loginParameters value.
-     */
-    public List<String> loginParameters() {
-        return this.loginParameters;
-    }
-
-    /**
-     * Set the loginParameters property: The loginParameters property.
-     *
-     * @param loginParameters the loginParameters value to set.
-     * @return the AzureActiveDirectoryLogin object itself.
-     */
-    public AzureActiveDirectoryLogin withLoginParameters(List<String> loginParameters) {
-        this.loginParameters = loginParameters;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureActiveDirectoryLogin withKind(String kind) {
-        super.withKind(kind);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
     }
 }

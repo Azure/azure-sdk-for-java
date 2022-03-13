@@ -9,14 +9,15 @@ import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Transport;
 import org.apache.qpid.proton.reactor.impl.IOHandler;
 
+import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
+import static com.azure.core.amqp.implementation.ClientConstants.HOSTNAME_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
 
 public class CustomIOHandler extends IOHandler {
-    private final ClientLogger logger = new ClientLogger(CustomIOHandler.class);
-    private final String connectionId;
+    private final ClientLogger logger;
 
     public CustomIOHandler(final String connectionId) {
-        this.connectionId = connectionId;
+        this.logger = new ClientLogger(CustomIOHandler.class, createContextWithConnectionId(connectionId));
     }
 
     @Override
@@ -24,8 +25,9 @@ public class CustomIOHandler extends IOHandler {
         final Transport transport = event.getTransport();
         final Connection connection = event.getConnection();
 
-        logger.info("onTransportClosed connectionId[{}], hostname[{}]",
-            connectionId, (connection != null ? connection.getHostname() : NOT_APPLICABLE));
+        logger.atInfo()
+            .addKeyValue(HOSTNAME_KEY, connection != null ? connection.getHostname() : NOT_APPLICABLE)
+            .log("onTransportClosed");
 
         if (transport != null && connection != null && connection.getTransport() != null) {
             transport.unbind();

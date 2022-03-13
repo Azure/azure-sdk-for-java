@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.WebActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -16,229 +16,23 @@ import java.util.List;
 /** Web activity. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("WebActivity")
-@JsonFlatten
 @Fluent
-public class WebActivity extends ExecutionActivity {
+public final class WebActivity extends ExecutionActivity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WebActivity.class);
 
     /*
-     * Rest API method for target endpoint.
+     * Web activity properties.
      */
-    @JsonProperty(value = "typeProperties.method", required = true)
-    private WebActivityMethod method;
-
-    /*
-     * Web activity target endpoint and path. Type: string (or Expression with
-     * resultType string).
-     */
-    @JsonProperty(value = "typeProperties.url", required = true)
-    private Object url;
-
-    /*
-     * Represents the headers that will be sent to the request. For example, to
-     * set the language and type on a request: "headers" : { "Accept-Language":
-     * "en-us", "Content-Type": "application/json" }. Type: string (or
-     * Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.headers")
-    private Object headers;
-
-    /*
-     * Represents the payload that will be sent to the endpoint. Required for
-     * POST/PUT method, not allowed for GET method Type: string (or Expression
-     * with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.body")
-    private Object body;
-
-    /*
-     * Authentication method used for calling the endpoint.
-     */
-    @JsonProperty(value = "typeProperties.authentication")
-    private WebActivityAuthentication authentication;
-
-    /*
-     * List of datasets passed to web endpoint.
-     */
-    @JsonProperty(value = "typeProperties.datasets")
-    private List<DatasetReference> datasets;
-
-    /*
-     * List of linked services passed to web endpoint.
-     */
-    @JsonProperty(value = "typeProperties.linkedServices")
-    private List<LinkedServiceReference> linkedServices;
-
-    /*
-     * The integration runtime reference.
-     */
-    @JsonProperty(value = "typeProperties.connectVia")
-    private IntegrationRuntimeReference connectVia;
+    @JsonProperty(value = "typeProperties", required = true)
+    private WebActivityTypeProperties innerTypeProperties = new WebActivityTypeProperties();
 
     /**
-     * Get the method property: Rest API method for target endpoint.
+     * Get the innerTypeProperties property: Web activity properties.
      *
-     * @return the method value.
+     * @return the innerTypeProperties value.
      */
-    public WebActivityMethod method() {
-        return this.method;
-    }
-
-    /**
-     * Set the method property: Rest API method for target endpoint.
-     *
-     * @param method the method value to set.
-     * @return the WebActivity object itself.
-     */
-    public WebActivity withMethod(WebActivityMethod method) {
-        this.method = method;
-        return this;
-    }
-
-    /**
-     * Get the url property: Web activity target endpoint and path. Type: string (or Expression with resultType string).
-     *
-     * @return the url value.
-     */
-    public Object url() {
-        return this.url;
-    }
-
-    /**
-     * Set the url property: Web activity target endpoint and path. Type: string (or Expression with resultType string).
-     *
-     * @param url the url value to set.
-     * @return the WebActivity object itself.
-     */
-    public WebActivity withUrl(Object url) {
-        this.url = url;
-        return this;
-    }
-
-    /**
-     * Get the headers property: Represents the headers that will be sent to the request. For example, to set the
-     * language and type on a request: "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }.
-     * Type: string (or Expression with resultType string).
-     *
-     * @return the headers value.
-     */
-    public Object headers() {
-        return this.headers;
-    }
-
-    /**
-     * Set the headers property: Represents the headers that will be sent to the request. For example, to set the
-     * language and type on a request: "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }.
-     * Type: string (or Expression with resultType string).
-     *
-     * @param headers the headers value to set.
-     * @return the WebActivity object itself.
-     */
-    public WebActivity withHeaders(Object headers) {
-        this.headers = headers;
-        return this;
-    }
-
-    /**
-     * Get the body property: Represents the payload that will be sent to the endpoint. Required for POST/PUT method,
-     * not allowed for GET method Type: string (or Expression with resultType string).
-     *
-     * @return the body value.
-     */
-    public Object body() {
-        return this.body;
-    }
-
-    /**
-     * Set the body property: Represents the payload that will be sent to the endpoint. Required for POST/PUT method,
-     * not allowed for GET method Type: string (or Expression with resultType string).
-     *
-     * @param body the body value to set.
-     * @return the WebActivity object itself.
-     */
-    public WebActivity withBody(Object body) {
-        this.body = body;
-        return this;
-    }
-
-    /**
-     * Get the authentication property: Authentication method used for calling the endpoint.
-     *
-     * @return the authentication value.
-     */
-    public WebActivityAuthentication authentication() {
-        return this.authentication;
-    }
-
-    /**
-     * Set the authentication property: Authentication method used for calling the endpoint.
-     *
-     * @param authentication the authentication value to set.
-     * @return the WebActivity object itself.
-     */
-    public WebActivity withAuthentication(WebActivityAuthentication authentication) {
-        this.authentication = authentication;
-        return this;
-    }
-
-    /**
-     * Get the datasets property: List of datasets passed to web endpoint.
-     *
-     * @return the datasets value.
-     */
-    public List<DatasetReference> datasets() {
-        return this.datasets;
-    }
-
-    /**
-     * Set the datasets property: List of datasets passed to web endpoint.
-     *
-     * @param datasets the datasets value to set.
-     * @return the WebActivity object itself.
-     */
-    public WebActivity withDatasets(List<DatasetReference> datasets) {
-        this.datasets = datasets;
-        return this;
-    }
-
-    /**
-     * Get the linkedServices property: List of linked services passed to web endpoint.
-     *
-     * @return the linkedServices value.
-     */
-    public List<LinkedServiceReference> linkedServices() {
-        return this.linkedServices;
-    }
-
-    /**
-     * Set the linkedServices property: List of linked services passed to web endpoint.
-     *
-     * @param linkedServices the linkedServices value to set.
-     * @return the WebActivity object itself.
-     */
-    public WebActivity withLinkedServices(List<LinkedServiceReference> linkedServices) {
-        this.linkedServices = linkedServices;
-        return this;
-    }
-
-    /**
-     * Get the connectVia property: The integration runtime reference.
-     *
-     * @return the connectVia value.
-     */
-    public IntegrationRuntimeReference connectVia() {
-        return this.connectVia;
-    }
-
-    /**
-     * Set the connectVia property: The integration runtime reference.
-     *
-     * @param connectVia the connectVia value to set.
-     * @return the WebActivity object itself.
-     */
-    public WebActivity withConnectVia(IntegrationRuntimeReference connectVia) {
-        this.connectVia = connectVia;
-        return this;
+    private WebActivityTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -284,6 +78,196 @@ public class WebActivity extends ExecutionActivity {
     }
 
     /**
+     * Get the method property: Rest API method for target endpoint.
+     *
+     * @return the method value.
+     */
+    public WebActivityMethod method() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().method();
+    }
+
+    /**
+     * Set the method property: Rest API method for target endpoint.
+     *
+     * @param method the method value to set.
+     * @return the WebActivity object itself.
+     */
+    public WebActivity withMethod(WebActivityMethod method) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new WebActivityTypeProperties();
+        }
+        this.innerTypeProperties().withMethod(method);
+        return this;
+    }
+
+    /**
+     * Get the url property: Web activity target endpoint and path. Type: string (or Expression with resultType string).
+     *
+     * @return the url value.
+     */
+    public Object url() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().url();
+    }
+
+    /**
+     * Set the url property: Web activity target endpoint and path. Type: string (or Expression with resultType string).
+     *
+     * @param url the url value to set.
+     * @return the WebActivity object itself.
+     */
+    public WebActivity withUrl(Object url) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new WebActivityTypeProperties();
+        }
+        this.innerTypeProperties().withUrl(url);
+        return this;
+    }
+
+    /**
+     * Get the headers property: Represents the headers that will be sent to the request. For example, to set the
+     * language and type on a request: "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }.
+     * Type: string (or Expression with resultType string).
+     *
+     * @return the headers value.
+     */
+    public Object headers() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().headers();
+    }
+
+    /**
+     * Set the headers property: Represents the headers that will be sent to the request. For example, to set the
+     * language and type on a request: "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }.
+     * Type: string (or Expression with resultType string).
+     *
+     * @param headers the headers value to set.
+     * @return the WebActivity object itself.
+     */
+    public WebActivity withHeaders(Object headers) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new WebActivityTypeProperties();
+        }
+        this.innerTypeProperties().withHeaders(headers);
+        return this;
+    }
+
+    /**
+     * Get the body property: Represents the payload that will be sent to the endpoint. Required for POST/PUT method,
+     * not allowed for GET method Type: string (or Expression with resultType string).
+     *
+     * @return the body value.
+     */
+    public Object body() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().body();
+    }
+
+    /**
+     * Set the body property: Represents the payload that will be sent to the endpoint. Required for POST/PUT method,
+     * not allowed for GET method Type: string (or Expression with resultType string).
+     *
+     * @param body the body value to set.
+     * @return the WebActivity object itself.
+     */
+    public WebActivity withBody(Object body) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new WebActivityTypeProperties();
+        }
+        this.innerTypeProperties().withBody(body);
+        return this;
+    }
+
+    /**
+     * Get the authentication property: Authentication method used for calling the endpoint.
+     *
+     * @return the authentication value.
+     */
+    public WebActivityAuthentication authentication() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().authentication();
+    }
+
+    /**
+     * Set the authentication property: Authentication method used for calling the endpoint.
+     *
+     * @param authentication the authentication value to set.
+     * @return the WebActivity object itself.
+     */
+    public WebActivity withAuthentication(WebActivityAuthentication authentication) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new WebActivityTypeProperties();
+        }
+        this.innerTypeProperties().withAuthentication(authentication);
+        return this;
+    }
+
+    /**
+     * Get the datasets property: List of datasets passed to web endpoint.
+     *
+     * @return the datasets value.
+     */
+    public List<DatasetReference> datasets() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().datasets();
+    }
+
+    /**
+     * Set the datasets property: List of datasets passed to web endpoint.
+     *
+     * @param datasets the datasets value to set.
+     * @return the WebActivity object itself.
+     */
+    public WebActivity withDatasets(List<DatasetReference> datasets) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new WebActivityTypeProperties();
+        }
+        this.innerTypeProperties().withDatasets(datasets);
+        return this;
+    }
+
+    /**
+     * Get the linkedServices property: List of linked services passed to web endpoint.
+     *
+     * @return the linkedServices value.
+     */
+    public List<LinkedServiceReference> linkedServices() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().linkedServices();
+    }
+
+    /**
+     * Set the linkedServices property: List of linked services passed to web endpoint.
+     *
+     * @param linkedServices the linkedServices value to set.
+     * @return the WebActivity object itself.
+     */
+    public WebActivity withLinkedServices(List<LinkedServiceReference> linkedServices) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new WebActivityTypeProperties();
+        }
+        this.innerTypeProperties().withLinkedServices(linkedServices);
+        return this;
+    }
+
+    /**
+     * Get the connectVia property: The integration runtime reference.
+     *
+     * @return the connectVia value.
+     */
+    public IntegrationRuntimeReference connectVia() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().connectVia();
+    }
+
+    /**
+     * Set the connectVia property: The integration runtime reference.
+     *
+     * @param connectVia the connectVia value to set.
+     * @return the WebActivity object itself.
+     */
+    public WebActivity withConnectVia(IntegrationRuntimeReference connectVia) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new WebActivityTypeProperties();
+        }
+        this.innerTypeProperties().withConnectVia(connectVia);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -291,27 +275,12 @@ public class WebActivity extends ExecutionActivity {
     @Override
     public void validate() {
         super.validate();
-        if (method() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property method in model WebActivity"));
-        }
-        if (url() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property url in model WebActivity"));
-        }
-        if (authentication() != null) {
-            authentication().validate();
-        }
-        if (datasets() != null) {
-            datasets().forEach(e -> e.validate());
-        }
-        if (linkedServices() != null) {
-            linkedServices().forEach(e -> e.validate());
-        }
-        if (connectVia() != null) {
-            connectVia().validate();
+                    new IllegalArgumentException("Missing required property innerTypeProperties in model WebActivity"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

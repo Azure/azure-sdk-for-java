@@ -23,7 +23,7 @@ Please [import](https://www.jetbrains.com/help/idea/copying-code-style-settings.
 Before working on a contribution, it would be beneficial to familiarize yourself with the project so that your
 submission is consistent with the project standards and is ready to be accepted with fewer changes requested. 
 
-- [Azure Spring Boot README](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/README.md), to learn more about the overall project and processes used.
+- [Azure Spring Boot README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/README.md), to learn more about the overall project and processes used.
 
 ## Development environment setup
 
@@ -41,7 +41,7 @@ If it's the first time you try to build the project or you pull new commits from
 1. Execute `git clone https://github.com/Azure/azure-sdk-for-java.git`
 1. Traverse to the root directory
 1. Build the whole product by executing the following command which may take several minutes:
-    * `mvn clean install -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -Djacoco.skip=true -DskipTests -Dparallel-test-playback`
+    * `mvn clean install -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -Djacoco.skip=true -DskipTests -Dparallel-test-playback`
 
 After executing the above steps, you can build the spring project only for the developing purpose:
 1. Traverse to spring directory:
@@ -67,7 +67,7 @@ Developing version naming convention is like `0.1.2-beta.1`. Release version nam
 
 ## Contribute to code
 Contribution is welcome. Please follow
-[this instruction](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md) to contribute code.
+[this instruction](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md) to contribute code.
 
 <!-- Links -->
 [maven]: https://maven.apache.org/

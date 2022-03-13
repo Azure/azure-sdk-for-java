@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** IaaS VM workload-specific backup policy. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "backupManagementType")
@@ -48,6 +49,12 @@ public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
      */
     @JsonProperty(value = "timeZone")
     private String timeZone;
+
+    /*
+     * The policyType property.
+     */
+    @JsonProperty(value = "policyType")
+    private IaasvmPolicyType policyType;
 
     /**
      * Get the instantRPDetails property: The instantRPDetails property.
@@ -149,10 +156,37 @@ public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
         return this;
     }
 
+    /**
+     * Get the policyType property: The policyType property.
+     *
+     * @return the policyType value.
+     */
+    public IaasvmPolicyType policyType() {
+        return this.policyType;
+    }
+
+    /**
+     * Set the policyType property: The policyType property.
+     *
+     * @param policyType the policyType value to set.
+     * @return the AzureIaaSvmProtectionPolicy object itself.
+     */
+    public AzureIaaSvmProtectionPolicy withPolicyType(IaasvmPolicyType policyType) {
+        this.policyType = policyType;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public AzureIaaSvmProtectionPolicy withProtectedItemsCount(Integer protectedItemsCount) {
         super.withProtectedItemsCount(protectedItemsCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureIaaSvmProtectionPolicy withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
+        super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
         return this;
     }
 

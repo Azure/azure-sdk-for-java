@@ -8,13 +8,6 @@ import java.nio.ByteBuffer
 
 class AvroParserStateTest extends Specification {
 
-    def setup() {
-        String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
-        String className = specificationContext.getCurrentSpec().getName()
-        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
-        System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
-    }
-
     def "constructor"() {
         setup:
         AvroParserState state = new AvroParserState()

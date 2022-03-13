@@ -7,6 +7,8 @@ package com.azure.resourcemanager.streamanalytics.implementation;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.streamanalytics.fluent.models.TransformationInner;
 import com.azure.resourcemanager.streamanalytics.models.Transformation;
+import java.util.Collections;
+import java.util.List;
 
 public final class TransformationImpl implements Transformation, Transformation.Definition, Transformation.Update {
     private TransformationInner innerObject;
@@ -17,8 +19,25 @@ public final class TransformationImpl implements Transformation, Transformation.
         return this.innerModel().id();
     }
 
+    public String name() {
+        return this.innerModel().name();
+    }
+
+    public String type() {
+        return this.innerModel().type();
+    }
+
     public Integer streamingUnits() {
         return this.innerModel().streamingUnits();
+    }
+
+    public List<Integer> validStreamingUnits() {
+        List<Integer> inner = this.innerModel().validStreamingUnits();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public String query() {
@@ -27,14 +46,6 @@ public final class TransformationImpl implements Transformation, Transformation.
 
     public String etag() {
         return this.innerModel().etag();
-    }
-
-    public String name() {
-        return this.innerModel().name();
-    }
-
-    public String type() {
-        return this.innerModel().type();
     }
 
     public TransformationInner innerModel() {
@@ -162,8 +173,18 @@ public final class TransformationImpl implements Transformation, Transformation.
         return this;
     }
 
+    public TransformationImpl withName(String name) {
+        this.innerModel().withName(name);
+        return this;
+    }
+
     public TransformationImpl withStreamingUnits(Integer streamingUnits) {
         this.innerModel().withStreamingUnits(streamingUnits);
+        return this;
+    }
+
+    public TransformationImpl withValidStreamingUnits(List<Integer> validStreamingUnits) {
+        this.innerModel().withValidStreamingUnits(validStreamingUnits);
         return this;
     }
 
@@ -172,14 +193,14 @@ public final class TransformationImpl implements Transformation, Transformation.
         return this;
     }
 
-    public TransformationImpl withName(String name) {
-        this.innerModel().withName(name);
-        return this;
-    }
-
     public TransformationImpl withIfMatch(String ifMatch) {
-        this.createIfMatch = ifMatch;
-        return this;
+        if (isInCreateMode()) {
+            this.createIfMatch = ifMatch;
+            return this;
+        } else {
+            this.updateIfMatch = ifMatch;
+            return this;
+        }
     }
 
     public TransformationImpl withIfNoneMatch(String ifNoneMatch) {
@@ -187,8 +208,7 @@ public final class TransformationImpl implements Transformation, Transformation.
         return this;
     }
 
-    public TransformationImpl ifMatch(String ifMatch) {
-        this.updateIfMatch = ifMatch;
-        return this;
+    private boolean isInCreateMode() {
+        return this.innerModel().id() == null;
     }
 }

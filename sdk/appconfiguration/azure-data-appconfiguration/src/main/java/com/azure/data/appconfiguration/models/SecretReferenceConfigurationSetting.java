@@ -4,8 +4,13 @@
 package com.azure.data.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 
+import java.io.IOException;
 import java.util.Map;
+
+import static com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonDeserializer.readSecretReferenceConfigurationSettingValue;
+import static com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer.writeSecretReferenceConfigurationSetting;
 
 /**
  * {@link SecretReferenceConfigurationSetting} model. It represents a configuration setting that references as
@@ -13,7 +18,9 @@ import java.util.Map;
  */
 @Fluent
 public final class SecretReferenceConfigurationSetting extends ConfigurationSetting {
-    private final String secretId;
+    private static final ClientLogger LOGGER = new ClientLogger(SecretReferenceConfigurationSetting.class);
+
+    private String secretId;
     private static final String SECRET_REFERENCE_CONTENT_TYPE =
         "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8";
 
@@ -40,6 +47,20 @@ public final class SecretReferenceConfigurationSetting extends ConfigurationSett
     }
 
     /**
+     * Set the secret ID value of this configuration setting.
+     *
+     * @param secretId the secret ID value of this configuration setting.
+     *
+     * @return The updated {@link SecretReferenceConfigurationSetting} object.
+     * @throws IllegalArgumentException if the setting's {@code value} is an invalid JSON format.
+     */
+    public SecretReferenceConfigurationSetting setSecretId(String secretId) {
+        this.secretId = secretId;
+        updateSettingValue();
+        return this;
+    }
+
+    /**
      * Sets the key of this setting.
      *
      * @param key The key to associate with this configuration setting.
@@ -58,10 +79,15 @@ public final class SecretReferenceConfigurationSetting extends ConfigurationSett
      * @param value The value to associate with this configuration setting.
      *
      * @return The updated {@link SecretReferenceConfigurationSetting} object.
+     * @throws IllegalArgumentException if the setting's {@code value} is an invalid JSON format.
      */
     @Override
     public SecretReferenceConfigurationSetting setValue(String value) {
         super.setValue(value);
+        // update strongly-typed properties.
+        final SecretReferenceConfigurationSetting updatedSetting = readSecretReferenceConfigurationSettingValue(
+            super.getKey(), value);
+        this.secretId = updatedSetting.getSecretId();
         return this;
     }
 
@@ -112,5 +138,14 @@ public final class SecretReferenceConfigurationSetting extends ConfigurationSett
     public SecretReferenceConfigurationSetting setTags(Map<String, String> tags) {
         super.setTags(tags);
         return this;
+    }
+
+    private void updateSettingValue() {
+        try {
+            super.setValue(writeSecretReferenceConfigurationSetting(this));
+        } catch (IOException exception) {
+            LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Can't parse Secret Reference configuration setting value.", exception));
+        }
     }
 }

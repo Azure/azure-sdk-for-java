@@ -5,69 +5,30 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.apimanagement.fluent.models.SubscriptionCreateParameterProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Subscription create details. */
-@JsonFlatten
 @Fluent
-public class SubscriptionCreateParameters {
+public final class SubscriptionCreateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionCreateParameters.class);
 
     /*
-     * User (user id path) for whom subscription is being created in form
-     * /users/{userId}
+     * Subscription contract properties.
      */
-    @JsonProperty(value = "properties.ownerId")
-    private String ownerId;
+    @JsonProperty(value = "properties")
+    private SubscriptionCreateParameterProperties innerProperties;
 
-    /*
-     * Scope like /products/{productId} or /apis or /apis/{apiId}.
+    /**
+     * Get the innerProperties property: Subscription contract properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.scope")
-    private String scope;
-
-    /*
-     * Subscription name.
-     */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
-
-    /*
-     * Primary subscription key. If not specified during request key will be
-     * generated automatically.
-     */
-    @JsonProperty(value = "properties.primaryKey")
-    private String primaryKey;
-
-    /*
-     * Secondary subscription key. If not specified during request key will be
-     * generated automatically.
-     */
-    @JsonProperty(value = "properties.secondaryKey")
-    private String secondaryKey;
-
-    /*
-     * Initial subscription state. If no value is specified, subscription is
-     * created with Submitted state. Possible states are * active – the
-     * subscription is active, * suspended – the subscription is blocked, and
-     * the subscriber cannot call any APIs of the product, * submitted – the
-     * subscription request has been made by the developer, but has not yet
-     * been approved or rejected, * rejected – the subscription request has
-     * been denied by an administrator, * cancelled – the subscription has been
-     * cancelled by the developer or administrator, * expired – the
-     * subscription reached its expiration date and was deactivated.
-     */
-    @JsonProperty(value = "properties.state")
-    private SubscriptionState state;
-
-    /*
-     * Determines whether tracing can be enabled
-     */
-    @JsonProperty(value = "properties.allowTracing")
-    private Boolean allowTracing;
+    private SubscriptionCreateParameterProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the ownerId property: User (user id path) for whom subscription is being created in form /users/{userId}.
@@ -75,7 +36,7 @@ public class SubscriptionCreateParameters {
      * @return the ownerId value.
      */
     public String ownerId() {
-        return this.ownerId;
+        return this.innerProperties() == null ? null : this.innerProperties().ownerId();
     }
 
     /**
@@ -85,7 +46,10 @@ public class SubscriptionCreateParameters {
      * @return the SubscriptionCreateParameters object itself.
      */
     public SubscriptionCreateParameters withOwnerId(String ownerId) {
-        this.ownerId = ownerId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubscriptionCreateParameterProperties();
+        }
+        this.innerProperties().withOwnerId(ownerId);
         return this;
     }
 
@@ -95,7 +59,7 @@ public class SubscriptionCreateParameters {
      * @return the scope value.
      */
     public String scope() {
-        return this.scope;
+        return this.innerProperties() == null ? null : this.innerProperties().scope();
     }
 
     /**
@@ -105,7 +69,10 @@ public class SubscriptionCreateParameters {
      * @return the SubscriptionCreateParameters object itself.
      */
     public SubscriptionCreateParameters withScope(String scope) {
-        this.scope = scope;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubscriptionCreateParameterProperties();
+        }
+        this.innerProperties().withScope(scope);
         return this;
     }
 
@@ -115,7 +82,7 @@ public class SubscriptionCreateParameters {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -125,7 +92,10 @@ public class SubscriptionCreateParameters {
      * @return the SubscriptionCreateParameters object itself.
      */
     public SubscriptionCreateParameters withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubscriptionCreateParameterProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -136,7 +106,7 @@ public class SubscriptionCreateParameters {
      * @return the primaryKey value.
      */
     public String primaryKey() {
-        return this.primaryKey;
+        return this.innerProperties() == null ? null : this.innerProperties().primaryKey();
     }
 
     /**
@@ -147,7 +117,10 @@ public class SubscriptionCreateParameters {
      * @return the SubscriptionCreateParameters object itself.
      */
     public SubscriptionCreateParameters withPrimaryKey(String primaryKey) {
-        this.primaryKey = primaryKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubscriptionCreateParameterProperties();
+        }
+        this.innerProperties().withPrimaryKey(primaryKey);
         return this;
     }
 
@@ -158,7 +131,7 @@ public class SubscriptionCreateParameters {
      * @return the secondaryKey value.
      */
     public String secondaryKey() {
-        return this.secondaryKey;
+        return this.innerProperties() == null ? null : this.innerProperties().secondaryKey();
     }
 
     /**
@@ -169,7 +142,10 @@ public class SubscriptionCreateParameters {
      * @return the SubscriptionCreateParameters object itself.
      */
     public SubscriptionCreateParameters withSecondaryKey(String secondaryKey) {
-        this.secondaryKey = secondaryKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubscriptionCreateParameterProperties();
+        }
+        this.innerProperties().withSecondaryKey(secondaryKey);
         return this;
     }
 
@@ -184,7 +160,7 @@ public class SubscriptionCreateParameters {
      * @return the state value.
      */
     public SubscriptionState state() {
-        return this.state;
+        return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
     /**
@@ -199,7 +175,10 @@ public class SubscriptionCreateParameters {
      * @return the SubscriptionCreateParameters object itself.
      */
     public SubscriptionCreateParameters withState(SubscriptionState state) {
-        this.state = state;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubscriptionCreateParameterProperties();
+        }
+        this.innerProperties().withState(state);
         return this;
     }
 
@@ -209,7 +188,7 @@ public class SubscriptionCreateParameters {
      * @return the allowTracing value.
      */
     public Boolean allowTracing() {
-        return this.allowTracing;
+        return this.innerProperties() == null ? null : this.innerProperties().allowTracing();
     }
 
     /**
@@ -219,7 +198,10 @@ public class SubscriptionCreateParameters {
      * @return the SubscriptionCreateParameters object itself.
      */
     public SubscriptionCreateParameters withAllowTracing(Boolean allowTracing) {
-        this.allowTracing = allowTracing;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubscriptionCreateParameterProperties();
+        }
+        this.innerProperties().withAllowTracing(allowTracing);
         return this;
     }
 
@@ -229,5 +211,8 @@ public class SubscriptionCreateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

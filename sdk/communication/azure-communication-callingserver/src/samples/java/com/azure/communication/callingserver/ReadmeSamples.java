@@ -3,11 +3,17 @@
 
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.models.EventSubscriptionType;
 import com.azure.communication.callingserver.models.CreateCallOptions;
+import com.azure.communication.callingserver.models.EventSubscriptionType;
 import com.azure.communication.callingserver.models.MediaType;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.core.credential.TokenCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
@@ -25,6 +31,7 @@ public class ReadmeSamples {
      * @return the calling server client.
      */
     public CallingServerClient createCallingServerClient() {
+        // BEGIN: readme-sample-createCallingServerClient
         // Your connectionString retrieved from your Azure Communication Service
         String connectionString = "endpoint=https://<resource-name>.communication.azure.com/;accesskey=<access-key>";
 
@@ -32,6 +39,7 @@ public class ReadmeSamples {
         final CallingServerClientBuilder builder = new CallingServerClientBuilder();
         builder.connectionString(connectionString);
         CallingServerClient callingServerClient = builder.buildClient();
+        // END: readme-sample-createCallingServerClient
 
         return callingServerClient;
     }
@@ -40,23 +48,22 @@ public class ReadmeSamples {
      * Sample code for creating a call connection using the sync call client.
      */
     public void createCallConnection() {
-
         CallingServerClient callingServerClient = createCallingServerClient();
 
+        // BEGIN: readme-sample-createCallConnection
         CommunicationIdentifier source = new CommunicationUserIdentifier("<acs-user-identity>");
         CommunicationIdentifier firstCallee = new CommunicationUserIdentifier("<acs-user-identity-1>");
         CommunicationIdentifier secondCallee = new CommunicationUserIdentifier("<acs-user-identity-2>");
 
-        CommunicationIdentifier[] targets = new CommunicationIdentifier[] { firstCallee, secondCallee };
+        List<CommunicationIdentifier> targets = Arrays.asList(firstCallee, secondCallee);
 
         String callbackUri = "<callback-uri-for-notification>";
 
-        MediaType[] requestedMediaTypes = new MediaType[] { MediaType.AUDIO, MediaType.VIDEO };
+        List<MediaType> requestedMediaTypes = Arrays.asList(MediaType.AUDIO, MediaType.VIDEO);
 
-        EventSubscriptionType[] requestedCallEvents = new EventSubscriptionType[] {
+        List<EventSubscriptionType> requestedCallEvents = Arrays.asList(
             EventSubscriptionType.DTMF_RECEIVED,
-            EventSubscriptionType.PARTICIPANTS_UPDATED
-        };
+            EventSubscriptionType.PARTICIPANTS_UPDATED);
 
         CreateCallOptions createCallOptions = new CreateCallOptions(
             callbackUri,
@@ -64,6 +71,7 @@ public class ReadmeSamples {
             requestedCallEvents);
 
         CallConnection callConnection = callingServerClient.createCallConnection(source, targets, createCallOptions);
+        // END: readme-sample-createCallConnection
     }
 
     /**
@@ -73,7 +81,10 @@ public class ReadmeSamples {
         String callConnectionId = "callId";
         CallingServerClient callingServerClient = createCallingServerClient();
         CallConnection callConnection = callingServerClient.getCallConnection(callConnectionId);
+
+        // BEGIN: readme-sample-hangupCallConnection
         callConnection.hangup();
+        // END: readme-sample-hangupCallConnection
     }
 
     /**
@@ -83,7 +94,52 @@ public class ReadmeSamples {
         String callConnectionId = "callId";
         CallingServerClient callingServerClient = createCallingServerClient();
         CallConnection callConnection = callingServerClient.getCallConnection(callConnectionId);
+
+        // BEGIN: readme-sample-addParticipant
         CommunicationIdentifier thirdCallee = new CommunicationUserIdentifier("<acs-user-identity-3>");
         callConnection.addParticipant(thirdCallee, "ACS User 3", "<string-for-tracing-responses>");
+        // END: readme-sample-addParticipant
+    }
+
+    /**
+     * Sample code for downloading a recording into a file.
+     */
+    public void getRecordingStream() {
+        String recordingUrl = "https://ams.skype.com/objects/v1/document_id/video";
+        String filePath = "filePath.mp4";
+        CallingServerClient callingServerClient = createCallingServerClient();
+
+        // BEGIN: readme-sample-getRecordingStream
+        callingServerClient.downloadTo(
+            recordingUrl,
+            Paths.get(filePath),
+            null,
+            true
+        );
+        // END: readme-sample-getRecordingStream
+    }
+
+    /**
+     * Sample code for creating async calling server client with token credential.
+     *
+     * @return the calling server client.
+     */
+    public CallingServerClient createCallingServerClientWithTokenCredential() {
+        // BEGIN: readme-sample-createCallingServerClientWithTokenCredential
+        // Your endpoint retrieved from your Azure Communication Service
+        String endpoint = "https://<resource-name>.communication.azure.com";
+
+        // Token credential used for managed identity authentication. Depends on `AZURE_CLIENT_SECRET`,
+        // `AZURE_CLIENT_ID`, and `AZURE_TENANT_ID` environment variables to be set up.
+        TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+
+        // Initialize the calling server client
+        CallingServerClient callingServerClient  = new CallingServerClientBuilder()
+            .endpoint(endpoint)
+            .credential(tokenCredential)
+            .buildClient();
+        // END: readme-sample-createCallingServerClientWithTokenCredential
+
+        return callingServerClient;
     }
 }

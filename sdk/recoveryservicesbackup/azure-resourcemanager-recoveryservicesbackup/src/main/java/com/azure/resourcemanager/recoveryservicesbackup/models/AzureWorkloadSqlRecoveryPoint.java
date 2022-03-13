@@ -82,7 +82,7 @@ public class AzureWorkloadSqlRecoveryPoint extends AzureWorkloadRecoveryPoint {
     /** {@inheritDoc} */
     @Override
     public AzureWorkloadSqlRecoveryPoint withRecoveryPointTierDetails(
-        List<RecoveryPointTierInformation> recoveryPointTierDetails) {
+        List<RecoveryPointTierInformationV2> recoveryPointTierDetails) {
         super.withRecoveryPointTierDetails(recoveryPointTierDetails);
         return this;
     }

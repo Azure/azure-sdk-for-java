@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a virtual machine scale set virtual machine profile. */
 @Fluent
 public final class VirtualMachineScaleSetVMProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetVMProfile.class);
-
     /*
      * Specifies the operating system settings for the virtual machines in the
      * scale set.
@@ -108,6 +104,27 @@ public final class VirtualMachineScaleSetVMProfile {
      */
     @JsonProperty(value = "userData")
     private String userData;
+
+    /*
+     * Specifies the capacity reservation related details of a scale set.
+     * <br><br>Minimum api-version: 2021-04-01.
+     */
+    @JsonProperty(value = "capacityReservation")
+    private CapacityReservationProfile capacityReservation;
+
+    /*
+     * Specifies the gallery applications that should be made available to the
+     * VM/VMSS
+     */
+    @JsonProperty(value = "applicationProfile")
+    private ApplicationProfile applicationProfile;
+
+    /*
+     * Specifies the hardware profile related details of a scale set.
+     * <br><br>Minimum api-version: 2021-11-01.
+     */
+    @JsonProperty(value = "hardwareProfile")
+    private VirtualMachineScaleSetHardwareProfile hardwareProfile;
 
     /**
      * Get the osProfile property: Specifies the operating system settings for the virtual machines in the scale set.
@@ -387,6 +404,72 @@ public final class VirtualMachineScaleSetVMProfile {
     }
 
     /**
+     * Get the capacityReservation property: Specifies the capacity reservation related details of a scale set.
+     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-04-01.
+     *
+     * @return the capacityReservation value.
+     */
+    public CapacityReservationProfile capacityReservation() {
+        return this.capacityReservation;
+    }
+
+    /**
+     * Set the capacityReservation property: Specifies the capacity reservation related details of a scale set.
+     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-04-01.
+     *
+     * @param capacityReservation the capacityReservation value to set.
+     * @return the VirtualMachineScaleSetVMProfile object itself.
+     */
+    public VirtualMachineScaleSetVMProfile withCapacityReservation(CapacityReservationProfile capacityReservation) {
+        this.capacityReservation = capacityReservation;
+        return this;
+    }
+
+    /**
+     * Get the applicationProfile property: Specifies the gallery applications that should be made available to the
+     * VM/VMSS.
+     *
+     * @return the applicationProfile value.
+     */
+    public ApplicationProfile applicationProfile() {
+        return this.applicationProfile;
+    }
+
+    /**
+     * Set the applicationProfile property: Specifies the gallery applications that should be made available to the
+     * VM/VMSS.
+     *
+     * @param applicationProfile the applicationProfile value to set.
+     * @return the VirtualMachineScaleSetVMProfile object itself.
+     */
+    public VirtualMachineScaleSetVMProfile withApplicationProfile(ApplicationProfile applicationProfile) {
+        this.applicationProfile = applicationProfile;
+        return this;
+    }
+
+    /**
+     * Get the hardwareProfile property: Specifies the hardware profile related details of a scale set.
+     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-11-01.
+     *
+     * @return the hardwareProfile value.
+     */
+    public VirtualMachineScaleSetHardwareProfile hardwareProfile() {
+        return this.hardwareProfile;
+    }
+
+    /**
+     * Set the hardwareProfile property: Specifies the hardware profile related details of a scale set.
+     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-11-01.
+     *
+     * @param hardwareProfile the hardwareProfile value to set.
+     * @return the VirtualMachineScaleSetVMProfile object itself.
+     */
+    public VirtualMachineScaleSetVMProfile withHardwareProfile(VirtualMachineScaleSetHardwareProfile hardwareProfile) {
+        this.hardwareProfile = hardwareProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -415,6 +498,15 @@ public final class VirtualMachineScaleSetVMProfile {
         }
         if (scheduledEventsProfile() != null) {
             scheduledEventsProfile().validate();
+        }
+        if (capacityReservation() != null) {
+            capacityReservation().validate();
+        }
+        if (applicationProfile() != null) {
+            applicationProfile().validate();
+        }
+        if (hardwareProfile() != null) {
+            hardwareProfile().validate();
         }
     }
 }

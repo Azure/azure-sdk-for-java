@@ -28,7 +28,7 @@ public final class RecognizePiiEntitiesResult extends TextAnalyticsResult {
     }
 
     /**
-     * Get an {@link IterableStream} of {@link PiiEntity}.
+     * Gets an {@link IterableStream} of {@link PiiEntity}.
      *
      * @return An {@link IterableStream} of {@link PiiEntity}.
      *

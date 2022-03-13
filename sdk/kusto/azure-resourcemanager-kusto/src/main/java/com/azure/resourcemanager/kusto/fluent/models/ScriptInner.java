@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
@@ -14,10 +13,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class representing a database script. */
-@JsonFlatten
 @Fluent
-public class ScriptInner extends ProxyResource {
+public final class ScriptInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ScriptInner.class);
+
+    /*
+     * The database script.
+     */
+    @JsonProperty(value = "properties")
+    private ScriptProperties innerProperties;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
@@ -25,35 +29,14 @@ public class ScriptInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /*
-     * The url to the KQL script blob file.
+    /**
+     * Get the innerProperties property: The database script.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.scriptUrl")
-    private String scriptUrl;
-
-    /*
-     * The SaS token.
-     */
-    @JsonProperty(value = "properties.scriptUrlSasToken")
-    private String scriptUrlSasToken;
-
-    /*
-     * A unique string. If changed the script will be applied again.
-     */
-    @JsonProperty(value = "properties.forceUpdateTag")
-    private String forceUpdateTag;
-
-    /*
-     * Flag that indicates whether to continue if one of the command fails.
-     */
-    @JsonProperty(value = "properties.continueOnErrors")
-    private Boolean continueOnErrors;
-
-    /*
-     * The provisioned state of the resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private ScriptProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
@@ -65,42 +48,77 @@ public class ScriptInner extends ProxyResource {
     }
 
     /**
-     * Get the scriptUrl property: The url to the KQL script blob file.
+     * Get the scriptUrl property: The url to the KQL script blob file. Must not be used together with scriptContent
+     * property.
      *
      * @return the scriptUrl value.
      */
     public String scriptUrl() {
-        return this.scriptUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().scriptUrl();
     }
 
     /**
-     * Set the scriptUrl property: The url to the KQL script blob file.
+     * Set the scriptUrl property: The url to the KQL script blob file. Must not be used together with scriptContent
+     * property.
      *
      * @param scriptUrl the scriptUrl value to set.
      * @return the ScriptInner object itself.
      */
     public ScriptInner withScriptUrl(String scriptUrl) {
-        this.scriptUrl = scriptUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScriptProperties();
+        }
+        this.innerProperties().withScriptUrl(scriptUrl);
         return this;
     }
 
     /**
-     * Get the scriptUrlSasToken property: The SaS token.
+     * Get the scriptUrlSasToken property: The SaS token that provide read access to the file which contain the script.
+     * Must be provided when using scriptUrl property.
      *
      * @return the scriptUrlSasToken value.
      */
     public String scriptUrlSasToken() {
-        return this.scriptUrlSasToken;
+        return this.innerProperties() == null ? null : this.innerProperties().scriptUrlSasToken();
     }
 
     /**
-     * Set the scriptUrlSasToken property: The SaS token.
+     * Set the scriptUrlSasToken property: The SaS token that provide read access to the file which contain the script.
+     * Must be provided when using scriptUrl property.
      *
      * @param scriptUrlSasToken the scriptUrlSasToken value to set.
      * @return the ScriptInner object itself.
      */
     public ScriptInner withScriptUrlSasToken(String scriptUrlSasToken) {
-        this.scriptUrlSasToken = scriptUrlSasToken;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScriptProperties();
+        }
+        this.innerProperties().withScriptUrlSasToken(scriptUrlSasToken);
+        return this;
+    }
+
+    /**
+     * Get the scriptContent property: The script content. This property should be used when the script is provide
+     * inline and not through file in a SA. Must not be used together with scriptUrl and scriptUrlSasToken properties.
+     *
+     * @return the scriptContent value.
+     */
+    public String scriptContent() {
+        return this.innerProperties() == null ? null : this.innerProperties().scriptContent();
+    }
+
+    /**
+     * Set the scriptContent property: The script content. This property should be used when the script is provide
+     * inline and not through file in a SA. Must not be used together with scriptUrl and scriptUrlSasToken properties.
+     *
+     * @param scriptContent the scriptContent value to set.
+     * @return the ScriptInner object itself.
+     */
+    public ScriptInner withScriptContent(String scriptContent) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScriptProperties();
+        }
+        this.innerProperties().withScriptContent(scriptContent);
         return this;
     }
 
@@ -110,7 +128,7 @@ public class ScriptInner extends ProxyResource {
      * @return the forceUpdateTag value.
      */
     public String forceUpdateTag() {
-        return this.forceUpdateTag;
+        return this.innerProperties() == null ? null : this.innerProperties().forceUpdateTag();
     }
 
     /**
@@ -120,7 +138,10 @@ public class ScriptInner extends ProxyResource {
      * @return the ScriptInner object itself.
      */
     public ScriptInner withForceUpdateTag(String forceUpdateTag) {
-        this.forceUpdateTag = forceUpdateTag;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScriptProperties();
+        }
+        this.innerProperties().withForceUpdateTag(forceUpdateTag);
         return this;
     }
 
@@ -130,7 +151,7 @@ public class ScriptInner extends ProxyResource {
      * @return the continueOnErrors value.
      */
     public Boolean continueOnErrors() {
-        return this.continueOnErrors;
+        return this.innerProperties() == null ? null : this.innerProperties().continueOnErrors();
     }
 
     /**
@@ -140,7 +161,10 @@ public class ScriptInner extends ProxyResource {
      * @return the ScriptInner object itself.
      */
     public ScriptInner withContinueOnErrors(Boolean continueOnErrors) {
-        this.continueOnErrors = continueOnErrors;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScriptProperties();
+        }
+        this.innerProperties().withContinueOnErrors(continueOnErrors);
         return this;
     }
 
@@ -150,7 +174,7 @@ public class ScriptInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -159,5 +183,8 @@ public class ScriptInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

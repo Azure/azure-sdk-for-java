@@ -13,7 +13,7 @@ public final class AnalyzeActionsOptions {
     private boolean includeStatistics;
 
     /**
-     * Get the value of {@code includeStatistics}.
+     * Gets the value of {@code includeStatistics}.
      *
      * @return The value of {@code includeStatistics}.
      */
@@ -22,7 +22,7 @@ public final class AnalyzeActionsOptions {
     }
 
     /**
-     * Set the value of {@code includeStatistics}. The default value is false by default.
+     * Sets the value of {@code includeStatistics}. The default value is false by default.
      * If set to true, indicates that the service should return document and document batch statistics
      * with the results of the operation.
      *

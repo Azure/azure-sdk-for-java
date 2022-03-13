@@ -5,24 +5,37 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Publishing Credentials Policies parameters. */
-@JsonFlatten
 @Fluent
-public class CsmPublishingCredentialsPoliciesEntityInner extends ProxyOnlyResource {
+public final class CsmPublishingCredentialsPoliciesEntityInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CsmPublishingCredentialsPoliciesEntityInner.class);
 
     /*
-     * <code>true</code> to allow access to a publishing method; otherwise,
-     * <code>false</code>.
+     * CsmPublishingCredentialsPoliciesEntity resource specific properties
      */
-    @JsonProperty(value = "properties.allow")
-    private Boolean allow;
+    @JsonProperty(value = "properties")
+    private CsmPublishingCredentialsPoliciesEntityProperties innerProperties;
+
+    /**
+     * Get the innerProperties property: CsmPublishingCredentialsPoliciesEntity resource specific properties.
+     *
+     * @return the innerProperties value.
+     */
+    private CsmPublishingCredentialsPoliciesEntityProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CsmPublishingCredentialsPoliciesEntityInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the allow property: &lt;code&gt;true&lt;/code&gt; to allow access to a publishing method; otherwise,
@@ -31,7 +44,7 @@ public class CsmPublishingCredentialsPoliciesEntityInner extends ProxyOnlyResour
      * @return the allow value.
      */
     public Boolean allow() {
-        return this.allow;
+        return this.innerProperties() == null ? null : this.innerProperties().allow();
     }
 
     /**
@@ -42,14 +55,10 @@ public class CsmPublishingCredentialsPoliciesEntityInner extends ProxyOnlyResour
      * @return the CsmPublishingCredentialsPoliciesEntityInner object itself.
      */
     public CsmPublishingCredentialsPoliciesEntityInner withAllow(Boolean allow) {
-        this.allow = allow;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public CsmPublishingCredentialsPoliciesEntityInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CsmPublishingCredentialsPoliciesEntityProperties();
+        }
+        this.innerProperties().withAllow(allow);
         return this;
     }
 
@@ -61,5 +70,8 @@ public class CsmPublishingCredentialsPoliciesEntityInner extends ProxyOnlyResour
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

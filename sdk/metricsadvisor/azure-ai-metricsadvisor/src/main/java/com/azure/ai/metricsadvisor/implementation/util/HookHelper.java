@@ -3,7 +3,10 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
+import com.azure.ai.metricsadvisor.administration.models.EmailNotificationHook;
 import com.azure.ai.metricsadvisor.administration.models.NotificationHook;
+import com.azure.ai.metricsadvisor.administration.models.WebNotificationHook;
+import com.azure.core.http.HttpHeaders;
 
 import java.util.List;
 
@@ -20,7 +23,9 @@ public final class HookHelper {
      */
     public interface HookAccessor {
         void setId(NotificationHook hook, String id);
-        void setAdminEmails(NotificationHook hook, List<String> admins);
+        List<String> getAdminsRaw(NotificationHook hook);
+        List<String> getEmailsToAlertRaw(EmailNotificationHook emailHook);
+        HttpHeaders getHttpHeadersRaw(WebNotificationHook webHook);
     }
 
     /**
@@ -36,7 +41,15 @@ public final class HookHelper {
         accessor.setId(hook, id);
     }
 
-    static void setAdminEmails(NotificationHook hook, List<String> adminEmails) {
-        accessor.setAdminEmails(hook, adminEmails);
+    public static List<String> getAdminsRaw(NotificationHook hook) {
+        return accessor.getAdminsRaw(hook);
+    }
+
+    public static List<String> getEmailsToAlertRaw(EmailNotificationHook emailHook) {
+        return accessor.getEmailsToAlertRaw(emailHook);
+    }
+
+    public static HttpHeaders getHttpHeadersRaw(WebNotificationHook webHook) {
+        return accessor.getHttpHeadersRaw(webHook);
     }
 }

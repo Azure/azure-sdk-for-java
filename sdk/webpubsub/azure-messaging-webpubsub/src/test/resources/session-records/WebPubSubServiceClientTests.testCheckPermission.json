@@ -1,0 +1,19 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "HEAD",
+    "Uri" : "https://REDACTED.webpubsub.azure.com/api/hubs/test/permissions/sendToGroup/connections/71xtjgThROOJ6DsVY3xbBw2ef45fd11?api-version=2021-10-01&targetName=java",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-messaging-webpubsub/1.0.0-beta.6 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "api-supported-versions" : "2021-10-01",
+      "Connection" : "keep-alive",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Fri, 12 Nov 2021 01:49:48 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

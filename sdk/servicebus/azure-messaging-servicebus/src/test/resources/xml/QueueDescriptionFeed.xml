@@ -1,13 +1,13 @@
 <feed>
-  <entry xml:base="https://foo.servicebus.windows.net/$Resources/queues?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=100">
-    <id>https://foo.servicebus.windows.net/queue?api-version=2017-04</id>
+  <entry xml:base="https://foo.servicebus.windows.net/$Resources/queues?api-version=2021-05&amp;enrich=false&amp;$skip=0&amp;$top=100">
+    <id>https://foo.servicebus.windows.net/queue?api-version=2021-05</id>
     <title type="text">queue</title>
     <published>2020-05-26T21:25:28Z</published>
     <updated>2020-05-26T21:10:28Z</updated>
     <author>
       <name>foo</name>
     </author>
-    <link rel="self" href="../queue?api-version=2017-04" />
+    <link rel="self" href="../queue?api-version=2021-05" />
     <content type="application/xml">
       <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
       >
@@ -43,15 +43,15 @@
       </QueueDescription>
     </content>
   </entry>
-  <entry xml:base="https://foo.servicebus.windows.net/$Resources/queues?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=100">
-    <id>https://foo.servicebus.windows.net/queue-session?api-version=2017-04</id>
+  <entry xml:base="https://foo.servicebus.windows.net/$Resources/queues?api-version=2021-05&amp;enrich=false&amp;$skip=0&amp;$top=100">
+    <id>https://foo.servicebus.windows.net/queue-session?api-version=2021-05</id>
     <title type="text">queue-session</title>
     <published>2020-05-26T21:07:28Z</published>
     <updated>2020-05-26T21:45:28Z</updated>
     <author>
       <name>foo</name>
     </author>
-    <link rel="self" href="../queue-session?api-version=2017-04" />
+    <link rel="self" href="../queue-session?api-version=2021-05" />
     <content type="application/xml">
       <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
       >

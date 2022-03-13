@@ -21,7 +21,8 @@ public final class TextAnalyticsActionResultPropertiesHelper {
      * instance.
      */
     public interface TextAnalyticsActionResultAccessor {
-        void setCompletedAt(TextAnalyticsActionResult actionsResult, OffsetDateTime completedAt);
+        void setActionName(TextAnalyticsActionResult actionResult, String actionName);
+        void setCompletedAt(TextAnalyticsActionResult actionResult, OffsetDateTime completedAt);
         void setError(TextAnalyticsActionResult actionResult, TextAnalyticsError error);
         void setIsError(TextAnalyticsActionResult actionResult, boolean isError);
     }
@@ -36,8 +37,12 @@ public final class TextAnalyticsActionResultPropertiesHelper {
         accessor = textAnalyticsActionResultAccessor;
     }
 
-    public static void setCompletedAt(TextAnalyticsActionResult actionsResult, OffsetDateTime completedAt) {
-        accessor.setCompletedAt(actionsResult, completedAt);
+    public static void setActionName(TextAnalyticsActionResult actionResult, String actionName) {
+        accessor.setActionName(actionResult, actionName);
+    }
+
+    public static void setCompletedAt(TextAnalyticsActionResult actionResult, OffsetDateTime completedAt) {
+        accessor.setCompletedAt(actionResult, completedAt);
     }
 
     public static void setError(TextAnalyticsActionResult actionResult, TextAnalyticsError error) {

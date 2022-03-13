@@ -30,7 +30,7 @@ public final class ReplicationObject {
     /*
      * Schedule
      */
-    @JsonProperty(value = "replicationSchedule", required = true)
+    @JsonProperty(value = "replicationSchedule")
     private ReplicationSchedule replicationSchedule;
 
     /*
@@ -153,12 +153,6 @@ public final class ReplicationObject {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (replicationSchedule() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property replicationSchedule in model ReplicationObject"));
-        }
         if (remoteVolumeResourceId() == null) {
             throw logger
                 .logExceptionAsError(

@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -47,9 +48,9 @@ public class AADWebApiITHelper {
             String.join(" ", accessTokenScopes));
     }
 
-    public String httpGetCookieByAccessTokenThenGetStringByCookie(String accessTokenEndpoint, String cookieEndpoint) {
+    public String getCookieAndAccessByCookie(String cookieEndpoint, String targetEndpoint) {
         ResponseEntity<String> responseEntity =
-            httpGetResponseByToken(accessTokenEndpoint, oAuth2ROPCResponse.getAccessToken());
+            httpGetResponseByToken(cookieEndpoint, oAuth2ROPCResponse.getAccessToken());
         String jSessionIdCookie = responseEntity
             .getHeaders()
             .getOrDefault(SET_COOKIE, new ArrayList<>())
@@ -61,11 +62,15 @@ public class AADWebApiITHelper {
         HttpHeaders headers = new HttpHeaders();
         headers.add(COOKIE, jSessionIdCookie);
         HttpEntity<Object> entity = new HttpEntity<>(headers);
-        return httpGetResponseByEntity(cookieEndpoint, entity).getBody();
+        return httpGetResponseByEntity(targetEndpoint, entity).getBody();
     }
 
     public String httpGetStringByAccessToken(String endpoint) {
         return httpGetStringByToken(endpoint, oAuth2ROPCResponse.getAccessToken());
+    }
+
+    public String httpGetStringWithoutAccessToken(String endpoint) {
+        return httpGetStringByToken(endpoint, null);
     }
 
     public String httpGetStringByIdToken(String endpoint) {
@@ -78,7 +83,9 @@ public class AADWebApiITHelper {
 
     public ResponseEntity<String> httpGetResponseByToken(String endpoint, String token) {
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", String.format("Bearer %s", token));
+        if (StringUtils.hasText(token)) {
+            headers.set("Authorization", String.format("Bearer %s", token));
+        }
         HttpEntity<Object> entity = new HttpEntity<>(headers);
         return httpGetResponseByEntity(endpoint, entity);
     }

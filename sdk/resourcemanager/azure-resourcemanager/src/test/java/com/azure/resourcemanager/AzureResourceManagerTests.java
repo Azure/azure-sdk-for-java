@@ -10,6 +10,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.Disk;
@@ -230,6 +231,10 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
         Assertions.assertEquals(27, powerStates.size());
     }
 
+    private static final String TEMPLATE_URI = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.network/vnet-two-subnets/azuredeploy.json";
+    private static final String PARAMETERS_URI = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.network/vnet-two-subnets/azuredeploy.parameters.json";
+    private static final String CONTENT_VERSION = "1.0.0.0";
+
     /**
      * Tests ARM template deployments.
      *
@@ -246,12 +251,8 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
                 .deployments()
                 .define("depl" + testId)
                 .withNewResourceGroup("rg" + testId, Region.US_WEST)
-                .withTemplateLink(
-                    "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vnet-two-subnets/azuredeploy.json",
-                    "1.0.0.0")
-                .withParametersLink(
-                    "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vnet-two-subnets/azuredeploy.parameters.json",
-                    "1.0.0.0")
+                .withTemplateLink(TEMPLATE_URI, CONTENT_VERSION)
+                .withParametersLink(PARAMETERS_URI, CONTENT_VERSION)
                 .withMode(DeploymentMode.COMPLETE)
                 .create();
         System.out.println("Created deployment: " + deployment.correlationId());
@@ -518,6 +519,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
      * @throws IOException
      * @throws ManagementException
      */
+    @DoNotRecord(skipInPlayback = true)
     @Test
     public void testVMImages() throws ManagementException, IOException {
         PagedIterable<VirtualMachinePublisher> publishers =
@@ -1278,16 +1280,6 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
         Assertions.assertTrue(containerGroupOperations.size() > 0);
     }
 
-    @Disabled("Cannot run test due to unknown parameter")
-    @Test
-    public void testContainerInstanceWithPrivateIpAddress() throws Exception {
-        // LIVE ONLY TEST BECAUSE IT REQUIRES SUBSCRIPTION ID
-        if (!isPlaybackMode()) {
-            new TestContainerInstanceWithPrivateIpAddress()
-                .runTest(azureResourceManager.containerGroups(), azureResourceManager.resourceGroups(), azureResourceManager.subscriptionId());
-        }
-    }
-
     @Test
     public void testContainerRegistry() throws Exception {
         new TestContainerRegistry().runTest(azureResourceManager.containerRegistries(), azureResourceManager.resourceGroups());
@@ -1329,10 +1321,12 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
 
         StringBuilder sb = new StringBuilder();
 
-        PagedIterable<Location> locations =
+        List<Location> locations =
             azureResourceManager
                 .getCurrentSubscription()
-                .listLocations(); // note the region is not complete since it depends on current subscription
+                .listLocations()
+                .stream().collect(Collectors.toList());
+        // note the region is not complete since it depends on current subscription
 
         List<Location> locationGroupByGeography = new ArrayList<>();
         List<String> geographies = Arrays.asList(

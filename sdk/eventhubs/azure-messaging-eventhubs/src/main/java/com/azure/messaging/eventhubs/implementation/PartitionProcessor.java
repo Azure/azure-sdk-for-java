@@ -14,6 +14,8 @@ import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.InitializationContext;
 import java.util.function.Consumer;
 
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
+
 /**
  * An abstract class defining all the operations that a partition processor can perform. Users of {@link
  * EventProcessorClient} should extend from this class and implement {@link #processEvent(EventContext)} for
@@ -42,8 +44,9 @@ public abstract class PartitionProcessor {
      * @param initializationContext The initialization context before events from the partition are processed.
      */
     public void initialize(InitializationContext initializationContext) {
-        logger.info("Initializing partition processor for partition {}",
-            initializationContext.getPartitionContext().getPartitionId());
+        logger.atInfo()
+            .addKeyValue(PARTITION_ID_KEY, initializationContext.getPartitionContext().getPartitionId())
+            .log("Initializing partition processor for partition");
     }
 
     /**
@@ -81,8 +84,8 @@ public abstract class PartitionProcessor {
      * events is closed.
      */
     public void close(CloseContext closeContext) {
-        logger.info("Closing partition processor for partition {} with close reason {}",
-            closeContext.getPartitionContext().getPartitionId(), closeContext.getCloseReason());
+        logger.atInfo()
+            .addKeyValue(PARTITION_ID_KEY, closeContext.getPartitionContext().getPartitionId())
+            .log("Closing partition processor with close reason {}", closeContext.getCloseReason());
     }
-
 }

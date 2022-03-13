@@ -20,7 +20,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-cosmos</artifactId>
-          <version>4.17.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+          <version>4.27.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
         </dependency>
       </dependencies>
 
@@ -29,24 +29,15 @@
           <plugin>
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>report-aggregate</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>report-aggregate</goal>
-                </goals>
-                <configuration>
-                  <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
-                  <excludes>
-                    <exclude>**/com/azure/cosmos/implementation/apachecommons/**/*</exclude>
-                    <exclude>**/com/azure/cosmos/implementation/guava25/**/*</exclude>
-                    <exclude>**/com/azure/cosmos/implementation/guava27/**/*</exclude>
-                  </excludes>
-                </configuration>
-              </execution>
-            </executions>
+            <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+            <configuration>
+              <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
+              <excludes>
+                <exclude>**/com/azure/cosmos/implementation/apachecommons/**/*</exclude>
+                <exclude>**/com/azure/cosmos/implementation/guava25/**/*</exclude>
+                <exclude>**/com/azure/cosmos/implementation/guava27/**/*</exclude>
+              </excludes>
+            </configuration>
           </plugin>
         </plugins>
       </build>
@@ -63,7 +54,9 @@
         <module>azure-cosmos-encryption</module>
         <module>azure-spring-data-cosmos</module>
         <module>azure-spring-data-cosmos-test</module>
+        <module>azure-cosmos-spark_3_2-12</module>
         <module>azure-cosmos-spark_3-1_2-12</module>
+        <module>azure-cosmos-spark_3-2_2-12</module>
       </modules>
     </profile>
   </profiles>

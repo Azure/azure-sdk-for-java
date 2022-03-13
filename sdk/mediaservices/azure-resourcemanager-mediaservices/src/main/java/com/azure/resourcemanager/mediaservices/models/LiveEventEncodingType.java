@@ -19,6 +19,12 @@ public final class LiveEventEncodingType extends ExpandableStringEnum<LiveEventE
     /** Static value Premium1080p for LiveEventEncodingType. */
     public static final LiveEventEncodingType PREMIUM1080P = fromString("Premium1080p");
 
+    /** Static value PassthroughBasic for LiveEventEncodingType. */
+    public static final LiveEventEncodingType PASSTHROUGH_BASIC = fromString("PassthroughBasic");
+
+    /** Static value PassthroughStandard for LiveEventEncodingType. */
+    public static final LiveEventEncodingType PASSTHROUGH_STANDARD = fromString("PassthroughStandard");
+
     /**
      * Creates or finds a LiveEventEncodingType from its string representation.
      *

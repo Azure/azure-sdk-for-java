@@ -17,6 +17,7 @@ import com.azure.resourcemanager.network.fluent.models.AutoApprovedPrivateLinkSe
 import com.azure.resourcemanager.network.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.network.fluent.models.PrivateLinkServiceInner;
 import com.azure.resourcemanager.network.fluent.models.PrivateLinkServiceVisibilityInner;
+import com.azure.resourcemanager.network.models.CheckPrivateLinkServiceVisibilityRequest;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -37,7 +38,7 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serviceName);
@@ -50,9 +51,9 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceName);
 
     /**
@@ -63,9 +64,9 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName);
 
     /**
@@ -77,9 +78,9 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName, Context context);
 
     /**
@@ -90,7 +91,7 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String serviceName);
@@ -129,7 +130,8 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private link service by resource group.
+     * @return the specified private link service by resource group along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<PrivateLinkServiceInner>> getByResourceGroupWithResponseAsync(
@@ -144,7 +146,7 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private link service by resource group.
+     * @return the specified private link service by resource group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<PrivateLinkServiceInner> getByResourceGroupAsync(String resourceGroupName, String serviceName, String expand);
@@ -157,7 +159,7 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private link service by resource group.
+     * @return the specified private link service by resource group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<PrivateLinkServiceInner> getByResourceGroupAsync(String resourceGroupName, String serviceName);
@@ -185,7 +187,7 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private link service by resource group.
+     * @return the specified private link service by resource group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PrivateLinkServiceInner> getByResourceGroupWithResponse(
@@ -200,7 +202,7 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private link service resource.
+     * @return private link service resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -215,9 +217,9 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private link service resource.
+     * @return the {@link PollerFlux} for polling of private link service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<PrivateLinkServiceInner>, PrivateLinkServiceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serviceName, PrivateLinkServiceInner parameters);
 
@@ -230,9 +232,9 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private link service resource.
+     * @return the {@link SyncPoller} for polling of private link service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateLinkServiceInner>, PrivateLinkServiceInner> beginCreateOrUpdate(
         String resourceGroupName, String serviceName, PrivateLinkServiceInner parameters);
 
@@ -246,9 +248,9 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private link service resource.
+     * @return the {@link SyncPoller} for polling of private link service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateLinkServiceInner>, PrivateLinkServiceInner> beginCreateOrUpdate(
         String resourceGroupName, String serviceName, PrivateLinkServiceInner parameters, Context context);
 
@@ -261,7 +263,7 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private link service resource.
+     * @return private link service resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<PrivateLinkServiceInner> createOrUpdateAsync(
@@ -305,7 +307,7 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private link services in a resource group.
+     * @return all private link services in a resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<PrivateLinkServiceInner> listByResourceGroupAsync(String resourceGroupName);
@@ -317,7 +319,7 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private link services in a resource group.
+     * @return all private link services in a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PrivateLinkServiceInner> listByResourceGroup(String resourceGroupName);
@@ -330,7 +332,7 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private link services in a resource group.
+     * @return all private link services in a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PrivateLinkServiceInner> listByResourceGroup(String resourceGroupName, Context context);
@@ -340,7 +342,7 @@ public interface PrivateLinkServicesClient
      *
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private link service in a subscription.
+     * @return all private link service in a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<PrivateLinkServiceInner> listAsync();
@@ -350,7 +352,7 @@ public interface PrivateLinkServicesClient
      *
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private link service in a subscription.
+     * @return all private link service in a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PrivateLinkServiceInner> list();
@@ -362,7 +364,7 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private link service in a subscription.
+     * @return all private link service in a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PrivateLinkServiceInner> list(Context context);
@@ -377,7 +379,8 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific private end point connection by specific private link service in the resource group.
+     * @return the specific private end point connection by specific private link service in the resource group along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<PrivateEndpointConnectionInner>> getPrivateEndpointConnectionWithResponseAsync(
@@ -393,7 +396,8 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific private end point connection by specific private link service in the resource group.
+     * @return the specific private end point connection by specific private link service in the resource group on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<PrivateEndpointConnectionInner> getPrivateEndpointConnectionAsync(
@@ -408,7 +412,8 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific private end point connection by specific private link service in the resource group.
+     * @return the specific private end point connection by specific private link service in the resource group on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<PrivateEndpointConnectionInner> getPrivateEndpointConnectionAsync(
@@ -440,7 +445,8 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific private end point connection by specific private link service in the resource group.
+     * @return the specific private end point connection by specific private link service in the resource group along
+     *     with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PrivateEndpointConnectionInner> getPrivateEndpointConnectionWithResponse(
@@ -456,7 +462,7 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return privateEndpointConnection resource.
+     * @return privateEndpointConnection resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<PrivateEndpointConnectionInner>> updatePrivateEndpointConnectionWithResponseAsync(
@@ -475,7 +481,7 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return privateEndpointConnection resource.
+     * @return privateEndpointConnection resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<PrivateEndpointConnectionInner> updatePrivateEndpointConnectionAsync(
@@ -514,7 +520,7 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return privateEndpointConnection resource.
+     * @return privateEndpointConnection resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PrivateEndpointConnectionInner> updatePrivateEndpointConnectionWithResponse(
@@ -533,7 +539,7 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deletePrivateEndpointConnectionWithResponseAsync(
@@ -548,9 +554,9 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeletePrivateEndpointConnectionAsync(
         String resourceGroupName, String serviceName, String peConnectionName);
 
@@ -563,9 +569,9 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeletePrivateEndpointConnection(
         String resourceGroupName, String serviceName, String peConnectionName);
 
@@ -579,9 +585,9 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeletePrivateEndpointConnection(
         String resourceGroupName, String serviceName, String peConnectionName, Context context);
 
@@ -594,7 +600,7 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deletePrivateEndpointConnectionAsync(
@@ -636,7 +642,8 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private end point connections for a specific private link service.
+     * @return all private end point connections for a specific private link service as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<PrivateEndpointConnectionInner> listPrivateEndpointConnectionsAsync(
@@ -650,7 +657,8 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private end point connections for a specific private link service.
+     * @return all private end point connections for a specific private link service as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PrivateEndpointConnectionInner> listPrivateEndpointConnections(
@@ -665,7 +673,8 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private end point connections for a specific private link service.
+     * @return all private end point connections for a specific private link service as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PrivateEndpointConnectionInner> listPrivateEndpointConnections(
@@ -675,90 +684,85 @@ public interface PrivateLinkServicesClient
      * Checks whether the subscription is visible to private link service.
      *
      * @param location The location of the domain name.
-     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param parameters The request body of CheckPrivateLinkService API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
+     * @return response for the CheckPrivateLinkServiceVisibility API service call along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> checkPrivateLinkServiceVisibilityWithResponseAsync(
-        String location, String privateLinkServiceAlias);
+        String location, CheckPrivateLinkServiceVisibilityRequest parameters);
 
     /**
      * Checks whether the subscription is visible to private link service.
      *
      * @param location The location of the domain name.
-     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param parameters The request body of CheckPrivateLinkService API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
+     * @return the {@link PollerFlux} for polling of response for the CheckPrivateLinkServiceVisibility API service
+     *     call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
-        beginCheckPrivateLinkServiceVisibilityAsync(String location, String privateLinkServiceAlias);
+        beginCheckPrivateLinkServiceVisibilityAsync(
+            String location, CheckPrivateLinkServiceVisibilityRequest parameters);
 
     /**
      * Checks whether the subscription is visible to private link service.
      *
      * @param location The location of the domain name.
-     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param parameters The request body of CheckPrivateLinkService API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
+     * @return the {@link SyncPoller} for polling of response for the CheckPrivateLinkServiceVisibility API service
+     *     call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
-        beginCheckPrivateLinkServiceVisibility(String location, String privateLinkServiceAlias);
+        beginCheckPrivateLinkServiceVisibility(String location, CheckPrivateLinkServiceVisibilityRequest parameters);
 
     /**
      * Checks whether the subscription is visible to private link service.
      *
      * @param location The location of the domain name.
-     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param parameters The request body of CheckPrivateLinkService API call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
+     * @return the {@link SyncPoller} for polling of response for the CheckPrivateLinkServiceVisibility API service
+     *     call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
-        beginCheckPrivateLinkServiceVisibility(String location, String privateLinkServiceAlias, Context context);
+        beginCheckPrivateLinkServiceVisibility(
+            String location, CheckPrivateLinkServiceVisibilityRequest parameters, Context context);
 
     /**
      * Checks whether the subscription is visible to private link service.
      *
      * @param location The location of the domain name.
-     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param parameters The request body of CheckPrivateLinkService API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
+     * @return response for the CheckPrivateLinkServiceVisibility API service call on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityAsync(
-        String location, String privateLinkServiceAlias);
+        String location, CheckPrivateLinkServiceVisibilityRequest parameters);
 
     /**
      * Checks whether the subscription is visible to private link service.
      *
      * @param location The location of the domain name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityAsync(String location);
-
-    /**
-     * Checks whether the subscription is visible to private link service.
-     *
-     * @param location The location of the domain name.
-     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param parameters The request body of CheckPrivateLinkService API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -766,25 +770,13 @@ public interface PrivateLinkServicesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibility(
-        String location, String privateLinkServiceAlias);
+        String location, CheckPrivateLinkServiceVisibilityRequest parameters);
 
     /**
      * Checks whether the subscription is visible to private link service.
      *
      * @param location The location of the domain name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibility(String location);
-
-    /**
-     * Checks whether the subscription is visible to private link service.
-     *
-     * @param location The location of the domain name.
-     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param parameters The request body of CheckPrivateLinkService API call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -793,107 +785,101 @@ public interface PrivateLinkServicesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibility(
-        String location, String privateLinkServiceAlias, Context context);
+        String location, CheckPrivateLinkServiceVisibilityRequest parameters, Context context);
 
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
      *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
-     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param parameters The request body of CheckPrivateLinkService API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
+     * @return response for the CheckPrivateLinkServiceVisibility API service call along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> checkPrivateLinkServiceVisibilityByResourceGroupWithResponseAsync(
-        String location, String resourceGroupName, String privateLinkServiceAlias);
+        String location, String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters);
 
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
      *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
-     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param parameters The request body of CheckPrivateLinkService API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
+     * @return the {@link PollerFlux} for polling of response for the CheckPrivateLinkServiceVisibility API service
+     *     call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
         beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(
-            String location, String resourceGroupName, String privateLinkServiceAlias);
+            String location, String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters);
 
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
      *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
-     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param parameters The request body of CheckPrivateLinkService API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
+     * @return the {@link SyncPoller} for polling of response for the CheckPrivateLinkServiceVisibility API service
+     *     call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
         beginCheckPrivateLinkServiceVisibilityByResourceGroup(
-            String location, String resourceGroupName, String privateLinkServiceAlias);
+            String location, String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters);
 
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
      *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
-     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param parameters The request body of CheckPrivateLinkService API call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
+     * @return the {@link SyncPoller} for polling of response for the CheckPrivateLinkServiceVisibility API service
+     *     call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
         beginCheckPrivateLinkServiceVisibilityByResourceGroup(
-            String location, String resourceGroupName, String privateLinkServiceAlias, Context context);
+            String location,
+            String resourceGroupName,
+            CheckPrivateLinkServiceVisibilityRequest parameters,
+            Context context);
 
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
      *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
-     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param parameters The request body of CheckPrivateLinkService API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
+     * @return response for the CheckPrivateLinkServiceVisibility API service call on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityByResourceGroupAsync(
-        String location, String resourceGroupName, String privateLinkServiceAlias);
+        String location, String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters);
 
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
      *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityByResourceGroupAsync(
-        String location, String resourceGroupName);
-
-    /**
-     * Checks whether the subscription is visible to private link service in the specified resource group.
-     *
-     * @param location The location of the domain name.
-     * @param resourceGroupName The name of the resource group.
-     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param parameters The request body of CheckPrivateLinkService API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -901,28 +887,14 @@ public interface PrivateLinkServicesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibilityByResourceGroup(
-        String location, String resourceGroupName, String privateLinkServiceAlias);
+        String location, String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters);
 
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
      *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibilityByResourceGroup(
-        String location, String resourceGroupName);
-
-    /**
-     * Checks whether the subscription is visible to private link service in the specified resource group.
-     *
-     * @param location The location of the domain name.
-     * @param resourceGroupName The name of the resource group.
-     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param parameters The request body of CheckPrivateLinkService API call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -931,7 +903,10 @@ public interface PrivateLinkServicesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibilityByResourceGroup(
-        String location, String resourceGroupName, String privateLinkServiceAlias, Context context);
+        String location,
+        String resourceGroupName,
+        CheckPrivateLinkServiceVisibilityRequest parameters,
+        Context context);
 
     /**
      * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this
@@ -941,7 +916,8 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of private link service id that can be linked to a private end point with auto approved.
+     * @return an array of private link service id that can be linked to a private end point with auto approved as
+     *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<AutoApprovedPrivateLinkServiceInner> listAutoApprovedPrivateLinkServicesAsync(String location);
@@ -954,7 +930,8 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of private link service id that can be linked to a private end point with auto approved.
+     * @return an array of private link service id that can be linked to a private end point with auto approved as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AutoApprovedPrivateLinkServiceInner> listAutoApprovedPrivateLinkServices(String location);
@@ -968,7 +945,8 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of private link service id that can be linked to a private end point with auto approved.
+     * @return an array of private link service id that can be linked to a private end point with auto approved as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AutoApprovedPrivateLinkServiceInner> listAutoApprovedPrivateLinkServices(
@@ -983,7 +961,8 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of private link service id that can be linked to a private end point with auto approved.
+     * @return an array of private link service id that can be linked to a private end point with auto approved as
+     *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<AutoApprovedPrivateLinkServiceInner> listAutoApprovedPrivateLinkServicesByResourceGroupAsync(
@@ -998,7 +977,8 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of private link service id that can be linked to a private end point with auto approved.
+     * @return an array of private link service id that can be linked to a private end point with auto approved as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AutoApprovedPrivateLinkServiceInner> listAutoApprovedPrivateLinkServicesByResourceGroup(
@@ -1014,7 +994,8 @@ public interface PrivateLinkServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of private link service id that can be linked to a private end point with auto approved.
+     * @return an array of private link service id that can be linked to a private end point with auto approved as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AutoApprovedPrivateLinkServiceInner> listAutoApprovedPrivateLinkServicesByResourceGroup(

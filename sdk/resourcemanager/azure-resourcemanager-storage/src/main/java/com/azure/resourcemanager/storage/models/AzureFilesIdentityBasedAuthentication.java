@@ -26,6 +26,13 @@ public final class AzureFilesIdentityBasedAuthentication {
     @JsonProperty(value = "activeDirectoryProperties")
     private ActiveDirectoryProperties activeDirectoryProperties;
 
+    /*
+     * Default share permission for users using Kerberos authentication if RBAC
+     * role is not assigned.
+     */
+    @JsonProperty(value = "defaultSharePermission")
+    private DefaultSharePermission defaultSharePermission;
+
     /**
      * Get the directoryServiceOptions property: Indicates the directory service used.
      *
@@ -65,6 +72,29 @@ public final class AzureFilesIdentityBasedAuthentication {
     public AzureFilesIdentityBasedAuthentication withActiveDirectoryProperties(
         ActiveDirectoryProperties activeDirectoryProperties) {
         this.activeDirectoryProperties = activeDirectoryProperties;
+        return this;
+    }
+
+    /**
+     * Get the defaultSharePermission property: Default share permission for users using Kerberos authentication if RBAC
+     * role is not assigned.
+     *
+     * @return the defaultSharePermission value.
+     */
+    public DefaultSharePermission defaultSharePermission() {
+        return this.defaultSharePermission;
+    }
+
+    /**
+     * Set the defaultSharePermission property: Default share permission for users using Kerberos authentication if RBAC
+     * role is not assigned.
+     *
+     * @param defaultSharePermission the defaultSharePermission value to set.
+     * @return the AzureFilesIdentityBasedAuthentication object itself.
+     */
+    public AzureFilesIdentityBasedAuthentication withDefaultSharePermission(
+        DefaultSharePermission defaultSharePermission) {
+        this.defaultSharePermission = defaultSharePermission;
         return this;
     }
 

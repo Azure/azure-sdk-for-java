@@ -64,7 +64,7 @@ public final class LocationBasedPerformanceTiersClientImpl implements LocationBa
     @ServiceInterface(name = "MySqlManagementClien")
     private interface LocationBasedPerformanceTiersService {
         @Headers({"Content-Type: application/json"})
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DBForMySQL/locations/{locationName}/performanceTiers")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/locations/{locationName}/performanceTiers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PerformanceTierListResult>> list(
@@ -83,7 +83,7 @@ public final class LocationBasedPerformanceTiersClientImpl implements LocationBa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of performance tiers.
+     * @return a list of performance tiers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PerformanceTierPropertiesInner>> listSinglePageAsync(String locationName) {
@@ -130,7 +130,7 @@ public final class LocationBasedPerformanceTiersClientImpl implements LocationBa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of performance tiers.
+     * @return a list of performance tiers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PerformanceTierPropertiesInner>> listSinglePageAsync(

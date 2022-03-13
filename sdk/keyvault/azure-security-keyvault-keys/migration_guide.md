@@ -1,7 +1,7 @@
 # Guide for migrating to azure-security-keyvault-keys from azure-keyvault
 This guide is intended to assist in the migration to `azure-security-keyvault-keys` from `azure-keyvault`. It will focus on side-by-side comparisons for similar operations between the two packages.
 
-Familiarity with the `azure-keyvault` package is assumed. For those new to the Key Vault Key client library for Java, please refer to the [README for azure-security-keyvault-keys](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-keys/README.md) rather than this guide.
+Familiarity with the `azure-keyvault` package is assumed. For those new to the Key Vault Key client library for Java, please refer to the [README for azure-security-keyvault-keys](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/README.md) rather than this guide.
 
 ## Table of contents
 - [Migration benefits](#migration-benefits)
@@ -38,9 +38,9 @@ The modern Key Vault Key client library also provides the ability to share in so
 ### Separate packages and clients
 In the interest of simplifying the API for working with Key Vault certificates, keys and secrets, the `azure-keyvault` was split into separate packages:
 
-- [`azure-security-keyvault-certificates`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-certificates/README.md) contains `CertificateClient` for working with Key Vault certificates.
+- [`azure-security-keyvault-certificates`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-certificates/README.md) contains `CertificateClient` for working with Key Vault certificates.
 - `azure-security-keyvault-keys` contains `KeyClient` for working with Key Vault keys and `CryptographyClient` for performing cryptographic operations.
-- [`azure-security-keyvault-secrets`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-secrets/README.md) contains `SecretClient` for working with Key Vault secrets.
+- [`azure-security-keyvault-secrets`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/README.md) contains `SecretClient` for working with Key Vault secrets.
 
 ### Package names and namespaces
 Package names and the namespace root for the modern Azure client libraries for Java have changed. Each will follow the pattern `com.azure.<area>.<service>` where the legacy clients followed the pattern `com.microsoft.azure.<service>`. This provides a quick and accessible means to help understand, at a glance, whether you are using the modern or legacy clients.
@@ -90,7 +90,7 @@ KeyVaultCredentials keyVaultCredentials = new MyKeyVaultCredentials("<client-id>
 KeyVaultClient keyVaultClient = new KeyVaultClient(keyVaultCredentials);
 ```
 
-Now in `azure-security-keyvault-keys` you can create a `KeyClient` using any credential from [`azure-identity`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity/README.md). Below is an example using [`DefaultAzureCredential`](https://docs.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable#defaultazurecredential):
+Now in `azure-security-keyvault-keys` you can create a `KeyClient` using any credential from [`azure-identity`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md). Below is an example using [`DefaultAzureCredential`](https://docs.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable#defaultazurecredential):
 
 ```java
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -287,4 +287,4 @@ byte[] ciphertext = encryptResult.getCipherText();
 ```
 
 ## Additional samples
-More examples can be found [here](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-security-keyvault-keys/src/samples).
+More examples can be found [here](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-keys/src/samples).

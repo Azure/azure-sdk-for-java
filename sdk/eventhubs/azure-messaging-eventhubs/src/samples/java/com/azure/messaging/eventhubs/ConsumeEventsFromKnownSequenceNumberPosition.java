@@ -6,6 +6,7 @@ import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.SendOptions;
 
 import java.time.Duration;
+import java.util.Collections;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -79,7 +80,7 @@ public class ConsumeEventsFromKnownSequenceNumberPosition {
         // Because the consumer is only listening to new events after the last enqueued event was received, we need to
         // send some events to that partition.
         final SendOptions sendOptions = new SendOptions().setPartitionId(nonEmptyPartition.getId());
-        producer.send(new EventData("Hello world!" .getBytes(UTF_8)), sendOptions);
+        producer.send(Collections.singletonList(new EventData("Hello world!".getBytes(UTF_8))), sendOptions);
 
         // Set isRunning to false so we stop taking events.
         isRunning.set(false);

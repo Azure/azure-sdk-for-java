@@ -8,6 +8,8 @@ import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
+import com.azure.core.http.HttpResponse
+import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.util.Context
 import com.azure.core.util.FluxUtil
 import com.azure.identity.DefaultAzureCredentialBuilder
@@ -44,7 +46,6 @@ import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
-import spock.lang.Ignore
 import spock.lang.IgnoreIf
 import spock.lang.Unroll
 
@@ -52,6 +53,7 @@ import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.security.MessageDigest
+import java.time.Duration
 import java.time.OffsetDateTime
 
 class BlockBlobAPITest extends APISpec {
@@ -65,10 +67,10 @@ class BlockBlobAPITest extends APISpec {
         blobName = generateBlobName()
         blobClient = cc.getBlobClient(blobName)
         blockBlobClient = blobClient.getBlockBlobClient()
-        blockBlobClient.upload(data.defaultInputStream, data.defaultDataSize)
+        blockBlobClient.upload(data.defaultInputStream, data.defaultDataSize, true)
         blobAsyncClient = ccAsync.getBlobAsyncClient(generateBlobName())
         blockBlobAsyncClient = blobAsyncClient.getBlockBlobAsyncClient()
-        blockBlobAsyncClient.upload(data.defaultFlux, data.defaultDataSize).block()
+        blockBlobAsyncClient.upload(data.defaultFlux, data.defaultDataSize, true).block()
     }
 
     def "Stage block"() {
@@ -182,7 +184,7 @@ class BlockBlobAPITest extends APISpec {
     def "Stage block retry on transient failure"() {
         setup:
         def clientWithFailure = getBlobClient(
-            env.primaryAccount.credential,
+            environment.primaryAccount.credential,
             blobClient.getBlobUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         ).getBlockBlobClient()
@@ -788,7 +790,7 @@ class BlockBlobAPITest extends APISpec {
     @LiveOnly
     def "Upload from file with tags"() {
         given:
-        def tags = Collections.singletonMap("tag", "value")
+        def tags = Collections.singletonMap(namer.getRandomName(20), namer.getRandomName(20))
         def file = getRandomFile(Constants.KB)
         def outStream = new ByteArrayOutputStream()
 
@@ -916,6 +918,19 @@ class BlockBlobAPITest extends APISpec {
         BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1 | null             | null      || Math.ceil(((double) BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1) / (double) BlobClient.BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE) // "". This also validates the default for blockSize
         100                                            | 50               | null      || 1 // Test that singleUploadSize is respected
         100                                            | 50               | 20        || 5 // Test that blockSize is respected
+    }
+
+    @LiveOnly
+    // Reading from recordings will not allow for the timing of the test to work correctly.
+    def "Upload from file timeout"() {
+        setup:
+        def file = getRandomFile(1024)
+
+        when:
+        blobClient.uploadFromFile(file.getPath(), null, null, null, null, null, Duration.ofNanos(5L))
+
+        then:
+        thrown(IllegalStateException)
     }
 
     def "Upload min"() {
@@ -1162,7 +1177,7 @@ class BlockBlobAPITest extends APISpec {
     def "Upload retry on transient failure"() {
         setup:
         def clientWithFailure = getBlobClient(
-            env.primaryAccount.credential,
+            environment.primaryAccount.credential,
             blobClient.getBlobUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         ).getBlockBlobClient()
@@ -1450,7 +1465,7 @@ class BlockBlobAPITest extends APISpec {
     def "Buffered upload handle pathing hot flux with transient failure"() {
         setup:
         def clientWithFailure = getBlobAsyncClient(
-            env.primaryAccount.credential,
+            environment.primaryAccount.credential,
             blobAsyncClient.getBlobUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         )
@@ -1486,7 +1501,7 @@ class BlockBlobAPITest extends APISpec {
          */
         setup:
         def clientWithFailure = getBlobClient(
-            env.primaryAccount.credential,
+            environment.primaryAccount.credential,
             blobClient.getBlobUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         )
@@ -1793,16 +1808,20 @@ class BlockBlobAPITest extends APISpec {
         def mockHttpResponse = getStubResponse(500, new HttpRequest(HttpMethod.PUT, new URL("https://www.fake.com")))
 
         // Mock a policy that will always then check that the data is still the same and return a retryable error.
-        def mockPolicy = { HttpPipelineCallContext context, HttpPipelineNextPolicy next ->
-            return collectBytesInBuffer(context.getHttpRequest().getBody())
-                .map({ it == data.defaultData })
-                .flatMap({ it ? Mono.just(mockHttpResponse) : Mono.error(new IllegalArgumentException()) })
+        def localData = data.defaultData
+        def mockPolicy = new HttpPipelinePolicy() {
+            @Override
+            Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+                return collectBytesInBuffer(context.getHttpRequest().getBody())
+                    .map({ it == localData })
+                    .flatMap({ it ? Mono.just(mockHttpResponse) : Mono.error(new IllegalArgumentException()) }) as Mono<HttpResponse>
+            }
         }
 
         // Build the pipeline
         blobAsyncClient = new BlobServiceClientBuilder()
-            .credential(env.primaryAccount.credential)
-            .endpoint(env.primaryAccount.blobEndpoint)
+            .credential(environment.primaryAccount.credential)
+            .endpoint(environment.primaryAccount.blobEndpoint)
             .retryOptions(new RequestRetryOptions(null, 3, null, 500, 1500, null))
             .addPolicy(mockPolicy).buildAsyncClient()
             .getBlobContainerAsyncClient(generateContainerName()).getBlobAsyncClient(generateBlobName())
@@ -1945,11 +1964,11 @@ class BlockBlobAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @IgnoreIf( { getEnv().serviceVersion != null } )
+    @IgnoreIf( { getEnvironment().serviceVersion != null } )
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
         setup:
-        def specialBlob = getSpecializedBuilder(env.primaryAccount.credential, blockBlobClient.getBlobUrl(), getPerCallVersionPolicy())
+        def specialBlob = getSpecializedBuilder(environment.primaryAccount.credential, blockBlobClient.getBlobUrl(), getPerCallVersionPolicy())
             .buildBlockBlobClient()
 
         when:

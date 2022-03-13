@@ -5,31 +5,30 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.apimanagement.fluent.models.SaveConfigurationParameterProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Save Tenant Configuration Contract details. */
-@JsonFlatten
 @Fluent
-public class SaveConfigurationParameter {
+public final class SaveConfigurationParameter {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SaveConfigurationParameter.class);
 
     /*
-     * The name of the Git branch in which to commit the current configuration
-     * snapshot.
+     * Properties of the Save Configuration Parameters.
      */
-    @JsonProperty(value = "properties.branch")
-    private String branch;
+    @JsonProperty(value = "properties")
+    private SaveConfigurationParameterProperties innerProperties;
 
-    /*
-     * The value if true, the current configuration database is committed to
-     * the Git repository, even if the Git repository has newer changes that
-     * would be overwritten.
+    /**
+     * Get the innerProperties property: Properties of the Save Configuration Parameters.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.force")
-    private Boolean force;
+    private SaveConfigurationParameterProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the branch property: The name of the Git branch in which to commit the current configuration snapshot.
@@ -37,7 +36,7 @@ public class SaveConfigurationParameter {
      * @return the branch value.
      */
     public String branch() {
-        return this.branch;
+        return this.innerProperties() == null ? null : this.innerProperties().branch();
     }
 
     /**
@@ -47,7 +46,10 @@ public class SaveConfigurationParameter {
      * @return the SaveConfigurationParameter object itself.
      */
     public SaveConfigurationParameter withBranch(String branch) {
-        this.branch = branch;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SaveConfigurationParameterProperties();
+        }
+        this.innerProperties().withBranch(branch);
         return this;
     }
 
@@ -58,7 +60,7 @@ public class SaveConfigurationParameter {
      * @return the force value.
      */
     public Boolean force() {
-        return this.force;
+        return this.innerProperties() == null ? null : this.innerProperties().force();
     }
 
     /**
@@ -69,7 +71,10 @@ public class SaveConfigurationParameter {
      * @return the SaveConfigurationParameter object itself.
      */
     public SaveConfigurationParameter withForce(Boolean force) {
-        this.force = force;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SaveConfigurationParameterProperties();
+        }
+        this.innerProperties().withForce(force);
         return this;
     }
 
@@ -79,5 +84,8 @@ public class SaveConfigurationParameter {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

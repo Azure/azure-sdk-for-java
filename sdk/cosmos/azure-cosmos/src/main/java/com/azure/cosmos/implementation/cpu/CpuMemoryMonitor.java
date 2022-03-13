@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.cpu;
 
 
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.CosmosDaemonThreadFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +18,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -34,7 +34,8 @@ public class CpuMemoryMonitor {
 
     private static final Logger logger = LoggerFactory.getLogger(CpuMemoryMonitor.class);
     private static final CpuMemoryReader CPU_MEMORY_READER = new CpuMemoryReader();
-    private static final ScheduledThreadPoolExecutor scheduledExecutorService = new ScheduledThreadPoolExecutor(1, new DaemonThreadFactory());
+    private static final ScheduledThreadPoolExecutor scheduledExecutorService =
+        new ScheduledThreadPoolExecutor(1, new CosmosDaemonThreadFactory("CpuMemoryMonitor"));
 
     static {
         scheduledExecutorService.setRemoveOnCancelPolicy(true);
@@ -218,14 +219,4 @@ public class CpuMemoryMonitor {
             }
         }
     }
-
-    private static class DaemonThreadFactory implements ThreadFactory {
-        @Override
-        public Thread newThread(Runnable r) {
-            Thread t = new Thread(r);
-            t.setDaemon(true);
-            return t;
-        }
-    }
-
 }

@@ -19,7 +19,12 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author Warren Zhu
  * @author Xiaolu Dai
+ *
+ * @deprecated {@link rx} API will be dropped in version 4.x, please migrate to reactor API in
+ * {@link EventHubTemplate}. From version 4.0.0, the reactor API support will be moved to
+ * com.azure.spring.eventhubs.core.EventHubTemplate.
  */
+@Deprecated
 public class EventHubRxTemplate extends AbstractEventHubTemplate implements EventHubRxOperation {
 
     private final ConcurrentHashMap<Tuple<String, String>, Observable<Message<?>>> subjectByNameAndGroup =
@@ -51,8 +56,8 @@ public class EventHubRxTemplate extends AbstractEventHubTemplate implements Even
         Tuple<String, String> nameAndConsumerGroup = Tuple.of(destination, consumerGroup);
 
         subjectByNameAndGroup.computeIfAbsent(nameAndConsumerGroup, k -> Observable.<Message<?>>create(subscriber -> {
-            final EventHubProcessor eventHubProcessor = new EventHubProcessor(subscriber::onNext, messagePayloadType,
-                getCheckpointConfig(), getMessageConverter());
+            final EventHubProcessor eventHubProcessor = new EventHubProcessor(subscriber::onNext, subscriber::onError,
+                messagePayloadType, getCheckpointConfig(), getMessageConverter());
             this.createEventProcessorClient(destination, consumerGroup, eventHubProcessor);
             this.startEventProcessorClient(destination, consumerGroup);
             subscriber.add(Subscriptions.create(() -> this.stopEventProcessorClient(destination, consumerGroup)));

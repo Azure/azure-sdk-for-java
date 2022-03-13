@@ -6,6 +6,7 @@ package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.kusto.fluent.models.ClusterInner;
 import com.azure.resourcemanager.kusto.fluent.models.FollowerDatabaseDefinitionInner;
@@ -55,6 +56,13 @@ public interface Cluster {
      * @return the sku value.
      */
     AzureSku sku();
+
+    /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the zones property: The availability zones of the cluster.
@@ -176,11 +184,78 @@ public interface Cluster {
     Boolean enableDoubleEncryption();
 
     /**
+     * Gets the publicNetworkAccess property: Public network access to the cluster is enabled by default. When disabled,
+     * only private endpoint connection to the cluster is allowed.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    PublicNetworkAccess publicNetworkAccess();
+
+    /**
+     * Gets the allowedIpRangeList property: The list of ips in the format of CIDR allowed to connect to the cluster.
+     *
+     * @return the allowedIpRangeList value.
+     */
+    List<String> allowedIpRangeList();
+
+    /**
      * Gets the engineType property: The engine type.
      *
      * @return the engineType value.
      */
     EngineType engineType();
+
+    /**
+     * Gets the acceptedAudiences property: The cluster's accepted audiences.
+     *
+     * @return the acceptedAudiences value.
+     */
+    List<AcceptedAudiences> acceptedAudiences();
+
+    /**
+     * Gets the enableAutoStop property: A boolean value that indicates if the cluster could be automatically stopped
+     * (due to lack of data or no activity for many days).
+     *
+     * @return the enableAutoStop value.
+     */
+    Boolean enableAutoStop();
+
+    /**
+     * Gets the restrictOutboundNetworkAccess property: Whether or not to restrict outbound network access. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     *
+     * @return the restrictOutboundNetworkAccess value.
+     */
+    ClusterNetworkAccessFlag restrictOutboundNetworkAccess();
+
+    /**
+     * Gets the allowedFqdnList property: List of allowed FQDNs(Fully Qualified Domain Name) for egress from Cluster.
+     *
+     * @return the allowedFqdnList value.
+     */
+    List<String> allowedFqdnList();
+
+    /**
+     * Gets the publicIpType property: Indicates what public IP type to create - IPv4 (default), or DualStack (both IPv4
+     * and IPv6).
+     *
+     * @return the publicIpType value.
+     */
+    PublicIpType publicIpType();
+
+    /**
+     * Gets the virtualClusterGraduationProperties property: Virtual Cluster graduation properties.
+     *
+     * @return the virtualClusterGraduationProperties value.
+     */
+    String virtualClusterGraduationProperties();
+
+    /**
+     * Gets the privateEndpointConnections property: A list of private endpoint connections.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    List<PrivateEndpointConnection> privateEndpointConnections();
 
     /**
      * Gets the region of the resource.
@@ -270,7 +345,15 @@ public interface Cluster {
                 DefinitionStages.WithKeyVaultProperties,
                 DefinitionStages.WithEnablePurge,
                 DefinitionStages.WithEnableDoubleEncryption,
+                DefinitionStages.WithPublicNetworkAccess,
+                DefinitionStages.WithAllowedIpRangeList,
                 DefinitionStages.WithEngineType,
+                DefinitionStages.WithAcceptedAudiences,
+                DefinitionStages.WithEnableAutoStop,
+                DefinitionStages.WithRestrictOutboundNetworkAccess,
+                DefinitionStages.WithAllowedFqdnList,
+                DefinitionStages.WithPublicIpType,
+                DefinitionStages.WithVirtualClusterGraduationProperties,
                 DefinitionStages.WithIfMatch,
                 DefinitionStages.WithIfNoneMatch {
             /**
@@ -401,6 +484,29 @@ public interface Cluster {
              */
             WithCreate withEnableDoubleEncryption(Boolean enableDoubleEncryption);
         }
+        /** The stage of the Cluster definition allowing to specify publicNetworkAccess. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Public network access to the cluster is enabled by default.
+             * When disabled, only private endpoint connection to the cluster is allowed.
+             *
+             * @param publicNetworkAccess Public network access to the cluster is enabled by default. When disabled,
+             *     only private endpoint connection to the cluster is allowed.
+             * @return the next definition stage.
+             */
+            WithCreate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
+        }
+        /** The stage of the Cluster definition allowing to specify allowedIpRangeList. */
+        interface WithAllowedIpRangeList {
+            /**
+             * Specifies the allowedIpRangeList property: The list of ips in the format of CIDR allowed to connect to
+             * the cluster..
+             *
+             * @param allowedIpRangeList The list of ips in the format of CIDR allowed to connect to the cluster.
+             * @return the next definition stage.
+             */
+            WithCreate withAllowedIpRangeList(List<String> allowedIpRangeList);
+        }
         /** The stage of the Cluster definition allowing to specify engineType. */
         interface WithEngineType {
             /**
@@ -410,6 +516,73 @@ public interface Cluster {
              * @return the next definition stage.
              */
             WithCreate withEngineType(EngineType engineType);
+        }
+        /** The stage of the Cluster definition allowing to specify acceptedAudiences. */
+        interface WithAcceptedAudiences {
+            /**
+             * Specifies the acceptedAudiences property: The cluster's accepted audiences..
+             *
+             * @param acceptedAudiences The cluster's accepted audiences.
+             * @return the next definition stage.
+             */
+            WithCreate withAcceptedAudiences(List<AcceptedAudiences> acceptedAudiences);
+        }
+        /** The stage of the Cluster definition allowing to specify enableAutoStop. */
+        interface WithEnableAutoStop {
+            /**
+             * Specifies the enableAutoStop property: A boolean value that indicates if the cluster could be
+             * automatically stopped (due to lack of data or no activity for many days)..
+             *
+             * @param enableAutoStop A boolean value that indicates if the cluster could be automatically stopped (due
+             *     to lack of data or no activity for many days).
+             * @return the next definition stage.
+             */
+            WithCreate withEnableAutoStop(Boolean enableAutoStop);
+        }
+        /** The stage of the Cluster definition allowing to specify restrictOutboundNetworkAccess. */
+        interface WithRestrictOutboundNetworkAccess {
+            /**
+             * Specifies the restrictOutboundNetworkAccess property: Whether or not to restrict outbound network access.
+             * Value is optional but if passed in, must be 'Enabled' or 'Disabled'.
+             *
+             * @param restrictOutboundNetworkAccess Whether or not to restrict outbound network access. Value is
+             *     optional but if passed in, must be 'Enabled' or 'Disabled'.
+             * @return the next definition stage.
+             */
+            WithCreate withRestrictOutboundNetworkAccess(ClusterNetworkAccessFlag restrictOutboundNetworkAccess);
+        }
+        /** The stage of the Cluster definition allowing to specify allowedFqdnList. */
+        interface WithAllowedFqdnList {
+            /**
+             * Specifies the allowedFqdnList property: List of allowed FQDNs(Fully Qualified Domain Name) for egress
+             * from Cluster..
+             *
+             * @param allowedFqdnList List of allowed FQDNs(Fully Qualified Domain Name) for egress from Cluster.
+             * @return the next definition stage.
+             */
+            WithCreate withAllowedFqdnList(List<String> allowedFqdnList);
+        }
+        /** The stage of the Cluster definition allowing to specify publicIpType. */
+        interface WithPublicIpType {
+            /**
+             * Specifies the publicIpType property: Indicates what public IP type to create - IPv4 (default), or
+             * DualStack (both IPv4 and IPv6).
+             *
+             * @param publicIpType Indicates what public IP type to create - IPv4 (default), or DualStack (both IPv4 and
+             *     IPv6).
+             * @return the next definition stage.
+             */
+            WithCreate withPublicIpType(PublicIpType publicIpType);
+        }
+        /** The stage of the Cluster definition allowing to specify virtualClusterGraduationProperties. */
+        interface WithVirtualClusterGraduationProperties {
+            /**
+             * Specifies the virtualClusterGraduationProperties property: Virtual Cluster graduation properties.
+             *
+             * @param virtualClusterGraduationProperties Virtual Cluster graduation properties.
+             * @return the next definition stage.
+             */
+            WithCreate withVirtualClusterGraduationProperties(String virtualClusterGraduationProperties);
         }
         /** The stage of the Cluster definition allowing to specify ifMatch. */
         interface WithIfMatch {
@@ -456,7 +629,14 @@ public interface Cluster {
             UpdateStages.WithKeyVaultProperties,
             UpdateStages.WithEnablePurge,
             UpdateStages.WithEnableDoubleEncryption,
+            UpdateStages.WithPublicNetworkAccess,
+            UpdateStages.WithAllowedIpRangeList,
             UpdateStages.WithEngineType,
+            UpdateStages.WithAcceptedAudiences,
+            UpdateStages.WithEnableAutoStop,
+            UpdateStages.WithRestrictOutboundNetworkAccess,
+            UpdateStages.WithAllowedFqdnList,
+            UpdateStages.WithPublicIpType,
             UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
@@ -588,6 +768,29 @@ public interface Cluster {
              */
             Update withEnableDoubleEncryption(Boolean enableDoubleEncryption);
         }
+        /** The stage of the Cluster update allowing to specify publicNetworkAccess. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Public network access to the cluster is enabled by default.
+             * When disabled, only private endpoint connection to the cluster is allowed.
+             *
+             * @param publicNetworkAccess Public network access to the cluster is enabled by default. When disabled,
+             *     only private endpoint connection to the cluster is allowed.
+             * @return the next definition stage.
+             */
+            Update withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
+        }
+        /** The stage of the Cluster update allowing to specify allowedIpRangeList. */
+        interface WithAllowedIpRangeList {
+            /**
+             * Specifies the allowedIpRangeList property: The list of ips in the format of CIDR allowed to connect to
+             * the cluster..
+             *
+             * @param allowedIpRangeList The list of ips in the format of CIDR allowed to connect to the cluster.
+             * @return the next definition stage.
+             */
+            Update withAllowedIpRangeList(List<String> allowedIpRangeList);
+        }
         /** The stage of the Cluster update allowing to specify engineType. */
         interface WithEngineType {
             /**
@@ -597,6 +800,63 @@ public interface Cluster {
              * @return the next definition stage.
              */
             Update withEngineType(EngineType engineType);
+        }
+        /** The stage of the Cluster update allowing to specify acceptedAudiences. */
+        interface WithAcceptedAudiences {
+            /**
+             * Specifies the acceptedAudiences property: The cluster's accepted audiences..
+             *
+             * @param acceptedAudiences The cluster's accepted audiences.
+             * @return the next definition stage.
+             */
+            Update withAcceptedAudiences(List<AcceptedAudiences> acceptedAudiences);
+        }
+        /** The stage of the Cluster update allowing to specify enableAutoStop. */
+        interface WithEnableAutoStop {
+            /**
+             * Specifies the enableAutoStop property: A boolean value that indicates if the cluster could be
+             * automatically stopped (due to lack of data or no activity for many days)..
+             *
+             * @param enableAutoStop A boolean value that indicates if the cluster could be automatically stopped (due
+             *     to lack of data or no activity for many days).
+             * @return the next definition stage.
+             */
+            Update withEnableAutoStop(Boolean enableAutoStop);
+        }
+        /** The stage of the Cluster update allowing to specify restrictOutboundNetworkAccess. */
+        interface WithRestrictOutboundNetworkAccess {
+            /**
+             * Specifies the restrictOutboundNetworkAccess property: Whether or not to restrict outbound network access.
+             * Value is optional but if passed in, must be 'Enabled' or 'Disabled'.
+             *
+             * @param restrictOutboundNetworkAccess Whether or not to restrict outbound network access. Value is
+             *     optional but if passed in, must be 'Enabled' or 'Disabled'.
+             * @return the next definition stage.
+             */
+            Update withRestrictOutboundNetworkAccess(ClusterNetworkAccessFlag restrictOutboundNetworkAccess);
+        }
+        /** The stage of the Cluster update allowing to specify allowedFqdnList. */
+        interface WithAllowedFqdnList {
+            /**
+             * Specifies the allowedFqdnList property: List of allowed FQDNs(Fully Qualified Domain Name) for egress
+             * from Cluster..
+             *
+             * @param allowedFqdnList List of allowed FQDNs(Fully Qualified Domain Name) for egress from Cluster.
+             * @return the next definition stage.
+             */
+            Update withAllowedFqdnList(List<String> allowedFqdnList);
+        }
+        /** The stage of the Cluster update allowing to specify publicIpType. */
+        interface WithPublicIpType {
+            /**
+             * Specifies the publicIpType property: Indicates what public IP type to create - IPv4 (default), or
+             * DualStack (both IPv4 and IPv6).
+             *
+             * @param publicIpType Indicates what public IP type to create - IPv4 (default), or DualStack (both IPv4 and
+             *     IPv6).
+             * @return the next definition stage.
+             */
+            Update withPublicIpType(PublicIpType publicIpType);
         }
         /** The stage of the Cluster update allowing to specify ifMatch. */
         interface WithIfMatch {
@@ -667,7 +927,7 @@ public interface Cluster {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto database principals operation response.
+     * @return the list Kusto database principals operation response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<FollowerDatabaseDefinition> listFollowerDatabases();
 
@@ -678,7 +938,7 @@ public interface Cluster {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto database principals operation response.
+     * @return the list Kusto database principals operation response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<FollowerDatabaseDefinition> listFollowerDatabases(Context context);
 
@@ -728,7 +988,7 @@ public interface Cluster {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of language extension objects.
+     * @return the list of language extension objects as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LanguageExtension> listLanguageExtensions();
 
@@ -739,7 +999,7 @@ public interface Cluster {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of language extension objects.
+     * @return the list of language extension objects as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LanguageExtension> listLanguageExtensions(Context context);
 

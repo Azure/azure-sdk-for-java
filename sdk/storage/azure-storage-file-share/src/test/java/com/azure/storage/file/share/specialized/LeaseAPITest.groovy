@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.share.specialized
 
+import com.azure.core.http.rest.Response
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.share.APISpec
 import com.azure.storage.file.share.ShareClient
@@ -10,6 +11,7 @@ import com.azure.storage.file.share.ShareFileClient
 import com.azure.storage.file.share.ShareServiceVersion
 import com.azure.storage.file.share.models.LeaseDurationType
 import com.azure.storage.file.share.models.LeaseStateType
+import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.options.ShareAcquireLeaseOptions
 import com.azure.storage.file.share.options.ShareBreakLeaseOptions
@@ -203,9 +205,13 @@ class LeaseAPITest extends APISpec {
         setup:
         def shareSnapshot = shareClient.createSnapshot().getSnapshot()
         def shareClient = shareBuilderHelper(shareClient.getShareName(), shareSnapshot).buildClient()
+        def leaseClient = createLeaseClient(shareClient)
 
         when:
-        def resp = createLeaseClient(shareClient).acquireLeaseWithResponse(new ShareAcquireLeaseOptions().setDuration(-1), null, null)
+        def resp = retry({
+            leaseClient
+                .acquireLeaseWithResponse(new ShareAcquireLeaseOptions().setDuration(-1), null, null)
+        },{ShareStorageException it -> it.errorCode == ShareErrorCode.SHARE_SNAPSHOT_IN_PROGRESS})
 
         then:
         resp.getStatusCode() == 201

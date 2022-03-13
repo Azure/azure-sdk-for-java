@@ -18,9 +18,7 @@ public enum CheckpointMode {
 
     /**
      * Checkpoint after each processed batch of records.
-     * @deprecated Please use {@code RECORD}
      */
-    @Deprecated
     BATCH,
 
     /**

@@ -1,7 +1,86 @@
 # Release History
 
-## 12.7.0-beta.1 (Unreleased)
+## 12.8.0-beta.4 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 12.7.4 (2022-02-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.1` to version `1.25.0`.
+- Upgraded `azure-core-http-netty` from `1.11.6` to version `1.11.7`.
+- Upgraded `azure-storage-blob` from `12.14.3` to version `12.14.4`.
+
+## 12.8.0-beta.3 (2022-02-09)
+
+### Features Added
+- Added support for 2021-04-10 service version.
+
+### Bugs Fixed
+- Fixed a bug in builders that would cause fileSystem or path name to be erased if specified before the connection string.
+
+## 12.7.3 (2022-01-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.22.0` to version `1.24.1`.
+- Upgraded `azure-core-http-netty` from `1.11.2` to version `1.11.6`.
+- Upgraded `azure-storage-blob` from `12.14.2` to version `12.14.3`.
+
+## 12.8.0-beta.2 (2021-12-07)
+
+### Features Added
+- Added support for 2021-02-12 service version.
+- Added support for listing system containers.
+
+### Bugs Fixed
+- Fixed a bug in DataLakeFileClient.flush() in which the logic of the overwrite parameter was reversed.
+- Fixed a bug that would cause authenticating with a sas token to fail if the timestamps in the token were formatted differently.
+
+## 12.7.2 (2021-11-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.21.0` to version `1.22.0`.
+- Upgraded `azure-core-http-netty` from `1.11.1` to version `1.11.2`.
+- Upgraded `azure-storage-blob` from `12.14.1` to version `12.14.2`.
+
+## 12.8.0-beta.1 (2021-11-05)
+
+### Features Added
+- Added support for the 2020-12-06 service version.
+
+## 12.7.1 (2021-10-12)
+
+### Bugs Fixed
+- Fixed bug where composite BlobServiceException wasn't translated into DataLakeServiceException.
+
+### Other Changes
+#### Dependency Updates
+- Updated to version `12.14.1` of `azure-storage-blob`
+- Updated to version `1.21.0` of `azure-core`
+
+## 12.7.0 (2021-09-15)
+- GA release
+
+## 12.7.0-beta.1 (2021-07-28)
+- Added support for openInputStream to sync data lake file clients
+- Added support for the 2020-10-02 service version.
+- Added support to specify Parquet Input Serialization when querying a file.
+- Updated DownloadRetryOptions.maxRetryRequests to default downloads to retry 5 times.
 
 ## 12.6.0 (2021-06-09)
 - GA release
@@ -19,7 +98,7 @@
 - Updated `azure-core` to version `1.16.0`
 
 ## 12.5.0 (2021-04-29)
-- Fixed a bug where large files would hang when the upload method was called. 
+- Fixed a bug where large files would not respond when the upload method was called. 
 - DataLakeLeaseClient now remembers the Lease ID after a lease change.
 
 ## 12.5.0-beta.3 (2021-04-16)
@@ -124,9 +203,9 @@ and
 
 ## 12.0.0-beta.7 (2019-12-04)
 This package's
-[documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-file-datalake/README.md)
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-file-datalake/README.md)
 and
-[samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-file-datalake/src/samples/java/com/azure/storage/file/datalake)
+[samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/storage/azure-storage-file-datalake/src/samples/java/com/azure/storage/file/datalake)
 
 - Fixed bug in ClientBuilders that prevented OAuth from functioning.
 - Added a check in ClientBuilders to enforce HTTPS for bearer token authentication.
@@ -148,7 +227,7 @@ and
 - Support for DataLakeFileClient: create, delete, rename, get properties, get access control, set metadata, set properties, set access control, append, flush, read
 
 This package's
-[documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-file-datalake/README.md)
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-file-datalake/README.md)
 and
-[samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-file-datalake/src/samples/java/com/azure/storage/file/datalake)
+[samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/storage/azure-storage-file-datalake/src/samples/java/com/azure/storage/file/datalake)
 

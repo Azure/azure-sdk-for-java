@@ -18,6 +18,7 @@ import com.azure.communication.chat.implementation.models.CommunicationIdentifie
 import com.azure.communication.chat.implementation.models.SendReadReceiptRequest;
 import com.azure.communication.chat.models.SendChatMessageOptions;
 import com.azure.communication.chat.models.SendChatMessageResult;
+import com.azure.communication.chat.models.TypingNotificationOptions;
 import com.azure.communication.chat.models.UpdateChatMessageOptions;
 import com.azure.communication.chat.models.UpdateChatThreadOptions;
 import com.azure.core.annotation.BodyParam;
@@ -152,16 +153,6 @@ public final class ChatThreadsImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/chat/threads/{chatThreadId}/typing")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<Void>> sendTypingNotification(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("chatThreadId") String chatThreadId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
         @Get("/chat/threads/{chatThreadId}/participants")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
@@ -214,6 +205,17 @@ public final class ChatThreadsImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("chatThreadId") String chatThreadId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/chat/threads/{chatThreadId}/typing")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<Void>> sendTypingNotification(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("chatThreadId") String chatThreadId,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") TypingNotificationOptions sendTypingNotificationRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -1216,99 +1218,6 @@ public final class ChatThreadsImpl {
     }
 
     /**
-     * Posts a typing event to a thread, on behalf of a user.
-     *
-     * @param chatThreadId Id of the thread.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendTypingNotificationWithResponseAsync(String chatThreadId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.sendTypingNotification(
-                                this.client.getEndpoint(), chatThreadId, this.client.getApiVersion(), accept, context));
-    }
-
-    /**
-     * Posts a typing event to a thread, on behalf of a user.
-     *
-     * @param chatThreadId Id of the thread.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendTypingNotificationWithResponseAsync(String chatThreadId, Context context) {
-        final String accept = "application/json";
-        return service.sendTypingNotification(
-                this.client.getEndpoint(), chatThreadId, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Posts a typing event to a thread, on behalf of a user.
-     *
-     * @param chatThreadId Id of the thread.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> sendTypingNotificationAsync(String chatThreadId) {
-        return sendTypingNotificationWithResponseAsync(chatThreadId).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Posts a typing event to a thread, on behalf of a user.
-     *
-     * @param chatThreadId Id of the thread.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> sendTypingNotificationAsync(String chatThreadId, Context context) {
-        return sendTypingNotificationWithResponseAsync(chatThreadId, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Posts a typing event to a thread, on behalf of a user.
-     *
-     * @param chatThreadId Id of the thread.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendTypingNotification(String chatThreadId) {
-        sendTypingNotificationAsync(chatThreadId).block();
-    }
-
-    /**
-     * Posts a typing event to a thread, on behalf of a user.
-     *
-     * @param chatThreadId Id of the thread.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> sendTypingNotificationWithResponse(String chatThreadId, Context context) {
-        return sendTypingNotificationWithResponseAsync(chatThreadId, context).block();
-    }
-
-    /**
      * Gets the participants of a thread.
      *
      * @param chatThreadId Thread id to get participants for.
@@ -1957,6 +1866,151 @@ public final class ChatThreadsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ChatThreadProperties> getChatThreadPropertiesWithResponse(String chatThreadId, Context context) {
         return getChatThreadPropertiesWithResponseAsync(chatThreadId, context).block();
+    }
+
+    /**
+     * Posts a typing event to a thread, on behalf of a user.
+     *
+     * @param chatThreadId Id of the thread.
+     * @param sendTypingNotificationRequest Details of the typing notification request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> sendTypingNotificationWithResponseAsync(
+            String chatThreadId, TypingNotificationOptions sendTypingNotificationRequest) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.sendTypingNotification(
+                                this.client.getEndpoint(),
+                                chatThreadId,
+                                this.client.getApiVersion(),
+                                sendTypingNotificationRequest,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Posts a typing event to a thread, on behalf of a user.
+     *
+     * @param chatThreadId Id of the thread.
+     * @param sendTypingNotificationRequest Details of the typing notification request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> sendTypingNotificationWithResponseAsync(
+            String chatThreadId, TypingNotificationOptions sendTypingNotificationRequest, Context context) {
+        final String accept = "application/json";
+        return service.sendTypingNotification(
+                this.client.getEndpoint(),
+                chatThreadId,
+                this.client.getApiVersion(),
+                sendTypingNotificationRequest,
+                accept,
+                context);
+    }
+
+    /**
+     * Posts a typing event to a thread, on behalf of a user.
+     *
+     * @param chatThreadId Id of the thread.
+     * @param sendTypingNotificationRequest Details of the typing notification request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> sendTypingNotificationAsync(
+            String chatThreadId, TypingNotificationOptions sendTypingNotificationRequest) {
+        return sendTypingNotificationWithResponseAsync(chatThreadId, sendTypingNotificationRequest)
+                .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Posts a typing event to a thread, on behalf of a user.
+     *
+     * @param chatThreadId Id of the thread.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> sendTypingNotificationAsync(String chatThreadId) {
+        final TypingNotificationOptions sendTypingNotificationRequest = null;
+        return sendTypingNotificationWithResponseAsync(chatThreadId, sendTypingNotificationRequest)
+                .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Posts a typing event to a thread, on behalf of a user.
+     *
+     * @param chatThreadId Id of the thread.
+     * @param sendTypingNotificationRequest Details of the typing notification request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> sendTypingNotificationAsync(
+            String chatThreadId, TypingNotificationOptions sendTypingNotificationRequest, Context context) {
+        return sendTypingNotificationWithResponseAsync(chatThreadId, sendTypingNotificationRequest, context)
+                .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Posts a typing event to a thread, on behalf of a user.
+     *
+     * @param chatThreadId Id of the thread.
+     * @param sendTypingNotificationRequest Details of the typing notification request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void sendTypingNotification(String chatThreadId, TypingNotificationOptions sendTypingNotificationRequest) {
+        sendTypingNotificationAsync(chatThreadId, sendTypingNotificationRequest).block();
+    }
+
+    /**
+     * Posts a typing event to a thread, on behalf of a user.
+     *
+     * @param chatThreadId Id of the thread.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void sendTypingNotification(String chatThreadId) {
+        final TypingNotificationOptions sendTypingNotificationRequest = null;
+        sendTypingNotificationAsync(chatThreadId, sendTypingNotificationRequest).block();
+    }
+
+    /**
+     * Posts a typing event to a thread, on behalf of a user.
+     *
+     * @param chatThreadId Id of the thread.
+     * @param sendTypingNotificationRequest Details of the typing notification request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> sendTypingNotificationWithResponse(
+            String chatThreadId, TypingNotificationOptions sendTypingNotificationRequest, Context context) {
+        return sendTypingNotificationWithResponseAsync(chatThreadId, sendTypingNotificationRequest, context).block();
     }
 
     /**

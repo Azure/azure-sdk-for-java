@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** IaaS VM workload-specific backup item representing the Classic Compute VM. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectableItemType")
 @JsonTypeName("Microsoft.ClassicCompute/virtualMachines")
-@Immutable
+@Fluent
 public final class AzureIaaSClassicComputeVMProtectableItem extends IaaSvmProtectableItem {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureIaaSClassicComputeVMProtectableItem.class);
 
@@ -21,6 +21,20 @@ public final class AzureIaaSClassicComputeVMProtectableItem extends IaaSvmProtec
     @Override
     public AzureIaaSClassicComputeVMProtectableItem withVirtualMachineId(String virtualMachineId) {
         super.withVirtualMachineId(virtualMachineId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureIaaSClassicComputeVMProtectableItem withVirtualMachineVersion(String virtualMachineVersion) {
+        super.withVirtualMachineVersion(virtualMachineVersion);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureIaaSClassicComputeVMProtectableItem withResourceGroup(String resourceGroup) {
+        super.withResourceGroup(resourceGroup);
         return this;
     }
 

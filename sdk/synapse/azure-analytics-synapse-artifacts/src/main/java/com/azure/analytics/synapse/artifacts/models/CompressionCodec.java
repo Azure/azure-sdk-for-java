@@ -10,6 +10,12 @@ import java.util.Collection;
 
 /** Defines values for CompressionCodec. */
 public final class CompressionCodec extends ExpandableStringEnum<CompressionCodec> {
+    /** Static value none for CompressionCodec. */
+    public static final CompressionCodec NONE = fromString("none");
+
+    /** Static value lzo for CompressionCodec. */
+    public static final CompressionCodec LZO = fromString("lzo");
+
     /** Static value bzip2 for CompressionCodec. */
     public static final CompressionCodec BZIP2 = fromString("bzip2");
 

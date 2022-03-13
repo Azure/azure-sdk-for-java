@@ -14,7 +14,6 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.notificationhubs.fluent.models.CheckAvailabilityResultInner;
 import com.azure.resourcemanager.notificationhubs.fluent.models.NamespaceResourceInner;
 import com.azure.resourcemanager.notificationhubs.fluent.models.ResourceListKeysInner;
-import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleListResultInner;
 import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleResourceInner;
 import com.azure.resourcemanager.notificationhubs.models.CheckAvailabilityParameters;
 import com.azure.resourcemanager.notificationhubs.models.NamespaceCreateOrUpdateParameters;
@@ -125,7 +124,7 @@ public interface NamespacesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName);
 
     /**
@@ -139,7 +138,7 @@ public interface NamespacesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName, Context context);
 
     /**
@@ -385,8 +384,7 @@ public interface NamespacesClient {
      * @return the Primary and Secondary ConnectionStrings to the namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SharedAccessAuthorizationRuleListResultInner listKeys(
-        String resourceGroupName, String namespaceName, String authorizationRuleName);
+    ResourceListKeysInner listKeys(String resourceGroupName, String namespaceName, String authorizationRuleName);
 
     /**
      * Gets the Primary and Secondary ConnectionStrings to the namespace.
@@ -401,7 +399,7 @@ public interface NamespacesClient {
      * @return the Primary and Secondary ConnectionStrings to the namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SharedAccessAuthorizationRuleListResultInner> listKeysWithResponse(
+    Response<ResourceListKeysInner> listKeysWithResponse(
         String resourceGroupName, String namespaceName, String authorizationRuleName, Context context);
 
     /**

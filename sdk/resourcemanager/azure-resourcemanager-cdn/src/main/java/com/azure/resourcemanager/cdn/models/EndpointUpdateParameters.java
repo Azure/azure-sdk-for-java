@@ -5,132 +5,31 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.cdn.fluent.models.EndpointPropertiesUpdateParameters;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** Properties required to create or update an endpoint. */
-@JsonFlatten
 @Fluent
-public class EndpointUpdateParameters {
+public final class EndpointUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EndpointUpdateParameters.class);
 
     /*
      * Endpoint tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
-     * A directory path on the origin that CDN can use to retrieve content
-     * from, e.g. contoso.cloudapp.net/originpath.
+     * The JSON object containing endpoint update parameters.
      */
-    @JsonProperty(value = "properties.originPath")
-    private String originPath;
-
-    /*
-     * List of content types on which compression applies. The value should be
-     * a valid MIME type.
-     */
-    @JsonProperty(value = "properties.contentTypesToCompress")
-    private List<String> contentTypesToCompress;
-
-    /*
-     * The host header value sent to the origin with each request. This
-     * property at Endpoint is only allowed when endpoint uses single origin
-     * and can be overridden by the same property specified at origin.If you
-     * leave this blank, the request hostname determines this value. Azure CDN
-     * origins, such as Web Apps, Blob Storage, and Cloud Services require this
-     * host header value to match the origin hostname by default.
-     */
-    @JsonProperty(value = "properties.originHostHeader")
-    private String originHostHeader;
-
-    /*
-     * Indicates whether content compression is enabled on CDN. Default value
-     * is false. If compression is enabled, content will be served as
-     * compressed if user requests for a compressed version. Content won't be
-     * compressed on CDN when requested content is smaller than 1 byte or
-     * larger than 1 MB.
-     */
-    @JsonProperty(value = "properties.isCompressionEnabled")
-    private Boolean isCompressionEnabled;
-
-    /*
-     * Indicates whether HTTP traffic is allowed on the endpoint. Default value
-     * is true. At least one protocol (HTTP or HTTPS) must be allowed.
-     */
-    @JsonProperty(value = "properties.isHttpAllowed")
-    private Boolean isHttpAllowed;
-
-    /*
-     * Indicates whether HTTPS traffic is allowed on the endpoint. Default
-     * value is true. At least one protocol (HTTP or HTTPS) must be allowed.
-     */
-    @JsonProperty(value = "properties.isHttpsAllowed")
-    private Boolean isHttpsAllowed;
-
-    /*
-     * Defines how CDN caches requests that include query strings. You can
-     * ignore any query strings when caching, bypass caching to prevent
-     * requests that contain query strings from being cached, or cache every
-     * request with a unique URL.
-     */
-    @JsonProperty(value = "properties.queryStringCachingBehavior")
-    private QueryStringCachingBehavior queryStringCachingBehavior;
-
-    /*
-     * Specifies what scenario the customer wants this CDN endpoint to optimize
-     * for, e.g. Download, Media services. With this information, CDN can apply
-     * scenario driven optimization.
-     */
-    @JsonProperty(value = "properties.optimizationType")
-    private OptimizationType optimizationType;
-
-    /*
-     * Path to a file hosted on the origin which helps accelerate delivery of
-     * the dynamic content and calculate the most optimal routes for the CDN.
-     * This is relative to the origin path. This property is only relevant when
-     * using a single origin.
-     */
-    @JsonProperty(value = "properties.probePath")
-    private String probePath;
-
-    /*
-     * List of rules defining the user's geo access within a CDN endpoint. Each
-     * geo filter defines an access rule to a specified path or content, e.g.
-     * block APAC for path /pictures/
-     */
-    @JsonProperty(value = "properties.geoFilters")
-    private List<GeoFilter> geoFilters;
-
-    /*
-     * A reference to the origin group.
-     */
-    @JsonProperty(value = "properties.defaultOriginGroup")
-    private ResourceReference defaultOriginGroup;
-
-    /*
-     * List of keys used to validate the signed URL hashes.
-     */
-    @JsonProperty(value = "properties.urlSigningKeys")
-    private List<UrlSigningKey> urlSigningKeys;
-
-    /*
-     * A policy that specifies the delivery rules to be used for an endpoint.
-     */
-    @JsonProperty(value = "properties.deliveryPolicy")
-    private EndpointPropertiesUpdateParametersDeliveryPolicy deliveryPolicy;
-
-    /*
-     * Defines the Web Application Firewall policy for the endpoint (if
-     * applicable)
-     */
-    @JsonProperty(value = "properties.webApplicationFirewallPolicyLink")
-    private EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink;
+    @JsonProperty(value = "properties")
+    private EndpointPropertiesUpdateParameters innerProperties;
 
     /**
      * Get the tags property: Endpoint tags.
@@ -153,13 +52,22 @@ public class EndpointUpdateParameters {
     }
 
     /**
+     * Get the innerProperties property: The JSON object containing endpoint update parameters.
+     *
+     * @return the innerProperties value.
+     */
+    private EndpointPropertiesUpdateParameters innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the originPath property: A directory path on the origin that CDN can use to retrieve content from, e.g.
      * contoso.cloudapp.net/originpath.
      *
      * @return the originPath value.
      */
     public String originPath() {
-        return this.originPath;
+        return this.innerProperties() == null ? null : this.innerProperties().originPath();
     }
 
     /**
@@ -170,7 +78,10 @@ public class EndpointUpdateParameters {
      * @return the EndpointUpdateParameters object itself.
      */
     public EndpointUpdateParameters withOriginPath(String originPath) {
-        this.originPath = originPath;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EndpointPropertiesUpdateParameters();
+        }
+        this.innerProperties().withOriginPath(originPath);
         return this;
     }
 
@@ -181,7 +92,7 @@ public class EndpointUpdateParameters {
      * @return the contentTypesToCompress value.
      */
     public List<String> contentTypesToCompress() {
-        return this.contentTypesToCompress;
+        return this.innerProperties() == null ? null : this.innerProperties().contentTypesToCompress();
     }
 
     /**
@@ -192,7 +103,10 @@ public class EndpointUpdateParameters {
      * @return the EndpointUpdateParameters object itself.
      */
     public EndpointUpdateParameters withContentTypesToCompress(List<String> contentTypesToCompress) {
-        this.contentTypesToCompress = contentTypesToCompress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EndpointPropertiesUpdateParameters();
+        }
+        this.innerProperties().withContentTypesToCompress(contentTypesToCompress);
         return this;
     }
 
@@ -205,7 +119,7 @@ public class EndpointUpdateParameters {
      * @return the originHostHeader value.
      */
     public String originHostHeader() {
-        return this.originHostHeader;
+        return this.innerProperties() == null ? null : this.innerProperties().originHostHeader();
     }
 
     /**
@@ -218,7 +132,10 @@ public class EndpointUpdateParameters {
      * @return the EndpointUpdateParameters object itself.
      */
     public EndpointUpdateParameters withOriginHostHeader(String originHostHeader) {
-        this.originHostHeader = originHostHeader;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EndpointPropertiesUpdateParameters();
+        }
+        this.innerProperties().withOriginHostHeader(originHostHeader);
         return this;
     }
 
@@ -230,7 +147,7 @@ public class EndpointUpdateParameters {
      * @return the isCompressionEnabled value.
      */
     public Boolean isCompressionEnabled() {
-        return this.isCompressionEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().isCompressionEnabled();
     }
 
     /**
@@ -242,7 +159,10 @@ public class EndpointUpdateParameters {
      * @return the EndpointUpdateParameters object itself.
      */
     public EndpointUpdateParameters withIsCompressionEnabled(Boolean isCompressionEnabled) {
-        this.isCompressionEnabled = isCompressionEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EndpointPropertiesUpdateParameters();
+        }
+        this.innerProperties().withIsCompressionEnabled(isCompressionEnabled);
         return this;
     }
 
@@ -253,7 +173,7 @@ public class EndpointUpdateParameters {
      * @return the isHttpAllowed value.
      */
     public Boolean isHttpAllowed() {
-        return this.isHttpAllowed;
+        return this.innerProperties() == null ? null : this.innerProperties().isHttpAllowed();
     }
 
     /**
@@ -264,7 +184,10 @@ public class EndpointUpdateParameters {
      * @return the EndpointUpdateParameters object itself.
      */
     public EndpointUpdateParameters withIsHttpAllowed(Boolean isHttpAllowed) {
-        this.isHttpAllowed = isHttpAllowed;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EndpointPropertiesUpdateParameters();
+        }
+        this.innerProperties().withIsHttpAllowed(isHttpAllowed);
         return this;
     }
 
@@ -275,7 +198,7 @@ public class EndpointUpdateParameters {
      * @return the isHttpsAllowed value.
      */
     public Boolean isHttpsAllowed() {
-        return this.isHttpsAllowed;
+        return this.innerProperties() == null ? null : this.innerProperties().isHttpsAllowed();
     }
 
     /**
@@ -286,7 +209,10 @@ public class EndpointUpdateParameters {
      * @return the EndpointUpdateParameters object itself.
      */
     public EndpointUpdateParameters withIsHttpsAllowed(Boolean isHttpsAllowed) {
-        this.isHttpsAllowed = isHttpsAllowed;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EndpointPropertiesUpdateParameters();
+        }
+        this.innerProperties().withIsHttpsAllowed(isHttpsAllowed);
         return this;
     }
 
@@ -298,7 +224,7 @@ public class EndpointUpdateParameters {
      * @return the queryStringCachingBehavior value.
      */
     public QueryStringCachingBehavior queryStringCachingBehavior() {
-        return this.queryStringCachingBehavior;
+        return this.innerProperties() == null ? null : this.innerProperties().queryStringCachingBehavior();
     }
 
     /**
@@ -311,7 +237,10 @@ public class EndpointUpdateParameters {
      */
     public EndpointUpdateParameters withQueryStringCachingBehavior(
         QueryStringCachingBehavior queryStringCachingBehavior) {
-        this.queryStringCachingBehavior = queryStringCachingBehavior;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EndpointPropertiesUpdateParameters();
+        }
+        this.innerProperties().withQueryStringCachingBehavior(queryStringCachingBehavior);
         return this;
     }
 
@@ -322,7 +251,7 @@ public class EndpointUpdateParameters {
      * @return the optimizationType value.
      */
     public OptimizationType optimizationType() {
-        return this.optimizationType;
+        return this.innerProperties() == null ? null : this.innerProperties().optimizationType();
     }
 
     /**
@@ -333,7 +262,10 @@ public class EndpointUpdateParameters {
      * @return the EndpointUpdateParameters object itself.
      */
     public EndpointUpdateParameters withOptimizationType(OptimizationType optimizationType) {
-        this.optimizationType = optimizationType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EndpointPropertiesUpdateParameters();
+        }
+        this.innerProperties().withOptimizationType(optimizationType);
         return this;
     }
 
@@ -345,7 +277,7 @@ public class EndpointUpdateParameters {
      * @return the probePath value.
      */
     public String probePath() {
-        return this.probePath;
+        return this.innerProperties() == null ? null : this.innerProperties().probePath();
     }
 
     /**
@@ -357,7 +289,10 @@ public class EndpointUpdateParameters {
      * @return the EndpointUpdateParameters object itself.
      */
     public EndpointUpdateParameters withProbePath(String probePath) {
-        this.probePath = probePath;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EndpointPropertiesUpdateParameters();
+        }
+        this.innerProperties().withProbePath(probePath);
         return this;
     }
 
@@ -368,7 +303,7 @@ public class EndpointUpdateParameters {
      * @return the geoFilters value.
      */
     public List<GeoFilter> geoFilters() {
-        return this.geoFilters;
+        return this.innerProperties() == null ? null : this.innerProperties().geoFilters();
     }
 
     /**
@@ -379,7 +314,10 @@ public class EndpointUpdateParameters {
      * @return the EndpointUpdateParameters object itself.
      */
     public EndpointUpdateParameters withGeoFilters(List<GeoFilter> geoFilters) {
-        this.geoFilters = geoFilters;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EndpointPropertiesUpdateParameters();
+        }
+        this.innerProperties().withGeoFilters(geoFilters);
         return this;
     }
 
@@ -389,7 +327,7 @@ public class EndpointUpdateParameters {
      * @return the defaultOriginGroup value.
      */
     public ResourceReference defaultOriginGroup() {
-        return this.defaultOriginGroup;
+        return this.innerProperties() == null ? null : this.innerProperties().defaultOriginGroup();
     }
 
     /**
@@ -399,7 +337,10 @@ public class EndpointUpdateParameters {
      * @return the EndpointUpdateParameters object itself.
      */
     public EndpointUpdateParameters withDefaultOriginGroup(ResourceReference defaultOriginGroup) {
-        this.defaultOriginGroup = defaultOriginGroup;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EndpointPropertiesUpdateParameters();
+        }
+        this.innerProperties().withDefaultOriginGroup(defaultOriginGroup);
         return this;
     }
 
@@ -409,7 +350,7 @@ public class EndpointUpdateParameters {
      * @return the urlSigningKeys value.
      */
     public List<UrlSigningKey> urlSigningKeys() {
-        return this.urlSigningKeys;
+        return this.innerProperties() == null ? null : this.innerProperties().urlSigningKeys();
     }
 
     /**
@@ -419,7 +360,10 @@ public class EndpointUpdateParameters {
      * @return the EndpointUpdateParameters object itself.
      */
     public EndpointUpdateParameters withUrlSigningKeys(List<UrlSigningKey> urlSigningKeys) {
-        this.urlSigningKeys = urlSigningKeys;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EndpointPropertiesUpdateParameters();
+        }
+        this.innerProperties().withUrlSigningKeys(urlSigningKeys);
         return this;
     }
 
@@ -429,7 +373,7 @@ public class EndpointUpdateParameters {
      * @return the deliveryPolicy value.
      */
     public EndpointPropertiesUpdateParametersDeliveryPolicy deliveryPolicy() {
-        return this.deliveryPolicy;
+        return this.innerProperties() == null ? null : this.innerProperties().deliveryPolicy();
     }
 
     /**
@@ -440,7 +384,10 @@ public class EndpointUpdateParameters {
      */
     public EndpointUpdateParameters withDeliveryPolicy(
         EndpointPropertiesUpdateParametersDeliveryPolicy deliveryPolicy) {
-        this.deliveryPolicy = deliveryPolicy;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EndpointPropertiesUpdateParameters();
+        }
+        this.innerProperties().withDeliveryPolicy(deliveryPolicy);
         return this;
     }
 
@@ -451,7 +398,7 @@ public class EndpointUpdateParameters {
      * @return the webApplicationFirewallPolicyLink value.
      */
     public EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink() {
-        return this.webApplicationFirewallPolicyLink;
+        return this.innerProperties() == null ? null : this.innerProperties().webApplicationFirewallPolicyLink();
     }
 
     /**
@@ -463,7 +410,10 @@ public class EndpointUpdateParameters {
      */
     public EndpointUpdateParameters withWebApplicationFirewallPolicyLink(
         EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink) {
-        this.webApplicationFirewallPolicyLink = webApplicationFirewallPolicyLink;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EndpointPropertiesUpdateParameters();
+        }
+        this.innerProperties().withWebApplicationFirewallPolicyLink(webApplicationFirewallPolicyLink);
         return this;
     }
 
@@ -473,20 +423,8 @@ public class EndpointUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (geoFilters() != null) {
-            geoFilters().forEach(e -> e.validate());
-        }
-        if (defaultOriginGroup() != null) {
-            defaultOriginGroup().validate();
-        }
-        if (urlSigningKeys() != null) {
-            urlSigningKeys().forEach(e -> e.validate());
-        }
-        if (deliveryPolicy() != null) {
-            deliveryPolicy().validate();
-        }
-        if (webApplicationFirewallPolicyLink() != null) {
-            webApplicationFirewallPolicyLink().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

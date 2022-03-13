@@ -4,6 +4,7 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.RequestConditions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -12,6 +13,8 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.models.BlobDownloadContentResponse;
+import com.azure.storage.blob.models.BlobImmutabilityPolicy;
+import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.models.BlobProperties;
@@ -704,5 +707,61 @@ public class BlobClientBaseJavaDocCodeSnippets {
             client.queryWithResponse(queryOptions, timeout, new Context(key1, value1))
                 .getStatusCode());
         // END: com.azure.storage.blob.specialized.BlobClientBase.queryWithResponse#BlobQueryOptions-Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link BlobClientBase#setImmutabilityPolicy(BlobImmutabilityPolicy)} and
+     * {@link BlobClientBase#setImmutabilityPolicyWithResponse(BlobImmutabilityPolicy, BlobRequestConditions, Duration, Context)}
+     */
+    public void setImmutabilityPolicy() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.setImmutabilityPolicy#BlobImmutabilityPolicy
+        BlobImmutabilityPolicy policy = new BlobImmutabilityPolicy()
+            .setPolicyMode(BlobImmutabilityPolicyMode.LOCKED)
+            .setExpiryTime(OffsetDateTime.now().plusDays(1));
+        BlobImmutabilityPolicy setPolicy = client.setImmutabilityPolicy(policy);
+        System.out.println("Successfully completed setting the immutability policy");
+        // END: com.azure.storage.blob.specialized.BlobClientBase.setImmutabilityPolicy#BlobImmutabilityPolicy
+
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.setImmutabilityPolicyWithResponse#BlobImmutabilityPolicy-BlobRequestConditions-Duration-Context
+        BlobImmutabilityPolicy immutabilityPolicy = new BlobImmutabilityPolicy()
+            .setPolicyMode(BlobImmutabilityPolicyMode.LOCKED)
+            .setExpiryTime(OffsetDateTime.now().plusDays(1));
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(1));
+        Response<BlobImmutabilityPolicy> response = client.setImmutabilityPolicyWithResponse(immutabilityPolicy,
+            requestConditions, timeout, new Context(key1, value1));
+        System.out.println("Successfully completed setting the immutability policy");
+        // END: com.azure.storage.blob.specialized.BlobClientBase.setImmutabilityPolicyWithResponse#BlobImmutabilityPolicy-BlobRequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link BlobClientBase#deleteImmutabilityPolicy()} and
+     * {@link BlobClientBase#deleteImmutabilityPolicyWithResponse(Duration, Context)}
+     */
+    public void deleteImmutabilityPolicy() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.deleteImmutabilityPolicy
+        client.deleteImmutabilityPolicy();
+        System.out.println("Completed immutability policy deletion.");
+        // END: com.azure.storage.blob.specialized.BlobClientBase.deleteImmutabilityPolicy
+
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.deleteImmutabilityPolicyWithResponse#Duration-Context
+        System.out.println("Delete immutability policy completed with status: "
+            + client.deleteImmutabilityPolicyWithResponse(timeout, new Context(key1, value1)).getStatusCode());
+        // END: com.azure.storage.blob.specialized.BlobClientBase.deleteImmutabilityPolicyWithResponse#Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link BlobClientBase#setLegalHold(boolean)} and
+     * {@link BlobClientBase#setLegalHoldWithResponse(boolean, Duration, Context)}
+     */
+    public void setLegalHold() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.setLegalHold#boolean
+        System.out.println("Legal hold status: " + client.setLegalHold(true));
+        // END: com.azure.storage.blob.specialized.BlobClientBase.setLegalHold#boolean
+
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.setLegalHoldWithResponse#boolean-Duration-Context
+        System.out.println("Legal hold status: " + client.setLegalHoldWithResponse(true, timeout,
+            new Context(key1, value1)));
+        // END: com.azure.storage.blob.specialized.BlobClientBase.setLegalHoldWithResponse#boolean-Duration-Context
     }
 }

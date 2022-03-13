@@ -23,33 +23,33 @@ import reactor.core.publisher.Mono;
 /** An instance of this class provides access to all the operations defined in AgentPoolsClient. */
 public interface AgentPoolsClient {
     /**
-     * Gets a list of agent pools in the specified managed cluster. The operation returns properties of each agent pool.
+     * Gets a list of agent pools in the specified managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of agent pools in the specified managed cluster.
+     * @return a list of agent pools in the specified managed cluster as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<AgentPoolInner> listAsync(String resourceGroupName, String resourceName);
 
     /**
-     * Gets a list of agent pools in the specified managed cluster. The operation returns properties of each agent pool.
+     * Gets a list of agent pools in the specified managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of agent pools in the specified managed cluster.
+     * @return a list of agent pools in the specified managed cluster as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AgentPoolInner> list(String resourceGroupName, String resourceName);
 
     /**
-     * Gets a list of agent pools in the specified managed cluster. The operation returns properties of each agent pool.
+     * Gets a list of agent pools in the specified managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -57,13 +57,13 @@ public interface AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of agent pools in the specified managed cluster.
+     * @return a list of agent pools in the specified managed cluster as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AgentPoolInner> list(String resourceGroupName, String resourceName, Context context);
 
     /**
-     * Gets the details of the agent pool by managed cluster and resource group.
+     * Gets the specified managed cluster agent pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -71,14 +71,15 @@ public interface AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the agent pool by managed cluster and resource group.
+     * @return the specified managed cluster agent pool along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<AgentPoolInner>> getWithResponseAsync(
         String resourceGroupName, String resourceName, String agentPoolName);
 
     /**
-     * Gets the details of the agent pool by managed cluster and resource group.
+     * Gets the specified managed cluster agent pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -86,13 +87,13 @@ public interface AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the agent pool by managed cluster and resource group.
+     * @return the specified managed cluster agent pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<AgentPoolInner> getAsync(String resourceGroupName, String resourceName, String agentPoolName);
 
     /**
-     * Gets the details of the agent pool by managed cluster and resource group.
+     * Gets the specified managed cluster agent pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -100,13 +101,13 @@ public interface AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the agent pool by managed cluster and resource group.
+     * @return the specified managed cluster agent pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AgentPoolInner get(String resourceGroupName, String resourceName, String agentPoolName);
 
     /**
-     * Gets the details of the agent pool by managed cluster and resource group.
+     * Gets the specified managed cluster agent pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -115,7 +116,7 @@ public interface AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the agent pool by managed cluster and resource group.
+     * @return the specified managed cluster agent pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AgentPoolInner> getWithResponse(
@@ -127,11 +128,11 @@ public interface AgentPoolsClient {
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
-     * @param parameters Parameters supplied to the Create or Update an agent pool operation.
+     * @param parameters The agent pool to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agent Pool.
+     * @return agent Pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -143,13 +144,13 @@ public interface AgentPoolsClient {
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
-     * @param parameters Parameters supplied to the Create or Update an agent pool operation.
+     * @param parameters The agent pool to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agent Pool.
+     * @return the {@link PollerFlux} for polling of agent Pool.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String resourceName, String agentPoolName, AgentPoolInner parameters);
 
@@ -159,13 +160,13 @@ public interface AgentPoolsClient {
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
-     * @param parameters Parameters supplied to the Create or Update an agent pool operation.
+     * @param parameters The agent pool to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agent Pool.
+     * @return the {@link SyncPoller} for polling of agent Pool.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, String agentPoolName, AgentPoolInner parameters);
 
@@ -175,14 +176,14 @@ public interface AgentPoolsClient {
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
-     * @param parameters Parameters supplied to the Create or Update an agent pool operation.
+     * @param parameters The agent pool to create or update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agent Pool.
+     * @return the {@link SyncPoller} for polling of agent Pool.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdate(
         String resourceGroupName,
         String resourceName,
@@ -196,11 +197,11 @@ public interface AgentPoolsClient {
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
-     * @param parameters Parameters supplied to the Create or Update an agent pool operation.
+     * @param parameters The agent pool to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agent Pool.
+     * @return agent Pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<AgentPoolInner> createOrUpdateAsync(
@@ -212,7 +213,7 @@ public interface AgentPoolsClient {
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
-     * @param parameters Parameters supplied to the Create or Update an agent pool operation.
+     * @param parameters The agent pool to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -228,7 +229,7 @@ public interface AgentPoolsClient {
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
-     * @param parameters Parameters supplied to the Create or Update an agent pool operation.
+     * @param parameters The agent pool to create or update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -244,7 +245,7 @@ public interface AgentPoolsClient {
         Context context);
 
     /**
-     * Deletes the agent pool in the specified managed cluster.
+     * Deletes an agent pool in the specified managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -252,14 +253,14 @@ public interface AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
         String resourceGroupName, String resourceName, String agentPoolName);
 
     /**
-     * Deletes the agent pool in the specified managed cluster.
+     * Deletes an agent pool in the specified managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -267,14 +268,14 @@ public interface AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String resourceName, String agentPoolName);
 
     /**
-     * Deletes the agent pool in the specified managed cluster.
+     * Deletes an agent pool in the specified managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -282,13 +283,13 @@ public interface AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, String agentPoolName);
 
     /**
-     * Deletes the agent pool in the specified managed cluster.
+     * Deletes an agent pool in the specified managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -297,14 +298,14 @@ public interface AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String resourceName, String agentPoolName, Context context);
 
     /**
-     * Deletes the agent pool in the specified managed cluster.
+     * Deletes an agent pool in the specified managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -312,13 +313,13 @@ public interface AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String agentPoolName);
 
     /**
-     * Deletes the agent pool in the specified managed cluster.
+     * Deletes an agent pool in the specified managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -331,7 +332,7 @@ public interface AgentPoolsClient {
     void delete(String resourceGroupName, String resourceName, String agentPoolName);
 
     /**
-     * Deletes the agent pool in the specified managed cluster.
+     * Deletes an agent pool in the specified managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -345,8 +346,7 @@ public interface AgentPoolsClient {
     void delete(String resourceGroupName, String resourceName, String agentPoolName, Context context);
 
     /**
-     * Gets the details of the upgrade profile for an agent pool with a specified resource group and managed cluster
-     * name.
+     * Gets the upgrade profile for an agent pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -354,16 +354,15 @@ public interface AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the upgrade profile for an agent pool with a specified resource group and managed cluster
-     *     name.
+     * @return the upgrade profile for an agent pool along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<AgentPoolUpgradeProfileInner>> getUpgradeProfileWithResponseAsync(
         String resourceGroupName, String resourceName, String agentPoolName);
 
     /**
-     * Gets the details of the upgrade profile for an agent pool with a specified resource group and managed cluster
-     * name.
+     * Gets the upgrade profile for an agent pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -371,16 +370,14 @@ public interface AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the upgrade profile for an agent pool with a specified resource group and managed cluster
-     *     name.
+     * @return the upgrade profile for an agent pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<AgentPoolUpgradeProfileInner> getUpgradeProfileAsync(
         String resourceGroupName, String resourceName, String agentPoolName);
 
     /**
-     * Gets the details of the upgrade profile for an agent pool with a specified resource group and managed cluster
-     * name.
+     * Gets the upgrade profile for an agent pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -388,15 +385,13 @@ public interface AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the upgrade profile for an agent pool with a specified resource group and managed cluster
-     *     name.
+     * @return the upgrade profile for an agent pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AgentPoolUpgradeProfileInner getUpgradeProfile(String resourceGroupName, String resourceName, String agentPoolName);
 
     /**
-     * Gets the details of the upgrade profile for an agent pool with a specified resource group and managed cluster
-     * name.
+     * Gets the upgrade profile for an agent pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -405,56 +400,60 @@ public interface AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the upgrade profile for an agent pool with a specified resource group and managed cluster
-     *     name.
+     * @return the upgrade profile for an agent pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AgentPoolUpgradeProfileInner> getUpgradeProfileWithResponse(
         String resourceGroupName, String resourceName, String agentPoolName, Context context);
 
     /**
-     * Gets a list of supported versions for the specified agent pool.
+     * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
+     * details about the version lifecycle.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of supported versions for the specified agent pool.
+     * @return the list of available versions for an agent pool along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<AgentPoolAvailableVersionsInner>> getAvailableAgentPoolVersionsWithResponseAsync(
         String resourceGroupName, String resourceName);
 
     /**
-     * Gets a list of supported versions for the specified agent pool.
+     * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
+     * details about the version lifecycle.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of supported versions for the specified agent pool.
+     * @return the list of available versions for an agent pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<AgentPoolAvailableVersionsInner> getAvailableAgentPoolVersionsAsync(
         String resourceGroupName, String resourceName);
 
     /**
-     * Gets a list of supported versions for the specified agent pool.
+     * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
+     * details about the version lifecycle.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of supported versions for the specified agent pool.
+     * @return the list of available versions for an agent pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AgentPoolAvailableVersionsInner getAvailableAgentPoolVersions(String resourceGroupName, String resourceName);
 
     /**
-     * Gets a list of supported versions for the specified agent pool.
+     * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
+     * details about the version lifecycle.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -462,14 +461,16 @@ public interface AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of supported versions for the specified agent pool.
+     * @return the list of available versions for an agent pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AgentPoolAvailableVersionsInner> getAvailableAgentPoolVersionsWithResponse(
         String resourceGroupName, String resourceName, Context context);
 
     /**
-     * Upgrade node image version of an agent pool to the latest.
+     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
+     * provides one new image per week with the latest updates. For more details on node image versions, see:
+     * https://docs.microsoft.com/azure/aks/node-image-upgrade.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -477,14 +478,16 @@ public interface AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> upgradeNodeImageVersionWithResponseAsync(
         String resourceGroupName, String resourceName, String agentPoolName);
 
     /**
-     * Upgrade node image version of an agent pool to the latest.
+     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
+     * provides one new image per week with the latest updates. For more details on node image versions, see:
+     * https://docs.microsoft.com/azure/aks/node-image-upgrade.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -492,14 +495,16 @@ public interface AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginUpgradeNodeImageVersionAsync(
         String resourceGroupName, String resourceName, String agentPoolName);
 
     /**
-     * Upgrade node image version of an agent pool to the latest.
+     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
+     * provides one new image per week with the latest updates. For more details on node image versions, see:
+     * https://docs.microsoft.com/azure/aks/node-image-upgrade.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -507,14 +512,16 @@ public interface AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginUpgradeNodeImageVersion(
         String resourceGroupName, String resourceName, String agentPoolName);
 
     /**
-     * Upgrade node image version of an agent pool to the latest.
+     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
+     * provides one new image per week with the latest updates. For more details on node image versions, see:
+     * https://docs.microsoft.com/azure/aks/node-image-upgrade.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -523,14 +530,16 @@ public interface AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginUpgradeNodeImageVersion(
         String resourceGroupName, String resourceName, String agentPoolName, Context context);
 
     /**
-     * Upgrade node image version of an agent pool to the latest.
+     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
+     * provides one new image per week with the latest updates. For more details on node image versions, see:
+     * https://docs.microsoft.com/azure/aks/node-image-upgrade.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -538,14 +547,16 @@ public interface AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<AgentPoolInner> upgradeNodeImageVersionAsync(
         String resourceGroupName, String resourceName, String agentPoolName);
 
     /**
-     * Upgrade node image version of an agent pool to the latest.
+     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
+     * provides one new image per week with the latest updates. For more details on node image versions, see:
+     * https://docs.microsoft.com/azure/aks/node-image-upgrade.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -559,7 +570,9 @@ public interface AgentPoolsClient {
     AgentPoolInner upgradeNodeImageVersion(String resourceGroupName, String resourceName, String agentPoolName);
 
     /**
-     * Upgrade node image version of an agent pool to the latest.
+     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
+     * provides one new image per week with the latest updates. For more details on node image versions, see:
+     * https://docs.microsoft.com/azure/aks/node-image-upgrade.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.

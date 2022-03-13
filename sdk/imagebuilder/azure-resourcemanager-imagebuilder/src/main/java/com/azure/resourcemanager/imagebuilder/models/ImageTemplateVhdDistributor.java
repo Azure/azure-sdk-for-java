@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.imagebuilder.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -14,7 +14,7 @@ import java.util.Map;
 /** Distribute via VHD in a storage account. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("VHD")
-@Immutable
+@Fluent
 public final class ImageTemplateVhdDistributor extends ImageTemplateDistributor {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageTemplateVhdDistributor.class);
 

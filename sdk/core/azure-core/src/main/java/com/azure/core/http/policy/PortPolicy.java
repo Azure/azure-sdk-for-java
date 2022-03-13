@@ -9,6 +9,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -17,15 +18,16 @@ import java.net.MalformedURLException;
  * The pipeline policy that adds a given port to each {@link HttpRequest}.
  */
 public class PortPolicy implements HttpPipelinePolicy {
+    private static final ClientLogger LOGGER = new ClientLogger(PortPolicy.class);
+
     private final int port;
     private final boolean overwrite;
-    private final ClientLogger logger = new ClientLogger(PortPolicy.class);
 
     /**
      * Creates a new PortPolicy object.
      *
      * @param port The port to set.
-     * @param overwrite Whether or not to overwrite a {@link HttpRequest HttpRequest's} port if it already has one.
+     * @param overwrite Whether to overwrite a {@link HttpRequest HttpRequest's} port if it already has one.
      */
     public PortPolicy(int port, boolean overwrite) {
         this.port = port;
@@ -36,7 +38,7 @@ public class PortPolicy implements HttpPipelinePolicy {
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
         if (overwrite || urlBuilder.getPort() == null) {
-            logger.info("Changing port to {}", port);
+            LOGGER.log(LogLevel.VERBOSE, () -> "Changing port to " + port);
 
             try {
                 context.getHttpRequest().setUrl(urlBuilder.setPort(port).toUrl());

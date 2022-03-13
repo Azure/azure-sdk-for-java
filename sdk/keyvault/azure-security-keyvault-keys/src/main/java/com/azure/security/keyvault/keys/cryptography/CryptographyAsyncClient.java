@@ -14,7 +14,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.security.keyvault.keys.cryptography.models.DecryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
@@ -49,20 +51,31 @@ import static com.azure.security.keyvault.keys.models.KeyType.RSA_HSM;
  *
  * <p><strong>Samples to construct the sync client</strong></p>
  *
- * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.instantiation}
- * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withJsonWebKey.instantiation}
- * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withHttpClient.instantiation}
- * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withPipeline.instantiation}
+ * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.instantiation -->
+ * <pre>
+ * CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder&#40;&#41;
+ *     .keyIdentifier&#40;&quot;&lt;your-key-id&gt;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.instantiation -->
+ * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withJsonWebKey.instantiation -->
+ * <pre>
+ * JsonWebKey jsonWebKey = new JsonWebKey&#40;&#41;.setId&#40;&quot;SampleJsonWebKey&quot;&#41;;
+ * CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder&#40;&#41;
+ *     .jsonWebKey&#40;jsonWebKey&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withJsonWebKey.instantiation -->
  *
  * @see CryptographyClientBuilder
  */
 @ServiceClient(builder = CryptographyClientBuilder.class, isAsync = true, serviceInterfaces = CryptographyService.class)
 public class CryptographyAsyncClient {
-    static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
-    static final String SECRETS_COLLECTION = "secrets";
     // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
     static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
+    static final String SECRETS_COLLECTION = "secrets";
 
     JsonWebKey key;
 
@@ -160,7 +173,14 @@ public class CryptographyAsyncClient {
      * <p>Gets the configured key in the client. Subscribes to the call asynchronously and prints out the returned key
      * details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.getKey}
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.getKey -->
+     * <pre>
+     * cryptographyAsyncClient.getKey&#40;&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;key -&gt;
+     *         System.out.printf&#40;&quot;Key returned with name: %s, and id: %s.%n&quot;, key.getName&#40;&#41;, key.getId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.getKey -->
      *
      * @return A {@link Mono} containing the requested {@link KeyVaultKey key}.
      *
@@ -183,7 +203,15 @@ public class CryptographyAsyncClient {
      * <p>Gets the configured key in the client. Subscribes to the call asynchronously and prints out the returned key
      * details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.getKeyWithResponse}
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.getKeyWithResponse -->
+     * <pre>
+     * cryptographyAsyncClient.getKeyWithResponse&#40;&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;keyResponse -&gt;
+     *         System.out.printf&#40;&quot;Key returned with name: %s, and id: %s.%n&quot;, keyResponse.getValue&#40;&#41;.getName&#40;&#41;,
+     *             keyResponse.getValue&#40;&#41;.getId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.getKeyWithResponse -->
      *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
      * requested {@link KeyVaultKey key}.
@@ -241,7 +269,18 @@ public class CryptographyAsyncClient {
      * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when
      * a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptionAlgorithm-byte}
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptionAlgorithm-byte -->
+     * <pre>
+     * byte[] plaintext = new byte[100];
+     * new Random&#40;0x1234567L&#41;.nextBytes&#40;plaintext&#41;;
+     *
+     * cryptographyAsyncClient.encrypt&#40;EncryptionAlgorithm.RSA_OAEP, plaintext&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;encryptResult -&gt;
+     *         System.out.printf&#40;&quot;Received encrypted content of length: %d, with algorithm: %s.%n&quot;,
+     *             encryptResult.getCipherText&#40;&#41;.length, encryptResult.getAlgorithm&#40;&#41;.toString&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptionAlgorithm-byte -->
      *
      * @param algorithm The algorithm to be used for encryption.
      * @param plaintext The content to be encrypted.
@@ -255,7 +294,10 @@ public class CryptographyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext) {
-        return encrypt(new EncryptParameters(algorithm, plaintext, null, null), null);
+        Objects.requireNonNull(algorithm, "'algorithm' cannot be null.");
+        Objects.requireNonNull(plaintext, "'plaintext' cannot be null.");
+
+        return encrypt(algorithm, plaintext, null);
     }
 
     /**
@@ -282,7 +324,24 @@ public class CryptographyAsyncClient {
      * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when
      * a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptParameters}
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptParameters -->
+     * <pre>
+     * byte[] plaintextBytes = new byte[100];
+     * new Random&#40;0x1234567L&#41;.nextBytes&#40;plaintextBytes&#41;;
+     * byte[] iv = &#123;
+     *     &#40;byte&#41; 0x1a, &#40;byte&#41; 0xf3, &#40;byte&#41; 0x8c, &#40;byte&#41; 0x2d, &#40;byte&#41; 0xc2, &#40;byte&#41; 0xb9, &#40;byte&#41; 0x6f, &#40;byte&#41; 0xfd,
+     *     &#40;byte&#41; 0xd8, &#40;byte&#41; 0x66, &#40;byte&#41; 0x94, &#40;byte&#41; 0x09, &#40;byte&#41; 0x23, &#40;byte&#41; 0x41, &#40;byte&#41; 0xbc, &#40;byte&#41; 0x04
+     * &#125;;
+     *
+     * EncryptParameters encryptParameters = EncryptParameters.createA128CbcParameters&#40;plaintextBytes, iv&#41;;
+     *
+     * cryptographyAsyncClient.encrypt&#40;encryptParameters&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;encryptResult -&gt;
+     *         System.out.printf&#40;&quot;Received encrypted content of length: %d, with algorithm: %s.%n&quot;,
+     *             encryptResult.getCipherText&#40;&#41;.length, encryptResult.getAlgorithm&#40;&#41;.toString&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptParameters -->
      *
      * @param encryptParameters The parameters to use in the encryption operation.
      *
@@ -304,6 +363,20 @@ public class CryptographyAsyncClient {
         }
     }
 
+    Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
+        return ensureValidKeyAvailable().flatMap(available -> {
+            if (!available) {
+                return cryptographyServiceClient.encrypt(algorithm, plaintext, context);
+            }
+
+            if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.ENCRYPT)) {
+                return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
+                    "Encrypt operation is missing permission/not supported for key with id: %s", key.getId()))));
+            }
+
+            return localKeyCryptographyClient.encryptAsync(algorithm, plaintext, context, key);
+        });
+    }
 
     Mono<EncryptResult> encrypt(EncryptParameters encryptParameters, Context context) {
         return ensureValidKeyAvailable().flatMap(available -> {
@@ -343,7 +416,17 @@ public class CryptographyAsyncClient {
      * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content
      * details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte}
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte -->
+     * <pre>
+     * byte[] ciphertext = new byte[100];
+     * new Random&#40;0x1234567L&#41;.nextBytes&#40;ciphertext&#41;;
+     *
+     * cryptographyAsyncClient.decrypt&#40;EncryptionAlgorithm.RSA_OAEP, ciphertext&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;decryptResult -&gt;
+     *         System.out.printf&#40;&quot;Received decrypted content of length: %d%n&quot;, decryptResult.getPlainText&#40;&#41;.length&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte -->
      *
      * @param algorithm The algorithm to be used for decryption.
      * @param ciphertext The content to be decrypted.
@@ -356,7 +439,10 @@ public class CryptographyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext) {
-        return decrypt(new DecryptParameters(algorithm, ciphertext, null, null, null));
+        Objects.requireNonNull(algorithm, "'algorithm' cannot be null.");
+        Objects.requireNonNull(algorithm, "'ciphertext' cannot be null.");
+
+        return decrypt(algorithm, ciphertext, null);
     }
 
     /**
@@ -382,7 +468,23 @@ public class CryptographyAsyncClient {
      * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content
      * details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#DecryptParameters}
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#DecryptParameters -->
+     * <pre>
+     * byte[] ciphertextBytes = new byte[100];
+     * new Random&#40;0x1234567L&#41;.nextBytes&#40;ciphertextBytes&#41;;
+     * byte[] iv = &#123;
+     *     &#40;byte&#41; 0x1a, &#40;byte&#41; 0xf3, &#40;byte&#41; 0x8c, &#40;byte&#41; 0x2d, &#40;byte&#41; 0xc2, &#40;byte&#41; 0xb9, &#40;byte&#41; 0x6f, &#40;byte&#41; 0xfd,
+     *     &#40;byte&#41; 0xd8, &#40;byte&#41; 0x66, &#40;byte&#41; 0x94, &#40;byte&#41; 0x09, &#40;byte&#41; 0x23, &#40;byte&#41; 0x41, &#40;byte&#41; 0xbc, &#40;byte&#41; 0x04
+     * &#125;;
+     *
+     * DecryptParameters decryptParameters = DecryptParameters.createA128CbcParameters&#40;ciphertextBytes, iv&#41;;
+     *
+     * cryptographyAsyncClient.decrypt&#40;decryptParameters&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;decryptResult -&gt;
+     *         System.out.printf&#40;&quot;Received decrypted content of length: %d.%n&quot;, decryptResult.getPlainText&#40;&#41;.length&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#DecryptParameters -->
      *
      * @param decryptParameters The parameters to use in the decryption operation.
      *
@@ -401,6 +503,21 @@ public class CryptographyAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext, Context context) {
+        return ensureValidKeyAvailable().flatMap(available -> {
+            if (!available) {
+                return cryptographyServiceClient.decrypt(algorithm, ciphertext, context);
+            }
+
+            if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.DECRYPT)) {
+                return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
+                    "Decrypt operation is not allowed for key with id: %s", key.getId()))));
+            }
+
+            return localKeyCryptographyClient.decryptAsync(algorithm, ciphertext, context, key);
+        });
     }
 
     Mono<DecryptResult> decrypt(DecryptParameters decryptParameters, Context context) {
@@ -434,7 +551,21 @@ public class CryptographyAsyncClient {
      * <p>Sings the digest. Subscribes to the call asynchronously and prints out the signature details when a response
      * has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.sign#SignatureAlgorithm-byte}
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.sign#SignatureAlgorithm-byte -->
+     * <pre>
+     * byte[] data = new byte[100];
+     * new Random&#40;0x1234567L&#41;.nextBytes&#40;data&#41;;
+     * MessageDigest md = MessageDigest.getInstance&#40;&quot;SHA-256&quot;&#41;;
+     * md.update&#40;data&#41;;
+     * byte[] digest = md.digest&#40;&#41;;
+     *
+     * cryptographyAsyncClient.sign&#40;SignatureAlgorithm.ES256, digest&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;signResult -&gt;
+     *         System.out.printf&#40;&quot;Received signature of length: %d, with algorithm: %s.%n&quot;,
+     *             signResult.getSignature&#40;&#41;.length, signResult.getAlgorithm&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.sign#SignatureAlgorithm-byte -->
      *
      * @param algorithm The algorithm to use for signing.
      * @param digest The content from which signature is to be created.
@@ -490,7 +621,21 @@ public class CryptographyAsyncClient {
      * <p>Verifies the signature against the specified digest. Subscribes to the call asynchronously and prints out the
      * verification details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.verify#SignatureAlgorithm-byte-byte}
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.verify#SignatureAlgorithm-byte-byte -->
+     * <pre>
+     * byte[] myData = new byte[100];
+     * new Random&#40;0x1234567L&#41;.nextBytes&#40;myData&#41;;
+     * MessageDigest messageDigest = MessageDigest.getInstance&#40;&quot;SHA-256&quot;&#41;;
+     * messageDigest.update&#40;myData&#41;;
+     * byte[] myDigest = messageDigest.digest&#40;&#41;;
+     *
+     * &#47;&#47; A signature can be obtained from the SignResult returned by the CryptographyAsyncClient.sign&#40;&#41; operation.
+     * cryptographyAsyncClient.verify&#40;SignatureAlgorithm.ES256, myDigest, signature&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;verifyResult -&gt;
+     *         System.out.printf&#40;&quot;Verification status: %s.%n&quot;, verifyResult.isValid&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.verify#SignatureAlgorithm-byte-byte -->
      *
      * @param algorithm The algorithm to use for signing.
      * @param digest The content from which signature was created.
@@ -548,7 +693,18 @@ public class CryptographyAsyncClient {
      * <p>Wraps the key content. Subscribes to the call asynchronously and prints out the wrapped key details when a
      * response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.wrapKey#KeyWrapAlgorithm-byte}
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.wrapKey#KeyWrapAlgorithm-byte -->
+     * <pre>
+     * byte[] key = new byte[100];
+     * new Random&#40;0x1234567L&#41;.nextBytes&#40;key&#41;;
+     *
+     * cryptographyAsyncClient.wrapKey&#40;KeyWrapAlgorithm.RSA_OAEP, key&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;wrapResult -&gt;
+     *         System.out.printf&#40;&quot;Received encrypted key of length: %d, with algorithm: %s.%n&quot;,
+     *             wrapResult.getEncryptedKey&#40;&#41;.length, wrapResult.getAlgorithm&#40;&#41;.toString&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.wrapKey#KeyWrapAlgorithm-byte -->
      *
      * @param algorithm The encryption algorithm to use for wrapping the key.
      * @param key The key content to be wrapped.
@@ -604,7 +760,19 @@ public class CryptographyAsyncClient {
      * <p>Unwraps the key content. Subscribes to the call asynchronously and prints out the unwrapped key details when
      * a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.unwrapKey#KeyWrapAlgorithm-byte}
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.unwrapKey#KeyWrapAlgorithm-byte -->
+     * <pre>
+     * byte[] keyToWrap = new byte[100];
+     * new Random&#40;0x1234567L&#41;.nextBytes&#40;key&#41;;
+     *
+     * cryptographyAsyncClient.wrapKey&#40;KeyWrapAlgorithm.RSA_OAEP, keyToWrap&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;wrapResult -&gt;
+     *         cryptographyAsyncClient.unwrapKey&#40;KeyWrapAlgorithm.RSA_OAEP, wrapResult.getEncryptedKey&#40;&#41;&#41;
+     *             .subscribe&#40;keyUnwrapResult -&gt;
+     *                 System.out.printf&#40;&quot;Received key of length: %d.%n&quot;, keyUnwrapResult.getKey&#40;&#41;.length&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.unwrapKey#KeyWrapAlgorithm-byte -->
      *
      * @param algorithm The encryption algorithm to use for wrapping the key.
      * @param encryptedKey The encrypted key content to unwrap.
@@ -659,7 +827,18 @@ public class CryptographyAsyncClient {
      * <p>Signs the raw data. Subscribes to the call asynchronously and prints out the signature details when a
      * response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.signData#SignatureAlgorithm-byte}
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.signData#SignatureAlgorithm-byte -->
+     * <pre>
+     * byte[] data = new byte[100];
+     * new Random&#40;0x1234567L&#41;.nextBytes&#40;data&#41;;
+     *
+     * cryptographyAsyncClient.sign&#40;SignatureAlgorithm.ES256, data&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;signResult -&gt;
+     *         System.out.printf&#40;&quot;Received signature of length: %d, with algorithm: %s.%n&quot;,
+     *             signResult.getSignature&#40;&#41;.length, signResult.getAlgorithm&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.signData#SignatureAlgorithm-byte -->
      *
      * @param algorithm The algorithm to use for signing.
      * @param data The content from which signature is to be created.
@@ -715,7 +894,18 @@ public class CryptographyAsyncClient {
      * <p>Verifies the signature against the raw data. Subscribes to the call asynchronously and prints out the
      * verification details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.verifyData#SignatureAlgorithm-byte-byte}
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.verifyData#SignatureAlgorithm-byte-byte -->
+     * <pre>
+     * byte[] myData = new byte[100];
+     * new Random&#40;0x1234567L&#41;.nextBytes&#40;myData&#41;;
+     *
+     * &#47;&#47; A signature can be obtained from the SignResult returned by the CryptographyAsyncClient.sign&#40;&#41; operation.
+     * cryptographyAsyncClient.verify&#40;SignatureAlgorithm.ES256, myData, signature&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;verifyResult -&gt;
+     *         System.out.printf&#40;&quot;Verification status: %s.%n&quot;, verifyResult.isValid&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.verifyData#SignatureAlgorithm-byte-byte -->
      *
      * @param algorithm The algorithm to use for signing.
      * @param data The raw content against which signature is to be verified.
@@ -756,15 +946,19 @@ public class CryptographyAsyncClient {
 
     private void unpackAndValidateId(String keyId) {
         if (CoreUtils.isNullOrEmpty(keyId)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Key Id is invalid"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("'keyId' cannot be null or empty."));
         }
 
         try {
             URL url = new URL(keyId);
             String[] tokens = url.getPath().split("/");
             String endpoint = url.getProtocol() + "://" + url.getHost();
+
+            if (url.getPort() != -1) {
+                endpoint += ":" + url.getPort();
+            }
+
             String keyName = (tokens.length >= 3 ? tokens[2] : null);
-            String version = (tokens.length >= 4 ? tokens[3] : null);
             this.keyCollection = (tokens.length >= 2 ? tokens[1] : null);
 
             if (Strings.isNullOrEmpty(endpoint)) {
@@ -773,9 +967,6 @@ public class CryptographyAsyncClient {
             } else if (Strings.isNullOrEmpty(keyName)) {
                 throw logger.logExceptionAsError(
                     new IllegalArgumentException("Key name in key identifier is invalid."));
-            } else if (Strings.isNullOrEmpty(version)) {
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Key version in key identifier is invalid."));
             }
         } catch (MalformedURLException e) {
             throw logger.logExceptionAsError(new IllegalArgumentException("The key identifier is malformed.", e));

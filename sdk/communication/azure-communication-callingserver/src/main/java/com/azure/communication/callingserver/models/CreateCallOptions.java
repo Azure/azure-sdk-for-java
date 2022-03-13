@@ -6,6 +6,8 @@ package com.azure.communication.callingserver.models;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.Fluent;
 
+import java.util.List;
+
 /**
  * The options for creating a call.
  */
@@ -30,12 +32,12 @@ public final class CreateCallOptions {
     /**
      * The requested media types.
      */
-    private final MediaType[] requestedMediaTypes;
+    private final List<MediaType> requestedMediaTypes;
 
     /**
      * The requested call events to subscribe to.
      */
-    private final EventSubscriptionType[] requestedCallEvents;
+    private final List<EventSubscriptionType> requestedCallEvents;
 
     /**
      * Get the alternate caller id of the source.
@@ -91,8 +93,8 @@ public final class CreateCallOptions {
      *
      * @return the requested modalities object itself.
      */
-    public MediaType[] getRequestedMediaTypes() {
-        return this.requestedMediaTypes == null ? new MediaType[0] : this.requestedMediaTypes.clone();
+    public List<MediaType> getRequestedMediaTypes() {
+        return requestedMediaTypes;
     }
 
     /**
@@ -100,8 +102,8 @@ public final class CreateCallOptions {
      *
      * @return the requested call events to subscribe to object itself.
      */
-    public EventSubscriptionType[] getRequestedCallEvents() {
-        return requestedCallEvents.clone();
+    public List<EventSubscriptionType> getRequestedCallEvents() {
+        return requestedCallEvents;
     }
 
     /**
@@ -114,22 +116,19 @@ public final class CreateCallOptions {
      */
     public CreateCallOptions(
         String callbackUri,
-        MediaType[] requestedMediaTypes,
-        EventSubscriptionType[] requestedCallEvents) {
+        List<MediaType> requestedMediaTypes,
+        List<EventSubscriptionType> requestedCallEvents) {
         if (callbackUri == null) {
             throw new IllegalArgumentException("object callbackUri cannot be null");
         }
-
         if (requestedMediaTypes == null) {
             throw new IllegalArgumentException("object requestedMediaTypes cannot be null");
         }
         if (requestedCallEvents == null) {
             throw new IllegalArgumentException("object requestedCallEvents cannot be null");
         }
-
         this.callbackUri = callbackUri;
-
-        this.requestedMediaTypes = requestedMediaTypes.clone();
-        this.requestedCallEvents = requestedCallEvents.clone();
+        this.requestedMediaTypes = requestedMediaTypes;
+        this.requestedCallEvents = requestedCallEvents;
     }
 }

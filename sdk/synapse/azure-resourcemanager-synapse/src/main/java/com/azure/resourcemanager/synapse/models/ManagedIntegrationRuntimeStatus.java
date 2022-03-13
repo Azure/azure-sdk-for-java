@@ -4,9 +4,9 @@
 
 package com.azure.resourcemanager.synapse.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.synapse.fluent.models.ManagedIntegrationRuntimeStatusTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,35 +17,25 @@ import java.util.List;
 /** Managed integration runtime status. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Managed")
-@JsonFlatten
-@Immutable
-public class ManagedIntegrationRuntimeStatus extends IntegrationRuntimeStatus {
+@Fluent
+public final class ManagedIntegrationRuntimeStatus extends IntegrationRuntimeStatus {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedIntegrationRuntimeStatus.class);
 
     /*
-     * The time at which the integration runtime was created, in ISO8601
-     * format.
+     * Managed integration runtime status type properties.
      */
-    @JsonProperty(value = "typeProperties.createTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createTime;
+    @JsonProperty(value = "typeProperties", required = true)
+    private ManagedIntegrationRuntimeStatusTypeProperties innerTypeProperties =
+        new ManagedIntegrationRuntimeStatusTypeProperties();
 
-    /*
-     * The list of nodes for managed integration runtime.
+    /**
+     * Get the innerTypeProperties property: Managed integration runtime status type properties.
+     *
+     * @return the innerTypeProperties value.
      */
-    @JsonProperty(value = "typeProperties.nodes", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ManagedIntegrationRuntimeNode> nodes;
-
-    /*
-     * The errors that occurred on this integration runtime.
-     */
-    @JsonProperty(value = "typeProperties.otherErrors", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ManagedIntegrationRuntimeError> otherErrors;
-
-    /*
-     * The last operation result that occurred on this integration runtime.
-     */
-    @JsonProperty(value = "typeProperties.lastOperation", access = JsonProperty.Access.WRITE_ONLY)
-    private ManagedIntegrationRuntimeOperationResult lastOperation;
+    private ManagedIntegrationRuntimeStatusTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
+    }
 
     /**
      * Get the createTime property: The time at which the integration runtime was created, in ISO8601 format.
@@ -53,7 +43,7 @@ public class ManagedIntegrationRuntimeStatus extends IntegrationRuntimeStatus {
      * @return the createTime value.
      */
     public OffsetDateTime createTime() {
-        return this.createTime;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().createTime();
     }
 
     /**
@@ -62,7 +52,7 @@ public class ManagedIntegrationRuntimeStatus extends IntegrationRuntimeStatus {
      * @return the nodes value.
      */
     public List<ManagedIntegrationRuntimeNode> nodes() {
-        return this.nodes;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().nodes();
     }
 
     /**
@@ -71,7 +61,7 @@ public class ManagedIntegrationRuntimeStatus extends IntegrationRuntimeStatus {
      * @return the otherErrors value.
      */
     public List<ManagedIntegrationRuntimeError> otherErrors() {
-        return this.otherErrors;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().otherErrors();
     }
 
     /**
@@ -80,7 +70,7 @@ public class ManagedIntegrationRuntimeStatus extends IntegrationRuntimeStatus {
      * @return the lastOperation value.
      */
     public ManagedIntegrationRuntimeOperationResult lastOperation() {
-        return this.lastOperation;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().lastOperation();
     }
 
     /**
@@ -91,14 +81,13 @@ public class ManagedIntegrationRuntimeStatus extends IntegrationRuntimeStatus {
     @Override
     public void validate() {
         super.validate();
-        if (nodes() != null) {
-            nodes().forEach(e -> e.validate());
-        }
-        if (otherErrors() != null) {
-            otherErrors().forEach(e -> e.validate());
-        }
-        if (lastOperation() != null) {
-            lastOperation().validate();
+        if (innerTypeProperties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model ManagedIntegrationRuntimeStatus"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

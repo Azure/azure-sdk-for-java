@@ -15,7 +15,8 @@ public interface LeaseCheckpointer {
      *
      * @param lease the lease to renew.
      * @param continuationToken the continuation token.
+     * @param cancellationToken the cancellation token.
      * @return the updated renewed lease.
      */
-    Mono<Lease> checkpoint(Lease lease, String continuationToken);
+    Mono<Lease> checkpoint(Lease lease, String continuationToken, CancellationToken cancellationToken);
 }

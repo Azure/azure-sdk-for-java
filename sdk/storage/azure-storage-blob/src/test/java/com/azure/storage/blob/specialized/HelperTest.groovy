@@ -68,7 +68,7 @@ class HelperTest extends APISpec {
 
     def "URLParser"() {
         when:
-        def parts = BlobUrlParts.parse(new URL("http://host/container/" + originalBlobName + "?snapshot=snapshot&sv=" + Constants.SAS_SERVICE_VERSION + "&sr=c&sp=r&sig=Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D"))
+        def parts = BlobUrlParts.parse(new URL("http://host/container/" + originalBlobName + "?snapshot=snapshot&sv=" + Constants.SAS_SERVICE_VERSION + "&sr=c&sp=r&sig=sD3fPKLnFKZUjnSV4qA%2FXoJOqsmDfNfxWcZ7kPtLc0I%3D"))
 
         then:
         parts.getScheme() == "http"
@@ -79,7 +79,7 @@ class HelperTest extends APISpec {
         parts.getCommonSasQueryParameters().getPermissions() == "r"
         parts.getCommonSasQueryParameters().getVersion() == Constants.SAS_SERVICE_VERSION
         parts.getCommonSasQueryParameters().getResource() == "c"
-        parts.getCommonSasQueryParameters().getSignature() == Utility.urlDecode("Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D")
+        parts.getCommonSasQueryParameters().getSignature() == Utility.urlDecode("sD3fPKLnFKZUjnSV4qA%2FXoJOqsmDfNfxWcZ7kPtLc0I%3D")
 
         where:
         originalBlobName       | finalBlobName
@@ -102,8 +102,8 @@ class HelperTest extends APISpec {
         def p = new BlobSasPermission().setReadPermission(true)
         def sasValues = new BlobServiceSasSignatureValues(e, p)
 
-        def implUtil = new BlobSasImplUtil(sasValues, "containerName", "blobName", "snapshot", null)
-        def sas = implUtil.generateSas(env.primaryAccount.credential, Context.NONE)
+        def implUtil = new BlobSasImplUtil(sasValues, "containerName", "blobName", "snapshot", null, "encryptionScope")
+        def sas = implUtil.generateSas(environment.primaryAccount.credential, Context.NONE)
 
         parts.setCommonSasQueryParameters(new CommonSasQueryParameters(SasImplUtils.parseQueryString(sas), true))
 
@@ -116,7 +116,8 @@ class HelperTest extends APISpec {
         splitParts[1].contains("snapshot=snapshot")
         splitParts[1].contains("sp=r")
         splitParts[1].contains("sig=")
-        splitParts[1].split("&").size() == 6 // snapshot & sv & sr & sp & sig
+        splitParts[1].contains("ses=encryptionScope")
+        splitParts[1].split("&").size() == 7 // snapshot & sv & sr & sp & sig & ses
     }
 
     def "BlobURLParts implicit root"() {
@@ -173,7 +174,6 @@ class HelperTest extends APISpec {
 
         then:
         StepVerifier.create(flux)
-            .assertNext(){buffer -> assert buffer.compareTo(ByteBuffer.wrap(data, 0, 9)) == 0}
             .verifyError(IllegalStateException.class)
     }
 

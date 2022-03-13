@@ -1,9 +1,9 @@
 <entry xmlns="http://www.w3.org/2005/Atom">
-  <id>https://sb-java.servicebus.windows.net/topic-1/Subscriptions/subscription/Rules/connies-bar?api-version=2017-04</id>
+  <id>https://sb-java.servicebus.windows.net/topic-1/Subscriptions/subscription/Rules/connies-bar?api-version=2021-05</id>
   <title type="text">connies-bar</title>
   <published>2020-10-05T23:31:21Z</published>
   <updated>2020-10-05T23:30:21Z</updated>
-  <link rel="self" href="https://sb-java.servicebus.windows.net/topic-1/Subscriptions/subscription/Rules/connies-bar?api-version=2017-04"/>
+  <link rel="self" href="https://sb-java.servicebus.windows.net/topic-1/Subscriptions/subscription/Rules/connies-bar?api-version=2021-05"/>
   <content type="application/xml">
     <RuleDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
       <Filter i:type="TrueFilter">

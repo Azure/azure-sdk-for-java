@@ -26,12 +26,15 @@ import com.azure.resourcemanager.netapp.fluent.AccountsClient;
 import com.azure.resourcemanager.netapp.fluent.BackupPoliciesClient;
 import com.azure.resourcemanager.netapp.fluent.BackupsClient;
 import com.azure.resourcemanager.netapp.fluent.NetAppManagementClient;
+import com.azure.resourcemanager.netapp.fluent.NetAppResourceQuotaLimitsClient;
 import com.azure.resourcemanager.netapp.fluent.NetAppResourcesClient;
 import com.azure.resourcemanager.netapp.fluent.OperationsClient;
 import com.azure.resourcemanager.netapp.fluent.PoolsClient;
 import com.azure.resourcemanager.netapp.fluent.SnapshotPoliciesClient;
 import com.azure.resourcemanager.netapp.fluent.SnapshotsClient;
+import com.azure.resourcemanager.netapp.fluent.SubvolumesClient;
 import com.azure.resourcemanager.netapp.fluent.VaultsClient;
+import com.azure.resourcemanager.netapp.fluent.VolumeGroupsClient;
 import com.azure.resourcemanager.netapp.fluent.VolumesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -148,6 +151,18 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         return this.netAppResources;
     }
 
+    /** The NetAppResourceQuotaLimitsClient object to access its operations. */
+    private final NetAppResourceQuotaLimitsClient netAppResourceQuotaLimits;
+
+    /**
+     * Gets the NetAppResourceQuotaLimitsClient object to access its operations.
+     *
+     * @return the NetAppResourceQuotaLimitsClient object.
+     */
+    public NetAppResourceQuotaLimitsClient getNetAppResourceQuotaLimits() {
+        return this.netAppResourceQuotaLimits;
+    }
+
     /** The AccountsClient object to access its operations. */
     private final AccountsClient accounts;
 
@@ -256,6 +271,30 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         return this.vaults;
     }
 
+    /** The VolumeGroupsClient object to access its operations. */
+    private final VolumeGroupsClient volumeGroups;
+
+    /**
+     * Gets the VolumeGroupsClient object to access its operations.
+     *
+     * @return the VolumeGroupsClient object.
+     */
+    public VolumeGroupsClient getVolumeGroups() {
+        return this.volumeGroups;
+    }
+
+    /** The SubvolumesClient object to access its operations. */
+    private final SubvolumesClient subvolumes;
+
+    /**
+     * Gets the SubvolumesClient object to access its operations.
+     *
+     * @return the SubvolumesClient object.
+     */
+    public SubvolumesClient getSubvolumes() {
+        return this.subvolumes;
+    }
+
     /**
      * Initializes an instance of NetAppManagementClient client.
      *
@@ -279,9 +318,10 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-04-01";
+        this.apiVersion = "2021-10-01";
         this.operations = new OperationsClientImpl(this);
         this.netAppResources = new NetAppResourcesClientImpl(this);
+        this.netAppResourceQuotaLimits = new NetAppResourceQuotaLimitsClientImpl(this);
         this.accounts = new AccountsClientImpl(this);
         this.pools = new PoolsClientImpl(this);
         this.volumes = new VolumesClientImpl(this);
@@ -291,6 +331,8 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         this.accountBackups = new AccountBackupsClientImpl(this);
         this.backupPolicies = new BackupPoliciesClientImpl(this);
         this.vaults = new VaultsClientImpl(this);
+        this.volumeGroups = new VolumeGroupsClientImpl(this);
+        this.subvolumes = new SubvolumesClientImpl(this);
     }
 
     /**

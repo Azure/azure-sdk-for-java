@@ -77,7 +77,7 @@ public interface BillingAccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a billing account.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BillingAccountInner>, BillingAccountInner> beginUpdate(
         String billingAccountName, BillingAccountUpdateRequest parameters);
 
@@ -93,7 +93,7 @@ public interface BillingAccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a billing account.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BillingAccountInner>, BillingAccountInner> beginUpdate(
         String billingAccountName, BillingAccountUpdateRequest parameters, Context context);
 

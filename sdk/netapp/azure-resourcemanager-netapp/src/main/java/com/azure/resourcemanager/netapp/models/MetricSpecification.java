@@ -40,6 +40,42 @@ public final class MetricSpecification {
     private String unit;
 
     /*
+     * Support metric aggregation type.
+     */
+    @JsonProperty(value = "supportedAggregationTypes")
+    private List<MetricAggregationType> supportedAggregationTypes;
+
+    /*
+     * The supported time grain types for the metrics.
+     */
+    @JsonProperty(value = "supportedTimeGrainTypes")
+    private List<String> supportedTimeGrainTypes;
+
+    /*
+     * The internal metric name.
+     */
+    @JsonProperty(value = "internalMetricName")
+    private String internalMetricName;
+
+    /*
+     * Whether or not the service is using regional MDM accounts.
+     */
+    @JsonProperty(value = "enableRegionalMdmAccount")
+    private Boolean enableRegionalMdmAccount;
+
+    /*
+     * The source MDM account.
+     */
+    @JsonProperty(value = "sourceMdmAccount")
+    private String sourceMdmAccount;
+
+    /*
+     * The source MDM namespace.
+     */
+    @JsonProperty(value = "sourceMdmNamespace")
+    private String sourceMdmNamespace;
+
+    /*
      * Dimensions of blobs, including blob type and access tier.
      */
     @JsonProperty(value = "dimensions")
@@ -68,6 +104,12 @@ public final class MetricSpecification {
      */
     @JsonProperty(value = "resourceIdDimensionNameOverride")
     private String resourceIdDimensionNameOverride;
+
+    /*
+     * Whether the metric is internal.
+     */
+    @JsonProperty(value = "isInternal")
+    private Boolean isInternal;
 
     /**
      * Get the name property: Name of metric specification.
@@ -146,6 +188,126 @@ public final class MetricSpecification {
      */
     public MetricSpecification withUnit(String unit) {
         this.unit = unit;
+        return this;
+    }
+
+    /**
+     * Get the supportedAggregationTypes property: Support metric aggregation type.
+     *
+     * @return the supportedAggregationTypes value.
+     */
+    public List<MetricAggregationType> supportedAggregationTypes() {
+        return this.supportedAggregationTypes;
+    }
+
+    /**
+     * Set the supportedAggregationTypes property: Support metric aggregation type.
+     *
+     * @param supportedAggregationTypes the supportedAggregationTypes value to set.
+     * @return the MetricSpecification object itself.
+     */
+    public MetricSpecification withSupportedAggregationTypes(List<MetricAggregationType> supportedAggregationTypes) {
+        this.supportedAggregationTypes = supportedAggregationTypes;
+        return this;
+    }
+
+    /**
+     * Get the supportedTimeGrainTypes property: The supported time grain types for the metrics.
+     *
+     * @return the supportedTimeGrainTypes value.
+     */
+    public List<String> supportedTimeGrainTypes() {
+        return this.supportedTimeGrainTypes;
+    }
+
+    /**
+     * Set the supportedTimeGrainTypes property: The supported time grain types for the metrics.
+     *
+     * @param supportedTimeGrainTypes the supportedTimeGrainTypes value to set.
+     * @return the MetricSpecification object itself.
+     */
+    public MetricSpecification withSupportedTimeGrainTypes(List<String> supportedTimeGrainTypes) {
+        this.supportedTimeGrainTypes = supportedTimeGrainTypes;
+        return this;
+    }
+
+    /**
+     * Get the internalMetricName property: The internal metric name.
+     *
+     * @return the internalMetricName value.
+     */
+    public String internalMetricName() {
+        return this.internalMetricName;
+    }
+
+    /**
+     * Set the internalMetricName property: The internal metric name.
+     *
+     * @param internalMetricName the internalMetricName value to set.
+     * @return the MetricSpecification object itself.
+     */
+    public MetricSpecification withInternalMetricName(String internalMetricName) {
+        this.internalMetricName = internalMetricName;
+        return this;
+    }
+
+    /**
+     * Get the enableRegionalMdmAccount property: Whether or not the service is using regional MDM accounts.
+     *
+     * @return the enableRegionalMdmAccount value.
+     */
+    public Boolean enableRegionalMdmAccount() {
+        return this.enableRegionalMdmAccount;
+    }
+
+    /**
+     * Set the enableRegionalMdmAccount property: Whether or not the service is using regional MDM accounts.
+     *
+     * @param enableRegionalMdmAccount the enableRegionalMdmAccount value to set.
+     * @return the MetricSpecification object itself.
+     */
+    public MetricSpecification withEnableRegionalMdmAccount(Boolean enableRegionalMdmAccount) {
+        this.enableRegionalMdmAccount = enableRegionalMdmAccount;
+        return this;
+    }
+
+    /**
+     * Get the sourceMdmAccount property: The source MDM account.
+     *
+     * @return the sourceMdmAccount value.
+     */
+    public String sourceMdmAccount() {
+        return this.sourceMdmAccount;
+    }
+
+    /**
+     * Set the sourceMdmAccount property: The source MDM account.
+     *
+     * @param sourceMdmAccount the sourceMdmAccount value to set.
+     * @return the MetricSpecification object itself.
+     */
+    public MetricSpecification withSourceMdmAccount(String sourceMdmAccount) {
+        this.sourceMdmAccount = sourceMdmAccount;
+        return this;
+    }
+
+    /**
+     * Get the sourceMdmNamespace property: The source MDM namespace.
+     *
+     * @return the sourceMdmNamespace value.
+     */
+    public String sourceMdmNamespace() {
+        return this.sourceMdmNamespace;
+    }
+
+    /**
+     * Set the sourceMdmNamespace property: The source MDM namespace.
+     *
+     * @param sourceMdmNamespace the sourceMdmNamespace value to set.
+     * @return the MetricSpecification object itself.
+     */
+    public MetricSpecification withSourceMdmNamespace(String sourceMdmNamespace) {
+        this.sourceMdmNamespace = sourceMdmNamespace;
         return this;
     }
 
@@ -246,6 +408,26 @@ public final class MetricSpecification {
      */
     public MetricSpecification withResourceIdDimensionNameOverride(String resourceIdDimensionNameOverride) {
         this.resourceIdDimensionNameOverride = resourceIdDimensionNameOverride;
+        return this;
+    }
+
+    /**
+     * Get the isInternal property: Whether the metric is internal.
+     *
+     * @return the isInternal value.
+     */
+    public Boolean isInternal() {
+        return this.isInternal;
+    }
+
+    /**
+     * Set the isInternal property: Whether the metric is internal.
+     *
+     * @param isInternal the isInternal value to set.
+     * @return the MetricSpecification object itself.
+     */
+    public MetricSpecification withIsInternal(Boolean isInternal) {
+        this.isInternal = isInternal;
         return this;
     }
 

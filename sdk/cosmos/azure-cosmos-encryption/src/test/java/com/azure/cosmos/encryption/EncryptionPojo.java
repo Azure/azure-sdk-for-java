@@ -13,7 +13,7 @@ public class EncryptionPojo {
     private int sensitiveInt;
     private float sensitiveFloat;
     private long sensitiveLong;
-    private double sensitiveDouble;
+    private Double sensitiveDouble;
     private boolean sensitiveBoolean;
     private EncryptionPojo sensitiveNestedPojo;
     private int[] sensitiveIntArray;
@@ -78,11 +78,11 @@ public class EncryptionPojo {
         this.sensitiveLong = sensitiveLong;
     }
 
-    public double getSensitiveDouble() {
+    public Double getSensitiveDouble() {
         return sensitiveDouble;
     }
 
-    public void setSensitiveDouble(double sensitiveDouble) {
+    public void setSensitiveDouble(Double sensitiveDouble) {
         this.sensitiveDouble = sensitiveDouble;
     }
 

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.MaintenanceWindowTimeRange;
@@ -14,53 +13,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Maintenance window options. */
-@JsonFlatten
 @Fluent
-public class MaintenanceWindowOptionsInner extends ProxyResource {
+public final class MaintenanceWindowOptionsInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MaintenanceWindowOptionsInner.class);
 
     /*
-     * Whether maintenance windows are enabled for the database.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.isEnabled")
-    private Boolean isEnabled;
+    @JsonProperty(value = "properties")
+    private MaintenanceWindowOptionsProperties innerProperties;
 
-    /*
-     * Available maintenance cycles e.g. {Saturday, 0, 48*60}, {Wednesday, 0,
-     * 24*60}.
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.maintenanceWindowCycles")
-    private List<MaintenanceWindowTimeRange> maintenanceWindowCycles;
-
-    /*
-     * Minimum duration of maintenance window.
-     */
-    @JsonProperty(value = "properties.minDurationInMinutes")
-    private Integer minDurationInMinutes;
-
-    /*
-     * Default duration for maintenance window.
-     */
-    @JsonProperty(value = "properties.defaultDurationInMinutes")
-    private Integer defaultDurationInMinutes;
-
-    /*
-     * Minimum number of maintenance windows cycles to be set on the database.
-     */
-    @JsonProperty(value = "properties.minCycles")
-    private Integer minCycles;
-
-    /*
-     * Time granularity in minutes for maintenance windows.
-     */
-    @JsonProperty(value = "properties.timeGranularityInMinutes")
-    private Integer timeGranularityInMinutes;
-
-    /*
-     * Whether we allow multiple maintenance windows per cycle.
-     */
-    @JsonProperty(value = "properties.allowMultipleMaintenanceWindowsPerCycle")
-    private Boolean allowMultipleMaintenanceWindowsPerCycle;
+    private MaintenanceWindowOptionsProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the isEnabled property: Whether maintenance windows are enabled for the database.
@@ -68,7 +38,7 @@ public class MaintenanceWindowOptionsInner extends ProxyResource {
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
-        return this.isEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().isEnabled();
     }
 
     /**
@@ -78,7 +48,10 @@ public class MaintenanceWindowOptionsInner extends ProxyResource {
      * @return the MaintenanceWindowOptionsInner object itself.
      */
     public MaintenanceWindowOptionsInner withIsEnabled(Boolean isEnabled) {
-        this.isEnabled = isEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MaintenanceWindowOptionsProperties();
+        }
+        this.innerProperties().withIsEnabled(isEnabled);
         return this;
     }
 
@@ -89,7 +62,7 @@ public class MaintenanceWindowOptionsInner extends ProxyResource {
      * @return the maintenanceWindowCycles value.
      */
     public List<MaintenanceWindowTimeRange> maintenanceWindowCycles() {
-        return this.maintenanceWindowCycles;
+        return this.innerProperties() == null ? null : this.innerProperties().maintenanceWindowCycles();
     }
 
     /**
@@ -101,7 +74,10 @@ public class MaintenanceWindowOptionsInner extends ProxyResource {
      */
     public MaintenanceWindowOptionsInner withMaintenanceWindowCycles(
         List<MaintenanceWindowTimeRange> maintenanceWindowCycles) {
-        this.maintenanceWindowCycles = maintenanceWindowCycles;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MaintenanceWindowOptionsProperties();
+        }
+        this.innerProperties().withMaintenanceWindowCycles(maintenanceWindowCycles);
         return this;
     }
 
@@ -111,7 +87,7 @@ public class MaintenanceWindowOptionsInner extends ProxyResource {
      * @return the minDurationInMinutes value.
      */
     public Integer minDurationInMinutes() {
-        return this.minDurationInMinutes;
+        return this.innerProperties() == null ? null : this.innerProperties().minDurationInMinutes();
     }
 
     /**
@@ -121,7 +97,10 @@ public class MaintenanceWindowOptionsInner extends ProxyResource {
      * @return the MaintenanceWindowOptionsInner object itself.
      */
     public MaintenanceWindowOptionsInner withMinDurationInMinutes(Integer minDurationInMinutes) {
-        this.minDurationInMinutes = minDurationInMinutes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MaintenanceWindowOptionsProperties();
+        }
+        this.innerProperties().withMinDurationInMinutes(minDurationInMinutes);
         return this;
     }
 
@@ -131,7 +110,7 @@ public class MaintenanceWindowOptionsInner extends ProxyResource {
      * @return the defaultDurationInMinutes value.
      */
     public Integer defaultDurationInMinutes() {
-        return this.defaultDurationInMinutes;
+        return this.innerProperties() == null ? null : this.innerProperties().defaultDurationInMinutes();
     }
 
     /**
@@ -141,7 +120,10 @@ public class MaintenanceWindowOptionsInner extends ProxyResource {
      * @return the MaintenanceWindowOptionsInner object itself.
      */
     public MaintenanceWindowOptionsInner withDefaultDurationInMinutes(Integer defaultDurationInMinutes) {
-        this.defaultDurationInMinutes = defaultDurationInMinutes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MaintenanceWindowOptionsProperties();
+        }
+        this.innerProperties().withDefaultDurationInMinutes(defaultDurationInMinutes);
         return this;
     }
 
@@ -151,7 +133,7 @@ public class MaintenanceWindowOptionsInner extends ProxyResource {
      * @return the minCycles value.
      */
     public Integer minCycles() {
-        return this.minCycles;
+        return this.innerProperties() == null ? null : this.innerProperties().minCycles();
     }
 
     /**
@@ -161,7 +143,10 @@ public class MaintenanceWindowOptionsInner extends ProxyResource {
      * @return the MaintenanceWindowOptionsInner object itself.
      */
     public MaintenanceWindowOptionsInner withMinCycles(Integer minCycles) {
-        this.minCycles = minCycles;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MaintenanceWindowOptionsProperties();
+        }
+        this.innerProperties().withMinCycles(minCycles);
         return this;
     }
 
@@ -171,7 +156,7 @@ public class MaintenanceWindowOptionsInner extends ProxyResource {
      * @return the timeGranularityInMinutes value.
      */
     public Integer timeGranularityInMinutes() {
-        return this.timeGranularityInMinutes;
+        return this.innerProperties() == null ? null : this.innerProperties().timeGranularityInMinutes();
     }
 
     /**
@@ -181,7 +166,10 @@ public class MaintenanceWindowOptionsInner extends ProxyResource {
      * @return the MaintenanceWindowOptionsInner object itself.
      */
     public MaintenanceWindowOptionsInner withTimeGranularityInMinutes(Integer timeGranularityInMinutes) {
-        this.timeGranularityInMinutes = timeGranularityInMinutes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MaintenanceWindowOptionsProperties();
+        }
+        this.innerProperties().withTimeGranularityInMinutes(timeGranularityInMinutes);
         return this;
     }
 
@@ -192,7 +180,7 @@ public class MaintenanceWindowOptionsInner extends ProxyResource {
      * @return the allowMultipleMaintenanceWindowsPerCycle value.
      */
     public Boolean allowMultipleMaintenanceWindowsPerCycle() {
-        return this.allowMultipleMaintenanceWindowsPerCycle;
+        return this.innerProperties() == null ? null : this.innerProperties().allowMultipleMaintenanceWindowsPerCycle();
     }
 
     /**
@@ -204,7 +192,10 @@ public class MaintenanceWindowOptionsInner extends ProxyResource {
      */
     public MaintenanceWindowOptionsInner withAllowMultipleMaintenanceWindowsPerCycle(
         Boolean allowMultipleMaintenanceWindowsPerCycle) {
-        this.allowMultipleMaintenanceWindowsPerCycle = allowMultipleMaintenanceWindowsPerCycle;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MaintenanceWindowOptionsProperties();
+        }
+        this.innerProperties().withAllowMultipleMaintenanceWindowsPerCycle(allowMultipleMaintenanceWindowsPerCycle);
         return this;
     }
 
@@ -214,8 +205,8 @@ public class MaintenanceWindowOptionsInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (maintenanceWindowCycles() != null) {
-            maintenanceWindowCycles().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

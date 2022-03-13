@@ -5,7 +5,6 @@ package com.azure.digitaltwins.core.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Context;
-import com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
@@ -59,7 +58,9 @@ public final class ListModelsOptions {
      * Gets whether to include the model definition in the result. If false, only the model metadata will be returned.
      * @return the includeModelDefinition value.
      */
-    public Boolean getIncludeModelDefinition() { return this.includeModelDefinition; }
+    public Boolean getIncludeModelDefinition() {
+        return this.includeModelDefinition;
+    }
 
     /**
      * Sets whether to include the model definition in the result. If false, only the model metadata will be returned.
@@ -80,7 +81,9 @@ public final class ListModelsOptions {
      * Gets the model Ids that will have their dependencies retrieved.
      * @return the dependenciesFor value.
      */
-    public List<String> getDependenciesFor() { return this.dependenciesFor; }
+    public List<String> getDependenciesFor() {
+        return this.dependenciesFor;
+    }
 
     /**
      * Sets the model Ids that will have their dependencies retrieved.

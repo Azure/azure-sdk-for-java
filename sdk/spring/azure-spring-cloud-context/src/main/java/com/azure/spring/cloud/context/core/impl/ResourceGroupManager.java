@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.context.core.impl;
 
+import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
@@ -13,7 +14,13 @@ import com.azure.spring.cloud.context.core.config.AzureProperties;
 public class ResourceGroupManager extends AzureManager<ResourceGroup, String> {
 
     private final AzureResourceManager azureResourceManager;
-    
+
+    /**
+     * Creates a new instance of {@link ResourceGroupManager}.
+     *
+     * @param azureResourceManager The Azure resource manager.
+     * @param azureProperties The Azure properties.
+     */
     public ResourceGroupManager(AzureResourceManager azureResourceManager, AzureProperties azureProperties) {
         super(azureProperties);
         this.azureResourceManager = azureResourceManager;
@@ -31,7 +38,15 @@ public class ResourceGroupManager extends AzureManager<ResourceGroup, String> {
 
     @Override
     public ResourceGroup internalGet(String key) {
-        return azureResourceManager.resourceGroups().getByName(key);
+        try {
+            return azureResourceManager.resourceGroups().getByName(key);
+        } catch (ManagementException e) {
+            if (e.getResponse().getStatusCode() == 404) {
+                return null;
+            } else {
+                throw e;
+            }
+        }
     }
 
     @Override

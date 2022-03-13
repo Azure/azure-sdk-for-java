@@ -17,18 +17,11 @@ public final class NGramTokenizerConverter {
         if (obj == null) {
             return null;
         }
-        NGramTokenizer nGramTokenizer = new NGramTokenizer(obj.getName());
 
-        Integer maxGram = obj.getMaxGram();
-        nGramTokenizer.setMaxGram(maxGram);
-
-        if (obj.getTokenChars() != null) {
-            nGramTokenizer.setTokenChars(obj.getTokenChars());
-        }
-
-        Integer minGram = obj.getMinGram();
-        nGramTokenizer.setMinGram(minGram);
-        return nGramTokenizer;
+        return new NGramTokenizer(obj.getName())
+            .setMaxGram(obj.getMaxGram())
+            .setMinGram(obj.getMinGram())
+            .setTokenChars(obj.getTokenChars());
     }
 
     /**
@@ -38,20 +31,11 @@ public final class NGramTokenizerConverter {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.indexes.implementation.models.NGramTokenizer nGramTokenizer =
-            new com.azure.search.documents.indexes.implementation.models.NGramTokenizer(obj.getName());
 
-        Integer maxGram = obj.getMaxGram();
-        nGramTokenizer.setMaxGram(maxGram);
-
-        if (obj.getTokenChars() != null) {
-            nGramTokenizer.setTokenChars(obj.getTokenChars());
-        }
-
-        Integer minGram = obj.getMinGram();
-        nGramTokenizer.setMinGram(minGram);
-
-        return nGramTokenizer;
+        return new com.azure.search.documents.indexes.implementation.models.NGramTokenizer(obj.getName())
+            .setMaxGram(obj.getMaxGram())
+            .setMinGram(obj.getMinGram())
+            .setTokenChars(obj.getTokenChars());
     }
 
     private NGramTokenizerConverter() {

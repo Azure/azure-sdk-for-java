@@ -32,6 +32,10 @@ public final class PrivateLinkResourceImpl implements PrivateLinkResource {
         return this.innerModel().type();
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
     public String groupId() {
         return this.innerModel().groupId();
     }
@@ -52,10 +56,6 @@ public final class PrivateLinkResourceImpl implements PrivateLinkResource {
         } else {
             return Collections.emptyList();
         }
-    }
-
-    public String etag() {
-        return this.innerModel().etag();
     }
 
     public PrivateLinkResourceInner innerModel() {

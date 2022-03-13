@@ -46,10 +46,11 @@ public class DelimitedTextDataset extends Dataset {
     private Object encodingName;
 
     /*
-     * The compressionCodec property.
+     * The data compressionCodec. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "typeProperties.compressionCodec")
-    private CompressionCodec compressionCodec;
+    private Object compressionCodec;
 
     /*
      * The data compression method used for DelimitedText.
@@ -174,21 +175,23 @@ public class DelimitedTextDataset extends Dataset {
     }
 
     /**
-     * Get the compressionCodec property: The compressionCodec property.
+     * Get the compressionCodec property: The data compressionCodec. Type: string (or Expression with resultType
+     * string).
      *
      * @return the compressionCodec value.
      */
-    public CompressionCodec getCompressionCodec() {
+    public Object getCompressionCodec() {
         return this.compressionCodec;
     }
 
     /**
-     * Set the compressionCodec property: The compressionCodec property.
+     * Set the compressionCodec property: The data compressionCodec. Type: string (or Expression with resultType
+     * string).
      *
      * @param compressionCodec the compressionCodec value to set.
      * @return the DelimitedTextDataset object itself.
      */
-    public DelimitedTextDataset setCompressionCodec(CompressionCodec compressionCodec) {
+    public DelimitedTextDataset setCompressionCodec(Object compressionCodec) {
         this.compressionCodec = compressionCodec;
         return this;
     }

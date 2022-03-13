@@ -3,8 +3,8 @@
 
 package com.azure.ai.metricsadvisor.administration;
 
-import com.azure.ai.metricsadvisor.administration.models.DatasourceCredentialEntity;
-import com.azure.ai.metricsadvisor.administration.models.DatasourceServicePrincipalInKeyVault;
+import com.azure.ai.metricsadvisor.administration.models.DataSourceCredentialEntity;
+import com.azure.ai.metricsadvisor.administration.models.DataSourceServicePrincipalInKeyVault;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import reactor.core.publisher.Mono;
 
@@ -29,15 +29,15 @@ public class DatasourceCredentialAsyncSample {
         final String tId = "67890ded-5e07-4e52-b225-4ae8f905afb5";
         final String mockSecr = "890hy69-5e07-4e52-b225-4ae8f905afb5";
 
-        DatasourceCredentialEntity datasourceCredential = new DatasourceServicePrincipalInKeyVault()
+        DataSourceCredentialEntity datasourceCredential = new DataSourceServicePrincipalInKeyVault()
             .setName(name)
-            .setKeyVaultForDatasourceSecrets("kv", cId, mockSecr)
+            .setKeyVaultForDataSourceSecrets("kv", cId, mockSecr)
             .setTenantId(tId)
-            .setSecretNameForDatasourceClientId("DSClientID_1")
-            .setSecretNameForDatasourceClientSecret("DSClientSer_1");
+            .setSecretNameForDataSourceClientId("DSClientID_1")
+            .setSecretNameForDataSourceClientSecret("DSClientSer_1");
 
-        final Mono<DatasourceCredentialEntity> createdDatasourceCredentialEntityMono = advisorAdministrationAsyncClient
-            .createDatasourceCredential(datasourceCredential);
+        final Mono<DataSourceCredentialEntity> createdDatasourceCredentialEntityMono = advisorAdministrationAsyncClient
+            .createDataSourceCredential(datasourceCredential);
 
         createdDatasourceCredentialEntityMono
             .doOnSubscribe(__ ->
@@ -46,9 +46,9 @@ public class DatasourceCredentialAsyncSample {
                 System.out.printf("Created Datasource credential entity: %s%n", datasourceCredentialEntity.getId()));
 
         // Retrieve the datasource credential entity that just created.
-        Mono<DatasourceCredentialEntity> fetchDataFeedMono =
+        Mono<DataSourceCredentialEntity> fetchDataFeedMono =
             createdDatasourceCredentialEntityMono.flatMap(createdDatasourceCredEntity -> {
-                return advisorAdministrationAsyncClient.getDatasourceCredential(createdDatasourceCredEntity.getId())
+                return advisorAdministrationAsyncClient.getDataSourceCredential(createdDatasourceCredEntity.getId())
                     .doOnSubscribe(__ ->
                         System.out
                             .printf("Fetching Datasource credential entity: %s%n", createdDatasourceCredEntity.getId()))
@@ -57,46 +57,46 @@ public class DatasourceCredentialAsyncSample {
                     .doOnNext(credentialEntity -> {
                         System.out.printf("Datasource credential entity Id : %s%n", credentialEntity.getId());
                         System.out.printf("Datasource credential entity name : %s%n", credentialEntity.getName());
-                        if (credentialEntity instanceof DatasourceServicePrincipalInKeyVault) {
-                            DatasourceServicePrincipalInKeyVault actualCredentialSPInKV
-                                = (DatasourceServicePrincipalInKeyVault) credentialEntity;
+                        if (credentialEntity instanceof DataSourceServicePrincipalInKeyVault) {
+                            DataSourceServicePrincipalInKeyVault actualCredentialSPInKV
+                                = (DataSourceServicePrincipalInKeyVault) credentialEntity;
                             System.out
                                 .printf("Actual credential entity key vault endpoint: %s%n",
                                     actualCredentialSPInKV.getKeyVaultEndpoint());
                             System.out.printf("Actual credential entity key vault client Id: %s%n",
                                 actualCredentialSPInKV.getKeyVaultClientId());
                             System.out.printf("Actual credential entity key vault secret name for data source: %s%n",
-                                actualCredentialSPInKV.getSecretNameForDatasourceClientId());
+                                actualCredentialSPInKV.getSecretNameForDataSourceClientId());
                             System.out.printf("Actual credential entity key vault secret for data source: %s%n",
-                                actualCredentialSPInKV.getSecretNameForDatasourceClientSecret());
+                                actualCredentialSPInKV.getSecretNameForDataSourceClientSecret());
                         }
                     });
             });
 
         // Update the datasource credential entity.
-        Mono<DatasourceCredentialEntity> updateDatasourcCredMono = fetchDataFeedMono
+        Mono<DataSourceCredentialEntity> updateDatasourcCredMono = fetchDataFeedMono
             .flatMap(datasourceCredEntity -> {
-                DatasourceServicePrincipalInKeyVault actualCredentialSPInKV = null;
-                if (datasourceCredEntity instanceof DatasourceServicePrincipalInKeyVault) {
-                    actualCredentialSPInKV = (DatasourceServicePrincipalInKeyVault) datasourceCredEntity;
+                DataSourceServicePrincipalInKeyVault actualCredentialSPInKV = null;
+                if (datasourceCredEntity instanceof DataSourceServicePrincipalInKeyVault) {
+                    actualCredentialSPInKV = (DataSourceServicePrincipalInKeyVault) datasourceCredEntity;
                 }
 
-                return advisorAdministrationAsyncClient.updateDatasourceCredential(
-                    actualCredentialSPInKV.setSecretNameForDatasourceClientId("clientIdSecretName"))
+                return advisorAdministrationAsyncClient.updateDataSourceCredential(
+                    actualCredentialSPInKV.setSecretNameForDataSourceClientId("clientIdSecretName"))
                     .doOnSubscribe(__ ->
                         System.out.printf("Updating datasource credential entity: %s%n", datasourceCredEntity.getId()))
                     .doOnSuccess(config -> {
 
                         System.out.printf("Updated datasource credential entity%n");
                         System.out.printf("Updated datasource credential entity client Id: %s%n",
-                            ((DatasourceServicePrincipalInKeyVault) datasourceCredEntity)
-                                .getSecretNameForDatasourceClientId());
+                            ((DataSourceServicePrincipalInKeyVault) datasourceCredEntity)
+                                .getSecretNameForDataSourceClientId());
                     });
             });
 
         // Delete the datasource credential entity.
         Mono<Void> deleteDatasourceCredMono = updateDatasourcCredMono.flatMap(datasourceCredEntity -> {
-            return advisorAdministrationAsyncClient.deleteDatasourceCredential(datasourceCredEntity.getId())
+            return advisorAdministrationAsyncClient.deleteDataSourceCredential(datasourceCredEntity.getId())
                 .doOnSubscribe(__ ->
                     System.out.printf("Deleting datasource credential entity: %s%n", datasourceCredEntity.getId()))
                 .doOnSuccess(config ->
@@ -112,24 +112,24 @@ public class DatasourceCredentialAsyncSample {
 
         // List datasource credential entity.
         System.out.printf("Listing datasource credential entity%n");
-        advisorAdministrationAsyncClient.listDatasourceCredentials()
+        advisorAdministrationAsyncClient.listDataSourceCredentials()
             .doOnNext(datasourceCredentialEntity -> {
                 System.out.printf("Datasource credential entity Id: %s%n", datasourceCredentialEntity.getId());
                 System.out.printf("Datasource credential entity name: %s%n", datasourceCredentialEntity.getName());
                 System.out.printf("Datasource credential entity description: %s%n",
                     datasourceCredentialEntity.getDescription());
-                if (datasourceCredentialEntity instanceof DatasourceServicePrincipalInKeyVault) {
-                    DatasourceServicePrincipalInKeyVault actualCredentialSPInKV
-                        = (DatasourceServicePrincipalInKeyVault) datasourceCredentialEntity;
+                if (datasourceCredentialEntity instanceof DataSourceServicePrincipalInKeyVault) {
+                    DataSourceServicePrincipalInKeyVault actualCredentialSPInKV
+                        = (DataSourceServicePrincipalInKeyVault) datasourceCredentialEntity;
                     System.out
                         .printf("Actual credential entity key vault endpoint: %s%n",
                             actualCredentialSPInKV.getKeyVaultEndpoint());
                     System.out.printf("Actual credential entity key vault client Id: %s%n",
                         actualCredentialSPInKV.getKeyVaultClientId());
                     System.out.printf("Actual credential entity key vault secret name for data source: %s%n",
-                        actualCredentialSPInKV.getSecretNameForDatasourceClientId());
+                        actualCredentialSPInKV.getSecretNameForDataSourceClientId());
                     System.out.printf("Actual credential entity key vault secret for data source: %s%n",
-                        actualCredentialSPInKV.getSecretNameForDatasourceClientSecret());
+                        actualCredentialSPInKV.getSecretNameForDataSourceClientSecret());
                 }
             });
     }

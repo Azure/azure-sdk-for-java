@@ -24,7 +24,9 @@ public class JobInputHttp extends JobInputClip {
     /*
      * Base URI for HTTPS job input. It will be concatenated with provided file
      * names. If no base uri is given, then the provided file list is assumed
-     * to be fully qualified uris. Maximum length of 4000 characters.
+     * to be fully qualified uris. Maximum length of 4000 characters. The query
+     * strings will not be returned in service responses to prevent sensitive
+     * data exposure.
      */
     @JsonProperty(value = "baseUri")
     private String baseUri;
@@ -32,7 +34,7 @@ public class JobInputHttp extends JobInputClip {
     /**
      * Get the baseUri property: Base URI for HTTPS job input. It will be concatenated with provided file names. If no
      * base uri is given, then the provided file list is assumed to be fully qualified uris. Maximum length of 4000
-     * characters.
+     * characters. The query strings will not be returned in service responses to prevent sensitive data exposure.
      *
      * @return the baseUri value.
      */
@@ -43,7 +45,7 @@ public class JobInputHttp extends JobInputClip {
     /**
      * Set the baseUri property: Base URI for HTTPS job input. It will be concatenated with provided file names. If no
      * base uri is given, then the provided file list is assumed to be fully qualified uris. Maximum length of 4000
-     * characters.
+     * characters. The query strings will not be returned in service responses to prevent sensitive data exposure.
      *
      * @param baseUri the baseUri value to set.
      * @return the JobInputHttp object itself.

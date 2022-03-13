@@ -5,53 +5,30 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Workload group operations for a sql pool. */
-@JsonFlatten
 @Fluent
-public class WorkloadGroupInner extends ProxyResource {
+public final class WorkloadGroupInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadGroupInner.class);
 
     /*
-     * The workload group minimum percentage resource.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.minResourcePercent")
-    private Integer minResourcePercent;
+    @JsonProperty(value = "properties")
+    private WorkloadGroupProperties innerProperties;
 
-    /*
-     * The workload group cap percentage resource.
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.maxResourcePercent")
-    private Integer maxResourcePercent;
-
-    /*
-     * The workload group request minimum grant percentage.
-     */
-    @JsonProperty(value = "properties.minResourcePercentPerRequest")
-    private Double minResourcePercentPerRequest;
-
-    /*
-     * The workload group request maximum grant percentage.
-     */
-    @JsonProperty(value = "properties.maxResourcePercentPerRequest")
-    private Double maxResourcePercentPerRequest;
-
-    /*
-     * The workload group importance level.
-     */
-    @JsonProperty(value = "properties.importance")
-    private String importance;
-
-    /*
-     * The workload group query execution timeout.
-     */
-    @JsonProperty(value = "properties.queryExecutionTimeout")
-    private Integer queryExecutionTimeout;
+    private WorkloadGroupProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the minResourcePercent property: The workload group minimum percentage resource.
@@ -59,7 +36,7 @@ public class WorkloadGroupInner extends ProxyResource {
      * @return the minResourcePercent value.
      */
     public Integer minResourcePercent() {
-        return this.minResourcePercent;
+        return this.innerProperties() == null ? null : this.innerProperties().minResourcePercent();
     }
 
     /**
@@ -69,7 +46,10 @@ public class WorkloadGroupInner extends ProxyResource {
      * @return the WorkloadGroupInner object itself.
      */
     public WorkloadGroupInner withMinResourcePercent(Integer minResourcePercent) {
-        this.minResourcePercent = minResourcePercent;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadGroupProperties();
+        }
+        this.innerProperties().withMinResourcePercent(minResourcePercent);
         return this;
     }
 
@@ -79,7 +59,7 @@ public class WorkloadGroupInner extends ProxyResource {
      * @return the maxResourcePercent value.
      */
     public Integer maxResourcePercent() {
-        return this.maxResourcePercent;
+        return this.innerProperties() == null ? null : this.innerProperties().maxResourcePercent();
     }
 
     /**
@@ -89,7 +69,10 @@ public class WorkloadGroupInner extends ProxyResource {
      * @return the WorkloadGroupInner object itself.
      */
     public WorkloadGroupInner withMaxResourcePercent(Integer maxResourcePercent) {
-        this.maxResourcePercent = maxResourcePercent;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadGroupProperties();
+        }
+        this.innerProperties().withMaxResourcePercent(maxResourcePercent);
         return this;
     }
 
@@ -99,7 +82,7 @@ public class WorkloadGroupInner extends ProxyResource {
      * @return the minResourcePercentPerRequest value.
      */
     public Double minResourcePercentPerRequest() {
-        return this.minResourcePercentPerRequest;
+        return this.innerProperties() == null ? null : this.innerProperties().minResourcePercentPerRequest();
     }
 
     /**
@@ -109,7 +92,10 @@ public class WorkloadGroupInner extends ProxyResource {
      * @return the WorkloadGroupInner object itself.
      */
     public WorkloadGroupInner withMinResourcePercentPerRequest(Double minResourcePercentPerRequest) {
-        this.minResourcePercentPerRequest = minResourcePercentPerRequest;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadGroupProperties();
+        }
+        this.innerProperties().withMinResourcePercentPerRequest(minResourcePercentPerRequest);
         return this;
     }
 
@@ -119,7 +105,7 @@ public class WorkloadGroupInner extends ProxyResource {
      * @return the maxResourcePercentPerRequest value.
      */
     public Double maxResourcePercentPerRequest() {
-        return this.maxResourcePercentPerRequest;
+        return this.innerProperties() == null ? null : this.innerProperties().maxResourcePercentPerRequest();
     }
 
     /**
@@ -129,7 +115,10 @@ public class WorkloadGroupInner extends ProxyResource {
      * @return the WorkloadGroupInner object itself.
      */
     public WorkloadGroupInner withMaxResourcePercentPerRequest(Double maxResourcePercentPerRequest) {
-        this.maxResourcePercentPerRequest = maxResourcePercentPerRequest;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadGroupProperties();
+        }
+        this.innerProperties().withMaxResourcePercentPerRequest(maxResourcePercentPerRequest);
         return this;
     }
 
@@ -139,7 +128,7 @@ public class WorkloadGroupInner extends ProxyResource {
      * @return the importance value.
      */
     public String importance() {
-        return this.importance;
+        return this.innerProperties() == null ? null : this.innerProperties().importance();
     }
 
     /**
@@ -149,7 +138,10 @@ public class WorkloadGroupInner extends ProxyResource {
      * @return the WorkloadGroupInner object itself.
      */
     public WorkloadGroupInner withImportance(String importance) {
-        this.importance = importance;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadGroupProperties();
+        }
+        this.innerProperties().withImportance(importance);
         return this;
     }
 
@@ -159,7 +151,7 @@ public class WorkloadGroupInner extends ProxyResource {
      * @return the queryExecutionTimeout value.
      */
     public Integer queryExecutionTimeout() {
-        return this.queryExecutionTimeout;
+        return this.innerProperties() == null ? null : this.innerProperties().queryExecutionTimeout();
     }
 
     /**
@@ -169,7 +161,10 @@ public class WorkloadGroupInner extends ProxyResource {
      * @return the WorkloadGroupInner object itself.
      */
     public WorkloadGroupInner withQueryExecutionTimeout(Integer queryExecutionTimeout) {
-        this.queryExecutionTimeout = queryExecutionTimeout;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadGroupProperties();
+        }
+        this.innerProperties().withQueryExecutionTimeout(queryExecutionTimeout);
         return this;
     }
 
@@ -179,5 +174,8 @@ public class WorkloadGroupInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

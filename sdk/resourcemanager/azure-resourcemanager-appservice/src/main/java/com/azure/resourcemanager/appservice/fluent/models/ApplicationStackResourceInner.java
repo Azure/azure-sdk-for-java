@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.models.ApplicationStack;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.StackMajorVersion;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,65 +13,52 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** ARM resource for a ApplicationStack. */
-@JsonFlatten
 @Fluent
-public class ApplicationStackResourceInner extends ProxyOnlyResource {
+public final class ApplicationStackResourceInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationStackResourceInner.class);
 
     /*
-     * Application stack name.
+     * Core resource properties
      */
-    @JsonProperty(value = "properties.name")
-    private String namePropertiesName;
-
-    /*
-     * Application stack display name.
-     */
-    @JsonProperty(value = "properties.display")
-    private String display;
-
-    /*
-     * Application stack dependency.
-     */
-    @JsonProperty(value = "properties.dependency")
-    private String dependency;
-
-    /*
-     * List of major versions available.
-     */
-    @JsonProperty(value = "properties.majorVersions")
-    private List<StackMajorVersion> majorVersions;
-
-    /*
-     * List of frameworks associated with application stack.
-     */
-    @JsonProperty(value = "properties.frameworks")
-    private List<ApplicationStack> frameworks;
-
-    /*
-     * <code>true</code> if this is the stack is deprecated; otherwise,
-     * <code>false</code>.
-     */
-    @JsonProperty(value = "properties.isDeprecated")
-    private List<ApplicationStack> isDeprecated;
+    @JsonProperty(value = "properties")
+    private ApplicationStack innerProperties;
 
     /**
-     * Get the namePropertiesName property: Application stack name.
+     * Get the innerProperties property: Core resource properties.
      *
-     * @return the namePropertiesName value.
+     * @return the innerProperties value.
      */
-    public String namePropertiesName() {
-        return this.namePropertiesName;
+    private ApplicationStack innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationStackResourceInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
     }
 
     /**
-     * Set the namePropertiesName property: Application stack name.
+     * Get the name property: Application stack name.
      *
-     * @param namePropertiesName the namePropertiesName value to set.
+     * @return the name value.
+     */
+    public String namePropertiesName() {
+        return this.innerProperties() == null ? null : this.innerProperties().name();
+    }
+
+    /**
+     * Set the name property: Application stack name.
+     *
+     * @param name the name value to set.
      * @return the ApplicationStackResourceInner object itself.
      */
-    public ApplicationStackResourceInner withNamePropertiesName(String namePropertiesName) {
-        this.namePropertiesName = namePropertiesName;
+    public ApplicationStackResourceInner withNamePropertiesName(String name) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationStack();
+        }
+        this.innerProperties().withName(name);
         return this;
     }
 
@@ -83,7 +68,7 @@ public class ApplicationStackResourceInner extends ProxyOnlyResource {
      * @return the display value.
      */
     public String display() {
-        return this.display;
+        return this.innerProperties() == null ? null : this.innerProperties().display();
     }
 
     /**
@@ -93,7 +78,10 @@ public class ApplicationStackResourceInner extends ProxyOnlyResource {
      * @return the ApplicationStackResourceInner object itself.
      */
     public ApplicationStackResourceInner withDisplay(String display) {
-        this.display = display;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationStack();
+        }
+        this.innerProperties().withDisplay(display);
         return this;
     }
 
@@ -103,7 +91,7 @@ public class ApplicationStackResourceInner extends ProxyOnlyResource {
      * @return the dependency value.
      */
     public String dependency() {
-        return this.dependency;
+        return this.innerProperties() == null ? null : this.innerProperties().dependency();
     }
 
     /**
@@ -113,7 +101,10 @@ public class ApplicationStackResourceInner extends ProxyOnlyResource {
      * @return the ApplicationStackResourceInner object itself.
      */
     public ApplicationStackResourceInner withDependency(String dependency) {
-        this.dependency = dependency;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationStack();
+        }
+        this.innerProperties().withDependency(dependency);
         return this;
     }
 
@@ -123,7 +114,7 @@ public class ApplicationStackResourceInner extends ProxyOnlyResource {
      * @return the majorVersions value.
      */
     public List<StackMajorVersion> majorVersions() {
-        return this.majorVersions;
+        return this.innerProperties() == null ? null : this.innerProperties().majorVersions();
     }
 
     /**
@@ -133,7 +124,10 @@ public class ApplicationStackResourceInner extends ProxyOnlyResource {
      * @return the ApplicationStackResourceInner object itself.
      */
     public ApplicationStackResourceInner withMajorVersions(List<StackMajorVersion> majorVersions) {
-        this.majorVersions = majorVersions;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationStack();
+        }
+        this.innerProperties().withMajorVersions(majorVersions);
         return this;
     }
 
@@ -143,7 +137,7 @@ public class ApplicationStackResourceInner extends ProxyOnlyResource {
      * @return the frameworks value.
      */
     public List<ApplicationStack> frameworks() {
-        return this.frameworks;
+        return this.innerProperties() == null ? null : this.innerProperties().frameworks();
     }
 
     /**
@@ -153,7 +147,10 @@ public class ApplicationStackResourceInner extends ProxyOnlyResource {
      * @return the ApplicationStackResourceInner object itself.
      */
     public ApplicationStackResourceInner withFrameworks(List<ApplicationStack> frameworks) {
-        this.frameworks = frameworks;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationStack();
+        }
+        this.innerProperties().withFrameworks(frameworks);
         return this;
     }
 
@@ -164,7 +161,7 @@ public class ApplicationStackResourceInner extends ProxyOnlyResource {
      * @return the isDeprecated value.
      */
     public List<ApplicationStack> isDeprecated() {
-        return this.isDeprecated;
+        return this.innerProperties() == null ? null : this.innerProperties().isDeprecated();
     }
 
     /**
@@ -175,14 +172,10 @@ public class ApplicationStackResourceInner extends ProxyOnlyResource {
      * @return the ApplicationStackResourceInner object itself.
      */
     public ApplicationStackResourceInner withIsDeprecated(List<ApplicationStack> isDeprecated) {
-        this.isDeprecated = isDeprecated;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ApplicationStackResourceInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationStack();
+        }
+        this.innerProperties().withIsDeprecated(isDeprecated);
         return this;
     }
 
@@ -194,14 +187,8 @@ public class ApplicationStackResourceInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
-        if (majorVersions() != null) {
-            majorVersions().forEach(e -> e.validate());
-        }
-        if (frameworks() != null) {
-            frameworks().forEach(e -> e.validate());
-        }
-        if (isDeprecated() != null) {
-            isDeprecated().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

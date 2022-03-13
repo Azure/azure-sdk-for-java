@@ -32,27 +32,6 @@ public interface IssueContract {
     String type();
 
     /**
-     * Gets the createdDate property: Date and time when the issue was created.
-     *
-     * @return the createdDate value.
-     */
-    OffsetDateTime createdDate();
-
-    /**
-     * Gets the state property: Status of the issue.
-     *
-     * @return the state value.
-     */
-    State state();
-
-    /**
-     * Gets the apiId property: A resource identifier for the API the issue was created for.
-     *
-     * @return the apiId value.
-     */
-    String apiId();
-
-    /**
      * Gets the title property: The issue title.
      *
      * @return the title value.
@@ -72,6 +51,27 @@ public interface IssueContract {
      * @return the userId value.
      */
     String userId();
+
+    /**
+     * Gets the createdDate property: Date and time when the issue was created.
+     *
+     * @return the createdDate value.
+     */
+    OffsetDateTime createdDate();
+
+    /**
+     * Gets the state property: Status of the issue.
+     *
+     * @return the state value.
+     */
+    State state();
+
+    /**
+     * Gets the apiId property: A resource identifier for the API the issue was created for.
+     *
+     * @return the apiId value.
+     */
+    String apiId();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.IssueContractInner object.
@@ -106,12 +106,12 @@ public interface IssueContract {
          * to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithCreatedDate,
-                DefinitionStages.WithState,
-                DefinitionStages.WithApiId,
-                DefinitionStages.WithTitle,
+            extends DefinitionStages.WithTitle,
                 DefinitionStages.WithDescription,
                 DefinitionStages.WithUserId,
+                DefinitionStages.WithCreatedDate,
+                DefinitionStages.WithState,
+                DefinitionStages.WithApiId,
                 DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
@@ -127,36 +127,6 @@ public interface IssueContract {
              * @return the created resource.
              */
             IssueContract create(Context context);
-        }
-        /** The stage of the IssueContract definition allowing to specify createdDate. */
-        interface WithCreatedDate {
-            /**
-             * Specifies the createdDate property: Date and time when the issue was created..
-             *
-             * @param createdDate Date and time when the issue was created.
-             * @return the next definition stage.
-             */
-            WithCreate withCreatedDate(OffsetDateTime createdDate);
-        }
-        /** The stage of the IssueContract definition allowing to specify state. */
-        interface WithState {
-            /**
-             * Specifies the state property: Status of the issue..
-             *
-             * @param state Status of the issue.
-             * @return the next definition stage.
-             */
-            WithCreate withState(State state);
-        }
-        /** The stage of the IssueContract definition allowing to specify apiId. */
-        interface WithApiId {
-            /**
-             * Specifies the apiId property: A resource identifier for the API the issue was created for..
-             *
-             * @param apiId A resource identifier for the API the issue was created for.
-             * @return the next definition stage.
-             */
-            WithCreate withApiId(String apiId);
         }
         /** The stage of the IssueContract definition allowing to specify title. */
         interface WithTitle {
@@ -188,6 +158,36 @@ public interface IssueContract {
              */
             WithCreate withUserId(String userId);
         }
+        /** The stage of the IssueContract definition allowing to specify createdDate. */
+        interface WithCreatedDate {
+            /**
+             * Specifies the createdDate property: Date and time when the issue was created..
+             *
+             * @param createdDate Date and time when the issue was created.
+             * @return the next definition stage.
+             */
+            WithCreate withCreatedDate(OffsetDateTime createdDate);
+        }
+        /** The stage of the IssueContract definition allowing to specify state. */
+        interface WithState {
+            /**
+             * Specifies the state property: Status of the issue..
+             *
+             * @param state Status of the issue.
+             * @return the next definition stage.
+             */
+            WithCreate withState(State state);
+        }
+        /** The stage of the IssueContract definition allowing to specify apiId. */
+        interface WithApiId {
+            /**
+             * Specifies the apiId property: A resource identifier for the API the issue was created for..
+             *
+             * @param apiId A resource identifier for the API the issue was created for.
+             * @return the next definition stage.
+             */
+            WithCreate withApiId(String apiId);
+        }
         /** The stage of the IssueContract definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -210,12 +210,12 @@ public interface IssueContract {
 
     /** The template for IssueContract update. */
     interface Update
-        extends UpdateStages.WithCreatedDate,
-            UpdateStages.WithState,
-            UpdateStages.WithApiId,
-            UpdateStages.WithTitle,
+        extends UpdateStages.WithTitle,
             UpdateStages.WithDescription,
             UpdateStages.WithUserId,
+            UpdateStages.WithCreatedDate,
+            UpdateStages.WithState,
+            UpdateStages.WithApiId,
             UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
@@ -234,36 +234,6 @@ public interface IssueContract {
     }
     /** The IssueContract update stages. */
     interface UpdateStages {
-        /** The stage of the IssueContract update allowing to specify createdDate. */
-        interface WithCreatedDate {
-            /**
-             * Specifies the createdDate property: Date and time when the issue was created..
-             *
-             * @param createdDate Date and time when the issue was created.
-             * @return the next definition stage.
-             */
-            Update withCreatedDate(OffsetDateTime createdDate);
-        }
-        /** The stage of the IssueContract update allowing to specify state. */
-        interface WithState {
-            /**
-             * Specifies the state property: Status of the issue..
-             *
-             * @param state Status of the issue.
-             * @return the next definition stage.
-             */
-            Update withState(State state);
-        }
-        /** The stage of the IssueContract update allowing to specify apiId. */
-        interface WithApiId {
-            /**
-             * Specifies the apiId property: A resource identifier for the API the issue was created for..
-             *
-             * @param apiId A resource identifier for the API the issue was created for.
-             * @return the next definition stage.
-             */
-            Update withApiId(String apiId);
-        }
         /** The stage of the IssueContract update allowing to specify title. */
         interface WithTitle {
             /**
@@ -293,6 +263,36 @@ public interface IssueContract {
              * @return the next definition stage.
              */
             Update withUserId(String userId);
+        }
+        /** The stage of the IssueContract update allowing to specify createdDate. */
+        interface WithCreatedDate {
+            /**
+             * Specifies the createdDate property: Date and time when the issue was created..
+             *
+             * @param createdDate Date and time when the issue was created.
+             * @return the next definition stage.
+             */
+            Update withCreatedDate(OffsetDateTime createdDate);
+        }
+        /** The stage of the IssueContract update allowing to specify state. */
+        interface WithState {
+            /**
+             * Specifies the state property: Status of the issue..
+             *
+             * @param state Status of the issue.
+             * @return the next definition stage.
+             */
+            Update withState(State state);
+        }
+        /** The stage of the IssueContract update allowing to specify apiId. */
+        interface WithApiId {
+            /**
+             * Specifies the apiId property: A resource identifier for the API the issue was created for..
+             *
+             * @param apiId A resource identifier for the API the issue was created for.
+             * @return the next definition stage.
+             */
+            Update withApiId(String apiId);
         }
         /** The stage of the IssueContract update allowing to specify ifMatch. */
         interface WithIfMatch {

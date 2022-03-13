@@ -10,11 +10,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Class for determining if the index policy currenlt applied to the container matches the index policy that is
+ * Class for determining if the index policy currently applied to the container matches the index policy that is
  * specified on an entities' @CosmosIndexingPolicy annotation
  */
 public class IndexPolicyCompareService {
 
+    /**
+     * Whether the policy needs updating.
+     *
+     * @param existingPolicy Existing policy
+     * @param newPolicy New policy
+     * @return Whether the policy needs updating.
+     */
     public static boolean policyNeedsUpdate(IndexingPolicy existingPolicy, IndexingPolicy newPolicy) {
         return !hasSameIncludedPaths(existingPolicy.getIncludedPaths(), newPolicy.getIncludedPaths())
             || !hasSameExcludedPaths(existingPolicy.getExcludedPaths(), newPolicy.getExcludedPaths())

@@ -5,16 +5,16 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.netapp.fluent.models.SnapshotPolicyProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Snapshot policy Details for create and update. */
-@JsonFlatten
 @Fluent
-public class SnapshotPolicyPatch {
+public final class SnapshotPolicyPatch {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SnapshotPolicyPatch.class);
 
     /*
@@ -45,43 +45,14 @@ public class SnapshotPolicyPatch {
      * Resource tags
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
-     * Schedule for hourly snapshots
+     * Snapshot Policy properties
      */
-    @JsonProperty(value = "properties.hourlySchedule")
-    private HourlySchedule hourlySchedule;
-
-    /*
-     * Schedule for daily snapshots
-     */
-    @JsonProperty(value = "properties.dailySchedule")
-    private DailySchedule dailySchedule;
-
-    /*
-     * Schedule for weekly snapshots
-     */
-    @JsonProperty(value = "properties.weeklySchedule")
-    private WeeklySchedule weeklySchedule;
-
-    /*
-     * Schedule for monthly snapshots
-     */
-    @JsonProperty(value = "properties.monthlySchedule")
-    private MonthlySchedule monthlySchedule;
-
-    /*
-     * The property to decide policy is enabled or not
-     */
-    @JsonProperty(value = "properties.enabled")
-    private Boolean enabled;
-
-    /*
-     * Azure lifecycle management
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    @JsonProperty(value = "properties")
+    private SnapshotPolicyProperties innerProperties;
 
     /**
      * Get the location property: Resource location.
@@ -151,12 +122,21 @@ public class SnapshotPolicyPatch {
     }
 
     /**
+     * Get the innerProperties property: Snapshot Policy properties.
+     *
+     * @return the innerProperties value.
+     */
+    private SnapshotPolicyProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the hourlySchedule property: Schedule for hourly snapshots.
      *
      * @return the hourlySchedule value.
      */
     public HourlySchedule hourlySchedule() {
-        return this.hourlySchedule;
+        return this.innerProperties() == null ? null : this.innerProperties().hourlySchedule();
     }
 
     /**
@@ -166,7 +146,10 @@ public class SnapshotPolicyPatch {
      * @return the SnapshotPolicyPatch object itself.
      */
     public SnapshotPolicyPatch withHourlySchedule(HourlySchedule hourlySchedule) {
-        this.hourlySchedule = hourlySchedule;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SnapshotPolicyProperties();
+        }
+        this.innerProperties().withHourlySchedule(hourlySchedule);
         return this;
     }
 
@@ -176,7 +159,7 @@ public class SnapshotPolicyPatch {
      * @return the dailySchedule value.
      */
     public DailySchedule dailySchedule() {
-        return this.dailySchedule;
+        return this.innerProperties() == null ? null : this.innerProperties().dailySchedule();
     }
 
     /**
@@ -186,7 +169,10 @@ public class SnapshotPolicyPatch {
      * @return the SnapshotPolicyPatch object itself.
      */
     public SnapshotPolicyPatch withDailySchedule(DailySchedule dailySchedule) {
-        this.dailySchedule = dailySchedule;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SnapshotPolicyProperties();
+        }
+        this.innerProperties().withDailySchedule(dailySchedule);
         return this;
     }
 
@@ -196,7 +182,7 @@ public class SnapshotPolicyPatch {
      * @return the weeklySchedule value.
      */
     public WeeklySchedule weeklySchedule() {
-        return this.weeklySchedule;
+        return this.innerProperties() == null ? null : this.innerProperties().weeklySchedule();
     }
 
     /**
@@ -206,7 +192,10 @@ public class SnapshotPolicyPatch {
      * @return the SnapshotPolicyPatch object itself.
      */
     public SnapshotPolicyPatch withWeeklySchedule(WeeklySchedule weeklySchedule) {
-        this.weeklySchedule = weeklySchedule;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SnapshotPolicyProperties();
+        }
+        this.innerProperties().withWeeklySchedule(weeklySchedule);
         return this;
     }
 
@@ -216,7 +205,7 @@ public class SnapshotPolicyPatch {
      * @return the monthlySchedule value.
      */
     public MonthlySchedule monthlySchedule() {
-        return this.monthlySchedule;
+        return this.innerProperties() == null ? null : this.innerProperties().monthlySchedule();
     }
 
     /**
@@ -226,7 +215,10 @@ public class SnapshotPolicyPatch {
      * @return the SnapshotPolicyPatch object itself.
      */
     public SnapshotPolicyPatch withMonthlySchedule(MonthlySchedule monthlySchedule) {
-        this.monthlySchedule = monthlySchedule;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SnapshotPolicyProperties();
+        }
+        this.innerProperties().withMonthlySchedule(monthlySchedule);
         return this;
     }
 
@@ -236,7 +228,7 @@ public class SnapshotPolicyPatch {
      * @return the enabled value.
      */
     public Boolean enabled() {
-        return this.enabled;
+        return this.innerProperties() == null ? null : this.innerProperties().enabled();
     }
 
     /**
@@ -246,7 +238,10 @@ public class SnapshotPolicyPatch {
      * @return the SnapshotPolicyPatch object itself.
      */
     public SnapshotPolicyPatch withEnabled(Boolean enabled) {
-        this.enabled = enabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SnapshotPolicyProperties();
+        }
+        this.innerProperties().withEnabled(enabled);
         return this;
     }
 
@@ -256,7 +251,7 @@ public class SnapshotPolicyPatch {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -265,17 +260,8 @@ public class SnapshotPolicyPatch {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (hourlySchedule() != null) {
-            hourlySchedule().validate();
-        }
-        if (dailySchedule() != null) {
-            dailySchedule().validate();
-        }
-        if (weeklySchedule() != null) {
-            weeklySchedule().validate();
-        }
-        if (monthlySchedule() != null) {
-            monthlySchedule().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

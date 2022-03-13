@@ -19,14 +19,14 @@ The main shared concepts of Azure Core (and therefore all Azure client libraries
 
 Azure Core is split into a number of sub-components:
 
-- [https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core) is the primary library, used by all client libraries to offer the functionality outlined above.
-- [https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-amqp](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-amqp) provides functionality related to AMQP (Advanced Message Queuing Protocol).
-- [https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-http-netty](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-http-netty) provides a Netty derived HTTP client.
-- [https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-http-okhttp](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-http-okhttp) provides an OkHttp derived HTTP client.
-- [https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-management](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-management) provides APIs used by the Azure management libraries, but which are redundant to client libraries.
-- [https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-test](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-test) provides utilities and API to make writing tests for Azure Core simpler and consistent.
-- [https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-tracing-opentelemetry](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-tracing-opentelemetry) provides an OpenTelemetry based tracing library.
+- [https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core) is the primary library, used by all client libraries to offer the functionality outlined above.
+- [https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-amqp](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-amqp) provides functionality related to AMQP (Advanced Message Queuing Protocol).
+- [https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-netty](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-netty) provides a Netty derived HTTP client.
+- [https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-okhttp](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-okhttp) provides an OkHttp derived HTTP client.
+- [https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-management](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-management) provides APIs used by the Azure management libraries, but which are redundant to client libraries.
+- [https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test) provides utilities and API to make writing tests for Azure Core simpler and consistent.
+- [https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-tracing-opentelemetry](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-tracing-opentelemetry) provides an OpenTelemetry based tracing library.
 
-For documentation on using Azure Core, refer to the [https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core readme](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core).
+For documentation on using Azure Core, refer to the [https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core readme](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core).
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2FREADME.png)

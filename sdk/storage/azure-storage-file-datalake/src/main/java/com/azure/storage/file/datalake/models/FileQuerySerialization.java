@@ -7,9 +7,10 @@ package com.azure.storage.file.datalake.models;
 /**
  * Defines the input and output serialization for a file quick query request.
  * either {@link FileQueryJsonSerialization}, {@link FileQueryDelimitedSerialization},
- * {@link FileQueryArrowSerialization}.
+ * {@link FileQueryArrowSerialization}, or {@link FileQueryParquetSerialization}.
  * <p>
- * Note: {@link FileQueryArrowSerialization} can only be used as an output.
+ * Note: {@link FileQueryParquetSerialization} can only be used as an input and
+ *  {@link FileQueryArrowSerialization} can only be used as an output.
  * </p>
  */
 public interface FileQuerySerialization {

@@ -29,7 +29,6 @@ import com.azure.storage.file.share.options.ShareGetStatisticsOptions
 import com.azure.storage.file.share.options.ShareSetAccessPolicyOptions
 import com.azure.storage.file.share.options.ShareSetPropertiesOptions
 import com.azure.storage.file.share.options.ShareSetMetadataOptions
-import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
@@ -55,7 +54,7 @@ class ShareAPITests extends APISpec {
 
     def "Get share URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net/%s", accountName, shareName)
 
         when:
@@ -67,7 +66,7 @@ class ShareAPITests extends APISpec {
 
     def "Get share snapshot URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net/%s", accountName, shareName)
         primaryShareClient.create()
         when:
@@ -82,7 +81,7 @@ class ShareAPITests extends APISpec {
 
         when:
         def snapshotEndpoint = String.format("https://%s.file.core.windows.net/%s?sharesnapshot=%s", accountName, shareName, shareSnapshotInfo.getSnapshot())
-        ShareClient client = getShareClientBuilder(snapshotEndpoint).credential(StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString)).buildClient()
+        ShareClient client = getShareClientBuilder(snapshotEndpoint).credential(StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString)).buildClient()
 
         then:
         client.getShareUrl() == snapshotEndpoint
@@ -173,7 +172,7 @@ class ShareAPITests extends APISpec {
 
         when:
         def createSnapshotResponse = primaryShareClient.createSnapshotWithResponse(null, null, null)
-        def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(env.primaryAccount.connectionString)
+        def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(environment.primaryAccount.connectionString)
             .snapshot(createSnapshotResponse.getValue().getSnapshot()).httpClient(new NettyAsyncHttpClientBuilder().build())
             .buildClient()
         then:
@@ -197,7 +196,7 @@ class ShareAPITests extends APISpec {
 
         when:
         def createSnapshotResponse = primaryShareClient.createSnapshotWithResponse(testMetadata, null, null)
-        def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(env.primaryAccount.connectionString)
+        def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(environment.primaryAccount.connectionString)
             .snapshot(createSnapshotResponse.getValue().getSnapshot()).httpClient(new NettyAsyncHttpClientBuilder().build())
             .buildClient()
         then:
@@ -349,6 +348,7 @@ class ShareAPITests extends APISpec {
         shareProperties.getProvisionedEgressMBps()
         shareProperties.getProvisionedIngressMBps()
         shareProperties.getProvisionedIops()
+        shareProperties.getProvisionedBandwidthMiBps()
         shareProperties.getProtocols().toString() == enabledProtocol.toString()
         shareProperties.getRootSquash() == rootSquash
 
@@ -552,7 +552,7 @@ class ShareAPITests extends APISpec {
         getAccessTierBeforeResponse.getAccessTier() == ShareAccessTier.HOT.toString()
         FileTestHelper.assertResponseStatusCode(setAccessTierResponse, 200)
         getAccessTierAfterResponse.getAccessTier() == ShareAccessTier.TRANSACTION_OPTIMIZED.toString()
-        getAccessTierAfterResponse.getAccessTierChangeTime().isEqual(time) || getAccessTierAfterResponse.getAccessTierChangeTime().isAfter(time)
+        getAccessTierAfterResponse.getAccessTierChangeTime().isEqual(time) || getAccessTierAfterResponse.getAccessTierChangeTime().isAfter(time.minusSeconds(1))
         getAccessTierAfterResponse.getAccessTierChangeTime().isBefore(time.plusMinutes(1))
         getAccessTierAfterResponse.getAccessTierTransitionState() == "pending-from-hot"
     }

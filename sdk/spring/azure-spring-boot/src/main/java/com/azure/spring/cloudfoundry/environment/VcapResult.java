@@ -34,8 +34,18 @@ public class VcapResult implements Serializable {
     private static final String DATABASE = "database";
     private static final long serialVersionUID = -4825963001214199795L;
 
+    /**
+     * Whether to log
+     */
     private final boolean logFlag;
 
+    /**
+     * Creates a new instance of {@link VcapResult}.
+     *
+     * @param environment the environment
+     * @param pojos the VCap POJOs
+     * @param logFlag whether to log
+     */
     public VcapResult(ConfigurableEnvironment environment, VcapPojo[] pojos, boolean logFlag) {
         this.logFlag = logFlag;
 

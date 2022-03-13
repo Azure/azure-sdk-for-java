@@ -6,26 +6,25 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterAgentPoolProfileProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** Profile for the container service agent pool. */
 @Fluent
-public class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoolProfileProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterAgentPoolProfile.class);
-
+public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoolProfileProperties {
     /*
      * Unique name of the agent pool profile in the context of the subscription
-     * and resource group.
+     * and resource group. Windows agent pool names must be 6 characters or
+     * less.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
 
     /**
      * Get the name property: Unique name of the agent pool profile in the context of the subscription and resource
-     * group.
+     * group. Windows agent pool names must be 6 characters or less.
      *
      * @return the name value.
      */
@@ -35,7 +34,7 @@ public class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoolProfi
 
     /**
      * Set the name property: Unique name of the agent pool profile in the context of the subscription and resource
-     * group.
+     * group. Windows agent pool names must be 6 characters or less.
      *
      * @param name the name value to set.
      * @return the ManagedClusterAgentPoolProfile object itself.
@@ -82,6 +81,13 @@ public class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoolProfi
 
     /** {@inheritDoc} */
     @Override
+    public ManagedClusterAgentPoolProfile withWorkloadRuntime(WorkloadRuntime workloadRuntime) {
+        super.withWorkloadRuntime(workloadRuntime);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public ManagedClusterAgentPoolProfile withVnetSubnetId(String vnetSubnetId) {
         super.withVnetSubnetId(vnetSubnetId);
         return this;
@@ -110,7 +116,7 @@ public class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoolProfi
 
     /** {@inheritDoc} */
     @Override
-    public ManagedClusterAgentPoolProfile withOsSku(Ossku osSku) {
+    public ManagedClusterAgentPoolProfile withOsSku(OSSku osSku) {
         super.withOsSku(osSku);
         return this;
     }
@@ -133,6 +139,13 @@ public class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoolProfi
     @Override
     public ManagedClusterAgentPoolProfile withEnableAutoScaling(Boolean enableAutoScaling) {
         super.withEnableAutoScaling(enableAutoScaling);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withScaleDownMode(ScaleDownMode scaleDownMode) {
+        super.withScaleDownMode(scaleDownMode);
         return this;
     }
 
@@ -161,6 +174,13 @@ public class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoolProfi
     @Override
     public ManagedClusterAgentPoolProfile withUpgradeSettings(AgentPoolUpgradeSettings upgradeSettings) {
         super.withUpgradeSettings(upgradeSettings);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withPowerState(PowerState powerState) {
+        super.withPowerState(powerState);
         return this;
     }
 
@@ -276,6 +296,13 @@ public class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoolProfi
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withCreationData(CreationData creationData) {
+        super.withCreationData(creationData);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
@@ -285,10 +312,12 @@ public class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoolProfi
     public void validate() {
         super.validate();
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model ManagedClusterAgentPoolProfile"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterAgentPoolProfile.class);
 }

@@ -45,7 +45,7 @@ public final class ToneReceivedEvent extends CallingServerEventBase {
      * @param toneInfo the toneInfo value.
      * @param callConnectionId the callConnectionId value.
      */
-    public ToneReceivedEvent(ToneInfo toneInfo, String callConnectionId) {
+    ToneReceivedEvent(ToneInfo toneInfo, String callConnectionId) {
         this.toneInfo = toneInfo;
         this.callConnectionId = callConnectionId;
     }

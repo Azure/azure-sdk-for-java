@@ -261,6 +261,13 @@ public class DpmContainer extends ProtectionContainer {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public DpmContainer withProtectableObjectType(String protectableObjectType) {
+        super.withProtectableObjectType(protectableObjectType);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

@@ -58,7 +58,7 @@ public interface HostSettingsResponse {
     Boolean validateAuthority();
 
     /**
-     * Gets the botOpenIdMetadata property: Same as ToBotFromChannelOpenIdMetadataUrl, used by SDK &lt; v4.12.
+     * Gets the botOpenIdMetadata property: Same as toBotFromChannelOpenIdMetadataUrl, used by SDK &lt; v4.12.
      *
      * @return the botOpenIdMetadata value.
      */

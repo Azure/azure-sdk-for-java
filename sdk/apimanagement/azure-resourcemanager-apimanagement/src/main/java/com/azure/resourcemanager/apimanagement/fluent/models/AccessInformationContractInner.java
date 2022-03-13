@@ -5,53 +5,51 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Tenant Settings. */
-@JsonFlatten
 @Fluent
-public class AccessInformationContractInner extends ProxyResource {
+public final class AccessInformationContractInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AccessInformationContractInner.class);
 
     /*
-     * Access Information type ('access' or 'gitAccess')
+     * AccessInformation entity contract properties.
      */
-    @JsonProperty(value = "properties.id")
-    private String idPropertiesId;
-
-    /*
-     * Principal (User) Identifier.
-     */
-    @JsonProperty(value = "properties.principalId")
-    private String principalId;
-
-    /*
-     * Determines whether direct access is enabled.
-     */
-    @JsonProperty(value = "properties.enabled")
-    private Boolean enabled;
+    @JsonProperty(value = "properties")
+    private AccessInformationContractProperties innerProperties;
 
     /**
-     * Get the idPropertiesId property: Access Information type ('access' or 'gitAccess').
+     * Get the innerProperties property: AccessInformation entity contract properties.
      *
-     * @return the idPropertiesId value.
+     * @return the innerProperties value.
      */
-    public String idPropertiesId() {
-        return this.idPropertiesId;
+    private AccessInformationContractProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Set the idPropertiesId property: Access Information type ('access' or 'gitAccess').
+     * Get the id property: Access Information type ('access' or 'gitAccess').
      *
-     * @param idPropertiesId the idPropertiesId value to set.
+     * @return the id value.
+     */
+    public String idPropertiesId() {
+        return this.innerProperties() == null ? null : this.innerProperties().id();
+    }
+
+    /**
+     * Set the id property: Access Information type ('access' or 'gitAccess').
+     *
+     * @param id the id value to set.
      * @return the AccessInformationContractInner object itself.
      */
-    public AccessInformationContractInner withIdPropertiesId(String idPropertiesId) {
-        this.idPropertiesId = idPropertiesId;
+    public AccessInformationContractInner withIdPropertiesId(String id) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccessInformationContractProperties();
+        }
+        this.innerProperties().withId(id);
         return this;
     }
 
@@ -61,7 +59,7 @@ public class AccessInformationContractInner extends ProxyResource {
      * @return the principalId value.
      */
     public String principalId() {
-        return this.principalId;
+        return this.innerProperties() == null ? null : this.innerProperties().principalId();
     }
 
     /**
@@ -71,7 +69,10 @@ public class AccessInformationContractInner extends ProxyResource {
      * @return the AccessInformationContractInner object itself.
      */
     public AccessInformationContractInner withPrincipalId(String principalId) {
-        this.principalId = principalId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccessInformationContractProperties();
+        }
+        this.innerProperties().withPrincipalId(principalId);
         return this;
     }
 
@@ -81,7 +82,7 @@ public class AccessInformationContractInner extends ProxyResource {
      * @return the enabled value.
      */
     public Boolean enabled() {
-        return this.enabled;
+        return this.innerProperties() == null ? null : this.innerProperties().enabled();
     }
 
     /**
@@ -91,7 +92,10 @@ public class AccessInformationContractInner extends ProxyResource {
      * @return the AccessInformationContractInner object itself.
      */
     public AccessInformationContractInner withEnabled(Boolean enabled) {
-        this.enabled = enabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccessInformationContractProperties();
+        }
+        this.innerProperties().withEnabled(enabled);
         return this;
     }
 
@@ -101,5 +105,8 @@ public class AccessInformationContractInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

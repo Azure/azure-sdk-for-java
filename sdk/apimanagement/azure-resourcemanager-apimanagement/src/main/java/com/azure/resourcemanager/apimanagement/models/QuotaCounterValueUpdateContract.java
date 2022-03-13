@@ -5,28 +5,30 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.apimanagement.fluent.models.QuotaCounterValueContractProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Quota counter value details. */
-@JsonFlatten
 @Fluent
-public class QuotaCounterValueUpdateContract {
+public final class QuotaCounterValueUpdateContract {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(QuotaCounterValueUpdateContract.class);
 
     /*
-     * Number of times Counter was called.
+     * Quota counter value details.
      */
-    @JsonProperty(value = "properties.callsCount")
-    private Integer callsCount;
+    @JsonProperty(value = "properties")
+    private QuotaCounterValueContractProperties innerProperties;
 
-    /*
-     * Data Transferred in KiloBytes.
+    /**
+     * Get the innerProperties property: Quota counter value details.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.kbTransferred")
-    private Double kbTransferred;
+    private QuotaCounterValueContractProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the callsCount property: Number of times Counter was called.
@@ -34,7 +36,7 @@ public class QuotaCounterValueUpdateContract {
      * @return the callsCount value.
      */
     public Integer callsCount() {
-        return this.callsCount;
+        return this.innerProperties() == null ? null : this.innerProperties().callsCount();
     }
 
     /**
@@ -44,7 +46,10 @@ public class QuotaCounterValueUpdateContract {
      * @return the QuotaCounterValueUpdateContract object itself.
      */
     public QuotaCounterValueUpdateContract withCallsCount(Integer callsCount) {
-        this.callsCount = callsCount;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new QuotaCounterValueContractProperties();
+        }
+        this.innerProperties().withCallsCount(callsCount);
         return this;
     }
 
@@ -54,7 +59,7 @@ public class QuotaCounterValueUpdateContract {
      * @return the kbTransferred value.
      */
     public Double kbTransferred() {
-        return this.kbTransferred;
+        return this.innerProperties() == null ? null : this.innerProperties().kbTransferred();
     }
 
     /**
@@ -64,7 +69,10 @@ public class QuotaCounterValueUpdateContract {
      * @return the QuotaCounterValueUpdateContract object itself.
      */
     public QuotaCounterValueUpdateContract withKbTransferred(Double kbTransferred) {
-        this.kbTransferred = kbTransferred;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new QuotaCounterValueContractProperties();
+        }
+        this.innerProperties().withKbTransferred(kbTransferred);
         return this;
     }
 
@@ -74,5 +82,8 @@ public class QuotaCounterValueUpdateContract {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

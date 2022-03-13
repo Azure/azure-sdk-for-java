@@ -9,6 +9,9 @@ import com.azure.core.util.ServiceVersion;
  * The versions of Azure Monitor service supported by this client library.
  */
 public enum AzureMonitorExporterServiceVersion implements ServiceVersion {
+    /**
+     * Service version {@code 2020-09-15_Preview}.
+     */
     V2020_09_15_PREVIEW("2020-09-15_Preview");
 
     private final String version;

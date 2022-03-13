@@ -15,7 +15,13 @@ import com.azure.spring.cloud.context.core.util.Tuple;
 public class EventHubConsumerGroupManager extends AzureManager<EventHubConsumerGroup, Tuple<EventHub, String>> {
 
     private final AzureResourceManager azureResourceManager;
-    
+
+    /**
+     * Creates a new instance of {@link EventHubConsumerGroupManager}.
+     *
+     * @param azureResourceManager The Azure resource manager.
+     * @param azureProperties The Azure properties.
+     */
     public EventHubConsumerGroupManager(AzureResourceManager azureResourceManager, AzureProperties azureProperties) {
         super(azureProperties);
         this.azureResourceManager = azureResourceManager;

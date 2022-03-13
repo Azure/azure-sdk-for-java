@@ -7,6 +7,7 @@ package com.azure.resourcemanager.hdinsight.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,7 @@ public final class AzureMonitorSelectedConfigurations {
      * The global configurations of selected configurations.
      */
     @JsonProperty(value = "globalConfigurations")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> globalConfigurations;
 
     /*

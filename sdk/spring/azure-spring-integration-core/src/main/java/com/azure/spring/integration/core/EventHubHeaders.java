@@ -14,4 +14,6 @@ public class EventHubHeaders extends AzureHeaders {
     public static final String OFFSET = PREFIX + "offset";
     public static final String SEQUENCE_NUMBER = PREFIX + "sequence_number";
 
+    public static final String BATCH_CONVERTED_SYSTEM_PROPERTIES = PREFIX + "batch_converted_system_properties";
+    public static final String BATCH_CONVERTED_APPLICATION_PROPERTIES = PREFIX + "batch_converted_application_properties";
 }

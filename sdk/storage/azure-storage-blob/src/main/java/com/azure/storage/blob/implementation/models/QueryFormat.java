@@ -15,11 +15,12 @@ public final class QueryFormat {
     /*
      * The quick query format type.
      */
-    @JsonProperty(value = "Type")
+    @JsonProperty(value = "Type", required = true)
     private QueryFormatType type;
 
     /*
-     * delimited text configuration
+     * Groups the settings used for interpreting the blob data if the blob is
+     * delimited text formatted.
      */
     @JsonProperty(value = "DelimitedTextConfiguration")
     private DelimitedTextConfiguration delimitedTextConfiguration;
@@ -31,7 +32,8 @@ public final class QueryFormat {
     private JsonTextConfiguration jsonTextConfiguration;
 
     /*
-     * arrow configuration
+     * Groups the settings used for formatting the response if the response
+     * should be Arrow formatted.
      */
     @JsonProperty(value = "ArrowConfiguration")
     private ArrowConfiguration arrowConfiguration;
@@ -63,7 +65,8 @@ public final class QueryFormat {
     }
 
     /**
-     * Get the delimitedTextConfiguration property: delimited text configuration.
+     * Get the delimitedTextConfiguration property: Groups the settings used for interpreting the blob data if the blob
+     * is delimited text formatted.
      *
      * @return the delimitedTextConfiguration value.
      */
@@ -72,7 +75,8 @@ public final class QueryFormat {
     }
 
     /**
-     * Set the delimitedTextConfiguration property: delimited text configuration.
+     * Set the delimitedTextConfiguration property: Groups the settings used for interpreting the blob data if the blob
+     * is delimited text formatted.
      *
      * @param delimitedTextConfiguration the delimitedTextConfiguration value to set.
      * @return the QueryFormat object itself.
@@ -103,7 +107,8 @@ public final class QueryFormat {
     }
 
     /**
-     * Get the arrowConfiguration property: arrow configuration.
+     * Get the arrowConfiguration property: Groups the settings used for formatting the response if the response should
+     * be Arrow formatted.
      *
      * @return the arrowConfiguration value.
      */
@@ -112,7 +117,8 @@ public final class QueryFormat {
     }
 
     /**
-     * Set the arrowConfiguration property: arrow configuration.
+     * Set the arrowConfiguration property: Groups the settings used for formatting the response if the response should
+     * be Arrow formatted.
      *
      * @param arrowConfiguration the arrowConfiguration value to set.
      * @return the QueryFormat object itself.

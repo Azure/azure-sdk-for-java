@@ -1,6 +1,86 @@
 # Release History
 
-## 2.6.0-beta.1 (Unreleased)
+## 2.13.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Supported disk encryption set in `Disk` and `VirtualMachine`.
+- Changed to use PATCH for `GalleryImage` update.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2021-12-01`.
+
+## 2.12.0 (2022-02-14)
+
+### Features Added
+
+- Supported option of `filter` and `expand` for list instances of virtual machines by `VirtualMachineScaleSetVMs.list`.
+- Changed to include the instance view of the virtual machine, when getting the virtual machine by `VirtualMachineScaleSetVMs.getInstance`.
+- Supported batch deallocate, powerOff, start, restart, redeploy for `VirtualMachineScaleSetVMs`.
+- Supported deep deletion on virtual machine via `withPrimaryNetworkInterfaceDeleteOptions`, `withOSDiskDeleteOptions`, `withDataDiskDefaultDeleteOptions` in `VirtualMachine` during create.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2021-11-01`.
+
+## 2.11.0 (2022-01-17)
+
+### Features Added
+
+- Supported Flexible orchestration mode for `VirtualMachineScaleSet` during create.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2021-08-01`.
+
+## 2.10.0 (2021-11-22)
+
+### Features Added
+
+- Supported hibernation for `VirtualMachine` (preview).
+- Supported `withPlan()` for `VirtualMachineScaleSet` during create.
+- Supported `getNetworkInterfaceByInstanceIdAsync()` in `VirtualMachineScaleSet`.
+- Supported `getNetworkInterfaceAsync()` in `VirtualMachineScaleSetVM`.
+- Supported `orchestrationMode()` in `VirtualMachineScaleSet`.
+
+## 2.9.0 (2021-10-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources
+
+## 2.8.0 (2021-09-15)
+
+### Dependency Updates
+
+- Updated `api-version` to `2021-07-01`.
+
+### Breaking Changes
+
+- Removed unused class `ManagedArtifact`.
+
+## 2.7.0 (2021-08-12)
+
+### Dependency Updates
+
+- Updated `api-version` to `2021-04-01`.
+
+### Breaking Changes
+
+- Property `publicIpAddressSkuName` in `PublicIpAddressSku` is renamed to `name`.
+- Property `publicIpAddressSkuTier` in `PublicIpAddressSku` is renamed to `tier`.
+- Enum `SecurityTypes` changed to subclass of `ExpandableStringEnum`.
+
+## 2.6.0 (2021-06-18)
 
 - Supported boot diagnostics with managed storage account.
 

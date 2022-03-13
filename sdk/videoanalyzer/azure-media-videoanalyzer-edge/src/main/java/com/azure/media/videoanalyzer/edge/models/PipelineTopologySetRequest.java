@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.UnsupportedEncodingException;
 
+
 /** Creates a new pipeline topology or updates an existing one. */
 @Fluent
 public final class PipelineTopologySetRequest extends MethodRequest {
@@ -90,8 +91,8 @@ public final class PipelineTopologySetRequest extends MethodRequest {
     /**
      * Get the payload as JSON: the serialized form of the request body
      *
-     * @throws UnsupportedEncodingException UnsupportedEncodingException
      * @return the payload as JSON
+     * @throws UnsupportedEncodingException UnsupportedEncodingException UnsupportedEncodingException
      */
     public String getPayloadAsJson() throws UnsupportedEncodingException {
         PipelineTopologySetRequestBody setRequestBody =

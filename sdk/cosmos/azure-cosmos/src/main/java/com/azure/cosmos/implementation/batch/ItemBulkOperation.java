@@ -3,14 +3,13 @@
 
 package com.azure.cosmos.implementation.batch;
 
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosItemOperation;
-import com.azure.cosmos.CosmosItemOperationType;
-import com.azure.cosmos.CosmosPatchOperations;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.patch.PatchUtil;
+import com.azure.cosmos.models.CosmosItemOperationType;
+import com.azure.cosmos.models.CosmosPatchOperations;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -21,10 +20,10 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *
  * @param <TInternal> The type of item.
  */
-public final class ItemBulkOperation<TInternal> implements CosmosItemOperation {
+public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOperationBase {
 
-    private TInternal item;
-
+    private final TInternal item;
+    private final TContext context;
     private final String id;
     private final PartitionKey partitionKey;
     private final CosmosItemOperationType operationType;
@@ -37,7 +36,8 @@ public final class ItemBulkOperation<TInternal> implements CosmosItemOperation {
         String id,
         PartitionKey partitionKey,
         RequestOptions requestOptions,
-        TInternal item) {
+        TInternal item,
+        TContext context) {
 
         checkNotNull(operationType, "expected non-null operationType");
 
@@ -45,6 +45,7 @@ public final class ItemBulkOperation<TInternal> implements CosmosItemOperation {
         this.partitionKey = partitionKey;
         this.id = id;
         this.item = item;
+        this.context = context;
         this.requestOptions = requestOptions;
     }
 
@@ -55,12 +56,13 @@ public final class ItemBulkOperation<TInternal> implements CosmosItemOperation {
      *
      * @return instance of JsonSerializable containing values for a operation.
      */
-    JsonSerializable serializeOperation() {
+    @Override
+    JsonSerializable getSerializedOperationInternal() {
         final JsonSerializable jsonSerializable = new JsonSerializable();
 
         jsonSerializable.set(
             BatchRequestResponseConstants.FIELD_OPERATION_TYPE,
-            BridgeInternal.getOperationValueForCosmosItemOperationType(this.getOperationType()));
+            ModelBridgeInternal.getOperationValueForCosmosItemOperationType(this.getOperationType()));
 
         if (StringUtils.isNotEmpty(this.getPartitionKeyJson())) {
             jsonSerializable.set(BatchRequestResponseConstants.FIELD_PARTITION_KEY, this.getPartitionKeyJson());
@@ -73,7 +75,7 @@ public final class ItemBulkOperation<TInternal> implements CosmosItemOperation {
         if (this.getItemInternal() != null) {
             if (this.getOperationType() == CosmosItemOperationType.PATCH) {
                 jsonSerializable.set(BatchRequestResponseConstants.FIELD_RESOURCE_BODY,
-                    PatchUtil.serializableBatchPatchOperation((CosmosPatchOperations)this.getItemInternal(), this.getRequestOptions()));
+                    PatchUtil.serializableBatchPatchOperation((CosmosPatchOperations) this.getItemInternal(), this.getRequestOptions()));
             } else {
                 jsonSerializable.set(BatchRequestResponseConstants.FIELD_RESOURCE_BODY, this.getItemInternal());
             }
@@ -112,6 +114,11 @@ public final class ItemBulkOperation<TInternal> implements CosmosItemOperation {
         return (T)this.item;
     }
 
+    @SuppressWarnings("unchecked")
+    public <T> T getContext() {
+        return (T)this.context;
+    }
+
     public String getId() {
         return this.id;
     }
@@ -124,7 +131,7 @@ public final class ItemBulkOperation<TInternal> implements CosmosItemOperation {
         return this.operationType;
     }
 
-    private RequestOptions getRequestOptions() {
+    public RequestOptions getRequestOptions() {
         return this.requestOptions;
     }
 

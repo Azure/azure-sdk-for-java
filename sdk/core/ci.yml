@@ -3,7 +3,6 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - hotfix/*
       - release/*
@@ -12,15 +11,11 @@ trigger:
       - sdk/core/
       - sdk/parents/azure-sdk-parent/
       - sdk/parents/azure-client-sdk-parent/
-      - eng/
-    exclude:
-      - eng/versioning
-      - eng/jacoco-test-coverage
+      - eng/pipelines/
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
@@ -30,10 +25,7 @@ pr:
       - sdk/core/
       - sdk/parents/azure-sdk-parent/
       - sdk/parents/azure-client-sdk-parent/
-      - eng/
-    exclude:
-      - eng/versioning
-      - eng/jacoco-test-coverage
+      - eng/pipelines/
 
 
 extends:
@@ -83,3 +75,5 @@ extends:
     AdditionalModules:
       - name: perf-test-core
         groupId: com.azure
+    MatrixReplace:
+      - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify

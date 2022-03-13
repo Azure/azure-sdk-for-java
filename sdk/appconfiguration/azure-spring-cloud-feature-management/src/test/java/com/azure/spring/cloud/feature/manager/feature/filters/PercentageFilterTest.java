@@ -3,14 +3,14 @@
 package com.azure.spring.cloud.feature.manager.feature.filters;
 
 import static com.azure.spring.cloud.feature.manager.FilterParameters.PERCENTAGE_FILTER_SETTING;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.LinkedHashMap;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 import com.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
-import com.azure.spring.cloud.feature.manager.feature.filters.PercentageFilter;
 
 public class PercentageFilterTest {
 
@@ -42,6 +42,16 @@ public class PercentageFilterTest {
         parameters.put(PERCENTAGE_FILTER_SETTING, "-1");
         context.setParameters(parameters);
         assertFalse(filter.evaluate(context));
+    }
+    
+    @Test
+    public void hundredPercentageInteger() {
+        PercentageFilter filter = new PercentageFilter();
+        FeatureFilterEvaluationContext context = new FeatureFilterEvaluationContext();
+        LinkedHashMap<String, Object> parameters = new LinkedHashMap<String, Object>();
+        parameters.put(PERCENTAGE_FILTER_SETTING, 100);
+        context.setParameters(parameters);
+        assertTrue(filter.evaluate(context));
     }
 
     @Test

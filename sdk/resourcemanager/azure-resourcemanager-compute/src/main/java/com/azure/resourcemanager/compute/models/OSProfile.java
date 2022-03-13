@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,8 +14,6 @@ import java.util.List;
  */
 @Fluent
 public final class OSProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OSProfile.class);
-
     /*
      * Specifies the host OS name of the virtual machine. <br><br> This name
      * cannot be updated after the VM is created. <br><br> **Max-length
@@ -97,7 +93,11 @@ public final class OSProfile {
 
     /*
      * Specifies set of certificates that should be installed onto the virtual
-     * machine.
+     * machine. To install certificates on a virtual machine it is recommended
+     * to use the [Azure Key Vault virtual machine extension for
+     * Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux)
+     * or the [Azure Key Vault virtual machine extension for
+     * Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
      */
     @JsonProperty(value = "secrets")
     private List<VaultSecretGroup> secrets;
@@ -298,7 +298,11 @@ public final class OSProfile {
     }
 
     /**
-     * Get the secrets property: Specifies set of certificates that should be installed onto the virtual machine.
+     * Get the secrets property: Specifies set of certificates that should be installed onto the virtual machine. To
+     * install certificates on a virtual machine it is recommended to use the [Azure Key Vault virtual machine extension
+     * for Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux) or the [Azure Key Vault
+     * virtual machine extension for
+     * Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
      *
      * @return the secrets value.
      */
@@ -307,7 +311,11 @@ public final class OSProfile {
     }
 
     /**
-     * Set the secrets property: Specifies set of certificates that should be installed onto the virtual machine.
+     * Set the secrets property: Specifies set of certificates that should be installed onto the virtual machine. To
+     * install certificates on a virtual machine it is recommended to use the [Azure Key Vault virtual machine extension
+     * for Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux) or the [Azure Key Vault
+     * virtual machine extension for
+     * Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
      *
      * @param secrets the secrets value to set.
      * @return the OSProfile object itself.

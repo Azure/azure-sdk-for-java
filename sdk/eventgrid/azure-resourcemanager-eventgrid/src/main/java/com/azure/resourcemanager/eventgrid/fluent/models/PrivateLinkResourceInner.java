@@ -5,17 +5,21 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Information of the private link resource. */
-@JsonFlatten
 @Fluent
-public class PrivateLinkResourceInner {
+public final class PrivateLinkResourceInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourceInner.class);
+
+    /*
+     * Properties of the private link resource.
+     */
+    @JsonProperty(value = "properties")
+    private PrivateLinkResourceProperties innerProperties;
 
     /*
      * Fully qualified identifier of the resource.
@@ -35,29 +39,14 @@ public class PrivateLinkResourceInner {
     @JsonProperty(value = "type")
     private String type;
 
-    /*
-     * The groupId property.
+    /**
+     * Get the innerProperties property: Properties of the private link resource.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.groupId")
-    private String groupId;
-
-    /*
-     * The displayName property.
-     */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
-
-    /*
-     * The requiredMembers property.
-     */
-    @JsonProperty(value = "properties.requiredMembers")
-    private List<String> requiredMembers;
-
-    /*
-     * The requiredZoneNames property.
-     */
-    @JsonProperty(value = "properties.requiredZoneNames")
-    private List<String> requiredZoneNames;
+    private PrivateLinkResourceProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the id property: Fully qualified identifier of the resource.
@@ -125,7 +114,7 @@ public class PrivateLinkResourceInner {
      * @return the groupId value.
      */
     public String groupId() {
-        return this.groupId;
+        return this.innerProperties() == null ? null : this.innerProperties().groupId();
     }
 
     /**
@@ -135,7 +124,10 @@ public class PrivateLinkResourceInner {
      * @return the PrivateLinkResourceInner object itself.
      */
     public PrivateLinkResourceInner withGroupId(String groupId) {
-        this.groupId = groupId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateLinkResourceProperties();
+        }
+        this.innerProperties().withGroupId(groupId);
         return this;
     }
 
@@ -145,7 +137,7 @@ public class PrivateLinkResourceInner {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -155,7 +147,10 @@ public class PrivateLinkResourceInner {
      * @return the PrivateLinkResourceInner object itself.
      */
     public PrivateLinkResourceInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateLinkResourceProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -165,7 +160,7 @@ public class PrivateLinkResourceInner {
      * @return the requiredMembers value.
      */
     public List<String> requiredMembers() {
-        return this.requiredMembers;
+        return this.innerProperties() == null ? null : this.innerProperties().requiredMembers();
     }
 
     /**
@@ -175,7 +170,10 @@ public class PrivateLinkResourceInner {
      * @return the PrivateLinkResourceInner object itself.
      */
     public PrivateLinkResourceInner withRequiredMembers(List<String> requiredMembers) {
-        this.requiredMembers = requiredMembers;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateLinkResourceProperties();
+        }
+        this.innerProperties().withRequiredMembers(requiredMembers);
         return this;
     }
 
@@ -185,7 +183,7 @@ public class PrivateLinkResourceInner {
      * @return the requiredZoneNames value.
      */
     public List<String> requiredZoneNames() {
-        return this.requiredZoneNames;
+        return this.innerProperties() == null ? null : this.innerProperties().requiredZoneNames();
     }
 
     /**
@@ -195,7 +193,10 @@ public class PrivateLinkResourceInner {
      * @return the PrivateLinkResourceInner object itself.
      */
     public PrivateLinkResourceInner withRequiredZoneNames(List<String> requiredZoneNames) {
-        this.requiredZoneNames = requiredZoneNames;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateLinkResourceProperties();
+        }
+        this.innerProperties().withRequiredZoneNames(requiredZoneNames);
         return this;
     }
 
@@ -205,5 +206,8 @@ public class PrivateLinkResourceInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

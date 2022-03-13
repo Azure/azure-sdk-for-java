@@ -25,6 +25,10 @@ public final class ApplicationImpl implements Application, Application.Definitio
         return this.innerModel().type();
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
     public String displayName() {
         return this.innerModel().displayName();
     }
@@ -35,10 +39,6 @@ public final class ApplicationImpl implements Application, Application.Definitio
 
     public String defaultVersion() {
         return this.innerModel().defaultVersion();
-    }
-
-    public String etag() {
-        return this.innerModel().etag();
     }
 
     public ApplicationInner innerModel() {

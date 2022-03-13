@@ -5,22 +5,25 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.compute.fluent.models.DiskUpdateProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Disk update resource. */
-@JsonFlatten
 @Fluent
-public class DiskUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskUpdate.class);
+public final class DiskUpdate {
+    /*
+     * Disk resource update properties.
+     */
+    @JsonProperty(value = "properties")
+    private DiskUpdateProperties innerProperties;
 
     /*
      * Resource tags
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
@@ -30,120 +33,14 @@ public class DiskUpdate {
     @JsonProperty(value = "sku")
     private DiskSku sku;
 
-    /*
-     * the Operating System type.
+    /**
+     * Get the innerProperties property: Disk resource update properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.osType")
-    private OperatingSystemTypes osType;
-
-    /*
-     * If creationData.createOption is Empty, this field is mandatory and it
-     * indicates the size of the disk to create. If this field is present for
-     * updates or creation with other options, it indicates a resize. Resizes
-     * are only allowed if the disk is not attached to a running VM, and can
-     * only increase the disk's size.
-     */
-    @JsonProperty(value = "properties.diskSizeGB")
-    private Integer diskSizeGB;
-
-    /*
-     * Encryption settings collection used be Azure Disk Encryption, can
-     * contain multiple encryption settings per disk or snapshot.
-     */
-    @JsonProperty(value = "properties.encryptionSettingsCollection")
-    private EncryptionSettingsCollection encryptionSettingsCollection;
-
-    /*
-     * The number of IOPS allowed for this disk; only settable for UltraSSD
-     * disks. One operation can transfer between 4k and 256k bytes.
-     */
-    @JsonProperty(value = "properties.diskIOPSReadWrite")
-    private Long diskIopsReadWrite;
-
-    /*
-     * The bandwidth allowed for this disk; only settable for UltraSSD disks.
-     * MBps means millions of bytes per second - MB here uses the ISO notation,
-     * of powers of 10.
-     */
-    @JsonProperty(value = "properties.diskMBpsReadWrite")
-    private Long diskMBpsReadWrite;
-
-    /*
-     * The total number of IOPS that will be allowed across all VMs mounting
-     * the shared disk as ReadOnly. One operation can transfer between 4k and
-     * 256k bytes.
-     */
-    @JsonProperty(value = "properties.diskIOPSReadOnly")
-    private Long diskIopsReadOnly;
-
-    /*
-     * The total throughput (MBps) that will be allowed across all VMs mounting
-     * the shared disk as ReadOnly. MBps means millions of bytes per second -
-     * MB here uses the ISO notation, of powers of 10.
-     */
-    @JsonProperty(value = "properties.diskMBpsReadOnly")
-    private Long diskMBpsReadOnly;
-
-    /*
-     * The maximum number of VMs that can attach to the disk at the same time.
-     * Value greater than one indicates a disk that can be mounted on multiple
-     * VMs at the same time.
-     */
-    @JsonProperty(value = "properties.maxShares")
-    private Integer maxShares;
-
-    /*
-     * Encryption property can be used to encrypt data at rest with customer
-     * managed keys or platform managed keys.
-     */
-    @JsonProperty(value = "properties.encryption")
-    private Encryption encryption;
-
-    /*
-     * Policy for accessing the disk via network.
-     */
-    @JsonProperty(value = "properties.networkAccessPolicy")
-    private NetworkAccessPolicy networkAccessPolicy;
-
-    /*
-     * ARM id of the DiskAccess resource for using private endpoints on disks.
-     */
-    @JsonProperty(value = "properties.diskAccessId")
-    private String diskAccessId;
-
-    /*
-     * Performance tier of the disk (e.g, P4, S10) as described here:
-     * https://azure.microsoft.com/en-us/pricing/details/managed-disks/. Does
-     * not apply to Ultra disks.
-     */
-    @JsonProperty(value = "properties.tier")
-    private String tier;
-
-    /*
-     * Set to true to enable bursting beyond the provisioned performance target
-     * of the disk. Bursting is disabled by default. Does not apply to Ultra
-     * disks.
-     */
-    @JsonProperty(value = "properties.burstingEnabled")
-    private Boolean burstingEnabled;
-
-    /*
-     * Purchase plan information to be added on the OS disk
-     */
-    @JsonProperty(value = "properties.purchasePlan")
-    private PurchasePlanAutoGenerated purchasePlan;
-
-    /*
-     * Properties of the disk for which update is pending.
-     */
-    @JsonProperty(value = "properties.propertyUpdatesInProgress", access = JsonProperty.Access.WRITE_ONLY)
-    private PropertyUpdatesInProgress propertyUpdatesInProgress;
-
-    /*
-     * Indicates the OS on a disk supports hibernation.
-     */
-    @JsonProperty(value = "properties.supportsHibernation")
-    private Boolean supportsHibernation;
+    private DiskUpdateProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the tags property: Resource tags.
@@ -193,7 +90,7 @@ public class DiskUpdate {
      * @return the osType value.
      */
     public OperatingSystemTypes osType() {
-        return this.osType;
+        return this.innerProperties() == null ? null : this.innerProperties().osType();
     }
 
     /**
@@ -203,7 +100,10 @@ public class DiskUpdate {
      * @return the DiskUpdate object itself.
      */
     public DiskUpdate withOsType(OperatingSystemTypes osType) {
-        this.osType = osType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
+        }
+        this.innerProperties().withOsType(osType);
         return this;
     }
 
@@ -216,7 +116,7 @@ public class DiskUpdate {
      * @return the diskSizeGB value.
      */
     public Integer diskSizeGB() {
-        return this.diskSizeGB;
+        return this.innerProperties() == null ? null : this.innerProperties().diskSizeGB();
     }
 
     /**
@@ -229,7 +129,10 @@ public class DiskUpdate {
      * @return the DiskUpdate object itself.
      */
     public DiskUpdate withDiskSizeGB(Integer diskSizeGB) {
-        this.diskSizeGB = diskSizeGB;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
+        }
+        this.innerProperties().withDiskSizeGB(diskSizeGB);
         return this;
     }
 
@@ -240,7 +143,7 @@ public class DiskUpdate {
      * @return the encryptionSettingsCollection value.
      */
     public EncryptionSettingsCollection encryptionSettingsCollection() {
-        return this.encryptionSettingsCollection;
+        return this.innerProperties() == null ? null : this.innerProperties().encryptionSettingsCollection();
     }
 
     /**
@@ -251,7 +154,10 @@ public class DiskUpdate {
      * @return the DiskUpdate object itself.
      */
     public DiskUpdate withEncryptionSettingsCollection(EncryptionSettingsCollection encryptionSettingsCollection) {
-        this.encryptionSettingsCollection = encryptionSettingsCollection;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
+        }
+        this.innerProperties().withEncryptionSettingsCollection(encryptionSettingsCollection);
         return this;
     }
 
@@ -262,7 +168,7 @@ public class DiskUpdate {
      * @return the diskIopsReadWrite value.
      */
     public Long diskIopsReadWrite() {
-        return this.diskIopsReadWrite;
+        return this.innerProperties() == null ? null : this.innerProperties().diskIopsReadWrite();
     }
 
     /**
@@ -273,7 +179,10 @@ public class DiskUpdate {
      * @return the DiskUpdate object itself.
      */
     public DiskUpdate withDiskIopsReadWrite(Long diskIopsReadWrite) {
-        this.diskIopsReadWrite = diskIopsReadWrite;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
+        }
+        this.innerProperties().withDiskIopsReadWrite(diskIopsReadWrite);
         return this;
     }
 
@@ -284,7 +193,7 @@ public class DiskUpdate {
      * @return the diskMBpsReadWrite value.
      */
     public Long diskMBpsReadWrite() {
-        return this.diskMBpsReadWrite;
+        return this.innerProperties() == null ? null : this.innerProperties().diskMBpsReadWrite();
     }
 
     /**
@@ -295,7 +204,10 @@ public class DiskUpdate {
      * @return the DiskUpdate object itself.
      */
     public DiskUpdate withDiskMBpsReadWrite(Long diskMBpsReadWrite) {
-        this.diskMBpsReadWrite = diskMBpsReadWrite;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
+        }
+        this.innerProperties().withDiskMBpsReadWrite(diskMBpsReadWrite);
         return this;
     }
 
@@ -306,7 +218,7 @@ public class DiskUpdate {
      * @return the diskIopsReadOnly value.
      */
     public Long diskIopsReadOnly() {
-        return this.diskIopsReadOnly;
+        return this.innerProperties() == null ? null : this.innerProperties().diskIopsReadOnly();
     }
 
     /**
@@ -317,7 +229,10 @@ public class DiskUpdate {
      * @return the DiskUpdate object itself.
      */
     public DiskUpdate withDiskIopsReadOnly(Long diskIopsReadOnly) {
-        this.diskIopsReadOnly = diskIopsReadOnly;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
+        }
+        this.innerProperties().withDiskIopsReadOnly(diskIopsReadOnly);
         return this;
     }
 
@@ -329,7 +244,7 @@ public class DiskUpdate {
      * @return the diskMBpsReadOnly value.
      */
     public Long diskMBpsReadOnly() {
-        return this.diskMBpsReadOnly;
+        return this.innerProperties() == null ? null : this.innerProperties().diskMBpsReadOnly();
     }
 
     /**
@@ -341,7 +256,10 @@ public class DiskUpdate {
      * @return the DiskUpdate object itself.
      */
     public DiskUpdate withDiskMBpsReadOnly(Long diskMBpsReadOnly) {
-        this.diskMBpsReadOnly = diskMBpsReadOnly;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
+        }
+        this.innerProperties().withDiskMBpsReadOnly(diskMBpsReadOnly);
         return this;
     }
 
@@ -352,7 +270,7 @@ public class DiskUpdate {
      * @return the maxShares value.
      */
     public Integer maxShares() {
-        return this.maxShares;
+        return this.innerProperties() == null ? null : this.innerProperties().maxShares();
     }
 
     /**
@@ -363,7 +281,10 @@ public class DiskUpdate {
      * @return the DiskUpdate object itself.
      */
     public DiskUpdate withMaxShares(Integer maxShares) {
-        this.maxShares = maxShares;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
+        }
+        this.innerProperties().withMaxShares(maxShares);
         return this;
     }
 
@@ -374,7 +295,7 @@ public class DiskUpdate {
      * @return the encryption value.
      */
     public Encryption encryption() {
-        return this.encryption;
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
     }
 
     /**
@@ -385,7 +306,10 @@ public class DiskUpdate {
      * @return the DiskUpdate object itself.
      */
     public DiskUpdate withEncryption(Encryption encryption) {
-        this.encryption = encryption;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
+        }
+        this.innerProperties().withEncryption(encryption);
         return this;
     }
 
@@ -395,7 +319,7 @@ public class DiskUpdate {
      * @return the networkAccessPolicy value.
      */
     public NetworkAccessPolicy networkAccessPolicy() {
-        return this.networkAccessPolicy;
+        return this.innerProperties() == null ? null : this.innerProperties().networkAccessPolicy();
     }
 
     /**
@@ -405,7 +329,10 @@ public class DiskUpdate {
      * @return the DiskUpdate object itself.
      */
     public DiskUpdate withNetworkAccessPolicy(NetworkAccessPolicy networkAccessPolicy) {
-        this.networkAccessPolicy = networkAccessPolicy;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
+        }
+        this.innerProperties().withNetworkAccessPolicy(networkAccessPolicy);
         return this;
     }
 
@@ -415,7 +342,7 @@ public class DiskUpdate {
      * @return the diskAccessId value.
      */
     public String diskAccessId() {
-        return this.diskAccessId;
+        return this.innerProperties() == null ? null : this.innerProperties().diskAccessId();
     }
 
     /**
@@ -425,7 +352,10 @@ public class DiskUpdate {
      * @return the DiskUpdate object itself.
      */
     public DiskUpdate withDiskAccessId(String diskAccessId) {
-        this.diskAccessId = diskAccessId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
+        }
+        this.innerProperties().withDiskAccessId(diskAccessId);
         return this;
     }
 
@@ -436,7 +366,7 @@ public class DiskUpdate {
      * @return the tier value.
      */
     public String tier() {
-        return this.tier;
+        return this.innerProperties() == null ? null : this.innerProperties().tier();
     }
 
     /**
@@ -447,7 +377,10 @@ public class DiskUpdate {
      * @return the DiskUpdate object itself.
      */
     public DiskUpdate withTier(String tier) {
-        this.tier = tier;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
+        }
+        this.innerProperties().withTier(tier);
         return this;
     }
 
@@ -458,7 +391,7 @@ public class DiskUpdate {
      * @return the burstingEnabled value.
      */
     public Boolean burstingEnabled() {
-        return this.burstingEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().burstingEnabled();
     }
 
     /**
@@ -469,7 +402,10 @@ public class DiskUpdate {
      * @return the DiskUpdate object itself.
      */
     public DiskUpdate withBurstingEnabled(Boolean burstingEnabled) {
-        this.burstingEnabled = burstingEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
+        }
+        this.innerProperties().withBurstingEnabled(burstingEnabled);
         return this;
     }
 
@@ -479,7 +415,7 @@ public class DiskUpdate {
      * @return the purchasePlan value.
      */
     public PurchasePlanAutoGenerated purchasePlan() {
-        return this.purchasePlan;
+        return this.innerProperties() == null ? null : this.innerProperties().purchasePlan();
     }
 
     /**
@@ -489,7 +425,33 @@ public class DiskUpdate {
      * @return the DiskUpdate object itself.
      */
     public DiskUpdate withPurchasePlan(PurchasePlanAutoGenerated purchasePlan) {
-        this.purchasePlan = purchasePlan;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
+        }
+        this.innerProperties().withPurchasePlan(purchasePlan);
+        return this;
+    }
+
+    /**
+     * Get the supportedCapabilities property: List of supported capabilities to be added on the OS disk.
+     *
+     * @return the supportedCapabilities value.
+     */
+    public SupportedCapabilities supportedCapabilities() {
+        return this.innerProperties() == null ? null : this.innerProperties().supportedCapabilities();
+    }
+
+    /**
+     * Set the supportedCapabilities property: List of supported capabilities to be added on the OS disk.
+     *
+     * @param supportedCapabilities the supportedCapabilities value to set.
+     * @return the DiskUpdate object itself.
+     */
+    public DiskUpdate withSupportedCapabilities(SupportedCapabilities supportedCapabilities) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
+        }
+        this.innerProperties().withSupportedCapabilities(supportedCapabilities);
         return this;
     }
 
@@ -499,7 +461,7 @@ public class DiskUpdate {
      * @return the propertyUpdatesInProgress value.
      */
     public PropertyUpdatesInProgress propertyUpdatesInProgress() {
-        return this.propertyUpdatesInProgress;
+        return this.innerProperties() == null ? null : this.innerProperties().propertyUpdatesInProgress();
     }
 
     /**
@@ -508,7 +470,7 @@ public class DiskUpdate {
      * @return the supportsHibernation value.
      */
     public Boolean supportsHibernation() {
-        return this.supportsHibernation;
+        return this.innerProperties() == null ? null : this.innerProperties().supportsHibernation();
     }
 
     /**
@@ -518,7 +480,58 @@ public class DiskUpdate {
      * @return the DiskUpdate object itself.
      */
     public DiskUpdate withSupportsHibernation(Boolean supportsHibernation) {
-        this.supportsHibernation = supportsHibernation;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
+        }
+        this.innerProperties().withSupportsHibernation(supportsHibernation);
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Policy for controlling export on the disk.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Policy for controlling export on the disk.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the DiskUpdate object itself.
+     */
+    public DiskUpdate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a disk
+     * or snapshot.
+     *
+     * @return the dataAccessAuthMode value.
+     */
+    public DataAccessAuthMode dataAccessAuthMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataAccessAuthMode();
+    }
+
+    /**
+     * Set the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a disk
+     * or snapshot.
+     *
+     * @param dataAccessAuthMode the dataAccessAuthMode value to set.
+     * @return the DiskUpdate object itself.
+     */
+    public DiskUpdate withDataAccessAuthMode(DataAccessAuthMode dataAccessAuthMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
+        }
+        this.innerProperties().withDataAccessAuthMode(dataAccessAuthMode);
         return this;
     }
 
@@ -528,20 +541,11 @@ public class DiskUpdate {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (sku() != null) {
             sku().validate();
-        }
-        if (encryptionSettingsCollection() != null) {
-            encryptionSettingsCollection().validate();
-        }
-        if (encryption() != null) {
-            encryption().validate();
-        }
-        if (purchasePlan() != null) {
-            purchasePlan().validate();
-        }
-        if (propertyUpdatesInProgress() != null) {
-            propertyUpdatesInProgress().validate();
         }
     }
 }

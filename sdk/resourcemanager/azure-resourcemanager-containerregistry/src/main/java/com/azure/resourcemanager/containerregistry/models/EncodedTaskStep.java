@@ -98,6 +98,20 @@ public final class EncodedTaskStep extends TaskStepProperties {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public EncodedTaskStep withContextPath(String contextPath) {
+        super.withContextPath(contextPath);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EncodedTaskStep withContextAccessToken(String contextAccessToken) {
+        super.withContextAccessToken(contextAccessToken);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.GetMetadataActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -16,113 +16,23 @@ import java.util.List;
 /** Activity to get metadata of dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("GetMetadata")
-@JsonFlatten
 @Fluent
-public class GetMetadataActivity extends ExecutionActivity {
+public final class GetMetadataActivity extends ExecutionActivity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GetMetadataActivity.class);
 
     /*
-     * GetMetadata activity dataset reference.
+     * GetMetadata activity properties.
      */
-    @JsonProperty(value = "typeProperties.dataset", required = true)
-    private DatasetReference dataset;
-
-    /*
-     * Fields of metadata to get from dataset.
-     */
-    @JsonProperty(value = "typeProperties.fieldList")
-    private List<Object> fieldList;
-
-    /*
-     * GetMetadata activity store settings.
-     */
-    @JsonProperty(value = "typeProperties.storeSettings")
-    private StoreReadSettings storeSettings;
-
-    /*
-     * GetMetadata activity format settings.
-     */
-    @JsonProperty(value = "typeProperties.formatSettings")
-    private FormatReadSettings formatSettings;
+    @JsonProperty(value = "typeProperties", required = true)
+    private GetMetadataActivityTypeProperties innerTypeProperties = new GetMetadataActivityTypeProperties();
 
     /**
-     * Get the dataset property: GetMetadata activity dataset reference.
+     * Get the innerTypeProperties property: GetMetadata activity properties.
      *
-     * @return the dataset value.
+     * @return the innerTypeProperties value.
      */
-    public DatasetReference dataset() {
-        return this.dataset;
-    }
-
-    /**
-     * Set the dataset property: GetMetadata activity dataset reference.
-     *
-     * @param dataset the dataset value to set.
-     * @return the GetMetadataActivity object itself.
-     */
-    public GetMetadataActivity withDataset(DatasetReference dataset) {
-        this.dataset = dataset;
-        return this;
-    }
-
-    /**
-     * Get the fieldList property: Fields of metadata to get from dataset.
-     *
-     * @return the fieldList value.
-     */
-    public List<Object> fieldList() {
-        return this.fieldList;
-    }
-
-    /**
-     * Set the fieldList property: Fields of metadata to get from dataset.
-     *
-     * @param fieldList the fieldList value to set.
-     * @return the GetMetadataActivity object itself.
-     */
-    public GetMetadataActivity withFieldList(List<Object> fieldList) {
-        this.fieldList = fieldList;
-        return this;
-    }
-
-    /**
-     * Get the storeSettings property: GetMetadata activity store settings.
-     *
-     * @return the storeSettings value.
-     */
-    public StoreReadSettings storeSettings() {
-        return this.storeSettings;
-    }
-
-    /**
-     * Set the storeSettings property: GetMetadata activity store settings.
-     *
-     * @param storeSettings the storeSettings value to set.
-     * @return the GetMetadataActivity object itself.
-     */
-    public GetMetadataActivity withStoreSettings(StoreReadSettings storeSettings) {
-        this.storeSettings = storeSettings;
-        return this;
-    }
-
-    /**
-     * Get the formatSettings property: GetMetadata activity format settings.
-     *
-     * @return the formatSettings value.
-     */
-    public FormatReadSettings formatSettings() {
-        return this.formatSettings;
-    }
-
-    /**
-     * Set the formatSettings property: GetMetadata activity format settings.
-     *
-     * @param formatSettings the formatSettings value to set.
-     * @return the GetMetadataActivity object itself.
-     */
-    public GetMetadataActivity withFormatSettings(FormatReadSettings formatSettings) {
-        this.formatSettings = formatSettings;
-        return this;
+    private GetMetadataActivityTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -168,6 +78,98 @@ public class GetMetadataActivity extends ExecutionActivity {
     }
 
     /**
+     * Get the dataset property: GetMetadata activity dataset reference.
+     *
+     * @return the dataset value.
+     */
+    public DatasetReference dataset() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().dataset();
+    }
+
+    /**
+     * Set the dataset property: GetMetadata activity dataset reference.
+     *
+     * @param dataset the dataset value to set.
+     * @return the GetMetadataActivity object itself.
+     */
+    public GetMetadataActivity withDataset(DatasetReference dataset) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new GetMetadataActivityTypeProperties();
+        }
+        this.innerTypeProperties().withDataset(dataset);
+        return this;
+    }
+
+    /**
+     * Get the fieldList property: Fields of metadata to get from dataset.
+     *
+     * @return the fieldList value.
+     */
+    public List<Object> fieldList() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().fieldList();
+    }
+
+    /**
+     * Set the fieldList property: Fields of metadata to get from dataset.
+     *
+     * @param fieldList the fieldList value to set.
+     * @return the GetMetadataActivity object itself.
+     */
+    public GetMetadataActivity withFieldList(List<Object> fieldList) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new GetMetadataActivityTypeProperties();
+        }
+        this.innerTypeProperties().withFieldList(fieldList);
+        return this;
+    }
+
+    /**
+     * Get the storeSettings property: GetMetadata activity store settings.
+     *
+     * @return the storeSettings value.
+     */
+    public StoreReadSettings storeSettings() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().storeSettings();
+    }
+
+    /**
+     * Set the storeSettings property: GetMetadata activity store settings.
+     *
+     * @param storeSettings the storeSettings value to set.
+     * @return the GetMetadataActivity object itself.
+     */
+    public GetMetadataActivity withStoreSettings(StoreReadSettings storeSettings) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new GetMetadataActivityTypeProperties();
+        }
+        this.innerTypeProperties().withStoreSettings(storeSettings);
+        return this;
+    }
+
+    /**
+     * Get the formatSettings property: GetMetadata activity format settings.
+     *
+     * @return the formatSettings value.
+     */
+    public FormatReadSettings formatSettings() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().formatSettings();
+    }
+
+    /**
+     * Set the formatSettings property: GetMetadata activity format settings.
+     *
+     * @param formatSettings the formatSettings value to set.
+     * @return the GetMetadataActivity object itself.
+     */
+    public GetMetadataActivity withFormatSettings(FormatReadSettings formatSettings) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new GetMetadataActivityTypeProperties();
+        }
+        this.innerTypeProperties().withFormatSettings(formatSettings);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -175,18 +177,13 @@ public class GetMetadataActivity extends ExecutionActivity {
     @Override
     public void validate() {
         super.validate();
-        if (dataset() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property dataset in model GetMetadataActivity"));
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model GetMetadataActivity"));
         } else {
-            dataset().validate();
-        }
-        if (storeSettings() != null) {
-            storeSettings().validate();
-        }
-        if (formatSettings() != null) {
-            formatSettings().validate();
+            innerTypeProperties().validate();
         }
     }
 }

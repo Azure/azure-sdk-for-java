@@ -50,6 +50,13 @@ public interface Topic {
     Map<String, String> tags();
 
     /**
+     * Gets the identity property: Identity information for the resource.
+     *
+     * @return the identity value.
+     */
+    IdentityInfo identity();
+
+    /**
      * Gets the systemData property: The system metadata relating to Topic resource.
      *
      * @return the systemData value.
@@ -119,6 +126,15 @@ public interface Topic {
     List<InboundIpRule> inboundIpRules();
 
     /**
+     * Gets the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
+     * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
+     * the topic.
+     *
+     * @return the disableLocalAuth value.
+     */
+    Boolean disableLocalAuth();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -185,10 +201,12 @@ public interface Topic {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
+                DefinitionStages.WithIdentity,
                 DefinitionStages.WithInputSchema,
                 DefinitionStages.WithInputSchemaMapping,
                 DefinitionStages.WithPublicNetworkAccess,
-                DefinitionStages.WithInboundIpRules {
+                DefinitionStages.WithInboundIpRules,
+                DefinitionStages.WithDisableLocalAuth {
             /**
              * Executes the create request.
              *
@@ -213,6 +231,16 @@ public interface Topic {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
+        }
+        /** The stage of the Topic definition allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Identity information for the resource..
+             *
+             * @param identity Identity information for the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withIdentity(IdentityInfo identity);
         }
         /** The stage of the Topic definition allowing to specify inputSchema. */
         interface WithInputSchema {
@@ -267,6 +295,20 @@ public interface Topic {
              */
             WithCreate withInboundIpRules(List<InboundIpRule> inboundIpRules);
         }
+        /** The stage of the Topic definition allowing to specify disableLocalAuth. */
+        interface WithDisableLocalAuth {
+            /**
+             * Specifies the disableLocalAuth property: This boolean is used to enable or disable local auth. Default
+             * value is false. When the property is set to true, only AAD token will be used to authenticate if user is
+             * allowed to publish to the topic..
+             *
+             * @param disableLocalAuth This boolean is used to enable or disable local auth. Default value is false.
+             *     When the property is set to true, only AAD token will be used to authenticate if user is allowed to
+             *     publish to the topic.
+             * @return the next definition stage.
+             */
+            WithCreate withDisableLocalAuth(Boolean disableLocalAuth);
+        }
     }
     /**
      * Begins update for the Topic resource.
@@ -277,7 +319,11 @@ public interface Topic {
 
     /** The template for Topic update. */
     interface Update
-        extends UpdateStages.WithTags, UpdateStages.WithPublicNetworkAccess, UpdateStages.WithInboundIpRules {
+        extends UpdateStages.WithTags,
+            UpdateStages.WithIdentity,
+            UpdateStages.WithPublicNetworkAccess,
+            UpdateStages.WithInboundIpRules,
+            UpdateStages.WithDisableLocalAuth {
         /**
          * Executes the update request.
          *
@@ -304,6 +350,16 @@ public interface Topic {
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
+        }
+        /** The stage of the Topic update allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Topic resource identity information..
+             *
+             * @param identity Topic resource identity information.
+             * @return the next definition stage.
+             */
+            Update withIdentity(IdentityInfo identity);
         }
         /** The stage of the Topic update allowing to specify publicNetworkAccess. */
         interface WithPublicNetworkAccess {
@@ -334,6 +390,20 @@ public interface Topic {
              * @return the next definition stage.
              */
             Update withInboundIpRules(List<InboundIpRule> inboundIpRules);
+        }
+        /** The stage of the Topic update allowing to specify disableLocalAuth. */
+        interface WithDisableLocalAuth {
+            /**
+             * Specifies the disableLocalAuth property: This boolean is used to enable or disable local auth. Default
+             * value is false. When the property is set to true, only AAD token will be used to authenticate if user is
+             * allowed to publish to the topic..
+             *
+             * @param disableLocalAuth This boolean is used to enable or disable local auth. Default value is false.
+             *     When the property is set to true, only AAD token will be used to authenticate if user is allowed to
+             *     publish to the topic.
+             * @return the next definition stage.
+             */
+            Update withDisableLocalAuth(Boolean disableLocalAuth);
         }
     }
     /**
@@ -367,7 +437,7 @@ public interface Topic {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Topic.
+     * @return shared access keys of the Topic along with {@link Response}.
      */
     Response<TopicSharedAccessKeys> listSharedAccessKeysWithResponse(Context context);
 

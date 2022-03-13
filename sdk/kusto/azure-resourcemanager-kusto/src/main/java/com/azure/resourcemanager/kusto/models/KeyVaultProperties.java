@@ -17,7 +17,7 @@ public final class KeyVaultProperties {
     /*
      * The name of the key vault key.
      */
-    @JsonProperty(value = "keyName", required = true)
+    @JsonProperty(value = "keyName")
     private String keyName;
 
     /*
@@ -29,7 +29,7 @@ public final class KeyVaultProperties {
     /*
      * The Uri of the key vault.
      */
-    @JsonProperty(value = "keyVaultUri", required = true)
+    @JsonProperty(value = "keyVaultUri")
     private String keyVaultUri;
 
     /*
@@ -124,15 +124,5 @@ public final class KeyVaultProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (keyName() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property keyName in model KeyVaultProperties"));
-        }
-        if (keyVaultUri() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property keyVaultUri in model KeyVaultProperties"));
-        }
     }
 }

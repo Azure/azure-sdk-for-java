@@ -23,6 +23,12 @@ public class SqlServerManager extends Manager<SqlManagementClient> {
 
     private final StorageManager storageManager;
 
+    /**
+     * Creates a new instance of {@link SqlServerManager}.
+     *
+     * @param httpPipeline The HttpPipeline to use.
+     * @param profile The AzureProfile to use.
+     */
     protected SqlServerManager(HttpPipeline httpPipeline, AzureProfile profile) {
         super(
             httpPipeline,

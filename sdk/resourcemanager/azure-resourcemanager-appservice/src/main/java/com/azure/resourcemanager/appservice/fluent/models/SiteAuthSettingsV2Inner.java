@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.AuthPlatform;
 import com.azure.resourcemanager.appservice.models.GlobalValidation;
@@ -16,146 +15,155 @@ import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SiteAuthSettingsV2 model. */
-@JsonFlatten
+/** Configuration settings for the Azure App Service Authentication / Authorization V2 feature. */
 @Fluent
-public class SiteAuthSettingsV2Inner extends ProxyOnlyResource {
+public final class SiteAuthSettingsV2Inner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SiteAuthSettingsV2Inner.class);
 
     /*
-     * The platform property.
+     * SiteAuthSettingsV2 resource specific properties
      */
-    @JsonProperty(value = "properties.platform")
-    private AuthPlatform platform;
-
-    /*
-     * The globalValidation property.
-     */
-    @JsonProperty(value = "properties.globalValidation")
-    private GlobalValidation globalValidation;
-
-    /*
-     * The identityProviders property.
-     */
-    @JsonProperty(value = "properties.identityProviders")
-    private IdentityProviders identityProviders;
-
-    /*
-     * The login property.
-     */
-    @JsonProperty(value = "properties.login")
-    private Login login;
-
-    /*
-     * The httpSettings property.
-     */
-    @JsonProperty(value = "properties.httpSettings")
-    private HttpSettings httpSettings;
+    @JsonProperty(value = "properties")
+    private SiteAuthSettingsV2Properties innerProperties;
 
     /**
-     * Get the platform property: The platform property.
+     * Get the innerProperties property: SiteAuthSettingsV2 resource specific properties.
      *
-     * @return the platform value.
+     * @return the innerProperties value.
      */
-    public AuthPlatform platform() {
-        return this.platform;
-    }
-
-    /**
-     * Set the platform property: The platform property.
-     *
-     * @param platform the platform value to set.
-     * @return the SiteAuthSettingsV2Inner object itself.
-     */
-    public SiteAuthSettingsV2Inner withPlatform(AuthPlatform platform) {
-        this.platform = platform;
-        return this;
-    }
-
-    /**
-     * Get the globalValidation property: The globalValidation property.
-     *
-     * @return the globalValidation value.
-     */
-    public GlobalValidation globalValidation() {
-        return this.globalValidation;
-    }
-
-    /**
-     * Set the globalValidation property: The globalValidation property.
-     *
-     * @param globalValidation the globalValidation value to set.
-     * @return the SiteAuthSettingsV2Inner object itself.
-     */
-    public SiteAuthSettingsV2Inner withGlobalValidation(GlobalValidation globalValidation) {
-        this.globalValidation = globalValidation;
-        return this;
-    }
-
-    /**
-     * Get the identityProviders property: The identityProviders property.
-     *
-     * @return the identityProviders value.
-     */
-    public IdentityProviders identityProviders() {
-        return this.identityProviders;
-    }
-
-    /**
-     * Set the identityProviders property: The identityProviders property.
-     *
-     * @param identityProviders the identityProviders value to set.
-     * @return the SiteAuthSettingsV2Inner object itself.
-     */
-    public SiteAuthSettingsV2Inner withIdentityProviders(IdentityProviders identityProviders) {
-        this.identityProviders = identityProviders;
-        return this;
-    }
-
-    /**
-     * Get the login property: The login property.
-     *
-     * @return the login value.
-     */
-    public Login login() {
-        return this.login;
-    }
-
-    /**
-     * Set the login property: The login property.
-     *
-     * @param login the login value to set.
-     * @return the SiteAuthSettingsV2Inner object itself.
-     */
-    public SiteAuthSettingsV2Inner withLogin(Login login) {
-        this.login = login;
-        return this;
-    }
-
-    /**
-     * Get the httpSettings property: The httpSettings property.
-     *
-     * @return the httpSettings value.
-     */
-    public HttpSettings httpSettings() {
-        return this.httpSettings;
-    }
-
-    /**
-     * Set the httpSettings property: The httpSettings property.
-     *
-     * @param httpSettings the httpSettings value to set.
-     * @return the SiteAuthSettingsV2Inner object itself.
-     */
-    public SiteAuthSettingsV2Inner withHttpSettings(HttpSettings httpSettings) {
-        this.httpSettings = httpSettings;
-        return this;
+    private SiteAuthSettingsV2Properties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
     @Override
     public SiteAuthSettingsV2Inner withKind(String kind) {
         super.withKind(kind);
+        return this;
+    }
+
+    /**
+     * Get the platform property: The configuration settings of the platform of App Service
+     * Authentication/Authorization.
+     *
+     * @return the platform value.
+     */
+    public AuthPlatform platform() {
+        return this.innerProperties() == null ? null : this.innerProperties().platform();
+    }
+
+    /**
+     * Set the platform property: The configuration settings of the platform of App Service
+     * Authentication/Authorization.
+     *
+     * @param platform the platform value to set.
+     * @return the SiteAuthSettingsV2Inner object itself.
+     */
+    public SiteAuthSettingsV2Inner withPlatform(AuthPlatform platform) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsV2Properties();
+        }
+        this.innerProperties().withPlatform(platform);
+        return this;
+    }
+
+    /**
+     * Get the globalValidation property: The configuration settings that determines the validation flow of users using
+     * App Service Authentication/Authorization.
+     *
+     * @return the globalValidation value.
+     */
+    public GlobalValidation globalValidation() {
+        return this.innerProperties() == null ? null : this.innerProperties().globalValidation();
+    }
+
+    /**
+     * Set the globalValidation property: The configuration settings that determines the validation flow of users using
+     * App Service Authentication/Authorization.
+     *
+     * @param globalValidation the globalValidation value to set.
+     * @return the SiteAuthSettingsV2Inner object itself.
+     */
+    public SiteAuthSettingsV2Inner withGlobalValidation(GlobalValidation globalValidation) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsV2Properties();
+        }
+        this.innerProperties().withGlobalValidation(globalValidation);
+        return this;
+    }
+
+    /**
+     * Get the identityProviders property: The configuration settings of each of the identity providers used to
+     * configure App Service Authentication/Authorization.
+     *
+     * @return the identityProviders value.
+     */
+    public IdentityProviders identityProviders() {
+        return this.innerProperties() == null ? null : this.innerProperties().identityProviders();
+    }
+
+    /**
+     * Set the identityProviders property: The configuration settings of each of the identity providers used to
+     * configure App Service Authentication/Authorization.
+     *
+     * @param identityProviders the identityProviders value to set.
+     * @return the SiteAuthSettingsV2Inner object itself.
+     */
+    public SiteAuthSettingsV2Inner withIdentityProviders(IdentityProviders identityProviders) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsV2Properties();
+        }
+        this.innerProperties().withIdentityProviders(identityProviders);
+        return this;
+    }
+
+    /**
+     * Get the login property: The configuration settings of the login flow of users using App Service
+     * Authentication/Authorization.
+     *
+     * @return the login value.
+     */
+    public Login login() {
+        return this.innerProperties() == null ? null : this.innerProperties().login();
+    }
+
+    /**
+     * Set the login property: The configuration settings of the login flow of users using App Service
+     * Authentication/Authorization.
+     *
+     * @param login the login value to set.
+     * @return the SiteAuthSettingsV2Inner object itself.
+     */
+    public SiteAuthSettingsV2Inner withLogin(Login login) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsV2Properties();
+        }
+        this.innerProperties().withLogin(login);
+        return this;
+    }
+
+    /**
+     * Get the httpSettings property: The configuration settings of the HTTP requests for authentication and
+     * authorization requests made against App Service Authentication/Authorization.
+     *
+     * @return the httpSettings value.
+     */
+    public HttpSettings httpSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().httpSettings();
+    }
+
+    /**
+     * Set the httpSettings property: The configuration settings of the HTTP requests for authentication and
+     * authorization requests made against App Service Authentication/Authorization.
+     *
+     * @param httpSettings the httpSettings value to set.
+     * @return the SiteAuthSettingsV2Inner object itself.
+     */
+    public SiteAuthSettingsV2Inner withHttpSettings(HttpSettings httpSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsV2Properties();
+        }
+        this.innerProperties().withHttpSettings(httpSettings);
         return this;
     }
 
@@ -167,20 +175,8 @@ public class SiteAuthSettingsV2Inner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
-        if (platform() != null) {
-            platform().validate();
-        }
-        if (globalValidation() != null) {
-            globalValidation().validate();
-        }
-        if (identityProviders() != null) {
-            identityProviders().validate();
-        }
-        if (login() != null) {
-            login().validate();
-        }
-        if (httpSettings() != null) {
-            httpSettings().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

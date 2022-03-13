@@ -980,6 +980,15 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         if (siteConfig == null) {
             return Mono.just((Indexable) this);
         }
+        if (siteConfig.azureStorageAccounts() != null) {
+            // Remove azureStorageAccounts if any lack accessKey property. Service will reject if lack accessKey.
+            if (siteConfig.azureStorageAccounts().values().stream()
+                .filter(Objects::nonNull)
+                .anyMatch(v -> v.accessKey() == null)) {
+
+                siteConfig.withAzureStorageAccounts(null);
+            }
+        }
         return createOrUpdateSiteConfig(siteConfig)
             .flatMap(
                 returnedSiteConfig -> {
@@ -1137,7 +1146,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     @SuppressWarnings("unchecked")
     public FluentImplT withManagedHostnameBindings(AppServiceDomain domain, String... hostnames) {
         for (String hostname : hostnames) {
-            if (hostname.equals("@") || hostname.equalsIgnoreCase(domain.name())) {
+            if ("@".equals(hostname) || hostname.equalsIgnoreCase(domain.name())) {
                 defineHostnameBinding()
                     .withAzureManagedDomain(domain)
                     .withSubDomain(hostname)

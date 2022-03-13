@@ -6,13 +6,18 @@ package com.azure.spring.autoconfigure.aad;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * factoty class of JacksonObjectMapper
+ * factory class of JacksonObjectMapper
  */
 public final class JacksonObjectMapperFactory {
 
     private JacksonObjectMapperFactory() {
     }
 
+    /**
+     * Gets the singleton instance of ObjectMapper.
+     *
+     * @return the ObjectMapper instance
+     */
     public static ObjectMapper getInstance() {
         return SingletonHelper.INSTANCE;
     }

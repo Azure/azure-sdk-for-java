@@ -53,9 +53,9 @@ public abstract class ArtifactsClientTestBase extends TestBase {
         TokenCredential credential = null;
 
         if (!interceptorManager.isPlaybackMode()) {
-            String clientId = System.getenv("CLIENT_ID");
-            String clientKey = System.getenv("CLIENT_SECRET");
-            String tenantId = System.getenv("TENANT_ID");
+            String clientId = System.getenv("AZURE_CLIENT_ID");
+            String clientKey = System.getenv("AZURE_CLIENT_SECRET");
+            String tenantId = System.getenv("AZURE_TENANT_ID");
             Objects.requireNonNull(clientId, "The client id cannot be null");
             Objects.requireNonNull(clientKey, "The client key cannot be null");
             Objects.requireNonNull(tenantId, "The tenant id cannot be null");

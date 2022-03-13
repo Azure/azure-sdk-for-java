@@ -49,6 +49,13 @@ public interface NetAppAccount {
     Map<String, String> tags();
 
     /**
+     * Gets the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
      * Gets the systemData property: The system meta data relating to this resource.
      *
      * @return the systemData value.

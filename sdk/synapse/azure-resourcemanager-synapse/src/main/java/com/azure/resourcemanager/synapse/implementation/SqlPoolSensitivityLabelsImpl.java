@@ -269,8 +269,7 @@ public final class SqlPoolSensitivityLabelsImpl implements SqlPoolSensitivityLab
         }
         this
             .deleteWithResponse(
-                resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName, Context.NONE)
-            .getValue();
+                resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {

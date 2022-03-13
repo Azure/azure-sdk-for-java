@@ -80,6 +80,7 @@ class CreateQueueOptionsTest {
             .setLockDuration(Duration.ofSeconds(120))
             .setMaxDeliveryCount(15)
             .setMaxSizeInMegabytes(2048)
+            .setMaxMessageSizeInKilobytes(1024L)
             .setDuplicateDetectionRequired(true)
             .setSessionRequired(true)
             .setUserMetadata("Test-queue-Metadata")
@@ -111,6 +112,7 @@ class CreateQueueOptionsTest {
         assertEquals(expected.isSessionRequired(), actual.isSessionRequired());
         assertEquals(expected.getUserMetadata(), actual.getUserMetadata());
         assertEquals(expected.getStatus(), actual.getStatus());
+        assertEquals(expected.getMaxMessageSizeInKilobytes(), actual.getMaxMessageSizeInKilobytes());
 
         TestUtils.assertAuthorizationRules(expected.getAuthorizationRules(), actual.getAuthorizationRules());
     }

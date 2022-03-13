@@ -10,10 +10,10 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.videoanalyzer.fluent.VideosClient;
+import com.azure.resourcemanager.videoanalyzer.fluent.models.VideoContentTokenInner;
 import com.azure.resourcemanager.videoanalyzer.fluent.models.VideoEntityInner;
-import com.azure.resourcemanager.videoanalyzer.fluent.models.VideoStreamingTokenInner;
+import com.azure.resourcemanager.videoanalyzer.models.VideoContentToken;
 import com.azure.resourcemanager.videoanalyzer.models.VideoEntity;
-import com.azure.resourcemanager.videoanalyzer.models.VideoStreamingToken;
 import com.azure.resourcemanager.videoanalyzer.models.Videos;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -73,26 +73,25 @@ public final class VideosImpl implements Videos {
         return this.serviceClient().deleteWithResponse(resourceGroupName, accountName, videoName, context);
     }
 
-    public VideoStreamingToken listStreamingToken(String resourceGroupName, String accountName, String videoName) {
-        VideoStreamingTokenInner inner =
-            this.serviceClient().listStreamingToken(resourceGroupName, accountName, videoName);
+    public VideoContentToken listContentToken(String resourceGroupName, String accountName, String videoName) {
+        VideoContentTokenInner inner = this.serviceClient().listContentToken(resourceGroupName, accountName, videoName);
         if (inner != null) {
-            return new VideoStreamingTokenImpl(inner, this.manager());
+            return new VideoContentTokenImpl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public Response<VideoStreamingToken> listStreamingTokenWithResponse(
+    public Response<VideoContentToken> listContentTokenWithResponse(
         String resourceGroupName, String accountName, String videoName, Context context) {
-        Response<VideoStreamingTokenInner> inner =
-            this.serviceClient().listStreamingTokenWithResponse(resourceGroupName, accountName, videoName, context);
+        Response<VideoContentTokenInner> inner =
+            this.serviceClient().listContentTokenWithResponse(resourceGroupName, accountName, videoName, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
                 inner.getStatusCode(),
                 inner.getHeaders(),
-                new VideoStreamingTokenImpl(inner.getValue(), this.manager()));
+                new VideoContentTokenImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

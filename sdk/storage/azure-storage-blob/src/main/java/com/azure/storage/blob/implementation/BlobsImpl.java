@@ -12,7 +12,6 @@ import com.azure.core.annotation.Head;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
@@ -35,35 +34,32 @@ import com.azure.storage.blob.implementation.models.BlobsBreakLeaseResponse;
 import com.azure.storage.blob.implementation.models.BlobsChangeLeaseResponse;
 import com.azure.storage.blob.implementation.models.BlobsCopyFromURLResponse;
 import com.azure.storage.blob.implementation.models.BlobsCreateSnapshotResponse;
+import com.azure.storage.blob.implementation.models.BlobsDeleteImmutabilityPolicyResponse;
 import com.azure.storage.blob.implementation.models.BlobsDeleteResponse;
-import com.azure.storage.blob.implementation.models.BlobsGetAccessControlResponse;
 import com.azure.storage.blob.implementation.models.BlobsGetAccountInfoResponse;
 import com.azure.storage.blob.implementation.models.BlobsGetPropertiesResponse;
 import com.azure.storage.blob.implementation.models.BlobsGetTagsResponse;
 import com.azure.storage.blob.implementation.models.BlobsReleaseLeaseResponse;
-import com.azure.storage.blob.implementation.models.BlobsRenameResponse;
 import com.azure.storage.blob.implementation.models.BlobsRenewLeaseResponse;
-import com.azure.storage.blob.implementation.models.BlobsSetAccessControlResponse;
 import com.azure.storage.blob.implementation.models.BlobsSetExpiryResponse;
 import com.azure.storage.blob.implementation.models.BlobsSetHttpHeadersResponse;
+import com.azure.storage.blob.implementation.models.BlobsSetImmutabilityPolicyResponse;
+import com.azure.storage.blob.implementation.models.BlobsSetLegalHoldResponse;
 import com.azure.storage.blob.implementation.models.BlobsSetMetadataResponse;
 import com.azure.storage.blob.implementation.models.BlobsSetTagsResponse;
 import com.azure.storage.blob.implementation.models.BlobsSetTierResponse;
 import com.azure.storage.blob.implementation.models.BlobsStartCopyFromURLResponse;
 import com.azure.storage.blob.implementation.models.BlobsUndeleteResponse;
-import com.azure.storage.blob.implementation.models.DataLakeStorageErrorException;
-import com.azure.storage.blob.implementation.models.DirectoryHttpHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.QueryRequest;
-import com.azure.storage.blob.implementation.models.StorageErrorException;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
+import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
-import com.azure.storage.blob.models.PathRenameMode;
 import com.azure.storage.blob.models.RehydratePriority;
-import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.Map;
 import reactor.core.publisher.Mono;
@@ -95,7 +91,7 @@ public final class BlobsImpl {
     public interface BlobsService {
         @Get("/{containerName}/{blob}")
         @ExpectedResponses({200, 206})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<StreamResponse> download(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -122,7 +118,7 @@ public final class BlobsImpl {
 
         @Head("/{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsGetPropertiesResponse> getProperties(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -146,7 +142,7 @@ public final class BlobsImpl {
 
         @Delete("/{containerName}/{blob}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsDeleteResponse> delete(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -167,89 +163,14 @@ public final class BlobsImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Patch("/{filesystem}/{path}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DataLakeStorageErrorException.class)
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-        Mono<BlobsSetAccessControlResponse> setAccessControl(
-                @HostParam("url") String url,
-                @QueryParam("action") String action,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-owner") String owner,
-                @HeaderParam("x-ms-group") String group,
-                @HeaderParam("x-ms-permissions") String posixPermissions,
-                @HeaderParam("x-ms-acl") String posixAcl,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
-                @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Head("/{filesystem}/{path}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DataLakeStorageErrorException.class)
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-        Mono<BlobsGetAccessControlResponse> getAccessControl(
-                @HostParam("url") String url,
-                @QueryParam("action") String action,
-                @QueryParam("timeout") Integer timeout,
-                @QueryParam("upn") Boolean upn,
-                @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
-                @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Put("/{filesystem}/{path}")
-        @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(DataLakeStorageErrorException.class)
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-        Mono<BlobsRenameResponse> rename(
-                @HostParam("url") String url,
-                @PathParam("filesystem") String filesystem,
-                @PathParam("path") String path,
-                @QueryParam("timeout") Integer timeout,
-                @QueryParam("mode") PathRenameMode pathRenameMode,
-                @HeaderParam("x-ms-rename-source") String renameSource,
-                @HeaderParam("x-ms-properties") String directoryProperties,
-                @HeaderParam("x-ms-permissions") String posixPermissions,
-                @HeaderParam("x-ms-umask") String posixUmask,
-                @HeaderParam("x-ms-cache-control") String cacheControl,
-                @HeaderParam("x-ms-content-type") String contentType,
-                @HeaderParam("x-ms-content-encoding") String contentEncoding,
-                @HeaderParam("x-ms-content-language") String contentLanguage,
-                @HeaderParam("x-ms-content-disposition") String contentDisposition,
-                @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-source-lease-id") String sourceLeaseId,
-                @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
-                @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @HeaderParam("x-ms-source-if-modified-since") DateTimeRfc1123 sourceIfModifiedSince,
-                @HeaderParam("x-ms-source-if-unmodified-since") DateTimeRfc1123 sourceIfUnmodifiedSince,
-                @HeaderParam("x-ms-source-if-match") String sourceIfMatch,
-                @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsUndeleteResponse> undelete(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
@@ -258,9 +179,11 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsSetExpiryResponse> setExpiry(
                 @HostParam("url") String url,
+                @PathParam("containerName") String containerName,
+                @PathParam("blob") String blob,
                 @QueryParam("comp") String comp,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
@@ -272,12 +195,12 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsSetHttpHeadersResponse> setHttpHeaders(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-blob-cache-control") String cacheControl,
                 @HeaderParam("x-ms-blob-content-type") String contentType,
@@ -298,12 +221,58 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-        Mono<BlobsSetMetadataResponse> setMetadata(
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        Mono<BlobsSetImmutabilityPolicyResponse> setImmutabilityPolicy(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+                @HeaderParam("x-ms-immutability-policy-until-date") DateTimeRfc1123 immutabilityPolicyExpiry,
+                @HeaderParam("x-ms-immutability-policy-mode") BlobImmutabilityPolicyMode immutabilityPolicyMode,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Delete("/{containerName}/{blob}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        Mono<BlobsDeleteImmutabilityPolicyResponse> deleteImmutabilityPolicy(
+                @HostParam("url") String url,
+                @PathParam("containerName") String containerName,
+                @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/{containerName}/{blob}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        Mono<BlobsSetLegalHoldResponse> setLegalHold(
+                @HostParam("url") String url,
+                @PathParam("containerName") String containerName,
+                @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("x-ms-legal-hold") boolean legalHold,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/{containerName}/{blob}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        Mono<BlobsSetMetadataResponse> setMetadata(
+                @HostParam("url") String url,
+                @PathParam("containerName") String containerName,
+                @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-meta-") Map<String, String> metadata,
                 @HeaderParam("x-ms-lease-id") String leaseId,
@@ -323,13 +292,13 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsAcquireLeaseResponse> acquireLease(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
-                @HeaderParam("x-ms-lease-action") String action,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
+                @HeaderParam("x-ms-lease-action") String action,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-lease-duration") Integer duration,
                 @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId,
@@ -345,13 +314,13 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsReleaseLeaseResponse> releaseLease(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
-                @HeaderParam("x-ms-lease-action") String action,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
+                @HeaderParam("x-ms-lease-action") String action,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
@@ -366,14 +335,13 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsRenewLeaseResponse> renewLease(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
-                @HeaderParam("x-ms-lease-action") String action,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
+                @HeaderParam("x-ms-lease-action") String action,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
@@ -388,14 +356,13 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsChangeLeaseResponse> changeLease(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
-                @HeaderParam("x-ms-lease-action") String action,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
+                @HeaderParam("x-ms-lease-action") String action,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId,
@@ -411,13 +378,13 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsBreakLeaseResponse> breakLease(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
-                @HeaderParam("x-ms-lease-action") String action,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
+                @HeaderParam("x-ms-lease-action") String action,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-lease-break-period") Integer breakPeriod,
                 @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
@@ -432,12 +399,12 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsCreateSnapshotResponse> createSnapshot(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-meta-") Map<String, String> metadata,
                 @HeaderParam("x-ms-encryption-key") String encryptionKey,
@@ -457,7 +424,7 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsStartCopyFromURLResponse> startCopyFromURL(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -476,23 +443,26 @@ public final class BlobsImpl {
                 @HeaderParam("If-Match") String ifMatch,
                 @HeaderParam("If-None-Match") String ifNoneMatch,
                 @HeaderParam("x-ms-if-tags") String ifTags,
-                @HeaderParam("x-ms-copy-source") URL copySource,
+                @HeaderParam("x-ms-copy-source") String copySource,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @HeaderParam("x-ms-tags") String blobTagsString,
                 @HeaderParam("x-ms-seal-blob") Boolean sealBlob,
+                @HeaderParam("x-ms-immutability-policy-until-date") DateTimeRfc1123 immutabilityPolicyExpiry,
+                @HeaderParam("x-ms-immutability-policy-mode") BlobImmutabilityPolicyMode immutabilityPolicyMode,
+                @HeaderParam("x-ms-legal-hold") Boolean legalHold,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsCopyFromURLResponse> copyFromURL(
                 @HostParam("url") String url,
-                @HeaderParam("x-ms-requires-sync") String xMsRequiresSync,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @HeaderParam("x-ms-requires-sync") String xMsRequiresSync,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-meta-") Map<String, String> metadata,
                 @HeaderParam("x-ms-access-tier") AccessTier tier,
@@ -505,24 +475,29 @@ public final class BlobsImpl {
                 @HeaderParam("If-Match") String ifMatch,
                 @HeaderParam("If-None-Match") String ifNoneMatch,
                 @HeaderParam("x-ms-if-tags") String ifTags,
-                @HeaderParam("x-ms-copy-source") URL copySource,
+                @HeaderParam("x-ms-copy-source") String copySource,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @HeaderParam("x-ms-source-content-md5") String sourceContentMD5,
                 @HeaderParam("x-ms-tags") String blobTagsString,
+                @HeaderParam("x-ms-immutability-policy-until-date") DateTimeRfc1123 immutabilityPolicyExpiry,
+                @HeaderParam("x-ms-immutability-policy-mode") BlobImmutabilityPolicyMode immutabilityPolicyMode,
+                @HeaderParam("x-ms-legal-hold") Boolean legalHold,
+                @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
+                @HeaderParam("x-ms-encryption-scope") String encryptionScope,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsAbortCopyFromURLResponse> abortCopyFromURL(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
-                @HeaderParam("x-ms-copy-action") String copyActionAbortConstant,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
+                @HeaderParam("x-ms-copy-action") String copyActionAbortConstant,
                 @QueryParam("copyid") String copyId,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-lease-id") String leaseId,
@@ -533,12 +508,12 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsSetTierResponse> setTier(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
                 @QueryParam("snapshot") String snapshot,
                 @QueryParam("versionid") String versionId,
                 @QueryParam("timeout") Integer timeout,
@@ -553,25 +528,25 @@ public final class BlobsImpl {
 
         @Get("/{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsGetAccountInfoResponse> getAccountInfo(
                 @HostParam("url") String url,
-                @QueryParam("restype") String restype,
-                @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @QueryParam("restype") String restype,
+                @QueryParam("comp") String comp,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/{containerName}/{blob}")
         @ExpectedResponses({200, 206})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<StreamResponse> query(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
                 @QueryParam("snapshot") String snapshot,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-lease-id") String leaseId,
@@ -591,12 +566,12 @@ public final class BlobsImpl {
 
         @Get("/{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsGetTagsResponse> getTags(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
@@ -609,12 +584,12 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsSetTagsResponse> setTags(
                 @HostParam("url") String url,
-                @QueryParam("comp") String comp,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
                 @HeaderParam("x-ms-version") String version,
                 @QueryParam("timeout") Integer timeout,
                 @QueryParam("versionid") String versionId,
@@ -661,7 +636,7 @@ public final class BlobsImpl {
      * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -757,7 +732,7 @@ public final class BlobsImpl {
      * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -864,7 +839,7 @@ public final class BlobsImpl {
      *     if blob soft delete is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -912,271 +887,6 @@ public final class BlobsImpl {
     }
 
     /**
-     * Set the owner, group, permissions, or access control list for a blob.
-     *
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param owner Optional. The owner of the blob or directory.
-     * @param group Optional. The owning group of the blob or directory.
-     * @param posixPermissions Optional and only valid if Hierarchical Namespace is enabled for the account. Sets POSIX
-     *     access permissions for the file owner, the file owning group, and others. Each class may be granted read,
-     *     write, or execute permission. The sticky bit is also supported. Both symbolic (rwxrw-rw-) and 4-digit octal
-     *     notation (e.g. 0766) are supported.
-     * @param posixAcl Sets POSIX access control rights on files and directories. The value is a comma-separated list of
-     *     access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group
-     *     identifier, and permissions in the format "[scope:][type]:[id]:[permissions]".
-     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
-     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
-     *     specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
-     *     the specified date/time.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when storage analytics logging is enabled.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlobsSetAccessControlResponse> setAccessControlWithResponseAsync(
-            Integer timeout,
-            String leaseId,
-            String owner,
-            String group,
-            String posixPermissions,
-            String posixAcl,
-            String ifMatch,
-            String ifNoneMatch,
-            OffsetDateTime ifModifiedSince,
-            OffsetDateTime ifUnmodifiedSince,
-            String requestId,
-            Context context) {
-        final String action = "setAccessControl";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted =
-                ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted =
-                ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.setAccessControl(
-                this.client.getUrl(),
-                action,
-                timeout,
-                leaseId,
-                owner,
-                group,
-                posixPermissions,
-                posixAcl,
-                ifMatch,
-                ifNoneMatch,
-                ifModifiedSinceConverted,
-                ifUnmodifiedSinceConverted,
-                requestId,
-                this.client.getVersion(),
-                accept,
-                context);
-    }
-
-    /**
-     * Get the owner, group, permissions, or access control list for a blob.
-     *
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param upn Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the identity
-     *     values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be transformed from Azure
-     *     Active Directory Object IDs to User Principal Names. If "false", the values will be returned as Azure Active
-     *     Directory Object IDs. The default value is false.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
-     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
-     *     specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
-     *     the specified date/time.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when storage analytics logging is enabled.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the owner, group, permissions, or access control list for a blob.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlobsGetAccessControlResponse> getAccessControlWithResponseAsync(
-            Integer timeout,
-            Boolean upn,
-            String leaseId,
-            String ifMatch,
-            String ifNoneMatch,
-            OffsetDateTime ifModifiedSince,
-            OffsetDateTime ifUnmodifiedSince,
-            String requestId,
-            Context context) {
-        final String action = "getAccessControl";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted =
-                ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted =
-                ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.getAccessControl(
-                this.client.getUrl(),
-                action,
-                timeout,
-                upn,
-                leaseId,
-                ifMatch,
-                ifNoneMatch,
-                ifModifiedSinceConverted,
-                ifUnmodifiedSinceConverted,
-                requestId,
-                this.client.getVersion(),
-                accept,
-                context);
-    }
-
-    /**
-     * Rename a blob/file. By default, the destination is overwritten and if the destination already exists and has a
-     * lease the lease is broken. This operation supports conditional HTTP requests. For more information, see
-     * [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
-     * To fail if the destination already exists, use a conditional request with If-None-Match: "*".
-     *
-     * @param filesystem The filesystem name.
-     * @param path The namespace path to a file or directory.
-     * @param renameSource The file or directory to be renamed. The value must have the following format:
-     *     "/{filesysystem}/{path}". If "x-ms-properties" is specified, the properties will overwrite the existing
-     *     properties; otherwise, the existing properties will be preserved.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param directoryProperties Optional. User-defined properties to be stored with the file or directory, in the
-     *     format of a comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is base64
-     *     encoded.
-     * @param posixPermissions Optional and only valid if Hierarchical Namespace is enabled for the account. Sets POSIX
-     *     access permissions for the file owner, the file owning group, and others. Each class may be granted read,
-     *     write, or execute permission. The sticky bit is also supported. Both symbolic (rwxrw-rw-) and 4-digit octal
-     *     notation (e.g. 0766) are supported.
-     * @param posixUmask Only valid if Hierarchical Namespace is enabled for the account. This umask restricts
-     *     permission settings for file and directory, and will only be applied when default Acl does not exist in
-     *     parent directory. If the umask bit has set, it means that the corresponding permission will be disabled.
-     *     Otherwise the corresponding permission will be determined by the permission. A 4-digit octal notation (e.g.
-     *     0022) is supported here. If no umask was specified, a default umask - 0027 will be used.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param sourceLeaseId A lease ID for the source path. If specified, the source path must have an active lease and
-     *     the lease ID must match.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
-     *     specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
-     *     the specified date/time.
-     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
-     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
-     * @param sourceIfModifiedSince Specify this header value to operate only on a blob if it has been modified since
-     *     the specified date/time.
-     * @param sourceIfUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified
-     *     since the specified date/time.
-     * @param sourceIfMatch Specify an ETag value to operate only on blobs with a matching value.
-     * @param sourceIfNoneMatch Specify an ETag value to operate only on blobs without a matching value.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when storage analytics logging is enabled.
-     * @param directoryHttpHeaders Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlobsRenameResponse> renameWithResponseAsync(
-            String filesystem,
-            String path,
-            String renameSource,
-            Integer timeout,
-            String directoryProperties,
-            String posixPermissions,
-            String posixUmask,
-            String leaseId,
-            String sourceLeaseId,
-            OffsetDateTime ifModifiedSince,
-            OffsetDateTime ifUnmodifiedSince,
-            String ifMatch,
-            String ifNoneMatch,
-            OffsetDateTime sourceIfModifiedSince,
-            OffsetDateTime sourceIfUnmodifiedSince,
-            String sourceIfMatch,
-            String sourceIfNoneMatch,
-            String requestId,
-            DirectoryHttpHeaders directoryHttpHeaders,
-            Context context) {
-        final String accept = "application/xml";
-        String cacheControlInternal = null;
-        if (directoryHttpHeaders != null) {
-            cacheControlInternal = directoryHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        String contentTypeInternal = null;
-        if (directoryHttpHeaders != null) {
-            contentTypeInternal = directoryHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentEncodingInternal = null;
-        if (directoryHttpHeaders != null) {
-            contentEncodingInternal = directoryHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (directoryHttpHeaders != null) {
-            contentLanguageInternal = directoryHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        String contentDispositionInternal = null;
-        if (directoryHttpHeaders != null) {
-            contentDispositionInternal = directoryHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted =
-                ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted =
-                ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        DateTimeRfc1123 sourceIfModifiedSinceConverted =
-                sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
-        DateTimeRfc1123 sourceIfUnmodifiedSinceConverted =
-                sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
-        return service.rename(
-                this.client.getUrl(),
-                filesystem,
-                path,
-                timeout,
-                this.client.getPathRenameMode(),
-                renameSource,
-                directoryProperties,
-                posixPermissions,
-                posixUmask,
-                cacheControl,
-                contentType,
-                contentEncoding,
-                contentLanguage,
-                contentDisposition,
-                leaseId,
-                sourceLeaseId,
-                ifModifiedSinceConverted,
-                ifUnmodifiedSinceConverted,
-                ifMatch,
-                ifNoneMatch,
-                sourceIfModifiedSinceConverted,
-                sourceIfUnmodifiedSinceConverted,
-                sourceIfMatch,
-                sourceIfNoneMatch,
-                this.client.getVersion(),
-                requestId,
-                accept,
-                context);
-    }
-
-    /**
      * Undelete a blob that was previously soft deleted.
      *
      * @param containerName The container name.
@@ -1188,7 +898,7 @@ public final class BlobsImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1199,9 +909,9 @@ public final class BlobsImpl {
         final String accept = "application/xml";
         return service.undelete(
                 this.client.getUrl(),
-                comp,
                 containerName,
                 blob,
+                comp,
                 timeout,
                 this.client.getVersion(),
                 requestId,
@@ -1212,6 +922,8 @@ public final class BlobsImpl {
     /**
      * Sets the time a blob will expire and be deleted.
      *
+     * @param containerName The container name.
+     * @param blob The blob name.
      * @param expiryOptions Required. Indicates mode of the expiry time.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -1221,17 +933,25 @@ public final class BlobsImpl {
      * @param expiresOn The time to set the blob to expiry.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobsSetExpiryResponse> setExpiryWithResponseAsync(
-            BlobExpiryOptions expiryOptions, Integer timeout, String requestId, String expiresOn, Context context) {
+            String containerName,
+            String blob,
+            BlobExpiryOptions expiryOptions,
+            Integer timeout,
+            String requestId,
+            String expiresOn,
+            Context context) {
         final String comp = "expiry";
         final String accept = "application/xml";
         return service.setExpiry(
                 this.client.getUrl(),
+                containerName,
+                blob,
                 comp,
                 timeout,
                 this.client.getVersion(),
@@ -1263,7 +983,7 @@ public final class BlobsImpl {
      * @param blobHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1320,9 +1040,9 @@ public final class BlobsImpl {
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.setHttpHeaders(
                 this.client.getUrl(),
-                comp,
                 containerName,
                 blob,
+                comp,
                 timeout,
                 cacheControl,
                 contentType,
@@ -1338,6 +1058,125 @@ public final class BlobsImpl {
                 contentDisposition,
                 this.client.getVersion(),
                 requestId,
+                accept,
+                context);
+    }
+
+    /**
+     * The Set Immutability Policy operation sets the immutability policy on the blob.
+     *
+     * @param containerName The container name.
+     * @param blob The blob name.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     *     the specified date/time.
+     * @param immutabilityPolicyExpiry Specifies the date time when the blobs immutability policy is set to expire.
+     * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlobsSetImmutabilityPolicyResponse> setImmutabilityPolicyWithResponseAsync(
+            String containerName,
+            String blob,
+            Integer timeout,
+            String requestId,
+            OffsetDateTime ifUnmodifiedSince,
+            OffsetDateTime immutabilityPolicyExpiry,
+            BlobImmutabilityPolicyMode immutabilityPolicyMode,
+            Context context) {
+        final String comp = "immutabilityPolicies";
+        final String accept = "application/xml";
+        DateTimeRfc1123 ifUnmodifiedSinceConverted =
+                ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 immutabilityPolicyExpiryConverted =
+                immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
+        return service.setImmutabilityPolicy(
+                this.client.getUrl(),
+                containerName,
+                blob,
+                comp,
+                timeout,
+                this.client.getVersion(),
+                requestId,
+                ifUnmodifiedSinceConverted,
+                immutabilityPolicyExpiryConverted,
+                immutabilityPolicyMode,
+                accept,
+                context);
+    }
+
+    /**
+     * The Delete Immutability Policy operation deletes the immutability policy on the blob.
+     *
+     * @param containerName The container name.
+     * @param blob The blob name.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlobsDeleteImmutabilityPolicyResponse> deleteImmutabilityPolicyWithResponseAsync(
+            String containerName, String blob, Integer timeout, String requestId, Context context) {
+        final String comp = "immutabilityPolicies";
+        final String accept = "application/xml";
+        return service.deleteImmutabilityPolicy(
+                this.client.getUrl(),
+                containerName,
+                blob,
+                comp,
+                timeout,
+                this.client.getVersion(),
+                requestId,
+                accept,
+                context);
+    }
+
+    /**
+     * The Set Legal Hold operation sets a legal hold on the blob.
+     *
+     * @param containerName The container name.
+     * @param blob The blob name.
+     * @param legalHold Specified if a legal hold should be set on the blob.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlobsSetLegalHoldResponse> setLegalHoldWithResponseAsync(
+            String containerName, String blob, boolean legalHold, Integer timeout, String requestId, Context context) {
+        final String comp = "legalhold";
+        final String accept = "application/xml";
+        return service.setLegalHold(
+                this.client.getUrl(),
+                containerName,
+                blob,
+                comp,
+                timeout,
+                this.client.getVersion(),
+                requestId,
+                legalHold,
                 accept,
                 context);
     }
@@ -1368,10 +1207,10 @@ public final class BlobsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when storage analytics logging is enabled.
      * @param cpkInfo Parameter group.
-     * @param encryptionScope Parameter group.
+     * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1389,7 +1228,7 @@ public final class BlobsImpl {
             String ifTags,
             String requestId,
             CpkInfo cpkInfo,
-            EncryptionScope encryptionScope,
+            EncryptionScope encryptionScopeParam,
             Context context) {
         final String comp = "metadata";
         final String accept = "application/xml";
@@ -1409,26 +1248,26 @@ public final class BlobsImpl {
         }
         EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         String encryptionScopeInternal = null;
-        if (encryptionScope != null) {
-            encryptionScopeInternal = encryptionScope.getEncryptionScope();
+        if (encryptionScopeParam != null) {
+            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
         }
-        String encryptionScopeLocal = encryptionScopeInternal;
+        String encryptionScope = encryptionScopeInternal;
         DateTimeRfc1123 ifModifiedSinceConverted =
                 ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted =
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.setMetadata(
                 this.client.getUrl(),
-                comp,
                 containerName,
                 blob,
+                comp,
                 timeout,
                 metadata,
                 leaseId,
                 encryptionKey,
                 encryptionKeySha256,
                 encryptionAlgorithm,
-                encryptionScopeLocal,
+                encryptionScope,
                 ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted,
                 ifMatch,
@@ -1465,7 +1304,7 @@ public final class BlobsImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1492,10 +1331,10 @@ public final class BlobsImpl {
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.acquireLease(
                 this.client.getUrl(),
-                comp,
-                action,
                 containerName,
                 blob,
+                comp,
+                action,
                 timeout,
                 duration,
                 proposedLeaseId,
@@ -1530,7 +1369,7 @@ public final class BlobsImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1556,10 +1395,10 @@ public final class BlobsImpl {
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.releaseLease(
                 this.client.getUrl(),
-                comp,
-                action,
                 containerName,
                 blob,
+                comp,
+                action,
                 timeout,
                 leaseId,
                 ifModifiedSinceConverted,
@@ -1593,7 +1432,7 @@ public final class BlobsImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1619,10 +1458,10 @@ public final class BlobsImpl {
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.renewLease(
                 this.client.getUrl(),
-                comp,
-                action,
                 containerName,
                 blob,
+                comp,
+                action,
                 timeout,
                 leaseId,
                 ifModifiedSinceConverted,
@@ -1659,7 +1498,7 @@ public final class BlobsImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1686,10 +1525,10 @@ public final class BlobsImpl {
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.changeLease(
                 this.client.getUrl(),
-                comp,
-                action,
                 containerName,
                 blob,
+                comp,
+                action,
                 timeout,
                 leaseId,
                 proposedLeaseId,
@@ -1729,7 +1568,7 @@ public final class BlobsImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1755,10 +1594,10 @@ public final class BlobsImpl {
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.breakLease(
                 this.client.getUrl(),
-                comp,
-                action,
                 containerName,
                 blob,
+                comp,
+                action,
                 timeout,
                 breakPeriod,
                 ifModifiedSinceConverted,
@@ -1797,10 +1636,10 @@ public final class BlobsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when storage analytics logging is enabled.
      * @param cpkInfo Parameter group.
-     * @param encryptionScope Parameter group.
+     * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1818,7 +1657,7 @@ public final class BlobsImpl {
             String leaseId,
             String requestId,
             CpkInfo cpkInfo,
-            EncryptionScope encryptionScope,
+            EncryptionScope encryptionScopeParam,
             Context context) {
         final String comp = "snapshot";
         final String accept = "application/xml";
@@ -1838,25 +1677,25 @@ public final class BlobsImpl {
         }
         EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         String encryptionScopeInternal = null;
-        if (encryptionScope != null) {
-            encryptionScopeInternal = encryptionScope.getEncryptionScope();
+        if (encryptionScopeParam != null) {
+            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
         }
-        String encryptionScopeLocal = encryptionScopeInternal;
+        String encryptionScope = encryptionScopeInternal;
         DateTimeRfc1123 ifModifiedSinceConverted =
                 ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted =
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.createSnapshot(
                 this.client.getUrl(),
-                comp,
                 containerName,
                 blob,
+                comp,
                 timeout,
                 metadata,
                 encryptionKey,
                 encryptionKeySha256,
                 encryptionAlgorithm,
-                encryptionScopeLocal,
+                encryptionScope,
                 ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted,
                 ifMatch,
@@ -1907,9 +1746,12 @@ public final class BlobsImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param blobTagsString Optional. Used to set blob tags in various blob operations.
      * @param sealBlob Overrides the sealed state of the destination blob. Service version 2019-12-12 and newer.
+     * @param immutabilityPolicyExpiry Specifies the date time when the blobs immutability policy is set to expire.
+     * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
+     * @param legalHold Specified if a legal hold should be set on the blob.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1917,7 +1759,7 @@ public final class BlobsImpl {
     public Mono<BlobsStartCopyFromURLResponse> startCopyFromURLWithResponseAsync(
             String containerName,
             String blob,
-            URL copySource,
+            String copySource,
             Integer timeout,
             Map<String, String> metadata,
             AccessTier tier,
@@ -1936,6 +1778,9 @@ public final class BlobsImpl {
             String requestId,
             String blobTagsString,
             Boolean sealBlob,
+            OffsetDateTime immutabilityPolicyExpiry,
+            BlobImmutabilityPolicyMode immutabilityPolicyMode,
+            Boolean legalHold,
             Context context) {
         final String accept = "application/xml";
         DateTimeRfc1123 sourceIfModifiedSinceConverted =
@@ -1946,6 +1791,8 @@ public final class BlobsImpl {
                 ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted =
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 immutabilityPolicyExpiryConverted =
+                immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
         return service.startCopyFromURL(
                 this.client.getUrl(),
                 containerName,
@@ -1970,6 +1817,9 @@ public final class BlobsImpl {
                 requestId,
                 blobTagsString,
                 sealBlob,
+                immutabilityPolicyExpiryConverted,
+                immutabilityPolicyMode,
+                legalHold,
                 accept,
                 context);
     }
@@ -2011,9 +1861,15 @@ public final class BlobsImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param sourceContentMD5 Specify the md5 calculated for the range of bytes that must be read from the copy source.
      * @param blobTagsString Optional. Used to set blob tags in various blob operations.
+     * @param immutabilityPolicyExpiry Specifies the date time when the blobs immutability policy is set to expire.
+     * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
+     * @param legalHold Specified if a legal hold should be set on the blob.
+     * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
+     *     copy source.
+     * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2021,7 +1877,7 @@ public final class BlobsImpl {
     public Mono<BlobsCopyFromURLResponse> copyFromURLWithResponseAsync(
             String containerName,
             String blob,
-            URL copySource,
+            String copySource,
             Integer timeout,
             Map<String, String> metadata,
             AccessTier tier,
@@ -2038,9 +1894,19 @@ public final class BlobsImpl {
             String requestId,
             byte[] sourceContentMD5,
             String blobTagsString,
+            OffsetDateTime immutabilityPolicyExpiry,
+            BlobImmutabilityPolicyMode immutabilityPolicyMode,
+            Boolean legalHold,
+            String copySourceAuthorization,
+            EncryptionScope encryptionScopeParam,
             Context context) {
         final String xMsRequiresSync = "true";
         final String accept = "application/xml";
+        String encryptionScopeInternal = null;
+        if (encryptionScopeParam != null) {
+            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+        }
+        String encryptionScope = encryptionScopeInternal;
         DateTimeRfc1123 sourceIfModifiedSinceConverted =
                 sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted =
@@ -2050,11 +1916,13 @@ public final class BlobsImpl {
         DateTimeRfc1123 ifUnmodifiedSinceConverted =
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
+        DateTimeRfc1123 immutabilityPolicyExpiryConverted =
+                immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
         return service.copyFromURL(
                 this.client.getUrl(),
-                xMsRequiresSync,
                 containerName,
                 blob,
+                xMsRequiresSync,
                 timeout,
                 metadata,
                 tier,
@@ -2073,6 +1941,11 @@ public final class BlobsImpl {
                 requestId,
                 sourceContentMD5Converted,
                 blobTagsString,
+                immutabilityPolicyExpiryConverted,
+                immutabilityPolicyMode,
+                legalHold,
+                copySourceAuthorization,
+                encryptionScope,
                 accept,
                 context);
     }
@@ -2092,7 +1965,7 @@ public final class BlobsImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2110,10 +1983,10 @@ public final class BlobsImpl {
         final String accept = "application/xml";
         return service.abortCopyFromURL(
                 this.client.getUrl(),
-                comp,
-                copyActionAbortConstant,
                 containerName,
                 blob,
+                comp,
+                copyActionAbortConstant,
                 copyId,
                 timeout,
                 leaseId,
@@ -2148,7 +2021,7 @@ public final class BlobsImpl {
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2169,9 +2042,9 @@ public final class BlobsImpl {
         final String accept = "application/xml";
         return service.setTier(
                 this.client.getUrl(),
-                comp,
                 containerName,
                 blob,
+                comp,
                 snapshot,
                 versionId,
                 timeout,
@@ -2192,7 +2065,7 @@ public final class BlobsImpl {
      * @param blob The blob name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2203,7 +2076,7 @@ public final class BlobsImpl {
         final String comp = "properties";
         final String accept = "application/xml";
         return service.getAccountInfo(
-                this.client.getUrl(), restype, comp, containerName, blob, this.client.getVersion(), accept, context);
+                this.client.getUrl(), containerName, blob, restype, comp, this.client.getVersion(), accept, context);
     }
 
     /**
@@ -2232,7 +2105,7 @@ public final class BlobsImpl {
      * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2275,9 +2148,9 @@ public final class BlobsImpl {
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.query(
                 this.client.getUrl(),
-                comp,
                 containerName,
                 blob,
+                comp,
                 snapshot,
                 timeout,
                 leaseId,
@@ -2316,7 +2189,7 @@ public final class BlobsImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return blob tags.
      */
@@ -2335,9 +2208,9 @@ public final class BlobsImpl {
         final String accept = "application/xml";
         return service.getTags(
                 this.client.getUrl(),
-                comp,
                 containerName,
                 blob,
+                comp,
                 timeout,
                 this.client.getVersion(),
                 requestId,
@@ -2368,7 +2241,7 @@ public final class BlobsImpl {
      * @param tags Blob tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2391,9 +2264,9 @@ public final class BlobsImpl {
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
         return service.setTags(
                 this.client.getUrl(),
-                comp,
                 containerName,
                 blob,
+                comp,
                 this.client.getVersion(),
                 timeout,
                 versionId,

@@ -4,8 +4,7 @@
 
 package com.azure.resourcemanager.batch.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.batch.models.PackageState;
@@ -14,41 +13,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** An application package which represents a particular version of an application. */
-@JsonFlatten
-@Immutable
-public class ApplicationPackageInner extends ProxyResource {
+@Fluent
+public final class ApplicationPackageInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationPackageInner.class);
 
     /*
-     * The current state of the application package.
+     * The properties associated with the Application Package.
      */
-    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
-    private PackageState state;
-
-    /*
-     * The format of the application package, if the package is active.
-     */
-    @JsonProperty(value = "properties.format", access = JsonProperty.Access.WRITE_ONLY)
-    private String format;
-
-    /*
-     * The URL for the application package in Azure Storage.
-     */
-    @JsonProperty(value = "properties.storageUrl", access = JsonProperty.Access.WRITE_ONLY)
-    private String storageUrl;
-
-    /*
-     * The UTC time at which the Azure Storage URL will expire.
-     */
-    @JsonProperty(value = "properties.storageUrlExpiry", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime storageUrlExpiry;
-
-    /*
-     * The time at which the package was last activated, if the package is
-     * active.
-     */
-    @JsonProperty(value = "properties.lastActivationTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastActivationTime;
+    @JsonProperty(value = "properties")
+    private ApplicationPackageProperties innerProperties;
 
     /*
      * The ETag of the resource, used for concurrency statements.
@@ -57,48 +30,12 @@ public class ApplicationPackageInner extends ProxyResource {
     private String etag;
 
     /**
-     * Get the state property: The current state of the application package.
+     * Get the innerProperties property: The properties associated with the Application Package.
      *
-     * @return the state value.
+     * @return the innerProperties value.
      */
-    public PackageState state() {
-        return this.state;
-    }
-
-    /**
-     * Get the format property: The format of the application package, if the package is active.
-     *
-     * @return the format value.
-     */
-    public String format() {
-        return this.format;
-    }
-
-    /**
-     * Get the storageUrl property: The URL for the application package in Azure Storage.
-     *
-     * @return the storageUrl value.
-     */
-    public String storageUrl() {
-        return this.storageUrl;
-    }
-
-    /**
-     * Get the storageUrlExpiry property: The UTC time at which the Azure Storage URL will expire.
-     *
-     * @return the storageUrlExpiry value.
-     */
-    public OffsetDateTime storageUrlExpiry() {
-        return this.storageUrlExpiry;
-    }
-
-    /**
-     * Get the lastActivationTime property: The time at which the package was last activated, if the package is active.
-     *
-     * @return the lastActivationTime value.
-     */
-    public OffsetDateTime lastActivationTime() {
-        return this.lastActivationTime;
+    private ApplicationPackageProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -111,10 +48,58 @@ public class ApplicationPackageInner extends ProxyResource {
     }
 
     /**
+     * Get the state property: The current state of the application package.
+     *
+     * @return the state value.
+     */
+    public PackageState state() {
+        return this.innerProperties() == null ? null : this.innerProperties().state();
+    }
+
+    /**
+     * Get the format property: The format of the application package, if the package is active.
+     *
+     * @return the format value.
+     */
+    public String format() {
+        return this.innerProperties() == null ? null : this.innerProperties().format();
+    }
+
+    /**
+     * Get the storageUrl property: The URL for the application package in Azure Storage.
+     *
+     * @return the storageUrl value.
+     */
+    public String storageUrl() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageUrl();
+    }
+
+    /**
+     * Get the storageUrlExpiry property: The UTC time at which the Azure Storage URL will expire.
+     *
+     * @return the storageUrlExpiry value.
+     */
+    public OffsetDateTime storageUrlExpiry() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageUrlExpiry();
+    }
+
+    /**
+     * Get the lastActivationTime property: The time at which the package was last activated, if the package is active.
+     *
+     * @return the lastActivationTime value.
+     */
+    public OffsetDateTime lastActivationTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().lastActivationTime();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -38,11 +38,17 @@ public class RuntimeStack {
     /** Node.JS 12 LTS. */
     public static final RuntimeStack NODEJS_12_LTS = COLLECTION.addValue(new RuntimeStack("NODE", "12-lts"));
 
+    /** Node.JS 14 LTS. */
+    public static final RuntimeStack NODEJS_14_LTS = COLLECTION.addValue(new RuntimeStack("NODE", "14-lts"));
+
     /** PHP 7.2. */
     public static final RuntimeStack PHP_7_2 = COLLECTION.addValue(new RuntimeStack("PHP", "7.2"));
 
     /** PHP 7.3. */
     public static final RuntimeStack PHP_7_3 = COLLECTION.addValue(new RuntimeStack("PHP", "7.3"));
+
+    /** PHP 7.4. */
+    public static final RuntimeStack PHP_7_4 = COLLECTION.addValue(new RuntimeStack("PHP", "7.4"));
 
     /** PYTHON 3.6. */
     public static final RuntimeStack PYTHON_3_6 = COLLECTION.addValue(new RuntimeStack("PYTHON", "3.6"));
@@ -70,6 +76,15 @@ public class RuntimeStack {
 
     /** Tomcat 9.0-jre8 image with catalina root set to Azure wwwroot. */
     public static final RuntimeStack TOMCAT_9_0_JRE8 = COLLECTION.addValue(new RuntimeStack("TOMCAT", "9.0-jre8"));
+
+    /** Tomcat 10.0-java17 image with catalina root set to Azure wwwroot. */
+    public static final RuntimeStack TOMCAT_10_0_JAVA17 = COLLECTION.addValue(new RuntimeStack("TOMCAT", "10.0-java17"));
+
+    /** Tomcat 10.0-jre11 image with catalina root set to Azure wwwroot. */
+    public static final RuntimeStack TOMCAT_10_0_JRE11 = COLLECTION.addValue(new RuntimeStack("TOMCAT", "10.0-jre11"));
+
+    /** Tomcat 10.0-jre8 image with catalina root set to Azure wwwroot. */
+    public static final RuntimeStack TOMCAT_10_0_JRE8 = COLLECTION.addValue(new RuntimeStack("TOMCAT", "10.0-jre8"));
 
     /** JBOSS EAP 7.2-java8. */
     public static final RuntimeStack JBOSS_EAP_7_2_JAVA8 =

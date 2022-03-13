@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -124,7 +125,7 @@ public final class OrderByContinuationToken extends JsonSerializable implements 
     }
 
     private void setOrderByItems(QueryItem[] orderByItems) {
-        BridgeInternal.setProperty(this, OrderByItemsPropetryName, orderByItems);
+        BridgeInternal.setProperty(this, OrderByItemsPropetryName, Arrays.asList(orderByItems));
     }
 
     private void setRid(String rid) {

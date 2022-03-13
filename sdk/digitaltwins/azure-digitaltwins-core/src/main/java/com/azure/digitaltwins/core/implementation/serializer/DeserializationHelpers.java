@@ -30,9 +30,8 @@ public final class DeserializationHelpers {
     public static <T> T deserializeObject(ObjectMapper mapper, Object payload, Class<T> clazz, JsonSerializer customJsonSerializer) throws JsonProcessingException {
         if (customJsonSerializer == null) {
             if (clazz.isAssignableFrom(String.class)) {
-                return (T)mapper.writeValueAsString(payload);
-            }
-            else {
+                return (T) mapper.writeValueAsString(payload);
+            } else {
                 return mapper.convertValue(payload, clazz);
             }
         }

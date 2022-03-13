@@ -122,7 +122,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup policy.
+     * @return base class for backup policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProtectionPolicyResourceInner>> getWithResponseAsync(
@@ -149,7 +149,6 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
         if (policyName == null) {
             return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -157,7 +156,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
                     service
                         .get(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             vaultName,
                             resourceGroupName,
                             this.client.getSubscriptionId(),
@@ -178,7 +177,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup policy.
+     * @return base class for backup policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProtectionPolicyResourceInner>> getWithResponseAsync(
@@ -205,13 +204,12 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
         if (policyName == null) {
             return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 vaultName,
                 resourceGroupName,
                 this.client.getSubscriptionId(),
@@ -230,7 +228,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup policy.
+     * @return base class for backup policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ProtectionPolicyResourceInner> getAsync(
@@ -274,7 +272,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup policy.
+     * @return base class for backup policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProtectionPolicyResourceInner> getWithResponse(
@@ -293,7 +291,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup policy.
+     * @return base class for backup policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProtectionPolicyResourceInner>> createOrUpdateWithResponseAsync(
@@ -325,7 +323,6 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -333,7 +330,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
                     service
                         .createOrUpdate(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             vaultName,
                             resourceGroupName,
                             this.client.getSubscriptionId(),
@@ -356,7 +353,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup policy.
+     * @return base class for backup policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProtectionPolicyResourceInner>> createOrUpdateWithResponseAsync(
@@ -392,13 +389,12 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 vaultName,
                 resourceGroupName,
                 this.client.getSubscriptionId(),
@@ -419,7 +415,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup policy.
+     * @return base class for backup policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ProtectionPolicyResourceInner> createOrUpdateAsync(
@@ -466,7 +462,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup policy.
+     * @return base class for backup policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProtectionPolicyResourceInner> createOrUpdateWithResponse(
@@ -488,7 +484,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -515,7 +511,6 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
         if (policyName == null) {
             return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -523,7 +518,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
                     service
                         .delete(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             vaultName,
                             resourceGroupName,
                             this.client.getSubscriptionId(),
@@ -544,7 +539,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -571,13 +566,12 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
         if (policyName == null) {
             return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 vaultName,
                 resourceGroupName,
                 this.client.getSubscriptionId(),
@@ -596,15 +590,16 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String vaultName, String resourceGroupName, String policyName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(vaultName, resourceGroupName, policyName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -618,9 +613,9 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String vaultName, String resourceGroupName, String policyName, Context context) {
         context = this.client.mergeContext(context);
@@ -641,9 +636,9 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String vaultName, String resourceGroupName, String policyName) {
         return beginDeleteAsync(vaultName, resourceGroupName, policyName).getSyncPoller();
@@ -660,9 +655,9 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String vaultName, String resourceGroupName, String policyName, Context context) {
         return beginDeleteAsync(vaultName, resourceGroupName, policyName, context).getSyncPoller();
@@ -678,7 +673,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String vaultName, String resourceGroupName, String policyName) {
@@ -698,7 +693,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String vaultName, String resourceGroupName, String policyName, Context context) {

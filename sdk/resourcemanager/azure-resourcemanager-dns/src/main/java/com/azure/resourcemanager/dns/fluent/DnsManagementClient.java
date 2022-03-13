@@ -10,7 +10,7 @@ import java.time.Duration;
 /** The interface for DnsManagementClient class. */
 public interface DnsManagementClient {
     /**
-     * Gets The ID of the target subscription.
+     * Gets Specifies the Azure subscription ID, which uniquely identifies the Microsoft Azure subscription.
      *
      * @return the subscriptionId value.
      */
@@ -57,4 +57,11 @@ public interface DnsManagementClient {
      * @return the ZonesClient object.
      */
     ZonesClient getZones();
+
+    /**
+     * Gets the DnsResourceReferencesClient object to access its operations.
+     *
+     * @return the DnsResourceReferencesClient object.
+     */
+    DnsResourceReferencesClient getDnsResourceReferences();
 }

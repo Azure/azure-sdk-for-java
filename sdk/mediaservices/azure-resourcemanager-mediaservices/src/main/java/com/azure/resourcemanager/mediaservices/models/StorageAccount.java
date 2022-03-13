@@ -30,6 +30,18 @@ public final class StorageAccount {
     @JsonProperty(value = "type", required = true)
     private StorageAccountType type;
 
+    /*
+     * The storage account identity.
+     */
+    @JsonProperty(value = "identity")
+    private ResourceIdentity identity;
+
+    /*
+     * The current status of the storage account mapping.
+     */
+    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
+    private String status;
+
     /**
      * Get the id property: The ID of the storage account resource. Media Services relies on tables and queues as well
      * as blobs, so the primary storage account must be a Standard Storage account (either Microsoft.ClassicStorage or
@@ -75,6 +87,35 @@ public final class StorageAccount {
     }
 
     /**
+     * Get the identity property: The storage account identity.
+     *
+     * @return the identity value.
+     */
+    public ResourceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The storage account identity.
+     *
+     * @param identity the identity value to set.
+     * @return the StorageAccount object itself.
+     */
+    public StorageAccount withIdentity(ResourceIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the status property: The current status of the storage account mapping.
+     *
+     * @return the status value.
+     */
+    public String status() {
+        return this.status;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -84,6 +125,9 @@ public final class StorageAccount {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property type in model StorageAccount"));
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 }

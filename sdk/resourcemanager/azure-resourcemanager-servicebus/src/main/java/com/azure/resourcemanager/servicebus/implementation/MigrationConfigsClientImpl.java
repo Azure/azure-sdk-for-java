@@ -508,7 +508,7 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
                 this.client.getHttpPipeline(),
                 MigrationConfigPropertiesInner.class,
                 MigrationConfigPropertiesInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

@@ -20,7 +20,6 @@ import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.text.ParseException;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -60,7 +59,7 @@ public class UserPrincipalAzureADGraphTest {
             final UserPrincipal serializedPrincipal = (UserPrincipal) objectInputStream.readObject();
 
             assertNotNull(serializedPrincipal, "Serialized UserPrincipal not null");
-            assertFalse(StringUtils.isEmpty(serializedPrincipal.getKid()), "Serialized UserPrincipal kid not empty");
+            assertTrue(StringUtils.hasText(serializedPrincipal.getKid()), "Serialized UserPrincipal kid not empty");
             assertNotNull(serializedPrincipal.getClaims(), "Serialized UserPrincipal claims not null.");
             assertTrue(serializedPrincipal.getClaims().size() > 0, "Serialized UserPrincipal claims not empty.");
         } finally {

@@ -1,6 +1,70 @@
 # Release History
 
-## 2.6.0-beta.1 (Unreleased)
+## 2.13.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Supported Tomcat 10 and Java 8, 11, 17 in `RuntimeStack` for `WebApp`.
+
+## 2.12.0 (2022-02-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources
+
+## 2.11.0 (2022-01-17)
+
+### Features Added
+
+- Supported option for tracking deployment status via `pushDeploy` in `WebApp` and `DeploymentSlot`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2021-03-01`.
+
+## 2.10.0 (2021-11-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources
+
+## 2.9.0 (2021-10-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources
+
+## 2.8.0 (2021-09-15)
+
+### Dependency Updates
+
+- Updated `api-version` to `2021-02-01`.
+
+### Features Added
+
+- Supported `NODEJS_14_LTS` and `PHP_7_4` in `RuntimeStack`.
+
+### Breaking Changes
+
+- Renamed `ManagedServiceIdentityUserAssignedIdentities` class to `UserAssignedIdentity`.
+
+## 2.7.0 (2021-08-12)
+
+### Dependency Updates
+
+- Updated core dependency from resources
+
+## 2.6.0 (2021-06-18)
+
+- Updated core dependency from resources
 
 ## 2.5.0 (2021-05-28)
 - Supported the configuration of network access for `WebApp`, `FunctionApp`.

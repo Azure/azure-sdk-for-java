@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.AzureDataExplorerCommandActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -16,68 +16,24 @@ import java.util.List;
 /** Azure Data Explorer command activity. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureDataExplorerCommand")
-@JsonFlatten
 @Fluent
-public class AzureDataExplorerCommandActivity extends ExecutionActivity {
+public final class AzureDataExplorerCommandActivity extends ExecutionActivity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureDataExplorerCommandActivity.class);
 
     /*
-     * A control command, according to the Azure Data Explorer command syntax.
-     * Type: string (or Expression with resultType string).
+     * Azure Data Explorer command activity properties.
      */
-    @JsonProperty(value = "typeProperties.command", required = true)
-    private Object command;
-
-    /*
-     * Control command timeout. Type: string (or Expression with resultType
-     * string), pattern:
-     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9]))..)
-     */
-    @JsonProperty(value = "typeProperties.commandTimeout")
-    private Object commandTimeout;
+    @JsonProperty(value = "typeProperties", required = true)
+    private AzureDataExplorerCommandActivityTypeProperties innerTypeProperties =
+        new AzureDataExplorerCommandActivityTypeProperties();
 
     /**
-     * Get the command property: A control command, according to the Azure Data Explorer command syntax. Type: string
-     * (or Expression with resultType string).
+     * Get the innerTypeProperties property: Azure Data Explorer command activity properties.
      *
-     * @return the command value.
+     * @return the innerTypeProperties value.
      */
-    public Object command() {
-        return this.command;
-    }
-
-    /**
-     * Set the command property: A control command, according to the Azure Data Explorer command syntax. Type: string
-     * (or Expression with resultType string).
-     *
-     * @param command the command value to set.
-     * @return the AzureDataExplorerCommandActivity object itself.
-     */
-    public AzureDataExplorerCommandActivity withCommand(Object command) {
-        this.command = command;
-        return this;
-    }
-
-    /**
-     * Get the commandTimeout property: Control command timeout. Type: string (or Expression with resultType string),
-     * pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9]))..).
-     *
-     * @return the commandTimeout value.
-     */
-    public Object commandTimeout() {
-        return this.commandTimeout;
-    }
-
-    /**
-     * Set the commandTimeout property: Control command timeout. Type: string (or Expression with resultType string),
-     * pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9]))..).
-     *
-     * @param commandTimeout the commandTimeout value to set.
-     * @return the AzureDataExplorerCommandActivity object itself.
-     */
-    public AzureDataExplorerCommandActivity withCommandTimeout(Object commandTimeout) {
-        this.commandTimeout = commandTimeout;
-        return this;
+    private AzureDataExplorerCommandActivityTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -123,6 +79,56 @@ public class AzureDataExplorerCommandActivity extends ExecutionActivity {
     }
 
     /**
+     * Get the command property: A control command, according to the Azure Data Explorer command syntax. Type: string
+     * (or Expression with resultType string).
+     *
+     * @return the command value.
+     */
+    public Object command() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().command();
+    }
+
+    /**
+     * Set the command property: A control command, according to the Azure Data Explorer command syntax. Type: string
+     * (or Expression with resultType string).
+     *
+     * @param command the command value to set.
+     * @return the AzureDataExplorerCommandActivity object itself.
+     */
+    public AzureDataExplorerCommandActivity withCommand(Object command) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureDataExplorerCommandActivityTypeProperties();
+        }
+        this.innerTypeProperties().withCommand(command);
+        return this;
+    }
+
+    /**
+     * Get the commandTimeout property: Control command timeout. Type: string (or Expression with resultType string),
+     * pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9]))..).
+     *
+     * @return the commandTimeout value.
+     */
+    public Object commandTimeout() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().commandTimeout();
+    }
+
+    /**
+     * Set the commandTimeout property: Control command timeout. Type: string (or Expression with resultType string),
+     * pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9]))..).
+     *
+     * @param commandTimeout the commandTimeout value to set.
+     * @return the AzureDataExplorerCommandActivity object itself.
+     */
+    public AzureDataExplorerCommandActivity withCommandTimeout(Object commandTimeout) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureDataExplorerCommandActivityTypeProperties();
+        }
+        this.innerTypeProperties().withCommandTimeout(commandTimeout);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -130,11 +136,13 @@ public class AzureDataExplorerCommandActivity extends ExecutionActivity {
     @Override
     public void validate() {
         super.validate();
-        if (command() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property command in model AzureDataExplorerCommandActivity"));
+                        "Missing required property innerTypeProperties in model AzureDataExplorerCommandActivity"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

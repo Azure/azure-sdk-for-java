@@ -5,16 +5,14 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A Sql pool connection policy. */
-@JsonFlatten
 @Fluent
-public class SqlPoolConnectionPolicyInner extends ProxyResource {
+public final class SqlPoolConnectionPolicyInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolConnectionPolicyInner.class);
 
     /*
@@ -30,46 +28,10 @@ public class SqlPoolConnectionPolicyInner extends ProxyResource {
     private String location;
 
     /*
-     * The state of security access.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.securityEnabledAccess")
-    private String securityEnabledAccess;
-
-    /*
-     * The fully qualified host name of the auditing proxy.
-     */
-    @JsonProperty(value = "properties.proxyDnsName")
-    private String proxyDnsName;
-
-    /*
-     * The port number of the auditing proxy.
-     */
-    @JsonProperty(value = "properties.proxyPort")
-    private String proxyPort;
-
-    /*
-     * The visibility of the auditing proxy.
-     */
-    @JsonProperty(value = "properties.visibility")
-    private String visibility;
-
-    /*
-     * Whether server default is enabled or disabled.
-     */
-    @JsonProperty(value = "properties.useServerDefault")
-    private String useServerDefault;
-
-    /*
-     * The state of proxy redirection.
-     */
-    @JsonProperty(value = "properties.redirectionState")
-    private String redirectionState;
-
-    /*
-     * The connection policy state.
-     */
-    @JsonProperty(value = "properties.state")
-    private String state;
+    @JsonProperty(value = "properties")
+    private SqlPoolConnectionPolicyProperties innerProperties;
 
     /**
      * Get the kind property: Resource kind.
@@ -90,12 +52,21 @@ public class SqlPoolConnectionPolicyInner extends ProxyResource {
     }
 
     /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
+     */
+    private SqlPoolConnectionPolicyProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the securityEnabledAccess property: The state of security access.
      *
      * @return the securityEnabledAccess value.
      */
     public String securityEnabledAccess() {
-        return this.securityEnabledAccess;
+        return this.innerProperties() == null ? null : this.innerProperties().securityEnabledAccess();
     }
 
     /**
@@ -105,7 +76,10 @@ public class SqlPoolConnectionPolicyInner extends ProxyResource {
      * @return the SqlPoolConnectionPolicyInner object itself.
      */
     public SqlPoolConnectionPolicyInner withSecurityEnabledAccess(String securityEnabledAccess) {
-        this.securityEnabledAccess = securityEnabledAccess;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlPoolConnectionPolicyProperties();
+        }
+        this.innerProperties().withSecurityEnabledAccess(securityEnabledAccess);
         return this;
     }
 
@@ -115,7 +89,7 @@ public class SqlPoolConnectionPolicyInner extends ProxyResource {
      * @return the proxyDnsName value.
      */
     public String proxyDnsName() {
-        return this.proxyDnsName;
+        return this.innerProperties() == null ? null : this.innerProperties().proxyDnsName();
     }
 
     /**
@@ -125,7 +99,10 @@ public class SqlPoolConnectionPolicyInner extends ProxyResource {
      * @return the SqlPoolConnectionPolicyInner object itself.
      */
     public SqlPoolConnectionPolicyInner withProxyDnsName(String proxyDnsName) {
-        this.proxyDnsName = proxyDnsName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlPoolConnectionPolicyProperties();
+        }
+        this.innerProperties().withProxyDnsName(proxyDnsName);
         return this;
     }
 
@@ -135,7 +112,7 @@ public class SqlPoolConnectionPolicyInner extends ProxyResource {
      * @return the proxyPort value.
      */
     public String proxyPort() {
-        return this.proxyPort;
+        return this.innerProperties() == null ? null : this.innerProperties().proxyPort();
     }
 
     /**
@@ -145,7 +122,10 @@ public class SqlPoolConnectionPolicyInner extends ProxyResource {
      * @return the SqlPoolConnectionPolicyInner object itself.
      */
     public SqlPoolConnectionPolicyInner withProxyPort(String proxyPort) {
-        this.proxyPort = proxyPort;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlPoolConnectionPolicyProperties();
+        }
+        this.innerProperties().withProxyPort(proxyPort);
         return this;
     }
 
@@ -155,7 +135,7 @@ public class SqlPoolConnectionPolicyInner extends ProxyResource {
      * @return the visibility value.
      */
     public String visibility() {
-        return this.visibility;
+        return this.innerProperties() == null ? null : this.innerProperties().visibility();
     }
 
     /**
@@ -165,7 +145,10 @@ public class SqlPoolConnectionPolicyInner extends ProxyResource {
      * @return the SqlPoolConnectionPolicyInner object itself.
      */
     public SqlPoolConnectionPolicyInner withVisibility(String visibility) {
-        this.visibility = visibility;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlPoolConnectionPolicyProperties();
+        }
+        this.innerProperties().withVisibility(visibility);
         return this;
     }
 
@@ -175,7 +158,7 @@ public class SqlPoolConnectionPolicyInner extends ProxyResource {
      * @return the useServerDefault value.
      */
     public String useServerDefault() {
-        return this.useServerDefault;
+        return this.innerProperties() == null ? null : this.innerProperties().useServerDefault();
     }
 
     /**
@@ -185,7 +168,10 @@ public class SqlPoolConnectionPolicyInner extends ProxyResource {
      * @return the SqlPoolConnectionPolicyInner object itself.
      */
     public SqlPoolConnectionPolicyInner withUseServerDefault(String useServerDefault) {
-        this.useServerDefault = useServerDefault;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlPoolConnectionPolicyProperties();
+        }
+        this.innerProperties().withUseServerDefault(useServerDefault);
         return this;
     }
 
@@ -195,7 +181,7 @@ public class SqlPoolConnectionPolicyInner extends ProxyResource {
      * @return the redirectionState value.
      */
     public String redirectionState() {
-        return this.redirectionState;
+        return this.innerProperties() == null ? null : this.innerProperties().redirectionState();
     }
 
     /**
@@ -205,7 +191,10 @@ public class SqlPoolConnectionPolicyInner extends ProxyResource {
      * @return the SqlPoolConnectionPolicyInner object itself.
      */
     public SqlPoolConnectionPolicyInner withRedirectionState(String redirectionState) {
-        this.redirectionState = redirectionState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlPoolConnectionPolicyProperties();
+        }
+        this.innerProperties().withRedirectionState(redirectionState);
         return this;
     }
 
@@ -215,7 +204,7 @@ public class SqlPoolConnectionPolicyInner extends ProxyResource {
      * @return the state value.
      */
     public String state() {
-        return this.state;
+        return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
     /**
@@ -225,7 +214,10 @@ public class SqlPoolConnectionPolicyInner extends ProxyResource {
      * @return the SqlPoolConnectionPolicyInner object itself.
      */
     public SqlPoolConnectionPolicyInner withState(String state) {
-        this.state = state;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlPoolConnectionPolicyProperties();
+        }
+        this.innerProperties().withState(state);
         return this;
     }
 
@@ -235,5 +227,8 @@ public class SqlPoolConnectionPolicyInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

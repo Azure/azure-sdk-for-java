@@ -55,6 +55,15 @@ public final class InvoiceSectionImpl implements InvoiceSection {
         return this.innerModel().systemId();
     }
 
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
+    }
+
     public TargetCloud targetCloud() {
         return this.innerModel().targetCloud();
     }

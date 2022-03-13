@@ -5,23 +5,31 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.apimanagement.fluent.models.AssociationContractProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Association entity details. */
-@JsonFlatten
 @Fluent
-public class AssociationContract extends ProxyResource {
+public final class AssociationContract extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AssociationContract.class);
 
     /*
-     * Provisioning state.
+     * Association entity contract properties.
      */
-    @JsonProperty(value = "properties.provisioningState")
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "properties")
+    private AssociationContractProperties innerProperties;
+
+    /**
+     * Get the innerProperties property: Association entity contract properties.
+     *
+     * @return the innerProperties value.
+     */
+    private AssociationContractProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the provisioningState property: Provisioning state.
@@ -29,7 +37,7 @@ public class AssociationContract extends ProxyResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -39,7 +47,10 @@ public class AssociationContract extends ProxyResource {
      * @return the AssociationContract object itself.
      */
     public AssociationContract withProvisioningState(ProvisioningState provisioningState) {
-        this.provisioningState = provisioningState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AssociationContractProperties();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
         return this;
     }
 
@@ -49,5 +60,8 @@ public class AssociationContract extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

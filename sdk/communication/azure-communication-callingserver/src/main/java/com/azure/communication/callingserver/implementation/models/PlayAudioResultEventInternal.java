@@ -26,7 +26,7 @@ public final class PlayAudioResultEventInternal {
     /*
      * The status of the operation
      */
-    @JsonProperty(value = "status")
+    @JsonProperty(value = "status", required = true)
     private OperationStatus status;
 
     /**

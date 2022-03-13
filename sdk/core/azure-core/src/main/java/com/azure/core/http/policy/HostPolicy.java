@@ -9,6 +9,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.util.UrlBuilder;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -17,8 +18,9 @@ import java.net.MalformedURLException;
  * The pipeline policy that adds the given host to each HttpRequest.
  */
 public class HostPolicy implements HttpPipelinePolicy {
+    private static final ClientLogger LOGGER = new ClientLogger(HostPolicy.class);
+
     private final String host;
-    private final ClientLogger logger = new ClientLogger(HostPolicy.class);
 
     /**
      * Create HostPolicy.
@@ -31,17 +33,14 @@ public class HostPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        logger.info("Setting host to {}", host);
+        LOGGER.log(LogLevel.VERBOSE, () -> "Setting host to " + host);
 
-        Mono<HttpResponse> result;
         final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
         try {
             context.getHttpRequest().setUrl(urlBuilder.setHost(host).toUrl());
-            result = next.process();
+            return next.process();
         } catch (MalformedURLException e) {
-            result = Mono.error(new RuntimeException(String.format("Host URL '%s' is invalid.",
-                host), e));
+            return Mono.error(new RuntimeException(String.format("Host URL '%s' is invalid.", host), e));
         }
-        return result;
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicefabric.fluent.models.ApplicationTypeVersionResourceInner;
 import java.util.Map;
@@ -33,6 +34,34 @@ public interface ApplicationTypeVersionResource {
     String type();
 
     /**
+     * Gets the location property: It will be deprecated in New API, resource location depends on the parent resource.
+     *
+     * @return the location value.
+     */
+    String location();
+
+    /**
+     * Gets the tags property: Azure resource tags.
+     *
+     * @return the tags value.
+     */
+    Map<String, String> tags();
+
+    /**
+     * Gets the etag property: Azure resource etag.
+     *
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the provisioningState property: The current deployment or provisioning state, which only appears in the
      * response.
      *
@@ -54,27 +83,6 @@ public interface ApplicationTypeVersionResource {
      * @return the defaultParameterList value.
      */
     Map<String, String> defaultParameterList();
-
-    /**
-     * Gets the location property: It will be deprecated in New API, resource location depends on the parent resource.
-     *
-     * @return the location value.
-     */
-    String location();
-
-    /**
-     * Gets the tags property: Azure resource tags.
-     *
-     * @return the tags value.
-     */
-    Map<String, String> tags();
-
-    /**
-     * Gets the etag property: Azure resource etag.
-     *
-     * @return the etag value.
-     */
-    String etag();
 
     /**
      * Gets the region of the resource.
@@ -187,7 +195,7 @@ public interface ApplicationTypeVersionResource {
     ApplicationTypeVersionResource.Update update();
 
     /** The template for ApplicationTypeVersionResource update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithAppPackageUrl {
+    interface Update extends UpdateStages.WithAppPackageUrl {
         /**
          * Executes the update request.
          *
@@ -205,16 +213,6 @@ public interface ApplicationTypeVersionResource {
     }
     /** The ApplicationTypeVersionResource update stages. */
     interface UpdateStages {
-        /** The stage of the ApplicationTypeVersionResource update allowing to specify tags. */
-        interface WithTags {
-            /**
-             * Specifies the tags property: Azure resource tags..
-             *
-             * @param tags Azure resource tags.
-             * @return the next definition stage.
-             */
-            Update withTags(Map<String, String> tags);
-        }
         /** The stage of the ApplicationTypeVersionResource update allowing to specify appPackageUrl. */
         interface WithAppPackageUrl {
             /**

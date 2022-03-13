@@ -158,16 +158,6 @@ public class NettyAsyncHttpResponseTests {
             .verifyComplete();
     }
 
-    @Test
-    public void close() {
-        Connection connection = mock(Connection.class);
-        when(connection.isDisposed()).thenReturn(true);
-
-        new NettyAsyncHttpResponse(null, connection, REQUEST, false).close();
-
-        verify(connection, times(1)).isDisposed();
-    }
-
     @ParameterizedTest
     @MethodSource("verifyDisposalSupplier")
     public void verifyDisposal(String methodName, Class<?>[] argumentTypes, Object[] argumentValues)
@@ -193,7 +183,6 @@ public class NettyAsyncHttpResponseTests {
 
         Connection connection = mock(Connection.class);
         when(connection.inbound()).thenReturn(nettyInbound);
-        when(connection.isDisposed()).thenReturn(false);
         when(connection.channel()).thenReturn(channel);
 
         NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(reactorNettyResponse, connection, REQUEST,
@@ -206,7 +195,6 @@ public class NettyAsyncHttpResponseTests {
             ((Flux<?>) object).blockLast();
         }
 
-        verify(connection, times(1)).isDisposed();
         verify(eventLoop, times(1)).execute(any());
     }
 

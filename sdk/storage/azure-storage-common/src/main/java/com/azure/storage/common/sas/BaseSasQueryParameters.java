@@ -3,10 +3,10 @@
 
 package com.azure.storage.common.sas;
 
-import com.azure.storage.common.Utility;
-
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
+import com.azure.storage.common.implementation.TimeAndFormat;
+import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -23,19 +23,39 @@ import java.util.function.Function;
  */
 @Deprecated
 public abstract class BaseSasQueryParameters {
-
+    /**
+     * The Storage version.
+     */
     protected String version;
 
+    /**
+     * The allowed HTTP/HTTPS protocols.
+     */
     protected SasProtocol protocol;
 
+    /**
+     * The start time for the SAS's validity.
+     */
     protected OffsetDateTime startTime;
 
+    /**
+     * The end time for the SAS's validity.
+     */
     protected OffsetDateTime expiryTime;
 
+    /**
+     * The IP range that the SAS validates.
+     */
     protected SasIpRange sasIpRange;
 
+    /**
+     * The permissions of the SAS.
+     */
     protected String permissions;
 
+    /**
+     * The signature of the SAS.
+     */
     protected String signature;
 
     /**
@@ -53,9 +73,9 @@ public abstract class BaseSasQueryParameters {
         this.protocol = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_PROTOCOL,
             removeSASParametersFromMap, SasProtocol::parse);
         this.startTime = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_START_TIME,
-            removeSASParametersFromMap, Utility::parseDate);
+            removeSASParametersFromMap, StorageImplUtils::parseDateAndFormat).getDateTime();
         this.expiryTime = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_EXPIRY_TIME,
-            removeSASParametersFromMap, Utility::parseDate);
+            removeSASParametersFromMap, StorageImplUtils::parseDateAndFormat).getDateTime();
         this.sasIpRange = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_IP_RANGE,
             removeSASParametersFromMap, SasIpRange::parse);
         this.permissions = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_PERMISSIONS,
@@ -215,7 +235,7 @@ public abstract class BaseSasQueryParameters {
      */
     @Deprecated
     protected String formatQueryParameterDate(OffsetDateTime dateTime) {
-        return SasImplUtils.formatQueryParameterDate(dateTime);
+        return SasImplUtils.formatQueryParameterDate(new TimeAndFormat(dateTime, null));
     }
 
     /**

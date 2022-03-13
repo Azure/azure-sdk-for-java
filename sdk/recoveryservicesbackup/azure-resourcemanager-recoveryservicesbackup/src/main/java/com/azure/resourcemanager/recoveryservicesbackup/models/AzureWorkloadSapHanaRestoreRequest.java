@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -27,7 +27,7 @@ import java.util.Map;
         name = "AzureWorkloadSAPHanaRestoreWithRehydrateRequest",
         value = AzureWorkloadSapHanaRestoreWithRehydrateRequest.class)
 })
-@Immutable
+@Fluent
 public class AzureWorkloadSapHanaRestoreRequest extends AzureWorkloadRestoreRequest {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureWorkloadSapHanaRestoreRequest.class);
 
@@ -63,6 +63,13 @@ public class AzureWorkloadSapHanaRestoreRequest extends AzureWorkloadRestoreRequ
     @Override
     public AzureWorkloadSapHanaRestoreRequest withRecoveryMode(RecoveryMode recoveryMode) {
         super.withRecoveryMode(recoveryMode);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureWorkloadSapHanaRestoreRequest withTargetVirtualMachineId(String targetVirtualMachineId) {
+        super.withTargetVirtualMachineId(targetVirtualMachineId);
         return this;
     }
 

@@ -1,22 +1,22 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/calling/serverCalls/aHR0cHM6Ly9jb252LXVzd2UtMDkuY29udi5za3lwZS5jb20vY29udi9EZVF2WEJGVVlFV1NNZkFXYno2azN3P2k9MTEmZT02Mzc1NzIyMjk0Mjc0NTI4Nzk=/recordings?api-version=2021-06-15-preview",
+    "Uri" : "https://REDACTED.communication.azure.com/calling/serverCalls/aHR0cHM6Ly9jb252LXVzd2UtMDkuY29udi5za3lwZS5jb20vY29udi9EZVF2WEJGVVlFV1NNZkFXYno2azN3P2k9MTEmZT02Mzc1NzIyMjk0Mjc0NTI4Nzk=/recordings?api-version=2021-08-30-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.1 (11.0.11; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "429b38b0-33f1-4167-bf2f-b80092e0edd1",
+      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.4 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d35a64a2-a614-4381-820b-2c20c1dd09ba",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "X-Cache" : "CONFIG_NOCACHE",
-      "content-length" : "83",
+      "content-length" : "93",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0FQbJYAAAAACQDDu6JrTsT45jhtV27J9xV1NURURHRTA4MDkAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+      "X-Azure-Ref" : "0xuwvYQAAAAB4jNsYHgrKQ5R0lTOh9KsxV1NURURHRTA4MTIAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
       "StatusCode" : "400",
-      "X-Microsoft-Skype-Chain-ID" : "000539a7-397e-4271-861d-b721dba5d259",
-      "Body" : "{\"code\":\"8501\",\"message\":\"Action is invalid when call is not in Established state\"}",
-      "x-ms-client-request-id" : "429b38b0-33f1-4167-bf2f-b80092e0edd1",
-      "Date" : "Tue, 15 Jun 2021 19:57:08 GMT",
+      "X-Microsoft-Skype-Chain-ID" : "1ca3c128-c796-4f9e-9c65-54176b13d2b1",
+      "Body" : "{\"error\":{\"code\":\"8501\",\"message\":\"Action is invalid when call is not in Established state\"}}",
+      "x-ms-client-request-id" : "d35a64a2-a614-4381-820b-2c20c1dd09ba",
+      "Date" : "Wed, 01 Sep 2021 21:12:38 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

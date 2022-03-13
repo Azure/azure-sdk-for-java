@@ -31,9 +31,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.storage.fluent.models.PrivateEndpointConnectionInner;
-import com.azure.resourcemanager.storage.models.PrivateEndpoint;
 import com.azure.resourcemanager.storage.models.PrivateEndpointConnectionListResult;
-import com.azure.resourcemanager.storage.models.PrivateLinkServiceConnectionState;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient. */
@@ -141,7 +139,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private endpoint connection associated with the specified storage account.
+     * @return list of private endpoint connection associated with the specified storage account along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionInner>> listSinglePageAsync(
@@ -196,7 +195,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private endpoint connection associated with the specified storage account.
+     * @return list of private endpoint connection associated with the specified storage account along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionInner>> listSinglePageAsync(
@@ -247,7 +247,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private endpoint connection associated with the specified storage account.
+     * @return list of private endpoint connection associated with the specified storage account as paginated response
+     *     with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PrivateEndpointConnectionInner> listAsync(String resourceGroupName, String accountName) {
@@ -265,7 +266,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private endpoint connection associated with the specified storage account.
+     * @return list of private endpoint connection associated with the specified storage account as paginated response
+     *     with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PrivateEndpointConnectionInner> listAsync(
@@ -283,7 +285,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private endpoint connection associated with the specified storage account.
+     * @return list of private endpoint connection associated with the specified storage account as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionInner> list(String resourceGroupName, String accountName) {
@@ -301,7 +304,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private endpoint connection associated with the specified storage account.
+     * @return list of private endpoint connection associated with the specified storage account as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionInner> list(
@@ -321,7 +325,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the storage account.
+     * @return the specified private endpoint connection associated with the storage account along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
@@ -381,7 +386,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the storage account.
+     * @return the specified private endpoint connection associated with the storage account along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
@@ -437,7 +443,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the storage account.
+     * @return the specified private endpoint connection associated with the storage account on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateEndpointConnectionInner> getAsync(
@@ -486,7 +493,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the storage account.
+     * @return the specified private endpoint connection associated with the storage account along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionInner> getWithResponse(
@@ -503,21 +511,19 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
-     * @param privateEndpoint The resource of private end point.
-     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
-     *     service consumer and provider.
+     * @param properties The private endpoint connection properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
+     * @return the Private Endpoint Connection resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrivateEndpointConnectionInner>> putWithResponseAsync(
         String resourceGroupName,
         String accountName,
         String privateEndpointConnectionName,
-        PrivateEndpoint privateEndpoint,
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+        PrivateEndpointConnectionInner properties) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -543,16 +549,12 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        if (privateLinkServiceConnectionState != null) {
-            privateLinkServiceConnectionState.validate();
-        }
-        if (privateEndpoint != null) {
-            privateEndpoint.validate();
+        if (properties == null) {
+            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        } else {
+            properties.validate();
         }
         final String accept = "application/json";
-        PrivateEndpointConnectionInner properties = new PrivateEndpointConnectionInner();
-        properties.withPrivateEndpoint(privateEndpoint);
-        properties.withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
         return FluxUtil
             .withContext(
                 context ->
@@ -579,22 +581,20 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
-     * @param privateEndpoint The resource of private end point.
-     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
-     *     service consumer and provider.
+     * @param properties The private endpoint connection properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
+     * @return the Private Endpoint Connection resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateEndpointConnectionInner>> putWithResponseAsync(
         String resourceGroupName,
         String accountName,
         String privateEndpointConnectionName,
-        PrivateEndpoint privateEndpoint,
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState,
+        PrivateEndpointConnectionInner properties,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -621,16 +621,12 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        if (privateLinkServiceConnectionState != null) {
-            privateLinkServiceConnectionState.validate();
-        }
-        if (privateEndpoint != null) {
-            privateEndpoint.validate();
+        if (properties == null) {
+            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        } else {
+            properties.validate();
         }
         final String accept = "application/json";
-        PrivateEndpointConnectionInner properties = new PrivateEndpointConnectionInner();
-        properties.withPrivateEndpoint(privateEndpoint);
-        properties.withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
         context = this.client.mergeContext(context);
         return service
             .put(
@@ -654,27 +650,19 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
-     * @param privateEndpoint The resource of private end point.
-     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
-     *     service consumer and provider.
+     * @param properties The private endpoint connection properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
+     * @return the Private Endpoint Connection resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateEndpointConnectionInner> putAsync(
         String resourceGroupName,
         String accountName,
         String privateEndpointConnectionName,
-        PrivateEndpoint privateEndpoint,
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
-        return putWithResponseAsync(
-                resourceGroupName,
-                accountName,
-                privateEndpointConnectionName,
-                privateEndpoint,
-                privateLinkServiceConnectionState)
+        PrivateEndpointConnectionInner properties) {
+        return putWithResponseAsync(resourceGroupName, accountName, privateEndpointConnectionName, properties)
             .flatMap(
                 (Response<PrivateEndpointConnectionInner> res) -> {
                     if (res.getValue() != null) {
@@ -694,41 +682,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrivateEndpointConnectionInner> putAsync(
-        String resourceGroupName, String accountName, String privateEndpointConnectionName) {
-        final PrivateEndpoint privateEndpoint = null;
-        final PrivateLinkServiceConnectionState privateLinkServiceConnectionState = null;
-        return putWithResponseAsync(
-                resourceGroupName,
-                accountName,
-                privateEndpointConnectionName,
-                privateEndpoint,
-                privateLinkServiceConnectionState)
-            .flatMap(
-                (Response<PrivateEndpointConnectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Update the state of specified private endpoint connection associated with the storage account.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * @param properties The private endpoint connection properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -736,16 +690,11 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner put(
-        String resourceGroupName, String accountName, String privateEndpointConnectionName) {
-        final PrivateEndpoint privateEndpoint = null;
-        final PrivateLinkServiceConnectionState privateLinkServiceConnectionState = null;
-        return putAsync(
-                resourceGroupName,
-                accountName,
-                privateEndpointConnectionName,
-                privateEndpoint,
-                privateLinkServiceConnectionState)
-            .block();
+        String resourceGroupName,
+        String accountName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner properties) {
+        return putAsync(resourceGroupName, accountName, privateEndpointConnectionName, properties).block();
     }
 
     /**
@@ -757,30 +706,21 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
-     * @param privateEndpoint The resource of private end point.
-     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
-     *     service consumer and provider.
+     * @param properties The private endpoint connection properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
+     * @return the Private Endpoint Connection resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionInner> putWithResponse(
         String resourceGroupName,
         String accountName,
         String privateEndpointConnectionName,
-        PrivateEndpoint privateEndpoint,
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState,
+        PrivateEndpointConnectionInner properties,
         Context context) {
-        return putWithResponseAsync(
-                resourceGroupName,
-                accountName,
-                privateEndpointConnectionName,
-                privateEndpoint,
-                privateLinkServiceConnectionState,
-                context)
+        return putWithResponseAsync(resourceGroupName, accountName, privateEndpointConnectionName, properties, context)
             .block();
     }
 
@@ -796,7 +736,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
@@ -856,7 +796,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -912,7 +852,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String accountName, String privateEndpointConnectionName) {
@@ -951,7 +891,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(

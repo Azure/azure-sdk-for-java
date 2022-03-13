@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
@@ -15,6 +16,9 @@ import java.util.Map;
 @Fluent
 public interface KubernetesClusterAgentPool
     extends ChildResource<KubernetesCluster>, HasInnerModel<ManagedClusterAgentPoolProfile> {
+
+    /** @return the provisioning state of the agent pool */
+    String provisioningState();
 
     /** @return the number of agents (virtual machines) to host docker containers */
     int count();
@@ -75,6 +79,22 @@ public interface KubernetesClusterAgentPool
 
     /** @return the maximum price of each spot virtual machines in the agent pool, -1 means pay-as-you-go prices */
     Double virtualMachineMaximumPrice();
+
+    /**
+     * @return the OS disk type to be used for machines in the agent pool
+     */
+    OSDiskType osDiskType();
+
+    /**
+     * @return the disk type for the placement of emptyDir volumes, container runtime data root,
+     * and Kubelet ephemeral storage
+     */
+    KubeletDiskType kubeletDiskType();
+
+    /**
+     * @return the tags of the agents.
+     */
+    Map<String, String> tags();
 
     // Fluent interfaces
 
@@ -259,6 +279,30 @@ public interface KubernetesClusterAgentPool
         }
 
         /**
+         * The stage of a container service agent pool definition allowing to specify tags.
+         *
+         * @param <ParentT> the stage of the container service definition to return to after attaching this definition
+         */
+        interface WithTags<ParentT> {
+            /**
+             * Specifies tags for the agents.
+             *
+             * @param tags the tags to associate
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withTags(Map<String, String> tags);
+
+            /**
+             * Adds a tag to the agents.
+             *
+             * @param key the key for the tag
+             * @param value the value for the tag
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withTag(String key, String value);
+        }
+
+        /**
          * The stage of a container service agent pool definition allowing to specify a virtual network to be used for
          * the agents.
          *
@@ -340,6 +384,34 @@ public interface KubernetesClusterAgentPool
         }
 
         /**
+         * The stage of a container service agent pool definition allowing to specify the agent pool disk type.
+         *
+         * @param <ParentT> the stage of the container service definition to return to after attaching this definition
+         */
+        interface WithDiskType<ParentT> {
+            /**
+             * The OS disk type to be used for machines in the agent pool.
+             *
+             * The default is 'Ephemeral' if the VM supports it and has a cache disk larger than the requested
+             * OSDiskSizeGB. Otherwise, defaults to 'Managed'.
+             *
+             * @param osDiskType the OS disk type to be used for machines in the agent pool
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withOSDiskType(OSDiskType osDiskType);
+
+            /**
+             * The disk type for the placement of emptyDir volumes, container runtime data root,
+             * and Kubelet ephemeral storage.
+             *
+             * @param kubeletDiskType the disk type for the placement of emptyDir volumes, container runtime data root,
+             *                        and Kubelet ephemeral storage.
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withKubeletDiskType(KubeletDiskType kubeletDiskType);
+        }
+
+        /**
          * The final stage of a container service agent pool definition. At this stage, any remaining optional settings
          * can be specified, or the container service agent pool can be attached to the parent container service
          * definition.
@@ -359,6 +431,8 @@ public interface KubernetesClusterAgentPool
                 WithNodeLabelsTaints<ParentT>,
                 WithVMPriority<ParentT>,
                 WithBillingProfile<ParentT>,
+                WithDiskType<ParentT>,
+                WithTags<ParentT>,
                 Attachable.InDefinition<ParentT> {
         }
     }
@@ -368,7 +442,10 @@ public interface KubernetesClusterAgentPool
         extends Settable<ParentT>,
             UpdateStages.WithAgentPoolVirtualMachineCount<ParentT>,
             UpdateStages.WithAutoScaling<ParentT>,
-            UpdateStages.WithAgentPoolMode<ParentT> { }
+            UpdateStages.WithAgentPoolMode<ParentT>,
+            UpdateStages.WithDiskType<ParentT>,
+            UpdateStages.WithTags<ParentT> {
+    }
 
     /** Grouping of agent pool update stages. */
     interface UpdateStages {
@@ -407,7 +484,39 @@ public interface KubernetesClusterAgentPool
         }
 
         /**
-         * The stage of a container service agent pool definition allowing to specify auto-scaling.
+         * The stage of a container service agent pool update allowing to specify tags.
+         *
+         * @param <ParentT> the stage of the container service definition to return to after attaching this definition
+         */
+        interface WithTags<ParentT> {
+            /**
+             * Specifies tags for the agents.
+             *
+             * @param tags tags indexed by name
+             * @return the next stage of the update
+             */
+            Update<ParentT> withTags(Map<String, String> tags);
+
+            /**
+             * Adds a tag to the agents.
+             *
+             * @param key the key for the tag
+             * @param value the value for the tag
+             * @return the next stage of the update
+             */
+            Update<ParentT> withTag(String key, String value);
+
+            /**
+             * Removes a tag from the agents.
+             *
+             * @param key the key of the tag to remove
+             * @return the next stage of the update
+             */
+            Update<ParentT> withoutTag(String key);
+        }
+
+        /**
+         * The stage of a container service agent pool update allowing to specify auto-scaling.
          *
          * @param <ParentT> the stage of the container service definition to return to after attaching this definition
          */
@@ -427,6 +536,23 @@ public interface KubernetesClusterAgentPool
              * @return the next stage of the update
              */
             Update<ParentT> withoutAutoScaling();
+        }
+
+        /**
+         * The stage of a container service agent pool update allowing to specify the agent pool disk type.
+         *
+         * @param <ParentT> the stage of the container service definition to return to after attaching this definition
+         */
+        interface WithDiskType<ParentT> {
+            /**
+             * The disk type for the placement of emptyDir volumes, container runtime data root,
+             * and Kubelet ephemeral storage.
+             *
+             * @param kubeletDiskType the disk type for the placement of emptyDir volumes, container runtime data root,
+             *                        and Kubelet ephemeral storage.
+             * @return the next stage of the update
+             */
+            Update<ParentT> withKubeletDiskType(KubeletDiskType kubeletDiskType);
         }
     }
 }

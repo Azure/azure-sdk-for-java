@@ -5,18 +5,23 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayPrivateLinkIpConfigurationProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The application gateway private link ip configuration. */
-@JsonFlatten
 @Fluent
-public class ApplicationGatewayPrivateLinkIpConfiguration extends SubResource {
+public final class ApplicationGatewayPrivateLinkIpConfiguration extends SubResource {
     @JsonIgnore
     private final ClientLogger logger = new ClientLogger(ApplicationGatewayPrivateLinkIpConfiguration.class);
+
+    /*
+     * Properties of an application gateway private link ip configuration.
+     */
+    @JsonProperty(value = "properties")
+    private ApplicationGatewayPrivateLinkIpConfigurationProperties innerProperties;
 
     /*
      * The name of application gateway private link ip configuration.
@@ -36,36 +41,14 @@ public class ApplicationGatewayPrivateLinkIpConfiguration extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * The private IP address of the IP configuration.
+    /**
+     * Get the innerProperties property: Properties of an application gateway private link ip configuration.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.privateIPAddress")
-    private String privateIpAddress;
-
-    /*
-     * The private IP address allocation method.
-     */
-    @JsonProperty(value = "properties.privateIPAllocationMethod")
-    private IpAllocationMethod privateIpAllocationMethod;
-
-    /*
-     * Reference to the subnet resource.
-     */
-    @JsonProperty(value = "properties.subnet")
-    private SubResource subnet;
-
-    /*
-     * Whether the ip configuration is primary or not.
-     */
-    @JsonProperty(value = "properties.primary")
-    private Boolean primary;
-
-    /*
-     * The provisioning state of the application gateway private link IP
-     * configuration.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private ApplicationGatewayPrivateLinkIpConfigurationProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: The name of application gateway private link ip configuration.
@@ -105,13 +88,20 @@ public class ApplicationGatewayPrivateLinkIpConfiguration extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayPrivateLinkIpConfiguration withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the privateIpAddress property: The private IP address of the IP configuration.
      *
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
-        return this.privateIpAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().privateIpAddress();
     }
 
     /**
@@ -121,7 +111,10 @@ public class ApplicationGatewayPrivateLinkIpConfiguration extends SubResource {
      * @return the ApplicationGatewayPrivateLinkIpConfiguration object itself.
      */
     public ApplicationGatewayPrivateLinkIpConfiguration withPrivateIpAddress(String privateIpAddress) {
-        this.privateIpAddress = privateIpAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayPrivateLinkIpConfigurationProperties();
+        }
+        this.innerProperties().withPrivateIpAddress(privateIpAddress);
         return this;
     }
 
@@ -131,7 +124,7 @@ public class ApplicationGatewayPrivateLinkIpConfiguration extends SubResource {
      * @return the privateIpAllocationMethod value.
      */
     public IpAllocationMethod privateIpAllocationMethod() {
-        return this.privateIpAllocationMethod;
+        return this.innerProperties() == null ? null : this.innerProperties().privateIpAllocationMethod();
     }
 
     /**
@@ -142,7 +135,10 @@ public class ApplicationGatewayPrivateLinkIpConfiguration extends SubResource {
      */
     public ApplicationGatewayPrivateLinkIpConfiguration withPrivateIpAllocationMethod(
         IpAllocationMethod privateIpAllocationMethod) {
-        this.privateIpAllocationMethod = privateIpAllocationMethod;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayPrivateLinkIpConfigurationProperties();
+        }
+        this.innerProperties().withPrivateIpAllocationMethod(privateIpAllocationMethod);
         return this;
     }
 
@@ -152,7 +148,7 @@ public class ApplicationGatewayPrivateLinkIpConfiguration extends SubResource {
      * @return the subnet value.
      */
     public SubResource subnet() {
-        return this.subnet;
+        return this.innerProperties() == null ? null : this.innerProperties().subnet();
     }
 
     /**
@@ -162,7 +158,10 @@ public class ApplicationGatewayPrivateLinkIpConfiguration extends SubResource {
      * @return the ApplicationGatewayPrivateLinkIpConfiguration object itself.
      */
     public ApplicationGatewayPrivateLinkIpConfiguration withSubnet(SubResource subnet) {
-        this.subnet = subnet;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayPrivateLinkIpConfigurationProperties();
+        }
+        this.innerProperties().withSubnet(subnet);
         return this;
     }
 
@@ -172,7 +171,7 @@ public class ApplicationGatewayPrivateLinkIpConfiguration extends SubResource {
      * @return the primary value.
      */
     public Boolean primary() {
-        return this.primary;
+        return this.innerProperties() == null ? null : this.innerProperties().primary();
     }
 
     /**
@@ -182,7 +181,10 @@ public class ApplicationGatewayPrivateLinkIpConfiguration extends SubResource {
      * @return the ApplicationGatewayPrivateLinkIpConfiguration object itself.
      */
     public ApplicationGatewayPrivateLinkIpConfiguration withPrimary(Boolean primary) {
-        this.primary = primary;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayPrivateLinkIpConfigurationProperties();
+        }
+        this.innerProperties().withPrimary(primary);
         return this;
     }
 
@@ -193,14 +195,7 @@ public class ApplicationGatewayPrivateLinkIpConfiguration extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ApplicationGatewayPrivateLinkIpConfiguration withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -209,5 +204,8 @@ public class ApplicationGatewayPrivateLinkIpConfiguration extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

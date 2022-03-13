@@ -16,7 +16,9 @@ import com.azure.core.test.TestMode
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.FluxUtil
 import com.azure.identity.EnvironmentCredentialBuilder
+import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobProperties
+import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.ListBlobContainersOptions
@@ -94,25 +96,25 @@ class APISpec extends StorageSpec {
     }
 
     def setup() {
-        primaryBlobServiceClient = getServiceClient(env.primaryAccount)
-        primaryBlobServiceAsyncClient = getServiceAsyncClient(env.primaryAccount)
-        alternateBlobServiceClient = getServiceClient(env.secondaryAccount)
-        premiumBlobServiceClient = getServiceClient(env.premiumAccount)
-        versionedBlobServiceClient = getServiceClient(env.versionedAccount)
-        softDeleteServiceClient = getServiceClient(env.softDeleteAccount)
+        primaryBlobServiceClient = getServiceClient(environment.primaryAccount)
+        primaryBlobServiceAsyncClient = getServiceAsyncClient(environment.primaryAccount)
+        alternateBlobServiceClient = getServiceClient(environment.secondaryAccount)
+        premiumBlobServiceClient = getServiceClient(environment.premiumAccount)
+        versionedBlobServiceClient = getServiceClient(environment.versionedAccount)
+        softDeleteServiceClient = getServiceClient(environment.softDeleteAccount)
 
         containerName = generateContainerName()
         cc = primaryBlobServiceClient.getBlobContainerClient(containerName)
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName)
-        cc.create()
+        ignoreErrors({ cc.create() }, BlobErrorCode.CONTAINER_ALREADY_EXISTS)
     }
 
     def cleanup() {
-        if (env.testMode != TestMode.PLAYBACK) {
+        if (environment.testMode != TestMode.PLAYBACK) {
             def cleanupClient = new BlobServiceClientBuilder()
                 .httpClient(getHttpClient())
-                .credential(env.primaryAccount.credential)
-                .endpoint(env.primaryAccount.blobEndpoint)
+                .credential(environment.primaryAccount.credential)
+                .endpoint(environment.primaryAccount.blobEndpoint)
                 .buildClient()
 
             def options = new ListBlobContainersOptions().setPrefix(namer.getResourcePrefix())
@@ -123,7 +125,7 @@ class APISpec extends StorageSpec {
                     createLeaseClient(containerClient).breakLeaseWithResponse(new BlobBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null)
                 }
 
-                containerClient.delete()
+                ignoreErrors({ containerClient.delete() }, BlobErrorCode.CONTAINER_NOT_FOUND)
             }
         }
     }
@@ -134,7 +136,7 @@ class APISpec extends StorageSpec {
 
     def getOAuthServiceClient() {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-            .endpoint(env.primaryAccount.blobEndpoint)
+            .endpoint(environment.primaryAccount.blobEndpoint)
 
         instrument(builder)
 
@@ -142,12 +144,12 @@ class APISpec extends StorageSpec {
     }
 
     def setOauthCredentials(BlobServiceClientBuilder builder) {
-        if (env.testMode != TestMode.PLAYBACK) {
+        if (environment.testMode != TestMode.PLAYBACK) {
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
             return builder.credential(new EnvironmentCredentialBuilder().build())
         } else {
             // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
-            return builder.credential(env.primaryAccount.credential)
+            return builder.credential(environment.primaryAccount.credential)
         }
     }
 
@@ -219,8 +221,8 @@ class APISpec extends StorageSpec {
     BlobServiceAsyncClient getPrimaryServiceClientForWrites(long perRequestDataSize) {
         int retryTimeout = Math.toIntExact((long) (perRequestDataSize / Constants.MB) * 20)
         retryTimeout = Math.max(60, retryTimeout)
-        return getServiceClientBuilder(env.primaryAccount.credential,
-            env.primaryAccount.blobEndpoint)
+        return getServiceClientBuilder(environment.primaryAccount.credential,
+            environment.primaryAccount.blobEndpoint)
         .retryOptions(new RequestRetryOptions(null, null, retryTimeout, null, null, null))
             .buildAsyncClient()
     }
@@ -665,76 +667,18 @@ class APISpec extends StorageSpec {
 
     // Only sleep if test is running in live mode
     def sleepIfRecord(long milliseconds) {
-        if (env.testMode != TestMode.PLAYBACK) {
+        if (environment.testMode != TestMode.PLAYBACK) {
             sleep(milliseconds)
         }
     }
 
-    class MockRetryRangeResponsePolicy implements HttpPipelinePolicy {
-        @Override
-        Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-            return next.process().flatMap { HttpResponse response ->
-                if (response.getRequest().getHeaders().getValue("x-ms-range") != "bytes=2-6") {
-                    return Mono.<HttpResponse> error(new IllegalArgumentException("The range header was not set correctly on retry."))
-                } else {
-                    // ETag can be a dummy value. It's not validated, but DownloadResponse requires one
-                    return Mono.<HttpResponse> just(new MockDownloadHttpResponse(response, 206, Flux.error(new IOException())))
-                }
+    def ignoreErrors(Closure closure, BlobErrorCode... errors) {
+        try {
+            closure.call()
+        } catch (BlobStorageException ex) {
+            if (!errors.contains(ex.errorCode)) {
+                throw ex
             }
-        }
-    }
-
-    /*
-    This is for stubbing responses that will actually go through the pipeline and autorest code. Autorest does not seem
-    to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
-    with than was worth it. Because this type is just for BlobDownload, we don't need to accept a header type.
-     */
-
-    class MockDownloadHttpResponse extends HttpResponse {
-        private final int statusCode
-        private final HttpHeaders headers
-        private final Flux<ByteBuffer> body
-
-        MockDownloadHttpResponse(HttpResponse response, int statusCode, Flux<ByteBuffer> body) {
-            super(response.getRequest())
-            this.statusCode = statusCode
-            this.headers = response.getHeaders()
-            this.body = body
-        }
-
-        @Override
-        int getStatusCode() {
-            return statusCode
-        }
-
-        @Override
-        String getHeaderValue(String s) {
-            return headers.getValue(s)
-        }
-
-        @Override
-        HttpHeaders getHeaders() {
-            return headers
-        }
-
-        @Override
-        Flux<ByteBuffer> getBody() {
-            return body
-        }
-
-        @Override
-        Mono<byte[]> getBodyAsByteArray() {
-            return Mono.error(new IOException())
-        }
-
-        @Override
-        Mono<String> getBodyAsString() {
-            return Mono.error(new IOException())
-        }
-
-        @Override
-        Mono<String> getBodyAsString(Charset charset) {
-            return Mono.error(new IOException())
         }
     }
 
@@ -774,7 +718,7 @@ class APISpec extends StorageSpec {
     }
 
     def getPollingDuration(long liveTestDurationInMillis) {
-        return (env.testMode == TestMode.PLAYBACK) ? Duration.ofMillis(10) : Duration.ofMillis(liveTestDurationInMillis)
+        return (environment.testMode == TestMode.PLAYBACK) ? Duration.ofMillis(1) : Duration.ofMillis(liveTestDurationInMillis)
     }
 
     def getPerCallVersionPolicy() {

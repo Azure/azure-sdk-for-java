@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.WebhookActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -16,218 +16,23 @@ import java.util.List;
 /** WebHook activity. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("WebHook")
-@JsonFlatten
 @Fluent
-public class WebhookActivity extends ControlActivity {
+public final class WebhookActivity extends ControlActivity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WebhookActivity.class);
 
     /*
-     * Rest API method for target endpoint.
+     * WebHook activity properties.
      */
-    @JsonProperty(value = "typeProperties.method", required = true)
-    private WebhookActivityMethod method;
-
-    /*
-     * WebHook activity target endpoint and path. Type: string (or Expression
-     * with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.url", required = true)
-    private Object url;
-
-    /*
-     * The timeout within which the webhook should be called back. If there is
-     * no value specified, it defaults to 10 minutes. Type: string. Pattern:
-     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     */
-    @JsonProperty(value = "typeProperties.timeout")
-    private String timeout;
-
-    /*
-     * Represents the headers that will be sent to the request. For example, to
-     * set the language and type on a request: "headers" : { "Accept-Language":
-     * "en-us", "Content-Type": "application/json" }. Type: string (or
-     * Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.headers")
-    private Object headers;
-
-    /*
-     * Represents the payload that will be sent to the endpoint. Required for
-     * POST/PUT method, not allowed for GET method Type: string (or Expression
-     * with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.body")
-    private Object body;
-
-    /*
-     * Authentication method used for calling the endpoint.
-     */
-    @JsonProperty(value = "typeProperties.authentication")
-    private WebActivityAuthentication authentication;
-
-    /*
-     * When set to true, statusCode, output and error in callback request body
-     * will be consumed by activity. The activity can be marked as failed by
-     * setting statusCode >= 400 in callback request. Default is false. Type:
-     * boolean (or Expression with resultType boolean).
-     */
-    @JsonProperty(value = "typeProperties.reportStatusOnCallBack")
-    private Object reportStatusOnCallBack;
+    @JsonProperty(value = "typeProperties", required = true)
+    private WebhookActivityTypeProperties innerTypeProperties = new WebhookActivityTypeProperties();
 
     /**
-     * Get the method property: Rest API method for target endpoint.
+     * Get the innerTypeProperties property: WebHook activity properties.
      *
-     * @return the method value.
+     * @return the innerTypeProperties value.
      */
-    public WebhookActivityMethod method() {
-        return this.method;
-    }
-
-    /**
-     * Set the method property: Rest API method for target endpoint.
-     *
-     * @param method the method value to set.
-     * @return the WebhookActivity object itself.
-     */
-    public WebhookActivity withMethod(WebhookActivityMethod method) {
-        this.method = method;
-        return this;
-    }
-
-    /**
-     * Get the url property: WebHook activity target endpoint and path. Type: string (or Expression with resultType
-     * string).
-     *
-     * @return the url value.
-     */
-    public Object url() {
-        return this.url;
-    }
-
-    /**
-     * Set the url property: WebHook activity target endpoint and path. Type: string (or Expression with resultType
-     * string).
-     *
-     * @param url the url value to set.
-     * @return the WebhookActivity object itself.
-     */
-    public WebhookActivity withUrl(Object url) {
-        this.url = url;
-        return this;
-    }
-
-    /**
-     * Get the timeout property: The timeout within which the webhook should be called back. If there is no value
-     * specified, it defaults to 10 minutes. Type: string. Pattern:
-     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
-     * @return the timeout value.
-     */
-    public String timeout() {
-        return this.timeout;
-    }
-
-    /**
-     * Set the timeout property: The timeout within which the webhook should be called back. If there is no value
-     * specified, it defaults to 10 minutes. Type: string. Pattern:
-     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
-     * @param timeout the timeout value to set.
-     * @return the WebhookActivity object itself.
-     */
-    public WebhookActivity withTimeout(String timeout) {
-        this.timeout = timeout;
-        return this;
-    }
-
-    /**
-     * Get the headers property: Represents the headers that will be sent to the request. For example, to set the
-     * language and type on a request: "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }.
-     * Type: string (or Expression with resultType string).
-     *
-     * @return the headers value.
-     */
-    public Object headers() {
-        return this.headers;
-    }
-
-    /**
-     * Set the headers property: Represents the headers that will be sent to the request. For example, to set the
-     * language and type on a request: "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }.
-     * Type: string (or Expression with resultType string).
-     *
-     * @param headers the headers value to set.
-     * @return the WebhookActivity object itself.
-     */
-    public WebhookActivity withHeaders(Object headers) {
-        this.headers = headers;
-        return this;
-    }
-
-    /**
-     * Get the body property: Represents the payload that will be sent to the endpoint. Required for POST/PUT method,
-     * not allowed for GET method Type: string (or Expression with resultType string).
-     *
-     * @return the body value.
-     */
-    public Object body() {
-        return this.body;
-    }
-
-    /**
-     * Set the body property: Represents the payload that will be sent to the endpoint. Required for POST/PUT method,
-     * not allowed for GET method Type: string (or Expression with resultType string).
-     *
-     * @param body the body value to set.
-     * @return the WebhookActivity object itself.
-     */
-    public WebhookActivity withBody(Object body) {
-        this.body = body;
-        return this;
-    }
-
-    /**
-     * Get the authentication property: Authentication method used for calling the endpoint.
-     *
-     * @return the authentication value.
-     */
-    public WebActivityAuthentication authentication() {
-        return this.authentication;
-    }
-
-    /**
-     * Set the authentication property: Authentication method used for calling the endpoint.
-     *
-     * @param authentication the authentication value to set.
-     * @return the WebhookActivity object itself.
-     */
-    public WebhookActivity withAuthentication(WebActivityAuthentication authentication) {
-        this.authentication = authentication;
-        return this;
-    }
-
-    /**
-     * Get the reportStatusOnCallBack property: When set to true, statusCode, output and error in callback request body
-     * will be consumed by activity. The activity can be marked as failed by setting statusCode &gt;= 400 in callback
-     * request. Default is false. Type: boolean (or Expression with resultType boolean).
-     *
-     * @return the reportStatusOnCallBack value.
-     */
-    public Object reportStatusOnCallBack() {
-        return this.reportStatusOnCallBack;
-    }
-
-    /**
-     * Set the reportStatusOnCallBack property: When set to true, statusCode, output and error in callback request body
-     * will be consumed by activity. The activity can be marked as failed by setting statusCode &gt;= 400 in callback
-     * request. Default is false. Type: boolean (or Expression with resultType boolean).
-     *
-     * @param reportStatusOnCallBack the reportStatusOnCallBack value to set.
-     * @return the WebhookActivity object itself.
-     */
-    public WebhookActivity withReportStatusOnCallBack(Object reportStatusOnCallBack) {
-        this.reportStatusOnCallBack = reportStatusOnCallBack;
-        return this;
+    private WebhookActivityTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -259,6 +64,183 @@ public class WebhookActivity extends ControlActivity {
     }
 
     /**
+     * Get the method property: Rest API method for target endpoint.
+     *
+     * @return the method value.
+     */
+    public WebhookActivityMethod method() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().method();
+    }
+
+    /**
+     * Set the method property: Rest API method for target endpoint.
+     *
+     * @param method the method value to set.
+     * @return the WebhookActivity object itself.
+     */
+    public WebhookActivity withMethod(WebhookActivityMethod method) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new WebhookActivityTypeProperties();
+        }
+        this.innerTypeProperties().withMethod(method);
+        return this;
+    }
+
+    /**
+     * Get the url property: WebHook activity target endpoint and path. Type: string (or Expression with resultType
+     * string).
+     *
+     * @return the url value.
+     */
+    public Object url() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().url();
+    }
+
+    /**
+     * Set the url property: WebHook activity target endpoint and path. Type: string (or Expression with resultType
+     * string).
+     *
+     * @param url the url value to set.
+     * @return the WebhookActivity object itself.
+     */
+    public WebhookActivity withUrl(Object url) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new WebhookActivityTypeProperties();
+        }
+        this.innerTypeProperties().withUrl(url);
+        return this;
+    }
+
+    /**
+     * Get the timeout property: The timeout within which the webhook should be called back. If there is no value
+     * specified, it defaults to 10 minutes. Type: string. Pattern:
+     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     *
+     * @return the timeout value.
+     */
+    public String timeout() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().timeout();
+    }
+
+    /**
+     * Set the timeout property: The timeout within which the webhook should be called back. If there is no value
+     * specified, it defaults to 10 minutes. Type: string. Pattern:
+     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     *
+     * @param timeout the timeout value to set.
+     * @return the WebhookActivity object itself.
+     */
+    public WebhookActivity withTimeout(String timeout) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new WebhookActivityTypeProperties();
+        }
+        this.innerTypeProperties().withTimeout(timeout);
+        return this;
+    }
+
+    /**
+     * Get the headers property: Represents the headers that will be sent to the request. For example, to set the
+     * language and type on a request: "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }.
+     * Type: string (or Expression with resultType string).
+     *
+     * @return the headers value.
+     */
+    public Object headers() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().headers();
+    }
+
+    /**
+     * Set the headers property: Represents the headers that will be sent to the request. For example, to set the
+     * language and type on a request: "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }.
+     * Type: string (or Expression with resultType string).
+     *
+     * @param headers the headers value to set.
+     * @return the WebhookActivity object itself.
+     */
+    public WebhookActivity withHeaders(Object headers) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new WebhookActivityTypeProperties();
+        }
+        this.innerTypeProperties().withHeaders(headers);
+        return this;
+    }
+
+    /**
+     * Get the body property: Represents the payload that will be sent to the endpoint. Required for POST/PUT method,
+     * not allowed for GET method Type: string (or Expression with resultType string).
+     *
+     * @return the body value.
+     */
+    public Object body() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().body();
+    }
+
+    /**
+     * Set the body property: Represents the payload that will be sent to the endpoint. Required for POST/PUT method,
+     * not allowed for GET method Type: string (or Expression with resultType string).
+     *
+     * @param body the body value to set.
+     * @return the WebhookActivity object itself.
+     */
+    public WebhookActivity withBody(Object body) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new WebhookActivityTypeProperties();
+        }
+        this.innerTypeProperties().withBody(body);
+        return this;
+    }
+
+    /**
+     * Get the authentication property: Authentication method used for calling the endpoint.
+     *
+     * @return the authentication value.
+     */
+    public WebActivityAuthentication authentication() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().authentication();
+    }
+
+    /**
+     * Set the authentication property: Authentication method used for calling the endpoint.
+     *
+     * @param authentication the authentication value to set.
+     * @return the WebhookActivity object itself.
+     */
+    public WebhookActivity withAuthentication(WebActivityAuthentication authentication) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new WebhookActivityTypeProperties();
+        }
+        this.innerTypeProperties().withAuthentication(authentication);
+        return this;
+    }
+
+    /**
+     * Get the reportStatusOnCallBack property: When set to true, statusCode, output and error in callback request body
+     * will be consumed by activity. The activity can be marked as failed by setting statusCode &gt;= 400 in callback
+     * request. Default is false. Type: boolean (or Expression with resultType boolean).
+     *
+     * @return the reportStatusOnCallBack value.
+     */
+    public Object reportStatusOnCallBack() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().reportStatusOnCallBack();
+    }
+
+    /**
+     * Set the reportStatusOnCallBack property: When set to true, statusCode, output and error in callback request body
+     * will be consumed by activity. The activity can be marked as failed by setting statusCode &gt;= 400 in callback
+     * request. Default is false. Type: boolean (or Expression with resultType boolean).
+     *
+     * @param reportStatusOnCallBack the reportStatusOnCallBack value to set.
+     * @return the WebhookActivity object itself.
+     */
+    public WebhookActivity withReportStatusOnCallBack(Object reportStatusOnCallBack) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new WebhookActivityTypeProperties();
+        }
+        this.innerTypeProperties().withReportStatusOnCallBack(reportStatusOnCallBack);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -266,18 +248,13 @@ public class WebhookActivity extends ControlActivity {
     @Override
     public void validate() {
         super.validate();
-        if (method() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property method in model WebhookActivity"));
-        }
-        if (url() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property url in model WebhookActivity"));
-        }
-        if (authentication() != null) {
-            authentication().validate();
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model WebhookActivity"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

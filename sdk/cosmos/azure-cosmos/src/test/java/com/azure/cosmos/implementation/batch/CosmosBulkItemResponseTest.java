@@ -3,14 +3,14 @@
 
 package com.azure.cosmos.implementation.batch;
 
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosBulkItemResponse;
-import com.azure.cosmos.CosmosItemOperationType;
-import com.azure.cosmos.TransactionalBatchOperationResult;
-import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
+import com.azure.cosmos.models.CosmosBatchOperationResult;
+import com.azure.cosmos.models.CosmosBatchResponse;
+import com.azure.cosmos.models.CosmosBulkItemResponse;
+import com.azure.cosmos.models.CosmosItemOperationType;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.testng.annotations.Test;
@@ -32,13 +32,14 @@ public class CosmosBulkItemResponseTest {
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void validateAllSetValuesInCosmosBulkItemResponse() {
-        List<TransactionalBatchOperationResult> results = new ArrayList<>();
-        ItemBulkOperation<?>[] arrayOperations = new ItemBulkOperation<?>[1];
+        List<CosmosBatchOperationResult> results = new ArrayList<>();
+        ItemBulkOperation<?, ?>[] arrayOperations = new ItemBulkOperation<?, ?>[1];
 
-        ItemBulkOperation<?> operation = new ItemBulkOperation<>(
+        ItemBulkOperation<?, ?> operation = new ItemBulkOperation<>(
             CosmosItemOperationType.READ,
             "0",
             PartitionKey.NONE,
+            null,
             null,
             null
         );
@@ -51,7 +52,7 @@ public class CosmosBulkItemResponseTest {
             BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST);
 
         // Create dummy result
-        TransactionalBatchOperationResult transactionalBatchOperationResult = BridgeInternal.createTransactionBatchResult(
+        CosmosBatchOperationResult transactionalBatchOperationResult = ModelBridgeInternal.createCosmosBatchResult(
             operation.getId(),
             5.0,
             null,
@@ -78,7 +79,7 @@ public class CosmosBulkItemResponseTest {
             new ArrayList<>(headers.entrySet()),
             responseContent.getBytes(StandardCharsets.UTF_8));
 
-        TransactionalBatchResponse batchResponse = BatchResponseParser.fromDocumentServiceResponse(
+        CosmosBatchResponse batchResponse = BatchResponseParser.fromDocumentServiceResponse(
             new RxDocumentServiceResponse(null, storeResponse),
             serverOperationBatchRequest.getBatchRequest(),
             true);
@@ -101,9 +102,9 @@ public class CosmosBulkItemResponseTest {
         assertThat(batchResponse.getResults().get(0).getOperation()).isEqualTo(operation);
 
         // Validate cosmos item response fields
-        CosmosBulkItemResponse cosmosBulkItemResponse = BridgeInternal.createCosmosBulkItemResponse(batchResponse.getResults().get(0), batchResponse);
+        CosmosBulkItemResponse cosmosBulkItemResponse = ModelBridgeInternal.createCosmosBulkItemResponse(batchResponse.getResults().get(0), batchResponse);
 
-        // Common properties which are in TransactionalBatchOperationResult
+        // Common properties which are in CosmosBatchOperationResult
         assertThat(cosmosBulkItemResponse.getETag()).isEqualTo(operation.getId());
         assertThat(cosmosBulkItemResponse.getRequestCharge()).isEqualTo(5.0);
         assertThat(cosmosBulkItemResponse.getRetryAfterDuration()).isEqualTo(Duration.ofMillis(100));
@@ -118,13 +119,14 @@ public class CosmosBulkItemResponseTest {
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void validateEmptyHeaderInCosmosBulkItemResponse() {
-        List<TransactionalBatchOperationResult> results = new ArrayList<>();
-        ItemBulkOperation<?>[] arrayOperations = new ItemBulkOperation<?>[1];
+        List<CosmosBatchOperationResult> results = new ArrayList<>();
+        ItemBulkOperation<?, ?>[] arrayOperations = new ItemBulkOperation<?, ?>[1];
 
-        ItemBulkOperation<?> operation = new ItemBulkOperation<>(
+        ItemBulkOperation<?, ?> operation = new ItemBulkOperation<>(
             CosmosItemOperationType.READ,
             "0",
             PartitionKey.NONE,
+            null,
             null,
             null
         );
@@ -138,7 +140,7 @@ public class CosmosBulkItemResponseTest {
 
 
         // Create dummy result
-        TransactionalBatchOperationResult transactionalBatchOperationResult = BridgeInternal.createTransactionBatchResult(
+        CosmosBatchOperationResult transactionalBatchOperationResult = ModelBridgeInternal.createCosmosBatchResult(
             null,
             5.0,
             null,
@@ -156,7 +158,7 @@ public class CosmosBulkItemResponseTest {
             new ArrayList<>(),
             responseContent.getBytes(StandardCharsets.UTF_8));
 
-        TransactionalBatchResponse batchResponse = BatchResponseParser.fromDocumentServiceResponse(
+        CosmosBatchResponse batchResponse = BatchResponseParser.fromDocumentServiceResponse(
             new RxDocumentServiceResponse(null, storeResponse),
             serverOperationBatchRequest.getBatchRequest(),
             true);
@@ -179,9 +181,9 @@ public class CosmosBulkItemResponseTest {
         assertThat(batchResponse.getResults().get(0).getOperation()).isEqualTo(operation);
 
         // Validate cosmos item response fields
-        CosmosBulkItemResponse cosmosBulkItemResponse = BridgeInternal.createCosmosBulkItemResponse(batchResponse.getResults().get(0), batchResponse);
+        CosmosBulkItemResponse cosmosBulkItemResponse = ModelBridgeInternal.createCosmosBulkItemResponse(batchResponse.getResults().get(0), batchResponse);
 
-        // Common properties which are in TransactionalBatchOperationResult
+        // Common properties which are in CosmosBatchOperationResult
         assertThat(cosmosBulkItemResponse.getETag()).isNull();
         assertThat(cosmosBulkItemResponse.getRequestCharge()).isEqualTo(5.0);
         assertThat(cosmosBulkItemResponse.getRetryAfterDuration()).isEqualTo(Duration.ZERO);

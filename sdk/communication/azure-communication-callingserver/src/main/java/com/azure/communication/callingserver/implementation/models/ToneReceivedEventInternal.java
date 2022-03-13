@@ -13,7 +13,7 @@ public final class ToneReceivedEventInternal {
     /*
      * The tone info.
      */
-    @JsonProperty(value = "toneInfo")
+    @JsonProperty(value = "toneInfo", required = true)
     private ToneInfoInternal toneInfo;
 
     /*

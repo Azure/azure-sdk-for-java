@@ -5,43 +5,30 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Schema Contract details. */
-@JsonFlatten
 @Fluent
-public class SchemaContractInner extends ProxyResource {
+public final class SchemaContractInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SchemaContractInner.class);
 
     /*
-     * Must be a valid a media type used in a Content-Type header as defined in
-     * the RFC 2616. Media type of the schema document (e.g. application/json,
-     * application/xml). </br> - `Swagger` Schema use
-     * `application/vnd.ms-azure-apim.swagger.definitions+json` </br> - `WSDL`
-     * Schema use `application/vnd.ms-azure-apim.xsd+xml` </br> - `OpenApi`
-     * Schema use `application/vnd.oai.openapi.components+json` </br> - `WADL
-     * Schema` use `application/vnd.ms-azure-apim.wadl.grammars+xml`.
+     * Properties of the Schema.
      */
-    @JsonProperty(value = "properties.contentType")
-    private String contentType;
+    @JsonProperty(value = "properties")
+    private SchemaContractProperties innerProperties;
 
-    /*
-     * Json escaped string defining the document representing the Schema. Used
-     * for schemas other than Swagger/OpenAPI.
+    /**
+     * Get the innerProperties property: Properties of the Schema.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.document.value")
-    private String value;
-
-    /*
-     * Types definitions. Used for Swagger/OpenAPI schemas only, null
-     * otherwise.
-     */
-    @JsonProperty(value = "properties.document.definitions")
-    private Object definitions;
+    private SchemaContractProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the contentType property: Must be a valid a media type used in a Content-Type header as defined in the RFC
@@ -54,7 +41,7 @@ public class SchemaContractInner extends ProxyResource {
      * @return the contentType value.
      */
     public String contentType() {
-        return this.contentType;
+        return this.innerProperties() == null ? null : this.innerProperties().contentType();
     }
 
     /**
@@ -69,7 +56,10 @@ public class SchemaContractInner extends ProxyResource {
      * @return the SchemaContractInner object itself.
      */
     public SchemaContractInner withContentType(String contentType) {
-        this.contentType = contentType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SchemaContractProperties();
+        }
+        this.innerProperties().withContentType(contentType);
         return this;
     }
 
@@ -80,7 +70,7 @@ public class SchemaContractInner extends ProxyResource {
      * @return the value value.
      */
     public String value() {
-        return this.value;
+        return this.innerProperties() == null ? null : this.innerProperties().value();
     }
 
     /**
@@ -91,7 +81,10 @@ public class SchemaContractInner extends ProxyResource {
      * @return the SchemaContractInner object itself.
      */
     public SchemaContractInner withValue(String value) {
-        this.value = value;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SchemaContractProperties();
+        }
+        this.innerProperties().withValue(value);
         return this;
     }
 
@@ -101,7 +94,7 @@ public class SchemaContractInner extends ProxyResource {
      * @return the definitions value.
      */
     public Object definitions() {
-        return this.definitions;
+        return this.innerProperties() == null ? null : this.innerProperties().definitions();
     }
 
     /**
@@ -111,7 +104,10 @@ public class SchemaContractInner extends ProxyResource {
      * @return the SchemaContractInner object itself.
      */
     public SchemaContractInner withDefinitions(Object definitions) {
-        this.definitions = definitions;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SchemaContractProperties();
+        }
+        this.innerProperties().withDefinitions(definitions);
         return this;
     }
 
@@ -121,5 +117,8 @@ public class SchemaContractInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

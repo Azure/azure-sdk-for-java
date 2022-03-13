@@ -67,7 +67,7 @@ public class ServiceBusSenderClientTest {
     @AfterEach
     void teardown() {
         sender.close();
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
     }
 
     @Test

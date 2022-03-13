@@ -7,7 +7,9 @@ package com.azure.resourcemanager.storagecache.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Cache identity properties. */
 @Fluent
@@ -15,13 +17,13 @@ public class CacheIdentity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CacheIdentity.class);
 
     /*
-     * The principal id of the cache.
+     * The principal ID for the system-assigned identity of the cache.
      */
     @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
-     * The tenant id associated with the cache.
+     * The tenant ID associated with the cache.
      */
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
@@ -32,8 +34,16 @@ public class CacheIdentity {
     @JsonProperty(value = "type")
     private CacheIdentityType type;
 
+    /*
+     * A dictionary where each key is a user assigned identity resource ID, and
+     * each key's value is an empty dictionary.
+     */
+    @JsonProperty(value = "userAssignedIdentities")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, UserAssignedIdentitiesValue> userAssignedIdentities;
+
     /**
-     * Get the principalId property: The principal id of the cache.
+     * Get the principalId property: The principal ID for the system-assigned identity of the cache.
      *
      * @return the principalId value.
      */
@@ -42,7 +52,7 @@ public class CacheIdentity {
     }
 
     /**
-     * Get the tenantId property: The tenant id associated with the cache.
+     * Get the tenantId property: The tenant ID associated with the cache.
      *
      * @return the tenantId value.
      */
@@ -71,10 +81,42 @@ public class CacheIdentity {
     }
 
     /**
+     * Get the userAssignedIdentities property: A dictionary where each key is a user assigned identity resource ID, and
+     * each key's value is an empty dictionary.
+     *
+     * @return the userAssignedIdentities value.
+     */
+    public Map<String, UserAssignedIdentitiesValue> userAssignedIdentities() {
+        return this.userAssignedIdentities;
+    }
+
+    /**
+     * Set the userAssignedIdentities property: A dictionary where each key is a user assigned identity resource ID, and
+     * each key's value is an empty dictionary.
+     *
+     * @param userAssignedIdentities the userAssignedIdentities value to set.
+     * @return the CacheIdentity object itself.
+     */
+    public CacheIdentity withUserAssignedIdentities(Map<String, UserAssignedIdentitiesValue> userAssignedIdentities) {
+        this.userAssignedIdentities = userAssignedIdentities;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (userAssignedIdentities() != null) {
+            userAssignedIdentities()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
+        }
     }
 }

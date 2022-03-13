@@ -456,6 +456,19 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canSendTypingNotificationWithResponseWithOptions(HttpClient httpClient) {
+        // Arrange
+        setupTest(httpClient, "canSendTypingNotificationWithResponseWithOptions");
+
+        TypingNotificationOptions options = new TypingNotificationOptions();
+        options.setSenderDisplayName("Sender");
+
+        // Action & Assert
+        chatThreadClient.sendTypingNotificationWithResponse(options, Context.NONE);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)")

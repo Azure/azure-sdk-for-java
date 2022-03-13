@@ -51,6 +51,7 @@ import static org.mockito.Mockito.when;
 class ServiceBusReactorReceiverTest {
     private static final String ENTITY_PATH = "queue-name";
     private static final String LINK_NAME = "a-link-name";
+    private static final String CONNECTION_ID = "a-connection-id";
 
     private final ClientLogger logger = new ClientLogger(ServiceBusReactorReceiver.class);
     private final EmitterProcessor<EndpointState> endpointStates = EmitterProcessor.create();
@@ -75,6 +76,7 @@ class ServiceBusReactorReceiverTest {
     private AmqpConnection connection;
 
     private ServiceBusReactorReceiver reactorReceiver;
+    private AutoCloseable openMocks;
 
     @BeforeAll
     static void beforeAll() {
@@ -90,7 +92,7 @@ class ServiceBusReactorReceiverTest {
     void setup(TestInfo testInfo) throws IOException {
         logger.info("[{}] Setting up.", testInfo.getDisplayName());
 
-        MockitoAnnotations.initMocks(this);
+        openMocks = MockitoAnnotations.openMocks(this);
 
         when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
 
@@ -109,6 +111,7 @@ class ServiceBusReactorReceiverTest {
         when(receiveLinkHandler.getEndpointStates()).thenReturn(endpointStates);
 
         when(tokenManager.getAuthorizationResults()).thenReturn(Flux.create(sink -> sink.next(AmqpResponseCode.OK)));
+        when(receiveLinkHandler.getConnectionId()).thenReturn(CONNECTION_ID);
 
         when(connection.getShutdownSignals()).thenReturn(Flux.never());
 
@@ -117,10 +120,11 @@ class ServiceBusReactorReceiverTest {
     }
 
     @AfterEach
-    void teardown(TestInfo testInfo) {
+    void teardown(TestInfo testInfo) throws Exception {
         logger.info("[{}] Tearing down.", testInfo.getDisplayName());
 
-        Mockito.framework().clearInlineMocks();
+        openMocks.close();
+        Mockito.framework().clearInlineMock(this);
     }
 
     /**

@@ -4,9 +4,7 @@
 
 package com.azure.resourcemanager.compute.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -14,10 +12,8 @@ import java.util.List;
  * The instance view of a dedicated host that includes the name of the dedicated host. It is used for the response to
  * the instance view of a dedicated host group.
  */
-@Immutable
+@Fluent
 public final class DedicatedHostInstanceViewWithName extends DedicatedHostInstanceView {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedHostInstanceViewWithName.class);
-
     /*
      * The name of the dedicated host.
      */

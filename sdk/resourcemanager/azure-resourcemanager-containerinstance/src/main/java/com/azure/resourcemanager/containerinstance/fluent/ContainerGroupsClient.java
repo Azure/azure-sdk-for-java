@@ -19,6 +19,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
+import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -197,7 +198,7 @@ public interface ContainerGroupsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a container group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ContainerGroupInner>, ContainerGroupInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup);
 
@@ -212,7 +213,7 @@ public interface ContainerGroupsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a container group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ContainerGroupInner>, ContainerGroupInner> beginCreateOrUpdate(
         String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup);
 
@@ -228,7 +229,7 @@ public interface ContainerGroupsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a container group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ContainerGroupInner>, ContainerGroupInner> beginCreateOrUpdate(
         String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup, Context context);
 
@@ -362,7 +363,7 @@ public interface ContainerGroupsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a container group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ContainerGroupInner>, ContainerGroupInner> beginDeleteAsync(
         String resourceGroupName, String containerGroupName);
 
@@ -377,7 +378,7 @@ public interface ContainerGroupsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a container group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ContainerGroupInner>, ContainerGroupInner> beginDelete(
         String resourceGroupName, String containerGroupName);
 
@@ -393,7 +394,7 @@ public interface ContainerGroupsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a container group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ContainerGroupInner>, ContainerGroupInner> beginDelete(
         String resourceGroupName, String containerGroupName, Context context);
 
@@ -465,7 +466,7 @@ public interface ContainerGroupsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginRestartAsync(String resourceGroupName, String containerGroupName);
 
     /**
@@ -479,7 +480,7 @@ public interface ContainerGroupsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String containerGroupName);
 
     /**
@@ -494,7 +495,7 @@ public interface ContainerGroupsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestart(
         String resourceGroupName, String containerGroupName, Context context);
 
@@ -614,7 +615,7 @@ public interface ContainerGroupsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String containerGroupName);
 
     /**
@@ -627,7 +628,7 @@ public interface ContainerGroupsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String containerGroupName);
 
     /**
@@ -641,7 +642,7 @@ public interface ContainerGroupsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String containerGroupName, Context context);
 
     /**
@@ -681,4 +682,68 @@ public interface ContainerGroupsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void start(String resourceGroupName, String containerGroupName, Context context);
+
+    /**
+     * Gets all the network dependencies for this container group to allow complete control of network setting and
+     * configuration. For container groups, this will always be an empty list.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the network dependencies for this container group to allow complete control of network setting and
+     *     configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<List<String>>> getOutboundNetworkDependenciesEndpointsWithResponseAsync(
+        String resourceGroupName, String containerGroupName);
+
+    /**
+     * Gets all the network dependencies for this container group to allow complete control of network setting and
+     * configuration. For container groups, this will always be an empty list.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the network dependencies for this container group to allow complete control of network setting and
+     *     configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<List<String>> getOutboundNetworkDependenciesEndpointsAsync(
+        String resourceGroupName, String containerGroupName);
+
+    /**
+     * Gets all the network dependencies for this container group to allow complete control of network setting and
+     * configuration. For container groups, this will always be an empty list.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the network dependencies for this container group to allow complete control of network setting and
+     *     configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    List<String> getOutboundNetworkDependenciesEndpoints(String resourceGroupName, String containerGroupName);
+
+    /**
+     * Gets all the network dependencies for this container group to allow complete control of network setting and
+     * configuration. For container groups, this will always be an empty list.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the network dependencies for this container group to allow complete control of network setting and
+     *     configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<List<String>> getOutboundNetworkDependenciesEndpointsWithResponse(
+        String resourceGroupName, String containerGroupName, Context context);
 }

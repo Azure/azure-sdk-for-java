@@ -38,6 +38,8 @@ For example, for Cosmos DB:
 
 **Prerequisites**: You must have an [Azure subscription](https://azure.microsoft.com/free/), [Cosmos DB account](https://docs.microsoft.com/azure/cosmos-db/account-overview) (SQL API), and [Java Development Kit (JDK) with version 8 or above][jdk] to use this package.
 
+> TODO: Once the library has GA'ed include the instructions on how to include the BOM file directly. And the benefit of using the BOM file over adding a direct dependency to the project.
+
 ### Authenticate the client
 
 If your library requires authentication for use, such as for Azure services, include instructions and example code 
@@ -58,8 +60,8 @@ Include code snippets and short descriptions for each task you listed in the [In
 Briefly explain each operation, but include enough clarity to explain complex or otherwise tricky operations.
 
 If possible, use the same example snippets that your in-code documentation uses. For example, use the snippets in your 
-`ReadmeSamples.java` that `embedme` ingests via its [alternate syntax](https://github.com/zakhenry/embedme#alternate-embedding-syntax) 
-directive. The `ReadmeSamples.java` file containing the snippets should reside alongside your package's code, and should be 
+`ReadmeSamples.java` that `codesnippet-maven-plugin` ingests via its [README syntax](https://github.com/Azure/azure-sdk-tools/tree/main/packages/java-packages/codesnippet-maven-plugin#injecting-codesnippets-into-readmes). 
+The `ReadmeSamples.java` file containing the snippets should reside alongside your package's code, and should be 
 validated in an automated fashion.
 
 Each example in the *Examples* section starts with an H3 that describes the example. At the top of this section, just 
@@ -127,8 +129,8 @@ provides more information on configuring or changing the HTTP client.
   they might be looking for.
   
 * After adding the new SDK, you need to include the package in the following locations
-1. version_client.txt - include the package with the version.
-2. parent pom - <enlistmentroot>\pom.xml - Multiple places in the file.
+1. `version_client.txt` - include the package with the version.
+2. parent pom - `<enlistmentroot>\pom.xml` - Multiple places in the file.
 
 ## Contributing
 

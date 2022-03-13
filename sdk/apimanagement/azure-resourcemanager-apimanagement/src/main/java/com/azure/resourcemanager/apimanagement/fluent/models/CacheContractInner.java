@@ -5,42 +5,30 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cache details. */
-@JsonFlatten
 @Fluent
-public class CacheContractInner extends ProxyResource {
+public final class CacheContractInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CacheContractInner.class);
 
     /*
-     * Cache description
+     * Cache properties details.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    @JsonProperty(value = "properties")
+    private CacheContractProperties innerProperties;
 
-    /*
-     * Runtime connection string to cache
+    /**
+     * Get the innerProperties property: Cache properties details.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.connectionString")
-    private String connectionString;
-
-    /*
-     * Location identifier to use cache from (should be either 'default' or
-     * valid Azure region identifier)
-     */
-    @JsonProperty(value = "properties.useFromLocation")
-    private String useFromLocation;
-
-    /*
-     * Original uri of entity in external system cache points to
-     */
-    @JsonProperty(value = "properties.resourceId")
-    private String resourceId;
+    private CacheContractProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the description property: Cache description.
@@ -48,7 +36,7 @@ public class CacheContractInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -58,7 +46,10 @@ public class CacheContractInner extends ProxyResource {
      * @return the CacheContractInner object itself.
      */
     public CacheContractInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CacheContractProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -68,7 +59,7 @@ public class CacheContractInner extends ProxyResource {
      * @return the connectionString value.
      */
     public String connectionString() {
-        return this.connectionString;
+        return this.innerProperties() == null ? null : this.innerProperties().connectionString();
     }
 
     /**
@@ -78,7 +69,10 @@ public class CacheContractInner extends ProxyResource {
      * @return the CacheContractInner object itself.
      */
     public CacheContractInner withConnectionString(String connectionString) {
-        this.connectionString = connectionString;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CacheContractProperties();
+        }
+        this.innerProperties().withConnectionString(connectionString);
         return this;
     }
 
@@ -89,7 +83,7 @@ public class CacheContractInner extends ProxyResource {
      * @return the useFromLocation value.
      */
     public String useFromLocation() {
-        return this.useFromLocation;
+        return this.innerProperties() == null ? null : this.innerProperties().useFromLocation();
     }
 
     /**
@@ -100,7 +94,10 @@ public class CacheContractInner extends ProxyResource {
      * @return the CacheContractInner object itself.
      */
     public CacheContractInner withUseFromLocation(String useFromLocation) {
-        this.useFromLocation = useFromLocation;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CacheContractProperties();
+        }
+        this.innerProperties().withUseFromLocation(useFromLocation);
         return this;
     }
 
@@ -110,7 +107,7 @@ public class CacheContractInner extends ProxyResource {
      * @return the resourceId value.
      */
     public String resourceId() {
-        return this.resourceId;
+        return this.innerProperties() == null ? null : this.innerProperties().resourceId();
     }
 
     /**
@@ -120,7 +117,10 @@ public class CacheContractInner extends ProxyResource {
      * @return the CacheContractInner object itself.
      */
     public CacheContractInner withResourceId(String resourceId) {
-        this.resourceId = resourceId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CacheContractProperties();
+        }
+        this.innerProperties().withResourceId(resourceId);
         return this;
     }
 
@@ -130,5 +130,8 @@ public class CacheContractInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -31,6 +31,13 @@ public interface ProductContract {
     String type();
 
     /**
+     * Gets the displayName property: Product name.
+     *
+     * @return the displayName value.
+     */
+    String displayName();
+
+    /**
      * Gets the description property: Product description. May include HTML formatting tags.
      *
      * @return the description value.
@@ -85,13 +92,6 @@ public interface ProductContract {
     ProductState state();
 
     /**
-     * Gets the displayName property: Product name.
-     *
-     * @return the displayName value.
-     */
-    String displayName();
-
-    /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.ProductContractInner object.
      *
      * @return the inner object.
@@ -123,13 +123,13 @@ public interface ProductContract {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithDescription,
+            extends DefinitionStages.WithDisplayName,
+                DefinitionStages.WithDescription,
                 DefinitionStages.WithTerms,
                 DefinitionStages.WithSubscriptionRequired,
                 DefinitionStages.WithApprovalRequired,
                 DefinitionStages.WithSubscriptionsLimit,
                 DefinitionStages.WithState,
-                DefinitionStages.WithDisplayName,
                 DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
@@ -145,6 +145,16 @@ public interface ProductContract {
              * @return the created resource.
              */
             ProductContract create(Context context);
+        }
+        /** The stage of the ProductContract definition allowing to specify displayName. */
+        interface WithDisplayName {
+            /**
+             * Specifies the displayName property: Product name..
+             *
+             * @param displayName Product name.
+             * @return the next definition stage.
+             */
+            WithCreate withDisplayName(String displayName);
         }
         /** The stage of the ProductContract definition allowing to specify description. */
         interface WithDescription {
@@ -233,16 +243,6 @@ public interface ProductContract {
              */
             WithCreate withState(ProductState state);
         }
-        /** The stage of the ProductContract definition allowing to specify displayName. */
-        interface WithDisplayName {
-            /**
-             * Specifies the displayName property: Product name..
-             *
-             * @param displayName Product name.
-             * @return the next definition stage.
-             */
-            WithCreate withDisplayName(String displayName);
-        }
         /** The stage of the ProductContract definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -265,13 +265,13 @@ public interface ProductContract {
 
     /** The template for ProductContract update. */
     interface Update
-        extends UpdateStages.WithDescription,
+        extends UpdateStages.WithDisplayName,
+            UpdateStages.WithDescription,
             UpdateStages.WithTerms,
             UpdateStages.WithSubscriptionRequired,
             UpdateStages.WithApprovalRequired,
             UpdateStages.WithSubscriptionsLimit,
             UpdateStages.WithState,
-            UpdateStages.WithDisplayName,
             UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
@@ -290,6 +290,16 @@ public interface ProductContract {
     }
     /** The ProductContract update stages. */
     interface UpdateStages {
+        /** The stage of the ProductContract update allowing to specify displayName. */
+        interface WithDisplayName {
+            /**
+             * Specifies the displayName property: Product name..
+             *
+             * @param displayName Product name.
+             * @return the next definition stage.
+             */
+            Update withDisplayName(String displayName);
+        }
         /** The stage of the ProductContract update allowing to specify description. */
         interface WithDescription {
             /**
@@ -376,16 +386,6 @@ public interface ProductContract {
              * @return the next definition stage.
              */
             Update withState(ProductState state);
-        }
-        /** The stage of the ProductContract update allowing to specify displayName. */
-        interface WithDisplayName {
-            /**
-             * Specifies the displayName property: Product name..
-             *
-             * @param displayName Product name.
-             * @return the next definition stage.
-             */
-            Update withDisplayName(String displayName);
         }
         /** The stage of the ProductContract update allowing to specify ifMatch. */
         interface WithIfMatch {

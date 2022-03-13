@@ -115,7 +115,7 @@ public class ShareServiceJavaDocCodeSamples {
         ShareServiceClient fileServiceClient = createClientWithSASToken();
         // BEGIN: ShareServiceClient.createShareWithResponse#string-map-integer-duration-context
         Response<ShareClient> response = fileServiceClient.createShareWithResponse("test",
-            Collections.singletonMap("share", "metadata"), null, Duration.ofSeconds(1),
+            Collections.singletonMap("share", "metadata"), null, Duration.ofSeconds(5),
             new Context(key1, value1));
         System.out.printf("Creating the share completed with status code %d", response.getStatusCode());
         // END: ShareServiceClient.createShareWithResponse#string-map-integer-duration-context
@@ -130,7 +130,7 @@ public class ShareServiceJavaDocCodeSamples {
         // BEGIN: ShareServiceClient.createShareWithResponse#String-ShareCreateOptions-Duration-Context
         Response<ShareClient> response = fileServiceClient.createShareWithResponse("test",
             new ShareCreateOptions().setMetadata(Collections.singletonMap("share", "metadata")).setQuotaInGb(1)
-            .setAccessTier(ShareAccessTier.HOT), Duration.ofSeconds(1), new Context(key1, value1));
+            .setAccessTier(ShareAccessTier.HOT), Duration.ofSeconds(5), new Context(key1, value1));
         System.out.printf("Creating the share completed with status code %d", response.getStatusCode());
         // END: ShareServiceClient.createShareWithResponse#String-ShareCreateOptions-Duration-Context
     }

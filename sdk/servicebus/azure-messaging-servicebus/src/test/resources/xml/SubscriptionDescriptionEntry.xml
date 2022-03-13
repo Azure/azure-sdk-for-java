@@ -1,9 +1,9 @@
 <entry xmlns="http://www.w3.org/2005/Atom">
-  <id>sb://sb-java-conniey-5.servicebus.windows.net/my-topic/Subscriptions/subscription-session-9?api-version=2017-04&amp;enrich=false</id>
+  <id>sb://sb-java-conniey-5.servicebus.windows.net/my-topic/Subscriptions/subscription-session-9?api-version=2021-05&amp;enrich=false</id>
   <title type="text">subscription-session-9</title>
   <published>2020-06-22T23:47:54Z</published>
   <updated>2020-06-22T23:47:54Z</updated>
-  <link rel="self" href="sb://sb-java-conniey-5.servicebus.windows.net/my-topic/Subscriptions/subscription-session-9?api-version=2017-04&amp;enrich=false"/>
+  <link rel="self" href="sb://sb-java-conniey-5.servicebus.windows.net/my-topic/Subscriptions/subscription-session-9?api-version=2021-05&amp;enrich=false"/>
   <content type="application/xml">
     <SubscriptionDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
     >

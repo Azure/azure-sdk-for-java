@@ -13,6 +13,7 @@ import org.mockito.Mockito;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
@@ -29,13 +30,27 @@ public class DownloadContentLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
-        named = "RUN_CALLINGSERVER_TEST_RECORD",
+        named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
-    public void downloadMetadata(HttpClient httpClient) throws UnsupportedEncodingException {
-        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
-        CallingServerClient conversationClient = setupClient(builder, "downloadMetadata");
+    public void downloadMetadataWithConnectionStringClient(HttpClient httpClient) throws UnsupportedEncodingException {
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
+        CallingServerClient conversationClient = setupClient(builder, "downloadMetadataWithConnectionStringClient");
+        downloadMetadata(conversationClient);
+    }
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
+        disabledReason = "Requires human intervention")
+    public void downloadMetadataWithTokenCredentialClient(HttpClient httpClient) throws UnsupportedEncodingException {
+        CallingServerClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
+        CallingServerClient conversationClient = setupClient(builder, "downloadMetadataWithTokenCredentialClient");
+        downloadMetadata(conversationClient);
+    }
 
+    private void downloadMetadata(CallingServerClient conversationClient) throws UnsupportedEncodingException {
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             conversationClient.downloadTo(METADATA_URL, byteArrayOutputStream, null);
@@ -50,11 +65,11 @@ public class DownloadContentLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
-        named = "RUN_CALLINGSERVER_TEST_RECORD",
+        named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void downloadVideo(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerClient conversationClient = setupClient(builder, "downloadVideo");
 
         try {
@@ -76,8 +91,12 @@ public class DownloadContentLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
+        disabledReason = "Requires human intervention")
     public void downloadContent404(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerClient conversationClient = setupClient(builder, "downloadContent404");
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -90,8 +109,8 @@ public class DownloadContentLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void downloadContentWrongUrl(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
-        CallingServerClient conversationClient = setupClient(builder, "downloadContent404");
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
+        CallingServerClient conversationClient = setupClient(builder, "downloadContentWrongUrl");
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         IllegalArgumentException ex =
@@ -104,16 +123,20 @@ public class DownloadContentLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
+        disabledReason = "Requires human intervention")
     public void downloadContentStreamFailure(HttpClient httpClient) throws IOException {
-        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerClient conversationClient = setupClient(builder, "downloadContent404");
 
-        ByteArrayOutputStream byteArrayOutputStream = Mockito.mock(ByteArrayOutputStream.class);
-        doThrow(IOException.class).when(byteArrayOutputStream).write(Mockito.any());
+        OutputStream outputStream = Mockito.mock(OutputStream.class);
+        doThrow(IOException.class).when(outputStream).write(Mockito.any(), Mockito.anyInt(), Mockito.anyInt());
         assertThrows(
             UncheckedIOException.class,
             () -> conversationClient
-                .downloadTo(METADATA_URL, byteArrayOutputStream, null));
+                .downloadTo(METADATA_URL, outputStream, null));
     }
 
     private CallingServerClient setupClient(CallingServerClientBuilder builder, String testName) {

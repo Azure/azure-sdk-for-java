@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RequestRateTooLargeException;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.Utils;
@@ -111,9 +112,16 @@ public class ThroughputRequestThrottler {
                     HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS,
                     String.valueOf(backoffTimeInMilliSeconds));
 
-                requestRateTooLargeException.getResponseHeaders().put(
-                    HttpConstants.HttpHeaders.SUB_STATUS,
-                    String.valueOf(HttpConstants.SubStatusCodes.THROUGHPUT_CONTROL_REQUEST_RATE_TOO_LARGE));
+                if (isBulkRequest(request)) {
+                    // For batch requests the BulkExecutor
+                    requestRateTooLargeException.getResponseHeaders().put(
+                        HttpConstants.HttpHeaders.SUB_STATUS,
+                        String.valueOf(HttpConstants.SubStatusCodes.THROUGHPUT_CONTROL_BULK_REQUEST_RATE_TOO_LARGE));
+                } else {
+                    requestRateTooLargeException.getResponseHeaders().put(
+                        HttpConstants.HttpHeaders.SUB_STATUS,
+                        String.valueOf(HttpConstants.SubStatusCodes.THROUGHPUT_CONTROL_REQUEST_RATE_TOO_LARGE));
+                }
 
                 if (request.requestContext != null) {
                     BridgeInternal.setResourceAddress(requestRateTooLargeException, request.requestContext.resourcePhysicalAddress);
@@ -123,6 +131,21 @@ public class ThroughputRequestThrottler {
             }
         } finally {
             this.throughputReadLock.unlock();
+        }
+    }
+
+    private static boolean isBulkRequest(RxDocumentServiceRequest request) {
+        if (request.getOperationType() != OperationType.Batch ||
+            request.getResourceType() != ResourceType.Document) {
+
+            return false;
+        }
+
+        String isAtomicBatch = request.getHeaders().get(HttpConstants.HttpHeaders.IS_BATCH_ATOMIC);
+        if(StringUtils.isEmpty(isAtomicBatch)) {
+            return true;
+        } else {
+            return !isAtomicBatch.equalsIgnoreCase(Boolean.TRUE.toString());
         }
     }
 

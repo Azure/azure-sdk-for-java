@@ -13,6 +13,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.synapse.fluent.models.RestorePointInner;
 import com.azure.resourcemanager.synapse.models.CreateSqlPoolRestorePointDefinition;
+import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SqlPoolRestorePointsClient. */
 public interface SqlPoolRestorePointsClient {
@@ -56,9 +57,9 @@ public interface SqlPoolRestorePointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points.
+     * @return database restore points along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(
         String resourceGroupName,
         String workspaceName,
@@ -76,9 +77,9 @@ public interface SqlPoolRestorePointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points.
+     * @return database restore points along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(
         String resourceGroupName,
         String workspaceName,
@@ -152,7 +153,7 @@ public interface SqlPoolRestorePointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a restore point.
+     * @return a restore point along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RestorePointInner> getWithResponse(
@@ -183,7 +184,7 @@ public interface SqlPoolRestorePointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(

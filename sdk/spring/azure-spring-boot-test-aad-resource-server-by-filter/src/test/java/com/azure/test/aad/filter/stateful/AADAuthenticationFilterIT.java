@@ -73,11 +73,11 @@ public class AADAuthenticationFilterIT {
     @Test
     public void testAllowedEndpointsForSingleTenantByCookie() {
         assertEquals("home",
-            singleTenantITHelper.httpGetCookieByAccessTokenThenGetStringByCookie("home", "home"));
+            singleTenantITHelper.getCookieAndAccessByCookie("home", "home"));
         assertEquals("api/all",
-            singleTenantITHelper.httpGetCookieByAccessTokenThenGetStringByCookie("home", "api/all"));
+            singleTenantITHelper.getCookieAndAccessByCookie("home", "api/all"));
         assertEquals("api/group1",
-            singleTenantITHelper.httpGetCookieByAccessTokenThenGetStringByCookie("home", "api/group1"));
+            singleTenantITHelper.getCookieAndAccessByCookie("home", "api/group1"));
     }
 
     @Test
@@ -96,11 +96,11 @@ public class AADAuthenticationFilterIT {
     @Test
     public void testAllowedEndpointsForMultipleTenantByCookie() {
         assertEquals("home",
-            multiTenantITHelper.httpGetCookieByAccessTokenThenGetStringByCookie("home", "home"));
+            multiTenantITHelper.getCookieAndAccessByCookie("home", "home"));
         assertEquals("api/all",
-            multiTenantITHelper.httpGetCookieByAccessTokenThenGetStringByCookie("home", "api/all"));
+            multiTenantITHelper.getCookieAndAccessByCookie("home", "api/all"));
         assertEquals("api/group1",
-            multiTenantITHelper.httpGetCookieByAccessTokenThenGetStringByCookie("home", "api/group1"));
+            multiTenantITHelper.getCookieAndAccessByCookie("home", "api/group1"));
     }
 
     @Test

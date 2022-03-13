@@ -34,8 +34,8 @@ public final class ClientEncryptionKey extends Resource {
 
     public String getEncryptionAlgorithm() {
         if (this.encryptionAlgorithm == null) {
-            if (super.has(Constants.Properties.ENCRYPTION_ALGORITHM_ID)) {
-                this.encryptionAlgorithm = super.getString(Constants.Properties.ENCRYPTION_ALGORITHM_ID);
+            if (super.has(Constants.Properties.ENCRYPTION_ALGORITHM)) {
+                this.encryptionAlgorithm = super.getString(Constants.Properties.ENCRYPTION_ALGORITHM);
             }
         }
         return this.encryptionAlgorithm;
@@ -43,7 +43,7 @@ public final class ClientEncryptionKey extends Resource {
 
     public void setEncryptionAlgorithm(String encryptionAlgorithm) {
         this.encryptionAlgorithm = encryptionAlgorithm;
-        BridgeInternal.setProperty(this, Constants.Properties.ENCRYPTION_ALGORITHM_ID,
+        BridgeInternal.setProperty(this, Constants.Properties.ENCRYPTION_ALGORITHM,
             encryptionAlgorithm);
     }
 

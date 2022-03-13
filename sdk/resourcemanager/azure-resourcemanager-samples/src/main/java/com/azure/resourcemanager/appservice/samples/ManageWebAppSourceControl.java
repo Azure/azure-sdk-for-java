@@ -217,14 +217,14 @@ public final class ManageWebAppSourceControl {
             System.out.println("Deploying helloworld.war to " + app5Name + " through web deploy...");
 
             app5.deploy()
-                    .withPackageUri("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/helloworld.zip")
+                    .withPackageUri("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/helloworld.zip")
                     .withExistingDeploymentsDeleted(true)
                     .execute();
 
             System.out.println("Deploying coffeeshop.war to " + app5Name + " through web deploy...");
 
             app5.deploy()
-                    .withPackageUri("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/coffeeshop.zip")
+                    .withPackageUri("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/coffeeshop.zip")
                     .withExistingDeploymentsDeleted(false)
                     .execute();
 

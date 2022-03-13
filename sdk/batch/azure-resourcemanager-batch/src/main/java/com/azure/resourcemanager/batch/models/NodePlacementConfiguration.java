@@ -15,15 +15,16 @@ public final class NodePlacementConfiguration {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NodePlacementConfiguration.class);
 
     /*
-     * Allocation policy used by Batch Service to provision the nodes. If not
-     * specified, Batch will use the regional policy.
+     * The placement policy for allocating nodes in the pool. Allocation policy
+     * used by Batch Service to provision the nodes. If not specified, Batch
+     * will use the regional policy.
      */
     @JsonProperty(value = "policy")
     private NodePlacementPolicyType policy;
 
     /**
-     * Get the policy property: Allocation policy used by Batch Service to provision the nodes. If not specified, Batch
-     * will use the regional policy.
+     * Get the policy property: The placement policy for allocating nodes in the pool. Allocation policy used by Batch
+     * Service to provision the nodes. If not specified, Batch will use the regional policy.
      *
      * @return the policy value.
      */
@@ -32,8 +33,8 @@ public final class NodePlacementConfiguration {
     }
 
     /**
-     * Set the policy property: Allocation policy used by Batch Service to provision the nodes. If not specified, Batch
-     * will use the regional policy.
+     * Set the policy property: The placement policy for allocating nodes in the pool. Allocation policy used by Batch
+     * Service to provision the nodes. If not specified, Batch will use the regional policy.
      *
      * @param policy the policy value to set.
      * @return the NodePlacementConfiguration object itself.

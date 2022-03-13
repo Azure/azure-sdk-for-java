@@ -16,6 +16,12 @@ public final class NodeSizeFamily extends ExpandableStringEnum<NodeSizeFamily> {
     /** Static value MemoryOptimized for NodeSizeFamily. */
     public static final NodeSizeFamily MEMORY_OPTIMIZED = fromString("MemoryOptimized");
 
+    /** Static value HardwareAcceleratedFPGA for NodeSizeFamily. */
+    public static final NodeSizeFamily HARDWARE_ACCELERATED_FPGA = fromString("HardwareAcceleratedFPGA");
+
+    /** Static value HardwareAcceleratedGPU for NodeSizeFamily. */
+    public static final NodeSizeFamily HARDWARE_ACCELERATED_GPU = fromString("HardwareAcceleratedGPU");
+
     /**
      * Creates or finds a NodeSizeFamily from its string representation.
      *

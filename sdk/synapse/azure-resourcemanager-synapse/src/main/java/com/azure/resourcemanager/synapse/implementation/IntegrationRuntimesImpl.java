@@ -10,8 +10,10 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.IntegrationRuntimesClient;
+import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner;
 import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeResourceInner;
 import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeStatusResponseInner;
+import com.azure.resourcemanager.synapse.models.IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeResource;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeStatusResponse;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimes;
@@ -122,6 +124,39 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
 
     public void stop(String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
         this.serviceClient().stop(resourceGroupName, workspaceName, integrationRuntimeName, context);
+    }
+
+    public IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse listOutboundNetworkDependenciesEndpoints(
+        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner inner =
+            this
+                .serviceClient()
+                .listOutboundNetworkDependenciesEndpoints(resourceGroupName, workspaceName, integrationRuntimeName);
+        if (inner != null) {
+            return new IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse>
+        listOutboundNetworkDependenciesEndpointsWithResponse(
+            String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
+        Response<IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner> inner =
+            this
+                .serviceClient()
+                .listOutboundNetworkDependenciesEndpointsWithResponse(
+                    resourceGroupName, workspaceName, integrationRuntimeName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseImpl(
+                    inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public void enableInteractiveQuery(String resourceGroupName, String workspaceName, String integrationRuntimeName) {

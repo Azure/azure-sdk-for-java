@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.OSFamilyProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a cloud service OS family. */
 @Fluent
 public final class OSFamilyInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OSFamilyInner.class);
-
     /*
      * Resource Id.
      */

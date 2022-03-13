@@ -12,6 +12,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mediaservices.models.AccountEncryption;
 import com.azure.resourcemanager.mediaservices.models.KeyDelivery;
 import com.azure.resourcemanager.mediaservices.models.MediaServiceIdentity;
+import com.azure.resourcemanager.mediaservices.models.PublicNetworkAccess;
 import com.azure.resourcemanager.mediaservices.models.StorageAccount;
 import com.azure.resourcemanager.mediaservices.models.StorageAuthentication;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -67,6 +68,13 @@ public class MediaServiceInner extends Resource {
      */
     @JsonProperty(value = "properties.keyDelivery")
     private KeyDelivery keyDelivery;
+
+    /*
+     * Whether or not public network access is allowed for resources under the
+     * Media Services account.
+     */
+    @JsonProperty(value = "properties.publicNetworkAccess")
+    private PublicNetworkAccess publicNetworkAccess;
 
     /**
      * Get the identity property: The Managed Identity for the Media Services account.
@@ -183,6 +191,28 @@ public class MediaServiceInner extends Resource {
      */
     public MediaServiceInner withKeyDelivery(KeyDelivery keyDelivery) {
         this.keyDelivery = keyDelivery;
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Whether or not public network access is allowed for resources under the
+     * Media Services account.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Whether or not public network access is allowed for resources under the
+     * Media Services account.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the MediaServiceInner object itself.
+     */
+    public MediaServiceInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
         return this;
     }
 

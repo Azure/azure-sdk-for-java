@@ -71,8 +71,8 @@ class APISpec extends StorageSpec {
     def fileSystemName
 
     def setup() {
-        primaryDataLakeServiceClient = getServiceClient(env.dataLakeAccount)
-        primaryDataLakeServiceAsyncClient = getServiceAsyncClient(env.dataLakeAccount)
+        primaryDataLakeServiceClient = getServiceClient(environment.dataLakeAccount)
+        primaryDataLakeServiceAsyncClient = getServiceAsyncClient(environment.dataLakeAccount)
 
         fileSystemName = generateFileSystemName()
         fsc = primaryDataLakeServiceClient.getFileSystemClient(fileSystemName)
@@ -81,11 +81,11 @@ class APISpec extends StorageSpec {
     }
 
     def cleanup() {
-        if (env.testMode != TestMode.PLAYBACK) {
+        if (environment.testMode != TestMode.PLAYBACK) {
             def cleanupClient = new DataLakeServiceClientBuilder()
                 .httpClient(getHttpClient())
-                .credential(env.dataLakeAccount.credential)
-                .endpoint(env.dataLakeAccount.dataLakeEndpoint)
+                .credential(environment.dataLakeAccount.credential)
+                .endpoint(environment.dataLakeAccount.dataLakeEndpoint)
                 .buildClient()
 
             def options = new ListFileSystemsOptions().setPrefix(namer.getResourcePrefix())
@@ -108,16 +108,16 @@ class APISpec extends StorageSpec {
 
     def getOAuthServiceClient() {
         DataLakeServiceClientBuilder builder = new DataLakeServiceClientBuilder()
-            .endpoint(env.dataLakeAccount.dataLakeEndpoint)
+            .endpoint(environment.dataLakeAccount.dataLakeEndpoint)
 
         instrument(builder)
 
-        if (env.testMode != TestMode.PLAYBACK) {
+        if (environment.testMode != TestMode.PLAYBACK) {
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
             return builder.credential(new EnvironmentCredentialBuilder().build()).buildClient()
         } else {
             // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
-            return builder.credential(env.dataLakeAccount.credential).buildClient()
+            return builder.credential(environment.dataLakeAccount.credential).buildClient()
         }
     }
 
@@ -167,7 +167,7 @@ class APISpec extends StorageSpec {
     DataLakeServiceAsyncClient getPrimaryServiceClientForWrites(long perRequestDataSize) {
         int retryTimeout = Math.toIntExact((long) (perRequestDataSize / Constants.MB) * 20)
         retryTimeout = Math.max(60, retryTimeout)
-        return getServiceClientBuilder(env.dataLakeAccount)
+        return getServiceClientBuilder(environment.dataLakeAccount)
             .retryOptions(new RequestRetryOptions(null, null, retryTimeout, null, null, null))
             .buildAsyncClient()
     }
@@ -484,74 +484,6 @@ class APISpec extends StorageSpec {
         }
     }
 
-    class MockRetryRangeResponsePolicy implements HttpPipelinePolicy {
-        @Override
-        Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-            return next.process().flatMap { HttpResponse response ->
-                if (response.getRequest().getHeaders().getValue("x-ms-range") != "bytes=2-6") {
-                    return Mono.<HttpResponse> error(new IllegalArgumentException("The range header was not set correctly on retry."))
-                } else {
-                    // ETag can be a dummy value. It's not validated, but DownloadResponse requires one
-                    return Mono.<HttpResponse> just(new MockDownloadHttpResponse(response, 206, Flux.error(new IOException())))
-                }
-            }
-        }
-    }
-
-    /*
-    This is for stubbing responses that will actually go through the pipeline and autorest code. Autorest does not seem
-    to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
-    with than was worth it. Because this type is just for BlobDownload, we don't need to accept a header type.
-     */
-
-    class MockDownloadHttpResponse extends HttpResponse {
-        private final int statusCode
-        private final HttpHeaders headers
-        private final Flux<ByteBuffer> body
-
-        MockDownloadHttpResponse(HttpResponse response, int statusCode, Flux<ByteBuffer> body) {
-            super(response.getRequest())
-            this.statusCode = statusCode
-            this.headers = response.getHeaders()
-            this.body = body
-        }
-
-        @Override
-        int getStatusCode() {
-            return statusCode
-        }
-
-        @Override
-        String getHeaderValue(String s) {
-            return headers.getValue(s)
-        }
-
-        @Override
-        HttpHeaders getHeaders() {
-            return headers
-        }
-
-        @Override
-        Flux<ByteBuffer> getBody() {
-            return body
-        }
-
-        @Override
-        Mono<byte[]> getBodyAsByteArray() {
-            return Mono.error(new IOException())
-        }
-
-        @Override
-        Mono<String> getBodyAsString() {
-            return Mono.error(new IOException())
-        }
-
-        @Override
-        Mono<String> getBodyAsString(Charset charset) {
-            return Mono.error(new IOException())
-        }
-    }
-
     def getMockRequest() {
         HttpHeaders headers = new HttpHeaders()
         headers.put(Constants.HeaderConstants.CONTENT_ENCODING, "en-US")
@@ -562,7 +494,7 @@ class APISpec extends StorageSpec {
 
     // Only sleep if test is running in live mode
     def sleepIfRecord(long milliseconds) {
-        if (env.testMode != TestMode.PLAYBACK) {
+        if (environment.testMode != TestMode.PLAYBACK) {
             sleep(milliseconds)
         }
     }
@@ -593,7 +525,7 @@ class APISpec extends StorageSpec {
     }
 
     def sleepIfLive(long milliseconds) {
-        if (env.testMode == TestMode.PLAYBACK) {
+        if (environment.testMode == TestMode.PLAYBACK) {
             return
         }
         sleep(milliseconds)

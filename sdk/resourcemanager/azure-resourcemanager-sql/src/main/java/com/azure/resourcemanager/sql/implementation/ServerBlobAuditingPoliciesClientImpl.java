@@ -413,7 +413,7 @@ public final class ServerBlobAuditingPoliciesClientImpl implements ServerBlobAud
                 this.client.getHttpPipeline(),
                 ServerBlobAuditingPolicyInner.class,
                 ServerBlobAuditingPolicyInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

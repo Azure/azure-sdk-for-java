@@ -12,5 +12,10 @@ import com.azure.core.credential.TokenCredential;
  */
 public interface CredentialsProvider {
 
+    /**
+     * Gets the credential.
+     *
+     * @return The credential.
+     */
     TokenCredential getCredential();
 }

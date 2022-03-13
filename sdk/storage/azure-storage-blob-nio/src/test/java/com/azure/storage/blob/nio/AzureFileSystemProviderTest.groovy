@@ -20,7 +20,6 @@ import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -61,7 +60,7 @@ class AzureFileSystemProviderTest extends APISpec {
 
     def "CreateFileSystem"() {
         setup:
-        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = env.primaryAccount.credential
+        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = environment.primaryAccount.credential
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
         def uri = getFileSystemUri()
 
@@ -92,7 +91,7 @@ class AzureFileSystemProviderTest extends APISpec {
     def "CreateFileSystem duplicate"() {
         setup:
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
-        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = env.primaryAccount.credential
+        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = environment.primaryAccount.credential
         provider.newFileSystem(getFileSystemUri(), config)
 
         when:
@@ -105,10 +104,10 @@ class AzureFileSystemProviderTest extends APISpec {
     def "CreateFileSystem initial check fail"() {
         when:
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
-        def badKey = env.primaryAccount.key.getBytes()
+        def badKey = environment.primaryAccount.key.getBytes()
         badKey[0]++
         config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] =
-            new StorageSharedKeyCredential(env.primaryAccount.name, new String(badKey))
+            new StorageSharedKeyCredential(environment.primaryAccount.name, new String(badKey))
         provider.newFileSystem(getFileSystemUri(), config)
 
         then:
@@ -1482,11 +1481,15 @@ class AzureFileSystemProviderTest extends APISpec {
 
     def "CheckAccess IOException"() {
         setup:
-        config = initializeConfigMap(new CheckAccessIoExceptionPolicy())
         def fs = createFS(config)
         def path = fs.getPath(generateBlobName())
         def os = fs.provider().newOutputStream(path)
         os.close()
+        fs.close()
+
+        config = initializeConfigMap(new CheckAccessIoExceptionPolicy())
+        fs = createFS(config)
+        path = fs.getPath(path.toString())
 
         when:
         fs.provider().checkAccess(path)
@@ -1651,7 +1654,6 @@ class AzureFileSystemProviderTest extends APISpec {
         def fs = createFS(config)
 
         when: "Path does not exist"
-        // Covers virtual directory, too
         fs.provider().readAttributes(fs.getPath("path"), BasicFileAttributes.class)
 
         then:
@@ -1696,15 +1698,15 @@ class AzureFileSystemProviderTest extends APISpec {
         result.keySet().size() == attrList.size()
 
         where:
-        attrStr                                          || attrList
-        "*"                                              || ["lastModifiedTime", "creationTime", "isRegularFile", "isDirectory", "isSymbolicLink", "isOther", "size"]
-        "basic:*"                                        || ["lastModifiedTime", "creationTime", "isRegularFile", "isDirectory", "isSymbolicLink", "isOther", "size"]
-        "azureBasic:*"                                   || ["lastModifiedTime", "creationTime", "isRegularFile", "isDirectory", "isSymbolicLink", "isOther", "size"]
-        "azureBlob:*"                                    || ["lastModifiedTime", "creationTime", "eTag", "blobHttpHeaders", "blobType", "copyId", "copyStatus", "copySource", "copyProgress", "copyCompletionTime", "copyStatusDescription", "isServerEncrypted", "accessTier", "isAccessTierInferred", "archiveStatus", "accessTierChangeTime", "metadata", "isRegularFile", "isDirectory", "isSymbolicLink", "isOther", "size"]
-        "lastModifiedTime,creationTime"                  || ["lastModifiedTime", "creationTime"]
-        "basic:isRegularFile,isDirectory"                || ["isRegularFile", "isDirectory"]
-        "azureBasic:size"                                || ["size"]
-        "azureBlob:eTag,blobHttpHeaders,blobType,copyId" || ["eTag", "blobHttpHeaders", "blobType", "copyId"]
+        attrStr                                               || attrList
+        "*"                                                   || ["lastModifiedTime", "creationTime", "isRegularFile", "isDirectory", "isVirtualDirectory", "isSymbolicLink", "isOther", "size"]
+        "basic:*"                                             || ["lastModifiedTime", "creationTime", "isRegularFile", "isDirectory", "isVirtualDirectory", "isSymbolicLink", "isOther", "size"]
+        "azureBasic:*"                                        || ["lastModifiedTime", "creationTime", "isRegularFile", "isDirectory", "isVirtualDirectory", "isSymbolicLink", "isOther", "size"]
+        "azureBlob:*"                                         || ["lastModifiedTime", "creationTime", "eTag", "blobHttpHeaders", "blobType", "copyId", "copyStatus", "copySource", "copyProgress", "copyCompletionTime", "copyStatusDescription", "isServerEncrypted", "accessTier", "isAccessTierInferred", "archiveStatus", "accessTierChangeTime", "metadata", "isRegularFile", "isDirectory", "isVirtualDirectory", "isSymbolicLink", "isOther", "size"]
+        "lastModifiedTime,creationTime"                       || ["lastModifiedTime", "creationTime"]
+        "basic:isRegularFile,isDirectory,isVirtualDirectory" || ["isRegularFile", "isDirectory", "isVirtualDirectory"]
+        "azureBasic:size"                                     || ["size"]
+        "azureBlob:eTag,blobHttpHeaders,blobType,copyId"      || ["eTag", "blobHttpHeaders", "blobType", "copyId"]
     }
 
     def "ReadAttributes str suppliers"() {
@@ -1760,7 +1762,6 @@ class AzureFileSystemProviderTest extends APISpec {
         def fs = createFS(config)
 
         when: "Path does not exist"
-        // Covers virtual directory, too
         fs.provider().readAttributes(fs.getPath("path"), "basic:creationTime")
 
         then:
@@ -1811,8 +1812,8 @@ class AzureFileSystemProviderTest extends APISpec {
         headers.getContentType() == contentType
 
         where:
-        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                                    | contentType
-        null         | null               | null            | null            | null                                                                                          | null
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                             | contentType
+        null         | null               | null            | null            | null                                                                                   | null
         "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(data.defaultBytes)) | "type"
     }
 

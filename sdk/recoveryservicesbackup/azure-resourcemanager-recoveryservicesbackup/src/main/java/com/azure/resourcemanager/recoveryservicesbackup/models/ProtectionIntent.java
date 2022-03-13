@@ -21,7 +21,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("ProtectionIntent")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "RecoveryServiceVaultItem", value = AzureRecoveryServiceVaultProtectionIntent.class),
-    @JsonSubTypes.Type(name = "AzureResourceItem", value = AzureResourceProtectionIntent.class)
+    @JsonSubTypes.Type(name = "AzureResourceItem", value = AzureResourceProtectionIntent.class),
+    @JsonSubTypes.Type(
+        name = "AzureWorkloadContainerAutoProtectionIntent",
+        value = AzureWorkloadContainerAutoProtectionIntent.class)
 })
 @Fluent
 public class ProtectionIntent {

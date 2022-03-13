@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
@@ -17,10 +16,21 @@ import java.util.List;
 import java.util.Map;
 
 /** NetApp account resource. */
-@JsonFlatten
 @Fluent
-public class NetAppAccountInner extends Resource {
+public final class NetAppAccountInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NetAppAccountInner.class);
+
+    /*
+     * A unique read-only string that changes whenever the resource is updated.
+     */
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    private String etag;
+
+    /*
+     * NetApp Account properties
+     */
+    @JsonProperty(value = "properties")
+    private AccountProperties innerProperties;
 
     /*
      * The system meta data relating to this resource.
@@ -28,23 +38,23 @@ public class NetAppAccountInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /*
-     * Azure lifecycle management
+    /**
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
+     * @return the etag value.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    public String etag() {
+        return this.etag;
+    }
 
-    /*
-     * Active Directories
+    /**
+     * Get the innerProperties property: NetApp Account properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.activeDirectories")
-    private List<ActiveDirectory> activeDirectories;
-
-    /*
-     * Encryption settings
-     */
-    @JsonProperty(value = "properties.encryption")
-    private AccountEncryption encryption;
+    private AccountProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the systemData property: The system meta data relating to this resource.
@@ -53,55 +63,6 @@ public class NetAppAccountInner extends Resource {
      */
     public SystemData systemData() {
         return this.systemData;
-    }
-
-    /**
-     * Get the provisioningState property: Azure lifecycle management.
-     *
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the activeDirectories property: Active Directories.
-     *
-     * @return the activeDirectories value.
-     */
-    public List<ActiveDirectory> activeDirectories() {
-        return this.activeDirectories;
-    }
-
-    /**
-     * Set the activeDirectories property: Active Directories.
-     *
-     * @param activeDirectories the activeDirectories value to set.
-     * @return the NetAppAccountInner object itself.
-     */
-    public NetAppAccountInner withActiveDirectories(List<ActiveDirectory> activeDirectories) {
-        this.activeDirectories = activeDirectories;
-        return this;
-    }
-
-    /**
-     * Get the encryption property: Encryption settings.
-     *
-     * @return the encryption value.
-     */
-    public AccountEncryption encryption() {
-        return this.encryption;
-    }
-
-    /**
-     * Set the encryption property: Encryption settings.
-     *
-     * @param encryption the encryption value to set.
-     * @return the NetAppAccountInner object itself.
-     */
-    public NetAppAccountInner withEncryption(AccountEncryption encryption) {
-        this.encryption = encryption;
-        return this;
     }
 
     /** {@inheritDoc} */
@@ -119,16 +80,68 @@ public class NetAppAccountInner extends Resource {
     }
 
     /**
+     * Get the provisioningState property: Azure lifecycle management.
+     *
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the activeDirectories property: Active Directories.
+     *
+     * @return the activeDirectories value.
+     */
+    public List<ActiveDirectory> activeDirectories() {
+        return this.innerProperties() == null ? null : this.innerProperties().activeDirectories();
+    }
+
+    /**
+     * Set the activeDirectories property: Active Directories.
+     *
+     * @param activeDirectories the activeDirectories value to set.
+     * @return the NetAppAccountInner object itself.
+     */
+    public NetAppAccountInner withActiveDirectories(List<ActiveDirectory> activeDirectories) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccountProperties();
+        }
+        this.innerProperties().withActiveDirectories(activeDirectories);
+        return this;
+    }
+
+    /**
+     * Get the encryption property: Encryption settings.
+     *
+     * @return the encryption value.
+     */
+    public AccountEncryption encryption() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
+    }
+
+    /**
+     * Set the encryption property: Encryption settings.
+     *
+     * @param encryption the encryption value to set.
+     * @return the NetAppAccountInner object itself.
+     */
+    public NetAppAccountInner withEncryption(AccountEncryption encryption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccountProperties();
+        }
+        this.innerProperties().withEncryption(encryption);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (activeDirectories() != null) {
-            activeDirectories().forEach(e -> e.validate());
-        }
-        if (encryption() != null) {
-            encryption().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

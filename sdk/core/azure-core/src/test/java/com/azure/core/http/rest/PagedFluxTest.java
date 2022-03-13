@@ -379,7 +379,7 @@ public class PagedFluxTest {
     }
 
     @SuppressWarnings("deprecation")
-    private static Stream<Arguments> pagingTerminatesOnSupplier() {
+    public static Stream<Arguments> pagingTerminatesOnSupplier() {
         PageRetriever<String, PagedResponse<String>> pfEndsWithNullPageRetriever = new GetPagesUntil(null);
         PagedFlux<String> pfEndsWithNull = PagedFlux.create(() -> pfEndsWithNullPageRetriever);
 

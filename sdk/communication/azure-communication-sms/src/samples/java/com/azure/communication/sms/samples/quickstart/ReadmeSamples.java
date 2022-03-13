@@ -16,6 +16,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ReadmeSamples {
     public SmsClient createSmsClientUsingAzureKeyCredential() {
+        // BEGIN: readme-sample-createSmsClientUsingAzureKeyCredential
         // You can find your endpoint and access key from your resource in the Azure Portal
         String endpoint = "https://<resource-name>.communication.azure.com";
         AzureKeyCredential azureKeyCredential = new AzureKeyCredential("<access-key>");
@@ -24,6 +25,7 @@ public class ReadmeSamples {
             .endpoint(endpoint)
             .credential(azureKeyCredential)
             .buildClient();
+        // END: readme-sample-createSmsClientUsingAzureKeyCredential
 
         return smsClient;
     }
@@ -42,17 +44,20 @@ public class ReadmeSamples {
     }
 
     public SmsClient createSmsClientWithConnectionString() {
+        // BEGIN: readme-sample-createSmsClientWithConnectionString
         // You can find your connection string from your resource in the Azure Portal
         String connectionString = "https://<resource-name>.communication.azure.com/;<access-key>";
 
         SmsClient smsClient = new SmsClientBuilder()
             .connectionString(connectionString)
             .buildClient();
+        // END: readme-sample-createSmsClientWithConnectionString
 
         return smsClient;
     }
 
     public SmsClient createSmsClientWithAAD() {
+        // BEGIN: readme-sample-createSmsClientWithAAD
         // You can find your endpoint and access key from your resource in the Azure Portal
         String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
 
@@ -60,6 +65,7 @@ public class ReadmeSamples {
             .endpoint(endpoint)
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
+        // END: readme-sample-createSmsClientWithAAD
 
         return smsClient;
     }
@@ -79,6 +85,7 @@ public class ReadmeSamples {
     public void sendMessageToOneRecipient() {
         SmsClient smsClient = createSmsClientUsingAzureKeyCredential();
 
+        // BEGIN: readme-sample-sendMessageToOneRecipient
         SmsSendResult sendResult = smsClient.send(
             "<from-phone-number>",
             "<to-phone-number>",
@@ -87,11 +94,13 @@ public class ReadmeSamples {
         System.out.println("Message Id: " + sendResult.getMessageId());
         System.out.println("Recipient Number: " + sendResult.getTo());
         System.out.println("Send Result Successful:" + sendResult.isSuccessful());
+        // END: readme-sample-sendMessageToOneRecipient
     }
 
     public void sendMessageToGroupWithOptions() {
         SmsClient smsClient = createSmsClientUsingAzureKeyCredential();
 
+        // BEGIN: readme-sample-sendMessageToGroupWithOptions
         SmsSendOptions options = new SmsSendOptions();
         options.setDeliveryReportEnabled(true);
         options.setTag("Marketing");
@@ -108,6 +117,7 @@ public class ReadmeSamples {
             System.out.println("Recipient Number: " + result.getTo());
             System.out.println("Send Result Successful:" + result.isSuccessful());
         }
+        // END: readme-sample-sendMessageToGroupWithOptions
     }
 
     /**
@@ -129,6 +139,7 @@ public class ReadmeSamples {
     public void sendMessageTroubleShooting() {
         SmsClient smsClient = createSmsClientUsingAzureKeyCredential();
 
+        // BEGIN: readme-sample-sendMessageTroubleShooting
         try {
             SmsSendOptions options = new SmsSendOptions();
             options.setDeliveryReportEnabled(true);
@@ -153,5 +164,6 @@ public class ReadmeSamples {
         } catch (RuntimeException ex) {
             System.out.println(ex.getMessage());
         }
+        // END: readme-sample-sendMessageTroubleShooting
     }
 }

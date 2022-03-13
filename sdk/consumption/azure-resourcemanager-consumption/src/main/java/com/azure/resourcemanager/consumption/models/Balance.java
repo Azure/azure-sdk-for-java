@@ -33,6 +33,20 @@ public interface Balance {
     String type();
 
     /**
+     * Gets the etag property: The etag for the resource.
+     *
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
+     * Gets the tags property: Resource tags.
+     *
+     * @return the tags value.
+     */
+    Map<String, String> tags();
+
+    /**
      * Gets the currency property: The ISO currency in which the meter is charged, for example, USD.
      *
      * @return the currency value.
@@ -137,20 +151,6 @@ public interface Balance {
      * @return the adjustmentDetails value.
      */
     List<BalancePropertiesAdjustmentDetailsItem> adjustmentDetails();
-
-    /**
-     * Gets the etag property: Resource etag.
-     *
-     * @return the etag value.
-     */
-    String etag();
-
-    /**
-     * Gets the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    Map<String, String> tags();
 
     /**
      * Gets the inner com.azure.resourcemanager.consumption.fluent.models.BalanceInner object.

@@ -34,6 +34,8 @@ public class StoreResult {
     final public long itemLSN;
     final public ISessionToken sessionToken;
     final public double requestCharge;
+    final public String activityId;
+    final public String correlatedActivityId;
     final public int currentReplicaSetSize;
     final public int currentWriteQuorum;
     final public boolean isValid;
@@ -51,6 +53,8 @@ public class StoreResult {
             long lsn,
             long quorumAckedLsn,
             double requestCharge,
+            String activityId,
+            String correlatedActivityId,
             int currentReplicaSetSize,
             int currentWriteQuorum,
             boolean isValid,
@@ -66,6 +70,8 @@ public class StoreResult {
         this.lsn = lsn;
         this.quorumAckedLSN = quorumAckedLsn;
         this.requestCharge = requestCharge;
+        this.activityId= activityId;
+        this.correlatedActivityId = correlatedActivityId;
         this.currentReplicaSetSize = currentReplicaSetSize;
         this.currentWriteQuorum = currentWriteQuorum;
         this.isValid = isValid;
@@ -208,6 +214,13 @@ public class StoreResult {
             jsonGenerator.writeObjectField("transportRequestTimeline", storeResult.storeResponse != null ?
                 storeResult.storeResponse.getRequestTimeline() :
                 storeResult.exception != null ? BridgeInternal.getRequestTimeline(storeResult.exception) : null);
+
+            this.writeNonNullObjectField(
+                jsonGenerator,
+                "transportRequestChannelAcquisitionContext",
+                storeResult.storeResponse != null ? storeResult.storeResponse.getChannelAcquisitionTimeline() :
+                    storeResult.exception != null? BridgeInternal.getChannelAcqusitionTimeline(storeResult.exception) : null);
+
             jsonGenerator.writeObjectField("rntbdRequestLengthInBytes", storeResult.storeResponse != null ?
                 storeResult.storeResponse.getRntbdRequestLength() : BridgeInternal.getRntbdRequestLength(storeResult.exception));
             jsonGenerator.writeObjectField("rntbdResponseLengthInBytes", storeResult.storeResponse != null ?
@@ -224,6 +237,14 @@ public class StoreResult {
                 storeResult.exception != null ? BridgeInternal.getServiceEndpointStatistics(storeResult.exception) : null);
 
             jsonGenerator.writeEndObject();
+        }
+
+        private void writeNonNullObjectField(JsonGenerator jsonGenerator, String fieldName, Object object) throws IOException {
+             if (object == null) {
+                 return;
+             }
+
+             jsonGenerator.writeObjectField(fieldName, object);
         }
     }
 }

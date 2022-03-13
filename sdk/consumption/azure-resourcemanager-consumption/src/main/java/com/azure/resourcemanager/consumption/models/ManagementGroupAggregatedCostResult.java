@@ -34,6 +34,20 @@ public interface ManagementGroupAggregatedCostResult {
     String type();
 
     /**
+     * Gets the etag property: The etag for the resource.
+     *
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
+     * Gets the tags property: Resource tags.
+     *
+     * @return the tags value.
+     */
+    Map<String, String> tags();
+
+    /**
      * Gets the billingPeriodId property: The id of the billing period resource that the aggregated cost belongs to.
      *
      * @return the billingPeriodId value.
@@ -104,20 +118,6 @@ public interface ManagementGroupAggregatedCostResult {
      * @return the excludedSubscriptions value.
      */
     List<String> excludedSubscriptions();
-
-    /**
-     * Gets the etag property: Resource etag.
-     *
-     * @return the etag value.
-     */
-    String etag();
-
-    /**
-     * Gets the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    Map<String, String> tags();
 
     /**
      * Gets the inner com.azure.resourcemanager.consumption.fluent.models.ManagementGroupAggregatedCostResultInner

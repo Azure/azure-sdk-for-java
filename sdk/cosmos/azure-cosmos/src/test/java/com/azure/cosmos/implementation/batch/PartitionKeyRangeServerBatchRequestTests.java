@@ -3,10 +3,10 @@
 
 package com.azure.cosmos.implementation.batch;
 
-import com.azure.cosmos.CosmosItemOperation;
-import com.azure.cosmos.CosmosItemOperationType;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.models.CosmosItemOperation;
+import com.azure.cosmos.models.CosmosItemOperationType;
 import com.azure.cosmos.models.PartitionKey;
 import org.testng.annotations.Test;
 
@@ -20,10 +20,11 @@ public class PartitionKeyRangeServerBatchRequestTests {
     private static final int TIMEOUT = 40000;
 
     private CosmosItemOperation createItemBulkOperation(String id) {
-        ItemBulkOperation<?> operation = new ItemBulkOperation<>(
+        ItemBulkOperation<?, ?> operation = new ItemBulkOperation<>(
             CosmosItemOperationType.CREATE,
             id,
             PartitionKey.NONE,
+            null,
             null,
             null
         );
@@ -152,12 +153,13 @@ public class PartitionKeyRangeServerBatchRequestTests {
             JsonSerializable jsonSerializable = new JsonSerializable();
             jsonSerializable.set("abc", StringUtils.repeat("x", docSizeInBytes - 10));// {"abc":" + "} = 10
 
-            ItemBulkOperation<?> operation = new ItemBulkOperation<>(
+            ItemBulkOperation<?, ?> operation = new ItemBulkOperation<>(
                 CosmosItemOperationType.CREATE,
                 "",
                 null,
                 null,
-                jsonSerializable
+                jsonSerializable,
+                null
             );
 
             operations.add(operation);

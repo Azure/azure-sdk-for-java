@@ -12,6 +12,9 @@ import com.azure.storage.blob.models.BlobStorageException;
  * exceptions from a single batch operation.
  */
 public final class BlobBatchStorageException extends HttpResponseException {
+    /**
+     * Exceptions returned by the batch response.
+     */
     private final Iterable<BlobStorageException> exceptions;
 
     BlobBatchStorageException(String message, HttpResponse response, Iterable<BlobStorageException> exceptions) {

@@ -25,7 +25,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrgdb2680588/providers/Microsoft.Web/serverfarms/java-webapp-396048plana21166054?api-version=2020-12-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrgdb2680588/providers/Microsoft.Web/serverfarms/java-webapp-396048plana21166054?api-version=2021-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)",
       "Content-Type" : "application/json"
@@ -52,7 +52,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrgdb2680588/providers/Microsoft.Web/sites/java-webapp-396048?api-version=2020-12-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrgdb2680588/providers/Microsoft.Web/sites/java-webapp-396048?api-version=2021-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)",
       "Content-Type" : "application/json"
@@ -104,7 +104,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrgdb2680588/providers/Microsoft.Web/sites/java-webapp-396048/config/web?api-version=2020-12-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrgdb2680588/providers/Microsoft.Web/sites/java-webapp-396048/config/web?api-version=2021-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)",
       "Content-Type" : "application/json"
@@ -132,7 +132,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrgdb2680588/providers/Microsoft.Authorization/roleAssignments/72ac9208-c6ce-4778-a5fe-378ecd5fa4b9?api-version=2018-01-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrgdb2680588/providers/Microsoft.Authorization/roleAssignments/72ac9208-c6ce-4778-a5fe-378ecd5fa4b9?api-version=2020-08-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)",
       "Content-Type" : "application/json"
@@ -157,7 +157,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrgdb2680588/providers/Microsoft.Web/serverfarms/java-webapp-396048plana21166054?api-version=2020-12-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrgdb2680588/providers/Microsoft.Web/serverfarms/java-webapp-396048plana21166054?api-version=2021-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)"
     },
@@ -183,7 +183,7 @@
     }
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrgdb2680588/providers/Microsoft.Web/sites/java-webapp-396048/publishxml?api-version=2020-12-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrgdb2680588/providers/Microsoft.Web/sites/java-webapp-396048/publishxml?api-version=2021-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)",
       "Content-Type" : "application/json"
@@ -206,7 +206,7 @@
       "content-type" : "application/xml",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "06f128fc-df24-4c21-85fa-7e1fc5490c33",
-      "Body" : "<publishData><publishProfile profileName=\"java-webapp-396048 - Web Deploy\" publishMethod=\"MSDeploy\" publishUrl=\"java-webapp-396048.scm.azurewebsites.net:443\" msdeploySite=\"java-webapp-396048\" userName=\"$java-webapp-396048\" userPWD=\"i4LdFoPrww8MvrbpyNkuz8lAXeu2qSm1JzGkDfBz9jffhG42XDazAbQdM8rl\" destinationAppUrl=\"http://java-webapp-396048.azurewebsites.net\" SQLServerDBConnectionString=\"\" mySQLDBConnectionString=\"\" hostingProviderForumLink=\"\" controlPanelLink=\"http://windows.azure.com\" webSystem=\"WebSites\"><databases /></publishProfile><publishProfile profileName=\"java-webapp-396048 - FTP\" publishMethod=\"FTP\" publishUrl=\"ftp://waws-prod-bay-137.ftp.azurewebsites.windows.net/site/wwwroot\" ftpPassiveMode=\"True\" userName=\"java-webapp-396048\\$java-webapp-396048\" userPWD=\"i4LdFoPrww8MvrbpyNkuz8lAXeu2qSm1JzGkDfBz9jffhG42XDazAbQdM8rl\" destinationAppUrl=\"http://java-webapp-396048.azurewebsites.net\" SQLServerDBConnectionString=\"\" mySQLDBConnectionString=\"\" hostingProviderForumLink=\"\" controlPanelLink=\"http://windows.azure.com\" webSystem=\"WebSites\"><databases /></publishProfile><publishProfile profileName=\"java-webapp-396048 - ReadOnly - FTP\" publishMethod=\"FTP\" publishUrl=\"ftp://waws-prod-bay-137dr.ftp.azurewebsites.windows.net/site/wwwroot\" ftpPassiveMode=\"True\" userName=\"java-webapp-396048\\$java-webapp-396048\" userPWD=\"i4LdFoPrww8MvrbpyNkuz8lAXeu2qSm1JzGkDfBz9jffhG42XDazAbQdM8rl\" destinationAppUrl=\"http://java-webapp-396048.azurewebsites.net\" SQLServerDBConnectionString=\"\" mySQLDBConnectionString=\"\" hostingProviderForumLink=\"\" controlPanelLink=\"http://windows.azure.com\" webSystem=\"WebSites\"><databases /></publishProfile></publishData>"
+      "Body" : "<publishData><publishProfile profileName=\"java-webapp-396048 - Web Deploy\" publishMethod=\"MSDeploy\" publishUrl=\"java-webapp-396048.scm.azurewebsites.net:443\" msdeploySite=\"java-webapp-396048\" userName=\"$java-webapp-396048\" userPWD=\"***REMOVED***\" destinationAppUrl=\"http://java-webapp-396048.azurewebsites.net\" SQLServerDBConnectionString=\"\" mySQLDBConnectionString=\"\" hostingProviderForumLink=\"\" controlPanelLink=\"http://windows.azure.com\" webSystem=\"WebSites\"><databases /></publishProfile><publishProfile profileName=\"java-webapp-396048 - FTP\" publishMethod=\"FTP\" publishUrl=\"ftp://waws-prod-bay-137.ftp.azurewebsites.windows.net/site/wwwroot\" ftpPassiveMode=\"True\" userName=\"java-webapp-396048\\$java-webapp-396048\" userPWD=\"***REMOVED***\" destinationAppUrl=\"http://java-webapp-396048.azurewebsites.net\" SQLServerDBConnectionString=\"\" mySQLDBConnectionString=\"\" hostingProviderForumLink=\"\" controlPanelLink=\"http://windows.azure.com\" webSystem=\"WebSites\"><databases /></publishProfile><publishProfile profileName=\"java-webapp-396048 - ReadOnly - FTP\" publishMethod=\"FTP\" publishUrl=\"ftp://waws-prod-bay-137dr.ftp.azurewebsites.windows.net/site/wwwroot\" ftpPassiveMode=\"True\" userName=\"java-webapp-396048\\$java-webapp-396048\" userPWD=\"***REMOVED***\" destinationAppUrl=\"http://java-webapp-396048.azurewebsites.net\" SQLServerDBConnectionString=\"\" mySQLDBConnectionString=\"\" hostingProviderForumLink=\"\" controlPanelLink=\"http://windows.azure.com\" webSystem=\"WebSites\"><databases /></publishProfile></publishData>"
     }
   }, {
     "Method" : "DELETE",

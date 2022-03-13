@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** The cluster create parameters. */
 @Fluent
@@ -91,6 +92,12 @@ public final class ClusterCreateProperties {
      */
     @JsonProperty(value = "computeIsolationProperties")
     private ComputeIsolationProperties computeIsolationProperties;
+
+    /*
+     * The private link configurations.
+     */
+    @JsonProperty(value = "privateLinkConfigurations")
+    private List<PrivateLinkConfiguration> privateLinkConfigurations;
 
     /**
      * Get the clusterVersion property: The version of the cluster.
@@ -355,6 +362,27 @@ public final class ClusterCreateProperties {
     }
 
     /**
+     * Get the privateLinkConfigurations property: The private link configurations.
+     *
+     * @return the privateLinkConfigurations value.
+     */
+    public List<PrivateLinkConfiguration> privateLinkConfigurations() {
+        return this.privateLinkConfigurations;
+    }
+
+    /**
+     * Set the privateLinkConfigurations property: The private link configurations.
+     *
+     * @param privateLinkConfigurations the privateLinkConfigurations value to set.
+     * @return the ClusterCreateProperties object itself.
+     */
+    public ClusterCreateProperties withPrivateLinkConfigurations(
+        List<PrivateLinkConfiguration> privateLinkConfigurations) {
+        this.privateLinkConfigurations = privateLinkConfigurations;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -386,6 +414,9 @@ public final class ClusterCreateProperties {
         }
         if (computeIsolationProperties() != null) {
             computeIsolationProperties().validate();
+        }
+        if (privateLinkConfigurations() != null) {
+            privateLinkConfigurations().forEach(e -> e.validate());
         }
     }
 }

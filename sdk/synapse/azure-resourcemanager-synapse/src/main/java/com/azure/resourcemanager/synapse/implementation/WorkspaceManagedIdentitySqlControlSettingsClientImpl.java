@@ -110,7 +110,8 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed Identity Sql Control Settings.
+     * @return managed Identity Sql Control Settings along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ManagedIdentitySqlControlSettingsModelInner>> getWithResponseAsync(
@@ -134,6 +135,7 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -141,7 +143,7 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -159,7 +161,8 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed Identity Sql Control Settings.
+     * @return managed Identity Sql Control Settings along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ManagedIdentitySqlControlSettingsModelInner>> getWithResponseAsync(
@@ -183,12 +186,13 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -204,7 +208,7 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed Identity Sql Control Settings.
+     * @return managed Identity Sql Control Settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ManagedIdentitySqlControlSettingsModelInner> getAsync(String resourceGroupName, String workspaceName) {
@@ -243,7 +247,7 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed Identity Sql Control Settings.
+     * @return managed Identity Sql Control Settings along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedIdentitySqlControlSettingsModelInner> getWithResponse(
@@ -260,7 +264,8 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Control Settings for workspace managed identity.
+     * @return managed Identity Sql Control Settings along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -294,6 +299,7 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
         } else {
             managedIdentitySqlControlSettings.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -301,7 +307,7 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
                     service
                         .createOrUpdate(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -321,7 +327,8 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Control Settings for workspace managed identity.
+     * @return managed Identity Sql Control Settings along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -356,12 +363,13 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
         } else {
             managedIdentitySqlControlSettings.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -379,9 +387,10 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Control Settings for workspace managed identity.
+     * @return managed Identity Sql Control Settings along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<
             PollResult<ManagedIdentitySqlControlSettingsModelInner>, ManagedIdentitySqlControlSettingsModelInner>
         beginCreateOrUpdateAsync(
@@ -397,7 +406,7 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
                 this.client.getHttpPipeline(),
                 ManagedIdentitySqlControlSettingsModelInner.class,
                 ManagedIdentitySqlControlSettingsModelInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -410,9 +419,10 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Control Settings for workspace managed identity.
+     * @return managed Identity Sql Control Settings along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<
             PollResult<ManagedIdentitySqlControlSettingsModelInner>, ManagedIdentitySqlControlSettingsModelInner>
         beginCreateOrUpdateAsync(
@@ -443,9 +453,10 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Control Settings for workspace managed identity.
+     * @return managed Identity Sql Control Settings along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
             PollResult<ManagedIdentitySqlControlSettingsModelInner>, ManagedIdentitySqlControlSettingsModelInner>
         beginCreateOrUpdate(
@@ -466,9 +477,10 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Control Settings for workspace managed identity.
+     * @return managed Identity Sql Control Settings along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
             PollResult<ManagedIdentitySqlControlSettingsModelInner>, ManagedIdentitySqlControlSettingsModelInner>
         beginCreateOrUpdate(
@@ -489,7 +501,7 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Control Settings for workspace managed identity.
+     * @return managed Identity Sql Control Settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ManagedIdentitySqlControlSettingsModelInner> createOrUpdateAsync(
@@ -511,7 +523,7 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Control Settings for workspace managed identity.
+     * @return managed Identity Sql Control Settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ManagedIdentitySqlControlSettingsModelInner> createOrUpdateAsync(
@@ -533,7 +545,7 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Control Settings for workspace managed identity.
+     * @return managed Identity Sql Control Settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedIdentitySqlControlSettingsModelInner createOrUpdate(
@@ -553,7 +565,7 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Control Settings for workspace managed identity.
+     * @return managed Identity Sql Control Settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedIdentitySqlControlSettingsModelInner createOrUpdate(

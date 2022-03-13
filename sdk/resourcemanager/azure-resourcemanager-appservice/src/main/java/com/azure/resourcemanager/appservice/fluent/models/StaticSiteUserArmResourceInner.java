@@ -5,41 +5,37 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Static Site User ARM resource. */
-@JsonFlatten
 @Fluent
-public class StaticSiteUserArmResourceInner extends ProxyOnlyResource {
+public final class StaticSiteUserArmResourceInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(StaticSiteUserArmResourceInner.class);
 
     /*
-     * The identity provider for the static site user.
+     * StaticSiteUserARMResource resource specific properties
      */
-    @JsonProperty(value = "properties.provider", access = JsonProperty.Access.WRITE_ONLY)
-    private String provider;
+    @JsonProperty(value = "properties")
+    private StaticSiteUserArmResourceProperties innerProperties;
 
-    /*
-     * The user id for the static site user.
+    /**
+     * Get the innerProperties property: StaticSiteUserARMResource resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.userId", access = JsonProperty.Access.WRITE_ONLY)
-    private String userId;
+    private StaticSiteUserArmResourceProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * The display name for the static site user.
-     */
-    @JsonProperty(value = "properties.displayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String displayName;
-
-    /*
-     * The roles for the static site user, in free-form string format
-     */
-    @JsonProperty(value = "properties.roles")
-    private String roles;
+    /** {@inheritDoc} */
+    @Override
+    public StaticSiteUserArmResourceInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the provider property: The identity provider for the static site user.
@@ -47,7 +43,7 @@ public class StaticSiteUserArmResourceInner extends ProxyOnlyResource {
      * @return the provider value.
      */
     public String provider() {
-        return this.provider;
+        return this.innerProperties() == null ? null : this.innerProperties().provider();
     }
 
     /**
@@ -56,7 +52,7 @@ public class StaticSiteUserArmResourceInner extends ProxyOnlyResource {
      * @return the userId value.
      */
     public String userId() {
-        return this.userId;
+        return this.innerProperties() == null ? null : this.innerProperties().userId();
     }
 
     /**
@@ -65,7 +61,7 @@ public class StaticSiteUserArmResourceInner extends ProxyOnlyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -74,7 +70,7 @@ public class StaticSiteUserArmResourceInner extends ProxyOnlyResource {
      * @return the roles value.
      */
     public String roles() {
-        return this.roles;
+        return this.innerProperties() == null ? null : this.innerProperties().roles();
     }
 
     /**
@@ -84,14 +80,10 @@ public class StaticSiteUserArmResourceInner extends ProxyOnlyResource {
      * @return the StaticSiteUserArmResourceInner object itself.
      */
     public StaticSiteUserArmResourceInner withRoles(String roles) {
-        this.roles = roles;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public StaticSiteUserArmResourceInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StaticSiteUserArmResourceProperties();
+        }
+        this.innerProperties().withRoles(roles);
         return this;
     }
 
@@ -103,5 +95,8 @@ public class StaticSiteUserArmResourceInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

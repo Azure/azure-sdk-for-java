@@ -34,15 +34,13 @@ The following sections provide several code snippets covering some of the most c
 
 Create a HttpClient.
 
-<!-- embedme ./src/samples/java/com/azure/core/http/jdk/httpclient/ReadmeSamples.java#L24-L24 -->
-```java
+```java readme-sample-createBasicClient
 HttpClient client = new JdkAsyncHttpClientBuilder().build();
 ```
 
 Create a HttpClient using a connection timeout of 60 seconds.
 
-<!-- embedme ./src/samples/java/com/azure/core/http/jdk/httpclient/ReadmeSamples.java#L31-L31 -->
-```java
+```java readme-sample-createClientWithConnectionTimeout
 HttpClient client = new JdkAsyncHttpClientBuilder().connectionTimeout(Duration.ofSeconds(60)).build();
 ```
 
@@ -50,8 +48,7 @@ HttpClient client = new JdkAsyncHttpClientBuilder().connectionTimeout(Duration.o
 
 Create a HttpClient that is using a proxy.
 
-<!-- embedme ./src/samples/java/com/azure/core/http/jdk/httpclient/ReadmeSamples.java#L38-L40 -->
-```java
+```java readme-sample-createProxyClient
 HttpClient client = new JdkAsyncHttpClientBuilder()
     .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888)))
     .build();
@@ -74,7 +71,7 @@ locate the root issue. View the [logging][logging] wiki for guidance about enabl
 
 ## Contributing
 
-For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md).
+For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
 
 1. Fork it
 1. Create your feature branch (`git checkout -b my-new-feature`)

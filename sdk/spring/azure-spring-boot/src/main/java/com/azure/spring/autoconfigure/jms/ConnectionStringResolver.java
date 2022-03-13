@@ -15,6 +15,12 @@ public class ConnectionStringResolver {
     private static final String SAS_KEY_NAME = "SharedAccessKeyName";
     private static final String SAS_KEY = "SharedAccessKey";
 
+    /**
+     * Gets a ServiceBus key.
+     *
+     * @param connectionString the connection string
+     * @return a ServiceBus key
+     */
     public static ServiceBusKey getServiceBusKey(String connectionString) {
         final String[] segments = connectionString.split(";");
         final HashMap<String, String> hashMap = new HashMap<>();

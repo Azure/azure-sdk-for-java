@@ -37,6 +37,8 @@ public class RequestResponseChannel implements IOObject {
     private final AtomicInteger openRefCount;
     private final AtomicInteger closeRefCount;
 
+    private final String instanceName = StringUtil.getRandomString("RRC");
+
     private OperationResult<Void, Exception> onOpen;
     private OperationResult<Void, Exception> onClose; // handles closeLink due to failures
     private OperationResult<Void, Exception> onGraceFullClose; // handles intentional close
@@ -192,6 +194,11 @@ public class RequestResponseChannel implements IOObject {
             return IOObjectState.CLOSED;
         }
         return IOObjectState.CLOSING; // only left cases are if some are active and some are closed
+    }
+
+    @Override
+    public String getId() {
+        return this.instanceName;
     }
 
     private class RequestHandler implements AmqpSender {

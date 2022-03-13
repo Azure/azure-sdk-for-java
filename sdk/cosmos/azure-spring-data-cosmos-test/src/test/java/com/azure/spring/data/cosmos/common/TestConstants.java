@@ -6,7 +6,9 @@ import com.azure.cosmos.models.IndexingMode;
 import com.azure.spring.data.cosmos.domain.Address;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class TestConstants {
 
@@ -93,6 +95,11 @@ public final class TestConstants {
     public static final String DEPARTMENT = "test-department";
 
     public static final Integer AGE = 24;
+
+    public static final Map<String, String> PASSPORT_IDS_BY_COUNTRY = new HashMap<String, String>() {{
+        put("United States of America", "123456789");
+        put("Côte d'Ivoire", "IC1234567");
+    }};
 
     private TestConstants() {
     }

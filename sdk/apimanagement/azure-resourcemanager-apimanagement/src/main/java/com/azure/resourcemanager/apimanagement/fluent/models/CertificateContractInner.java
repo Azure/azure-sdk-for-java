@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.KeyVaultContractProperties;
@@ -14,36 +13,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Certificate details. */
-@JsonFlatten
 @Fluent
-public class CertificateContractInner extends ProxyResource {
+public final class CertificateContractInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificateContractInner.class);
 
     /*
-     * Subject attribute of the certificate.
+     * Certificate properties details.
      */
-    @JsonProperty(value = "properties.subject")
-    private String subject;
+    @JsonProperty(value = "properties")
+    private CertificateContractProperties innerProperties;
 
-    /*
-     * Thumbprint of the certificate.
-     */
-    @JsonProperty(value = "properties.thumbprint")
-    private String thumbprint;
-
-    /*
-     * Expiration date of the certificate. The date conforms to the following
-     * format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
+    /**
+     * Get the innerProperties property: Certificate properties details.
      *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.expirationDate")
-    private OffsetDateTime expirationDate;
-
-    /*
-     * KeyVault location details of the certificate.
-     */
-    @JsonProperty(value = "properties.keyVault")
-    private KeyVaultContractProperties keyVault;
+    private CertificateContractProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the subject property: Subject attribute of the certificate.
@@ -51,7 +38,7 @@ public class CertificateContractInner extends ProxyResource {
      * @return the subject value.
      */
     public String subject() {
-        return this.subject;
+        return this.innerProperties() == null ? null : this.innerProperties().subject();
     }
 
     /**
@@ -61,7 +48,10 @@ public class CertificateContractInner extends ProxyResource {
      * @return the CertificateContractInner object itself.
      */
     public CertificateContractInner withSubject(String subject) {
-        this.subject = subject;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CertificateContractProperties();
+        }
+        this.innerProperties().withSubject(subject);
         return this;
     }
 
@@ -71,7 +61,7 @@ public class CertificateContractInner extends ProxyResource {
      * @return the thumbprint value.
      */
     public String thumbprint() {
-        return this.thumbprint;
+        return this.innerProperties() == null ? null : this.innerProperties().thumbprint();
     }
 
     /**
@@ -81,7 +71,10 @@ public class CertificateContractInner extends ProxyResource {
      * @return the CertificateContractInner object itself.
      */
     public CertificateContractInner withThumbprint(String thumbprint) {
-        this.thumbprint = thumbprint;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CertificateContractProperties();
+        }
+        this.innerProperties().withThumbprint(thumbprint);
         return this;
     }
 
@@ -92,7 +85,7 @@ public class CertificateContractInner extends ProxyResource {
      * @return the expirationDate value.
      */
     public OffsetDateTime expirationDate() {
-        return this.expirationDate;
+        return this.innerProperties() == null ? null : this.innerProperties().expirationDate();
     }
 
     /**
@@ -103,7 +96,10 @@ public class CertificateContractInner extends ProxyResource {
      * @return the CertificateContractInner object itself.
      */
     public CertificateContractInner withExpirationDate(OffsetDateTime expirationDate) {
-        this.expirationDate = expirationDate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CertificateContractProperties();
+        }
+        this.innerProperties().withExpirationDate(expirationDate);
         return this;
     }
 
@@ -113,7 +109,7 @@ public class CertificateContractInner extends ProxyResource {
      * @return the keyVault value.
      */
     public KeyVaultContractProperties keyVault() {
-        return this.keyVault;
+        return this.innerProperties() == null ? null : this.innerProperties().keyVault();
     }
 
     /**
@@ -123,7 +119,10 @@ public class CertificateContractInner extends ProxyResource {
      * @return the CertificateContractInner object itself.
      */
     public CertificateContractInner withKeyVault(KeyVaultContractProperties keyVault) {
-        this.keyVault = keyVault;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CertificateContractProperties();
+        }
+        this.innerProperties().withKeyVault(keyVault);
         return this;
     }
 
@@ -133,8 +132,8 @@ public class CertificateContractInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (keyVault() != null) {
-            keyVault().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

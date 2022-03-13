@@ -3,7 +3,6 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
@@ -13,20 +12,20 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
-import com.azure.ai.textanalytics.models.ExtractKeyPhrasesOptions;
+import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
-import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
+import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
+import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedIterable;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.SyncPoller;
@@ -50,47 +49,56 @@ public class ReadmeSamples {
      * Code snippet for configuring http client.
      */
     public void configureHttpClient() {
+        // BEGIN: readme-sample-configureHttpClient
         HttpClient client = new NettyAsyncHttpClientBuilder()
             .port(8080)
             .wiretap(true)
             .build();
+        // END: readme-sample-configureHttpClient
     }
 
     /**
      * Code snippet for getting sync client using the AzureKeyCredential authentication.
      */
     public void useAzureKeyCredentialSyncClient() {
+        // BEGIN: readme-sample-createTextAnalyticsClientWithKeyCredential
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildClient();
+        // END: readme-sample-createTextAnalyticsClientWithKeyCredential
     }
 
     /**
      * Code snippet for getting async client using AzureKeyCredential authentication.
      */
     public void useAzureKeyCredentialAsyncClient() {
-        TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
+        // BEGIN: readme-sample-createTextAnalyticsAsyncClientWithKeyCredential
+        TextAnalyticsAsyncClient textAnalyticsAsyncClient = new TextAnalyticsClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
+        // END: readme-sample-createTextAnalyticsAsyncClientWithKeyCredential
     }
 
     /**
      * Code snippet for getting async client using AAD authentication.
      */
     public void useAadAsyncClient() {
+        // BEGIN: readme-sample-createTextAnalyticsAsyncClientWithAAD
         TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
-        TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
+        TextAnalyticsAsyncClient textAnalyticsAsyncClient = new TextAnalyticsClientBuilder()
             .endpoint("{endpoint}")
             .credential(defaultCredential)
             .buildAsyncClient();
+        // END: readme-sample-createTextAnalyticsAsyncClientWithAAD
     }
 
     /**
      * Code snippet for rotating AzureKeyCredential of the client
      */
     public void rotatingAzureKeyCredential() {
+        // BEGIN: readme-sample-rotatingAzureKeyCredential
         AzureKeyCredential credential = new AzureKeyCredential("{key}");
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
             .credential(credential)
@@ -98,12 +106,14 @@ public class ReadmeSamples {
             .buildClient();
 
         credential.update("{new_key}");
+        // END: readme-sample-rotatingAzureKeyCredential
     }
 
     /**
      * Code snippet for handling exception
      */
     public void handlingException() {
+        // BEGIN: readme-sample-handlingException
         List<DetectLanguageInput> documents = Arrays.asList(
             new DetectLanguageInput("1", "This is written in English.", "us"),
             new DetectLanguageInput("1", "Este es un documento  escrito en Español.", "es")
@@ -114,43 +124,51 @@ public class ReadmeSamples {
         } catch (HttpResponseException e) {
             System.out.println(e.getMessage());
         }
+        // END: readme-sample-handlingException
     }
 
     /**
      * Code snippet for analyzing sentiment of a document.
      */
     public void analyzeSentiment() {
+        // BEGIN: readme-sample-analyzeSentiment
         String document = "The hotel was dark and unclean. I like microsoft.";
         DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment(document);
         System.out.printf("Analyzed document sentiment: %s.%n", documentSentiment.getSentiment());
         documentSentiment.getSentences().forEach(sentenceSentiment ->
             System.out.printf("Analyzed sentence sentiment: %s.%n", sentenceSentiment.getSentiment()));
+        // END: readme-sample-analyzeSentiment
     }
 
     /**
      * Code snippet for detecting language in a document.
      */
     public void detectLanguages() {
+        // BEGIN: readme-sample-detectLanguages
         String document = "Bonjour tout le monde";
         DetectedLanguage detectedLanguage = textAnalyticsClient.detectLanguage(document);
         System.out.printf("Detected language name: %s, ISO 6391 name: %s, confidence score: %f.%n",
             detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getConfidenceScore());
+        // END: readme-sample-detectLanguages
     }
 
     /**
      * Code snippet for recognizing category entity in a document.
      */
     public void recognizeEntity() {
+        // BEGIN: readme-sample-recognizeEntity
         String document = "Satya Nadella is the CEO of Microsoft";
         textAnalyticsClient.recognizeEntities(document).forEach(entity ->
             System.out.printf("Recognized entity: %s, category: %s, subcategory: %s, confidence score: %f.%n",
                 entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
+        // END: readme-sample-recognizeEntity
     }
 
     /**
      * Code snippet for recognizing linked entity in a document.
      */
     public void recognizeLinkedEntity() {
+        // BEGIN: readme-sample-recognizeLinkedEntity
         String document = "Old Faithful is a geyser at Yellowstone Park.";
         textAnalyticsClient.recognizeLinkedEntities(document).forEach(linkedEntity -> {
             System.out.println("Linked Entities:");
@@ -159,21 +177,25 @@ public class ReadmeSamples {
             linkedEntity.getMatches().forEach(match ->
                 System.out.printf("Text: %s, confidence score: %f.%n", match.getText(), match.getConfidenceScore()));
         });
+        // END: readme-sample-recognizeLinkedEntity
     }
 
     /**
      * Code snippet for extracting key phrases in a document.
      */
     public void extractKeyPhrases() {
+        // BEGIN: readme-sample-extractKeyPhrases
         String document = "My cat might need to see a veterinarian.";
         System.out.println("Extracted phrases:");
         textAnalyticsClient.extractKeyPhrases(document).forEach(keyPhrase -> System.out.printf("%s.%n", keyPhrase));
+        // END: readme-sample-extractKeyPhrases
     }
 
     /**
      * Code snippet for recognizing Personally Identifiable Information entity in a document.
      */
     public void recognizePiiEntity() {
+        // BEGIN: readme-sample-recognizePiiEntity
         String document = "My SSN is 859-98-0987";
         PiiEntityCollection piiEntityCollection = textAnalyticsClient.recognizePiiEntities(document);
         System.out.printf("Redacted Text: %s%n", piiEntityCollection.getRedactedText());
@@ -181,12 +203,14 @@ public class ReadmeSamples {
             "Recognized Personally Identifiable Information entity: %s, entity category: %s, entity subcategory: %s,"
                 + " confidence score: %f.%n",
             entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
+        // END: readme-sample-recognizePiiEntity
     }
 
     /**
      * Code snippet for recognizing healthcare entities in documents.
      */
     public void recognizeHealthcareEntities() {
+        // BEGIN: readme-sample-recognizeHealthcareEntities
         List<TextDocumentInput> documents = Arrays.asList(new TextDocumentInput("0",
             "RECORD #333582770390100 | MH | 85986313 | | 054351 | 2/14/2001 12:00:00 AM | "
                 + "CORONARY ARTERY DISEASE | Signed | DIS | Admission Date: 5/22/2001 "
@@ -205,41 +229,44 @@ public class ReadmeSamples {
                 + " for revascularization with open heart surgery."
         ));
         AnalyzeHealthcareEntitiesOptions options = new AnalyzeHealthcareEntitiesOptions().setIncludeStatistics(true);
-        SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedIterable<AnalyzeHealthcareEntitiesResultCollection>>
+        SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedIterable>
             syncPoller = textAnalyticsClient.beginAnalyzeHealthcareEntities(documents, options, Context.NONE);
         syncPoller.waitForCompletion();
-        syncPoller.getFinalResult().forEach(healthcareTaskResult -> healthcareTaskResult.forEach(
-            healthcareEntitiesResult -> {
-                System.out.println("Document entities: ");
-                AtomicInteger ct = new AtomicInteger();
-                healthcareEntitiesResult.getEntities().forEach(healthcareEntity -> {
-                    System.out.printf("\ti = %d, Text: %s, category: %s, subcategory: %s, confidence score: %f.%n",
-                        ct.getAndIncrement(), healthcareEntity.getText(), healthcareEntity.getCategory(),
-                        healthcareEntity.getSubcategory(), healthcareEntity.getConfidenceScore());
-                    IterableStream<EntityDataSource> healthcareEntityDataSources =
-                        healthcareEntity.getDataSources();
-                    if (healthcareEntityDataSources != null) {
-                        healthcareEntityDataSources.forEach(healthcareEntityLink -> System.out.printf(
-                            "\t\tEntity ID in data source: %s, data source: %s.%n",
-                            healthcareEntityLink.getEntityId(), healthcareEntityLink.getName()));
-                    }
-                });
-                // Healthcare entity relation groups
-                healthcareEntitiesResult.getEntityRelations().forEach(entityRelation -> {
-                    System.out.printf("\tRelation type: %s.%n", entityRelation.getRelationType());
-                    entityRelation.getRoles().forEach(role -> {
-                        final HealthcareEntity entity = role.getEntity();
-                        System.out.printf("\t\tEntity text: %s, category: %s, role: %s.%n",
-                            entity.getText(), entity.getCategory(), role.getName());
+        syncPoller.getFinalResult().forEach(
+            analyzeHealthcareEntitiesResultCollection -> analyzeHealthcareEntitiesResultCollection.forEach(
+                healthcareEntitiesResult -> {
+                    System.out.println("Document entities: ");
+                    AtomicInteger ct = new AtomicInteger();
+                    healthcareEntitiesResult.getEntities().forEach(healthcareEntity -> {
+                        System.out.printf("\ti = %d, Text: %s, category: %s, subcategory: %s, confidence score: %f.%n",
+                            ct.getAndIncrement(), healthcareEntity.getText(), healthcareEntity.getCategory(),
+                            healthcareEntity.getSubcategory(), healthcareEntity.getConfidenceScore());
+                        IterableStream<EntityDataSource> healthcareEntityDataSources =
+                            healthcareEntity.getDataSources();
+                        if (healthcareEntityDataSources != null) {
+                            healthcareEntityDataSources.forEach(healthcareEntityLink -> System.out.printf(
+                                "\t\tEntity ID in data source: %s, data source: %s.%n",
+                                healthcareEntityLink.getEntityId(), healthcareEntityLink.getName()));
+                        }
                     });
-                });
-            }));
+                    // Healthcare entity relation groups
+                    healthcareEntitiesResult.getEntityRelations().forEach(entityRelation -> {
+                        System.out.printf("\tRelation type: %s.%n", entityRelation.getRelationType());
+                        entityRelation.getRoles().forEach(role -> {
+                            final HealthcareEntity entity = role.getEntity();
+                            System.out.printf("\t\tEntity text: %s, category: %s, role: %s.%n",
+                                entity.getText(), entity.getCategory(), role.getName());
+                        });
+                    });
+                }));
+        // END: readme-sample-recognizeHealthcareEntities
     }
 
     /**
      * Code snippet for executing actions in a batch of documents.
      */
     public void analyzeActions() {
+        // BEGIN: readme-sample-analyzeActions
         List<TextDocumentInput> documents = Arrays.asList(
             new TextDocumentInput("0",
                 "We went to Contoso Steakhouse located at midtown NYC last week for a dinner party, and we adore"
@@ -251,20 +278,20 @@ public class ReadmeSamples {
                     + " only complaint I have is the food didn't come fast enough. Overall I highly recommend it!")
         );
 
-        SyncPoller<AnalyzeActionsOperationDetail, PagedIterable<AnalyzeActionsResult>> syncPoller =
+        SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
             textAnalyticsClient.beginAnalyzeActions(documents,
                 new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
-                    .setExtractKeyPhrasesOptions(new ExtractKeyPhrasesOptions())
-                    .setRecognizePiiEntitiesOptions(new RecognizePiiEntitiesOptions()),
+                    .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction())
+                    .setRecognizePiiEntitiesActions(new RecognizePiiEntitiesAction()),
                 new AnalyzeActionsOptions().setIncludeStatistics(false),
                 Context.NONE);
         syncPoller.waitForCompletion();
         syncPoller.getFinalResult().forEach(analyzeActionsResult -> {
             System.out.println("Key phrases extraction action results:");
-            analyzeActionsResult.getExtractKeyPhrasesActionResults().forEach(actionResult -> {
+            analyzeActionsResult.getExtractKeyPhrasesResults().forEach(actionResult -> {
                 AtomicInteger counter = new AtomicInteger();
                 if (!actionResult.isError()) {
-                    for (ExtractKeyPhraseResult extractKeyPhraseResult : actionResult.getDocumentResults()) {
+                    for (ExtractKeyPhraseResult extractKeyPhraseResult : actionResult.getDocumentsResults()) {
                         System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
                         System.out.println("Extracted phrases:");
                         extractKeyPhraseResult.getKeyPhrases()
@@ -273,10 +300,10 @@ public class ReadmeSamples {
                 }
             });
             System.out.println("PII entities recognition action results:");
-            analyzeActionsResult.getRecognizePiiEntitiesActionResults().forEach(actionResult -> {
+            analyzeActionsResult.getRecognizePiiEntitiesResults().forEach(actionResult -> {
                 AtomicInteger counter = new AtomicInteger();
                 if (!actionResult.isError()) {
-                    for (RecognizePiiEntitiesResult entitiesResult : actionResult.getDocumentResults()) {
+                    for (RecognizePiiEntitiesResult entitiesResult : actionResult.getDocumentsResults()) {
                         System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
                         PiiEntityCollection piiEntityCollection = entitiesResult.getEntities();
                         System.out.printf("Redacted Text: %s%n", piiEntityCollection.getRedactedText());
@@ -290,4 +317,5 @@ public class ReadmeSamples {
             });
         });
     }
+    // END: readme-sample-analyzeActions
 }

@@ -60,6 +60,13 @@ public interface NetAppManagementClient {
     NetAppResourcesClient getNetAppResources();
 
     /**
+     * Gets the NetAppResourceQuotaLimitsClient object to access its operations.
+     *
+     * @return the NetAppResourceQuotaLimitsClient object.
+     */
+    NetAppResourceQuotaLimitsClient getNetAppResourceQuotaLimits();
+
+    /**
      * Gets the AccountsClient object to access its operations.
      *
      * @return the AccountsClient object.
@@ -121,4 +128,18 @@ public interface NetAppManagementClient {
      * @return the VaultsClient object.
      */
     VaultsClient getVaults();
+
+    /**
+     * Gets the VolumeGroupsClient object to access its operations.
+     *
+     * @return the VolumeGroupsClient object.
+     */
+    VolumeGroupsClient getVolumeGroups();
+
+    /**
+     * Gets the SubvolumesClient object to access its operations.
+     *
+     * @return the SubvolumesClient object.
+     */
+    SubvolumesClient getSubvolumes();
 }

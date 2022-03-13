@@ -5,56 +5,60 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The Login model. */
-@JsonFlatten
+/** The configuration settings of the login flow of users using App Service Authentication/Authorization. */
 @Fluent
-public class Login extends ProxyOnlyResource {
+public final class Login {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Login.class);
 
     /*
-     * The routes property.
+     * The routes that specify the endpoints used for login and logout
+     * requests.
      */
-    @JsonProperty(value = "properties.routes")
+    @JsonProperty(value = "routes")
     private LoginRoutes routes;
 
     /*
-     * The tokenStore property.
+     * The configuration settings of the token store.
      */
-    @JsonProperty(value = "properties.tokenStore")
+    @JsonProperty(value = "tokenStore")
     private TokenStore tokenStore;
 
     /*
-     * The preserveUrlFragmentsForLogins property.
+     * <code>true</code> if the fragments from the request are preserved after
+     * the login request is made; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "properties.preserveUrlFragmentsForLogins")
+    @JsonProperty(value = "preserveUrlFragmentsForLogins")
     private Boolean preserveUrlFragmentsForLogins;
 
     /*
-     * The allowedExternalRedirectUrls property.
+     * External URLs that can be redirected to as part of logging in or logging
+     * out of the app. Note that the query string part of the URL is ignored.
+     * This is an advanced setting typically only needed by Windows Store
+     * application backends.
+     * Note that URLs within the current domain are always implicitly allowed.
      */
-    @JsonProperty(value = "properties.allowedExternalRedirectUrls")
+    @JsonProperty(value = "allowedExternalRedirectUrls")
     private List<String> allowedExternalRedirectUrls;
 
     /*
-     * The cookieExpiration property.
+     * The configuration settings of the session cookie's expiration.
      */
-    @JsonProperty(value = "properties.cookieExpiration")
+    @JsonProperty(value = "cookieExpiration")
     private CookieExpiration cookieExpiration;
 
     /*
-     * The nonce property.
+     * The configuration settings of the nonce used in the login flow.
      */
-    @JsonProperty(value = "properties.nonce")
+    @JsonProperty(value = "nonce")
     private Nonce nonce;
 
     /**
-     * Get the routes property: The routes property.
+     * Get the routes property: The routes that specify the endpoints used for login and logout requests.
      *
      * @return the routes value.
      */
@@ -63,7 +67,7 @@ public class Login extends ProxyOnlyResource {
     }
 
     /**
-     * Set the routes property: The routes property.
+     * Set the routes property: The routes that specify the endpoints used for login and logout requests.
      *
      * @param routes the routes value to set.
      * @return the Login object itself.
@@ -74,7 +78,7 @@ public class Login extends ProxyOnlyResource {
     }
 
     /**
-     * Get the tokenStore property: The tokenStore property.
+     * Get the tokenStore property: The configuration settings of the token store.
      *
      * @return the tokenStore value.
      */
@@ -83,7 +87,7 @@ public class Login extends ProxyOnlyResource {
     }
 
     /**
-     * Set the tokenStore property: The tokenStore property.
+     * Set the tokenStore property: The configuration settings of the token store.
      *
      * @param tokenStore the tokenStore value to set.
      * @return the Login object itself.
@@ -94,7 +98,8 @@ public class Login extends ProxyOnlyResource {
     }
 
     /**
-     * Get the preserveUrlFragmentsForLogins property: The preserveUrlFragmentsForLogins property.
+     * Get the preserveUrlFragmentsForLogins property: &lt;code&gt;true&lt;/code&gt; if the fragments from the request
+     * are preserved after the login request is made; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the preserveUrlFragmentsForLogins value.
      */
@@ -103,7 +108,8 @@ public class Login extends ProxyOnlyResource {
     }
 
     /**
-     * Set the preserveUrlFragmentsForLogins property: The preserveUrlFragmentsForLogins property.
+     * Set the preserveUrlFragmentsForLogins property: &lt;code&gt;true&lt;/code&gt; if the fragments from the request
+     * are preserved after the login request is made; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @param preserveUrlFragmentsForLogins the preserveUrlFragmentsForLogins value to set.
      * @return the Login object itself.
@@ -114,7 +120,10 @@ public class Login extends ProxyOnlyResource {
     }
 
     /**
-     * Get the allowedExternalRedirectUrls property: The allowedExternalRedirectUrls property.
+     * Get the allowedExternalRedirectUrls property: External URLs that can be redirected to as part of logging in or
+     * logging out of the app. Note that the query string part of the URL is ignored. This is an advanced setting
+     * typically only needed by Windows Store application backends. Note that URLs within the current domain are always
+     * implicitly allowed.
      *
      * @return the allowedExternalRedirectUrls value.
      */
@@ -123,7 +132,10 @@ public class Login extends ProxyOnlyResource {
     }
 
     /**
-     * Set the allowedExternalRedirectUrls property: The allowedExternalRedirectUrls property.
+     * Set the allowedExternalRedirectUrls property: External URLs that can be redirected to as part of logging in or
+     * logging out of the app. Note that the query string part of the URL is ignored. This is an advanced setting
+     * typically only needed by Windows Store application backends. Note that URLs within the current domain are always
+     * implicitly allowed.
      *
      * @param allowedExternalRedirectUrls the allowedExternalRedirectUrls value to set.
      * @return the Login object itself.
@@ -134,7 +146,7 @@ public class Login extends ProxyOnlyResource {
     }
 
     /**
-     * Get the cookieExpiration property: The cookieExpiration property.
+     * Get the cookieExpiration property: The configuration settings of the session cookie's expiration.
      *
      * @return the cookieExpiration value.
      */
@@ -143,7 +155,7 @@ public class Login extends ProxyOnlyResource {
     }
 
     /**
-     * Set the cookieExpiration property: The cookieExpiration property.
+     * Set the cookieExpiration property: The configuration settings of the session cookie's expiration.
      *
      * @param cookieExpiration the cookieExpiration value to set.
      * @return the Login object itself.
@@ -154,7 +166,7 @@ public class Login extends ProxyOnlyResource {
     }
 
     /**
-     * Get the nonce property: The nonce property.
+     * Get the nonce property: The configuration settings of the nonce used in the login flow.
      *
      * @return the nonce value.
      */
@@ -163,7 +175,7 @@ public class Login extends ProxyOnlyResource {
     }
 
     /**
-     * Set the nonce property: The nonce property.
+     * Set the nonce property: The configuration settings of the nonce used in the login flow.
      *
      * @param nonce the nonce value to set.
      * @return the Login object itself.
@@ -173,21 +185,12 @@ public class Login extends ProxyOnlyResource {
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public Login withKind(String kind) {
-        super.withKind(kind);
-        return this;
-    }
-
     /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
         if (routes() != null) {
             routes().validate();
         }

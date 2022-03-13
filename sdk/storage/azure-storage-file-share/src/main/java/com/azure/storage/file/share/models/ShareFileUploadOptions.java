@@ -39,18 +39,37 @@ public final class ShareFileUploadOptions {
     /**
      * Constructs a new {@code FileParallelUploadOptions}.
      *
+     * Use {@link #ShareFileUploadOptions(InputStream)} instead to supply an InputStream without knowing the exact
+     * length beforehand.
+     *
      * @param dataStream The data to write to the file. The data must be markable. This is in order to support retries.
      * If the data is not markable, consider wrapping your data source in a {@link java.io.BufferedInputStream} to add
      * mark support.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
+     * @deprecated length is no longer necessary; use {@link #ShareFileUploadOptions(InputStream)} instead.
      */
+    @Deprecated
     public ShareFileUploadOptions(InputStream dataStream, long length) {
         StorageImplUtils.assertNotNull("dataStream", length);
         StorageImplUtils.assertInBounds("length", length, 0, Long.MAX_VALUE);
         this.dataStream = dataStream;
         this.length = length;
         this.dataFlux = null;
+    }
+
+    /**
+     * Constructs a new {@code FileParallelUploadOptions}.
+     *
+     * @param dataStream The data to write to the file. The data must be markable. This is in order to support retries.
+     * If the data is not markable, consider wrapping your data source in a {@link java.io.BufferedInputStream} to add
+     * mark support.
+     */
+    public ShareFileUploadOptions(InputStream dataStream) {
+        StorageImplUtils.assertNotNull("dataStream", dataStream);
+        this.dataStream = dataStream;
+        this.dataFlux = null;
+        this.length = null;
     }
 
     /**

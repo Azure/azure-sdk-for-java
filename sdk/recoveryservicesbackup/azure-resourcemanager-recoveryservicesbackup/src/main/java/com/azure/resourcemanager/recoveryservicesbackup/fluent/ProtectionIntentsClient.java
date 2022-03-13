@@ -38,7 +38,7 @@ public interface ProtectionIntentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response contract for enable backup validation request.
+     * @return response contract for enable backup validation request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PreValidateEnableBackupResponseInner> validateWithResponse(
@@ -73,7 +73,7 @@ public interface ProtectionIntentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup ProtectionIntent.
+     * @return base class for backup ProtectionIntent along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ProtectionIntentResourceInner> getWithResponse(
@@ -112,7 +112,7 @@ public interface ProtectionIntentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup ProtectionIntent.
+     * @return base class for backup ProtectionIntent along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ProtectionIntentResourceInner> createOrUpdateWithResponse(
@@ -148,7 +148,7 @@ public interface ProtectionIntentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(

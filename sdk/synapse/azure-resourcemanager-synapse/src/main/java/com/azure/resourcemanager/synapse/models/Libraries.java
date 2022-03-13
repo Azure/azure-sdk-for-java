@@ -32,7 +32,7 @@ public interface Libraries {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return library by name in a workspace.
+     * @return library by name in a workspace along with {@link Response}.
      */
     Response<LibraryResource> getWithResponse(
         String resourceGroupName, String libraryName, String workspaceName, Context context);

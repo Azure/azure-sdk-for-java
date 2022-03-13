@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicefabric.fluent.models.ApplicationResourceInner;
 import java.util.List;
@@ -32,6 +33,56 @@ public interface ApplicationResource {
      * @return the type value.
      */
     String type();
+
+    /**
+     * Gets the identity property: Describes the managed identities for an Azure resource.
+     *
+     * @return the identity value.
+     */
+    ManagedIdentity identity();
+
+    /**
+     * Gets the location property: It will be deprecated in New API, resource location depends on the parent resource.
+     *
+     * @return the location value.
+     */
+    String location();
+
+    /**
+     * Gets the tags property: Azure resource tags.
+     *
+     * @return the tags value.
+     */
+    Map<String, String> tags();
+
+    /**
+     * Gets the etag property: Azure resource etag.
+     *
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
+     * Gets the provisioningState property: The current deployment or provisioning state, which only appears in the
+     * response.
+     *
+     * @return the provisioningState value.
+     */
+    String provisioningState();
+
+    /**
+     * Gets the typeName property: The application type name as defined in the application manifest.
+     *
+     * @return the typeName value.
+     */
+    String typeName();
 
     /**
      * Gets the typeVersion property: The version of the application type as defined in the application manifest.
@@ -89,40 +140,12 @@ public interface ApplicationResource {
     List<ApplicationMetricDescription> metrics();
 
     /**
-     * Gets the provisioningState property: The current deployment or provisioning state, which only appears in the
-     * response.
+     * Gets the managedIdentities property: List of user assigned identities for the application, each mapped to a
+     * friendly name.
      *
-     * @return the provisioningState value.
+     * @return the managedIdentities value.
      */
-    String provisioningState();
-
-    /**
-     * Gets the typeName property: The application type name as defined in the application manifest.
-     *
-     * @return the typeName value.
-     */
-    String typeName();
-
-    /**
-     * Gets the location property: It will be deprecated in New API, resource location depends on the parent resource.
-     *
-     * @return the location value.
-     */
-    String location();
-
-    /**
-     * Gets the tags property: Azure resource tags.
-     *
-     * @return the tags value.
-     */
-    Map<String, String> tags();
-
-    /**
-     * Gets the etag property: Azure resource etag.
-     *
-     * @return the etag value.
-     */
-    String etag();
+    List<ApplicationUserAssignedIdentity> managedIdentities();
 
     /**
      * Gets the region of the resource.
@@ -172,6 +195,8 @@ public interface ApplicationResource {
         interface WithCreate
             extends DefinitionStages.WithLocation,
                 DefinitionStages.WithTags,
+                DefinitionStages.WithIdentity,
+                DefinitionStages.WithTypeName,
                 DefinitionStages.WithTypeVersion,
                 DefinitionStages.WithParameters,
                 DefinitionStages.WithUpgradePolicy,
@@ -179,7 +204,7 @@ public interface ApplicationResource {
                 DefinitionStages.WithMaximumNodes,
                 DefinitionStages.WithRemoveApplicationCapacity,
                 DefinitionStages.WithMetrics,
-                DefinitionStages.WithTypeName {
+                DefinitionStages.WithManagedIdentities {
             /**
              * Executes the create request.
              *
@@ -222,6 +247,26 @@ public interface ApplicationResource {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
+        }
+        /** The stage of the ApplicationResource definition allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Describes the managed identities for an Azure resource..
+             *
+             * @param identity Describes the managed identities for an Azure resource.
+             * @return the next definition stage.
+             */
+            WithCreate withIdentity(ManagedIdentity identity);
+        }
+        /** The stage of the ApplicationResource definition allowing to specify typeName. */
+        interface WithTypeName {
+            /**
+             * Specifies the typeName property: The application type name as defined in the application manifest..
+             *
+             * @param typeName The application type name as defined in the application manifest.
+             * @return the next definition stage.
+             */
+            WithCreate withTypeName(String typeName);
         }
         /** The stage of the ApplicationResource definition allowing to specify typeVersion. */
         interface WithTypeVersion {
@@ -308,15 +353,17 @@ public interface ApplicationResource {
              */
             WithCreate withMetrics(List<ApplicationMetricDescription> metrics);
         }
-        /** The stage of the ApplicationResource definition allowing to specify typeName. */
-        interface WithTypeName {
+        /** The stage of the ApplicationResource definition allowing to specify managedIdentities. */
+        interface WithManagedIdentities {
             /**
-             * Specifies the typeName property: The application type name as defined in the application manifest..
+             * Specifies the managedIdentities property: List of user assigned identities for the application, each
+             * mapped to a friendly name..
              *
-             * @param typeName The application type name as defined in the application manifest.
+             * @param managedIdentities List of user assigned identities for the application, each mapped to a friendly
+             *     name.
              * @return the next definition stage.
              */
-            WithCreate withTypeName(String typeName);
+            WithCreate withManagedIdentities(List<ApplicationUserAssignedIdentity> managedIdentities);
         }
     }
     /**
@@ -328,14 +375,14 @@ public interface ApplicationResource {
 
     /** The template for ApplicationResource update. */
     interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithTypeVersion,
+        extends UpdateStages.WithTypeVersion,
             UpdateStages.WithParameters,
             UpdateStages.WithUpgradePolicy,
             UpdateStages.WithMinimumNodes,
             UpdateStages.WithMaximumNodes,
             UpdateStages.WithRemoveApplicationCapacity,
-            UpdateStages.WithMetrics {
+            UpdateStages.WithMetrics,
+            UpdateStages.WithManagedIdentities {
         /**
          * Executes the update request.
          *
@@ -353,16 +400,6 @@ public interface ApplicationResource {
     }
     /** The ApplicationResource update stages. */
     interface UpdateStages {
-        /** The stage of the ApplicationResource update allowing to specify tags. */
-        interface WithTags {
-            /**
-             * Specifies the tags property: Azure resource tags..
-             *
-             * @param tags Azure resource tags.
-             * @return the next definition stage.
-             */
-            Update withTags(Map<String, String> tags);
-        }
         /** The stage of the ApplicationResource update allowing to specify typeVersion. */
         interface WithTypeVersion {
             /**
@@ -447,6 +484,18 @@ public interface ApplicationResource {
              * @return the next definition stage.
              */
             Update withMetrics(List<ApplicationMetricDescription> metrics);
+        }
+        /** The stage of the ApplicationResource update allowing to specify managedIdentities. */
+        interface WithManagedIdentities {
+            /**
+             * Specifies the managedIdentities property: List of user assigned identities for the application, each
+             * mapped to a friendly name..
+             *
+             * @param managedIdentities List of user assigned identities for the application, each mapped to a friendly
+             *     name.
+             * @return the next definition stage.
+             */
+            Update withManagedIdentities(List<ApplicationUserAssignedIdentity> managedIdentities);
         }
     }
     /**

@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.streamanalytics.fluent.models.AzureTableOutputDataSourceProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -16,59 +16,26 @@ import java.util.List;
 /** Describes an Azure Table output data source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Microsoft.Storage/Table")
-@JsonFlatten
 @Fluent
-public class AzureTableOutputDataSource extends OutputDataSource {
+public final class AzureTableOutputDataSource extends OutputDataSource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureTableOutputDataSource.class);
 
     /*
-     * The name of the Azure Storage account. Required on PUT (CreateOrReplace)
-     * requests.
-     */
-    @JsonProperty(value = "properties.accountName")
-    private String accountName;
-
-    /*
-     * The account key for the Azure Storage account. Required on PUT
-     * (CreateOrReplace) requests.
-     */
-    @JsonProperty(value = "properties.accountKey")
-    private String accountKey;
-
-    /*
-     * The name of the Azure Table. Required on PUT (CreateOrReplace) requests.
-     */
-    @JsonProperty(value = "properties.table")
-    private String table;
-
-    /*
-     * This element indicates the name of a column from the SELECT statement in
-     * the query that will be used as the partition key for the Azure Table.
-     * Required on PUT (CreateOrReplace) requests.
-     */
-    @JsonProperty(value = "properties.partitionKey")
-    private String partitionKey;
-
-    /*
-     * This element indicates the name of a column from the SELECT statement in
-     * the query that will be used as the row key for the Azure Table. Required
+     * The properties that are associated with an Azure Table output. Required
      * on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "properties.rowKey")
-    private String rowKey;
+    @JsonProperty(value = "properties")
+    private AzureTableOutputDataSourceProperties innerProperties;
 
-    /*
-     * If specified, each item in the array is the name of a column to remove
-     * (if present) from output event entities.
+    /**
+     * Get the innerProperties property: The properties that are associated with an Azure Table output. Required on PUT
+     * (CreateOrReplace) requests.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.columnsToRemove")
-    private List<String> columnsToRemove;
-
-    /*
-     * The number of rows to write to the Azure Table at a time.
-     */
-    @JsonProperty(value = "properties.batchSize")
-    private Integer batchSize;
+    private AzureTableOutputDataSourceProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the accountName property: The name of the Azure Storage account. Required on PUT (CreateOrReplace) requests.
@@ -76,7 +43,7 @@ public class AzureTableOutputDataSource extends OutputDataSource {
      * @return the accountName value.
      */
     public String accountName() {
-        return this.accountName;
+        return this.innerProperties() == null ? null : this.innerProperties().accountName();
     }
 
     /**
@@ -86,7 +53,10 @@ public class AzureTableOutputDataSource extends OutputDataSource {
      * @return the AzureTableOutputDataSource object itself.
      */
     public AzureTableOutputDataSource withAccountName(String accountName) {
-        this.accountName = accountName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureTableOutputDataSourceProperties();
+        }
+        this.innerProperties().withAccountName(accountName);
         return this;
     }
 
@@ -97,7 +67,7 @@ public class AzureTableOutputDataSource extends OutputDataSource {
      * @return the accountKey value.
      */
     public String accountKey() {
-        return this.accountKey;
+        return this.innerProperties() == null ? null : this.innerProperties().accountKey();
     }
 
     /**
@@ -108,7 +78,10 @@ public class AzureTableOutputDataSource extends OutputDataSource {
      * @return the AzureTableOutputDataSource object itself.
      */
     public AzureTableOutputDataSource withAccountKey(String accountKey) {
-        this.accountKey = accountKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureTableOutputDataSourceProperties();
+        }
+        this.innerProperties().withAccountKey(accountKey);
         return this;
     }
 
@@ -118,7 +91,7 @@ public class AzureTableOutputDataSource extends OutputDataSource {
      * @return the table value.
      */
     public String table() {
-        return this.table;
+        return this.innerProperties() == null ? null : this.innerProperties().table();
     }
 
     /**
@@ -128,7 +101,10 @@ public class AzureTableOutputDataSource extends OutputDataSource {
      * @return the AzureTableOutputDataSource object itself.
      */
     public AzureTableOutputDataSource withTable(String table) {
-        this.table = table;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureTableOutputDataSourceProperties();
+        }
+        this.innerProperties().withTable(table);
         return this;
     }
 
@@ -139,7 +115,7 @@ public class AzureTableOutputDataSource extends OutputDataSource {
      * @return the partitionKey value.
      */
     public String partitionKey() {
-        return this.partitionKey;
+        return this.innerProperties() == null ? null : this.innerProperties().partitionKey();
     }
 
     /**
@@ -150,7 +126,10 @@ public class AzureTableOutputDataSource extends OutputDataSource {
      * @return the AzureTableOutputDataSource object itself.
      */
     public AzureTableOutputDataSource withPartitionKey(String partitionKey) {
-        this.partitionKey = partitionKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureTableOutputDataSourceProperties();
+        }
+        this.innerProperties().withPartitionKey(partitionKey);
         return this;
     }
 
@@ -161,7 +140,7 @@ public class AzureTableOutputDataSource extends OutputDataSource {
      * @return the rowKey value.
      */
     public String rowKey() {
-        return this.rowKey;
+        return this.innerProperties() == null ? null : this.innerProperties().rowKey();
     }
 
     /**
@@ -172,7 +151,10 @@ public class AzureTableOutputDataSource extends OutputDataSource {
      * @return the AzureTableOutputDataSource object itself.
      */
     public AzureTableOutputDataSource withRowKey(String rowKey) {
-        this.rowKey = rowKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureTableOutputDataSourceProperties();
+        }
+        this.innerProperties().withRowKey(rowKey);
         return this;
     }
 
@@ -183,7 +165,7 @@ public class AzureTableOutputDataSource extends OutputDataSource {
      * @return the columnsToRemove value.
      */
     public List<String> columnsToRemove() {
-        return this.columnsToRemove;
+        return this.innerProperties() == null ? null : this.innerProperties().columnsToRemove();
     }
 
     /**
@@ -194,7 +176,10 @@ public class AzureTableOutputDataSource extends OutputDataSource {
      * @return the AzureTableOutputDataSource object itself.
      */
     public AzureTableOutputDataSource withColumnsToRemove(List<String> columnsToRemove) {
-        this.columnsToRemove = columnsToRemove;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureTableOutputDataSourceProperties();
+        }
+        this.innerProperties().withColumnsToRemove(columnsToRemove);
         return this;
     }
 
@@ -204,7 +189,7 @@ public class AzureTableOutputDataSource extends OutputDataSource {
      * @return the batchSize value.
      */
     public Integer batchSize() {
-        return this.batchSize;
+        return this.innerProperties() == null ? null : this.innerProperties().batchSize();
     }
 
     /**
@@ -214,7 +199,10 @@ public class AzureTableOutputDataSource extends OutputDataSource {
      * @return the AzureTableOutputDataSource object itself.
      */
     public AzureTableOutputDataSource withBatchSize(Integer batchSize) {
-        this.batchSize = batchSize;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureTableOutputDataSourceProperties();
+        }
+        this.innerProperties().withBatchSize(batchSize);
         return this;
     }
 
@@ -226,5 +214,8 @@ public class AzureTableOutputDataSource extends OutputDataSource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

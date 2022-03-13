@@ -45,7 +45,7 @@ public class HookInfoPatch {
     /*
      * hook administrators
      */
-    @JsonProperty(value = "admins", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "admins")
     private List<String> admins;
 
     /**
@@ -115,5 +115,16 @@ public class HookInfoPatch {
      */
     public List<String> getAdmins() {
         return this.admins;
+    }
+
+    /**
+     * Set the admins property: hook administrators.
+     *
+     * @param admins the admins value to set.
+     * @return the HookInfoPatch object itself.
+     */
+    public HookInfoPatch setAdmins(List<String> admins) {
+        this.admins = admins;
+        return this;
     }
 }

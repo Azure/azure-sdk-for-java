@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.ConnectionPolicy;
@@ -24,12 +25,15 @@ import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.http.HttpClient;
+import com.azure.cosmos.implementation.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
-import com.azure.cosmos.implementation.throughputControl.ThroughputControlTests;
+import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlTrackingUnit;
 import com.azure.cosmos.implementation.throughputControl.ThroughputRequestThrottler;
 import com.azure.cosmos.implementation.throughputControl.controller.request.GlobalThroughputRequestController;
@@ -40,6 +44,7 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
@@ -180,6 +185,10 @@ public class ReflectionUtils {
         return get(UserAgentContainer.class, rxDocumentClient, "userAgentContainer");
     }
 
+    public static ApiType getApiType(RxDocumentClientImpl rxDocumentClient) {
+        return get(ApiType.class, rxDocumentClient, "apiType");
+    }
+
     public static Future<?> getFuture() {
         return getStaticField(CpuMemoryMonitor.class, "future");
     }
@@ -210,6 +219,10 @@ public class ReflectionUtils {
 
     public static void setGatewayHttpClient(RxStoreModel client, HttpClient httpClient) {
         set(client, httpClient, "httpClient");
+    }
+
+    public static HttpHeaders getHttpHeaders(HttpRequest httpRequest) {
+        return get(HttpHeaders.class, httpRequest, "headers");
     }
 
     public static ReplicatedResourceClient getReplicatedResourceClient(StoreClient storeClient) {
@@ -307,5 +320,36 @@ public class ReflectionUtils {
     public static ConcurrentHashMap<OperationType, ThroughputControlTrackingUnit> getThroughputControlTrackingDictionary(
         ThroughputRequestThrottler requestThrottler) {
         return get(ConcurrentHashMap.class, requestThrottler, "trackingDictionary");
+    }
+
+    public static HttpClient getHttpClient(RxStoreModel rxStoreModel) {
+        return get(HttpClient.class, rxStoreModel, "httpClient");
+    }
+
+    public static HttpClient getHttpClient(ClientTelemetry telemetry) {
+        return get(HttpClient.class, telemetry, "httpClient");
+    }
+
+    public static void setHttpClient(ClientTelemetry telemetry, HttpClient httpClient) {
+        set(telemetry, httpClient, "httpClient");
+    }
+
+    public static void setDefaultMinDurationBeforeEnforcingCollectionRoutingMapRefreshDuration(
+        Duration newDuration) {
+
+        String fieldName = "minDurationBeforeEnforcingCollectionRoutingMapRefresh";
+
+        try {
+            Field field = GatewayAddressCache.class.getDeclaredField(fieldName);
+            field.setAccessible(true);
+            FieldUtils.removeFinalModifier(field, true);
+            FieldUtils.writeField(field, (Object)null, newDuration, true);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static LocationCache getLocationCache(GlobalEndpointManager globalEndpointManager) {
+        return get(LocationCache.class, globalEndpointManager, "locationCache");
     }
 }

@@ -50,6 +50,12 @@ public final class ServiceProviderParameter {
     @JsonProperty(value = "default", access = JsonProperty.Access.WRITE_ONLY)
     private String defaultProperty;
 
+    /*
+     * Meta data for the Service Provider
+     */
+    @JsonProperty(value = "metadata", access = JsonProperty.Access.WRITE_ONLY)
+    private ServiceProviderParameterMetadata metadata;
+
     /**
      * Get the name property: Name of the Service Provider.
      *
@@ -105,10 +111,22 @@ public final class ServiceProviderParameter {
     }
 
     /**
+     * Get the metadata property: Meta data for the Service Provider.
+     *
+     * @return the metadata value.
+     */
+    public ServiceProviderParameterMetadata metadata() {
+        return this.metadata;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (metadata() != null) {
+            metadata().validate();
+        }
     }
 }

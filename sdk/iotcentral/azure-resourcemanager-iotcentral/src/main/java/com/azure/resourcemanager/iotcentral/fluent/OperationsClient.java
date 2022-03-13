@@ -13,7 +13,7 @@ import com.azure.resourcemanager.iotcentral.fluent.models.OperationInner;
 /** An instance of this class provides access to all the operations defined in OperationsClient. */
 public interface OperationsClient {
     /**
-     * Lists all of the available IoT Central application REST API operations.
+     * Lists all of the available IoT Central Resource Provider operations.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -23,7 +23,7 @@ public interface OperationsClient {
     PagedIterable<OperationInner> list();
 
     /**
-     * Lists all of the available IoT Central application REST API operations.
+     * Lists all of the available IoT Central Resource Provider operations.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

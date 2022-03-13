@@ -5,17 +5,14 @@ package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.WordDelimiterTokenFilter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.WordDelimiterTokenFilter} and
  * {@link WordDelimiterTokenFilter}.
  */
 public final class WordDelimiterTokenFilterConverter {
     /**
-     * Maps from {@link com.azure.search.documents.indexes.implementation.models.WordDelimiterTokenFilter} to
-     * {@link WordDelimiterTokenFilter}.
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.WordDelimiterTokenFilter} to {@link
+     * WordDelimiterTokenFilter}.
      */
     public static WordDelimiterTokenFilter map(com.azure.search.documents.indexes.implementation.models.WordDelimiterTokenFilter obj) {
         if (obj == null) {
@@ -26,9 +23,7 @@ public final class WordDelimiterTokenFilterConverter {
         Boolean catenateNumbers = obj.isCatenateNumbers();
         wordDelimiterTokenFilter.setNumbersCatenated(catenateNumbers);
 
-        if (obj.getProtectedWords() != null) {
-            wordDelimiterTokenFilter.setProtectedWords(obj.getProtectedWords());
-        }
+        wordDelimiterTokenFilter.setProtectedWords(obj.getProtectedWords());
 
         Boolean generateNumberParts = obj.isGenerateNumberParts();
         wordDelimiterTokenFilter.setGenerateNumberParts(generateNumberParts);
@@ -57,8 +52,7 @@ public final class WordDelimiterTokenFilterConverter {
     }
 
     /**
-     * Maps from {@link WordDelimiterTokenFilter} to
-     * {@link com.azure.search.documents.indexes.implementation.models.WordDelimiterTokenFilter}.
+     * Maps from {@link WordDelimiterTokenFilter} to {@link com.azure.search.documents.indexes.implementation.models.WordDelimiterTokenFilter}.
      */
     public static com.azure.search.documents.indexes.implementation.models.WordDelimiterTokenFilter map(WordDelimiterTokenFilter obj) {
         if (obj == null) {
@@ -70,10 +64,7 @@ public final class WordDelimiterTokenFilterConverter {
         Boolean catenateNumbers = obj.areNumbersCatenated();
         wordDelimiterTokenFilter.setCatenateNumbers(catenateNumbers);
 
-        if (obj.getProtectedWords() != null) {
-            List<String> protectedWords = new ArrayList<>(obj.getProtectedWords());
-            wordDelimiterTokenFilter.setProtectedWords(protectedWords);
-        }
+        wordDelimiterTokenFilter.setProtectedWords(obj.getProtectedWords());
 
         Boolean generateNumberParts = obj.generateNumberParts();
         wordDelimiterTokenFilter.setGenerateNumberParts(generateNumberParts);

@@ -236,9 +236,7 @@ public final class CertificatesImpl implements Certificates {
                         String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
         }
         String localIfMatch = null;
-        this
-            .deleteWithResponse(resourceGroupName, resourceName, certificateName, localIfMatch, Context.NONE)
-            .getValue();
+        this.deleteWithResponse(resourceGroupName, resourceName, certificateName, localIfMatch, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context) {

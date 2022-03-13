@@ -21,23 +21,23 @@ public final class UniformInt64RangePartitionSchemeDescription extends Partition
     /*
      * The number of partitions.
      */
-    @JsonProperty(value = "Count", required = true)
+    @JsonProperty(value = "count", required = true)
     private int count;
 
     /*
      * String indicating the lower bound of the partition key range that
-     * should be split between the partition ‘Count’
+     * should be split between the partition ‘count’
      *
      */
-    @JsonProperty(value = "LowKey", required = true)
+    @JsonProperty(value = "lowKey", required = true)
     private String lowKey;
 
     /*
      * String indicating the upper bound of the partition key range that
-     * should be split between the partition ‘Count’
+     * should be split between the partition ‘count’
      *
      */
-    @JsonProperty(value = "HighKey", required = true)
+    @JsonProperty(value = "highKey", required = true)
     private String highKey;
 
     /**
@@ -62,7 +62,7 @@ public final class UniformInt64RangePartitionSchemeDescription extends Partition
 
     /**
      * Get the lowKey property: String indicating the lower bound of the partition key range that should be split
-     * between the partition ‘Count’.
+     * between the partition ‘count’.
      *
      * @return the lowKey value.
      */
@@ -72,7 +72,7 @@ public final class UniformInt64RangePartitionSchemeDescription extends Partition
 
     /**
      * Set the lowKey property: String indicating the lower bound of the partition key range that should be split
-     * between the partition ‘Count’.
+     * between the partition ‘count’.
      *
      * @param lowKey the lowKey value to set.
      * @return the UniformInt64RangePartitionSchemeDescription object itself.
@@ -84,7 +84,7 @@ public final class UniformInt64RangePartitionSchemeDescription extends Partition
 
     /**
      * Get the highKey property: String indicating the upper bound of the partition key range that should be split
-     * between the partition ‘Count’.
+     * between the partition ‘count’.
      *
      * @return the highKey value.
      */
@@ -94,7 +94,7 @@ public final class UniformInt64RangePartitionSchemeDescription extends Partition
 
     /**
      * Set the highKey property: String indicating the upper bound of the partition key range that should be split
-     * between the partition ‘Count’.
+     * between the partition ‘count’.
      *
      * @param highKey the highKey value to set.
      * @return the UniformInt64RangePartitionSchemeDescription object itself.

@@ -88,7 +88,7 @@ public final class ProtectionPolicyOperationResultsClientImpl implements Protect
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup policy.
+     * @return base class for backup policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProtectionPolicyResourceInner>> getWithResponseAsync(
@@ -118,7 +118,6 @@ public final class ProtectionPolicyOperationResultsClientImpl implements Protect
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -126,7 +125,7 @@ public final class ProtectionPolicyOperationResultsClientImpl implements Protect
                     service
                         .get(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             vaultName,
                             resourceGroupName,
                             this.client.getSubscriptionId(),
@@ -148,7 +147,7 @@ public final class ProtectionPolicyOperationResultsClientImpl implements Protect
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup policy.
+     * @return base class for backup policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProtectionPolicyResourceInner>> getWithResponseAsync(
@@ -178,13 +177,12 @@ public final class ProtectionPolicyOperationResultsClientImpl implements Protect
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 vaultName,
                 resourceGroupName,
                 this.client.getSubscriptionId(),
@@ -204,7 +202,7 @@ public final class ProtectionPolicyOperationResultsClientImpl implements Protect
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup policy.
+     * @return base class for backup policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ProtectionPolicyResourceInner> getAsync(
@@ -249,7 +247,7 @@ public final class ProtectionPolicyOperationResultsClientImpl implements Protect
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup policy.
+     * @return base class for backup policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProtectionPolicyResourceInner> getWithResponse(

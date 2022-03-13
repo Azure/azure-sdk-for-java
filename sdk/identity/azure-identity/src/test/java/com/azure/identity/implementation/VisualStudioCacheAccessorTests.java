@@ -12,8 +12,7 @@ public class VisualStudioCacheAccessorTests {
     @Test
     public void testReadJsonFile() throws Exception {
         // setup
-        VisualStudioCacheAccessor accessor = new VisualStudioCacheAccessor();
-        JsonNode jsonRead = accessor.readJsonFile(getPath("settings.json"));
+        JsonNode jsonRead = VisualStudioCacheAccessor.readJsonFile(getPath("settings.json"));
         Assert.assertEquals("first", jsonRead.get("editor.suggestSelection").asText());
         Assert.assertEquals("/Contents/Home", jsonRead.get("java.home").asText());
         Assert.assertEquals(12, jsonRead.size());

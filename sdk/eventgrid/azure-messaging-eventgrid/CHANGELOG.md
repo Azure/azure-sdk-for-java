@@ -1,7 +1,111 @@
 # Release History
 
-## 4.5.0-beta.1 (Unreleased)
+## 4.10.0-beta.1 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 4.9.0 (2022-02-10)
+
+### Features Added
+- Added interfaces from `com.azure.core.client.traits` to `EventGridPublisherClientBuilder`.
+- Added a new method `retryOptions` to `EventGridPublisherClientBuilder`.
+- Updated ARM events, `ResourceActionCancelEventData`, `ResourceActionFailureEventData`, 
+`ResourceActionSuccessEventData`, `ResourceDeleteCancelEventData`, `ResourceDeleteFailureEventData`, 
+`ResourceDeleteSuccessEventData`, `ResourceWriteCancelEventData`, `ResourceWriteFailureEventData`,
+`ResourceWriteSuccessEventData`. 
+    - Added new type `ResourceAuthorization` and `ResourceHttpRequest`.
+    - Deprecated 
+      `getHttpRequest()` and replaced it with `getResourceAuthorization()`,
+      `setHttpRequest(String httpRequest)` and replaced it with `setResourceAuthorization(ResourceAuthorization authorization)`,
+      `getClaims()` and replaced it with `getResourceClaims()`,
+      `setClaims(String claims)` and replaced it with `setResourceClaims(Map<String, String> claims)`,
+      `getAuthorization()` and replaced it with `getResourceHttpRequest()`,
+      `setAuthorization(String authorization)` and replaced it with `setResourceHttpRequest(ResourceHttpRequest httpRequest)`.
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.25.0`.
+- Updated `azure-core-http-netty` to `1.11.7`.
+
+## 4.8.0 (2022-01-14)
+
+### Features Added
+- Added new properties
+    - `deleteLocation` to `AcsRecordingChunkInfoProperties`
+    - `recordingChannelType`, `recordingContentType`, `recordingFormatType` to `AcsRecordingFileStatusUpdatedEventData`
+    - `connectedRegistry`, `location` to `ContainerRegistryImagePushedEventData`, `ContainerRegistryImageDeletedEventData`,
+      `ContainerRegistryEventConnectedRegistry`, `ContainerRegistryChartPushedEventData`,
+      `ContainerRegistryChartDeletedEventData`, `ContainerResistryArtifactEventData`
+
+- Added new model types,
+    - `ContainerRegistryEventConnectedRegistry`, `RecordingChannelType`, `RecordingContentType`, `RecordingFormatType`
+
+### Other Changes
+
+#### Dependency Updates
+- Update `azure-core` dependency to `1.24.1`.
+- Update `azure-core-http-netty` dependency to `1.11.6`.
+
+## 4.7.1 (2021-11-11)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` from `1.21.0` to `1.22.0`.
+- Updated `azure-core-http-netty` from `1.11.1` to `1.11.2`.
+
+## 4.7.0 (2021-10-13)
+
+### Features Added
+- Added new Api Management service system events, `ApiManagementApiCreatedEventData`, `ApiManagementApiDeletedEventData`, 
+  `ApiManagementApiReleaseCreatedEventData`, `ApiManagementApiReleaseDeletedEventData`, 
+  `ApiManagementApiReleaseUpdatedEventData`, `ApiManagementApiUpdatedEventData`, `ApiManagementProductCreatedEventData`,
+  `ApiManagementProductDeletedEventData`, `ApiManagementProductUpdatedEventData`,
+  `ApiManagementSubscriptionCreatedEventData`, `ApiManagementSubscriptionDeletedEventData`,
+  `ApiManagementSubscriptionUpdatedEventData`,`ApiManagementUserCreatedEventData`, `ApiManagementUserDeletedEventData`,
+  `ApiManagementUserUpdatedEventData`. 
+- Added a new Media service system event, `MediaLiveEventChannelArchiveHeartbeatEventData`.
+- Added a new Communication service system event, `AcsUserDisconnectedEventData`.
+- Added fields `transcriptionLanguage`, `transcriptionState`, `ingestDriftValue`, `lastFragmentArrivalTime` 
+  to system event classes `MediaLiveEventIngestHeartbeatEventData`.
+
+### Other Changes
+
+#### Dependency Updates
+- Update `azure-core` dependency to `1.21.0`.
+- Update `azure-core-http-netty` dependency to `1.11.1`.
+
+## 4.6.1 (2021-09-10)
+
+### Other Changes
+
+#### Dependency Updates
+- Update `azure-core` dependency to `1.20.0`.
+- Update `azure-core-http-netty` dependency to `1.11.0`.
+
+## 4.6.0 (2021-08-11)
+### Features Added
+- Added new Container Service system event `ContainerServiceNewKubernetesVersionAvailableEventData`.
+
+### Dependency Updates
+- Update `azure-core` dependency to `1.19.0`.
+- Update `azure-core-http-netty` dependency to `1.10.2`.
+
+## 4.5.0 (2021-07-19)
+### Features Added
+- Added `EventGridPublisherClientBuilder#credential(TokenCredential credential)` to support Azure Active Directory authentication.
+- Added field `metadata` to system event classes `AcsChatMessageEditedEventData`, `AcsChatMessageEditedInThreadEventData`, `AcsChatMessageReceivedEventData` and `AcsChatMessageReceivedInThreadEventData`.
+
+### Dependency Updates
+- Update `azure-core` dependency to `1.18.0`.
+- Update `azure-core-http-netty` dependency to `1.10.1`.
 
 ## 4.4.0 (2021-06-09)
 ### New Features

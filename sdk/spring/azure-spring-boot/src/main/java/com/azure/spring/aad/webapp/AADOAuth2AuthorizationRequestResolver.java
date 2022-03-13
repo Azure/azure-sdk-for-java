@@ -24,6 +24,12 @@ public class AADOAuth2AuthorizationRequestResolver implements OAuth2Authorizatio
 
     private final AADAuthenticationProperties properties;
 
+    /**
+     * Creates a new instance of {@link AADOAuth2AuthorizationRequestResolver}.
+     *
+     * @param clientRegistrationRepository the client registration repository
+     * @param properties the AAD authentication properties
+     */
     public AADOAuth2AuthorizationRequestResolver(ClientRegistrationRepository clientRegistrationRepository,
                                                  AADAuthenticationProperties properties) {
         this.defaultResolver = new DefaultOAuth2AuthorizationRequestResolver(
@@ -52,7 +58,7 @@ public class AADOAuth2AuthorizationRequestResolver implements OAuth2Authorizatio
         // Handle conditional access policy, step 3.
         final String conditionalAccessPolicyClaims =
             Optional.of(httpServletRequest)
-                    .map(HttpServletRequest::getSession)
+                    .map(r -> r.getSession(false))
                     .map(httpSession -> {
                         String claims = (String) httpSession.getAttribute(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS);
                         if (claims != null) {

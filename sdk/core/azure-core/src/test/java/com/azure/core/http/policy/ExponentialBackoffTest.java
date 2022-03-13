@@ -47,6 +47,12 @@ public class ExponentialBackoffTest {
     }
 
     @Test
+    public void testNegativeBaseDelay() {
+        assertThrows(IllegalArgumentException.class, () -> new ExponentialBackoff(5, Duration.ofSeconds(-1),
+                Duration.ofMillis(5000)));
+    }
+
+    @Test
     public void testBaseEqualToMaxDelay() {
         ExponentialBackoff expBackoff = new ExponentialBackoff(3, Duration.ofSeconds(1),
             Duration.ofMillis(1000));
@@ -72,6 +78,26 @@ public class ExponentialBackoffTest {
     public void testExponentialBackoff() {
         ExponentialBackoff expBackoff = new ExponentialBackoff(10, Duration.ofSeconds(1),
             Duration.ofSeconds(10));
+
+        // exponential backoff
+        for (int i = 0; i < 4; i++) {
+            long delayMillis = expBackoff.calculateRetryDelay(i).toMillis();
+            assertTrue(delayMillis >= ((1 << i) * 950) && delayMillis <= ((1 << i) * 1050));
+        }
+
+        // max delay
+        for (int i = 4; i < 10; i++) {
+            assertEquals(expBackoff.calculateRetryDelay(i).toMillis(), 10000);
+        }
+    }
+
+    @Test
+    public void testExponentialBackoffOptions() {
+        ExponentialBackoffOptions exponentialBackoffOptions = new ExponentialBackoffOptions()
+            .setMaxRetries(10)
+            .setBaseDelay(Duration.ofSeconds(1))
+            .setMaxDelay(Duration.ofSeconds(10));
+        ExponentialBackoff expBackoff = new ExponentialBackoff(exponentialBackoffOptions);
 
         // exponential backoff
         for (int i = 0; i < 4; i++) {

@@ -129,7 +129,8 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Sql pool data masking rule.
+     * @return represents a Sql pool data masking rule along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataMaskingRuleInner>> createOrUpdateWithResponseAsync(
@@ -169,6 +170,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String dataMaskingPolicyName = "Default";
         final String accept = "application/json";
         return FluxUtil
@@ -177,7 +179,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
                     service
                         .createOrUpdate(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -202,7 +204,8 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Sql pool data masking rule.
+     * @return represents a Sql pool data masking rule along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataMaskingRuleInner>> createOrUpdateWithResponseAsync(
@@ -243,13 +246,14 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String dataMaskingPolicyName = "Default";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -272,7 +276,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Sql pool data masking rule.
+     * @return represents a Sql pool data masking rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DataMaskingRuleInner> createOrUpdateAsync(
@@ -329,7 +333,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Sql pool data masking rule.
+     * @return represents a Sql pool data masking rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataMaskingRuleInner> createOrUpdateWithResponse(
@@ -354,7 +358,8 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific Sql pool data masking rule.
+     * @return the specific Sql pool data masking rule along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataMaskingRuleInner>> getWithResponseAsync(
@@ -385,6 +390,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter dataMaskingRuleName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String dataMaskingPolicyName = "Default";
         final String accept = "application/json";
         return FluxUtil
@@ -393,7 +399,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -416,7 +422,8 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific Sql pool data masking rule.
+     * @return the specific Sql pool data masking rule along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataMaskingRuleInner>> getWithResponseAsync(
@@ -451,13 +458,14 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter dataMaskingRuleName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String dataMaskingPolicyName = "Default";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -478,7 +486,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific Sql pool data masking rule.
+     * @return the specific Sql pool data masking rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DataMaskingRuleInner> getAsync(
@@ -523,7 +531,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific Sql pool data masking rule.
+     * @return the specific Sql pool data masking rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataMaskingRuleInner> getWithResponse(
@@ -545,7 +553,8 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Sql pool data masking rules.
+     * @return a list of Sql pool data masking rules along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataMaskingRuleInner>> listBySqlPoolSinglePageAsync(
@@ -572,6 +581,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String dataMaskingPolicyName = "Default";
         final String accept = "application/json";
         return FluxUtil
@@ -580,7 +590,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
                     service
                         .listBySqlPool(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -605,7 +615,8 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Sql pool data masking rules.
+     * @return a list of Sql pool data masking rules along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataMaskingRuleInner>> listBySqlPoolSinglePageAsync(
@@ -632,13 +643,14 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String dataMaskingPolicyName = "Default";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listBySqlPool(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,

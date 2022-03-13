@@ -33,6 +33,18 @@ public final class ImageRegistryCredential {
     @JsonProperty(value = "password")
     private String password;
 
+    /*
+     * The identity for the private registry.
+     */
+    @JsonProperty(value = "identity")
+    private String identity;
+
+    /*
+     * The identity URL for the private registry.
+     */
+    @JsonProperty(value = "identityUrl")
+    private String identityUrl;
+
     /**
      * Get the server property: The Docker image registry server without a protocol such as "http" and "https".
      *
@@ -90,6 +102,46 @@ public final class ImageRegistryCredential {
      */
     public ImageRegistryCredential withPassword(String password) {
         this.password = password;
+        return this;
+    }
+
+    /**
+     * Get the identity property: The identity for the private registry.
+     *
+     * @return the identity value.
+     */
+    public String identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity for the private registry.
+     *
+     * @param identity the identity value to set.
+     * @return the ImageRegistryCredential object itself.
+     */
+    public ImageRegistryCredential withIdentity(String identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the identityUrl property: The identity URL for the private registry.
+     *
+     * @return the identityUrl value.
+     */
+    public String identityUrl() {
+        return this.identityUrl;
+    }
+
+    /**
+     * Set the identityUrl property: The identity URL for the private registry.
+     *
+     * @param identityUrl the identityUrl value to set.
+     * @return the ImageRegistryCredential object itself.
+     */
+    public ImageRegistryCredential withIdentityUrl(String identityUrl) {
+        this.identityUrl = identityUrl;
         return this;
     }
 

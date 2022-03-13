@@ -17,7 +17,7 @@ public final class BlobItemInternal {
      * The Name property.
      */
     @JsonProperty(value = "Name", required = true)
-    private String name;
+    private BlobName name;
 
     /*
      * The Deleted property.
@@ -68,6 +68,12 @@ public final class BlobItemInternal {
     private Map<String, String> objectReplicationMetadata;
 
     /*
+     * The HasVersionsOnly property.
+     */
+    @JsonProperty(value = "HasVersionsOnly")
+    private Boolean hasVersionsOnly;
+
+    /*
      * The IsPrefix property.
      */
     @JsonProperty(value = "IsPrefix")
@@ -78,7 +84,7 @@ public final class BlobItemInternal {
      *
      * @return the name value.
      */
-    public String getName() {
+    public BlobName getName() {
         return this.name;
     }
 
@@ -88,7 +94,7 @@ public final class BlobItemInternal {
      * @param name the name value to set.
      * @return the BlobItemInternal object itself.
      */
-    public BlobItemInternal setName(String name) {
+    public BlobItemInternal setName(BlobName name) {
         this.name = name;
         return this;
     }
@@ -250,6 +256,26 @@ public final class BlobItemInternal {
      */
     public BlobItemInternal setObjectReplicationMetadata(Map<String, String> objectReplicationMetadata) {
         this.objectReplicationMetadata = objectReplicationMetadata;
+        return this;
+    }
+
+    /**
+     * Get the hasVersionsOnly property: The HasVersionsOnly property.
+     *
+     * @return the hasVersionsOnly value.
+     */
+    public Boolean isHasVersionsOnly() {
+        return this.hasVersionsOnly;
+    }
+
+    /**
+     * Set the hasVersionsOnly property: The HasVersionsOnly property.
+     *
+     * @param hasVersionsOnly the hasVersionsOnly value to set.
+     * @return the BlobItemInternal object itself.
+     */
+    public BlobItemInternal setHasVersionsOnly(Boolean hasVersionsOnly) {
+        this.hasVersionsOnly = hasVersionsOnly;
         return this;
     }
 

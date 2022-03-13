@@ -5,82 +5,30 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.costmanagement.fluent.models.AlertProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The request payload to update an alert. */
-@JsonFlatten
 @Fluent
-public class DismissAlertPayload {
+public final class DismissAlertPayload {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DismissAlertPayload.class);
 
     /*
-     * defines the type of alert
+     * The properties property.
      */
-    @JsonProperty(value = "properties.definition")
-    private AlertPropertiesDefinition definition;
+    @JsonProperty(value = "properties")
+    private AlertProperties innerProperties;
 
-    /*
-     * Alert description
+    /**
+     * Get the innerProperties property: The properties property.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * Source of alert
-     */
-    @JsonProperty(value = "properties.source")
-    private AlertSource source;
-
-    /*
-     * Alert details
-     */
-    @JsonProperty(value = "properties.details")
-    private AlertPropertiesDetails details;
-
-    /*
-     * related budget
-     */
-    @JsonProperty(value = "properties.costEntityId")
-    private String costEntityId;
-
-    /*
-     * alert status
-     */
-    @JsonProperty(value = "properties.status")
-    private AlertStatus status;
-
-    /*
-     * dateTime in which alert was created
-     */
-    @JsonProperty(value = "properties.creationTime")
-    private String creationTime;
-
-    /*
-     * dateTime in which alert was closed
-     */
-    @JsonProperty(value = "properties.closeTime")
-    private String closeTime;
-
-    /*
-     * dateTime in which alert was last modified
-     */
-    @JsonProperty(value = "properties.modificationTime")
-    private String modificationTime;
-
-    /*
-     * The statusModificationUserName property.
-     */
-    @JsonProperty(value = "properties.statusModificationUserName")
-    private String statusModificationUsername;
-
-    /*
-     * dateTime in which the alert status was last modified
-     */
-    @JsonProperty(value = "properties.statusModificationTime")
-    private String statusModificationTime;
+    private AlertProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the definition property: defines the type of alert.
@@ -88,7 +36,7 @@ public class DismissAlertPayload {
      * @return the definition value.
      */
     public AlertPropertiesDefinition definition() {
-        return this.definition;
+        return this.innerProperties() == null ? null : this.innerProperties().definition();
     }
 
     /**
@@ -98,7 +46,10 @@ public class DismissAlertPayload {
      * @return the DismissAlertPayload object itself.
      */
     public DismissAlertPayload withDefinition(AlertPropertiesDefinition definition) {
-        this.definition = definition;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertProperties();
+        }
+        this.innerProperties().withDefinition(definition);
         return this;
     }
 
@@ -108,7 +59,7 @@ public class DismissAlertPayload {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -118,7 +69,10 @@ public class DismissAlertPayload {
      * @return the DismissAlertPayload object itself.
      */
     public DismissAlertPayload withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -128,7 +82,7 @@ public class DismissAlertPayload {
      * @return the source value.
      */
     public AlertSource source() {
-        return this.source;
+        return this.innerProperties() == null ? null : this.innerProperties().source();
     }
 
     /**
@@ -138,7 +92,10 @@ public class DismissAlertPayload {
      * @return the DismissAlertPayload object itself.
      */
     public DismissAlertPayload withSource(AlertSource source) {
-        this.source = source;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertProperties();
+        }
+        this.innerProperties().withSource(source);
         return this;
     }
 
@@ -148,7 +105,7 @@ public class DismissAlertPayload {
      * @return the details value.
      */
     public AlertPropertiesDetails details() {
-        return this.details;
+        return this.innerProperties() == null ? null : this.innerProperties().details();
     }
 
     /**
@@ -158,7 +115,10 @@ public class DismissAlertPayload {
      * @return the DismissAlertPayload object itself.
      */
     public DismissAlertPayload withDetails(AlertPropertiesDetails details) {
-        this.details = details;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertProperties();
+        }
+        this.innerProperties().withDetails(details);
         return this;
     }
 
@@ -168,7 +128,7 @@ public class DismissAlertPayload {
      * @return the costEntityId value.
      */
     public String costEntityId() {
-        return this.costEntityId;
+        return this.innerProperties() == null ? null : this.innerProperties().costEntityId();
     }
 
     /**
@@ -178,7 +138,10 @@ public class DismissAlertPayload {
      * @return the DismissAlertPayload object itself.
      */
     public DismissAlertPayload withCostEntityId(String costEntityId) {
-        this.costEntityId = costEntityId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertProperties();
+        }
+        this.innerProperties().withCostEntityId(costEntityId);
         return this;
     }
 
@@ -188,7 +151,7 @@ public class DismissAlertPayload {
      * @return the status value.
      */
     public AlertStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -198,7 +161,10 @@ public class DismissAlertPayload {
      * @return the DismissAlertPayload object itself.
      */
     public DismissAlertPayload withStatus(AlertStatus status) {
-        this.status = status;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertProperties();
+        }
+        this.innerProperties().withStatus(status);
         return this;
     }
 
@@ -208,7 +174,7 @@ public class DismissAlertPayload {
      * @return the creationTime value.
      */
     public String creationTime() {
-        return this.creationTime;
+        return this.innerProperties() == null ? null : this.innerProperties().creationTime();
     }
 
     /**
@@ -218,7 +184,10 @@ public class DismissAlertPayload {
      * @return the DismissAlertPayload object itself.
      */
     public DismissAlertPayload withCreationTime(String creationTime) {
-        this.creationTime = creationTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertProperties();
+        }
+        this.innerProperties().withCreationTime(creationTime);
         return this;
     }
 
@@ -228,7 +197,7 @@ public class DismissAlertPayload {
      * @return the closeTime value.
      */
     public String closeTime() {
-        return this.closeTime;
+        return this.innerProperties() == null ? null : this.innerProperties().closeTime();
     }
 
     /**
@@ -238,7 +207,10 @@ public class DismissAlertPayload {
      * @return the DismissAlertPayload object itself.
      */
     public DismissAlertPayload withCloseTime(String closeTime) {
-        this.closeTime = closeTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertProperties();
+        }
+        this.innerProperties().withCloseTime(closeTime);
         return this;
     }
 
@@ -248,7 +220,7 @@ public class DismissAlertPayload {
      * @return the modificationTime value.
      */
     public String modificationTime() {
-        return this.modificationTime;
+        return this.innerProperties() == null ? null : this.innerProperties().modificationTime();
     }
 
     /**
@@ -258,7 +230,10 @@ public class DismissAlertPayload {
      * @return the DismissAlertPayload object itself.
      */
     public DismissAlertPayload withModificationTime(String modificationTime) {
-        this.modificationTime = modificationTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertProperties();
+        }
+        this.innerProperties().withModificationTime(modificationTime);
         return this;
     }
 
@@ -268,7 +243,7 @@ public class DismissAlertPayload {
      * @return the statusModificationUsername value.
      */
     public String statusModificationUsername() {
-        return this.statusModificationUsername;
+        return this.innerProperties() == null ? null : this.innerProperties().statusModificationUsername();
     }
 
     /**
@@ -278,7 +253,10 @@ public class DismissAlertPayload {
      * @return the DismissAlertPayload object itself.
      */
     public DismissAlertPayload withStatusModificationUsername(String statusModificationUsername) {
-        this.statusModificationUsername = statusModificationUsername;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertProperties();
+        }
+        this.innerProperties().withStatusModificationUsername(statusModificationUsername);
         return this;
     }
 
@@ -288,7 +266,7 @@ public class DismissAlertPayload {
      * @return the statusModificationTime value.
      */
     public String statusModificationTime() {
-        return this.statusModificationTime;
+        return this.innerProperties() == null ? null : this.innerProperties().statusModificationTime();
     }
 
     /**
@@ -298,7 +276,10 @@ public class DismissAlertPayload {
      * @return the DismissAlertPayload object itself.
      */
     public DismissAlertPayload withStatusModificationTime(String statusModificationTime) {
-        this.statusModificationTime = statusModificationTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertProperties();
+        }
+        this.innerProperties().withStatusModificationTime(statusModificationTime);
         return this;
     }
 
@@ -308,11 +289,8 @@ public class DismissAlertPayload {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (definition() != null) {
-            definition().validate();
-        }
-        if (details() != null) {
-            details().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

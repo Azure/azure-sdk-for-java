@@ -10,15 +10,14 @@ With this starter you could easily use Spring JMS Queue and Topic with Azure Ser
 - [Environment checklist][environment_checklist]
 
 ### Include the package
-[//]: # ({x-version-update-start;com.azure.spring:azure-spring-boot-starter-servicebus-jms;current})
+1. [Add azure-spring-boot-bom].
+1. Add dependency. `<version>` can be skipped because we already add `azure-spring-boot-bom`.
 ```xml
 <dependency>
-    <groupId>com.azure.spring</groupId>
-    <artifactId>azure-spring-boot-starter-servicebus-jms</artifactId>
-    <version>3.5.0</version>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-boot-starter-servicebus-jms</artifactId>
 </dependency>
 ```
-[//]: # ({x-version-update-end})
 
 ## Key concepts
 This starter uses Azure Service Bus messaging features (queues and publish/subscribe topics) from Java applications using the popular Java Message Service (JMS) API standard with AMQP 1.0.
@@ -26,33 +25,37 @@ This starter uses Azure Service Bus messaging features (queues and publish/subsc
 The Advanced Message Queuing Protocol (AMQP) 1.0 is an efficient, reliable, wire-level messaging protocol that you can use to build robust, cross-platform messaging applications.
 
 Support for AMQP 1.0 in Azure Service Bus means that you can use the queuing and publish/subscribe brokered messaging features from a range of platforms using an efficient binary protocol. Furthermore, you can build applications comprised of components built using a mix of languages, frameworks, and operating systems.
+
+### Support for JmsListener
+azure-spring-boot-starter-servicebus-jms autoconfigures two Spring beans of `JmsListenerContainerFactory` for Azure Service Bus Queue and Topic, with the bean name as `jmsListenerContainerFactory` and `topicJmsListenerContainerFactory`. 
+
 ## Examples
 
 ### Configure the app for your service bus
 In this section, you see how to configure your app to use either a Service Bus queue or topic.
 
-#### Use a Service Bus queue
+#### configuration options
 
-Append the following code to the end of the *application.properties* file. Replace the sample values with the appropriate values for your service bus:
+Name | Description | Type |Required
+|:---|:---|:---|:---
+spring.jms.servicebus.connection-string | Connection string of your Service Bus namespace from the Azure portal.|String | Yes
+spring.jms.servicebus.topic-client-id | JMS client ID, which is your Service Bus Subscription name in the Azure portal.|String | Yes if using Service Bus Topic.
+spring.jms.servicebus.idle-timeout | Idle timeout in milliseconds. The recommended value for this tutorial is 1800000.| int | Yes
+spring.jms.servicebus.pricing-tier | Pricing tier of your Service Bus namespace. Supported values are *premium*, *standard*, and *basic*. Premium uses Java Message Service (JMS) 2.0, while standard and basic use JMS 1.0 to interact with Azure Service Bus.|String | Yes
+spring.jms.servicebus.listener.reply-pub-sub-domain| Whether the reply destination type is topic. Only works for the bean of topicJmsListenerContainerFactory.| Boolean |
+spring.jms.servicebus.listener.reply-qos-settings.*|Configure the QosSettings to use when sending a reply. Can be set to null to indicate that the broker's defaults should be used. |
+spring.jms.servicebus.listener.subscription-durable|Whether to make the subscription durable. Only works for the bean of topicJmsListenerContainerFactory. The default value is true.|Boolean|
+spring.jms.servicebus.listener.subscription-durable|Whether to make the subscription shared. Only works for the bean of topicJmsListenerContainerFactory.|Boolean|
+spring.jms.servicebus.listener.phase|Specify the phase in which this container should be started and stopped. Default=0|int|
+spring.jms.servicebus.prefetch-policy.all|Specify the default value for all prefetchPolicy fields. Default=0|int|
+spring.jms.servicebus.durable-topic-prefetch|Specify durable topic prefetch value. Default=0|int|
+spring.jms.servicebus.queue-browser-prefetch|Specify the queueBrowserPrefetch value. Default=0|int|
+spring.jms.servicebus.queue-prefetch|Specify the queuePrefetch value. Default=0|int|
+spring.jms.servicebus.topic-prefetch|Specify the topicPrefetch value. Default=0|int|
 
-```yaml
-spring.jms.servicebus.connection-string=<ServiceBusNamespaceConnectionString>
-spring.jms.servicebus.idle-timeout=<IdleTimeout>
-# Supported values for pricing-tier are premium, standard and basic. Premium uses Java Message Service (JMS) 2.0, while standard and basic use JMS 1.0 to interact with Azure Service Bus.
-spring.jms.servicebus.pricing-tier=<ServiceBusPricingTier>
-```
 
-#### Use Service Bus topic
-
-Append the following code to the end of the *application.properties* file. Replace the sample values with the appropriate values for your service bus:
-
-```yaml
-spring.jms.servicebus.connection-string=<ServiceBusNamespaceConnectionString>
-spring.jms.servicebus.topic-client-id=<ServiceBusTopicClientId>
-spring.jms.servicebus.idle-timeout=<IdleTimeout>
-# Supported values for pricing-tier are premium and standard.
-spring.jms.servicebus.pricing-tier=<ServiceBusPricingTier>
-```
+Note: `JmsListenerContainerFactory` beans also support all [Spring native application properties of JmsListener][Spring_jms_configuration].    
+For more infomation about prefetch, please refer to this [doc](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-prefetch?tabs=java).
 
 ### Implement basic Service Bus functionality
 
@@ -62,8 +65,7 @@ In this section, you create the necessary Java classes for sending messages to y
 
 Create a Java file named *User.java* in the package directory of your app. Define a generic user class that stores and retrieves user's name:
 
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/User.java#L11-L30 -->
-```java
+```java readme-sample-JmsUser
 import java.io.Serializable;
 
 public class User implements Serializable {
@@ -89,9 +91,8 @@ public class User implements Serializable {
 #### Create a new class for the message send controller
 
 1. Create a Java file named *SendController.java* in the package directory of your app. Add the following code to the new file:
-    
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/SendController.java#L11-L35 -->
-    ```java
+
+    ```java readme-sample-SendController
     import org.slf4j.Logger;
     import org.slf4j.LoggerFactory;
     import org.springframework.beans.factory.annotation.Autowired;
@@ -99,17 +100,17 @@ public class User implements Serializable {
     import org.springframework.web.bind.annotation.PostMapping;
     import org.springframework.web.bind.annotation.RequestParam;
     import org.springframework.web.bind.annotation.RestController;
-    
+
     @RestController
     public class SendController {
-    
+
         private static final String DESTINATION_NAME = "<DestinationName>";
-    
+
         private static final Logger LOGGER = LoggerFactory.getLogger(SendController.class);
-    
+
         @Autowired
         private JmsTemplate jmsTemplate;
-    
+
         @PostMapping("/messages")
         public String postMessage(@RequestParam String message) {
             LOGGER.info("Sending message");
@@ -127,21 +128,20 @@ public class User implements Serializable {
 - Receive messages from a Service Bus queue
 
     Create a Java file named *QueueReceiveController.java* in the package directory of your app. Add the following code to the new file:
-    
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/QueueReceiveController.java#L11-L27 -->
-    ```java
+
+    ```java readme-sample-QueueReceiveController
     import org.slf4j.Logger;
     import org.slf4j.LoggerFactory;
     import org.springframework.jms.annotation.JmsListener;
     import org.springframework.stereotype.Component;
-    
+
     @Component
     public class QueueReceiveController {
-    
+
         private static final String QUEUE_NAME = "<ServiceBusQueueName>";
-    
+
         private final Logger logger = LoggerFactory.getLogger(QueueReceiveController.class);
-    
+
         @JmsListener(destination = QUEUE_NAME, containerFactory = "jmsListenerContainerFactory")
         public void receiveMessage(User user) {
             logger.info("Received message: {}", user.getName());
@@ -155,23 +155,22 @@ public class User implements Serializable {
 - Receive messages from a Service Bus subscription
 
     Create a Java file named *TopicReceiveController.java* in the package directory of your app. Add the following code to the new file. Replace the `<ServiceBusTopicName>` placeholder with your own topic name configured in your Service Bus namespace. Replace the `<ServiceBusSubscriptionName>` placeholder with your own subscription name for your Service Bus topic.
-    
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/TopicReceiveController.java#L11-L30 -->
-    ```java
+
+    ```java readme-sample-TopicReceiveController
     import org.slf4j.Logger;
     import org.slf4j.LoggerFactory;
     import org.springframework.jms.annotation.JmsListener;
     import org.springframework.stereotype.Component;
-    
+
     @Component
     public class TopicReceiveController {
-    
+
         private static final String TOPIC_NAME = "<ServiceBusTopicName>";
-    
+
         private static final String SUBSCRIPTION_NAME = "<ServiceBusSubscriptionName>";
-    
+
         private final Logger logger = LoggerFactory.getLogger(TopicReceiveController.class);
-    
+
         @JmsListener(destination = TOPIC_NAME, containerFactory = "topicJmsListenerContainerFactory",
             subscription = SUBSCRIPTION_NAME)
         public void receiveMessage(User user) {
@@ -186,8 +185,20 @@ A customized `MessageConverter` bean can be used to convert between Java objects
 
 Below code snippet sets content-type of `BytesMessage` as `application/json`.
 
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/CustomizedMessageConverter.java#L25-L45 -->
-```java
+```java readme-sample-CustomMessageConverter
+import com.fasterxml.jackson.databind.ObjectWriter;
+import org.apache.qpid.jms.message.JmsBytesMessage;
+import org.apache.qpid.jms.provider.amqp.message.AmqpJmsMessageFacade;
+import org.apache.qpid.proton.amqp.Symbol;
+import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
+import org.springframework.jms.support.converter.MessageType;
+import org.springframework.stereotype.Component;
+
+import javax.jms.BytesMessage;
+import javax.jms.JMSException;
+import javax.jms.Session;
+import java.io.IOException;
+
 @Component
 public class CustomMessageConverter extends MappingJackson2MessageConverter {
 
@@ -226,41 +237,38 @@ To solve this issue, you need to add the dependency below into your classpath:
    <version>2.3.0</version>
 </dependency>
 ```
-### Enable client logging
-Azure SDKs for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
-### Enable Spring logging
-Spring allow all the supported logging systems to set logger levels set in the Spring Environment (for example, in application.properties) by using `logging.level.<logger-name>=<level>` where level is one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF. The root logger can be configured by using logging.level.root.
+### Logging setting
+Please refer to [spring logging document] to get more information about logging.
 
-The following example shows potential logging settings in `application.properties`:
-
-```
+#### Logging setting examples
+- Example: Setting logging level of hibernate
+```properties
 logging.level.root=WARN
 logging.level.org.springframework.web=DEBUG
 logging.level.org.hibernate=ERROR
 ```
 
-For more information about setting logging in spring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging).
- 
-
 ## Next steps
 The following section provides sample projects illustrating how to use the starter in different cases.
 ### More sample code
-- [JMS Service Bus Queue](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-queue)
-- [JMS Service Bus Topic](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-topic)
+- [JMS Service Bus Queue](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/servicebus/azure-spring-boot-sample-servicebus-jms-queue)
+- [JMS Service Bus Topic](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/servicebus/azure-spring-boot-sample-servicebus-jms-topic)
 
 
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
 
-Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md) to build from source or contribute.
+Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/CONTRIBUTING.md) to build from source or contribute.
 
 <!-- LINKS -->
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-service-bus
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
-[package]: https://mvnrepository.com/artifact/com.microsoft.azure/azure-servicebus-jms-spring-boot-starter
-[sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
+[package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-boot-starter-servicebus-jms
+[sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/servicebus/azure-spring-boot-starter-servicebus-jms
+[spring logging document]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
 [servicebus-message-payloads]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads
 [spring_jms_guide]: https://spring.io/guides/gs/messaging-jms/
-[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[Add azure-spring-boot-bom]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-boot-bom
+[Spring_jms_configuration]: https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#application-properties.integration.spring.jms.listener.acknowledge-mode

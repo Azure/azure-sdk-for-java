@@ -6,14 +6,18 @@ package com.azure.ai.metricsadvisor;
 import com.azure.ai.metricsadvisor.models.ListMetricFeedbackOptions;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -32,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Tests for Metrics Advisor client builder
  */
 public class MetricsAdvisorClientBuilderTest extends TestBase {
-    private static final String METRIC_ID = "27e3015f-04fd-44ba-a20b-bc529a0aebae";
+    private static final String METRIC_ID = "390d1139-98fb-45af-b831-8d5ad61b150a";
     private static final int PAGE_SIZE = 10;
     private static final int LISTING_LIMIT = 100;
 
@@ -121,6 +125,17 @@ public class MetricsAdvisorClientBuilderTest extends TestBase {
                 .stream()
                 .limit(LISTING_LIMIT)
                 .forEach(metricFeedback -> assertNotNull(metricFeedback)));
+    }
+
+    @Test
+    @DoNotRecord
+    public void bothRetryOptionsAndRetryPolicySet() {
+        assertThrows(IllegalStateException.class, () -> new MetricsAdvisorClientBuilder()
+            .endpoint("https://localhost:8080")
+            .credential(new MetricsAdvisorKeyCredential("subscription_key", "api_key"))
+            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
+            .retryPolicy(new RetryPolicy())
+            .buildClient());
     }
 
     // Client builder runner

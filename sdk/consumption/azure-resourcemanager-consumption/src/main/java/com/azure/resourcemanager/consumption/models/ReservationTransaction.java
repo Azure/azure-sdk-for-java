@@ -185,6 +185,27 @@ public interface ReservationTransaction {
     String billingFrequency();
 
     /**
+     * Gets the billingMonth property: The billing month(yyyyMMdd), on which the event initiated.
+     *
+     * @return the billingMonth value.
+     */
+    Integer billingMonth();
+
+    /**
+     * Gets the monetaryCommitment property: The monetary commitment amount at the enrollment scope.
+     *
+     * @return the monetaryCommitment value.
+     */
+    BigDecimal monetaryCommitment();
+
+    /**
+     * Gets the overage property: The overage amount at the enrollment scope.
+     *
+     * @return the overage value.
+     */
+    BigDecimal overage();
+
+    /**
      * Gets the inner com.azure.resourcemanager.consumption.fluent.models.ReservationTransactionInner object.
      *
      * @return the inner object.

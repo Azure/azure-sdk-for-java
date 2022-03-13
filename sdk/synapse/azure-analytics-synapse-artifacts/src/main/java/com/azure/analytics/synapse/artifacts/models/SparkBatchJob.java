@@ -112,7 +112,7 @@ public final class SparkBatchJob {
      * The batch state
      */
     @JsonProperty(value = "state")
-    private String state;
+    private LivyStates state;
 
     /*
      * The log lines.
@@ -445,7 +445,7 @@ public final class SparkBatchJob {
      *
      * @return the state value.
      */
-    public String getState() {
+    public LivyStates getState() {
         return this.state;
     }
 
@@ -455,7 +455,7 @@ public final class SparkBatchJob {
      * @param state the state value to set.
      * @return the SparkBatchJob object itself.
      */
-    public SparkBatchJob setState(String state) {
+    public SparkBatchJob setState(LivyStates state) {
         this.state = state;
         return this;
     }

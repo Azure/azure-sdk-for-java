@@ -22,6 +22,9 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties(prefix = AppConfigurationProviderProperties.CONFIG_PREFIX)
 public class AppConfigurationProviderProperties {
 
+    /**
+     * Prefix for the libraries internal configurations.
+     */
     public static final String CONFIG_PREFIX = "spring.cloud.appconfiguration";
     private static final Date startDate = new Date();
     @NotEmpty

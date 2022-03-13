@@ -35,6 +35,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appservice.fluent.AppServiceCertificateOrdersClient;
 import com.azure.resourcemanager.appservice.fluent.models.AppServiceCertificateOrderInner;
+import com.azure.resourcemanager.appservice.fluent.models.AppServiceCertificatePatchResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.AppServiceCertificateResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.CertificateEmailInner;
 import com.azure.resourcemanager.appservice.fluent.models.CertificateOrderActionInner;
@@ -43,7 +44,6 @@ import com.azure.resourcemanager.appservice.fluent.models.SiteSealInner;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateCollection;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrderCollection;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrderPatchResource;
-import com.azure.resourcemanager.appservice.models.AppServiceCertificatePatchResource;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
 import com.azure.resourcemanager.appservice.models.ReissueCertificateOrderRequest;
 import com.azure.resourcemanager.appservice.models.RenewCertificateOrderRequest;
@@ -179,7 +179,7 @@ public final class AppServiceCertificateOrdersClientImpl
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<AppServiceCertificateOrderInner>> update(
             @HostParam("$host") String endpoint,
@@ -259,7 +259,7 @@ public final class AppServiceCertificateOrdersClientImpl
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/certificates/{name}")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<AppServiceCertificateResourceInner>> updateCertificate(
             @HostParam("$host") String endpoint,
@@ -268,7 +268,7 @@ public final class AppServiceCertificateOrdersClientImpl
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") AppServiceCertificatePatchResource keyVaultCertificate,
+            @BodyParam("application/json") AppServiceCertificatePatchResourceInner keyVaultCertificate,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -432,7 +432,8 @@ public final class AppServiceCertificateOrdersClientImpl
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificate orders.
+     * @return collection of certificate orders along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AppServiceCertificateOrderInner>> listSinglePageAsync() {
@@ -478,7 +479,8 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificate orders.
+     * @return collection of certificate orders along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AppServiceCertificateOrderInner>> listSinglePageAsync(Context context) {
@@ -519,7 +521,7 @@ public final class AppServiceCertificateOrdersClientImpl
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificate orders.
+     * @return collection of certificate orders as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AppServiceCertificateOrderInner> listAsync() {
@@ -533,7 +535,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificate orders.
+     * @return collection of certificate orders as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AppServiceCertificateOrderInner> listAsync(Context context) {
@@ -546,7 +548,7 @@ public final class AppServiceCertificateOrdersClientImpl
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificate orders.
+     * @return collection of certificate orders as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AppServiceCertificateOrderInner> list() {
@@ -560,7 +562,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificate orders.
+     * @return collection of certificate orders as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AppServiceCertificateOrderInner> list(Context context) {
@@ -574,7 +576,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> validatePurchaseInformationWithResponseAsync(
@@ -622,7 +624,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> validatePurchaseInformationWithResponseAsync(
@@ -666,7 +668,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> validatePurchaseInformationAsync(AppServiceCertificateOrderInner appServiceCertificateOrder) {
@@ -695,7 +697,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> validatePurchaseInformationWithResponse(
@@ -710,7 +712,8 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificate orders.
+     * @return collection of certificate orders along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AppServiceCertificateOrderInner>> listByResourceGroupSinglePageAsync(
@@ -763,7 +766,8 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificate orders.
+     * @return collection of certificate orders along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AppServiceCertificateOrderInner>> listByResourceGroupSinglePageAsync(
@@ -812,7 +816,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificate orders.
+     * @return collection of certificate orders as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AppServiceCertificateOrderInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -829,7 +833,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificate orders.
+     * @return collection of certificate orders as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AppServiceCertificateOrderInner> listByResourceGroupAsync(
@@ -846,7 +850,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificate orders.
+     * @return collection of certificate orders as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AppServiceCertificateOrderInner> listByResourceGroup(String resourceGroupName) {
@@ -861,7 +865,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificate orders.
+     * @return collection of certificate orders as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AppServiceCertificateOrderInner> listByResourceGroup(
@@ -877,7 +881,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate purchase order.
+     * @return sSL certificate purchase order along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AppServiceCertificateOrderInner>> getByResourceGroupWithResponseAsync(
@@ -927,7 +931,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate purchase order.
+     * @return sSL certificate purchase order along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AppServiceCertificateOrderInner>> getByResourceGroupWithResponseAsync(
@@ -973,7 +977,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate purchase order.
+     * @return sSL certificate purchase order on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppServiceCertificateOrderInner> getByResourceGroupAsync(
@@ -1013,7 +1017,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate purchase order.
+     * @return sSL certificate purchase order along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AppServiceCertificateOrderInner> getByResourceGroupWithResponse(
@@ -1030,7 +1034,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate purchase order.
+     * @return sSL certificate purchase order along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -1092,7 +1096,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate purchase order.
+     * @return sSL certificate purchase order along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -1151,9 +1155,9 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate purchase order.
+     * @return the {@link PollerFlux} for polling of sSL certificate purchase order.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AppServiceCertificateOrderInner>, AppServiceCertificateOrderInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -1168,7 +1172,7 @@ public final class AppServiceCertificateOrdersClientImpl
                 this.client.getHttpPipeline(),
                 AppServiceCertificateOrderInner.class,
                 AppServiceCertificateOrderInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1181,9 +1185,9 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate purchase order.
+     * @return the {@link PollerFlux} for polling of sSL certificate purchase order.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AppServiceCertificateOrderInner>, AppServiceCertificateOrderInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -1213,9 +1217,9 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate purchase order.
+     * @return the {@link SyncPoller} for polling of sSL certificate purchase order.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AppServiceCertificateOrderInner>, AppServiceCertificateOrderInner> beginCreateOrUpdate(
         String resourceGroupName,
         String certificateOrderName,
@@ -1234,9 +1238,9 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate purchase order.
+     * @return the {@link SyncPoller} for polling of sSL certificate purchase order.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AppServiceCertificateOrderInner>, AppServiceCertificateOrderInner> beginCreateOrUpdate(
         String resourceGroupName,
         String certificateOrderName,
@@ -1255,7 +1259,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate purchase order.
+     * @return sSL certificate purchase order on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppServiceCertificateOrderInner> createOrUpdateAsync(
@@ -1277,7 +1281,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate purchase order.
+     * @return sSL certificate purchase order on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AppServiceCertificateOrderInner> createOrUpdateAsync(
@@ -1339,7 +1343,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String certificateOrderName) {
@@ -1388,7 +1392,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1434,7 +1438,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String certificateOrderName) {
@@ -1465,7 +1469,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String certificateOrderName, Context context) {
@@ -1481,7 +1485,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate purchase order.
+     * @return sSL certificate purchase order along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AppServiceCertificateOrderInner>> updateWithResponseAsync(
@@ -1543,7 +1547,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate purchase order.
+     * @return sSL certificate purchase order along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AppServiceCertificateOrderInner>> updateWithResponseAsync(
@@ -1602,7 +1606,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate purchase order.
+     * @return sSL certificate purchase order on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppServiceCertificateOrderInner> updateAsync(
@@ -1649,7 +1653,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate purchase order.
+     * @return sSL certificate purchase order along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AppServiceCertificateOrderInner> updateWithResponse(
@@ -1669,7 +1673,8 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificate order certificates.
+     * @return collection of certificate order certificates along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AppServiceCertificateResourceInner>> listCertificatesSinglePageAsync(
@@ -1728,7 +1733,8 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificate order certificates.
+     * @return collection of certificate order certificates along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AppServiceCertificateResourceInner>> listCertificatesSinglePageAsync(
@@ -1783,7 +1789,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificate order certificates.
+     * @return collection of certificate order certificates as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AppServiceCertificateResourceInner> listCertificatesAsync(
@@ -1802,7 +1808,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificate order certificates.
+     * @return collection of certificate order certificates as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AppServiceCertificateResourceInner> listCertificatesAsync(
@@ -1820,7 +1826,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificate order certificates.
+     * @return collection of certificate order certificates as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AppServiceCertificateResourceInner> listCertificates(
@@ -1837,7 +1843,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificate order certificates.
+     * @return collection of certificate order certificates as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AppServiceCertificateResourceInner> listCertificates(
@@ -1854,7 +1860,8 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return key Vault container ARM resource for a certificate that is purchased through Azure.
+     * @return key Vault container ARM resource for a certificate that is purchased through Azure along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AppServiceCertificateResourceInner>> getCertificateWithResponseAsync(
@@ -1909,7 +1916,8 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return key Vault container ARM resource for a certificate that is purchased through Azure.
+     * @return key Vault container ARM resource for a certificate that is purchased through Azure along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AppServiceCertificateResourceInner>> getCertificateWithResponseAsync(
@@ -1960,7 +1968,8 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return key Vault container ARM resource for a certificate that is purchased through Azure.
+     * @return key Vault container ARM resource for a certificate that is purchased through Azure on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppServiceCertificateResourceInner> getCertificateAsync(
@@ -2003,7 +2012,8 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return key Vault container ARM resource for a certificate that is purchased through Azure.
+     * @return key Vault container ARM resource for a certificate that is purchased through Azure along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AppServiceCertificateResourceInner> getCertificateWithResponse(
@@ -2021,7 +2031,8 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return key Vault container ARM resource for a certificate that is purchased through Azure.
+     * @return key Vault container ARM resource for a certificate that is purchased through Azure along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateCertificateWithResponseAsync(
@@ -2087,7 +2098,8 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return key Vault container ARM resource for a certificate that is purchased through Azure.
+     * @return key Vault container ARM resource for a certificate that is purchased through Azure along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateCertificateWithResponseAsync(
@@ -2150,9 +2162,10 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return key Vault container ARM resource for a certificate that is purchased through Azure.
+     * @return the {@link PollerFlux} for polling of key Vault container ARM resource for a certificate that is
+     *     purchased through Azure.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AppServiceCertificateResourceInner>, AppServiceCertificateResourceInner>
         beginCreateOrUpdateCertificateAsync(
             String resourceGroupName,
@@ -2169,7 +2182,7 @@ public final class AppServiceCertificateOrdersClientImpl
                 this.client.getHttpPipeline(),
                 AppServiceCertificateResourceInner.class,
                 AppServiceCertificateResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2183,9 +2196,10 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return key Vault container ARM resource for a certificate that is purchased through Azure.
+     * @return the {@link PollerFlux} for polling of key Vault container ARM resource for a certificate that is
+     *     purchased through Azure.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AppServiceCertificateResourceInner>, AppServiceCertificateResourceInner>
         beginCreateOrUpdateCertificateAsync(
             String resourceGroupName,
@@ -2217,9 +2231,10 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return key Vault container ARM resource for a certificate that is purchased through Azure.
+     * @return the {@link SyncPoller} for polling of key Vault container ARM resource for a certificate that is
+     *     purchased through Azure.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AppServiceCertificateResourceInner>, AppServiceCertificateResourceInner>
         beginCreateOrUpdateCertificate(
             String resourceGroupName,
@@ -2241,9 +2256,10 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return key Vault container ARM resource for a certificate that is purchased through Azure.
+     * @return the {@link SyncPoller} for polling of key Vault container ARM resource for a certificate that is
+     *     purchased through Azure.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AppServiceCertificateResourceInner>, AppServiceCertificateResourceInner>
         beginCreateOrUpdateCertificate(
             String resourceGroupName,
@@ -2266,7 +2282,8 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return key Vault container ARM resource for a certificate that is purchased through Azure.
+     * @return key Vault container ARM resource for a certificate that is purchased through Azure on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppServiceCertificateResourceInner> createOrUpdateCertificateAsync(
@@ -2290,7 +2307,8 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return key Vault container ARM resource for a certificate that is purchased through Azure.
+     * @return key Vault container ARM resource for a certificate that is purchased through Azure on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AppServiceCertificateResourceInner> createOrUpdateCertificateAsync(
@@ -2361,7 +2379,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteCertificateWithResponseAsync(
@@ -2416,7 +2434,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteCertificateWithResponseAsync(
@@ -2467,7 +2485,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteCertificateAsync(String resourceGroupName, String certificateOrderName, String name) {
@@ -2500,7 +2518,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteCertificateWithResponse(
@@ -2518,14 +2536,15 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return key Vault container ARM resource for a certificate that is purchased through Azure.
+     * @return key Vault container ARM resource for a certificate that is purchased through Azure along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AppServiceCertificateResourceInner>> updateCertificateWithResponseAsync(
         String resourceGroupName,
         String certificateOrderName,
         String name,
-        AppServiceCertificatePatchResource keyVaultCertificate) {
+        AppServiceCertificatePatchResourceInner keyVaultCertificate) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -2584,14 +2603,15 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return key Vault container ARM resource for a certificate that is purchased through Azure.
+     * @return key Vault container ARM resource for a certificate that is purchased through Azure along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AppServiceCertificateResourceInner>> updateCertificateWithResponseAsync(
         String resourceGroupName,
         String certificateOrderName,
         String name,
-        AppServiceCertificatePatchResource keyVaultCertificate,
+        AppServiceCertificatePatchResourceInner keyVaultCertificate,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -2647,14 +2667,15 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return key Vault container ARM resource for a certificate that is purchased through Azure.
+     * @return key Vault container ARM resource for a certificate that is purchased through Azure on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppServiceCertificateResourceInner> updateCertificateAsync(
         String resourceGroupName,
         String certificateOrderName,
         String name,
-        AppServiceCertificatePatchResource keyVaultCertificate) {
+        AppServiceCertificatePatchResourceInner keyVaultCertificate) {
         return updateCertificateWithResponseAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate)
             .flatMap(
                 (Response<AppServiceCertificateResourceInner> res) -> {
@@ -2683,7 +2704,7 @@ public final class AppServiceCertificateOrdersClientImpl
         String resourceGroupName,
         String certificateOrderName,
         String name,
-        AppServiceCertificatePatchResource keyVaultCertificate) {
+        AppServiceCertificatePatchResourceInner keyVaultCertificate) {
         return updateCertificateAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate).block();
     }
 
@@ -2698,14 +2719,15 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return key Vault container ARM resource for a certificate that is purchased through Azure.
+     * @return key Vault container ARM resource for a certificate that is purchased through Azure along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AppServiceCertificateResourceInner> updateCertificateWithResponse(
         String resourceGroupName,
         String certificateOrderName,
         String name,
-        AppServiceCertificatePatchResource keyVaultCertificate,
+        AppServiceCertificatePatchResourceInner keyVaultCertificate,
         Context context) {
         return updateCertificateWithResponseAsync(
                 resourceGroupName, certificateOrderName, name, keyVaultCertificate, context)
@@ -2721,7 +2743,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> reissueWithResponseAsync(
@@ -2783,7 +2805,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> reissueWithResponseAsync(
@@ -2842,7 +2864,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> reissueAsync(
@@ -2881,7 +2903,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> reissueWithResponse(
@@ -2903,7 +2925,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renewWithResponseAsync(
@@ -2965,7 +2987,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> renewWithResponseAsync(
@@ -3024,7 +3046,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> renewAsync(
@@ -3063,7 +3085,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> renewWithResponse(
@@ -3083,7 +3105,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resendEmailWithResponseAsync(String resourceGroupName, String certificateOrderName) {
@@ -3132,7 +3154,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> resendEmailWithResponseAsync(
@@ -3178,7 +3200,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> resendEmailAsync(String resourceGroupName, String certificateOrderName) {
@@ -3209,7 +3231,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resendEmailWithResponse(
@@ -3218,19 +3240,20 @@ public final class AppServiceCertificateOrdersClientImpl
     }
 
     /**
-     * Description for Verify domain ownership for this certificate order.
+     * Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
+     * order.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param name Name of the object.
+     * @param nameIdentifier Email address.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resendRequestEmailsWithResponseAsync(
-        String resourceGroupName, String certificateOrderName, String name) {
+        String resourceGroupName, String certificateOrderName, NameIdentifierInner nameIdentifier) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -3251,9 +3274,12 @@ public final class AppServiceCertificateOrdersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (nameIdentifier == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nameIdentifier is required and cannot be null."));
+        } else {
+            nameIdentifier.validate();
+        }
         final String accept = "application/json";
-        NameIdentifierInner nameIdentifier = new NameIdentifierInner();
-        nameIdentifier.withName(name);
         return FluxUtil
             .withContext(
                 context ->
@@ -3271,20 +3297,21 @@ public final class AppServiceCertificateOrdersClientImpl
     }
 
     /**
-     * Description for Verify domain ownership for this certificate order.
+     * Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
+     * order.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param name Name of the object.
+     * @param nameIdentifier Email address.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> resendRequestEmailsWithResponseAsync(
-        String resourceGroupName, String certificateOrderName, String name, Context context) {
+        String resourceGroupName, String certificateOrderName, NameIdentifierInner nameIdentifier, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -3305,9 +3332,12 @@ public final class AppServiceCertificateOrdersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (nameIdentifier == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nameIdentifier is required and cannot be null."));
+        } else {
+            nameIdentifier.validate();
+        }
         final String accept = "application/json";
-        NameIdentifierInner nameIdentifier = new NameIdentifierInner();
-        nameIdentifier.withName(name);
         context = this.client.mergeContext(context);
         return service
             .resendRequestEmails(
@@ -3322,74 +3352,69 @@ public final class AppServiceCertificateOrdersClientImpl
     }
 
     /**
-     * Description for Verify domain ownership for this certificate order.
+     * Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
+     * order.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param name Name of the object.
+     * @param nameIdentifier Email address.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resendRequestEmailsAsync(String resourceGroupName, String certificateOrderName, String name) {
-        return resendRequestEmailsWithResponseAsync(resourceGroupName, certificateOrderName, name)
+    public Mono<Void> resendRequestEmailsAsync(
+        String resourceGroupName, String certificateOrderName, NameIdentifierInner nameIdentifier) {
+        return resendRequestEmailsWithResponseAsync(resourceGroupName, certificateOrderName, nameIdentifier)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
-     * Description for Verify domain ownership for this certificate order.
+     * Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
+     * order.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resendRequestEmailsAsync(String resourceGroupName, String certificateOrderName) {
-        final String name = null;
-        return resendRequestEmailsWithResponseAsync(resourceGroupName, certificateOrderName, name)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Description for Verify domain ownership for this certificate order.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param nameIdentifier Email address.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resendRequestEmails(String resourceGroupName, String certificateOrderName) {
-        final String name = null;
-        resendRequestEmailsAsync(resourceGroupName, certificateOrderName, name).block();
+    public void resendRequestEmails(
+        String resourceGroupName, String certificateOrderName, NameIdentifierInner nameIdentifier) {
+        resendRequestEmailsAsync(resourceGroupName, certificateOrderName, nameIdentifier).block();
     }
 
     /**
-     * Description for Verify domain ownership for this certificate order.
+     * Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
+     * order.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param name Name of the object.
+     * @param nameIdentifier Email address.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resendRequestEmailsWithResponse(
-        String resourceGroupName, String certificateOrderName, String name, Context context) {
-        return resendRequestEmailsWithResponseAsync(resourceGroupName, certificateOrderName, name, context).block();
+        String resourceGroupName, String certificateOrderName, NameIdentifierInner nameIdentifier, Context context) {
+        return resendRequestEmailsWithResponseAsync(resourceGroupName, certificateOrderName, nameIdentifier, context)
+            .block();
     }
 
     /**
-     * Description for Verify domain ownership for this certificate order.
+     * This method is used to obtain the site seal information for an issued certificate. A site seal is a graphic that
+     * the certificate purchaser can embed on their web site to show their visitors information about their SSL
+     * certificate. If a web site visitor clicks on the site seal image, a pop-up page is displayed that contains
+     * detailed information about the SSL certificate. The site seal token is used to link the site seal graphic image
+     * to the appropriate certificate details pop-up page display when a user clicks on the site seal. The site seal
+     * images are expected to be static images and hosted by the reseller, to minimize delays for customer page load
+     * times.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
@@ -3397,7 +3422,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return site seal.
+     * @return site seal along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SiteSealInner>> retrieveSiteSealWithResponseAsync(
@@ -3446,7 +3471,13 @@ public final class AppServiceCertificateOrdersClientImpl
     }
 
     /**
-     * Description for Verify domain ownership for this certificate order.
+     * This method is used to obtain the site seal information for an issued certificate. A site seal is a graphic that
+     * the certificate purchaser can embed on their web site to show their visitors information about their SSL
+     * certificate. If a web site visitor clicks on the site seal image, a pop-up page is displayed that contains
+     * detailed information about the SSL certificate. The site seal token is used to link the site seal graphic image
+     * to the appropriate certificate details pop-up page display when a user clicks on the site seal. The site seal
+     * images are expected to be static images and hosted by the reseller, to minimize delays for customer page load
+     * times.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
@@ -3455,7 +3486,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return site seal.
+     * @return site seal along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SiteSealInner>> retrieveSiteSealWithResponseAsync(
@@ -3501,7 +3532,13 @@ public final class AppServiceCertificateOrdersClientImpl
     }
 
     /**
-     * Description for Verify domain ownership for this certificate order.
+     * This method is used to obtain the site seal information for an issued certificate. A site seal is a graphic that
+     * the certificate purchaser can embed on their web site to show their visitors information about their SSL
+     * certificate. If a web site visitor clicks on the site seal image, a pop-up page is displayed that contains
+     * detailed information about the SSL certificate. The site seal token is used to link the site seal graphic image
+     * to the appropriate certificate details pop-up page display when a user clicks on the site seal. The site seal
+     * images are expected to be static images and hosted by the reseller, to minimize delays for customer page load
+     * times.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
@@ -3509,7 +3546,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return site seal.
+     * @return site seal on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SiteSealInner> retrieveSiteSealAsync(
@@ -3526,7 +3563,13 @@ public final class AppServiceCertificateOrdersClientImpl
     }
 
     /**
-     * Description for Verify domain ownership for this certificate order.
+     * This method is used to obtain the site seal information for an issued certificate. A site seal is a graphic that
+     * the certificate purchaser can embed on their web site to show their visitors information about their SSL
+     * certificate. If a web site visitor clicks on the site seal image, a pop-up page is displayed that contains
+     * detailed information about the SSL certificate. The site seal token is used to link the site seal graphic image
+     * to the appropriate certificate details pop-up page display when a user clicks on the site seal. The site seal
+     * images are expected to be static images and hosted by the reseller, to minimize delays for customer page load
+     * times.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
@@ -3543,7 +3586,13 @@ public final class AppServiceCertificateOrdersClientImpl
     }
 
     /**
-     * Description for Verify domain ownership for this certificate order.
+     * This method is used to obtain the site seal information for an issued certificate. A site seal is a graphic that
+     * the certificate purchaser can embed on their web site to show their visitors information about their SSL
+     * certificate. If a web site visitor clicks on the site seal image, a pop-up page is displayed that contains
+     * detailed information about the SSL certificate. The site seal token is used to link the site seal graphic image
+     * to the appropriate certificate details pop-up page display when a user clicks on the site seal. The site seal
+     * images are expected to be static images and hosted by the reseller, to minimize delays for customer page load
+     * times.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
@@ -3552,7 +3601,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return site seal.
+     * @return site seal along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SiteSealInner> retrieveSiteSealWithResponse(
@@ -3569,7 +3618,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> verifyDomainOwnershipWithResponseAsync(
@@ -3619,7 +3668,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> verifyDomainOwnershipWithResponseAsync(
@@ -3665,7 +3714,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> verifyDomainOwnershipAsync(String resourceGroupName, String certificateOrderName) {
@@ -3696,7 +3745,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> verifyDomainOwnershipWithResponse(
@@ -3712,7 +3761,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of CertificateOrderAction.
+     * @return array of CertificateOrderAction along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<CertificateOrderActionInner>>> retrieveCertificateActionsWithResponseAsync(
@@ -3761,7 +3810,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of CertificateOrderAction.
+     * @return array of CertificateOrderAction along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<CertificateOrderActionInner>>> retrieveCertificateActionsWithResponseAsync(
@@ -3806,7 +3855,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of CertificateOrderAction.
+     * @return array of CertificateOrderAction on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<CertificateOrderActionInner>> retrieveCertificateActionsAsync(
@@ -3846,7 +3895,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of CertificateOrderAction.
+     * @return array of CertificateOrderAction along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<CertificateOrderActionInner>> retrieveCertificateActionsWithResponse(
@@ -3862,7 +3911,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of CertificateEmail.
+     * @return array of CertificateEmail along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<CertificateEmailInner>>> retrieveCertificateEmailHistoryWithResponseAsync(
@@ -3911,7 +3960,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of CertificateEmail.
+     * @return array of CertificateEmail along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<CertificateEmailInner>>> retrieveCertificateEmailHistoryWithResponseAsync(
@@ -3956,7 +4005,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of CertificateEmail.
+     * @return array of CertificateEmail on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<CertificateEmailInner>> retrieveCertificateEmailHistoryAsync(
@@ -3996,7 +4045,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of CertificateEmail.
+     * @return array of CertificateEmail along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<CertificateEmailInner>> retrieveCertificateEmailHistoryWithResponse(
@@ -4011,7 +4060,8 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificate orders.
+     * @return collection of certificate orders along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AppServiceCertificateOrderInner>> listNextSinglePageAsync(String nextLink) {
@@ -4047,7 +4097,8 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificate orders.
+     * @return collection of certificate orders along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AppServiceCertificateOrderInner>> listNextSinglePageAsync(
@@ -4083,7 +4134,8 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificate orders.
+     * @return collection of certificate orders along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AppServiceCertificateOrderInner>> listByResourceGroupNextSinglePageAsync(
@@ -4121,7 +4173,8 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificate orders.
+     * @return collection of certificate orders along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AppServiceCertificateOrderInner>> listByResourceGroupNextSinglePageAsync(
@@ -4157,7 +4210,8 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificate order certificates.
+     * @return collection of certificate order certificates along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AppServiceCertificateResourceInner>> listCertificatesNextSinglePageAsync(
@@ -4194,7 +4248,8 @@ public final class AppServiceCertificateOrdersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificate order certificates.
+     * @return collection of certificate order certificates along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AppServiceCertificateResourceInner>> listCertificatesNextSinglePageAsync(

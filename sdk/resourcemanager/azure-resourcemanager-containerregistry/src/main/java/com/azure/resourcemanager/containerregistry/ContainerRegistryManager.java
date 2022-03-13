@@ -18,14 +18,12 @@ import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureCo
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.storage.StorageManager;
 
 /** Entry point to Azure container registry management. */
 public final class ContainerRegistryManager
     extends Manager<ContainerRegistryManagementClient> {
     // The service managers
     private RegistriesImpl registries;
-    private final StorageManager storageManager;
     private RegistryTasksImpl tasks;
     private RegistryTaskRunsImpl registryTaskRuns;
 
@@ -95,14 +93,12 @@ public final class ContainerRegistryManager
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
-        this.storageManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, StorageManager.configure())
-            .authenticate(null, profile);
     }
 
     /** @return the availability set resource management API entry point */
     public Registries containerRegistries() {
         if (this.registries == null) {
-            this.registries = new RegistriesImpl(this, this.storageManager);
+            this.registries = new RegistriesImpl(this);
         }
         return this.registries;
     }

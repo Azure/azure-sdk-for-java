@@ -18,8 +18,8 @@ import java.util.List;
 @Fluent
 public class ArtifactManifestProperties {
     /*
-     * Registry login server name.  This is likely to be similar to
-     * {registry-name}.azurecr.io
+     * Registry login server name. This is likely to be similar to
+     * {registry-name}.azurecr.io.
      */
     @JsonProperty(value = "registry", access = JsonProperty.Access.WRITE_ONLY)
     private String registryLoginServer;

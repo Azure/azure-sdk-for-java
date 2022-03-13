@@ -444,7 +444,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
                 this.client.getHttpPipeline(),
                 ServerDnsAliasInner.class,
                 ServerDnsAliasInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -708,7 +708,8 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serverName, dnsAliasName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1160,7 +1161,8 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
             acquireWithResponseAsync(resourceGroupName, serverName, dnsAliasName, oldServerDnsAliasId);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

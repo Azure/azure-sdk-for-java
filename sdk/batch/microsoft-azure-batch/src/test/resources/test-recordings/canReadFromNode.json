@@ -1,182 +1,174 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://batchsdktest.eastus.batch.azure.com/jobs?api-version=2020-09-01.12.0",
+    "Uri" : "https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/jobs?api-version=2021-06-01.14.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.15.7 MacAddressHash:e52147eea5b10208b8f9de54947ef0d8db9e76e0caec6a11c98b8f9f12de05e2 Java:1.8.0_144 (BatchServiceClient, 2020-09-01.12.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/11.4 MacAddressHash:f152d1cc9e30dca4e1c450c8d8e8d14d2fb7e2be9be344f7bcc6cef88fc4b4e3 Java:16.0.1 (BatchServiceClient, 2021-06-01.14.0)",
       "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
     },
     "Response" : {
-      "date" : "Mon, 12 Oct 2020 20:32:11 GMT",
+      "date" : "Mon, 26 Jul 2021 18:12:14 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
-      "dataserviceid" : "https://batchsdktest.eastus.batch.azure.com/jobs/job-1",
+      "dataserviceid" : "https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/jobs/job-1",
       "retry-after" : "0",
-      "request-id" : "205b8ca2-3b68-487b-8de3-7b0086f9b823",
+      "request-id" : "3c652c4c-2f42-4950-bf2a-c7da25088b95",
       "StatusCode" : "201",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Mon, 12 Oct 2020 20:32:12 GMT",
+      "last-modified" : "Mon, 26 Jul 2021 18:12:14 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "808afce4-f275-4ecb-b150-e14b877977a0",
-      "etag" : "0x8D86EEDE67C6804",
-      "location" : "https://batchsdktest.eastus.batch.azure.com/jobs/job-1",
+      "client-request-id" : "3188f287-daec-40f1-b1bc-8448800f4c10",
+      "etag" : "0x8D95060E59654A0",
+      "location" : "https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/jobs/job-1",
       "dataserviceversion" : "3.0",
       "Body" : ""
     }
   }, {
     "Method" : "POST",
-    "Uri" : "https://batchsdktest.eastus.batch.azure.com/jobs/BatchUser-Job-canReadFromNode/tasks?api-version=2020-09-01.12.0",
+    "Uri" : "https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/jobs/BatchUser-Job-canReadFromNode/tasks?api-version=2021-06-01.14.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.15.7 MacAddressHash:e52147eea5b10208b8f9de54947ef0d8db9e76e0caec6a11c98b8f9f12de05e2 Java:1.8.0_144 (BatchServiceClient, 2020-09-01.12.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/11.4 MacAddressHash:f152d1cc9e30dca4e1c450c8d8e8d14d2fb7e2be9be344f7bcc6cef88fc4b4e3 Java:16.0.1 (BatchServiceClient, 2021-06-01.14.0)",
       "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
     },
     "Response" : {
-      "date" : "Mon, 12 Oct 2020 20:32:12 GMT",
+      "date" : "Mon, 26 Jul 2021 18:12:14 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
-      "dataserviceid" : "https://batchsdktest.eastus.batch.azure.com/jobs/BatchUser-Job-canReadFromNode/tasks/mytask",
+      "dataserviceid" : "https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/jobs/BatchUser-Job-canReadFromNode/tasks/mytask",
       "retry-after" : "0",
-      "request-id" : "f10a5b4d-ddbd-4586-b58b-d49bcafb60f4",
+      "request-id" : "272619fe-2461-493c-8b8d-4ce274ae8b58",
       "StatusCode" : "201",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Mon, 12 Oct 2020 20:32:12 GMT",
+      "last-modified" : "Mon, 26 Jul 2021 18:12:14 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "6ddc8b70-a094-4889-aa6b-68f29a87d6c3",
-      "etag" : "0x8D86EEDE68555BB",
-      "location" : "https://batchsdktest.eastus.batch.azure.com/jobs/BatchUser-Job-canReadFromNode/tasks/mytask",
+      "client-request-id" : "484ebe18-4bf5-4d35-9d8e-2e1710d38515",
+      "etag" : "0x8D95060E5A6B157",
+      "location" : "https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/jobs/BatchUser-Job-canReadFromNode/tasks/mytask",
       "dataserviceversion" : "3.0",
       "Body" : ""
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://batchsdktest.eastus.batch.azure.com/jobs/BatchUser-Job-canReadFromNode/tasks?api-version=2020-09-01.12.0&%24select=id%2C%20state",
+    "Uri" : "https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/jobs/BatchUser-Job-canReadFromNode/tasks?api-version=2021-06-01.14.0&%24select=id%2C%20state",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.15.7 MacAddressHash:e52147eea5b10208b8f9de54947ef0d8db9e76e0caec6a11c98b8f9f12de05e2 Java:1.8.0_144 (BatchServiceClient, 2020-09-01.12.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/11.4 MacAddressHash:f152d1cc9e30dca4e1c450c8d8e8d14d2fb7e2be9be344f7bcc6cef88fc4b4e3 Java:16.0.1 (BatchServiceClient, 2021-06-01.14.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Mon, 12 Oct 2020 20:32:12 GMT",
+      "date" : "Mon, 26 Jul 2021 18:12:14 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "97a5de82-15fb-4dd8-a62a-ec52a51ca126",
+      "client-request-id" : "a9f61b11-aaa1-4b59-b08b-bb6cc5c5ac9e",
       "content-type" : "application/json;odata=minimalmetadata",
       "retry-after" : "0",
-      "request-id" : "a9df1bc8-ad60-43bd-9500-5ead6f57cdcd",
+      "request-id" : "3fb58bcc-d5fa-47b7-9a67-96395e162607",
       "StatusCode" : "200",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://batchsdktest.eastus.batch.azure.com/$metadata#tasks\",\"value\":[\r\n    {\r\n      \"id\":\"mytask\",\"state\":\"active\"\r\n    }\r\n  ]\r\n}",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/$metadata#tasks\",\"value\":[\r\n    {\r\n      \"id\":\"mytask\",\"state\":\"active\"\r\n    }\r\n  ]\r\n}",
       "strict-transport-security" : "max-age=31536000; includeSubDomains"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://batchsdktest.eastus.batch.azure.com/jobs/BatchUser-Job-canReadFromNode/tasks?api-version=2020-09-01.12.0&%24select=id%2C%20state",
+    "Uri" : "https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/jobs/BatchUser-Job-canReadFromNode/tasks?api-version=2021-06-01.14.0&%24select=id%2C%20state",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.15.7 MacAddressHash:e52147eea5b10208b8f9de54947ef0d8db9e76e0caec6a11c98b8f9f12de05e2 Java:1.8.0_144 (BatchServiceClient, 2020-09-01.12.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/11.4 MacAddressHash:f152d1cc9e30dca4e1c450c8d8e8d14d2fb7e2be9be344f7bcc6cef88fc4b4e3 Java:16.0.1 (BatchServiceClient, 2021-06-01.14.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Mon, 12 Oct 2020 20:32:22 GMT",
+      "date" : "Mon, 26 Jul 2021 18:12:25 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "8dbaee40-e5ef-41c6-965d-78c3ba9a7c67",
+      "client-request-id" : "54b5e8f4-19c0-4e73-a8c8-e892a175327f",
       "content-type" : "application/json;odata=minimalmetadata",
       "retry-after" : "0",
-      "request-id" : "e049c82a-1eef-496f-8a4b-3e29847a68b8",
+      "request-id" : "bedf50c4-b7b5-4df2-85de-9793de89aff6",
       "StatusCode" : "200",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://batchsdktest.eastus.batch.azure.com/$metadata#tasks\",\"value\":[\r\n    {\r\n      \"id\":\"mytask\",\"state\":\"completed\"\r\n    }\r\n  ]\r\n}",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/$metadata#tasks\",\"value\":[\r\n    {\r\n      \"id\":\"mytask\",\"state\":\"completed\"\r\n    }\r\n  ]\r\n}",
       "strict-transport-security" : "max-age=31536000; includeSubDomains"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://batchsdktest.eastus.batch.azure.com/jobs/BatchUser-Job-canReadFromNode/tasks/mytask?api-version=2020-09-01.12.0",
+    "Uri" : "https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/jobs/BatchUser-Job-canReadFromNode/tasks/mytask?api-version=2021-06-01.14.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.15.7 MacAddressHash:e52147eea5b10208b8f9de54947ef0d8db9e76e0caec6a11c98b8f9f12de05e2 Java:1.8.0_144 (BatchServiceClient, 2020-09-01.12.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/11.4 MacAddressHash:f152d1cc9e30dca4e1c450c8d8e8d14d2fb7e2be9be344f7bcc6cef88fc4b4e3 Java:16.0.1 (BatchServiceClient, 2021-06-01.14.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Mon, 12 Oct 2020 20:32:22 GMT",
+      "date" : "Mon, 26 Jul 2021 18:12:25 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
       "retry-after" : "0",
-      "request-id" : "3f3916d1-0539-4f40-9c7d-2881ed9b8cf6",
+      "request-id" : "356caf36-a961-4a5f-836d-b6deb20782ed",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Mon, 12 Oct 2020 20:32:12 GMT",
+      "last-modified" : "Mon, 26 Jul 2021 18:12:14 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "53e579cd-fd19-40c6-9700-384943e7b7e2",
+      "client-request-id" : "e8580c71-74f2-4bfd-b2e8-4e82cefeb4ae",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8D86EEDE68555BB",
+      "etag" : "0x8D95060E5A6B157",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://batchsdktest.eastus.batch.azure.com/$metadata#tasks/@Element\",\"id\":\"mytask\",\"url\":\"https://batchsdktest.eastus.batch.azure.com/jobs/BatchUser-Job-canReadFromNode/tasks/mytask\",\"eTag\":\"0x8D86EEDE68555BB\",\"creationTime\":\"2020-10-12T20:32:12.6727611Z\",\"lastModified\":\"2020-10-12T20:32:12.6727611Z\",\"state\":\"completed\",\"stateTransitionTime\":\"2020-10-12T20:32:13.793489Z\",\"previousState\":\"running\",\"previousStateTransitionTime\":\"2020-10-12T20:32:13.708648Z\",\"commandLine\":\"/bin/bash -c \\\"echo hello\\\"\",\"userIdentity\":{\r\n    \"autoUser\":{\r\n      \"scope\":\"pool\",\"elevationLevel\":\"nonadmin\"\r\n    }\r\n  },\"constraints\":{\r\n    \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"retentionTime\":\"P7D\",\"maxTaskRetryCount\":0\r\n  },\"requiredSlots\":1,\"executionInfo\":{\r\n    \"startTime\":\"2020-10-12T20:32:13.751197Z\",\"endTime\":\"2020-10-12T20:32:13.793489Z\",\"exitCode\":0,\"result\":\"success\",\"retryCount\":0,\"requeueCount\":0\r\n  },\"nodeInfo\":{\r\n    \"affinityId\":\"TVM:tvmps_8435cf5a767955660a6ebf3ef38dc9e8ccb25c4d9e623428cea9611fc7700007_d\",\"nodeUrl\":\"https://batchsdktest.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_8435cf5a767955660a6ebf3ef38dc9e8ccb25c4d9e623428cea9611fc7700007_d\",\"poolId\":\"BatchUser-testpool\",\"nodeId\":\"tvmps_8435cf5a767955660a6ebf3ef38dc9e8ccb25c4d9e623428cea9611fc7700007_d\",\"taskRootDirectory\":\"workitems/BatchUser-Job-canReadFromNode/job-1/mytask\",\"taskRootDirectoryUrl\":\"https://batchsdktest.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_8435cf5a767955660a6ebf3ef38dc9e8ccb25c4d9e623428cea9611fc7700007_d/files/workitems/BatchUser-Job-canReadFromNode/job-1/mytask\"\r\n  }\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/$metadata#tasks/@Element\",\"id\":\"mytask\",\"url\":\"https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/jobs/BatchUser-Job-canReadFromNode/tasks/mytask\",\"eTag\":\"0x8D95060E5A6B157\",\"creationTime\":\"2021-07-26T18:12:14.9625175Z\",\"lastModified\":\"2021-07-26T18:12:14.9625175Z\",\"state\":\"completed\",\"stateTransitionTime\":\"2021-07-26T18:12:15.664812Z\",\"previousState\":\"running\",\"previousStateTransitionTime\":\"2021-07-26T18:12:15.58203Z\",\"commandLine\":\"/bin/bash -c \\\"echo hello\\\"\",\"userIdentity\":{\r\n    \"autoUser\":{\r\n      \"scope\":\"pool\",\"elevationLevel\":\"nonadmin\"\r\n    }\r\n  },\"constraints\":{\r\n    \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"retentionTime\":\"P7D\",\"maxTaskRetryCount\":0\r\n  },\"requiredSlots\":1,\"executionInfo\":{\r\n    \"startTime\":\"2021-07-26T18:12:15.620553Z\",\"endTime\":\"2021-07-26T18:12:15.664812Z\",\"exitCode\":0,\"result\":\"success\",\"retryCount\":0,\"requeueCount\":0\r\n  },\"nodeInfo\":{\r\n    \"affinityId\":\"TVM:tvmps_1d5ab483cc518efe1f0026d93b6172c0320c4b277c74fd5ba9b91ff26bb62e22_d\",\"nodeUrl\":\"https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_1d5ab483cc518efe1f0026d93b6172c0320c4b277c74fd5ba9b91ff26bb62e22_d\",\"poolId\":\"BatchUser-testpool\",\"nodeId\":\"tvmps_1d5ab483cc518efe1f0026d93b6172c0320c4b277c74fd5ba9b91ff26bb62e22_d\",\"taskRootDirectory\":\"workitems/BatchUser-Job-canReadFromNode/job-1/mytask\",\"taskRootDirectoryUrl\":\"https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_1d5ab483cc518efe1f0026d93b6172c0320c4b277c74fd5ba9b91ff26bb62e22_d/files/workitems/BatchUser-Job-canReadFromNode/job-1/mytask\"\r\n  }\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://batchsdktest.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_8435cf5a767955660a6ebf3ef38dc9e8ccb25c4d9e623428cea9611fc7700007_d/files?recursive=true&api-version=2020-09-01.12.0",
+    "Uri" : "https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_1d5ab483cc518efe1f0026d93b6172c0320c4b277c74fd5ba9b91ff26bb62e22_d/files?recursive=true&api-version=2021-06-01.14.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.15.7 MacAddressHash:e52147eea5b10208b8f9de54947ef0d8db9e76e0caec6a11c98b8f9f12de05e2 Java:1.8.0_144 (BatchServiceClient, 2020-09-01.12.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/11.4 MacAddressHash:f152d1cc9e30dca4e1c450c8d8e8d14d2fb7e2be9be344f7bcc6cef88fc4b4e3 Java:16.0.1 (BatchServiceClient, 2021-06-01.14.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Mon, 12 Oct 2020 20:32:22 GMT",
+      "date" : "Mon, 26 Jul 2021 18:12:25 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "392f1134-942c-4e3f-93e5-c804a62c07c3",
+      "client-request-id" : "1e1e0444-093b-4a2e-8c66-074656768dd0",
       "content-type" : "application/json;odata=minimalmetadata",
       "retry-after" : "0",
-      "request-id" : "d48352a6-2088-4f23-aeeb-d508acb94b7a",
+      "request-id" : "9d0b54a6-9d1f-4ced-9236-6ed5318b5a47",
       "StatusCode" : "200",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://batchsdktest.eastus.batch.azure.com/$metadata#files\",\"value\":[\r\n    {\r\n      \"name\":\"volatile\",\"url\":\"https://batchsdktest.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_8435cf5a767955660a6ebf3ef38dc9e8ccb25c4d9e623428cea9611fc7700007_d/files/volatile\",\"isDirectory\":true\r\n    },{\r\n      \"name\":\"workitems\",\"url\":\"https://batchsdktest.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_8435cf5a767955660a6ebf3ef38dc9e8ccb25c4d9e623428cea9611fc7700007_d/files/workitems\",\"isDirectory\":true\r\n    },{\r\n      \"name\":\"applications\",\"url\":\"https://batchsdktest.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_8435cf5a767955660a6ebf3ef38dc9e8ccb25c4d9e623428cea9611fc7700007_d/files/applications\",\"isDirectory\":true\r\n    },{\r\n      \"name\":\"fsmounts\",\"url\":\"https://batchsdktest.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_8435cf5a767955660a6ebf3ef38dc9e8ccb25c4d9e623428cea9611fc7700007_d/files/fsmounts\",\"isDirectory\":true\r\n    },{\r\n      \"name\":\"startup\",\"url\":\"https://batchsdktest.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_8435cf5a767955660a6ebf3ef38dc9e8ccb25c4d9e623428cea9611fc7700007_d/files/startup\",\"isDirectory\":true\r\n    },{\r\n      \"name\":\"shared\",\"url\":\"https://batchsdktest.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_8435cf5a767955660a6ebf3ef38dc9e8ccb25c4d9e623428cea9611fc7700007_d/files/shared\",\"isDirectory\":true\r\n    },{\r\n      \"name\":\"volatile/startup\",\"url\":\"https://batchsdktest.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_8435cf5a767955660a6ebf3ef38dc9e8ccb25c4d9e623428cea9611fc7700007_d/files/volatile/startup\",\"isDirectory\":true\r\n    },{\r\n      \"name\":\"workitems/BatchUser-Job-canReadFromNode\",\"url\":\"https://batchsdktest.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_8435cf5a767955660a6ebf3ef38dc9e8ccb25c4d9e623428cea9611fc7700007_d/files/workitems/BatchUser-Job-canReadFromNode\",\"isDirectory\":true\r\n    },{\r\n      \"name\":\"workitems/BatchUser-Job-canReadFromTaskFile\",\"url\":\"https://batchsdktest.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_8435cf5a767955660a6ebf3ef38dc9e8ccb25c4d9e623428cea9611fc7700007_d/files/workitems/BatchUser-Job-canReadFromTaskFile\",\"isDirectory\":true\r\n    },{\r\n      \"name\":\"workitems/BatchUser-Job-canReadFromNode/job-1\",\"url\":\"https://batchsdktest.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_8435cf5a767955660a6ebf3ef38dc9e8ccb25c4d9e623428cea9611fc7700007_d/files/workitems/BatchUser-Job-canReadFromNode/job-1\",\"isDirectory\":true\r\n    },{\r\n      \"name\":\"workitems/BatchUser-Job-canReadFromNode/job-1/mytask\",\"url\":\"https://batchsdktest.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_8435cf5a767955660a6ebf3ef38dc9e8ccb25c4d9e623428cea9611fc7700007_d/files/workitems/BatchUser-Job-canReadFromNode/job-1/mytask\",\"isDirectory\":true\r\n    },{\r\n      \"name\":\"workitems/BatchUser-Job-canReadFromNode/job-1/mytask/certs\",\"url\":\"https://batchsdktest.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_8435cf5a767955660a6ebf3ef38dc9e8ccb25c4d9e623428cea9611fc7700007_d/files/workitems/BatchUser-Job-canReadFromNode/job-1/mytask/certs\",\"isDirectory\":true\r\n    },{\r\n      \"name\":\"workitems/BatchUser-Job-canReadFromNode/job-1/mytask/wd\",\"url\":\"https://batchsdktest.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_8435cf5a767955660a6ebf3ef38dc9e8ccb25c4d9e623428cea9611fc7700007_d/files/workitems/BatchUser-Job-canReadFromNode/job-1/mytask/wd\",\"isDirectory\":true\r\n    },{\r\n      \"name\":\"workitems/BatchUser-Job-canReadFromNode/job-1/mytask/stdout.txt\",\"url\":\"https://batchsdktest.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_8435cf5a767955660a6ebf3ef38dc9e8ccb25c4d9e623428cea9611fc7700007_d/files/workitems/BatchUser-Job-canReadFromNode/job-1/mytask/stdout.txt\",\"isDirectory\":false,\"properties\":{\r\n        \"lastModified\":\"2020-10-12T20:32:13.782442Z\",\"contentLength\":\"6\",\"contentType\":\"text/plain\",\"fileMode\":\"0o100644\"\r\n      }\r\n    },{\r\n      \"name\":\"workitems/BatchUser-Job-canReadFromNode/job-1/mytask/stderr.txt\",\"url\":\"https://batchsdktest.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_8435cf5a767955660a6ebf3ef38dc9e8ccb25c4d9e623428cea9611fc7700007_d/files/workitems/BatchUser-Job-canReadFromNode/job-1/mytask/stderr.txt\",\"isDirectory\":false,\"properties\":{\r\n        \"lastModified\":\"2020-10-12T20:32:13.766441Z\",\"contentLength\":\"0\",\"contentType\":\"text/plain\",\"fileMode\":\"0o100644\"\r\n      }\r\n    }\r\n  ]\r\n}",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/$metadata#files\",\"value\":[\r\n    {\r\n      \"name\":\"workitems\",\"url\":\"https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_1d5ab483cc518efe1f0026d93b6172c0320c4b277c74fd5ba9b91ff26bb62e22_d/files/workitems\",\"isDirectory\":true\r\n    },{\r\n      \"name\":\"shared\",\"url\":\"https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_1d5ab483cc518efe1f0026d93b6172c0320c4b277c74fd5ba9b91ff26bb62e22_d/files/shared\",\"isDirectory\":true\r\n    },{\r\n      \"name\":\"startup\",\"url\":\"https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_1d5ab483cc518efe1f0026d93b6172c0320c4b277c74fd5ba9b91ff26bb62e22_d/files/startup\",\"isDirectory\":true\r\n    },{\r\n      \"name\":\"volatile\",\"url\":\"https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_1d5ab483cc518efe1f0026d93b6172c0320c4b277c74fd5ba9b91ff26bb62e22_d/files/volatile\",\"isDirectory\":true\r\n    },{\r\n      \"name\":\"applications\",\"url\":\"https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_1d5ab483cc518efe1f0026d93b6172c0320c4b277c74fd5ba9b91ff26bb62e22_d/files/applications\",\"isDirectory\":true\r\n    },{\r\n      \"name\":\"fsmounts\",\"url\":\"https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_1d5ab483cc518efe1f0026d93b6172c0320c4b277c74fd5ba9b91ff26bb62e22_d/files/fsmounts\",\"isDirectory\":true\r\n    },{\r\n      \"name\":\"workitems/BatchUser-Job-canReadFromNode\",\"url\":\"https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_1d5ab483cc518efe1f0026d93b6172c0320c4b277c74fd5ba9b91ff26bb62e22_d/files/workitems/BatchUser-Job-canReadFromNode\",\"isDirectory\":true\r\n    },{\r\n      \"name\":\"workitems/BatchUser-Job-canReadFromTaskFile\",\"url\":\"https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_1d5ab483cc518efe1f0026d93b6172c0320c4b277c74fd5ba9b91ff26bb62e22_d/files/workitems/BatchUser-Job-canReadFromTaskFile\",\"isDirectory\":true\r\n    },{\r\n      \"name\":\"workitems/BatchUser-testGetTaskCounts\",\"url\":\"https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_1d5ab483cc518efe1f0026d93b6172c0320c4b277c74fd5ba9b91ff26bb62e22_d/files/workitems/BatchUser-testGetTaskCounts\",\"isDirectory\":true\r\n    },{\r\n      \"name\":\"volatile/startup\",\"url\":\"https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_1d5ab483cc518efe1f0026d93b6172c0320c4b277c74fd5ba9b91ff26bb62e22_d/files/volatile/startup\",\"isDirectory\":true\r\n    },{\r\n      \"name\":\"workitems/BatchUser-Job-canReadFromNode/job-1\",\"url\":\"https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_1d5ab483cc518efe1f0026d93b6172c0320c4b277c74fd5ba9b91ff26bb62e22_d/files/workitems/BatchUser-Job-canReadFromNode/job-1\",\"isDirectory\":true\r\n    },{\r\n      \"name\":\"workitems/BatchUser-Job-canReadFromNode/job-1/mytask\",\"url\":\"https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_1d5ab483cc518efe1f0026d93b6172c0320c4b277c74fd5ba9b91ff26bb62e22_d/files/workitems/BatchUser-Job-canReadFromNode/job-1/mytask\",\"isDirectory\":true\r\n    },{\r\n      \"name\":\"workitems/BatchUser-Job-canReadFromNode/job-1/mytask/stderr.txt\",\"url\":\"https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_1d5ab483cc518efe1f0026d93b6172c0320c4b277c74fd5ba9b91ff26bb62e22_d/files/workitems/BatchUser-Job-canReadFromNode/job-1/mytask/stderr.txt\",\"isDirectory\":false,\"properties\":{\r\n        \"lastModified\":\"2021-07-26T18:12:15.630257Z\",\"contentLength\":\"0\",\"contentType\":\"text/plain\",\"fileMode\":\"0o100644\"\r\n      }\r\n    },{\r\n      \"name\":\"workitems/BatchUser-Job-canReadFromNode/job-1/mytask/stdout.txt\",\"url\":\"https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_1d5ab483cc518efe1f0026d93b6172c0320c4b277c74fd5ba9b91ff26bb62e22_d/files/workitems/BatchUser-Job-canReadFromNode/job-1/mytask/stdout.txt\",\"isDirectory\":false,\"properties\":{\r\n        \"lastModified\":\"2021-07-26T18:12:15.654258Z\",\"contentLength\":\"6\",\"contentType\":\"text/plain\",\"fileMode\":\"0o100644\"\r\n      }\r\n    },{\r\n      \"name\":\"workitems/BatchUser-Job-canReadFromNode/job-1/mytask/certs\",\"url\":\"https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_1d5ab483cc518efe1f0026d93b6172c0320c4b277c74fd5ba9b91ff26bb62e22_d/files/workitems/BatchUser-Job-canReadFromNode/job-1/mytask/certs\",\"isDirectory\":true\r\n    },{\r\n      \"name\":\"workitems/BatchUser-Job-canReadFromNode/job-1/mytask/wd\",\"url\":\"https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_1d5ab483cc518efe1f0026d93b6172c0320c4b277c74fd5ba9b91ff26bb62e22_d/files/workitems/BatchUser-Job-canReadFromNode/job-1/mytask/wd\",\"isDirectory\":true\r\n    }\r\n  ]\r\n}",
       "strict-transport-security" : "max-age=31536000; includeSubDomains"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://batchsdktest.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_8435cf5a767955660a6ebf3ef38dc9e8ccb25c4d9e623428cea9611fc7700007_d/files/workitems%2FBatchUser-Job-canReadFromNode%2Fjob-1%2Fmytask%2Fstdout.txt?api-version=2020-09-01.12.0",
+    "Uri" : "https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_1d5ab483cc518efe1f0026d93b6172c0320c4b277c74fd5ba9b91ff26bb62e22_d/files/workitems%2FBatchUser-Job-canReadFromNode%2Fjob-1%2Fmytask%2Fstdout.txt?api-version=2021-06-01.14.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.15.7 MacAddressHash:e52147eea5b10208b8f9de54947ef0d8db9e76e0caec6a11c98b8f9f12de05e2 Java:1.8.0_144 (BatchServiceClient, 2020-09-01.12.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/11.4 MacAddressHash:f152d1cc9e30dca4e1c450c8d8e8d14d2fb7e2be9be344f7bcc6cef88fc4b4e3 Java:16.0.1 (BatchServiceClient, 2021-06-01.14.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Mon, 12 Oct 2020 20:32:22 GMT",
+      "date" : "Mon, 26 Jul 2021 18:12:25 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "ocp-batch-file-mode" : "0o100644",
-      "transfer-encoding" : "chunked",
       "ocp-batch-file-isdirectory" : "False",
-      "ocp-batch-file-url" : "https%3A%2F%2Fbatchsdktest.eastus.batch.azure.com%2Fpools%2FBatchUser-testpool%2Fnodes%2Ftvmps_8435cf5a767955660a6ebf3ef38dc9e8ccb25c4d9e623428cea9611fc7700007_d%2Ffiles%2Fworkitems%2FBatchUser-Job-canReadFromNode%2Fjob-1%2Fmytask%2Fstdout.txt",
+      "ocp-batch-file-url" : "https%3A%2F%2Fshpasterbatch1.pilotprod2.eastus.batch.azure.com%2Fpools%2FBatchUser-testpool%2Fnodes%2Ftvmps_1d5ab483cc518efe1f0026d93b6172c0320c4b277c74fd5ba9b91ff26bb62e22_d%2Ffiles%2Fworkitems%2FBatchUser-Job-canReadFromNode%2Fjob-1%2Fmytask%2Fstdout.txt",
       "retry-after" : "0",
-      "request-id" : "43dc1780-9b16-4a24-a9d9-ada423b1b1eb",
+      "request-id" : "57f0da48-fe00-44fd-9a90-0a7f460695cc",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Mon, 12 Oct 2020 20:32:13 GMT",
+      "last-modified" : "Mon, 26 Jul 2021 18:12:15 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "db38cabd-d96e-4cfb-8b74-d3bbeff12208",
+      "client-request-id" : "10fc5e18-fe8e-461a-bad4-2b53ad884a7a",
       "content-type" : "text/plain",
       "dataserviceversion" : "3.0",
       "Body" : "hello\n"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://batchsdktest.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_8435cf5a767955660a6ebf3ef38dc9e8ccb25c4d9e623428cea9611fc7700007_d/files/workitems%2FBatchUser-Job-canReadFromNode%2Fjob-1%2Fmytask%2Fstdout.txt?api-version=2020-09-01.12.0",
+    "Uri" : "https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_1d5ab483cc518efe1f0026d93b6172c0320c4b277c74fd5ba9b91ff26bb62e22_d/files/workitems%2FBatchUser-Job-canReadFromNode%2Fjob-1%2Fmytask%2Fstdout.txt?api-version=2021-06-01.14.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.15.7 MacAddressHash:e52147eea5b10208b8f9de54947ef0d8db9e76e0caec6a11c98b8f9f12de05e2 Java:1.8.0_144 (BatchServiceClient, 2020-09-01.12.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/11.4 MacAddressHash:f152d1cc9e30dca4e1c450c8d8e8d14d2fb7e2be9be344f7bcc6cef88fc4b4e3 Java:16.0.1 (BatchServiceClient, 2021-06-01.14.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Mon, 12 Oct 2020 20:32:22 GMT",
+      "date" : "Mon, 26 Jul 2021 18:12:25 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "ocp-batch-file-mode" : "0o100644",
-      "transfer-encoding" : "chunked",
       "ocp-batch-file-isdirectory" : "False",
-      "ocp-batch-file-url" : "https%3A%2F%2Fbatchsdktest.eastus.batch.azure.com%2Fpools%2FBatchUser-testpool%2Fnodes%2Ftvmps_8435cf5a767955660a6ebf3ef38dc9e8ccb25c4d9e623428cea9611fc7700007_d%2Ffiles%2Fworkitems%2FBatchUser-Job-canReadFromNode%2Fjob-1%2Fmytask%2Fstdout.txt",
+      "ocp-batch-file-url" : "https%3A%2F%2Fshpasterbatch1.pilotprod2.eastus.batch.azure.com%2Fpools%2FBatchUser-testpool%2Fnodes%2Ftvmps_1d5ab483cc518efe1f0026d93b6172c0320c4b277c74fd5ba9b91ff26bb62e22_d%2Ffiles%2Fworkitems%2FBatchUser-Job-canReadFromNode%2Fjob-1%2Fmytask%2Fstdout.txt",
       "retry-after" : "0",
-      "request-id" : "f1eeacde-0a66-480d-a61f-bc3ff9482863",
+      "request-id" : "efcfdb40-1308-4bd8-8431-14132f6d9a2d",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Mon, 12 Oct 2020 20:32:13 GMT",
+      "last-modified" : "Mon, 26 Jul 2021 18:12:15 GMT",
       "x-content-type-options" : "nosniff",
       "content-type" : "text/plain",
       "dataserviceversion" : "3.0",
@@ -184,44 +176,43 @@
     }
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://batchsdktest.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_8435cf5a767955660a6ebf3ef38dc9e8ccb25c4d9e623428cea9611fc7700007_d/files/workitems%2FBatchUser-Job-canReadFromNode%2Fjob-1%2Fmytask%2Fstdout.txt?api-version=2020-09-01.12.0",
+    "Uri" : "https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/pools/BatchUser-testpool/nodes/tvmps_1d5ab483cc518efe1f0026d93b6172c0320c4b277c74fd5ba9b91ff26bb62e22_d/files/workitems%2FBatchUser-Job-canReadFromNode%2Fjob-1%2Fmytask%2Fstdout.txt?api-version=2021-06-01.14.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.15.7 MacAddressHash:e52147eea5b10208b8f9de54947ef0d8db9e76e0caec6a11c98b8f9f12de05e2 Java:1.8.0_144 (BatchServiceClient, 2020-09-01.12.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/11.4 MacAddressHash:f152d1cc9e30dca4e1c450c8d8e8d14d2fb7e2be9be344f7bcc6cef88fc4b4e3 Java:16.0.1 (BatchServiceClient, 2021-06-01.14.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Mon, 12 Oct 2020 20:32:22 GMT",
+      "date" : "Mon, 26 Jul 2021 18:12:26 GMT",
       "content-length" : "6",
       "server" : "Microsoft-HTTPAPI/2.0",
       "ocp-batch-file-mode" : "0o100644",
       "ocp-batch-file-isdirectory" : "False",
-      "ocp-batch-file-url" : "https%3A%2F%2Fbatchsdktest.eastus.batch.azure.com%2Fpools%2FBatchUser-testpool%2Fnodes%2Ftvmps_8435cf5a767955660a6ebf3ef38dc9e8ccb25c4d9e623428cea9611fc7700007_d%2Ffiles%2Fworkitems%2FBatchUser-Job-canReadFromNode%2Fjob-1%2Fmytask%2Fstdout.txt",
+      "ocp-batch-file-url" : "https%3A%2F%2Fshpasterbatch1.pilotprod2.eastus.batch.azure.com%2Fpools%2FBatchUser-testpool%2Fnodes%2Ftvmps_1d5ab483cc518efe1f0026d93b6172c0320c4b277c74fd5ba9b91ff26bb62e22_d%2Ffiles%2Fworkitems%2FBatchUser-Job-canReadFromNode%2Fjob-1%2Fmytask%2Fstdout.txt",
       "retry-after" : "0",
-      "request-id" : "37851732-ae33-4d38-801d-76c0f8463ceb",
+      "request-id" : "d33efa64-1734-45cd-a476-d8370101318c",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Mon, 12 Oct 2020 20:32:13 GMT",
+      "last-modified" : "Mon, 26 Jul 2021 18:12:15 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "cc2b305d-9ef9-462c-9be4-eb7f3e6f04cd",
+      "client-request-id" : "6b9d47ff-0cc4-48b5-858a-a0b5baf585bf",
       "content-type" : "text/plain",
       "dataserviceversion" : "3.0",
       "Body" : ""
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://batchsdktest.eastus.batch.azure.com/jobs/BatchUser-Job-canReadFromNode?api-version=2020-09-01.12.0",
+    "Uri" : "https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/jobs/BatchUser-Job-canReadFromNode?api-version=2021-06-01.14.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.15.7 MacAddressHash:e52147eea5b10208b8f9de54947ef0d8db9e76e0caec6a11c98b8f9f12de05e2 Java:1.8.0_144 (BatchServiceClient, 2020-09-01.12.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/11.4 MacAddressHash:f152d1cc9e30dca4e1c450c8d8e8d14d2fb7e2be9be344f7bcc6cef88fc4b4e3 Java:16.0.1 (BatchServiceClient, 2021-06-01.14.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Mon, 12 Oct 2020 20:32:22 GMT",
+      "date" : "Mon, 26 Jul 2021 18:12:26 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "02366739-bc32-4152-b202-f055dec23fc6",
+      "client-request-id" : "1fc92d2b-4d21-4638-8628-75eed163492f",
       "retry-after" : "0",
-      "request-id" : "195ddf98-0751-4282-9ddb-c1490f6cf0dd",
+      "request-id" : "e01d70f0-79b5-4401-8810-967385ca89c7",
       "StatusCode" : "202",
       "dataserviceversion" : "3.0",
       "Body" : "",

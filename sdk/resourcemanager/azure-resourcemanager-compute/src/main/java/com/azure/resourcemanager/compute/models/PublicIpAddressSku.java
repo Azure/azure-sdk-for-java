@@ -5,64 +5,60 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the public IP Sku. */
+/** Describes the public IP Sku. It can only be set with OrchestrationMode as Flexible. */
 @Fluent
 public final class PublicIpAddressSku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PublicIpAddressSku.class);
-
     /*
      * Specify public IP sku name
      */
-    @JsonProperty(value = "publicIPAddressSkuName", required = true)
-    private PublicIpAddressSkuName publicIpAddressSkuName;
+    @JsonProperty(value = "name")
+    private PublicIpAddressSkuName name;
 
     /*
      * Specify public IP sku tier
      */
-    @JsonProperty(value = "publicIPAddressSkuTier")
-    private PublicIpAddressSkuTier publicIpAddressSkuTier;
+    @JsonProperty(value = "tier")
+    private PublicIpAddressSkuTier tier;
 
     /**
-     * Get the publicIpAddressSkuName property: Specify public IP sku name.
+     * Get the name property: Specify public IP sku name.
      *
-     * @return the publicIpAddressSkuName value.
+     * @return the name value.
      */
-    public PublicIpAddressSkuName publicIpAddressSkuName() {
-        return this.publicIpAddressSkuName;
+    public PublicIpAddressSkuName name() {
+        return this.name;
     }
 
     /**
-     * Set the publicIpAddressSkuName property: Specify public IP sku name.
+     * Set the name property: Specify public IP sku name.
      *
-     * @param publicIpAddressSkuName the publicIpAddressSkuName value to set.
+     * @param name the name value to set.
      * @return the PublicIpAddressSku object itself.
      */
-    public PublicIpAddressSku withPublicIpAddressSkuName(PublicIpAddressSkuName publicIpAddressSkuName) {
-        this.publicIpAddressSkuName = publicIpAddressSkuName;
+    public PublicIpAddressSku withName(PublicIpAddressSkuName name) {
+        this.name = name;
         return this;
     }
 
     /**
-     * Get the publicIpAddressSkuTier property: Specify public IP sku tier.
+     * Get the tier property: Specify public IP sku tier.
      *
-     * @return the publicIpAddressSkuTier value.
+     * @return the tier value.
      */
-    public PublicIpAddressSkuTier publicIpAddressSkuTier() {
-        return this.publicIpAddressSkuTier;
+    public PublicIpAddressSkuTier tier() {
+        return this.tier;
     }
 
     /**
-     * Set the publicIpAddressSkuTier property: Specify public IP sku tier.
+     * Set the tier property: Specify public IP sku tier.
      *
-     * @param publicIpAddressSkuTier the publicIpAddressSkuTier value to set.
+     * @param tier the tier value to set.
      * @return the PublicIpAddressSku object itself.
      */
-    public PublicIpAddressSku withPublicIpAddressSkuTier(PublicIpAddressSkuTier publicIpAddressSkuTier) {
-        this.publicIpAddressSkuTier = publicIpAddressSkuTier;
+    public PublicIpAddressSku withTier(PublicIpAddressSkuTier tier) {
+        this.tier = tier;
         return this;
     }
 
@@ -72,11 +68,5 @@ public final class PublicIpAddressSku {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (publicIpAddressSkuName() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property publicIpAddressSkuName in model PublicIpAddressSku"));
-        }
     }
 }

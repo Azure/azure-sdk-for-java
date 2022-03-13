@@ -2,13 +2,13 @@
   <title type="text">Subscriptions</title>
   <id>feed-id</id>
   <updated>2020-06-30T11:41:32Z</updated>
-  <link rel="self" href="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=100"/>
-  <entry xml:base="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=100">
-    <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-0?api-version=2017-04</id>
+  <link rel="self" href="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2021-05&amp;enrich=false&amp;$skip=0&amp;$top=100"/>
+  <entry xml:base="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2021-05&amp;enrich=false&amp;$skip=0&amp;$top=100">
+    <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-0?api-version=2021-05</id>
     <title type="text">subscription-0</title>
     <published>2020-06-22T23:47:53Z</published>
     <updated>2020-06-23T23:47:53Z</updated>
-    <link rel="self" href="Subscriptions/subscription-0?api-version=2017-04"/>
+    <link rel="self" href="Subscriptions/subscription-0?api-version=2021-05"/>
     <content type="application/xml">
       <SubscriptionDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
       >
@@ -36,12 +36,12 @@
       </SubscriptionDescription>
     </content>
   </entry>
-  <entry xml:base="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=100">
-    <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-0?api-version=2017-04</id>
+  <entry xml:base="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2021-05&amp;enrich=false&amp;$skip=0&amp;$top=100">
+    <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-0?api-version=2021-05</id>
     <title type="text">subscription-session-0</title>
     <published>2020-06-22T23:47:53Z</published>
     <updated>2020-05-22T23:47:53Z</updated>
-    <link rel="self" href="Subscriptions/subscription-session-0?api-version=2017-04"/>
+    <link rel="self" href="Subscriptions/subscription-session-0?api-version=2021-05"/>
     <content type="application/xml">
       <SubscriptionDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
       >
@@ -69,12 +69,12 @@
       </SubscriptionDescription>
     </content>
   </entry>
-  <entry xml:base="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=100">
-    <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-1?api-version=2017-04</id>
+  <entry xml:base="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2021-05&amp;enrich=false&amp;$skip=0&amp;$top=100">
+    <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-1?api-version=2021-05</id>
     <title type="text">subscription-session-1</title>
     <published>2020-06-22T23:47:54Z</published>
     <updated>2020-04-22T23:47:54Z</updated>
-    <link rel="self" href="Subscriptions/subscription-session-1?api-version=2017-04"/>
+    <link rel="self" href="Subscriptions/subscription-session-1?api-version=2021-05"/>
     <content type="application/xml">
       <SubscriptionDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
       >
@@ -102,12 +102,12 @@
       </SubscriptionDescription>
     </content>
   </entry>
-  <entry xml:base="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=100">
-    <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-2?api-version=2017-04</id>
+  <entry xml:base="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2021-05&amp;enrich=false&amp;$skip=0&amp;$top=100">
+    <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-2?api-version=2021-05</id>
     <title type="text">subscription-session-2</title>
     <published>2020-06-22T23:47:53Z</published>
     <updated>2020-06-22T23:47:53Z</updated>
-    <link rel="self" href="Subscriptions/subscription-session-2?api-version=2017-04"/>
+    <link rel="self" href="Subscriptions/subscription-session-2?api-version=2021-05"/>
     <content type="application/xml">
       <SubscriptionDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
       >
@@ -135,12 +135,12 @@
       </SubscriptionDescription>
     </content>
   </entry>
-  <entry xml:base="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=100">
-    <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-3?api-version=2017-04</id>
+  <entry xml:base="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2021-05&amp;enrich=false&amp;$skip=0&amp;$top=100">
+    <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-3?api-version=2021-05</id>
     <title type="text">subscription-session-3</title>
     <published>2020-06-22T23:47:53Z</published>
     <updated>2020-06-22T23:47:53Z</updated>
-    <link rel="self" href="Subscriptions/subscription-session-3?api-version=2017-04"/>
+    <link rel="self" href="Subscriptions/subscription-session-3?api-version=2021-05"/>
     <content type="application/xml">
       <SubscriptionDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
       >
@@ -168,12 +168,12 @@
       </SubscriptionDescription>
     </content>
   </entry>
-  <entry xml:base="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=100">
-    <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-4?api-version=2017-04</id>
+  <entry xml:base="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2021-05&amp;enrich=false&amp;$skip=0&amp;$top=100">
+    <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-4?api-version=2021-05</id>
     <title type="text">subscription-session-4</title>
     <published>2020-06-22T23:47:53Z</published>
     <updated>2020-06-22T23:47:53Z</updated>
-    <link rel="self" href="Subscriptions/subscription-session-4?api-version=2017-04"/>
+    <link rel="self" href="Subscriptions/subscription-session-4?api-version=2021-05"/>
     <content type="application/xml">
       <SubscriptionDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
       >
@@ -201,12 +201,12 @@
       </SubscriptionDescription>
     </content>
   </entry>
-  <entry xml:base="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=100">
-    <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-5?api-version=2017-04</id>
+  <entry xml:base="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2021-05&amp;enrich=false&amp;$skip=0&amp;$top=100">
+    <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-5?api-version=2021-05</id>
     <title type="text">subscription-session-5</title>
     <published>2020-06-22T23:47:53Z</published>
     <updated>2020-06-22T23:47:53Z</updated>
-    <link rel="self" href="Subscriptions/subscription-session-5?api-version=2017-04"/>
+    <link rel="self" href="Subscriptions/subscription-session-5?api-version=2021-05"/>
     <content type="application/xml">
       <SubscriptionDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
       >
@@ -234,12 +234,12 @@
       </SubscriptionDescription>
     </content>
   </entry>
-  <entry xml:base="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=100">
-    <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-6?api-version=2017-04</id>
+  <entry xml:base="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2021-05&amp;enrich=false&amp;$skip=0&amp;$top=100">
+    <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-6?api-version=2021-05</id>
     <title type="text">subscription-session-6</title>
     <published>2020-06-22T23:47:53Z</published>
     <updated>2020-06-22T23:47:53Z</updated>
-    <link rel="self" href="Subscriptions/subscription-session-6?api-version=2017-04"/>
+    <link rel="self" href="Subscriptions/subscription-session-6?api-version=2021-05"/>
     <content type="application/xml">
       <SubscriptionDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
       >
@@ -267,12 +267,12 @@
       </SubscriptionDescription>
     </content>
   </entry>
-  <entry xml:base="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=100">
-    <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-7?api-version=2017-04</id>
+  <entry xml:base="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2021-05&amp;enrich=false&amp;$skip=0&amp;$top=100">
+    <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-7?api-version=2021-05</id>
     <title type="text">subscription-session-7</title>
     <published>2020-06-22T23:47:53Z</published>
     <updated>2020-06-22T23:47:53Z</updated>
-    <link rel="self" href="Subscriptions/subscription-session-7?api-version=2017-04"/>
+    <link rel="self" href="Subscriptions/subscription-session-7?api-version=2021-05"/>
     <content type="application/xml">
       <SubscriptionDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
       >
@@ -300,12 +300,12 @@
       </SubscriptionDescription>
     </content>
   </entry>
-  <entry xml:base="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=100">
-    <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-8?api-version=2017-04</id>
+  <entry xml:base="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2021-05&amp;enrich=false&amp;$skip=0&amp;$top=100">
+    <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-8?api-version=2021-05</id>
     <title type="text">subscription-session-8</title>
     <published>2020-06-22T23:47:53Z</published>
     <updated>2020-06-22T23:47:53Z</updated>
-    <link rel="self" href="Subscriptions/subscription-session-8?api-version=2017-04"/>
+    <link rel="self" href="Subscriptions/subscription-session-8?api-version=2021-05"/>
     <content type="application/xml">
       <SubscriptionDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
       >
@@ -333,12 +333,12 @@
       </SubscriptionDescription>
     </content>
   </entry>
-  <entry xml:base="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=100">
-    <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-9?api-version=2017-04</id>
+  <entry xml:base="https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2021-05&amp;enrich=false&amp;$skip=0&amp;$top=100">
+    <id>https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-9?api-version=2021-05</id>
     <title type="text">subscription-session-9</title>
     <published>2020-06-22T23:47:54Z</published>
     <updated>2020-06-22T23:47:54Z</updated>
-    <link rel="self" href="Subscriptions/subscription-session-9?api-version=2017-04"/>
+    <link rel="self" href="Subscriptions/subscription-session-9?api-version=2021-05"/>
     <content type="application/xml">
       <SubscriptionDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
       >

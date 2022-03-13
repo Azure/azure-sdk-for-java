@@ -8,12 +8,12 @@ import com.azure.ai.metricsadvisor.administration.models.AzureBlobDataFeedSource
 import com.azure.ai.metricsadvisor.administration.models.AzureDataExplorerDataFeedSource;
 import com.azure.ai.metricsadvisor.administration.models.AzureDataLakeStorageGen2DataFeedSource;
 import com.azure.ai.metricsadvisor.administration.models.DataFeed;
-import com.azure.ai.metricsadvisor.administration.models.DatasourceDataLakeGen2SharedKey;
-import com.azure.ai.metricsadvisor.administration.models.DatasourceAuthenticationType;
-import com.azure.ai.metricsadvisor.administration.models.DatasourceCredentialEntity;
-import com.azure.ai.metricsadvisor.administration.models.DatasourceServicePrincipal;
-import com.azure.ai.metricsadvisor.administration.models.DatasourceServicePrincipalInKeyVault;
-import com.azure.ai.metricsadvisor.administration.models.DatasourceSqlServerConnectionString;
+import com.azure.ai.metricsadvisor.administration.models.DataSourceDataLakeGen2SharedKey;
+import com.azure.ai.metricsadvisor.administration.models.DataSourceAuthenticationType;
+import com.azure.ai.metricsadvisor.administration.models.DataSourceCredentialEntity;
+import com.azure.ai.metricsadvisor.administration.models.DataSourceServicePrincipal;
+import com.azure.ai.metricsadvisor.administration.models.DataSourceServicePrincipalInKeyVault;
+import com.azure.ai.metricsadvisor.administration.models.DataSourceSqlServerConnectionString;
 import com.azure.ai.metricsadvisor.administration.models.SqlServerDataFeedSource;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.Assertions;
@@ -54,7 +54,7 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
             DataFeed createdDataFeed = client.createDataFeed(dataFeed);
             Assertions.assertTrue(createdDataFeed.getSource() instanceof SqlServerDataFeedSource);
             Assertions.assertNull(((SqlServerDataFeedSource) createdDataFeed.getSource()).getCredentialId());
-            Assertions.assertEquals(DatasourceAuthenticationType.BASIC,
+            Assertions.assertEquals(DataSourceAuthenticationType.BASIC,
                 ((SqlServerDataFeedSource) createdDataFeed.getSource()).getAuthenticationType());
             dataFeed = createdDataFeed;
 
@@ -66,7 +66,7 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
             DataFeed updatedDataFeed = client.updateDataFeed(dataFeed);
             Assertions.assertTrue(updatedDataFeed.getSource() instanceof SqlServerDataFeedSource);
             Assertions.assertNull(((SqlServerDataFeedSource) updatedDataFeed.getSource()).getCredentialId());
-            Assertions.assertEquals(DatasourceAuthenticationType.MANAGED_IDENTITY,
+            Assertions.assertEquals(DataSourceAuthenticationType.MANAGED_IDENTITY,
                 ((SqlServerDataFeedSource) updatedDataFeed.getSource()).getAuthenticationType());
             dataFeed = updatedDataFeed;
 
@@ -82,7 +82,7 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
             try {
                 client.deleteDataFeed(dataFeed.getId());
             } finally {
-                credIds.forEach(credentialId -> client.deleteDatasourceCredential(credentialId));
+                credIds.forEach(credentialId -> client.deleteDataSourceCredential(credentialId));
             }
         }
     }
@@ -90,11 +90,11 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
     private DataFeed sqlServerWithConnStringCred(MetricsAdvisorAdministrationClient client,
                                                  DataFeed dataFeed,
                                                  List<String> credIds) {
-        DatasourceSqlServerConnectionString sqlConStrCred = initDatasourceSqlServerConnectionString();
-        final DatasourceCredentialEntity createdCredential = client.createDatasourceCredential(sqlConStrCred);
-        Assertions.assertTrue(createdCredential instanceof DatasourceSqlServerConnectionString);
+        DataSourceSqlServerConnectionString sqlConStrCred = initDatasourceSqlServerConnectionString();
+        final DataSourceCredentialEntity createdCredential = client.createDataSourceCredential(sqlConStrCred);
+        Assertions.assertTrue(createdCredential instanceof DataSourceSqlServerConnectionString);
         credIds.add(createdCredential.getId());
-        sqlConStrCred = (DatasourceSqlServerConnectionString) createdCredential;
+        sqlConStrCred = (DataSourceSqlServerConnectionString) createdCredential;
 
         dataFeed.setSource(SqlServerDataFeedSource.fromConnectionStringCredential(
             TEMPLATE_QUERY,
@@ -108,11 +108,11 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
     private DataFeed sqlServerWithServicePrincipalCred(MetricsAdvisorAdministrationClient client,
                                                        DataFeed dataFeed,
                                                        List<String> credIds) {
-        DatasourceServicePrincipal servicePrincipalCred = initDatasourceServicePrincipal();
-        DatasourceCredentialEntity createdCredential = client.createDatasourceCredential(servicePrincipalCred);
-        Assertions.assertTrue(createdCredential instanceof DatasourceServicePrincipal);
+        DataSourceServicePrincipal servicePrincipalCred = initDatasourceServicePrincipal();
+        DataSourceCredentialEntity createdCredential = client.createDataSourceCredential(servicePrincipalCred);
+        Assertions.assertTrue(createdCredential instanceof DataSourceServicePrincipal);
         credIds.add(createdCredential.getId());
-        servicePrincipalCred = ((DatasourceServicePrincipal) createdCredential);
+        servicePrincipalCred = ((DataSourceServicePrincipal) createdCredential);
 
         dataFeed.setSource(SqlServerDataFeedSource.fromServicePrincipalCredential(
             SQL_SERVER_CONNECTION_STRING,
@@ -127,11 +127,11 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
     private DataFeed sqlServerWithServicePrincipalInKVCred(MetricsAdvisorAdministrationClient client,
                                                            DataFeed dataFeed,
                                                            List<String> credIds) {
-        DatasourceServicePrincipalInKeyVault servicePrincipalInKVCred = initDatasourceServicePrincipalInKeyVault();
-        DatasourceCredentialEntity createdCredential = client.createDatasourceCredential(servicePrincipalInKVCred);
-        Assertions.assertTrue(createdCredential instanceof DatasourceServicePrincipalInKeyVault);
+        DataSourceServicePrincipalInKeyVault servicePrincipalInKVCred = initDatasourceServicePrincipalInKeyVault();
+        DataSourceCredentialEntity createdCredential = client.createDataSourceCredential(servicePrincipalInKVCred);
+        Assertions.assertTrue(createdCredential instanceof DataSourceServicePrincipalInKeyVault);
         credIds.add(createdCredential.getId());
-        servicePrincipalInKVCred = (DatasourceServicePrincipalInKeyVault) createdCredential;
+        servicePrincipalInKVCred = (DataSourceServicePrincipalInKeyVault) createdCredential;
 
         dataFeed.setSource(SqlServerDataFeedSource.fromServicePrincipalInKeyVaultCredential(
             SQL_SERVER_CONNECTION_STRING,
@@ -166,7 +166,7 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
             Assertions.assertTrue(createdDataFeed.getSource() instanceof AzureDataLakeStorageGen2DataFeedSource);
             Assertions.assertNull(
                 ((AzureDataLakeStorageGen2DataFeedSource) createdDataFeed.getSource()).getCredentialId());
-            Assertions.assertEquals(DatasourceAuthenticationType.BASIC,
+            Assertions.assertEquals(DataSourceAuthenticationType.BASIC,
                 ((AzureDataLakeStorageGen2DataFeedSource) createdDataFeed.getSource()).getAuthenticationType());
             dataFeed = createdDataFeed;
 
@@ -183,7 +183,7 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
                 client.deleteDataFeed(dataFeed.getId());
             } finally {
                 credIds.forEach(credentialId ->
-                    client.deleteDatasourceCredential(credentialId));
+                    client.deleteDataSourceCredential(credentialId));
             }
         }
     }
@@ -191,11 +191,11 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
     private DataFeed dataLakeWithSharedKeyCred(MetricsAdvisorAdministrationClient client,
                                                DataFeed dataFeed,
                                                List<String> credIds) {
-        DatasourceDataLakeGen2SharedKey sharedKeyCred = initDataSourceDataLakeGen2SharedKey();
-        DatasourceCredentialEntity createdCredential = client.createDatasourceCredential(sharedKeyCred);
-        Assertions.assertTrue(createdCredential instanceof DatasourceDataLakeGen2SharedKey);
+        DataSourceDataLakeGen2SharedKey sharedKeyCred = initDataSourceDataLakeGen2SharedKey();
+        DataSourceCredentialEntity createdCredential = client.createDataSourceCredential(sharedKeyCred);
+        Assertions.assertTrue(createdCredential instanceof DataSourceDataLakeGen2SharedKey);
         credIds.add(createdCredential.getId());
-        sharedKeyCred = (DatasourceDataLakeGen2SharedKey) createdCredential;
+        sharedKeyCred = (DataSourceDataLakeGen2SharedKey) createdCredential;
 
         dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.fromSharedKeyCredential("adsampledatalakegen2",
             TEST_DB_NAME,
@@ -211,11 +211,11 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
     private DataFeed dataLakeWithServicePrincipalCred(MetricsAdvisorAdministrationClient client,
                                                       DataFeed dataFeed,
                                                       List<String> credIds) {
-        DatasourceServicePrincipal servicePrincipalCred = initDatasourceServicePrincipal();
-        DatasourceCredentialEntity createdCredential = client.createDatasourceCredential(servicePrincipalCred);
-        Assertions.assertTrue(createdCredential instanceof DatasourceServicePrincipal);
+        DataSourceServicePrincipal servicePrincipalCred = initDatasourceServicePrincipal();
+        DataSourceCredentialEntity createdCredential = client.createDataSourceCredential(servicePrincipalCred);
+        Assertions.assertTrue(createdCredential instanceof DataSourceServicePrincipal);
         credIds.add(createdCredential.getId());
-        servicePrincipalCred = (DatasourceServicePrincipal) createdCredential;
+        servicePrincipalCred = (DataSourceServicePrincipal) createdCredential;
 
         dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.fromServicePrincipalCredential(
             "adsampledatalakegen2",
@@ -232,11 +232,11 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
     private DataFeed dataLakeWithServicePrincipalInKVCred(MetricsAdvisorAdministrationClient client,
                                                           DataFeed dataFeed,
                                                           List<String> credIds) {
-        DatasourceServicePrincipalInKeyVault servicePrincipalInKVCred = initDatasourceServicePrincipalInKeyVault();
-        DatasourceCredentialEntity createdCredential = client.createDatasourceCredential(servicePrincipalInKVCred);
-        Assertions.assertTrue(createdCredential instanceof DatasourceServicePrincipalInKeyVault);
+        DataSourceServicePrincipalInKeyVault servicePrincipalInKVCred = initDatasourceServicePrincipalInKeyVault();
+        DataSourceCredentialEntity createdCredential = client.createDataSourceCredential(servicePrincipalInKVCred);
+        Assertions.assertTrue(createdCredential instanceof DataSourceServicePrincipalInKeyVault);
         credIds.add(createdCredential.getId());
-        servicePrincipalInKVCred = (DatasourceServicePrincipalInKeyVault) createdCredential;
+        servicePrincipalInKVCred = (DataSourceServicePrincipalInKeyVault) createdCredential;
 
         dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.fromServicePrincipalInKeyVaultCredential(
             "adsampledatalakegen2",
@@ -269,7 +269,7 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
             Assertions.assertTrue(createdDataFeed.getSource() instanceof AzureDataExplorerDataFeedSource);
             Assertions.assertNull(((AzureDataExplorerDataFeedSource) createdDataFeed.getSource())
                 .getCredentialId());
-            Assertions.assertEquals(DatasourceAuthenticationType.BASIC,
+            Assertions.assertEquals(DataSourceAuthenticationType.BASIC,
                 ((AzureDataExplorerDataFeedSource) createdDataFeed.getSource())
                     .getAuthenticationType());
             dataFeed = createdDataFeed;
@@ -285,7 +285,7 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
             Assertions.assertTrue(updatedDataFeed.getSource() instanceof AzureDataExplorerDataFeedSource);
             Assertions.assertNull(((AzureDataExplorerDataFeedSource) updatedDataFeed.getSource())
                 .getCredentialId());
-            Assertions.assertEquals(DatasourceAuthenticationType.MANAGED_IDENTITY,
+            Assertions.assertEquals(DataSourceAuthenticationType.MANAGED_IDENTITY,
                 ((AzureDataExplorerDataFeedSource) updatedDataFeed.getSource())
                     .getAuthenticationType());
             dataFeed = updatedDataFeed;
@@ -300,7 +300,7 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
             try {
                 client.deleteDataFeed(dataFeed.getId());
             } finally {
-                credIds.forEach(credentialId -> client.deleteDatasourceCredential(credentialId));
+                credIds.forEach(credentialId -> client.deleteDataSourceCredential(credentialId));
             }
         }
     }
@@ -308,13 +308,13 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
     private DataFeed dataExplorerWithServicePrincipalCred(MetricsAdvisorAdministrationClient client,
                                                           DataFeed dataFeed,
                                                           List<String> credIds) {
-        DatasourceServicePrincipal servicePrincipalCred = initDatasourceServicePrincipal();
+        DataSourceServicePrincipal servicePrincipalCred = initDatasourceServicePrincipal();
 
-        DatasourceCredentialEntity createdCredential = client.createDatasourceCredential(servicePrincipalCred);
+        DataSourceCredentialEntity createdCredential = client.createDataSourceCredential(servicePrincipalCred);
 
-        Assertions.assertTrue(createdCredential instanceof DatasourceServicePrincipal);
+        Assertions.assertTrue(createdCredential instanceof DataSourceServicePrincipal);
         credIds.add(createdCredential.getId());
-        servicePrincipalCred = (DatasourceServicePrincipal) createdCredential;
+        servicePrincipalCred = (DataSourceServicePrincipal) createdCredential;
 
         dataFeed.setSource(AzureDataExplorerDataFeedSource.fromServicePrincipalCredential(
             DATA_EXPLORER_CONNECTION_STRING,
@@ -329,11 +329,11 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
     private DataFeed dataExplorerWithServicePrincipalInKVCred(MetricsAdvisorAdministrationClient client,
                                                               DataFeed dataFeed,
                                                               List<String> credIds) {
-        DatasourceServicePrincipalInKeyVault servicePrincipalInKVCred = initDatasourceServicePrincipalInKeyVault();
-        DatasourceCredentialEntity createdCredential = client.createDatasourceCredential(servicePrincipalInKVCred);
-        Assertions.assertTrue(createdCredential instanceof DatasourceServicePrincipalInKeyVault);
+        DataSourceServicePrincipalInKeyVault servicePrincipalInKVCred = initDatasourceServicePrincipalInKeyVault();
+        DataSourceCredentialEntity createdCredential = client.createDataSourceCredential(servicePrincipalInKVCred);
+        Assertions.assertTrue(createdCredential instanceof DataSourceServicePrincipalInKeyVault);
         credIds.add(createdCredential.getId());
-        servicePrincipalInKVCred = (DatasourceServicePrincipalInKeyVault) createdCredential;
+        servicePrincipalInKVCred = (DataSourceServicePrincipalInKeyVault) createdCredential;
 
 
         dataFeed.setSource(AzureDataExplorerDataFeedSource.fromServicePrincipalInKeyVaultCredential(
@@ -361,7 +361,7 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
 
             DataFeed createdDataFeed = client.createDataFeed(dataFeed);
             Assertions.assertTrue(createdDataFeed.getSource() instanceof AzureBlobDataFeedSource);
-            Assertions.assertEquals(DatasourceAuthenticationType.BASIC,
+            Assertions.assertEquals(DataSourceAuthenticationType.BASIC,
                 ((AzureBlobDataFeedSource) createdDataFeed.getSource()).getAuthenticationType());
             dataFeed = createdDataFeed;
 
@@ -372,7 +372,7 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
 
             DataFeed updatedDataFeed = client.updateDataFeed(dataFeed);
             Assertions.assertTrue(updatedDataFeed.getSource() instanceof AzureBlobDataFeedSource);
-            Assertions.assertEquals(DatasourceAuthenticationType.MANAGED_IDENTITY,
+            Assertions.assertEquals(DataSourceAuthenticationType.MANAGED_IDENTITY,
                 ((AzureBlobDataFeedSource) updatedDataFeed.getSource()).getAuthenticationType());
             dataFeed = updatedDataFeed;
         } finally {

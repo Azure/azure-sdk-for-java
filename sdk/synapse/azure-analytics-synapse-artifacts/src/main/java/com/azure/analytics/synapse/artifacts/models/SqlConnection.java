@@ -18,14 +18,26 @@ public final class SqlConnection {
     /*
      * The type of the connection.
      */
-    @JsonProperty(value = "type", required = true)
+    @JsonProperty(value = "type")
     private SqlConnectionType type;
 
     /*
      * The identifier of the connection.
      */
-    @JsonProperty(value = "name", required = true)
+    @JsonProperty(value = "name")
     private String name;
+
+    /*
+     * The associated SQL pool name (supported by SQL pool v3)
+     */
+    @JsonProperty(value = "poolName")
+    private String poolName;
+
+    /*
+     * The associated database name (supported by SQL pool v3)
+     */
+    @JsonProperty(value = "databaseName")
+    private String databaseName;
 
     /*
      * The connection used to execute the SQL script.
@@ -69,6 +81,46 @@ public final class SqlConnection {
      */
     public SqlConnection setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the poolName property: The associated SQL pool name (supported by SQL pool v3).
+     *
+     * @return the poolName value.
+     */
+    public String getPoolName() {
+        return this.poolName;
+    }
+
+    /**
+     * Set the poolName property: The associated SQL pool name (supported by SQL pool v3).
+     *
+     * @param poolName the poolName value to set.
+     * @return the SqlConnection object itself.
+     */
+    public SqlConnection setPoolName(String poolName) {
+        this.poolName = poolName;
+        return this;
+    }
+
+    /**
+     * Get the databaseName property: The associated database name (supported by SQL pool v3).
+     *
+     * @return the databaseName value.
+     */
+    public String getDatabaseName() {
+        return this.databaseName;
+    }
+
+    /**
+     * Set the databaseName property: The associated database name (supported by SQL pool v3).
+     *
+     * @param databaseName the databaseName value to set.
+     * @return the SqlConnection object itself.
+     */
+    public SqlConnection setDatabaseName(String databaseName) {
+        this.databaseName = databaseName;
         return this;
     }
 

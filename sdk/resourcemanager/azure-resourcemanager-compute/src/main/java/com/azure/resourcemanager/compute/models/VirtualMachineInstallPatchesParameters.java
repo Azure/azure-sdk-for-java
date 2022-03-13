@@ -6,19 +6,16 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Input for InstallPatches as directly received by the API. */
 @Fluent
 public final class VirtualMachineInstallPatchesParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineInstallPatchesParameters.class);
-
     /*
      * Specifies the maximum amount of time that the operation will run. It
      * must be an ISO 8601-compliant duration string such as PT4H (4 hours)
      */
-    @JsonProperty(value = "maximumDuration", required = true)
+    @JsonProperty(value = "maximumDuration")
     private String maximumDuration;
 
     /*
@@ -129,14 +126,8 @@ public final class VirtualMachineInstallPatchesParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (maximumDuration() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property maximumDuration in model VirtualMachineInstallPatchesParameters"));
-        }
         if (rebootSetting() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property rebootSetting in model VirtualMachineInstallPatchesParameters"));
@@ -148,4 +139,6 @@ public final class VirtualMachineInstallPatchesParameters {
             linuxParameters().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineInstallPatchesParameters.class);
 }

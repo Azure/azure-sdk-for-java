@@ -11,17 +11,15 @@ import com.azure.messaging.eventhubs.models.PartitionEvent;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Receives a single set of events then stops. {@link EventHubsOptions#getCount()} represents the batch size to
+ * Receives a single set of events then stops. {@link EventHubsReceiveOptions#getCount()} represents the batch size to
  * receive.
  */
 public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
     private EventHubConsumerClient receiver;
     private EventHubConsumerAsyncClient receiverAsync;
-    private final int totalMessagesToSend;
 
     /**
      * Creates an instance of performance test.
@@ -30,28 +28,35 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
      */
     public ReceiveEventsTest(EventHubsReceiveOptions options) {
         super(options);
-        this.totalMessagesToSend = options.getCount() * 2;
     }
 
     @Override
     public Mono<Void> globalSetupAsync() {
         return Mono.using(
             () -> createEventHubClientBuilder().buildAsyncProducerClient(),
-            client -> sendMessages(client, options.getPartitionId(), totalMessagesToSend),
+            client -> sendMessages(client, options.getPartitionId(), options.getCount()),
             client -> client.close());
     }
 
     @Override
-    public void run() {
-        Objects.requireNonNull(options.getConsumerGroup(), "'getConsumerGroup' requires a value.");
-        Objects.requireNonNull(options.getPartitionId(), "'getPartitionId' requires a value.");
-
-        if (receiver == null) {
+    public Mono<Void> setupAsync() {
+        if (options.isSync()) {
             receiver = createEventHubClientBuilder()
+                .prefetchCount(options.getPrefetch())
                 .consumerGroup(options.getConsumerGroup())
                 .buildConsumerClient();
+        } else {
+            receiverAsync = createEventHubClientBuilder()
+                .prefetchCount(options.getPrefetch())
+                .consumerGroup(options.getConsumerGroup())
+                .buildAsyncConsumerClient();
         }
 
+        return Mono.empty();
+    }
+
+    @Override
+    public void run() {
         final IterableStream<PartitionEvent> partitionEvents = receiver.receiveFromPartition(
             options.getPartitionId(), options.getCount(), EventPosition.earliest());
 
@@ -69,15 +74,6 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        Objects.requireNonNull(options.getConsumerGroup(), "'getConsumerGroup' requires a value.");
-        Objects.requireNonNull(options.getPartitionId(), "'getPartitionId' requires a value.");
-
-        if (receiverAsync == null) {
-            receiverAsync = createEventHubClientBuilder()
-                .consumerGroup(options.getConsumerGroup())
-                .buildAsyncConsumerClient();
-        }
-
         return receiverAsync.receiveFromPartition(options.getPartitionId(), EventPosition.earliest())
             .take(options.getCount())
             .then();
@@ -88,6 +84,7 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
         if (receiver != null) {
             receiver.close();
         }
+
         if (receiverAsync != null) {
             receiverAsync.close();
         }

@@ -5,7 +5,9 @@ package com.azure.spring.autoconfigure.storage.resource;
 
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +20,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.InputStream;
 import java.net.URL;
+import org.springframework.util.StringUtils;
 
 /**
  * Implements {@link WritableResource} for reading and writing objects in Azure
@@ -36,17 +39,44 @@ public class BlobStorageResource extends AzureStorageResource {
     private final BlobContainerClient blobContainerClient;
     private final BlockBlobClient blockBlobClient;
     private final boolean autoCreateFiles;
+    private final String contentType;
 
-    BlobStorageResource(BlobServiceClient blobServiceClient, String location) {
+    /**
+     * Creates a new instance of {@link BlobStorageResource}.
+     *
+     * @param blobServiceClient the BlobServiceClient
+     * @param location the location
+     */
+    public BlobStorageResource(BlobServiceClient blobServiceClient, String location) {
         this(blobServiceClient, location, false);
     }
 
-    BlobStorageResource(BlobServiceClient blobServiceClient, String location, boolean autoCreateFiles) {
+    /**
+     * Creates a new instance of {@link BlobStorageResource}.
+     *
+     * @param blobServiceClient the BlobServiceClient
+     * @param location the location
+     * @param autoCreateFiles whether to automatically create files
+     */
+    public BlobStorageResource(BlobServiceClient blobServiceClient, String location, Boolean autoCreateFiles) {
+        this(blobServiceClient, location, autoCreateFiles, null);
+    }
+
+    /**
+     * Creates a new instance of {@link BlobStorageResource}.
+     *
+     * @param blobServiceClient the BlobServiceClient
+     * @param location the location
+     * @param autoCreateFiles whether to automatically create files
+     * @param contentType the content type
+     */
+    public BlobStorageResource(BlobServiceClient blobServiceClient, String location, Boolean autoCreateFiles,
+                               String contentType) {
         assertIsAzureStorageLocation(location);
-        this.autoCreateFiles = autoCreateFiles;
+        this.autoCreateFiles = autoCreateFiles != null && autoCreateFiles;
         this.blobServiceClient = blobServiceClient;
         this.location = location;
-
+        this.contentType = StringUtils.hasText(contentType) ? contentType : getContentType(location);
         this.blobContainerClient = blobServiceClient.getBlobContainerClient(getContainerName(location));
         this.blockBlobClient = blobContainerClient.getBlobClient(getFilename(location)).getBlockBlobClient();
     }
@@ -61,7 +91,13 @@ public class BlobStorageResource extends AzureStorageResource {
                     throw new FileNotFoundException("The blob was not found: " + this.location);
                 }
             }
-            return this.blockBlobClient.getBlobOutputStream(true);
+            BlockBlobOutputStreamOptions options = new BlockBlobOutputStreamOptions();
+            if (StringUtils.hasText(contentType)) {
+                BlobHttpHeaders blobHttpHeaders = new BlobHttpHeaders();
+                blobHttpHeaders.setContentType(contentType);
+                options.setHeaders(blobHttpHeaders);
+            }
+            return this.blockBlobClient.getBlobOutputStream(options);
         } catch (BlobStorageException e) {
             LOG.error(MSG_FAIL_OPEN_OUTPUT, e);
             throw new IOException(MSG_FAIL_OPEN_OUTPUT, e);
@@ -106,8 +142,14 @@ public class BlobStorageResource extends AzureStorageResource {
 
     @Override
     public String getDescription() {
-        return String.format("Azure storage account blob resource [container='%s', blob='%s']",
-            this.blockBlobClient.getContainerName(), this.blockBlobClient.getBlobName());
+        StringBuilder sb = new StringBuilder();
+        sb.append("Azure storage account blob resource [container='")
+            .append(this.blockBlobClient.getContainerName())
+            .append("', blob='")
+            .append(blockBlobClient.getBlobName())
+            .append("'");
+        sb.append("]");
+        return sb.toString();
     }
 
     @Override
@@ -134,8 +176,9 @@ public class BlobStorageResource extends AzureStorageResource {
 
     private void create() {
         if (!this.blobContainerClient.exists()) {
+            LOG.debug("Blob container {} doesn't exist, now creating it",
+                blobContainerClient.getBlobContainerName());
             this.blobContainerClient.create();
         }
     }
-
 }

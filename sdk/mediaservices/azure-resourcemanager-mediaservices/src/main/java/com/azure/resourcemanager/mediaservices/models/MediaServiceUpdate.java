@@ -61,6 +61,13 @@ public class MediaServiceUpdate {
     @JsonProperty(value = "properties.keyDelivery")
     private KeyDelivery keyDelivery;
 
+    /*
+     * Whether or not public network access is allowed for resources under the
+     * Media Services account.
+     */
+    @JsonProperty(value = "properties.publicNetworkAccess")
+    private PublicNetworkAccess publicNetworkAccess;
+
     /**
      * Get the tags property: Resource tags.
      *
@@ -187,6 +194,28 @@ public class MediaServiceUpdate {
      */
     public MediaServiceUpdate withKeyDelivery(KeyDelivery keyDelivery) {
         this.keyDelivery = keyDelivery;
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Whether or not public network access is allowed for resources under the
+     * Media Services account.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Whether or not public network access is allowed for resources under the
+     * Media Services account.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the MediaServiceUpdate object itself.
+     */
+    public MediaServiceUpdate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
         return this;
     }
 

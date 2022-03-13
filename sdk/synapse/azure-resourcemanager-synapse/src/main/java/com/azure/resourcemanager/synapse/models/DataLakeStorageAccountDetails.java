@@ -26,6 +26,18 @@ public final class DataLakeStorageAccountDetails {
     @JsonProperty(value = "filesystem")
     private String filesystem;
 
+    /*
+     * ARM resource Id of this storage account
+     */
+    @JsonProperty(value = "resourceId")
+    private String resourceId;
+
+    /*
+     * Create managed private endpoint to this storage account or not
+     */
+    @JsonProperty(value = "createManagedPrivateEndpoint")
+    private Boolean createManagedPrivateEndpoint;
+
     /**
      * Get the accountUrl property: Account URL.
      *
@@ -63,6 +75,46 @@ public final class DataLakeStorageAccountDetails {
      */
     public DataLakeStorageAccountDetails withFilesystem(String filesystem) {
         this.filesystem = filesystem;
+        return this;
+    }
+
+    /**
+     * Get the resourceId property: ARM resource Id of this storage account.
+     *
+     * @return the resourceId value.
+     */
+    public String resourceId() {
+        return this.resourceId;
+    }
+
+    /**
+     * Set the resourceId property: ARM resource Id of this storage account.
+     *
+     * @param resourceId the resourceId value to set.
+     * @return the DataLakeStorageAccountDetails object itself.
+     */
+    public DataLakeStorageAccountDetails withResourceId(String resourceId) {
+        this.resourceId = resourceId;
+        return this;
+    }
+
+    /**
+     * Get the createManagedPrivateEndpoint property: Create managed private endpoint to this storage account or not.
+     *
+     * @return the createManagedPrivateEndpoint value.
+     */
+    public Boolean createManagedPrivateEndpoint() {
+        return this.createManagedPrivateEndpoint;
+    }
+
+    /**
+     * Set the createManagedPrivateEndpoint property: Create managed private endpoint to this storage account or not.
+     *
+     * @param createManagedPrivateEndpoint the createManagedPrivateEndpoint value to set.
+     * @return the DataLakeStorageAccountDetails object itself.
+     */
+    public DataLakeStorageAccountDetails withCreateManagedPrivateEndpoint(Boolean createManagedPrivateEndpoint) {
+        this.createManagedPrivateEndpoint = createManagedPrivateEndpoint;
         return this;
     }
 

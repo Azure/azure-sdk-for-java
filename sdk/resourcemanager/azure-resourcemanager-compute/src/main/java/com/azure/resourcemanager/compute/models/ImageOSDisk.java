@@ -7,14 +7,11 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes an Operating System disk. */
 @Fluent
 public final class ImageOSDisk extends ImageDisk {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageOSDisk.class);
-
     /*
      * This property allows you to specify the type of the OS that is included
      * in the disk if creating a VM from a custom image. <br><br> Possible
@@ -131,14 +128,16 @@ public final class ImageOSDisk extends ImageDisk {
     public void validate() {
         super.validate();
         if (osType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property osType in model ImageOSDisk"));
         }
         if (osState() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property osState in model ImageOSDisk"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ImageOSDisk.class);
 }

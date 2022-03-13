@@ -44,7 +44,7 @@ public final class ManageVirtualMachineFromMSIEnabledVirtualMachine {
         final boolean cleanupResource = args.length <= 3 || Boolean.getBoolean(args[3]);
         final String linuxVMName = "yourVirtualMachineName";
         final String userName = "tirekicker";
-        final String password = Utils.password();
+        final String sshPublicKey = Utils.sshPublicKey();
 
         //=============================================================
         // ManagedIdentityCredential Authenticate
@@ -77,7 +77,7 @@ public final class ManageVirtualMachineFromMSIEnabledVirtualMachine {
             .withoutPrimaryPublicIPAddress()
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
             .withRootUsername(userName)
-            .withRootPassword(password)
+            .withSsh(sshPublicKey)
             .create();
 
         System.out.println("Created virtual machine using ManagedIdentityCredential.");

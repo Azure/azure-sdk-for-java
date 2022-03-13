@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Recipient Email details. */
-@JsonFlatten
 @Fluent
-public class RecipientEmailContractInner extends ProxyResource {
+public final class RecipientEmailContractInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RecipientEmailContractInner.class);
 
     /*
-     * User Email subscribed to notification.
+     * Recipient Email contract properties.
      */
-    @JsonProperty(value = "properties.email")
-    private String email;
+    @JsonProperty(value = "properties")
+    private RecipientEmailContractProperties innerProperties;
+
+    /**
+     * Get the innerProperties property: Recipient Email contract properties.
+     *
+     * @return the innerProperties value.
+     */
+    private RecipientEmailContractProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the email property: User Email subscribed to notification.
@@ -29,7 +36,7 @@ public class RecipientEmailContractInner extends ProxyResource {
      * @return the email value.
      */
     public String email() {
-        return this.email;
+        return this.innerProperties() == null ? null : this.innerProperties().email();
     }
 
     /**
@@ -39,7 +46,10 @@ public class RecipientEmailContractInner extends ProxyResource {
      * @return the RecipientEmailContractInner object itself.
      */
     public RecipientEmailContractInner withEmail(String email) {
-        this.email = email;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecipientEmailContractProperties();
+        }
+        this.innerProperties().withEmail(email);
         return this;
     }
 
@@ -49,5 +59,8 @@ public class RecipientEmailContractInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

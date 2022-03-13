@@ -54,6 +54,10 @@ public final class Region {
      */
     public static final Region US_WEST_CENTRAL = new Region("westcentralus", "West Central US");
     /**
+     * West US 3 (US) (recommended)
+     */
+    public static final Region US_WEST3 = new Region("westus3", "West US 3");
+    /**
      * Canada Central (Canada) (recommended)
      */
     public static final Region CANADA_CENTRAL = new Region("canadacentral", "Canada Central");
@@ -100,6 +104,10 @@ public final class Region {
      * Switzerland North (Europe) (recommended)
      */
     public static final Region SWITZERLAND_NORTH = new Region("switzerlandnorth", "Switzerland North");
+    /**
+     * Sweden Central (Europe) (recommended)
+     */
+    public static final Region SWEDEN_CENTRAL = new Region("swedencentral", "Sweden Central");
     /**
      * France South (Europe)
      */

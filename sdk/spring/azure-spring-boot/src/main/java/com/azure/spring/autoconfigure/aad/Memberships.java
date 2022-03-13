@@ -21,6 +21,12 @@ public class Memberships {
     private final String odataNextLink;
     private final List<Membership> value;
 
+    /**
+     * Creates a new instance of {@link Memberships}/
+     *
+     * @param odataNextLink the OData next link
+     * @param value the list of memberships
+     */
     @JsonCreator
     public Memberships(
         @JsonAlias("odata.nextLink")
@@ -30,10 +36,20 @@ public class Memberships {
         this.value = value;
     }
 
+    /**
+     * Gets the OData next link.
+     *
+     * @return the OData next link
+     */
     public String getOdataNextLink() {
         return odataNextLink;
     }
 
+    /**
+     * Gets the list of memberships.
+     *
+     * @return the list of memberships
+     */
     public List<Membership> getValue() {
         return value;
     }

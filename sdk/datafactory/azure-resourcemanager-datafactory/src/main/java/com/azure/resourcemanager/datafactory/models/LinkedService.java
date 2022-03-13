@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -33,6 +34,7 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "AzureTableStorage", value = AzureTableStorageLinkedService.class),
     @JsonSubTypes.Type(name = "AzureSqlDW", value = AzureSqlDWLinkedService.class),
     @JsonSubTypes.Type(name = "SqlServer", value = SqlServerLinkedService.class),
+    @JsonSubTypes.Type(name = "AmazonRdsForSqlServer", value = AmazonRdsForSqlServerLinkedService.class),
     @JsonSubTypes.Type(name = "AzureSqlDatabase", value = AzureSqlDatabaseLinkedService.class),
     @JsonSubTypes.Type(name = "AzureSqlMI", value = AzureSqlMILinkedService.class),
     @JsonSubTypes.Type(name = "AzureBatch", value = AzureBatchLinkedService.class),
@@ -48,6 +50,7 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "OracleCloudStorage", value = OracleCloudStorageLinkedService.class),
     @JsonSubTypes.Type(name = "GoogleCloudStorage", value = GoogleCloudStorageLinkedService.class),
     @JsonSubTypes.Type(name = "Oracle", value = OracleLinkedService.class),
+    @JsonSubTypes.Type(name = "AmazonRdsForOracle", value = AmazonRdsForOracleLinkedService.class),
     @JsonSubTypes.Type(name = "AzureMySql", value = AzureMySqlLinkedService.class),
     @JsonSubTypes.Type(name = "MySql", value = MySqlLinkedService.class),
     @JsonSubTypes.Type(name = "PostgreSql", value = PostgreSqlLinkedService.class),
@@ -77,6 +80,10 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "SapOpenHub", value = SapOpenHubLinkedService.class),
     @JsonSubTypes.Type(name = "RestService", value = RestServiceLinkedService.class),
     @JsonSubTypes.Type(name = "AmazonS3", value = AmazonS3LinkedService.class),
+    @JsonSubTypes.Type(name = "TeamDesk", value = TeamDeskLinkedService.class),
+    @JsonSubTypes.Type(name = "Quickbase", value = QuickbaseLinkedService.class),
+    @JsonSubTypes.Type(name = "Smartsheet", value = SmartsheetLinkedService.class),
+    @JsonSubTypes.Type(name = "Zendesk", value = ZendeskLinkedService.class),
     @JsonSubTypes.Type(name = "AmazonRedshift", value = AmazonRedshiftLinkedService.class),
     @JsonSubTypes.Type(name = "CustomDataSource", value = CustomDataSourceLinkedService.class),
     @JsonSubTypes.Type(name = "AzureSearch", value = AzureSearchLinkedService.class),
@@ -149,6 +156,7 @@ public class LinkedService {
      * Parameters for linked service.
      */
     @JsonProperty(value = "parameters")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ParameterSpecification> parameters;
 
     /*

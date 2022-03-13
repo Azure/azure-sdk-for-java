@@ -3,7 +3,10 @@
 
 package com.azure.core.test.implementation;
 
-public class TestRunMetrics {
+/**
+ * Model class containing the metrics about a test run.
+ */
+public final class TestRunMetrics {
     private final String logPrefix;
     private final long startMillis;
 

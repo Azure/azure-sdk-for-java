@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ConnectionMonitorDestination;
@@ -23,9 +22,8 @@ import java.util.List;
 import java.util.Map;
 
 /** Information about the connection monitor. */
-@JsonFlatten
 @Fluent
-public class ConnectionMonitorResultInner extends Resource {
+public final class ConnectionMonitorResultInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorResultInner.class);
 
     /*
@@ -35,83 +33,10 @@ public class ConnectionMonitorResultInner extends Resource {
     private String etag;
 
     /*
-     * Describes the source of connection monitor.
+     * Properties of the connection monitor result.
      */
-    @JsonProperty(value = "properties.source")
-    private ConnectionMonitorSource source;
-
-    /*
-     * Describes the destination of connection monitor.
-     */
-    @JsonProperty(value = "properties.destination")
-    private ConnectionMonitorDestination destination;
-
-    /*
-     * Determines if the connection monitor will start automatically once
-     * created.
-     */
-    @JsonProperty(value = "properties.autoStart")
-    private Boolean autoStart;
-
-    /*
-     * Monitoring interval in seconds.
-     */
-    @JsonProperty(value = "properties.monitoringIntervalInSeconds")
-    private Integer monitoringIntervalInSeconds;
-
-    /*
-     * List of connection monitor endpoints.
-     */
-    @JsonProperty(value = "properties.endpoints")
-    private List<ConnectionMonitorEndpoint> endpoints;
-
-    /*
-     * List of connection monitor test configurations.
-     */
-    @JsonProperty(value = "properties.testConfigurations")
-    private List<ConnectionMonitorTestConfiguration> testConfigurations;
-
-    /*
-     * List of connection monitor test groups.
-     */
-    @JsonProperty(value = "properties.testGroups")
-    private List<ConnectionMonitorTestGroup> testGroups;
-
-    /*
-     * List of connection monitor outputs.
-     */
-    @JsonProperty(value = "properties.outputs")
-    private List<ConnectionMonitorOutput> outputs;
-
-    /*
-     * Optional notes to be associated with the connection monitor.
-     */
-    @JsonProperty(value = "properties.notes")
-    private String notes;
-
-    /*
-     * The provisioning state of the connection monitor.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The date and time when the connection monitor was started.
-     */
-    @JsonProperty(value = "properties.startTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime startTime;
-
-    /*
-     * The monitoring status of the connection monitor.
-     */
-    @JsonProperty(value = "properties.monitoringStatus", access = JsonProperty.Access.WRITE_ONLY)
-    private String monitoringStatus;
-
-    /*
-     * Type of connection monitor.
-     */
-    @JsonProperty(value = "properties.connectionMonitorType", access = JsonProperty.Access.WRITE_ONLY)
-    private ConnectionMonitorType connectionMonitorType;
+    @JsonProperty(value = "properties")
+    private ConnectionMonitorResultProperties innerProperties;
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
@@ -123,220 +48,12 @@ public class ConnectionMonitorResultInner extends Resource {
     }
 
     /**
-     * Get the source property: Describes the source of connection monitor.
+     * Get the innerProperties property: Properties of the connection monitor result.
      *
-     * @return the source value.
+     * @return the innerProperties value.
      */
-    public ConnectionMonitorSource source() {
-        return this.source;
-    }
-
-    /**
-     * Set the source property: Describes the source of connection monitor.
-     *
-     * @param source the source value to set.
-     * @return the ConnectionMonitorResultInner object itself.
-     */
-    public ConnectionMonitorResultInner withSource(ConnectionMonitorSource source) {
-        this.source = source;
-        return this;
-    }
-
-    /**
-     * Get the destination property: Describes the destination of connection monitor.
-     *
-     * @return the destination value.
-     */
-    public ConnectionMonitorDestination destination() {
-        return this.destination;
-    }
-
-    /**
-     * Set the destination property: Describes the destination of connection monitor.
-     *
-     * @param destination the destination value to set.
-     * @return the ConnectionMonitorResultInner object itself.
-     */
-    public ConnectionMonitorResultInner withDestination(ConnectionMonitorDestination destination) {
-        this.destination = destination;
-        return this;
-    }
-
-    /**
-     * Get the autoStart property: Determines if the connection monitor will start automatically once created.
-     *
-     * @return the autoStart value.
-     */
-    public Boolean autoStart() {
-        return this.autoStart;
-    }
-
-    /**
-     * Set the autoStart property: Determines if the connection monitor will start automatically once created.
-     *
-     * @param autoStart the autoStart value to set.
-     * @return the ConnectionMonitorResultInner object itself.
-     */
-    public ConnectionMonitorResultInner withAutoStart(Boolean autoStart) {
-        this.autoStart = autoStart;
-        return this;
-    }
-
-    /**
-     * Get the monitoringIntervalInSeconds property: Monitoring interval in seconds.
-     *
-     * @return the monitoringIntervalInSeconds value.
-     */
-    public Integer monitoringIntervalInSeconds() {
-        return this.monitoringIntervalInSeconds;
-    }
-
-    /**
-     * Set the monitoringIntervalInSeconds property: Monitoring interval in seconds.
-     *
-     * @param monitoringIntervalInSeconds the monitoringIntervalInSeconds value to set.
-     * @return the ConnectionMonitorResultInner object itself.
-     */
-    public ConnectionMonitorResultInner withMonitoringIntervalInSeconds(Integer monitoringIntervalInSeconds) {
-        this.monitoringIntervalInSeconds = monitoringIntervalInSeconds;
-        return this;
-    }
-
-    /**
-     * Get the endpoints property: List of connection monitor endpoints.
-     *
-     * @return the endpoints value.
-     */
-    public List<ConnectionMonitorEndpoint> endpoints() {
-        return this.endpoints;
-    }
-
-    /**
-     * Set the endpoints property: List of connection monitor endpoints.
-     *
-     * @param endpoints the endpoints value to set.
-     * @return the ConnectionMonitorResultInner object itself.
-     */
-    public ConnectionMonitorResultInner withEndpoints(List<ConnectionMonitorEndpoint> endpoints) {
-        this.endpoints = endpoints;
-        return this;
-    }
-
-    /**
-     * Get the testConfigurations property: List of connection monitor test configurations.
-     *
-     * @return the testConfigurations value.
-     */
-    public List<ConnectionMonitorTestConfiguration> testConfigurations() {
-        return this.testConfigurations;
-    }
-
-    /**
-     * Set the testConfigurations property: List of connection monitor test configurations.
-     *
-     * @param testConfigurations the testConfigurations value to set.
-     * @return the ConnectionMonitorResultInner object itself.
-     */
-    public ConnectionMonitorResultInner withTestConfigurations(
-        List<ConnectionMonitorTestConfiguration> testConfigurations) {
-        this.testConfigurations = testConfigurations;
-        return this;
-    }
-
-    /**
-     * Get the testGroups property: List of connection monitor test groups.
-     *
-     * @return the testGroups value.
-     */
-    public List<ConnectionMonitorTestGroup> testGroups() {
-        return this.testGroups;
-    }
-
-    /**
-     * Set the testGroups property: List of connection monitor test groups.
-     *
-     * @param testGroups the testGroups value to set.
-     * @return the ConnectionMonitorResultInner object itself.
-     */
-    public ConnectionMonitorResultInner withTestGroups(List<ConnectionMonitorTestGroup> testGroups) {
-        this.testGroups = testGroups;
-        return this;
-    }
-
-    /**
-     * Get the outputs property: List of connection monitor outputs.
-     *
-     * @return the outputs value.
-     */
-    public List<ConnectionMonitorOutput> outputs() {
-        return this.outputs;
-    }
-
-    /**
-     * Set the outputs property: List of connection monitor outputs.
-     *
-     * @param outputs the outputs value to set.
-     * @return the ConnectionMonitorResultInner object itself.
-     */
-    public ConnectionMonitorResultInner withOutputs(List<ConnectionMonitorOutput> outputs) {
-        this.outputs = outputs;
-        return this;
-    }
-
-    /**
-     * Get the notes property: Optional notes to be associated with the connection monitor.
-     *
-     * @return the notes value.
-     */
-    public String notes() {
-        return this.notes;
-    }
-
-    /**
-     * Set the notes property: Optional notes to be associated with the connection monitor.
-     *
-     * @param notes the notes value to set.
-     * @return the ConnectionMonitorResultInner object itself.
-     */
-    public ConnectionMonitorResultInner withNotes(String notes) {
-        this.notes = notes;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the connection monitor.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the startTime property: The date and time when the connection monitor was started.
-     *
-     * @return the startTime value.
-     */
-    public OffsetDateTime startTime() {
-        return this.startTime;
-    }
-
-    /**
-     * Get the monitoringStatus property: The monitoring status of the connection monitor.
-     *
-     * @return the monitoringStatus value.
-     */
-    public String monitoringStatus() {
-        return this.monitoringStatus;
-    }
-
-    /**
-     * Get the connectionMonitorType property: Type of connection monitor.
-     *
-     * @return the connectionMonitorType value.
-     */
-    public ConnectionMonitorType connectionMonitorType() {
-        return this.connectionMonitorType;
+    private ConnectionMonitorResultProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -354,28 +71,257 @@ public class ConnectionMonitorResultInner extends Resource {
     }
 
     /**
+     * Get the provisioningState property: The provisioning state of the connection monitor.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the startTime property: The date and time when the connection monitor was started.
+     *
+     * @return the startTime value.
+     */
+    public OffsetDateTime startTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().startTime();
+    }
+
+    /**
+     * Get the monitoringStatus property: The monitoring status of the connection monitor.
+     *
+     * @return the monitoringStatus value.
+     */
+    public String monitoringStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().monitoringStatus();
+    }
+
+    /**
+     * Get the connectionMonitorType property: Type of connection monitor.
+     *
+     * @return the connectionMonitorType value.
+     */
+    public ConnectionMonitorType connectionMonitorType() {
+        return this.innerProperties() == null ? null : this.innerProperties().connectionMonitorType();
+    }
+
+    /**
+     * Get the source property: Describes the source of connection monitor.
+     *
+     * @return the source value.
+     */
+    public ConnectionMonitorSource source() {
+        return this.innerProperties() == null ? null : this.innerProperties().source();
+    }
+
+    /**
+     * Set the source property: Describes the source of connection monitor.
+     *
+     * @param source the source value to set.
+     * @return the ConnectionMonitorResultInner object itself.
+     */
+    public ConnectionMonitorResultInner withSource(ConnectionMonitorSource source) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionMonitorResultProperties();
+        }
+        this.innerProperties().withSource(source);
+        return this;
+    }
+
+    /**
+     * Get the destination property: Describes the destination of connection monitor.
+     *
+     * @return the destination value.
+     */
+    public ConnectionMonitorDestination destination() {
+        return this.innerProperties() == null ? null : this.innerProperties().destination();
+    }
+
+    /**
+     * Set the destination property: Describes the destination of connection monitor.
+     *
+     * @param destination the destination value to set.
+     * @return the ConnectionMonitorResultInner object itself.
+     */
+    public ConnectionMonitorResultInner withDestination(ConnectionMonitorDestination destination) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionMonitorResultProperties();
+        }
+        this.innerProperties().withDestination(destination);
+        return this;
+    }
+
+    /**
+     * Get the autoStart property: Determines if the connection monitor will start automatically once created.
+     *
+     * @return the autoStart value.
+     */
+    public Boolean autoStart() {
+        return this.innerProperties() == null ? null : this.innerProperties().autoStart();
+    }
+
+    /**
+     * Set the autoStart property: Determines if the connection monitor will start automatically once created.
+     *
+     * @param autoStart the autoStart value to set.
+     * @return the ConnectionMonitorResultInner object itself.
+     */
+    public ConnectionMonitorResultInner withAutoStart(Boolean autoStart) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionMonitorResultProperties();
+        }
+        this.innerProperties().withAutoStart(autoStart);
+        return this;
+    }
+
+    /**
+     * Get the monitoringIntervalInSeconds property: Monitoring interval in seconds.
+     *
+     * @return the monitoringIntervalInSeconds value.
+     */
+    public Integer monitoringIntervalInSeconds() {
+        return this.innerProperties() == null ? null : this.innerProperties().monitoringIntervalInSeconds();
+    }
+
+    /**
+     * Set the monitoringIntervalInSeconds property: Monitoring interval in seconds.
+     *
+     * @param monitoringIntervalInSeconds the monitoringIntervalInSeconds value to set.
+     * @return the ConnectionMonitorResultInner object itself.
+     */
+    public ConnectionMonitorResultInner withMonitoringIntervalInSeconds(Integer monitoringIntervalInSeconds) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionMonitorResultProperties();
+        }
+        this.innerProperties().withMonitoringIntervalInSeconds(monitoringIntervalInSeconds);
+        return this;
+    }
+
+    /**
+     * Get the endpoints property: List of connection monitor endpoints.
+     *
+     * @return the endpoints value.
+     */
+    public List<ConnectionMonitorEndpoint> endpoints() {
+        return this.innerProperties() == null ? null : this.innerProperties().endpoints();
+    }
+
+    /**
+     * Set the endpoints property: List of connection monitor endpoints.
+     *
+     * @param endpoints the endpoints value to set.
+     * @return the ConnectionMonitorResultInner object itself.
+     */
+    public ConnectionMonitorResultInner withEndpoints(List<ConnectionMonitorEndpoint> endpoints) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionMonitorResultProperties();
+        }
+        this.innerProperties().withEndpoints(endpoints);
+        return this;
+    }
+
+    /**
+     * Get the testConfigurations property: List of connection monitor test configurations.
+     *
+     * @return the testConfigurations value.
+     */
+    public List<ConnectionMonitorTestConfiguration> testConfigurations() {
+        return this.innerProperties() == null ? null : this.innerProperties().testConfigurations();
+    }
+
+    /**
+     * Set the testConfigurations property: List of connection monitor test configurations.
+     *
+     * @param testConfigurations the testConfigurations value to set.
+     * @return the ConnectionMonitorResultInner object itself.
+     */
+    public ConnectionMonitorResultInner withTestConfigurations(
+        List<ConnectionMonitorTestConfiguration> testConfigurations) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionMonitorResultProperties();
+        }
+        this.innerProperties().withTestConfigurations(testConfigurations);
+        return this;
+    }
+
+    /**
+     * Get the testGroups property: List of connection monitor test groups.
+     *
+     * @return the testGroups value.
+     */
+    public List<ConnectionMonitorTestGroup> testGroups() {
+        return this.innerProperties() == null ? null : this.innerProperties().testGroups();
+    }
+
+    /**
+     * Set the testGroups property: List of connection monitor test groups.
+     *
+     * @param testGroups the testGroups value to set.
+     * @return the ConnectionMonitorResultInner object itself.
+     */
+    public ConnectionMonitorResultInner withTestGroups(List<ConnectionMonitorTestGroup> testGroups) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionMonitorResultProperties();
+        }
+        this.innerProperties().withTestGroups(testGroups);
+        return this;
+    }
+
+    /**
+     * Get the outputs property: List of connection monitor outputs.
+     *
+     * @return the outputs value.
+     */
+    public List<ConnectionMonitorOutput> outputs() {
+        return this.innerProperties() == null ? null : this.innerProperties().outputs();
+    }
+
+    /**
+     * Set the outputs property: List of connection monitor outputs.
+     *
+     * @param outputs the outputs value to set.
+     * @return the ConnectionMonitorResultInner object itself.
+     */
+    public ConnectionMonitorResultInner withOutputs(List<ConnectionMonitorOutput> outputs) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionMonitorResultProperties();
+        }
+        this.innerProperties().withOutputs(outputs);
+        return this;
+    }
+
+    /**
+     * Get the notes property: Optional notes to be associated with the connection monitor.
+     *
+     * @return the notes value.
+     */
+    public String notes() {
+        return this.innerProperties() == null ? null : this.innerProperties().notes();
+    }
+
+    /**
+     * Set the notes property: Optional notes to be associated with the connection monitor.
+     *
+     * @param notes the notes value to set.
+     * @return the ConnectionMonitorResultInner object itself.
+     */
+    public ConnectionMonitorResultInner withNotes(String notes) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionMonitorResultProperties();
+        }
+        this.innerProperties().withNotes(notes);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (source() != null) {
-            source().validate();
-        }
-        if (destination() != null) {
-            destination().validate();
-        }
-        if (endpoints() != null) {
-            endpoints().forEach(e -> e.validate());
-        }
-        if (testConfigurations() != null) {
-            testConfigurations().forEach(e -> e.validate());
-        }
-        if (testGroups() != null) {
-            testGroups().forEach(e -> e.validate());
-        }
-        if (outputs() != null) {
-            outputs().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

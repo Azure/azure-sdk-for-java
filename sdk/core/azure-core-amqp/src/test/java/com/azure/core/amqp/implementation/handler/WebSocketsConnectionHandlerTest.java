@@ -82,7 +82,7 @@ public class WebSocketsConnectionHandlerTest {
             handler.close();
         }
 
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
 
         if (mocksCloseable != null) {
             mocksCloseable.close();

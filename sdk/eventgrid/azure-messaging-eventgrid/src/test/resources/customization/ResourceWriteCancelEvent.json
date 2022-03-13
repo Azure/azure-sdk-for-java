@@ -6,10 +6,10 @@
     "eventTime": "2017-08-16T03:54:38.2696833Z",
     "id": "25b3b0d0-d79b-44d5-9963-440d4e6a9bba",
     "data": {
-      "authorization": "{azure_resource_manager_authorizations}",
-      "claims": "{azure_resource_manager_claims}",
+      "authorization": "{\"scope\":\"scopeValue\",\"action\":\"actionValue\",\"evidence\":{\"eKey\":\"eValue\"}}",
+      "claims": "{\"claimKey1\":\"claimValue1\",\"claimKey2\":\"claimValue2\"}",
       "correlationId": "54ef1e39-6a82-44b3-abc1-bdeb6ce4d3c6",
-      "httpRequest": "{request-operation}",
+      "httpRequest": "{\"clientRequestId\":\"idValue\",\"clientIpAddress\":\"ipAddressValue\",\"method\":\"methodValue\",\"url\":\"urlValue\"}",
       "resourceProvider": "Microsoft.EventGrid",
       "resourceUri": "/subscriptions/{subscription-id}/resourceGroups/{resource-group}/providers/Microsoft.EventGrid/eventSubscriptions/LogicAppdd584bdf-8347-49c9-b9a9-d1f980783501",
       "operationName": "Microsoft.EventGrid/eventSubscriptions/write",

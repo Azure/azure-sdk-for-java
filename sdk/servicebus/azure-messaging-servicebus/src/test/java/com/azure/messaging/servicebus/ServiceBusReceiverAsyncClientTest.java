@@ -15,6 +15,7 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
@@ -118,6 +119,7 @@ class ServiceBusReceiverAsyncClientTest {
     private ServiceBusConnectionProcessor connectionProcessor;
     private ServiceBusReceiverAsyncClient receiver;
     private ServiceBusReceiverAsyncClient sessionReceiver;
+    private AutoCloseable mocksCloseable;
 
     @Mock
     private ServiceBusReactorReceiver amqpReceiveLink;
@@ -154,7 +156,7 @@ class ServiceBusReceiverAsyncClientTest {
     void setup(TestInfo testInfo) {
         logger.info("[{}] Setting up.", testInfo.getDisplayName());
 
-        MockitoAnnotations.initMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
 
         // Forcing us to publish the messages we receive on the AMQP link on single. Similar to how it is done
         // in ReactorExecutor.
@@ -198,11 +200,12 @@ class ServiceBusReceiverAsyncClientTest {
     }
 
     @AfterEach
-    void teardown(TestInfo testInfo) {
+    void teardown(TestInfo testInfo) throws Exception {
         logger.info("[{}] Tearing down.", testInfo.getDisplayName());
 
         receiver.close();
-        Mockito.framework().clearInlineMocks();
+        mocksCloseable.close();
+        Mockito.framework().clearInlineMock(this);
     }
 
     /**
@@ -318,7 +321,9 @@ class ServiceBusReceiverAsyncClientTest {
         // This needs to be used with "try with resource" : https://javadoc.io/static/org.mockito/mockito-core/3.9.0/org/mockito/Mockito.html#static_mocks
         try (
             MockedConstruction<FluxAutoLockRenew> mockedAutoLockRenew = Mockito.mockConstructionWithAnswer(FluxAutoLockRenew.class,
-                invocationOnMock -> new FluxAutoLockRenew(Flux.empty(), Duration.ofSeconds(30),
+                invocationOnMock -> new FluxAutoLockRenew(Flux.empty(),
+                    new ReceiverOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, 1, Duration.ofSeconds(30),
+                        true),
                     new LockContainer<>(Duration.ofSeconds(30)), (lock) -> Mono.empty()))) {
 
             ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
@@ -339,11 +344,19 @@ class ServiceBusReceiverAsyncClientTest {
         }
     }
 
+    public static Stream<DispositionStatus> settleWithNullTransactionId() {
+        return Stream.of(DispositionStatus.DEFERRED, DispositionStatus.ABANDONED, DispositionStatus.COMPLETED,
+            DispositionStatus.SUSPENDED);
+    }
+
     /**
      * Verifies that we error if we try to settle a message with null transaction-id.
+     *
+     * Transactions are not used in {@link ServiceBusReceiverAsyncClient#release(ServiceBusReceivedMessage)} since this
+     * is package-private, so we skip this case.
      */
     @ParameterizedTest
-    @EnumSource(DispositionStatus.class)
+    @MethodSource
     void settleWithNullTransactionId(DispositionStatus dispositionStatus) {
         // Arrange
         ServiceBusTransactionContext nullTransactionId = new ServiceBusTransactionContext(null);
@@ -763,6 +776,9 @@ class ServiceBusReceiverAsyncClientTest {
             case SUSPENDED:
                 operation = receiver.deadLetter(receivedMessage);
                 break;
+            case RELEASED:
+                operation = receiver.release(receivedMessage);
+                break;
             default:
                 throw new IllegalArgumentException("Unrecognized operation: " + dispositionStatus);
         }
@@ -1059,18 +1075,21 @@ class ServiceBusReceiverAsyncClientTest {
         // Arrange
         final Duration maxDuration = Duration.ofSeconds(8);
         final Duration renewalPeriod = Duration.ofSeconds(3);
-        final String lockToken = "some-token";
+
+        final UUID lockTokenUUID = UUID.randomUUID();
+        final String lockToken = lockTokenUUID.toString();
+        final ServiceBusReceivedMessage message = new ServiceBusReceivedMessage(BinaryData.fromString("foo"));
+        message.setLockToken(lockTokenUUID);
 
         // At most 4 times because we renew the lock before it expires (by some seconds).
-        final int atMost = 5;
+        final int atMost = 6;
         final Duration totalSleepPeriod = maxDuration.plusMillis(500);
 
-        when(receivedMessage.getLockToken()).thenReturn(lockToken);
         when(managementNode.renewMessageLock(lockToken, null))
             .thenReturn(Mono.fromCallable(() -> OffsetDateTime.now().plus(renewalPeriod)));
 
         // Act & Assert
-        StepVerifier.create(receiver.renewMessageLock(receivedMessage, maxDuration))
+        StepVerifier.create(receiver.renewMessageLock(message, maxDuration))
             .thenAwait(totalSleepPeriod)
             .then(() -> logger.info("Finished renewals for first sleep."))
             .expectComplete()
@@ -1133,7 +1152,7 @@ class ServiceBusReceiverAsyncClientTest {
         final String sessionId = "some-token";
 
         // At most 4 times because we renew the lock before it expires (by some seconds).
-        final int atMost = 5;
+        final int atMost = 6;
         final Duration totalSleepPeriod = maxDuration.plusMillis(500);
 
         when(managementNode.renewSessionLock(sessionId, null))

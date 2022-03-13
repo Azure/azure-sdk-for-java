@@ -18,11 +18,18 @@ public class StandardServiceBusJmsIT {
     private JmsTemplate jmsTemplate;
 
     @Test
-    void integrationTest() throws InterruptedException {
-
-        final String name = "Tester";
+    void integrationTestQueue() throws InterruptedException {
+        final String name = "Test Queue";
         jmsTemplate.convertAndSend(Receiver.QUEUE_NAME, new User(name));
-        String msg = Receiver.EXCHANGER.exchange(name);
+        String msg = Receiver.EXCHANGER_QUEUE.exchange(name);
+        Assertions.assertEquals(name, msg);
+    }
+
+    @Test
+    void integrationTestTopic() throws InterruptedException {
+        final String name = "Test Topic";
+        jmsTemplate.convertAndSend(Receiver.TOPIC_NAME, new User(name));
+        String msg = Receiver.EXCHANGER_TOPIC.exchange(name);
         Assertions.assertEquals(name, msg);
     }
 }
