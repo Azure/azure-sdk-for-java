@@ -239,7 +239,7 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
             CopyAuthorization target =
                 client.getCopyAuthorization(null);
             SyncPoller<DocumentOperationResult, DocumentModel>
-                copyPoller = client.beginCopyModel(actualModel.getModelId(), target)
+                copyPoller = client.beginCopyModelTo(actualModel.getModelId(), target)
                 .setPollInterval(durationTestMode);
             DocumentModel copiedModel = copyPoller.getFinalResult();
 

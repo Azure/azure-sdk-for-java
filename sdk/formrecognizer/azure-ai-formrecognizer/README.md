@@ -390,9 +390,8 @@ String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
 // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
 SyncPoller<DocumentOperationResult, DocumentModel> buildOperationPoller =
     documentModelAdminClient.beginBuildModel(trainingFilesUrl,
-        "my-build-model",
-        new BuildModelOptions().setDescription("model desc"),
-        Context.NONE);
+        DocumentBuildMode.TEMPLATE, "my-build-model",
+        new BuildModelOptions().setDescription("model desc"), Context.NONE);
 
 DocumentModel documentModel = buildOperationPoller.getFinalResult();
 

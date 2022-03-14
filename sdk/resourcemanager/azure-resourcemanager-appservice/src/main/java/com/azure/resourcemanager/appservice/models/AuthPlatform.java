@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The configuration settings of the platform of App Service Authentication/Authorization. */
 @Fluent
 public final class AuthPlatform {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AuthPlatform.class);
-
     /*
      * <code>true</code> if the Authentication / Authorization feature is
      * enabled for the current app; otherwise, <code>false</code>.

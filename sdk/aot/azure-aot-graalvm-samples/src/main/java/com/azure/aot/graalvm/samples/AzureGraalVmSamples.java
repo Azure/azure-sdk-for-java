@@ -11,7 +11,6 @@ import com.azure.aot.graalvm.samples.keyvault.keys.KeyVaultKeysSample;
 import com.azure.aot.graalvm.samples.keyvault.secrets.KeyVaultSecretsSample;
 import com.azure.aot.graalvm.samples.storage.blob.StorageBlobSample;
 import com.azure.aot.graalvm.samples.textanalytics.TextAnalyticsSample;
-
 import java.io.IOException;
 
 /**

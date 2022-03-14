@@ -29,7 +29,8 @@ public interface Locations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Batch service quotas for the specified subscription at the given location.
+     * @return the Batch service quotas for the specified subscription at the given location along with {@link
+     *     Response}.
      */
     Response<BatchLocationQuota> getQuotasWithResponse(String locationName, Context context);
 
@@ -40,7 +41,8 @@ public interface Locations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Batch supported Virtual Machine VM sizes available at the given location.
+     * @return the list of Batch supported Virtual Machine VM sizes available at the given location as paginated
+     *     response with {@link PagedIterable}.
      */
     PagedIterable<SupportedSku> listSupportedVirtualMachineSkus(String locationName);
 
@@ -54,7 +56,8 @@ public interface Locations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Batch supported Virtual Machine VM sizes available at the given location.
+     * @return the list of Batch supported Virtual Machine VM sizes available at the given location as paginated
+     *     response with {@link PagedIterable}.
      */
     PagedIterable<SupportedSku> listSupportedVirtualMachineSkus(
         String locationName, Integer maxresults, String filter, Context context);
@@ -66,7 +69,8 @@ public interface Locations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Batch supported Cloud Service VM sizes available at the given location.
+     * @return the list of Batch supported Cloud Service VM sizes available at the given location as paginated response
+     *     with {@link PagedIterable}.
      */
     PagedIterable<SupportedSku> listSupportedCloudServiceSkus(String locationName);
 
@@ -80,7 +84,8 @@ public interface Locations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Batch supported Cloud Service VM sizes available at the given location.
+     * @return the list of Batch supported Cloud Service VM sizes available at the given location as paginated response
+     *     with {@link PagedIterable}.
      */
     PagedIterable<SupportedSku> listSupportedCloudServiceSkus(
         String locationName, Integer maxresults, String filter, Context context);
@@ -106,7 +111,7 @@ public interface Locations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the CheckNameAvailability operation response.
+     * @return the CheckNameAvailability operation response along with {@link Response}.
      */
     Response<CheckNameAvailabilityResult> checkNameAvailabilityWithResponse(
         String locationName, CheckNameAvailabilityParameters parameters, Context context);

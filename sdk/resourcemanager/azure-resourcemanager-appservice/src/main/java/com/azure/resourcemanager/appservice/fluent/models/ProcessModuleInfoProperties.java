@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** ProcessModuleInfo resource specific properties. */
 @Fluent
 public final class ProcessModuleInfoProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProcessModuleInfoProperties.class);
-
     /*
      * Base address. Used as module identifier in ARM resource URI.
      */
