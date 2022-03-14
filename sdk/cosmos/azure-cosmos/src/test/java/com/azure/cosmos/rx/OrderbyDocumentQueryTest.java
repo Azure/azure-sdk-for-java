@@ -736,9 +736,13 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             .hasValidQueryMetrics(true)
             .build();
 
-        validateQuerySuccess(queryObservable.byPage().map(response -> response.convertGenericType(
-            objectNode -> new InternalObjectNode(objectNode)
-        )), validator);
+        validateQuerySuccess(queryObservable.byPage().map(response ->  ImplementationBridgeHelpers
+            .FeedResponseHelper
+            .getFeedResponseAccessor()
+            .convertGenericType(
+                response,
+                objectNode -> new InternalObjectNode(objectNode)
+            )), validator);
     }
 
     private void updateCollectionIndex() {

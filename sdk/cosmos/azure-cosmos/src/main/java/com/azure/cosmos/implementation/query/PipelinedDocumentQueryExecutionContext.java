@@ -163,8 +163,12 @@ public class PipelinedDocumentQueryExecutionContext<T>
         return this
             .component
             .drainAsync(this.actualPageSize)
-            .map(documentFeedResponse -> documentFeedResponse.convertGenericType(
-                (document) -> this.factoryMethod.apply(document.getPropertyBag())
-            ));
+            .map(documentFeedResponse -> ImplementationBridgeHelpers
+                .FeedResponseHelper
+                .getFeedResponseAccessor().convertGenericType(
+                    documentFeedResponse,
+                    (document) -> this.factoryMethod.apply(document.getPropertyBag())
+                )
+            );
     }
 }

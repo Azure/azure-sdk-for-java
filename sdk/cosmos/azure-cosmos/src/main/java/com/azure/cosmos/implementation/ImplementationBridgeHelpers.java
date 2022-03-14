@@ -618,6 +618,7 @@ public class ImplementationBridgeHelpers {
 
         public interface FeedResponseAccessor {
             <T> boolean getNoChanges(FeedResponse<T> feedResponse);
+            <TNew, T> FeedResponse<TNew> convertGenericType(FeedResponse<T> feedResponse, Function<T, TNew> conversion);
         }
     }
 

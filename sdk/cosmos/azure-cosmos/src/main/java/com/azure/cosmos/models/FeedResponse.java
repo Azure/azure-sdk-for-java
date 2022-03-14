@@ -471,7 +471,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         return 0;
     }
 
-    public <TNew> FeedResponse<TNew> convertGenericType(Function<T, TNew> conversion) {
+    <TNew> FeedResponse<TNew> convertGenericType(Function<T, TNew> conversion) {
         List<TNew> newResults = new ArrayList<>(this.results.size());
 
         for (T result: this.results) {
@@ -556,6 +556,13 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
                 @Override
                 public <T> boolean getNoChanges(FeedResponse<T> feedResponse) {
                     return feedResponse.getNoChanges();
+                }
+
+                @Override
+                public <TNew, T> FeedResponse<TNew> convertGenericType(FeedResponse<T> feedResponse, Function<T,
+                    TNew> conversion) {
+
+                    return feedResponse.convertGenericType(conversion);
                 }
             });
     }
