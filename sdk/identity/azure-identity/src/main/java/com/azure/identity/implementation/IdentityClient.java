@@ -1241,12 +1241,18 @@ public class IdentityClient {
     /**
      * Asynchronously acquire a token from the App Service Managed Service Identity endpoint.
      *
+     * Specifying identity parameters will use the 2019-08-01 endpoint version.
+     * Specifying MSI parameters will use the 2017-09-01 endpoint version.
+     *
      * @param identityEndpoint the Identity endpoint to acquire token from
      * @param identityHeader the identity header to acquire token with
+     * @param msiEndpoint the MSI endpoint to acquire token from
+     * @param msiSecret the MSI secret to acquire token with
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateToManagedIdentityEndpoint(String identityEndpoint, String identityHeader,
+                                                                   String msiEndpoint, String msiSecret,
                                                                    TokenRequestContext request) {
         return Mono.fromCallable(() -> {
             String endpoint;
@@ -1254,9 +1260,15 @@ public class IdentityClient {
             String endpointVersion;
 
 
-            endpoint = identityEndpoint;
-            headerValue = identityHeader;
-            endpointVersion = IDENTITY_ENDPOINT_VERSION;
+            if (identityEndpoint != null) {
+                endpoint = identityEndpoint;
+                headerValue = identityHeader;
+                endpointVersion = IDENTITY_ENDPOINT_VERSION;
+            } else {
+                endpoint = msiEndpoint;
+                headerValue = msiSecret;
+                endpointVersion = MSI_ENDPOINT_VERSION;
+            }
 
 
             String resource = ScopeUtil.scopesToResource(request.getScopes());
@@ -1268,7 +1280,11 @@ public class IdentityClient {
             payload.append("&api-version=");
             payload.append(URLEncoder.encode(endpointVersion, StandardCharsets.UTF_8.name()));
             if (clientId != null) {
-                payload.append("&client_id=");
+                if (endpointVersion.equals(IDENTITY_ENDPOINT_VERSION)) {
+                    payload.append("&client_id=");
+                } else {
+                    payload.append("&clientid=");
+                }
                 payload.append(URLEncoder.encode(clientId, StandardCharsets.UTF_8.name()));
             }
             if (resourceId != null) {
