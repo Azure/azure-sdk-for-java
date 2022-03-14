@@ -56,7 +56,10 @@ public final class RntbdResponse implements ReferenceCounted {
     @JsonProperty
     private volatile int referenceCount;
 
+    @JsonIgnore
     private Instant decodeStartTime;
+
+    @JsonIgnore
     private Instant decodeEndTime;
 
     // endregion
@@ -139,22 +142,18 @@ public final class RntbdResponse implements ReferenceCounted {
         return this.getHeader(RntbdResponseHeader.TransportRequestID);
     }
 
-    @JsonIgnore
     public Instant getDecodeStartTime() {
         return this.decodeStartTime;
     }
 
-    @JsonIgnore
     public void setDecodeStartTime(Instant decodeStartTime) {
         this.decodeStartTime = decodeStartTime;
     }
 
-    @JsonIgnore
     public Instant getDecodeEndTime() {
         return this.decodeEndTime;
     }
 
-    @JsonIgnore
     public void setDecodeEndTime(Instant decodeEndTime) {
         this.decodeEndTime = decodeEndTime;
     }
