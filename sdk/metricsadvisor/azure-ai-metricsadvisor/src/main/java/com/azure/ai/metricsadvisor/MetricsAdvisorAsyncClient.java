@@ -4,6 +4,7 @@
 package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.implementation.MetricsAdvisorClientImpl;
+import com.azure.ai.metricsadvisor.models.ListDataFeedOptions;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -16,6 +17,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the asynchronous MetricsAdvisorClient type. */
@@ -2518,5 +2520,38 @@ public final class MetricsAdvisorAsyncClient {
     public PagedFlux<BinaryData> getEnrichmentStatusByMetric(
             String metricId, BinaryData body, RequestOptions requestOptions) {
         return this.serviceClient.getEnrichmentStatusByMetricAsync(metricId, body, requestOptions);
+    }
+
+    /**
+     * List information of all data feeds on the metrics advisor account.
+     *
+     * @param listDataFeedOptions The configurable {@link ListDataFeedOptions options} to pass for filtering the output result.
+     *
+     * @return A {@link PagedFlux} containing information of all the data feeds in the account.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listDataFeeds(ListDataFeedOptions listDataFeedOptions) {
+        return listDataFeeds(listDataFeedOptions, Context.NONE);
+    }
+
+    PagedFlux<BinaryData> listDataFeeds(ListDataFeedOptions listDataFeedOptions, Context context) {
+        RequestOptions requestOptions = new RequestOptions().setContext(context);
+        if (listDataFeedOptions != null) {
+            if (listDataFeedOptions.getSkip() != null) {
+                requestOptions.addQueryParam("$skip", listDataFeedOptions.getSkip().toString());
+            }
+            if (listDataFeedOptions.getMaxPageSize() != null) {
+                requestOptions.addQueryParam("$maxpagesize", listDataFeedOptions.getMaxPageSize().toString());
+            }
+            if (listDataFeedOptions.getListDataFeedFilter() != null) {
+                if (listDataFeedOptions.getListDataFeedFilter().getName() != null) {
+                    requestOptions.addQueryParam("dataFeedName", listDataFeedOptions.getListDataFeedFilter().getName());
+                }
+                if (listDataFeedOptions.getListDataFeedFilter().getCreator() != null) {
+                    requestOptions.addQueryParam("creator", listDataFeedOptions.getListDataFeedFilter().getCreator());
+                }
+            }
+        }
+        return this.listDataFeeds(requestOptions);
     }
 }
