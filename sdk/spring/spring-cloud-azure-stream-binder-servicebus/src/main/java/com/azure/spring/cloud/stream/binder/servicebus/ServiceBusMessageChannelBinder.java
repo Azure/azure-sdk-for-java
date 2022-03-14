@@ -131,7 +131,7 @@ public class ServiceBusMessageChannelBinder extends
         extendedConsumerPropertiesMap.put(new ConsumerIdentifier(destination.getName(), group), properties);
         final ServiceBusInboundChannelAdapter inboundAdapter;
 
-        ServiceBusContainerProperties containerProperties = createServiceBusContainerProperties(destination, group, properties);
+        ServiceBusContainerProperties containerProperties = createContainerProperties(destination, group, properties);
         ServiceBusMessageListenerContainer listenerContainer = new ServiceBusMessageListenerContainer(getProcessorFactory(), containerProperties);
 
         serviceBusMessageListenerContainers.add(listenerContainer);
@@ -155,7 +155,7 @@ public class ServiceBusMessageChannelBinder extends
      * @param properties the consumer properties.
      * @return the {@link ServiceBusContainerProperties}.
      */
-    private ServiceBusContainerProperties createServiceBusContainerProperties(
+    ServiceBusContainerProperties createContainerProperties(
         ConsumerDestination destination,
         String group,
         ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {

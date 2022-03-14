@@ -14,10 +14,12 @@ import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBu
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusProducerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.core.provisioning.ServiceBusChannelProvisioner;
 import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusChannelResourceManagerProvisioner;
+import com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.cloud.stream.binder.Binder;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.Duration;
 
@@ -79,8 +81,7 @@ public class ServiceBusBinderConfigurationTests {
         String producerConnectionString = String.format(CONNECTION_STRING_FORMAT, "fake-producer-namespace");
         String consumerConnectionString = String.format(CONNECTION_STRING_FORMAT, "fake-consumer-namespace");
 
-        new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(ServiceBusExtendedBindingPropertiesTestConfiguration.class))
+        this.contextRunner
             .withPropertyValues(
                 "spring.cloud.stream.servicebus.bindings.input.consumer.domain-name=fake-consumer-domain",
                 "spring.cloud.stream.servicebus.bindings.input.consumer.namespace=fake-consumer-namespace",
@@ -107,14 +108,10 @@ public class ServiceBusBinderConfigurationTests {
                 "spring.cloud.stream.servicebus.bindings.input.producer.send-timeout=5m"
             )
             .run(context -> {
-                assertThat(context).hasSingleBean(ServiceBusExtendedBindingProperties.class);
-                ServiceBusExtendedBindingProperties extendedBindingProperties =
-                    context.getBean(ServiceBusExtendedBindingProperties.class);
-
-                assertThat(extendedBindingProperties.getExtendedConsumerProperties("input")).isNotNull();
-
+                assertThat(context).hasSingleBean(ServiceBusMessageChannelBinder.class);
+                ServiceBusMessageChannelBinder binder = context.getBean(ServiceBusMessageChannelBinder.class);
                 ServiceBusConsumerProperties consumerProperties =
-                    extendedBindingProperties.getExtendedConsumerProperties("input");
+                    binder.getExtendedConsumerProperties("input");
                 assertEquals("fake-consumer-domain", consumerProperties.getDomainName());
                 assertEquals("fake-consumer-namespace", consumerProperties.getNamespace());
                 assertEquals(consumerConnectionString, consumerProperties.getConnectionString());
@@ -131,7 +128,7 @@ public class ServiceBusBinderConfigurationTests {
                 assertTrue(consumerProperties.isRequeueRejected());
 
                 ServiceBusProducerProperties producerProperties =
-                    extendedBindingProperties.getExtendedProducerProperties("input");
+                    binder.getExtendedProducerProperties("input");
                 assertEquals("fake-producer-domain", producerProperties.getDomainName());
                 assertEquals("fake-producer-namespace", producerProperties.getNamespace());
                 assertEquals(producerConnectionString, producerProperties.getConnectionString());
@@ -139,6 +136,20 @@ public class ServiceBusBinderConfigurationTests {
                 assertEquals(ServiceBusEntityType.QUEUE, producerProperties.getEntityType());
                 assertTrue(producerProperties.isSync());
                 assertEquals(Duration.ofMinutes(5), producerProperties.getSendTimeout());
+            });
+    }
+
+    @Test
+    void clientMessageConverterShouldBeConfigured() {
+        this.contextRunner
+            .withBean(ServiceBusMessageConverter.class)
+            .withPropertyValues("spring.cloud.azure.servicebus.namespace=fake-namespace")
+            .run(context -> {
+                assertThat(context).hasSingleBean(ServiceBusMessageConverter.class);
+                assertThat(context).hasSingleBean(ServiceBusMessageChannelBinder.class);
+                ServiceBusMessageConverter converter = context.getBean(ServiceBusMessageConverter.class);
+                ServiceBusMessageChannelBinder binder = context.getBean(ServiceBusMessageChannelBinder.class);
+                assertThat(ReflectionTestUtils.getField(binder, "messageConverter")).isSameAs(converter);
             });
     }
 
