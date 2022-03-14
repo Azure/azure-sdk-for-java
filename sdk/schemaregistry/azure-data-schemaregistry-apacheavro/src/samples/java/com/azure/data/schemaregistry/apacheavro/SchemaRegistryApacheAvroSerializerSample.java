@@ -46,6 +46,6 @@ public class SchemaRegistryApacheAvroSerializerSample {
 
         // Serialize the playing card object and write to the output stream.
         MessageWithMetadata message = serializer.serializeMessageData(playingCard,
-            TypeReference.createInstance(BinaryContent.class));
+            TypeReference.createInstance(MessageWithMetadata.class));
     }
 }

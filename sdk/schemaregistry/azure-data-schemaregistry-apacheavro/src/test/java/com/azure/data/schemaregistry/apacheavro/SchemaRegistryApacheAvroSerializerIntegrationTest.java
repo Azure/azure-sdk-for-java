@@ -132,7 +132,7 @@ public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestBase 
 
         // Act & Assert
         final MessageWithMetadata encodedMessage = encoder.serializeMessageData(cards,
-            TypeReference.createInstance(BinaryContent.class));
+            TypeReference.createInstance(MessageWithMetadata.class));
         assertNotNull(encodedMessage);
 
         final byte[] outputArray = encodedMessage.getBodyAsBinaryData().toBytes();
