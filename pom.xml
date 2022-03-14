@@ -56,6 +56,7 @@
         <module>sdk/core/azure-core-serializer-json-gson</module>
         <module>sdk/core/azure-core-serializer-json-jackson</module>
         <module>sdk/core/azure-core-test</module>
+        <module>sdk/core/azure-core-test-junit-extensions</module>
         <module>sdk/core/azure-core-tracing-opentelemetry</module>
 
         <!-- Cosmos -->
@@ -219,6 +220,7 @@
         <module>sdk/core/azure-core-serializer-json-gson</module>
         <module>sdk/core/azure-core-serializer-json-jackson</module>
         <module>sdk/core/azure-core-test</module>
+        <module>sdk/core/azure-core-test-junit-extensions</module>
         <module>sdk/core/azure-core-tracing-opentelemetry</module>
 
         <!-- Cosmos -->

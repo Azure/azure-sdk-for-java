@@ -11,6 +11,8 @@ import com.azure.core.http.clients.NoOpHttpClient;
 import com.azure.core.http.policy.AzureSasCredentialPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.test.junit.extensions.SyncAsyncExtension;
+import com.azure.core.test.junit.extensions.annotation.SyncAsyncTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -33,7 +35,7 @@ public class CredentialsTests {
     private static final String DUMMY_NAME = "Dummy-Name";
     private static final String DUMMY_VALUE = "DummyValue";
 
-    @Test
+    @SyncAsyncTest
     public void basicCredentialsTest() throws Exception {
         BasicAuthenticationCredential credentials = new BasicAuthenticationCredential("user", "pass");
 
@@ -53,10 +55,13 @@ public class CredentialsTests {
             .build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
-        pipeline.send(request).block();
+        SyncAsyncExtension.execute(
+            () -> pipeline.sendSynchronously(request),
+            () -> pipeline.send(request).block()
+        );
     }
 
-    @Test
+    @SyncAsyncTest
     public void tokenCredentialTest() throws Exception {
         TokenCredential credentials = request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX));
 
@@ -72,29 +77,13 @@ public class CredentialsTests {
                 .build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("https://localhost"));
-        pipeline.send(request).block();
+        SyncAsyncExtension.execute(
+            () -> pipeline.sendSynchronously(request),
+            () -> pipeline.send(request).block()
+        );
     }
 
-    @Test
-    public void tokenCredentialSyncTest() throws Exception {
-        TokenCredential credentials = request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX));
-
-        HttpPipelinePolicy auditorPolicy =  (context, next) -> {
-            String headerValue = context.getHttpRequest().getHeaders().getValue("Authorization");
-            Assertions.assertEquals("Bearer this_is_a_token", headerValue);
-            return next.process();
-        };
-
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient())
-            .policies(new BearerTokenAuthenticationPolicy(credentials, "scope./default"), auditorPolicy)
-            .build();
-
-        HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("https://localhost"));
-        pipeline.sendSynchronously(request);
-    }
-
-    @Test
+    @SyncAsyncTest
     public void tokenCredentialHttpSchemeTest() throws Exception {
         TokenCredential credentials = request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX));
 
@@ -110,29 +99,15 @@ public class CredentialsTests {
                 .build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
-        StepVerifier.create(pipeline.send(request))
+
+        SyncAsyncExtension.execute(
+            () -> {
+                assertThrows(RuntimeException.class, () -> pipeline.sendSynchronously(request));
+            },
+            () -> StepVerifier.create(pipeline.send(request))
                 .expectErrorMessage("token credentials require a URL using the HTTPS protocol scheme")
-                .verify();
-    }
-
-    @Test
-    public void tokenCredentialHttpSchemeSyncTest() throws Exception {
-        TokenCredential credentials = request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX));
-
-        HttpPipelinePolicy auditorPolicy =  (context, next) -> {
-            String headerValue = context.getHttpRequest().getHeaders().getValue("Authorization");
-            Assertions.assertEquals("Bearer this_is_a_token", headerValue);
-            return next.process();
-        };
-
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient())
-            .policies(new BearerTokenAuthenticationPolicy(credentials, "scope./default"), auditorPolicy)
-            .build();
-
-        HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
-
-        assertThrows(RuntimeException.class, () -> pipeline.sendSynchronously(request));
+                .verify()
+        );
     }
 
     @ParameterizedTest
