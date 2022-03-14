@@ -34,7 +34,6 @@ import org.springframework.cloud.stream.binder.Binder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.lang.Nullable;
 
 import java.util.stream.Collectors;
 
@@ -101,13 +100,13 @@ public class ServiceBusBinderConfiguration {
     public ServiceBusMessageChannelBinder serviceBusBinder(ServiceBusChannelProvisioner channelProvisioner,
                                                            ServiceBusExtendedBindingProperties bindingProperties,
                                                            ObjectProvider<NamespaceProperties> namespaceProperties,
-                                                           @Nullable ServiceBusMessageConverter messageConverter,
+                                                           ObjectProvider<ServiceBusMessageConverter> messageConverter,
                                                            ObjectProvider<ClientFactoryCustomizer> customizers) {
 
         ServiceBusMessageChannelBinder binder = new ServiceBusMessageChannelBinder(null, channelProvisioner);
         binder.setBindingProperties(bindingProperties);
         binder.setNamespaceProperties(namespaceProperties.getIfAvailable());
-        binder.setMessageConverter(messageConverter);
+        binder.setMessageConverter(messageConverter.getIfAvailable());
         binder.setClientFactoryCustomizers(customizers.orderedStream().collect(Collectors.toList()));
         return binder;
     }
