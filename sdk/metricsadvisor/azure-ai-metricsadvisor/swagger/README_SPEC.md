@@ -27,4 +27,7 @@ context-client-method-parameter: true
 azure-arm: false
 service-versions:
 - '1.0'
+
+security: AADToken
+security-scopes: https://cognitiveservices.azure.com/.default
 ```

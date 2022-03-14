@@ -9,13 +9,17 @@ import com.azure.ai.metricsadvisor.MetricsAdvisorClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class QueryASingleAnomalyDetectionConfiguration {
     public static void main(String[] args) {
         // BEGIN:
         // com.azure.ai.metricsadvisor.generated.getanomalydetectionconfiguration.queryasingleanomalydetectionconfiguration
         MetricsAdvisorClient metricsAdvisorClient =
-                new MetricsAdvisorClientBuilder().endpoint("{endpoint}").buildClient();
+                new MetricsAdvisorClientBuilder()
+                        .credential(new DefaultAzureCredentialBuilder().build())
+                        .endpoint("{endpoint}")
+                        .buildClient();
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
                 metricsAdvisorClient.getAnomalyDetectionConfigurationWithResponse(

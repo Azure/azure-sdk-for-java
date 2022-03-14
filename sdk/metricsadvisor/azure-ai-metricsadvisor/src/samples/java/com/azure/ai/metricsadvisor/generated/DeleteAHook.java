@@ -8,12 +8,16 @@ import com.azure.ai.metricsadvisor.MetricsAdvisorClient;
 import com.azure.ai.metricsadvisor.MetricsAdvisorClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class DeleteAHook {
     public static void main(String[] args) {
         // BEGIN: com.azure.ai.metricsadvisor.generated.deletehook.deleteahook
         MetricsAdvisorClient metricsAdvisorClient =
-                new MetricsAdvisorClientBuilder().endpoint("{endpoint}").buildClient();
+                new MetricsAdvisorClientBuilder()
+                        .credential(new DefaultAzureCredentialBuilder().build())
+                        .endpoint("{endpoint}")
+                        .buildClient();
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response =
                 metricsAdvisorClient.deleteHookWithResponse("01234567-8901-2345-6789-012345678901", requestOptions);

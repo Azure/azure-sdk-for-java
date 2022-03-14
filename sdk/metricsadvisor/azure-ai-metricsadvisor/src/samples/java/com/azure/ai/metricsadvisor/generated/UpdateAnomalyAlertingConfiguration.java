@@ -9,13 +9,17 @@ import com.azure.ai.metricsadvisor.MetricsAdvisorClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class UpdateAnomalyAlertingConfiguration {
     public static void main(String[] args) {
         // BEGIN:
         // com.azure.ai.metricsadvisor.generated.updateanomalyalertingconfiguration.updateanomalyalertingconfiguration
         MetricsAdvisorClient metricsAdvisorClient =
-                new MetricsAdvisorClientBuilder().endpoint("{endpoint}").buildClient();
+                new MetricsAdvisorClientBuilder()
+                        .credential(new DefaultAzureCredentialBuilder().build())
+                        .endpoint("{endpoint}")
+                        .buildClient();
         BinaryData body =
                 BinaryData.fromString(
                         "{\"name\":\"alerting configuration name\",\"description\":\"this is an anomaly alerting configuration\",\"crossMetricsOperator\":\"AND\",\"hookIds\":[\"00000000-0000-0000-0000-000000000001\"],\"metricAlertingConfigurations\":[{\"anomalyDetectionConfigurationId\":\"33333333-3333-3333-3333-000000000001\",\"anomalyScopeType\":\"All\",\"negationOperation\":false,\"severityFilter\":{\"maxAlertSeverity\":\"High\",\"minAlertSeverity\":\"Medium\"},\"snoozeFilter\":{\"autoSnooze\":0,\"onlyForSuccessive\":true,\"snoozeScope\":\"Series\"}},{\"anomalyDetectionConfigurationId\":\"33333333-3333-3333-3333-000000000002\",\"anomalyScopeType\":\"Dimension\",\"dimensionAnomalyScope\":{\"dimension\":{\"city\":\"Beijing\"}},\"negationOperation\":false,\"severityFilter\":{\"maxAlertSeverity\":\"High\",\"minAlertSeverity\":\"Low\"},\"snoozeFilter\":{\"autoSnooze\":0,\"onlyForSuccessive\":true,\"snoozeScope\":\"Series\"},\"valueFilter\":{\"direction\":\"Both\",\"lower\":0,\"upper\":1000}}]}");

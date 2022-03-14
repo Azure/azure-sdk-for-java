@@ -9,12 +9,16 @@ import com.azure.ai.metricsadvisor.MetricsAdvisorClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class CreateANewDataSourceCredential {
     public static void main(String[] args) {
         // BEGIN: com.azure.ai.metricsadvisor.generated.createcredential.createanewdatasourcecredential
         MetricsAdvisorClient metricsAdvisorClient =
-                new MetricsAdvisorClientBuilder().endpoint("{endpoint}").buildClient();
+                new MetricsAdvisorClientBuilder()
+                        .credential(new DefaultAzureCredentialBuilder().build())
+                        .endpoint("{endpoint}")
+                        .buildClient();
         BinaryData body =
                 BinaryData.fromString(
                         "{\"dataSourceCredentialDescription\":\"This is a data source credential\",\"dataSourceCredentialName\":\"A data source credential\",\"dataSourceCredentialType\":\"ServicePrincipal\",\"parameters\":{\"clientId\":\"88888888-8888-8888-8888-888888888888\",\"clientSecret\":\"fake-client-secret\",\"tenantId\":\"12345678-1234-1234-1234-123456788888\"}}");
