@@ -5,4 +5,6 @@ param (
   [string] $targetBranch = ("origin/${env:SYSTEM_PULLREQUEST_TARGETBRANCH}" -replace "/refs/heads/")
 )
 
-return get-markdown-files-from-changed-files.ps1 -TargetCommittish $targetBranch -DiffPath '*.md'
+. (Join-Path $PSScriptRoot get-diff-changes-from-PR.ps1)
+
+return Get-PullRequest-Diff-Changes -TargetCommittish $targetBranch -DiffPath '*.md'
