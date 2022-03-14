@@ -235,7 +235,7 @@ public class IdentityClient {
                 ConfidentialClientApplication.builder(clientId, credential);
             try {
                 applicationBuilder = applicationBuilder.authority(authorityUrl)
-                    .validateAuthority(options.getAuthorityValidation());
+                    .validateAuthority(options.getAuthorityValidationSafetyCheck());
             } catch (MalformedURLException e) {
                 return Mono.error(LOGGER.logExceptionAsWarning(new IllegalStateException(e)));
             }
@@ -304,7 +304,7 @@ public class IdentityClient {
             PublicClientApplication.Builder publicClientApplicationBuilder = PublicClientApplication.builder(clientId);
             try {
                 publicClientApplicationBuilder = publicClientApplicationBuilder.authority(authorityUrl)
-                    .validateAuthority(options.getAuthorityValidation());
+                    .validateAuthority(options.getAuthorityValidationSafetyCheck());
             } catch (MalformedURLException e) {
                 throw LOGGER.logExceptionAsWarning(new IllegalStateException(e));
             }
@@ -370,7 +370,7 @@ public class IdentityClient {
                     ConfidentialClientApplication.Builder applicationBuilder =
                         ConfidentialClientApplication.builder(spDetails.get("client"),
                             ClientCredentialFactory.createFromSecret(spDetails.get("key")))
-                            .authority(authorityUrl).validateAuthority(options.getAuthorityValidation());
+                            .authority(authorityUrl).validateAuthority(options.getAuthorityValidationSafetyCheck());
 
                     // If http pipeline is available, then it should override the proxy options if any configured.
                     if (httpPipelineAdapter != null) {
