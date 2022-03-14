@@ -6,4 +6,5 @@ module com.azure.ai.metricsadvisor {
     requires transitive com.azure.core;
 
     exports com.azure.ai.metricsadvisor;
+    exports com.azure.ai.metricsadvisor.models;
 }
