@@ -2564,6 +2564,28 @@ public final class MetricsAdvisorAsyncClient {
         return mapPage(this.listDataFeeds(requestOptions), data -> data.toObject(DataFeedDetail.class));
     }
 
+    /**
+     * Create a new data feed.
+     *
+     * @param dataFeed the data feed.
+     * @return the created data feed on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DataFeedDetail> createDataFeed(DataFeedDetail dataFeed) {
+        return createDataFeed(dataFeed, Context.NONE);
+    }
+
+    Mono<DataFeedDetail> createDataFeed(DataFeedDetail dataFeed, Context context) {
+        RequestOptions requestOptions = new RequestOptions().setContext(context);
+        return this.serviceClient.createDataFeedWithResponseAsync(BinaryData.fromObject(dataFeed), requestOptions)
+            .flatMap(response -> {
+                String uri = response.getHeaders().getValue("location");
+                String id = uri.substring(uri.lastIndexOf("/") + 1);
+                return this.getDataFeedByIdWithResponse(id, null);
+            })
+            .map(response -> response.getValue().toObject(DataFeedDetail.class));
+    }
+
     private static <T, S> PagedFlux<S> mapPage(PagedFlux<T> pagedFlux, Function<T, S> mapper) {
         Supplier<PageRetriever<String, PagedResponse<S>>> provider = () -> (continuationToken, pageSize) -> {
             Flux<PagedResponse<T>> flux = (continuationToken == null)

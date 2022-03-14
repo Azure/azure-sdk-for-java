@@ -4,21 +4,54 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.http.rest.Response;
-import com.azure.core.util.BinaryData;
+import com.azure.ai.metricsadvisor.models.AuthenticationTypeEnum;
+import com.azure.ai.metricsadvisor.models.DataFeedDetail;
+import com.azure.ai.metricsadvisor.models.Dimension;
+import com.azure.ai.metricsadvisor.models.FillMissingPointType;
+import com.azure.ai.metricsadvisor.models.Granularity;
+import com.azure.ai.metricsadvisor.models.Metric;
+import com.azure.ai.metricsadvisor.models.NeedRollupEnum;
+import com.azure.ai.metricsadvisor.models.RollUpMethod;
+import com.azure.ai.metricsadvisor.models.SqlServerDataFeed;
+import com.azure.ai.metricsadvisor.models.SqlSourceParameter;
+import com.azure.ai.metricsadvisor.models.ViewMode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
 
 public final class CreateANewDataFeedTests extends MetricsAdvisorClientTestBase {
     @Test
     public void testCreateANewDataFeedTests() {
-        BinaryData body =
-                BinaryData.fromString(
-                        "{\"allUpIdentification\":\"__SUM__\",\"authenticationType\":\"Basic\",\"dataFeedDescription\":\"This is a sample data feed.\",\"dataFeedName\":\"Sample - cost/revenue - city/category\",\"dataSourceParameter\":{\"connectionString\":\"Server=PlaceholderSqlServer,1433;Initial Catalog=PlaceholderDatabase;User ID=PlaceholderUserName;Password=PlaceholderPassword;\",\"query\":\"select * from your_table where timestamp = @StartTime\"},\"dataSourceType\":\"SqlServer\",\"dataStartFrom\":\"2020-01-01T00:00:00.000Z\",\"dimension\":[{\"dimensionDisplayName\":\"category\",\"dimensionName\":\"category\"},{\"dimensionDisplayName\":\"city\",\"dimensionName\":\"city\"}],\"fillMissingPointType\":\"SmartFilling\",\"granularityName\":\"Daily\",\"maxConcurrency\":5,\"metrics\":[{\"metricDisplayName\":\"cost\",\"metricName\":\"cost\"},{\"metricDisplayName\":\"revenue\",\"metricName\":\"revenue\"}],\"minRetryIntervalInSeconds\":3600,\"needRollup\":\"NeedRollup\",\"rollUpMethod\":\"Sum\",\"startOffsetInSeconds\":86400,\"stopRetryAfterInSeconds\":604800,\"timestampColumn\":\"timestamp\",\"viewMode\":\"Private\"}");
-        RequestOptions requestOptions = new RequestOptions();
-        Response<Void> response = metricsAdvisorClient.createDataFeedWithResponse(body, requestOptions);
-        Assertions.assertEquals(201, response.getStatusCode());
-        Assertions.assertNotNull(response.getHeaders().get("Location").getValue());
+        DataFeedDetail dataFeed = new SqlServerDataFeed()
+            .setAllUpIdentification("__SUM__")
+            .setAuthenticationType(AuthenticationTypeEnum.BASIC)
+            .setDataFeedDescription("This is a sample data feed.")
+            .setDataFeedName("Sample - cost/revenue - city/category")
+            .setDataSourceParameter(new SqlSourceParameter()
+                .setConnectionString("Server=PlaceholderSqlServer,1433;Initial Catalog=PlaceholderDatabase;User ID=PlaceholderUserName;Password=PlaceholderPassword;")
+                .setQuery("select * from your_table where timestamp = @StartTime"))
+            .setDataStartFrom("2020-01-01T00:00:00.000Z")
+            .setDimension(Arrays.asList(
+                new Dimension().setDimensionDisplayName("category").setDimensionName("category"),
+                new Dimension().setDimensionDisplayName("city").setDimensionName("city")
+            ))
+            .setFillMissingPointType(FillMissingPointType.SMART_FILLING)
+            .setGranularityName(Granularity.DAILY)
+            .setMaxConcurrency(5)
+            .setMetrics(Arrays.asList(
+                new Metric().setMetricDisplayName("cost").setMetricName("cost"),
+                new Metric().setMetricDisplayName("revenue").setMetricName("revenue")
+            ))
+            .setMinRetryIntervalInSeconds(3600L)
+            .setNeedRollup(NeedRollupEnum.NEED_ROLLUP)
+            .setRollUpMethod(RollUpMethod.SUM)
+            .setStartOffsetInSeconds(86400L)
+            .setStopRetryAfterInSeconds(604800L)
+            .setTimestampColumn("timestamp")
+            .setViewMode(ViewMode.PRIVATE);
+
+        DataFeedDetail createdDataFeed = metricsAdvisorClient.createDataFeed(dataFeed);
+        Assertions.assertEquals("Sample - cost/revenue - city/category", createdDataFeed.getDataFeedName());
     }
 }

@@ -2544,4 +2544,15 @@ public final class MetricsAdvisorClient {
     public PagedIterable<DataFeedDetail> listDataFeeds(ListDataFeedOptions options, Context context) {
         return new PagedIterable<>(this.asyncClient.listDataFeeds(options, context));
     }
+
+    /**
+     * Create a new data feed.
+     *
+     * @param dataFeed the data feed.
+     * @return the created data feed.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DataFeedDetail createDataFeed(DataFeedDetail dataFeed) {
+        return this.asyncClient.createDataFeed(dataFeed, Context.NONE).block();
+    }
 }
