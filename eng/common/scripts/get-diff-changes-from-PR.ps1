@@ -23,7 +23,7 @@ param (
   [string] $DiffFilterType = 'd'
 )
 
-Set-StrictMode -Version 3
+#Set-StrictMode -Version 3
 
 function Get-PullRequest-Diff-Changes($SourceCommittish, $TargetCommittish, $DiffPath, $DiffFilterType) {
   # If ${env:SYSTEM_PULLREQUEST_TARGETBRANCH} is empty, then return empty.
