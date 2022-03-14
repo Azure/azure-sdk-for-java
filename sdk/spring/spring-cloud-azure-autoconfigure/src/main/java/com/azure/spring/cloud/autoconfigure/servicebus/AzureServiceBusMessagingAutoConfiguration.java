@@ -62,7 +62,7 @@ public class AzureServiceBusMessagingAutoConfiguration {
                 connectionStringProviders.getIfAvailable();
             if (connectionStringProvider != null) {
                 namespaceProperties.setConnectionString(connectionStringProvider.getConnectionString());
-                LOGGER.warn("Service Bus connection string is set now.");
+                LOGGER.info("Service Bus connection string is set from {} now.", connectionStringProvider.getClass().getName());
             }
         }
         return namespaceProperties;

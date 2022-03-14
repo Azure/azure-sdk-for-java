@@ -65,7 +65,7 @@ public class AzureEventHubsMessagingAutoConfiguration {
                 connectionStringProviders.getIfAvailable();
             if (connectionStringProvider != null) {
                 namespaceProperties.setConnectionString(connectionStringProvider.getConnectionString());
-                LOGGER.warn("Event Hubs connection string is set now.");
+                LOGGER.info("Event Hubs connection string is set from {} now.", connectionStringProvider.getClass().getName());
             }
         }
         return namespaceProperties;

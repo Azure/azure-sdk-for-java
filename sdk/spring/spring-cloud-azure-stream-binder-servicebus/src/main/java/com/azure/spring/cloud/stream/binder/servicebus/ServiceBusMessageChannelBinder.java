@@ -134,7 +134,6 @@ public class ServiceBusMessageChannelBinder extends
         ServiceBusContainerProperties containerProperties = new ServiceBusContainerProperties();
         containerProperties.setEntityName(destination.getName());
         containerProperties.setSubscriptionName(group);
-        containerProperties.setAutoComplete(properties.getExtension().getAutoComplete());
         ServiceBusMessageListenerContainer listenerContainer = new ServiceBusMessageListenerContainer(getProcessorFactory(), containerProperties);
 
         serviceBusMessageListenerContainers.add(listenerContainer);
