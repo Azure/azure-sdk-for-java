@@ -11,7 +11,6 @@ import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.identity.UsernamePasswordCredentialBuilder;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.AbstractAzureHttpConfigurationProperties;
-import com.azure.spring.cloud.core.provider.authentication.TokenCredentialOptionsProvider;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.cloud.core.implementation.factory.AbstractAzureServiceClientBuilderFactory;
@@ -21,6 +20,7 @@ import com.azure.spring.cloud.core.implementation.factory.credential.ClientSecre
 import com.azure.spring.cloud.core.implementation.factory.credential.DefaultAzureCredentialBuilderFactory;
 import com.azure.spring.cloud.core.implementation.factory.credential.ManagedIdentityCredentialBuilderFactory;
 import com.azure.spring.cloud.core.implementation.factory.credential.UsernamePasswordCredentialBuilderFactory;
+import com.azure.spring.cloud.core.provider.authentication.TokenCredentialOptionsProvider;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -51,8 +51,14 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
     @ConditionalOnMissingBean(name = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)
     @Bean(name = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)
     @Order
-    TokenCredential tokenCredential(DefaultAzureCredentialBuilderFactory factory) {
-        return factory.build().build();
+    TokenCredential tokenCredential(DefaultAzureCredentialBuilderFactory factory,
+                                    AzureTokenCredentialResolver resolver) {
+        TokenCredential globalTokenCredential = resolver.resolve(this.identityClientProperties);
+        if (globalTokenCredential != null) {
+            return globalTokenCredential;
+        } else {
+            return factory.build().build();
+        }
     }
 
     @Bean

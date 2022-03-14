@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.stream.binder.eventhubs.config;
 
-import com.azure.identity.DefaultAzureCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
@@ -115,7 +115,7 @@ public class EventHubsBinderConfiguration {
     @ConditionalOnMissingBean
     ClientFactoryCustomizer defaultClientFactoryCustomizer(
         AzureTokenCredentialResolver azureTokenCredentialResolver,
-        @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)DefaultAzureCredential defaultAzureCredential,
+        @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultAzureCredential,
         ObjectProvider<AzureServiceClientBuilderCustomizer<EventHubClientBuilder>> clientBuilderCustomizers,
         ObjectProvider<AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder>> processorClientBuilderCustomizers) {
 
@@ -128,12 +128,12 @@ public class EventHubsBinderConfiguration {
      */
     static class DefaultClientFactoryCustomizer implements ClientFactoryCustomizer {
 
-        private final DefaultAzureCredential defaultAzureCredential;
+        private final TokenCredential defaultAzureCredential;
         private final AzureTokenCredentialResolver tokenCredentialResolver;
         private final ObjectProvider<AzureServiceClientBuilderCustomizer<EventHubClientBuilder>> clientBuilderCustomizers;
         private final ObjectProvider<AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder>> processorClientBuilderCustomizers;
 
-        DefaultClientFactoryCustomizer(DefaultAzureCredential defaultAzureCredential,
+        DefaultClientFactoryCustomizer(TokenCredential defaultAzureCredential,
                                        AzureTokenCredentialResolver azureTokenCredentialResolver,
                                        ObjectProvider<AzureServiceClientBuilderCustomizer<EventHubClientBuilder>> clientBuilderCustomizers,
                                        ObjectProvider<AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder>> processorClientBuilderCustomizers) {
