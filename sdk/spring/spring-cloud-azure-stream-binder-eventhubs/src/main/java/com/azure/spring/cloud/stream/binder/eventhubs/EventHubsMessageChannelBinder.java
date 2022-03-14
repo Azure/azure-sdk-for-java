@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.stream.binder.eventhubs;
 
 import com.azure.messaging.eventhubs.CheckpointStore;
+import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
 import com.azure.spring.cloud.stream.binder.eventhubs.config.ClientFactoryCustomizer;
 import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsConsumerProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsExtendedBindingProperties;
@@ -14,7 +15,6 @@ import com.azure.spring.messaging.eventhubs.core.EventHubsTemplate;
 import com.azure.spring.messaging.eventhubs.core.listener.EventHubsMessageListenerContainer;
 import com.azure.spring.messaging.eventhubs.core.properties.EventHubsContainerProperties;
 import com.azure.spring.messaging.eventhubs.core.properties.NamespaceProperties;
-import com.azure.spring.messaging.eventhubs.core.properties.ProcessorProperties;
 import com.azure.spring.messaging.eventhubs.core.properties.ProducerProperties;
 import com.azure.spring.messaging.eventhubs.implementation.core.DefaultEventHubsNamespaceProcessorFactory;
 import com.azure.spring.messaging.eventhubs.implementation.core.DefaultEventHubsNamespaceProducerFactory;
@@ -29,6 +29,7 @@ import com.azure.spring.integration.core.instrumentation.InstrumentationManager;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.ListenerMode;
 import com.azure.spring.messaging.PropertiesSupplier;
+import com.azure.spring.messaging.eventhubs.implementation.properties.merger.ProcessorPropertiesMerger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.stream.binder.AbstractMessageChannelBinder;
@@ -135,10 +136,7 @@ public class EventHubsMessageChannelBinder extends
             group = "anonymous." + UUID.randomUUID();
         }
 
-        EventHubsContainerProperties containerProperties = new EventHubsContainerProperties();
-        containerProperties.setEventHubName(destination.getName());
-        containerProperties.setConsumerGroup(group);
-        containerProperties.setCheckpointConfig(properties.getExtension().getCheckpoint());
+        EventHubsContainerProperties containerProperties = createContainerProperties(destination, group, properties);
         EventHubsMessageListenerContainer listenerContainer = new EventHubsMessageListenerContainer(
             getProcessorFactory(), containerProperties);
 
@@ -158,6 +156,26 @@ public class EventHubsMessageChannelBinder extends
         inboundAdapter.setErrorChannel(errorInfrastructure.getErrorChannel());
 
         return inboundAdapter;
+    }
+
+    /**
+     * Create {@link EventHubsContainerProperties} from the extended {@link EventHubsConsumerProperties}.
+     * @param destination reference to the consumer destination.
+     * @param group the consumer group.
+     * @param properties the consumer properties.
+     * @return the {@link EventHubsContainerProperties}.
+     */
+    private EventHubsContainerProperties createContainerProperties(
+        ConsumerDestination destination,
+        String group,
+        ExtendedConsumerProperties<EventHubsConsumerProperties> properties) {
+        EventHubsContainerProperties containerProperties = new EventHubsContainerProperties();
+        AzurePropertiesUtils.copyAzureCommonProperties(properties.getExtension(), containerProperties);
+        ProcessorPropertiesMerger.copyProcessorPropertiesIfNotNull(properties.getExtension(), containerProperties);
+        containerProperties.setEventHubName(destination.getName());
+        containerProperties.setConsumerGroup(group);
+        containerProperties.setCheckpointConfig(properties.getExtension().getCheckpoint());
+        return containerProperties;
     }
 
     @Override
@@ -203,21 +221,6 @@ public class EventHubsMessageChannelBinder extends
         };
     }
 
-    private PropertiesSupplier<ConsumerIdentifier, ProcessorProperties> getProcessorPropertiesSupplier() {
-        return key -> {
-            if (this.extendedConsumerPropertiesMap.containsKey(key)) {
-                EventHubsConsumerProperties consumerProperties = this.extendedConsumerPropertiesMap.get(key)
-                    .getExtension();
-                consumerProperties.setEventHubName(key.getDestination());
-                consumerProperties.setConsumerGroup(key.getGroup());
-                return consumerProperties;
-            } else {
-                LOGGER.debug("Can't find extended properties for destination {}, group {}", key.getDestination(), key.getGroup());
-                return null;
-            }
-        };
-    }
-
     private EventHubsTemplate getEventHubTemplate() {
         if (this.eventHubsTemplate == null) {
             DefaultEventHubsNamespaceProducerFactory factory = new DefaultEventHubsNamespaceProducerFactory(
@@ -238,7 +241,7 @@ public class EventHubsMessageChannelBinder extends
     private EventHubsProcessorFactory getProcessorFactory() {
         if (this.processorFactory == null) {
             this.processorFactory = new DefaultEventHubsNamespaceProcessorFactory(
-                this.checkpointStore, this.namespaceProperties, getProcessorPropertiesSupplier());
+                this.checkpointStore, this.namespaceProperties);
 
             clientFactoryCustomizers.forEach(customizer -> customizer.customize(processorFactory));
 
