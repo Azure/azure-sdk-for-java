@@ -124,7 +124,7 @@ function Fetch-Namespaces-From-Javadoc ($jarFilePath, $destination) {
     elseif (Test-Path "$tempLocation/com") {
         $originLocation = Get-Location 
         try {
-            Push-Location $tempLocation
+            Set-Location $tempLocation
             $allFolders = Get-ChildItem "$tempLocation/com" -Recurse -Directory | 
                 Where-Object {$_.GetFiles().Count -gt 0 -and $_.name -notmatch "class-use"}
             foreach ($path in $allFolders) {
