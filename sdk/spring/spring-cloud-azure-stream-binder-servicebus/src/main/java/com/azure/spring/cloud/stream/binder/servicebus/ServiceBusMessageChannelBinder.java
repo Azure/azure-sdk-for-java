@@ -53,7 +53,6 @@ import org.springframework.util.Assert;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -354,7 +353,4 @@ public class ServiceBusMessageChannelBinder extends
         this.clientFactoryCustomizers = clientFactoryCustomizers;
     }
 
-    List<ServiceBusMessageListenerContainer> getEventHubsMessageListenerContainers() {
-        return Collections.unmodifiableList(this.serviceBusMessageListenerContainers);
-    }
 }

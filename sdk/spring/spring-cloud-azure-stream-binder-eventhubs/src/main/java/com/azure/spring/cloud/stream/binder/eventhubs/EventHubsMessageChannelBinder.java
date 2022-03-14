@@ -52,7 +52,6 @@ import org.springframework.util.StringUtils;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -291,7 +290,4 @@ public class EventHubsMessageChannelBinder extends
         this.clientFactoryCustomizers = clientFactoryCustomizers;
     }
 
-    List<EventHubsMessageListenerContainer> getEventHubsMessageListenerContainers() {
-        return Collections.unmodifiableList(this.eventHubsMessageListenerContainers);
-    }
 }
