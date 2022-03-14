@@ -37,8 +37,8 @@ public class SyncAsyncExtension implements TestTemplateInvocationContextProvider
         Boolean isSync = IS_SYNC_THREAD_LOCAL.get();
         WAS_EXTENSION_USED_THREAD_LOCAL.set(true);
         if (isSync == null) {
-            throw new IllegalStateException("The IS_SYNC_THREAD_LOCAL is undefined. Make sure you're using" +
-                "@SyncAsyncTest with SyncAsyncExtension.execute()");
+            throw new IllegalStateException("The IS_SYNC_THREAD_LOCAL is undefined. Make sure you're using"
+                + "@SyncAsyncTest with SyncAsyncExtension.execute()");
         } else if (isSync) {
             return sync.call();
         } else {
@@ -56,8 +56,8 @@ public class SyncAsyncExtension implements TestTemplateInvocationContextProvider
         Boolean isSync = IS_SYNC_THREAD_LOCAL.get();
         WAS_EXTENSION_USED_THREAD_LOCAL.set(true);
         if (isSync == null) {
-            throw new IllegalStateException("The IS_SYNC_THREAD_LOCAL is undefined. Make sure you're using" +
-                "@SyncAsyncTest with SyncAsyncExtension.execute()");
+            throw new IllegalStateException("The IS_SYNC_THREAD_LOCAL is undefined. Make sure you're using"
+                + "@SyncAsyncTest with SyncAsyncExtension.execute()");
         } else if (isSync) {
             sync.run();
         } else {
