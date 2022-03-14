@@ -1,0 +1,24 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com//metricsadvisor/v1.0/dataFeeds",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "0b8b4ebb-ef95-46b4-9cde-8d06fe216686",
+      "content-length" : "0",
+      "x-envoy-upstream-service-time" : "1981",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "0b8b4ebb-ef95-46b4-9cde-8d06fe216686",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "Date" : "Mon, 14 Mar 2022 04:54:08 GMT",
+      "Location" : "https://metricsadvisor-weidxu.cognitiveservices.azure.com/metricsadvisor/v1.0/dataFeeds/a4c95870-7426-488f-a1b6-5cee2115bd32"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

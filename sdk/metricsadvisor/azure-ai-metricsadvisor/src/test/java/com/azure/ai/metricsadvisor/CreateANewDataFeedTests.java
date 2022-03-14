@@ -6,14 +6,12 @@ package com.azure.ai.metricsadvisor;
 
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public final class CreateANewDataFeedTests extends MetricsAdvisorClientTestBase {
     @Test
-    @DoNotRecord(skipInPlayback = true)
     public void testCreateANewDataFeedTests() {
         BinaryData body =
                 BinaryData.fromString(
@@ -21,6 +19,6 @@ public final class CreateANewDataFeedTests extends MetricsAdvisorClientTestBase 
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response = metricsAdvisorClient.createDataFeedWithResponse(body, requestOptions);
         Assertions.assertEquals(201, response.getStatusCode());
-        Assertions.assertEquals("", response.getHeaders().get("Location").getValue());
+        Assertions.assertNotNull(response.getHeaders().get("Location").getValue());
     }
 }
