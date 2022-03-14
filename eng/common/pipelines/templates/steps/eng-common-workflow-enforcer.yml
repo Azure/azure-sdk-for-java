@@ -1,5 +1,5 @@
 steps:
-  - ${{if ne(variables['DefaultBranch'], '')}}:
+  - ${{if eq(variables['DefaultBranch'], '')}}:
     - template: eng/common/pipelines/templates/steps/set-default-branch.yml
       parameters:
         DefaultBranchVariableName: DefaultBranch
