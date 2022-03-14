@@ -1,6 +1,6 @@
 steps:
   - ${{if eq(variables['DefaultBranch'], '')}}:
-    - template: set-default-branch.yml
+    - template: /eng/common/pipelines/templates/steps/set-default-branch.yml
       parameters:
         DefaultBranchVariableName: DefaultBranch
   - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
