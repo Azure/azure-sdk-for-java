@@ -41,7 +41,7 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
 
     private DocumentModelAdministrationClient getDocumentModelAdministrationClient(HttpClient httpClient,
                                                                                    DocumentAnalysisServiceVersion serviceVersion) {
-        return getDocumentModelAdminClientBuilder(httpClient, serviceVersion, false).buildClient();
+        return getDocumentModelAdminClientBuilder(httpClient, serviceVersion, true).buildClient();
     }
 
     /**
