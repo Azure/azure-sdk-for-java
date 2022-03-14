@@ -59,11 +59,12 @@ public class EventHubsBinderConfiguration {
 
 
     /**
-     * Declare Event Hubs Channel Provisioner bean.
+     * Declare the ARM implementation of {@link EventHubsChannelProvisioner}.
      *
-     * @param eventHubsProperties the event Hubs Properties
-     * @param eventHubsProvisioner the event Hubs Provisioner
-     * @return EventHubsChannelProvisioner bean the Event Hubs Channel Provisioner bean
+     * @param eventHubsProperties the event Hubs Properties.
+     * @param eventHubsProvisioner the event Hubs Provisioner.
+     *
+     * @return the {@link EventHubsChannelResourceManagerProvisioner}.
      */
     @Bean
     @ConditionalOnMissingBean
@@ -71,14 +72,13 @@ public class EventHubsBinderConfiguration {
     EventHubsChannelProvisioner eventHubChannelArmProvisioner(
         AzureEventHubsProperties eventHubsProperties, EventHubsProvisioner eventHubsProvisioner) {
 
-        return new EventHubsChannelResourceManagerProvisioner(eventHubsProperties.getNamespace(),
-                                                             eventHubsProvisioner);
+        return new EventHubsChannelResourceManagerProvisioner(eventHubsProperties.getNamespace(), eventHubsProvisioner);
     }
 
     /**
-     * Declare Event Hubs Channel Provisioner bean.
+     * Declare the {@link EventHubsChannelProvisioner} bean.
      *
-     * @return EventHubsChannelProvisioner bean the Event Hubs Channel Provisioner bean
+     * @return the {@link EventHubsChannelProvisioner} bean.
      */
     @Bean
     @ConditionalOnMissingBean({ EventHubsProvisioner.class, EventHubsChannelProvisioner.class })
@@ -87,14 +87,16 @@ public class EventHubsBinderConfiguration {
     }
 
     /**
-     * Declare Event Hubs Message Channel Binder bean.
+     * Declare the {@link EventHubsMessageChannelBinder} bean.
      *
-     * @param channelProvisioner the channel Provisioner
-     * @param bindingProperties the binding Properties
-     * @param namespaceProperties the namespace Properties
-     * @param checkpointStores the checkpoint Stores
-     * @param customizers customizers to customize client factories
-     * @return EventHubsMessageChannelBinder bean the Event Hubs Message Channel Binder bean
+     * @param channelProvisioner the channel provisioner.
+     * @param bindingProperties the binding properties.
+     * @param namespaceProperties the namespace properties.
+     * @param checkpointStores the checkpoint stores.
+     * @param producerFactoryCustomizers customizers to customize producer factories.
+     * @param processorFactoryCustomizers customizers to customize processor factories.
+     *
+     * @return the {@link EventHubsMessageChannelBinder} bean.
      */
     @Bean
     @ConditionalOnMissingBean
@@ -102,45 +104,52 @@ public class EventHubsBinderConfiguration {
                                                         EventHubsExtendedBindingProperties bindingProperties,
                                                         ObjectProvider<NamespaceProperties> namespaceProperties,
                                                         ObjectProvider<CheckpointStore> checkpointStores,
-                                                        ObjectProvider<ClientFactoryCustomizer> customizers) {
+                                                        ObjectProvider<EventHubsProducerFactoryCustomizer> producerFactoryCustomizers,
+                                                        ObjectProvider<EventHubsProcessorFactoryCustomizer> processorFactoryCustomizers) {
         EventHubsMessageChannelBinder binder = new EventHubsMessageChannelBinder(null, channelProvisioner);
         binder.setBindingProperties(bindingProperties);
         binder.setNamespaceProperties(namespaceProperties.getIfAvailable());
         checkpointStores.ifAvailable(binder::setCheckpointStore);
-        binder.setClientFactoryCustomizers(customizers.orderedStream().collect(Collectors.toList()));
+        binder.setProducerFactoryCustomizers(producerFactoryCustomizers.orderedStream().collect(Collectors.toList()));
+        binder.setProcessorFactoryCustomizers(processorFactoryCustomizers.orderedStream().collect(Collectors.toList()));
         return binder;
     }
 
     @Bean
     @ConditionalOnMissingBean
-    ClientFactoryCustomizer defaultClientFactoryCustomizer(
+    EventHubsProducerFactoryCustomizer defaultEventHubsProducerFactoryCustomizer(
         AzureTokenCredentialResolver azureTokenCredentialResolver,
         @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultAzureCredential,
-        ObjectProvider<AzureServiceClientBuilderCustomizer<EventHubClientBuilder>> clientBuilderCustomizers,
+        ObjectProvider<AzureServiceClientBuilderCustomizer<EventHubClientBuilder>> clientBuilderCustomizers) {
+
+        return new DefaultProducerFactoryCustomizer(defaultAzureCredential, azureTokenCredentialResolver, clientBuilderCustomizers);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    EventHubsProcessorFactoryCustomizer defaultEventHubsProcessorFactoryCustomizer(
+        AzureTokenCredentialResolver azureTokenCredentialResolver,
+        @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultAzureCredential,
         ObjectProvider<AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder>> processorClientBuilderCustomizers) {
 
-        return new DefaultClientFactoryCustomizer(defaultAzureCredential, azureTokenCredentialResolver,
-            clientBuilderCustomizers, processorClientBuilderCustomizers);
+        return new DefaultProcessorFactoryCustomizer(defaultAzureCredential, azureTokenCredentialResolver, processorClientBuilderCustomizers);
     }
 
     /**
-     * The {@link ClientFactoryCustomizer} to configure the credential related properties.
+     * The default {@link EventHubsProducerFactoryCustomizer} to configure the credential related properties and client builder customizers.
      */
-    static class DefaultClientFactoryCustomizer implements ClientFactoryCustomizer {
+    static class DefaultProducerFactoryCustomizer implements EventHubsProducerFactoryCustomizer {
 
         private final TokenCredential defaultAzureCredential;
         private final AzureTokenCredentialResolver tokenCredentialResolver;
         private final ObjectProvider<AzureServiceClientBuilderCustomizer<EventHubClientBuilder>> clientBuilderCustomizers;
-        private final ObjectProvider<AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder>> processorClientBuilderCustomizers;
 
-        DefaultClientFactoryCustomizer(TokenCredential defaultAzureCredential,
-                                       AzureTokenCredentialResolver azureTokenCredentialResolver,
-                                       ObjectProvider<AzureServiceClientBuilderCustomizer<EventHubClientBuilder>> clientBuilderCustomizers,
-                                       ObjectProvider<AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder>> processorClientBuilderCustomizers) {
+        DefaultProducerFactoryCustomizer(TokenCredential defaultAzureCredential,
+                                         AzureTokenCredentialResolver azureTokenCredentialResolver,
+                                         ObjectProvider<AzureServiceClientBuilderCustomizer<EventHubClientBuilder>> clientBuilderCustomizers) {
             this.defaultAzureCredential = defaultAzureCredential;
             this.tokenCredentialResolver = azureTokenCredentialResolver;
             this.clientBuilderCustomizers = clientBuilderCustomizers;
-            this.processorClientBuilderCustomizers = processorClientBuilderCustomizers;
         }
 
         @Override
@@ -155,6 +164,28 @@ public class EventHubsBinderConfiguration {
             }
         }
 
+        ObjectProvider<AzureServiceClientBuilderCustomizer<EventHubClientBuilder>> getClientBuilderCustomizers() {
+            return clientBuilderCustomizers;
+        }
+    }
+
+    /**
+     * The default {@link EventHubsProcessorFactoryCustomizer} to configure the credential related properties and client builder customizers.
+     */
+    static class DefaultProcessorFactoryCustomizer implements EventHubsProcessorFactoryCustomizer {
+
+        private final TokenCredential defaultAzureCredential;
+        private final AzureTokenCredentialResolver tokenCredentialResolver;
+        private final ObjectProvider<AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder>> processorClientBuilderCustomizers;
+
+        DefaultProcessorFactoryCustomizer(TokenCredential defaultAzureCredential,
+                                          AzureTokenCredentialResolver azureTokenCredentialResolver,
+                                          ObjectProvider<AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder>> processorClientBuilderCustomizers) {
+            this.defaultAzureCredential = defaultAzureCredential;
+            this.tokenCredentialResolver = azureTokenCredentialResolver;
+            this.processorClientBuilderCustomizers = processorClientBuilderCustomizers;
+        }
+
         @Override
         public void customize(EventHubsProcessorFactory factory) {
             if (factory instanceof DefaultEventHubsNamespaceProcessorFactory) {
@@ -165,10 +196,6 @@ public class EventHubsBinderConfiguration {
                 defaultFactory.setTokenCredentialResolver(tokenCredentialResolver);
                 processorClientBuilderCustomizers.orderedStream().forEach(defaultFactory::addBuilderCustomizer);
             }
-        }
-
-        ObjectProvider<AzureServiceClientBuilderCustomizer<EventHubClientBuilder>> getClientBuilderCustomizers() {
-            return clientBuilderCustomizers;
         }
 
         ObjectProvider<AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder>> getProcessorClientBuilderCustomizers() {

@@ -154,15 +154,23 @@ public class ServiceBusBinderConfigurationTests {
     }
 
     @Test
-    void clientFactoryCustomizerShouldBeConfigured() {
+    void producerFactoryCustomizerShouldBeConfigured() {
         this.contextRunner
             .withBean(ServiceBusProvisioner.class, () -> mock(ServiceBusProvisioner.class))
             .withPropertyValues("spring.cloud.azure.servicebus.namespace=fake-namespace")
-            .run(context -> assertThat(context).hasSingleBean(ClientFactoryCustomizer.class));
+            .run(context -> assertThat(context).hasSingleBean(ServiceBusProducerFactoryCustomizer.class));
     }
 
     @Test
-    void builderCustomizerShouldBeConfiguredToClientFactoryCustomizer() {
+    void processorFactoryCustomizerShouldBeConfigured() {
+        this.contextRunner
+            .withBean(ServiceBusProvisioner.class, () -> mock(ServiceBusProvisioner.class))
+            .withPropertyValues("spring.cloud.azure.servicebus.namespace=fake-namespace")
+            .run(context -> assertThat(context).hasSingleBean(ServiceBusProcessorFactoryCustomizer.class));
+    }
+
+    @Test
+    void producerBuilderCustomizerShouldBeConfiguredToProducerFactoryCustomizer() {
         this.contextRunner
             .withBean(ServiceBusProvisioner.class, () -> mock(ServiceBusProvisioner.class))
             .withPropertyValues("spring.cloud.azure.servicebus.namespace=fake-namespace")
@@ -174,12 +182,33 @@ public class ServiceBusBinderConfigurationTests {
             .withBean("session-processor-customizer3", ServiceBusSessionProcessorClientBuilderCustomizer.class, ServiceBusSessionProcessorClientBuilderCustomizer::new)
             .withBean("other-customizer1", OtherBuilderCustomizer.class, OtherBuilderCustomizer::new)
             .run(context -> {
-                assertThat(context).hasSingleBean(ClientFactoryCustomizer.class);
-                ClientFactoryCustomizer clientFactoryCustomizer = context.getBean(ClientFactoryCustomizer.class);
+                assertThat(context).hasSingleBean(ServiceBusProducerFactoryCustomizer.class);
+                ServiceBusProducerFactoryCustomizer clientFactoryCustomizer = context.getBean(ServiceBusProducerFactoryCustomizer.class);
 
-                ServiceBusBinderConfiguration.DefaultClientFactoryCustomizer defaultFactoryCustomizer = (ServiceBusBinderConfiguration.DefaultClientFactoryCustomizer) clientFactoryCustomizer;
+                ServiceBusBinderConfiguration.DefaultProducerFactoryCustomizer defaultFactoryCustomizer = (ServiceBusBinderConfiguration.DefaultProducerFactoryCustomizer) clientFactoryCustomizer;
 
                 assertEquals(1, (int) defaultFactoryCustomizer.getSenderClientBuilderCustomizers().stream().count());
+            });
+    }
+
+    @Test
+    void processorBuilderCustomizerShouldBeConfiguredToProcessorFactoryCustomizer() {
+        this.contextRunner
+            .withBean(ServiceBusProvisioner.class, () -> mock(ServiceBusProvisioner.class))
+            .withPropertyValues("spring.cloud.azure.servicebus.namespace=fake-namespace")
+            .withBean("producer-customizer1", ServiceBusSenderClientBuilderCustomizer.class, ServiceBusSenderClientBuilderCustomizer::new)
+            .withBean("processor-customizer1", ServiceBusProcessorClientBuilderCustomizer.class, ServiceBusProcessorClientBuilderCustomizer::new)
+            .withBean("processor-customizer2", ServiceBusProcessorClientBuilderCustomizer.class, ServiceBusProcessorClientBuilderCustomizer::new)
+            .withBean("session-processor-customizer1", ServiceBusSessionProcessorClientBuilderCustomizer.class, ServiceBusSessionProcessorClientBuilderCustomizer::new)
+            .withBean("session-processor-customizer2", ServiceBusSessionProcessorClientBuilderCustomizer.class, ServiceBusSessionProcessorClientBuilderCustomizer::new)
+            .withBean("session-processor-customizer3", ServiceBusSessionProcessorClientBuilderCustomizer.class, ServiceBusSessionProcessorClientBuilderCustomizer::new)
+            .withBean("other-customizer1", OtherBuilderCustomizer.class, OtherBuilderCustomizer::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(ServiceBusProcessorFactoryCustomizer.class);
+                ServiceBusProcessorFactoryCustomizer clientFactoryCustomizer = context.getBean(ServiceBusProcessorFactoryCustomizer.class);
+
+                ServiceBusBinderConfiguration.DefaultProcessorFactoryCustomizer defaultFactoryCustomizer = (ServiceBusBinderConfiguration.DefaultProcessorFactoryCustomizer) clientFactoryCustomizer;
+
                 assertEquals(2, (int) defaultFactoryCustomizer.getProcessorClientBuilderCustomizers().stream().count());
                 assertEquals(3, (int) defaultFactoryCustomizer.getSessionProcessorClientBuilderCustomizers().stream().count());
             });

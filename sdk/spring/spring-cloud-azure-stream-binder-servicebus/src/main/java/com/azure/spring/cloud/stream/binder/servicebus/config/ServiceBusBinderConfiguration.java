@@ -57,11 +57,12 @@ import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEF
 public class ServiceBusBinderConfiguration {
 
     /**
-     * Declare Service Bus Channel Provisioner bean.
+     * Declare the ARM implementation of {@link ServiceBusChannelProvisioner}.
      *
-     * @param serviceBusProperties the service bus properties
-     * @param serviceBusProvisioner the service bus provisioner
-     * @return ServiceBusChannelProvisioner bean the Service Bus Channel Provisioner bean
+     * @param serviceBusProperties the service bus properties.
+     * @param serviceBusProvisioner the service bus provisioner.
+     *
+     * @return the {@link ServiceBusChannelResourceManagerProvisioner} bean.
      */
     @Bean
     @ConditionalOnMissingBean
@@ -75,9 +76,9 @@ public class ServiceBusBinderConfiguration {
     }
 
     /**
-     * Declare Service Bus Channel Provisioner bean.
+     * Declare {@link ServiceBusChannelProvisioner} bean.
      *
-     * @return ServiceBusChannelProvisioner bean the Service Bus Channel Provisioner bean
+     * @return the {@link ServiceBusChannelProvisioner} bean.
      */
     @Bean
     @ConditionalOnMissingBean({ServiceBusProvisioner.class, ServiceBusChannelProvisioner.class})
@@ -86,14 +87,16 @@ public class ServiceBusBinderConfiguration {
     }
 
     /**
-     * Declare Service Bus Message Channel Binder bean.
+     * Declare the {@link ServiceBusMessageChannelBinder} bean.
      *
-     * @param channelProvisioner the channel Provisioner
-     * @param bindingProperties the binding Properties
-     * @param namespaceProperties the namespace Properties
-     * @param messageConverter the message Converter
-     * @param customizers the client factory customizers
-     * @return ServiceBusMessageChannelBinder bean the Service Bus Message Channel Binder bean
+     * @param channelProvisioner the channel provisioner.
+     * @param bindingProperties the binding properties.
+     * @param namespaceProperties the namespace properties.
+     * @param messageConverter the message converter.
+     * @param producerFactoryCustomizers customizers to customize producer factories.
+     * @param processorFactoryCustomizers customizers to customize processor factories.
+     *
+     * @return the {@link ServiceBusMessageChannelBinder} bean.
      */
     @Bean
     @ConditionalOnMissingBean
@@ -101,52 +104,57 @@ public class ServiceBusBinderConfiguration {
                                                            ServiceBusExtendedBindingProperties bindingProperties,
                                                            ObjectProvider<NamespaceProperties> namespaceProperties,
                                                            ObjectProvider<ServiceBusMessageConverter> messageConverter,
-                                                           ObjectProvider<ClientFactoryCustomizer> customizers) {
+                                                           ObjectProvider<ServiceBusProducerFactoryCustomizer> producerFactoryCustomizers,
+                                                           ObjectProvider<ServiceBusProcessorFactoryCustomizer> processorFactoryCustomizers) {
 
         ServiceBusMessageChannelBinder binder = new ServiceBusMessageChannelBinder(null, channelProvisioner);
         binder.setBindingProperties(bindingProperties);
         binder.setNamespaceProperties(namespaceProperties.getIfAvailable());
         binder.setMessageConverter(messageConverter.getIfAvailable());
-        binder.setClientFactoryCustomizers(customizers.orderedStream().collect(Collectors.toList()));
+        binder.setProducerFactoryCustomizers(producerFactoryCustomizers.orderedStream().collect(Collectors.toList()));
+        binder.setProcessorFactoryCustomizers(processorFactoryCustomizers.orderedStream().collect(Collectors.toList()));
         return binder;
     }
 
     @Bean
     @ConditionalOnMissingBean
-    ClientFactoryCustomizer defaultClientFactoryCustomizer(
+    ServiceBusProducerFactoryCustomizer defaultServiceBusProducerFactoryCustomizer(
         AzureTokenCredentialResolver azureTokenCredentialResolver,
         @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultAzureCredential,
-        ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> senderClientBuilderCustomizers,
+        ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> senderClientBuilderCustomizers) {
+
+        return new DefaultProducerFactoryCustomizer(defaultAzureCredential, azureTokenCredentialResolver,
+            senderClientBuilderCustomizers);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    ServiceBusProcessorFactoryCustomizer defaultServiceBusProcessorFactoryCustomizer(
+        AzureTokenCredentialResolver azureTokenCredentialResolver,
+        @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultAzureCredential,
         ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> processorClientBuilderCustomizers,
         ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder>> sessionProcessorClientBuilderCustomizers) {
 
-        return new DefaultClientFactoryCustomizer(defaultAzureCredential, azureTokenCredentialResolver,
-            senderClientBuilderCustomizers,
+        return new DefaultProcessorFactoryCustomizer(defaultAzureCredential, azureTokenCredentialResolver,
             processorClientBuilderCustomizers,
             sessionProcessorClientBuilderCustomizers);
     }
 
     /**
-     * The {@link ClientFactoryCustomizer} to configure the credential related properties and client builder customizers.
+     * The default {@link ServiceBusProducerFactory} to configure the credential related properties and client builder customizers.
      */
-    static class DefaultClientFactoryCustomizer implements ClientFactoryCustomizer {
+    static class DefaultProducerFactoryCustomizer implements ServiceBusProducerFactoryCustomizer {
 
         private final TokenCredential defaultAzureCredential;
         private final AzureTokenCredentialResolver tokenCredentialResolver;
         private final ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> senderClientBuilderCustomizers;
-        private final ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> processorClientBuilderCustomizers;
-        private final ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder>> sessionProcessorClientBuilderCustomizers;
 
-        DefaultClientFactoryCustomizer(TokenCredential defaultAzureCredential,
-                                       AzureTokenCredentialResolver azureTokenCredentialResolver,
-                                       ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> senderClientBuilderCustomizers,
-                                       ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> processorClientBuilderCustomizers,
-                                       ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder>> sessionProcessorClientBuilderCustomizers) {
+        DefaultProducerFactoryCustomizer(TokenCredential defaultAzureCredential,
+                                         AzureTokenCredentialResolver azureTokenCredentialResolver,
+                                         ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> senderClientBuilderCustomizers) {
             this.defaultAzureCredential = defaultAzureCredential;
             this.tokenCredentialResolver = azureTokenCredentialResolver;
             this.senderClientBuilderCustomizers = senderClientBuilderCustomizers;
-            this.processorClientBuilderCustomizers = processorClientBuilderCustomizers;
-            this.sessionProcessorClientBuilderCustomizers = sessionProcessorClientBuilderCustomizers;
         }
 
         @Override
@@ -159,6 +167,32 @@ public class ServiceBusBinderConfiguration {
                 defaultFactory.setTokenCredentialResolver(tokenCredentialResolver);
                 senderClientBuilderCustomizers.orderedStream().forEach(defaultFactory::addBuilderCustomizer);
             }
+        }
+
+        ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> getSenderClientBuilderCustomizers() {
+            return senderClientBuilderCustomizers;
+        }
+
+    }
+
+    /**
+     * The default {@link ServiceBusProducerFactory} to configure the credential related properties and client builder customizers.
+     */
+    static class DefaultProcessorFactoryCustomizer implements ServiceBusProcessorFactoryCustomizer {
+
+        private final TokenCredential defaultAzureCredential;
+        private final AzureTokenCredentialResolver tokenCredentialResolver;
+        private final ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> processorClientBuilderCustomizers;
+        private final ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder>> sessionProcessorClientBuilderCustomizers;
+
+        DefaultProcessorFactoryCustomizer(TokenCredential defaultAzureCredential,
+                                          AzureTokenCredentialResolver azureTokenCredentialResolver,
+                                          ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> processorClientBuilderCustomizers,
+                                          ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder>> sessionProcessorClientBuilderCustomizers) {
+            this.defaultAzureCredential = defaultAzureCredential;
+            this.tokenCredentialResolver = azureTokenCredentialResolver;
+            this.processorClientBuilderCustomizers = processorClientBuilderCustomizers;
+            this.sessionProcessorClientBuilderCustomizers = sessionProcessorClientBuilderCustomizers;
         }
 
         @Override
@@ -179,10 +213,6 @@ public class ServiceBusBinderConfiguration {
                     .forEach(defaultFactory::addBuilderCustomizer);
             }
 
-        }
-
-        ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> getSenderClientBuilderCustomizers() {
-            return senderClientBuilderCustomizers;
         }
 
         ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> getProcessorClientBuilderCustomizers() {
