@@ -9,9 +9,7 @@ steps:
         # Find the default branch of the repo
         Write-Host "Default Branch: $(DefaultBranch)"
         $targetBranch = "$(DefaultBranch)"
-        if (!$targetBranch) {
-          $defaultBranch = (git remote show origin | Out-String) -replace "(?ms).*HEAD branch: (\w+).*", '$1'
-        }
+
         if ((!"$(System.PullRequest.SourceBranch)".StartsWith("sync-eng/common")) -and $targetBranch -eq $defaultBranch)
         {
           $filesInCommonDir  = & 'eng/common/scripts/get-diff-changes-from-PR.ps1' -DiffPath 'eng/common/*'
