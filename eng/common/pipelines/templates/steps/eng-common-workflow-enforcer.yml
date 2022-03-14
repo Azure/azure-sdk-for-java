@@ -1,18 +1,20 @@
 steps:
+  - ${{if ne(variables['DefaultBranch'], '')}}:
+    - template: eng\common\pipelines\templates\steps\set-default-branch.yml
+      parameters:
+        DefaultBranchVariableName: DefaultBranch
   - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
     - pwsh: |
         Set-PsDebug -Trace 1
         # Find the default branch of the repo
-        $defaultBranch = (git remote show origin | Out-String) -replace "(?ms).*HEAD branch: (\w+).*", '$1'
-        $targetBranch = "$(System.PullRequest.TargetBranch)" -replace "refs/heads/"
-
-        Write-Host "Default Branch: ${defaultBranch}"
-
+        Write-Host "Default Branch: $(DefaultBranch)"
+        $targetBranch = "$(DefaultBranch)"
+        if (!$targetBranch) {
+          $defaultBranch = (git remote show origin | Out-String) -replace "(?ms).*HEAD branch: (\w+).*", '$1'
+        }
         if ((!"$(System.PullRequest.SourceBranch)".StartsWith("sync-eng/common")) -and $targetBranch -eq $defaultBranch)
         {
-
-          $filesInCommonDir = git diff "origin/${targetBranch}" HEAD --name-only -- 'eng/common/*'
-
+          $filesInCommonDir  = & 'eng/common/scripts/get-diff-changes-from-PR.ps1' -DiffPath 'eng/common/*'
           if (($LASTEXITCODE -eq 0) -and ($filesInCommonDir.Count -gt 0))
           {
             Write-Host "##vso[task.LogIssue type=error;]Changes to files under 'eng/common' directory should not be made in this Repo`n${filesInCommonDir}"
