@@ -442,8 +442,8 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
 
     private void populateQuotaHeader(String headerMaxQuota,
                                      String headerCurrentUsage) {
-        String[] headerMaxQuotaWords = headerMaxQuota.split(Constants.Quota.DELIMITER_CHARS, -1);
-        String[] headerCurrentUsageWords = headerCurrentUsage.split(Constants.Quota.DELIMITER_CHARS, -1);
+        String[] headerMaxQuotaWords = StringUtils.split(headerMaxQuota, Constants.Quota.DELIMITER_CHARS, -1);
+        String[] headerCurrentUsageWords = StringUtils.split(headerCurrentUsage, Constants.Quota.DELIMITER_CHARS, -1);
 
         for (int i = 0; i < headerMaxQuotaWords.length; ++i) {
             if (headerMaxQuotaWords[i].equalsIgnoreCase(Constants.Quota.DATABASE)) {

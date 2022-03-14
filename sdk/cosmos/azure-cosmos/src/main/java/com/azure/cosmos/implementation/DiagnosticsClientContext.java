@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.guava27.Strings;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
@@ -212,7 +213,7 @@ public interface DiagnosticsClientContext {
                 return "";
             }
 
-            return preferredRegions.stream().map(r -> r.toLowerCase(Locale.ROOT).replaceAll(" ", "")).collect(Collectors.joining(","));
+            return preferredRegions.stream().map(r -> StringUtils.replace(r.toLowerCase(Locale.ROOT), " ", "")).collect(Collectors.joining(","));
         }
 
         private String consistencyRelatedConfigInternal() {

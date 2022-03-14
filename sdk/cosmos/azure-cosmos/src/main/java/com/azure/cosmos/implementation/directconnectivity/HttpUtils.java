@@ -28,7 +28,7 @@ public class HttpUtils {
 
     public static String urlEncode(String url) {
         try {
-            return URLEncoder.encode(url, UrlEncodingInfo.UTF_8).replaceAll(UrlEncodingInfo.PLUS_SYMBOL_ESCAPED, UrlEncodingInfo.SINGLE_SPACE_URI_ENCODING);
+            return StringUtils.replace(URLEncoder.encode(url, UrlEncodingInfo.UTF_8), UrlEncodingInfo.PLUS_SYMBOL_ESCAPED, UrlEncodingInfo.SINGLE_SPACE_URI_ENCODING);
         } catch (UnsupportedEncodingException e) {
             log.error("failed to encode {}", url, e);
             throw new IllegalArgumentException("failed to encode url " + url, e);
@@ -37,7 +37,7 @@ public class HttpUtils {
 
     public static String urlDecode(String url) {
         try {
-            return URLDecoder.decode(url.replaceAll(UrlEncodingInfo.PLUS_SYMBOL_ESCAPED, UrlEncodingInfo.PLUS_SYMBOL_URI_ENCODING), UrlEncodingInfo.UTF_8);
+            return URLDecoder.decode(StringUtils.replace(url, UrlEncodingInfo.PLUS_SYMBOL_ESCAPED, UrlEncodingInfo.PLUS_SYMBOL_URI_ENCODING), UrlEncodingInfo.UTF_8);
         } catch (UnsupportedEncodingException e) {
             log.error("failed to decode {}", url, e);
             throw new IllegalArgumentException("failed to decode url " + url, e);

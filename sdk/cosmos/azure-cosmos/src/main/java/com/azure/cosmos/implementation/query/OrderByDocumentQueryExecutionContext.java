@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Undefined;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
@@ -432,8 +433,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
     private String getOrderByItemString(Object orderbyRawItem) {
         String orderByItemToString;
         if (orderbyRawItem instanceof String) {
-            orderByItemToString = "\"" + orderbyRawItem.toString().replaceAll("\"",
-                "\\\"") + "\"";
+            orderByItemToString = "\"" + StringUtils.replace(orderbyRawItem.toString(), "\"", "\\\"") + "\"";
         } else {
             if (orderbyRawItem != null) {
                 orderByItemToString = orderbyRawItem.toString();
