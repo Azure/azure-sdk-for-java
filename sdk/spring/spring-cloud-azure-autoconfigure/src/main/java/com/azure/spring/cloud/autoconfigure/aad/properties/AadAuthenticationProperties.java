@@ -53,7 +53,6 @@ public class AadAuthenticationProperties implements InitializingBean {
     /**
      * Default UserGroup configuration.
      */
-    @NestedConfigurationProperty
     private final UserGroupProperties userGroup = new UserGroupProperties();
 
     /**
