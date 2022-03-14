@@ -13,6 +13,8 @@ import com.azure.core.http.MockHttpResponse;
 import com.azure.core.http.clients.NoOpHttpClient;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.FluxByteBufferContent;
+import com.azure.core.test.junit.extensions.SyncAsyncExtension;
+import com.azure.core.test.junit.extensions.annotation.SyncAsyncTest;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
@@ -77,6 +79,9 @@ public class RetryPolicyTests {
             .verifyComplete();
     }
 
+    // TODO (kasobol-msft) what to do with parameterized tests?
+    // https://github.com/junit-team/junit5/pull/2409 OR https://github.com/junit-team/junit5/issues/871
+    // would be great.
     @ParameterizedTest
     @ValueSource(ints = {408, 429, 500, 502, 503})
     public void defaultRetryPolicyRetriesExpectedErrorCodesSync(int returnCode) {
@@ -306,7 +311,7 @@ public class RetryPolicyTests {
         );
     }
 
-    @Test
+    @SyncAsyncTest
     public void retryMax() {
         final int maxRetries = 5;
         final HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -322,33 +327,18 @@ public class RetryPolicyTests {
             .policies(new RetryPolicy(new FixedDelay(maxRetries, Duration.ofMillis(1))))
             .build();
 
-        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")))
-            .assertNext(response -> assertEquals(500, response.getStatusCode()))
-            .verifyComplete();
+        SyncAsyncExtension.execute(
+            () -> {
+                HttpResponse response = pipeline.sendSynchronously(new HttpRequest(HttpMethod.GET, "http://localhost/"));
+                assertEquals(500, response.getStatusCode());
+            },
+            () -> StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")))
+                .assertNext(response -> assertEquals(500, response.getStatusCode()))
+                .verifyComplete()
+        );
     }
 
-    @Test
-    public void retryMaxSync() {
-        final int maxRetries = 5;
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient() {
-                int count = -1;
-
-                @Override
-                public Mono<HttpResponse> send(HttpRequest request) {
-                    Assertions.assertTrue(count++ < maxRetries);
-                    return Mono.just(new MockHttpResponse(request, 500));
-                }
-            })
-            .policies(new RetryPolicy(new FixedDelay(maxRetries, Duration.ofMillis(1))))
-            .build();
-
-        HttpResponse response = pipeline.sendSynchronously(new HttpRequest(HttpMethod.GET, "http://localhost/"));
-
-        assertEquals(500, response.getStatusCode());
-    }
-
-    @Test
+    @SyncAsyncTest
     public void fixedDelayRetry() {
         final int maxRetries = 5;
         final long delayMillis = 500;
@@ -370,39 +360,18 @@ public class RetryPolicyTests {
             .policies(new RetryPolicy(new FixedDelay(maxRetries, Duration.ofMillis(delayMillis))))
             .build();
 
-        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")))
-            .assertNext(response -> assertEquals(500, response.getStatusCode()))
-            .verifyComplete();
+        SyncAsyncExtension.execute(
+            () -> {
+                HttpResponse response = pipeline.sendSynchronously(new HttpRequest(HttpMethod.GET, "http://localhost/"));
+                assertEquals(500, response.getStatusCode());
+            },
+            () -> StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")))
+                .assertNext(response -> assertEquals(500, response.getStatusCode()))
+                .verifyComplete()
+        );
     }
 
-    @Test
-    public void fixedDelayRetrySync() {
-        final int maxRetries = 5;
-        final long delayMillis = 500;
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient() {
-                int count = -1;
-                long previousAttemptMadeAt = -1;
-
-                @Override
-                public Mono<HttpResponse> send(HttpRequest request) {
-                    if (count > 0) {
-                        Assertions.assertTrue(System.currentTimeMillis() >= previousAttemptMadeAt + delayMillis);
-                    }
-                    Assertions.assertTrue(count++ < maxRetries);
-                    previousAttemptMadeAt = System.currentTimeMillis();
-                    return Mono.just(new MockHttpResponse(request, 500));
-                }
-            })
-            .policies(new RetryPolicy(new FixedDelay(maxRetries, Duration.ofMillis(delayMillis))))
-            .build();
-
-        HttpResponse response = pipeline.sendSynchronously(new HttpRequest(HttpMethod.GET, "http://localhost/"));
-
-        assertEquals(500, response.getStatusCode());
-    }
-
-    @Test
+    @SyncAsyncTest
     public void exponentialDelayRetry() {
         final int maxRetries = 5;
         final long baseDelayMillis = 100;
@@ -430,46 +399,19 @@ public class RetryPolicyTests {
             .policies(new RetryPolicy(exponentialBackoff))
             .build();
 
-        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")))
-            .assertNext(response -> assertEquals(503, response.getStatusCode()))
-            .verifyComplete();
-    }
-
-    @Test
-    public void exponentialDelayRetrySync() {
-        final int maxRetries = 5;
-        final long baseDelayMillis = 100;
-        final long maxDelayMillis = 1000;
-        ExponentialBackoff exponentialBackoff = new ExponentialBackoff(maxRetries, Duration.ofMillis(baseDelayMillis),
-            Duration.ofMillis(maxDelayMillis));
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient() {
-                int count = -1;
-                long previousAttemptMadeAt = -1;
-
-                @Override
-                public Mono<HttpResponse> send(HttpRequest request) {
-                    if (count > 0) {
-                        long requestMadeAt = System.currentTimeMillis();
-                        long expectedToBeMadeAt =
-                            previousAttemptMadeAt + ((1L << (count - 1)) * (long) (baseDelayMillis * 0.95));
-                        Assertions.assertTrue(requestMadeAt >= expectedToBeMadeAt);
-                    }
-                    Assertions.assertTrue(count++ < maxRetries);
-                    previousAttemptMadeAt = System.currentTimeMillis();
-                    return Mono.just(new MockHttpResponse(request, 503));
-                }
-            })
-            .policies(new RetryPolicy(exponentialBackoff))
-            .build();
-
-        HttpResponse response = pipeline.sendSynchronously(new HttpRequest(HttpMethod.GET, "http://localhost/"));
-
-        assertEquals(503, response.getStatusCode());
+        SyncAsyncExtension.execute(
+            () -> {
+                HttpResponse response = pipeline.sendSynchronously(new HttpRequest(HttpMethod.GET, "http://localhost/"));
+                assertEquals(503, response.getStatusCode());
+            },
+            () -> StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")))
+                .assertNext(response -> assertEquals(503, response.getStatusCode()))
+                .verifyComplete()
+        );
     }
 
     @SuppressWarnings("ReactiveStreamsUnusedPublisher")
-    @Test
+    @SyncAsyncTest
     public void retryConsumesBody() {
         final AtomicInteger bodyConsumptionCount = new AtomicInteger();
         Flux<ByteBuffer> errorBody = Flux.generate(sink -> {
@@ -523,69 +465,14 @@ public class RetryPolicyTests {
             }))
             .build();
 
-        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "https://example.com")))
-            .expectNextCount(1)
-            .verifyComplete();
-
-        assertEquals(2, bodyConsumptionCount.get());
-    }
-
-    @SuppressWarnings("ReactiveStreamsUnusedPublisher")
-    @Test
-    public void retryConsumesBodySync() {
-        final AtomicInteger bodyConsumptionCount = new AtomicInteger();
-        Flux<ByteBuffer> errorBody = Flux.generate(sink -> {
-            bodyConsumptionCount.incrementAndGet();
-            sink.next(ByteBuffer.wrap("Should be consumed".getBytes(StandardCharsets.UTF_8)));
-            sink.complete();
-        });
-
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(new RetryPolicy(new FixedDelay(2, Duration.ofMillis(1))))
-            .httpClient(request -> Mono.just(new HttpResponse(request) {
-                @Override
-                public int getStatusCode() {
-                    return 503;
-                }
-
-                @Override
-                public String getHeaderValue(String name) {
-                    return getHeaders().getValue(name);
-                }
-
-                @Override
-                public HttpHeaders getHeaders() {
-                    return new HttpHeaders();
-                }
-
-                @Override
-                public Flux<ByteBuffer> getBody() {
-                    return errorBody;
-                }
-
-                @Override
-                public BinaryData getContent() {
-                    return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(errorBody));
-                }
-
-                @Override
-                public Mono<byte[]> getBodyAsByteArray() {
-                    return FluxUtil.collectBytesInByteBufferStream(getBody());
-                }
-
-                @Override
-                public Mono<String> getBodyAsString() {
-                    return getBodyAsString(StandardCharsets.UTF_8);
-                }
-
-                @Override
-                public Mono<String> getBodyAsString(Charset charset) {
-                    return getBodyAsByteArray().map(bytes -> new String(bytes, charset));
-                }
-            }))
-            .build();
-
-        pipeline.sendSynchronously(new HttpRequest(HttpMethod.GET, "https://example.com"));
+        SyncAsyncExtension.execute(
+            () -> {
+                pipeline.sendSynchronously(new HttpRequest(HttpMethod.GET, "https://example.com"));
+            },
+            () -> StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "https://example.com")))
+                .expectNextCount(1)
+                .verifyComplete()
+        );
 
         assertEquals(2, bodyConsumptionCount.get());
     }
