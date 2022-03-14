@@ -55,6 +55,7 @@ import org.slf4j.LoggerFactory;
 import javax.net.ssl.SSLException;
 import java.net.SocketAddress;
 import java.nio.channels.ClosedChannelException;
+import java.time.Instant;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -731,7 +732,11 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         }
 
         requestRecord.stage(RntbdRequestRecord.Stage.DECODE_STARTED, response.getDecodeStartTime());
-        requestRecord.stage(RntbdRequestRecord.Stage.RECEIVED, response.getDecodeEndTime());
+
+        // When decode completed, it means sdk has received the full response from server
+        requestRecord.stage(
+                RntbdRequestRecord.Stage.RECEIVED,
+                response.getDecodeEndTime() != null ? response.getDecodeEndTime() : Instant.now());
 
         requestRecord.responseLength(response.getMessageLength());
 
