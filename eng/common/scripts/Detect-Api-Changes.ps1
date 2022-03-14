@@ -16,8 +16,6 @@ Param (
   [string] $TargetBranch = ("origin/${env:SYSTEM_PULLREQUEST_TARGETBRANCH}" -replace "refs/heads/")
 )
 
-. (Join-Path $PSScriptRoot get-diff-changes-from-PR.ps1)
-
 # Submit API review request and return status whether current revision is approved or pending or failed to create review
 function Submit-Request($filePath, $packageName)
 {
