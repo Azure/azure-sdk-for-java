@@ -2,12 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.stream.binder.servicebus;
 
+import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusBindingProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusConsumerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.core.provisioning.ServiceBusChannelProvisioner;
 import com.azure.spring.messaging.servicebus.core.properties.ServiceBusContainerProperties;
+import com.azure.spring.messaging.servicebus.support.ServiceBusMessageHeaders;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -17,13 +19,19 @@ import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
 import org.springframework.cloud.stream.binder.HeaderMode;
 import org.springframework.cloud.stream.provisioning.ConsumerDestination;
 import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageHandler;
+import org.springframework.messaging.support.ErrorMessage;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.Duration;
 import java.util.HashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
 
 public class ServiceBusMessageChannelBinderTest {
 
@@ -44,12 +52,51 @@ public class ServiceBusMessageChannelBinderTest {
     private static final String GROUP = "test";
     private static final String NAMESPACE_NAME = "test-namespace";
     private static final String CREATE_CONTAINER_PROPERTIES_METHOD_NAME = "createContainerProperties";
+    private static final String GET_ERROR_MESSAGE_HANDLER_METHOD_NAME = "getErrorMessageHandler";
 
     @BeforeEach
     void init() {
         MockitoAnnotations.openMocks(this);
         GenericApplicationContext context = new GenericApplicationContext();
         binder.setApplicationContext(context);
+    }
+
+    @Test
+    void testAbandonCalledForError() {
+        prepareConsumerProperties();
+        when(consumerDestination.getName()).thenReturn(ENTITY_NAME);
+        binder.createConsumerEndpoint(consumerDestination, GROUP, consumerProperties);
+        MessageHandler handler = ReflectionTestUtils.invokeMethod(
+            binder,
+            ServiceBusMessageChannelTestBinder.class,
+            GET_ERROR_MESSAGE_HANDLER_METHOD_NAME,
+            consumerDestination, GROUP, consumerProperties);
+        ServiceBusReceivedMessageContext messageContext = mock(ServiceBusReceivedMessageContext.class);
+        Message originalMessage = MessageBuilder.withPayload("test")
+            .setHeader(ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT, messageContext).build();
+        ErrorMessage msg = new ErrorMessage(new RuntimeException(), originalMessage);
+        handler.handleMessage(msg);
+        verify(messageContext).abandon();
+    }
+
+    @Test
+    void testDeadLetterCalledForError() {
+        prepareConsumerProperties();
+        consumerProperties.getExtension().setRequeueRejected(true);
+        when(consumerDestination.getName()).thenReturn(ENTITY_NAME);
+        binder.createConsumerEndpoint(consumerDestination, GROUP, consumerProperties);
+        MessageHandler handler = ReflectionTestUtils.invokeMethod(
+            binder,
+            ServiceBusMessageChannelTestBinder.class,
+            GET_ERROR_MESSAGE_HANDLER_METHOD_NAME,
+            consumerDestination, GROUP, consumerProperties);
+        ServiceBusReceivedMessageContext messageContext = mock(ServiceBusReceivedMessageContext.class);
+
+        Message originalMessage = MessageBuilder.withPayload("test")
+            .setHeader(ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT, messageContext).build();
+        ErrorMessage msg = new ErrorMessage(new RuntimeException(), originalMessage);
+        handler.handleMessage(msg);
+        verify(messageContext).deadLetter();
     }
 
     @Test
