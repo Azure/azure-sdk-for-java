@@ -141,7 +141,7 @@ public final class RntbdResponse implements ReferenceCounted {
 
     @JsonIgnore
     public Instant getDecodeStartTime() {
-        return decodeStartTime;
+        return this.decodeStartTime;
     }
 
     @JsonIgnore
@@ -149,10 +149,12 @@ public final class RntbdResponse implements ReferenceCounted {
         this.decodeStartTime = decodeStartTime;
     }
 
+    @JsonIgnore
     public Instant getDecodeEndTime() {
-        return decodeEndTime;
+        return this.decodeEndTime;
     }
 
+    @JsonIgnore
     public void setDecodeEndTime(Instant decodeEndTime) {
         this.decodeEndTime = decodeEndTime;
     }

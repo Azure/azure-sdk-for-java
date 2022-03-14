@@ -1010,7 +1010,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         InternalObjectNode internalObjectNode = new InternalObjectNode();
         String uuid = UUID.randomUUID().toString();
         internalObjectNode.setId(uuid);
-        BridgeInternal.setProperty(internalObjectNode, "mypk", "wiqkclagxrdqclmvuzcsomihrkxbbikwypqrcgrhpgkylztdxxirzwwkmleovdrikggqupfcclpaowyetbywvbeyegniacruvzncxflfzrwnhtdubzrezefqhtyznagotfxtcynnyderhryvbtpoxbuyfkkwsmoydfmglwzgqobraysfidipfsybbgsromwwiuygkuzbitkwzvzuenfjvxkklcjomrasmddllqfiqmgmcbmnmikpvyzbdbuitfjuohwbqfyueqjvbwehgwhosooehtglncoyiundhhqrsbkazhuxjzqoteouwexvzchkhuukpkqkdlkfhhqbgcvrhzizljrkfujebedsfdrvzdvavxrwpkyqvnvbbqvoylvxejetqvzqaakrsvbnilfngjgdavkdwfgxqvhjatrccvsbjpueenjljgouzoqdweckcjjhfiloefucsmloniyklseuztfhkzufbzntnvlaziaqqoayilyxssmfafvawxxnhyyaosnlsujsemzwvpirnbkjtfbggaamzcocdvsebdkxkyfvkakvangpgmrqqctlrbblrmmwchqliypeuuqtbiozgtfjtwjdhhowetaltnlpwqokckxpbfrpyshcygzrxdzhnffjagppnaeyrzuhrofoyurrythnpefgtiybfmckzwvsgntsudnqfqcudeporevbhgvlkaavdypfiahusbzwcgsigspfpxlqbxhqfzbrrcrgtlcbokvrtrghobknoxcaelnhchwaekpqepimanaqagajdpzbsaoepnkkfrxsavjkpxeawhrhacnnutphuzngxnpzrtujcfwvmhxuskdmmoyjdtrmqvbgehwpfseiyjsmugjpcbndigkufynwnuolasltqxfirxvkqcibculpqbarejhtufquoqzvvpwfszzpsjovmajrfviuozdscztuhavlszbdncrxdsmoikkmxwenfkqoomdzxbvw");
+        BridgeInternal.setProperty(internalObjectNode, "mypk", uuid);
         return internalObjectNode;
     }
 
@@ -1051,6 +1051,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("\"eventName\":\"channelAcquisitionStarted\"");
         assertThat(diagnostics).contains("\"eventName\":\"pipelined\"");
         assertThat(diagnostics).contains("\"eventName\":\"transitTime\"");
+        assertThat(diagnostics).contains("\"eventName\":\"decodeTime");
         assertThat(diagnostics).contains("\"eventName\":\"received\"");
         assertThat(diagnostics).contains("\"eventName\":\"completed\"");
         assertThat(diagnostics).contains("\"startTimeUTC\"");

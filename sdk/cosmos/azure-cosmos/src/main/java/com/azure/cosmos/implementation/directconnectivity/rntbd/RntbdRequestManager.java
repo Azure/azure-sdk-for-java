@@ -730,10 +730,8 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             return;
         }
 
-        if (response.getDecodeEndTime() != null && response.getDecodeStartTime() != null) {
-            requestRecord.stage(RntbdRequestRecord.Stage.DECODE_STARTED, response.getDecodeStartTime());
-            requestRecord.stage(RntbdRequestRecord.Stage.DECODE_COMPLETED, response.getDecodeEndTime());
-        }
+        requestRecord.stage(RntbdRequestRecord.Stage.DECODE_STARTED, response.getDecodeStartTime());
+        requestRecord.stage(RntbdRequestRecord.Stage.DECODE_COMPLETED, response.getDecodeEndTime());
 
         requestRecord.responseLength(response.getMessageLength());
         requestRecord.stage(RntbdRequestRecord.Stage.RECEIVED);
