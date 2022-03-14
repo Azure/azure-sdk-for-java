@@ -311,6 +311,9 @@ public interface VirtualMachine
     /** @return the resource ID of the availability set associated with this virtual machine */
     String availabilitySetId();
 
+    /** @return the resource ID of the virtual machine scale set associated with this virtual machine */
+    String virtualMachineScaleSetId();
+
     /** @return the provisioningState value */
     String provisioningState();
 
@@ -1765,6 +1768,16 @@ public interface VirtualMachine
             WithManagedCreate withAvailabilityZone(AvailabilityZoneId zoneId);
         }
 
+        /** The stage of the VM definition allowing to specify virtual machine scale set */
+        interface WithScaleSet {
+            /**
+             * Specifies an existing virtual machine scale set for the virtual machine.
+             * @param scaleSet the virtual machine scale set with flexible orchestration mode
+             * @return the next stage of the definition
+             */
+            WithManagedCreate withExistingVirtualMachineScaleSet(VirtualMachineScaleSet scaleSet);
+        }
+
         /**
          * The stage of the definition which contains all the minimum required inputs for the VM using managed OS disk
          * to be created and optionally allow managed data disks specific settings to be specified.
@@ -1874,7 +1887,8 @@ public interface VirtualMachine
                 DefinitionStages.WithLicenseType,
                 DefinitionStages.WithAdditionalCapacities,
                 DefinitionStages.WithNetworkInterfaceDeleteOptions,
-                DefinitionStages.WithEphemeralOSDisk {
+                DefinitionStages.WithEphemeralOSDisk,
+                DefinitionStages.WithScaleSet {
 
             /**
              * Begins creating the virtual machine resource.
