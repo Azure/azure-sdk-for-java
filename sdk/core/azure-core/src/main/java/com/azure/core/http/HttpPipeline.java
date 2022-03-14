@@ -122,7 +122,7 @@ public final class HttpPipeline {
     public Mono<HttpResponse> send(HttpPipelineCallContext context) {
         // Return deferred to mono for complete lazy behaviour.
         return Mono.defer(() -> {
-            HttpPipelineNextPolicy next = new HttpPipelineNextPolicy(this, context);
+            HttpPipelineNextPolicy next = new HttpPipelineNextPolicy(this, context, false);
             return next.process();
         });
     }
@@ -135,7 +135,7 @@ public final class HttpPipeline {
      * upon completion.
      */
     public HttpResponse sendSynchronously(HttpPipelineCallContext context) {
-        HttpPipelineNextPolicy next = new HttpPipelineNextPolicy(this, context);
+        HttpPipelineNextPolicy next = new HttpPipelineNextPolicy(this, context, true);
         return next.processSynchronously();
     }
 }
