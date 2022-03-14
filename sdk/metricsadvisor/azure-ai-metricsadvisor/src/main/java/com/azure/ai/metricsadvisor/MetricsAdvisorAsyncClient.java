@@ -4,6 +4,7 @@
 package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.implementation.MetricsAdvisorClientImpl;
+import com.azure.ai.metricsadvisor.models.DataFeedDetail;
 import com.azure.ai.metricsadvisor.models.ListDataFeedOptions;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -14,11 +15,19 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.paging.PageRetriever;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /** Initializes a new instance of the asynchronous MetricsAdvisorClient type. */
 @ServiceClient(builder = MetricsAdvisorClientBuilder.class, isAsync = true)
@@ -2530,11 +2539,11 @@ public final class MetricsAdvisorAsyncClient {
      * @return A {@link PagedFlux} containing information of all the data feeds in the account.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listDataFeeds(ListDataFeedOptions listDataFeedOptions) {
+    public PagedFlux<DataFeedDetail> listDataFeeds(ListDataFeedOptions listDataFeedOptions) {
         return listDataFeeds(listDataFeedOptions, Context.NONE);
     }
 
-    PagedFlux<BinaryData> listDataFeeds(ListDataFeedOptions listDataFeedOptions, Context context) {
+    PagedFlux<DataFeedDetail> listDataFeeds(ListDataFeedOptions listDataFeedOptions, Context context) {
         RequestOptions requestOptions = new RequestOptions().setContext(context);
         if (listDataFeedOptions != null) {
             if (listDataFeedOptions.getSkip() != null) {
@@ -2552,6 +2561,25 @@ public final class MetricsAdvisorAsyncClient {
                 }
             }
         }
-        return this.listDataFeeds(requestOptions);
+        return mapPage(this.listDataFeeds(requestOptions), data -> data.toObject(DataFeedDetail.class));
+    }
+
+    private static <T, S> PagedFlux<S> mapPage(PagedFlux<T> pagedFlux, Function<T, S> mapper) {
+        Supplier<PageRetriever<String, PagedResponse<S>>> provider = () -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<T>> flux = (continuationToken == null)
+                ? pagedFlux.byPage().take(1)
+                : pagedFlux.byPage(continuationToken).take(1);
+            return flux.map(mapPagedResponse(mapper));
+        };
+        return PagedFlux.create(provider);
+    }
+
+    private static <T, S> Function<PagedResponse<T>, PagedResponse<S>> mapPagedResponse(Function<T, S> mapper) {
+        return pagedResponse -> new PagedResponseBase<Void, S>(pagedResponse.getRequest(),
+            pagedResponse.getStatusCode(),
+            pagedResponse.getHeaders(),
+            pagedResponse.getValue().stream().map(mapper).collect(Collectors.toList()),
+            pagedResponse.getContinuationToken(),
+            null);
     }
 }

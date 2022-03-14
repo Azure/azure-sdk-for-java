@@ -7,4 +7,8 @@ module com.azure.ai.metricsadvisor {
 
     exports com.azure.ai.metricsadvisor;
     exports com.azure.ai.metricsadvisor.models;
+
+    opens com.azure.ai.metricsadvisor.models to
+        com.azure.core,
+        com.fasterxml.jackson.databind;
 }
