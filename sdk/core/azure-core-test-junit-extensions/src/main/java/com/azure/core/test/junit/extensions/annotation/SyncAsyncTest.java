@@ -3,7 +3,9 @@
 
 package com.azure.core.test.junit.extensions.annotation;
 
+import com.azure.core.test.junit.extensions.SyncAsyncExtension;
 import org.junit.jupiter.api.TestTemplate;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -16,8 +18,9 @@ import java.util.concurrent.Callable;
  * The {@link com.azure.core.test.SyncAsyncExtension#execute(Callable, Callable)} should be used in the test
  * to branch out.
  */
-@Target(ElementType.METHOD)
+@Target({ElementType.ANNOTATION_TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @TestTemplate
+@ExtendWith(SyncAsyncExtension.class)
 public @interface SyncAsyncTest {
 }
