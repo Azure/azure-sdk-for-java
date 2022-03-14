@@ -34,11 +34,11 @@ import com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessage
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.stream.binder.AbstractMessageChannelBinder;
-import org.springframework.cloud.stream.binder.BinderHeaders;
-import org.springframework.cloud.stream.binder.BinderSpecificPropertiesProvider;
 import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
 import org.springframework.cloud.stream.binder.ExtendedProducerProperties;
 import org.springframework.cloud.stream.binder.ExtendedPropertiesBinder;
+import org.springframework.cloud.stream.binder.BinderHeaders;
+import org.springframework.cloud.stream.binder.BinderSpecificPropertiesProvider;
 import org.springframework.cloud.stream.provisioning.ConsumerDestination;
 import org.springframework.cloud.stream.provisioning.ProducerDestination;
 import org.springframework.integration.core.MessageProducer;
@@ -133,7 +133,6 @@ public class ServiceBusMessageChannelBinder extends
         final ServiceBusInboundChannelAdapter inboundAdapter;
 
         ServiceBusContainerProperties containerProperties = createServiceBusContainerProperties(destination, group, properties);
-
         ServiceBusMessageListenerContainer listenerContainer = new ServiceBusMessageListenerContainer(getProcessorFactory(), containerProperties);
 
         serviceBusMessageListenerContainers.add(listenerContainer);
