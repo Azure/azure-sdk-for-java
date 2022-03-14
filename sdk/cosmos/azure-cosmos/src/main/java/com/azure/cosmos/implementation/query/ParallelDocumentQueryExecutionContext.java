@@ -63,9 +63,9 @@ public class ParallelDocumentQueryExecutionContext<T>
         String resourceLink,
         String rewrittenQuery,
         UUID correlatedActivityId,
-        boolean hasSelectValue) {
+        boolean shouldUnwrapSelectValue) {
         super(diagnosticsClientContext, client, resourceTypeEnum, resourceType, query, cosmosQueryRequestOptions, resourceLink,
-                rewrittenQuery, correlatedActivityId, hasSelectValue);
+                rewrittenQuery, correlatedActivityId, shouldUnwrapSelectValue);
         this.cosmosQueryRequestOptions = cosmosQueryRequestOptions;
         partitionKeyRangeToContinuationTokenMap = new HashMap<>();
     }
@@ -86,7 +86,8 @@ public class ParallelDocumentQueryExecutionContext<T>
                 initParams.getResourceLink(),
                 queryInfo.getRewrittenQuery(),
                 initParams.getCorrelatedActivityId(),
-                queryInfo.hasSelectValue());
+                queryInfo.hasSelectValue() &&
+                    !(queryInfo.hasOrderBy() || queryInfo.hasAggregates() || queryInfo.hasGroupBy() || queryInfo.hasDCount()));
         context.setTop(initParams.getTop());
 
         try {

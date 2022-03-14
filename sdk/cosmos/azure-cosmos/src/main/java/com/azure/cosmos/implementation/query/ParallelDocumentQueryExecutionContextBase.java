@@ -45,11 +45,11 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
                                                         IDocumentQueryClient client,
                                                         ResourceType resourceTypeEnum, Class<T> resourceType,
                                                         SqlQuerySpec query, CosmosQueryRequestOptions cosmosQueryRequestOptions, String resourceLink, String rewrittenQuery,
-                                                        UUID correlatedActivityId, boolean hasSelectValue) {
+                                                        UUID correlatedActivityId, boolean shouldUnwrapSelectValue) {
         super(diagnosticsClientContext, client, resourceTypeEnum, resourceType, query, cosmosQueryRequestOptions, resourceLink, correlatedActivityId);
 
         this.factoryMethod =  DocumentQueryExecutionContextBase.getEffectiveFactoryMethod(
-            this.cosmosQueryRequestOptions, hasSelectValue, resourceType);
+            this.cosmosQueryRequestOptions, shouldUnwrapSelectValue, resourceType);
         documentProducers = new ArrayList<>();
         if (!Strings.isNullOrEmpty(rewrittenQuery)) {
             this.querySpec = new SqlQuerySpec(rewrittenQuery, super.query.getParameters());
