@@ -41,12 +41,12 @@ public class AppConfigurationEndpointTest {
         Map<String, String> allRequestParams = new HashMap<String, String>();
 
         AppConfigurationEndpoint endpoint = new AppConfigurationEndpoint(request, configStores, allRequestParams);
-        assertEquals("https://testConfig.azconfig.io", endpoint.getEndpoint());
+        assertEquals("https://testConfig.", endpoint.getEndpoint());
         assertEquals("testConfig", endpoint.getStore());
 
         request = mapper.readValue(new File(GET_TEST_REFRESH), JsonNode.class);
         endpoint = new AppConfigurationEndpoint(request, configStores, allRequestParams);
-        assertEquals("https://testConfig.azconfig.io", endpoint.getEndpoint());
+        assertEquals("https://testConfig.", endpoint.getEndpoint());
         assertEquals("testConfig", endpoint.getStore());
     }
 

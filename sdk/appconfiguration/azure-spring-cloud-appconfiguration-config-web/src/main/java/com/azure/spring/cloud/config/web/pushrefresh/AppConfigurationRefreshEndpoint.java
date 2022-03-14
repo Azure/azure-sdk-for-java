@@ -2,20 +2,19 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.web.pushrefresh;
 
-import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
-import com.azure.spring.cloud.config.web.AppConfigurationEndpoint;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import static com.azure.spring.cloud.config.web.AppConfigurationWebConstants.APPCONFIGURATION_REFRESH;
+import static com.azure.spring.cloud.config.web.AppConfigurationWebConstants.DATA;
+import static com.azure.spring.cloud.config.web.AppConfigurationWebConstants.SYNC_TOKEN;
 import static com.azure.spring.cloud.config.web.AppConfigurationWebConstants.VALIDATION_CODE_FORMAT_START;
 import static com.azure.spring.cloud.config.web.AppConfigurationWebConstants.VALIDATION_CODE_KEY;
 
 import java.io.IOException;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.actuate.endpoint.web.annotation.ControllerEndpoint;
@@ -26,6 +25,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
+import com.azure.spring.cloud.config.web.AppConfigurationEndpoint;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Endpoint for requesting new configurations to be loaded.
@@ -47,7 +51,7 @@ public final class AppConfigurationRefreshEndpoint implements ApplicationEventPu
      * Endpoint for triggering a refresh check for a single config store.
      * 
      * @param contextRefresher Used to verify refresh is available.
-     * @param appConfiguration properties set for client library. 
+     * @param appConfiguration properties set for client library.
      */
     public AppConfigurationRefreshEndpoint(ContextRefresher contextRefresher,
         AppConfigurationProperties appConfiguration) {
@@ -81,6 +85,16 @@ public final class AppConfigurationRefreshEndpoint implements ApplicationEventPu
             return HttpStatus.UNAUTHORIZED.getReasonPhrase();
         }
 
+        String syncToken = "";
+
+        JsonNode data = kvReference.findValue(DATA);
+        if (data != null) {
+            JsonNode syncTokenNode = data.findValue(SYNC_TOKEN);
+            if (syncTokenNode != null) {
+                syncToken = syncTokenNode.asText();
+            }
+        }
+
         JsonNode validationResponse = kvReference.findValue(VALIDATION_CODE_KEY);
         if (validationResponse != null) {
             // Validating Web Hook
@@ -88,8 +102,7 @@ public final class AppConfigurationRefreshEndpoint implements ApplicationEventPu
         } else {
             if (contextRefresher != null) {
                 if (validation.triggerRefresh()) {
-                    publisher.publishEvent(
-                        new AppConfigurationRefreshEvent(validation.getEndpoint()));
+                    publisher.publishEvent(new AppConfigurationRefreshEvent(validation.getEndpoint(), syncToken));
                     return HttpStatus.OK.getReasonPhrase();
                 } else {
                     LOGGER.debug("Non Refreshable notification");

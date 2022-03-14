@@ -3,6 +3,8 @@
 package com.azure.spring.cloud.config.web.pushbusrefresh;
 
 import static com.azure.spring.cloud.config.web.AppConfigurationWebConstants.APPCONFIGURATION_REFRESH_BUS;
+import static com.azure.spring.cloud.config.web.AppConfigurationWebConstants.DATA;
+import static com.azure.spring.cloud.config.web.AppConfigurationWebConstants.SYNC_TOKEN;
 import static com.azure.spring.cloud.config.web.AppConfigurationWebConstants.VALIDATION_CODE_FORMAT_START;
 import static com.azure.spring.cloud.config.web.AppConfigurationWebConstants.VALIDATION_CODE_KEY;
 
@@ -88,6 +90,16 @@ public final class AppConfigurationBusRefreshEndpoint extends AbstractBusEndpoin
             return HttpStatus.UNAUTHORIZED.getReasonPhrase();
         }
 
+        String syncToken = "";
+
+        JsonNode data = kvReference.findValue(DATA);
+        if (data != null) {
+            JsonNode syncTokenNode = data.findValue(SYNC_TOKEN);
+            if (syncTokenNode != null) {
+                syncToken = syncTokenNode.asText();
+            }
+        }
+
         JsonNode validationResponse = kvReference.findValue(VALIDATION_CODE_KEY);
         if (validationResponse != null) {
             // Validating Web Hook
@@ -95,8 +107,9 @@ public final class AppConfigurationBusRefreshEndpoint extends AbstractBusEndpoin
         } else {
             if (validation.triggerRefresh()) {
                 // Spring Bus is in use, will publish a RefreshRemoteApplicationEvent
-                publish(new AppConfigurationBusRefreshEvent(validation.getEndpoint(), this, getInstanceId(),
-                    new PathDestinationFactory().getDestination(null)));
+
+                publish(new AppConfigurationBusRefreshEvent(validation.getEndpoint(), syncToken, this, getInstanceId(),
+                        new PathDestinationFactory().getDestination(null)));
                 return HttpStatus.OK.getReasonPhrase();
             } else {
                 LOGGER.debug("Non Refreshable notification");

@@ -181,6 +181,10 @@ public final class ClientStore {
     public PagedIterable<ConfigurationSetting> listSettings(SettingSelector settingSelector, String storeName) {
         return getClient(storeName).listConfigurationSettings(settingSelector);
     }
+    
+    public void updateSyncToken(String storeName, String syncToken) {
+        getClient(storeName).updateSyncToken(syncToken);
+    }
 
     ConfigurationClientBuilder getBuilder() {
         return new ConfigurationClientBuilder();

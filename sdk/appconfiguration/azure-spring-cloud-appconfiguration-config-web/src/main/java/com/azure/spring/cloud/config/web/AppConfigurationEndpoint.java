@@ -45,7 +45,7 @@ public class AppConfigurationEndpoint {
         if (requestTopic != null) {
             String topic = requestTopic.asText();
             store = topic.substring(topic.toLowerCase(Locale.ROOT).indexOf(CONFIG_STORE_TOPIC) + CONFIG_STORE_TOPIC.length() + 1);
-            endpoint = String.format("https://%s.azconfig.io", store);
+            endpoint = String.format("https://%s.", store);
         } else {
             throw new IllegalArgumentException("Refresh request missing topic field.");
         }
@@ -59,7 +59,7 @@ public class AppConfigurationEndpoint {
      */
     public boolean authenticate() {
         for (ConfigStore configStore : configStores) {
-            if (configStore.getEndpoint().equals(endpoint)) {
+            if (configStore.getEndpoint().startsWith(endpoint)) {
                 PushNotification pushNotification = configStore.getMonitoring().getPushNotification();
 
                 // One of these need to be set
@@ -94,7 +94,7 @@ public class AppConfigurationEndpoint {
      */
     public boolean triggerRefresh() {
         for (ConfigStore configStore : configStores) {
-            if (configStore.getEndpoint().equals(endpoint) && configStore.getMonitoring().isEnabled()) {
+            if (configStore.getEndpoint().startsWith(endpoint) && configStore.getMonitoring().isEnabled()) {
                 return true;
             }
         }
