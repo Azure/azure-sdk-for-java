@@ -72,7 +72,7 @@ public class ServiceBusMessageChannelBinderTest {
             GET_ERROR_MESSAGE_HANDLER_METHOD_NAME,
             consumerDestination, GROUP, consumerProperties);
         ServiceBusReceivedMessageContext messageContext = mock(ServiceBusReceivedMessageContext.class);
-        Message originalMessage = MessageBuilder.withPayload("test")
+        Message<String> originalMessage = MessageBuilder.withPayload("test")
             .setHeader(ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT, messageContext).build();
         ErrorMessage msg = new ErrorMessage(new RuntimeException(), originalMessage);
         handler.handleMessage(msg);
@@ -92,7 +92,7 @@ public class ServiceBusMessageChannelBinderTest {
             consumerDestination, GROUP, consumerProperties);
         ServiceBusReceivedMessageContext messageContext = mock(ServiceBusReceivedMessageContext.class);
 
-        Message originalMessage = MessageBuilder.withPayload("test")
+        Message<String> originalMessage = MessageBuilder.withPayload("test")
             .setHeader(ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT, messageContext).build();
         ErrorMessage msg = new ErrorMessage(new RuntimeException(), originalMessage);
         handler.handleMessage(msg);
