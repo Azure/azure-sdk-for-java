@@ -30,7 +30,7 @@ class SparkE2EThroughputControlITest extends IntegrationSpec with Spark with Cos
       "spark.cosmos.throughputControl.globalControl.expireIntervalInMS" -> "20000"
     )
 
-    val newSpark = getSpark()
+    val newSpark = getSpark
 
     // scalastyle:off underscore.import
     // scalastyle:off import.grouping

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Information about the formal API definition for the app. */
 @Fluent
 public final class ApiDefinitionInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiDefinitionInfo.class);
-
     /*
      * The URL of the API definition.
      */

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Web App stack runtimes. */
 @Immutable
 public final class WebAppRuntimes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebAppRuntimes.class);
-
     /*
      * Linux-specific settings associated with the minor version.
      */

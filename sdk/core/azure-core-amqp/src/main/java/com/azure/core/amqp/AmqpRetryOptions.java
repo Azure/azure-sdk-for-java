@@ -14,7 +14,7 @@ import java.util.Objects;
  */
 @Fluent
 public class AmqpRetryOptions {
-    private final ClientLogger logger = new ClientLogger(AmqpRetryOptions.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AmqpRetryOptions.class);
 
     private int maxRetries;
     private Duration delay;
@@ -69,7 +69,7 @@ public class AmqpRetryOptions {
      */
     public AmqpRetryOptions setMaxRetries(int numberOfRetries) {
         if (numberOfRetries < 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'numberOfRetries' cannot be negative."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'numberOfRetries' cannot be negative."));
         }
 
         this.maxRetries = numberOfRetries;
@@ -88,7 +88,7 @@ public class AmqpRetryOptions {
     public AmqpRetryOptions setDelay(Duration delay) {
         Objects.requireNonNull(delay, "'delay' cannot be null.");
         if (delay.isNegative() || delay.isZero()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'delay' must be positive."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'delay' must be positive."));
         }
 
         this.delay = delay;
@@ -107,7 +107,7 @@ public class AmqpRetryOptions {
     public AmqpRetryOptions setMaxDelay(Duration maximumDelay) {
         Objects.requireNonNull(maximumDelay, "'maximumDelay' cannot be null.");
         if (maximumDelay.isNegative() || maximumDelay.isZero()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'maximumDelay' must be positive."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'maximumDelay' must be positive."));
         }
 
         this.maxDelay = maximumDelay;
@@ -126,7 +126,7 @@ public class AmqpRetryOptions {
     public AmqpRetryOptions setTryTimeout(Duration tryTimeout) {
         Objects.requireNonNull(tryTimeout, "'tryTimeout' cannot be null");
         if (tryTimeout.isNegative() || tryTimeout.isZero()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'tryTimeout' must be positive."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'tryTimeout' must be positive."));
         }
 
         this.tryTimeout = tryTimeout;

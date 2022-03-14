@@ -60,6 +60,12 @@ public final class ClusterPrincipalProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /*
+     * The service principal object id in AAD (Azure active directory)
+     */
+    @JsonProperty(value = "aadObjectId", access = JsonProperty.Access.WRITE_ONLY)
+    private String aadObjectId;
+
     /**
      * Get the principalId property: The principal ID assigned to the cluster principal. It can be a user email,
      * application ID, or security group name.
@@ -167,6 +173,15 @@ public final class ClusterPrincipalProperties {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the aadObjectId property: The service principal object id in AAD (Azure active directory).
+     *
+     * @return the aadObjectId value.
+     */
+    public String aadObjectId() {
+        return this.aadObjectId;
     }
 
     /**

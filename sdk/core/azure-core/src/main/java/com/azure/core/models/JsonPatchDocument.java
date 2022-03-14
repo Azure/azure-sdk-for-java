@@ -25,8 +25,9 @@ public final class JsonPatchDocument {
     private static final Object SERIALIZER_INSTANTIATION_SYNCHRONIZER = new Object();
     private static volatile JsonSerializer defaultSerializer;
 
+    // JsonPatchDocument is a commonly used model, use a static logger.
     @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(JsonPatchDocument.class);
+    private static final ClientLogger LOGGER = new ClientLogger(JsonPatchDocument.class);
 
     @JsonIgnore
     private final JsonSerializer serializer;
@@ -478,7 +479,7 @@ public final class JsonPatchDocument {
 
             rawValue = outputStream.toString("UTF-8");
         } catch (IOException ex) {
-            throw logger.logExceptionAsError(new UncheckedIOException(ex));
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
 
         return Option.of(rawValue);

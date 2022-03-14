@@ -6,7 +6,6 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ClientCertMode;
 import com.azure.resourcemanager.appservice.models.CloningInfo;
 import com.azure.resourcemanager.appservice.models.ExtendedLocation;
@@ -17,7 +16,6 @@ import com.azure.resourcemanager.appservice.models.RedundancyMode;
 import com.azure.resourcemanager.appservice.models.SiteAvailabilityState;
 import com.azure.resourcemanager.appservice.models.SlotSwapStatus;
 import com.azure.resourcemanager.appservice.models.UsageState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -27,8 +25,6 @@ import java.util.UUID;
 /** A web app, a mobile app backend, or an API app. */
 @Fluent
 public final class SiteInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SiteInner.class);
-
     /*
      * Site resource specific properties
      */

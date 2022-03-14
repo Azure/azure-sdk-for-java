@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ComputeModeOptions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Worker pool of an App Service Environment. */
 @Fluent
 public final class WorkerPool {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkerPool.class);
-
     /*
      * Worker size ID for referencing this worker pool.
      */

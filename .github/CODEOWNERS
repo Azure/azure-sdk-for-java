@@ -1,6 +1,13 @@
 # Instructions for CODEOWNERS file format and automatic build failure notifications:
 # https://github.com/Azure/azure-sdk/blob/main/docs/policies/opensource.md#codeowners
 
+################
+# Automation
+################
+
+# Git Hub integration and bot rules
+/.github/                                       @AlexGhiondea @jsquire   
+
 ###########
 # SDK
 ###########
@@ -389,7 +396,7 @@
 #/<NotInRepo>/          @jfggdl
 
 # ServiceLabel: %Event Hubs %Service Attention
-#/<NotInRepo>/          @kasun04
+#/<NotInRepo>/          @kasun04 @saglodha
 
 # ServiceLabel: %Functions %Service Attention
 #/<NotInRepo>/          @ahmedelnably @fabiocav
@@ -575,7 +582,7 @@
 #/<NotInRepo>/          @chlahav
 
 # ServiceLabel: %Service Attention %Service Bus
-#/<NotInRepo>/          @jfggdl @axisc
+#/<NotInRepo>/          @EldertGrootenboer @saglodha
 
 # ServiceLabel: %Service Attention %Service Fabric
 #/<NotInRepo>/          @QingChenmsft @vaishnavk @juhacket

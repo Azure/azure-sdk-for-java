@@ -254,8 +254,8 @@ class PartitionPumpManager {
                 .concatMap(Flux::collectList)
                 .publishOn(scheduler, false, prefetch)
                 .subscribe(partitionEventBatch -> {
-                    processEvents(partitionContext, partitionProcessor,
-                        eventHubConsumer, partitionEventBatch);
+                    processEvents(partitionContext, partitionProcessor, partitionPump, eventHubConsumer,
+                        partitionEventBatch);
                 },
                     /* EventHubConsumer receive() returned an error */
                     ex -> handleError(claimedOwnership, partitionPump, partitionProcessor, ex, partitionContext),
@@ -316,7 +316,8 @@ class PartitionPumpManager {
     }
 
     private void processEvents(PartitionContext partitionContext, PartitionProcessor partitionProcessor,
-        EventHubConsumerAsyncClient eventHubConsumer, List<PartitionEvent> partitionEventBatch) {
+        PartitionPump partitionPump, EventHubConsumerAsyncClient eventHubConsumer,
+        List<PartitionEvent> partitionEventBatch) {
         try {
             if (batchReceiveMode) {
                 LastEnqueuedEventProperties[] lastEnqueuedEventProperties = new LastEnqueuedEventProperties[1];
@@ -326,15 +327,23 @@ class PartitionPumpManager {
                         return partitionEvent.getData();
                     })
                     .collect(Collectors.toList());
+
+                // It's possible when using windowTimeout that in the timeframe, there weren't any events received.
+                LastEnqueuedEventProperties enqueuedEventProperties =
+                    updateOrGetLastEnqueuedEventProperties(partitionPump, lastEnqueuedEventProperties[0]);
+
                 EventBatchContext eventBatchContext = new EventBatchContext(partitionContext, eventDataList,
-                    checkpointStore, lastEnqueuedEventProperties[0]);
+                    checkpointStore, enqueuedEventProperties);
+
                 if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
                     logger.atVerbose()
                         .addKeyValue(PARTITION_ID_KEY, partitionContext.getPartitionId())
                         .addKeyValue(ENTITY_PATH_KEY, partitionContext.getEventHubName())
                         .log("Processing event batch.");
                 }
+
                 partitionProcessor.processEventBatch(eventBatchContext);
+
                 if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
                     logger.atVerbose()
                         .addKeyValue(PARTITION_ID_KEY, partitionContext.getPartitionId())
@@ -346,8 +355,14 @@ class PartitionPumpManager {
                     ? partitionEventBatch.get(0).getData() : null);
                 LastEnqueuedEventProperties lastEnqueuedEventProperties = (partitionEventBatch.size() == 1
                     ? partitionEventBatch.get(0).getLastEnqueuedEventProperties() : null);
+
+                // Get the last value we've seen if the current value from this is null.
+                LastEnqueuedEventProperties enqueuedEventProperties =
+                    updateOrGetLastEnqueuedEventProperties(partitionPump, lastEnqueuedEventProperties);
+
                 EventContext eventContext = new EventContext(partitionContext, eventData, checkpointStore,
-                    lastEnqueuedEventProperties);
+                    enqueuedEventProperties);
+
                 processEvent(partitionContext, partitionProcessor, eventHubConsumer, eventContext);
             }
         } catch (Throwable throwable) {
@@ -448,5 +463,23 @@ class PartitionPumpManager {
                 spanObject != null ? spanObject.getClass() : "null"));
         }
         tracerProvider.endSpan(processSpanContext, signal);
+    }
+
+    /**
+     * Updates the last enqueued event if it was seen and gets the most up-to-date value.
+     *
+     * @param partitionPump The partition pump.
+     * @param last The last enqueued event properties. Could be null if there were no events seen.
+     *
+     * @return Updates the partition pump properties if there is a latest value and returns it.
+     */
+    private LastEnqueuedEventProperties updateOrGetLastEnqueuedEventProperties(PartitionPump partitionPump,
+        LastEnqueuedEventProperties last) {
+
+        if (last != null) {
+            partitionPump.setLastEnqueuedEventProperties(last);
+        }
+
+        return partitionPump.getLastEnqueuedEventProperties();
     }
 }

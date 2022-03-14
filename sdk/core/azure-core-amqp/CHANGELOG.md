@@ -8,6 +8,11 @@
 
 ### Bugs Fixed
 
+- Fixed issue where EndpointStates were not emitted serially. ([#24762](https://github.com/Azure/azure-sdk-for-java/issues/24762))
+- Fixed issue of not emitting the shutdown signal serially when ClosedChannelException thrown concurrently. ([#27320](https://github.com/Azure/azure-sdk-for-java/issues/27320))
+- Fixed the issue of leaving downstream in an unterminated state when RequestResponseChannel is disposed after invoking sendWithAck ([27482](https://github.com/Azure/azure-sdk-for-java/issues/27482))
+- Removing CustomIOHandler.onUnhandled which listens to every proton-j reactor event that could cause excessive logging. The underlying library could encounter `NullPointerException` if the selector is null.
+
 ### Other Changes
 
 ## 2.4.0 (2022-02-04)

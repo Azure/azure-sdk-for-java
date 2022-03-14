@@ -1,5 +1,20 @@
 # Release History
 
+## 3.15.0-beta.1 (Unreleased)
+
+## 3.14.0 (2022-03-01)
+This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.2.
+
+### Dependency Upgrades
+- Upgrade azure-core to 1.25.0.
+- Upgrade azure-identity to 1.4.4.
+- Upgrade azure-security-keyvault-jca to 2.6.0.
+- Upgrade azure-security-keyvault-secrets to 4.3.7.
+- Upgrade azure-spring-data-cosmos to 3.18.0.
+- Upgrade azure-storage-blob to 12.14.4.
+- Upgrade azure-storage-file-share to 12.11.4.
+- Upgrade AzureSpringBoot artifacts to 3.14.0.
+
 ## 3.13.0 (2022-01-26)
 This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.2.
 

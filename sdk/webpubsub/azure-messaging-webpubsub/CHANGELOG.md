@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,20 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0 (2022-03-08)
+
+### Features Added
+
+- Added interfaces from `com.azure.core.client.traits` to `WebPubSubServiceClientBuilder`.
+- Added `retryOptions` to `WebPubSubServiceClientBuilder`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.25.0` to `1.26.0`.
+- Upgraded `azure-core-http-netty` from `1.11.7` to `1.11.8`.
 
 ## 1.0.2 (2022-02-08)
 

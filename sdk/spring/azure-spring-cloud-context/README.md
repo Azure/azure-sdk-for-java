@@ -9,12 +9,12 @@ This package helps developers to finish the auto-configuration of Azure Context.
 - [Environment checklist][environment_checklist]
 
 ### Include the package
-[//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-context;current})
+[//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-context;dependency})
 ```xml
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-cloud-context</artifactId>
-    <version>2.13.0</version>
+    <version>2.14.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

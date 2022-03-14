@@ -16,9 +16,10 @@ import reactor.core.publisher.Mono;
  */
 @Immutable
 class AppServiceMsiCredential extends ManagedIdentityServiceCredential {
+    private static final ClientLogger LOGGER = new ClientLogger(AppServiceMsiCredential.class);
+
     private final String identityEndpoint;
     private final String identityHeader;
-    private final ClientLogger logger = new ClientLogger(AppServiceMsiCredential.class);
 
     /**
      * Creates an instance of {@link AppServiceMsiCredential}.
@@ -32,7 +33,7 @@ class AppServiceMsiCredential extends ManagedIdentityServiceCredential {
         this.identityEndpoint = configuration.get(Configuration.PROPERTY_IDENTITY_ENDPOINT);
         this.identityHeader = configuration.get(Configuration.PROPERTY_IDENTITY_HEADER);
         if (identityEndpoint != null) {
-            validateEndpointProtocol(this.identityEndpoint, "MSI", logger);
+            validateEndpointProtocol(this.identityEndpoint, "MSI", LOGGER);
         }
     }
 

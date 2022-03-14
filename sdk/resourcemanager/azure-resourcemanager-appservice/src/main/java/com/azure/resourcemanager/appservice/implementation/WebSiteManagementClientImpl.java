@@ -7,7 +7,6 @@ package com.azure.resourcemanager.appservice.implementation;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.appservice.fluent.AppServiceCertificateOrdersClient;
 import com.azure.resourcemanager.appservice.fluent.AppServiceEnvironmentsClient;
@@ -37,8 +36,6 @@ import java.time.Duration;
 /** Initializes a new instance of the WebSiteManagementClientImpl type. */
 @ServiceClient(builder = WebSiteManagementClientBuilder.class)
 public final class WebSiteManagementClientImpl extends AzureServiceClient implements WebSiteManagementClient {
-    private final ClientLogger logger = new ClientLogger(WebSiteManagementClientImpl.class);
-
     /** Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000). */
     private final String subscriptionId;
 

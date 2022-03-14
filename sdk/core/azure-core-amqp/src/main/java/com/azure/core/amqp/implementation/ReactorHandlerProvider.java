@@ -24,7 +24,7 @@ import java.util.Objects;
  * Provides handlers for the various types of links.
  */
 public class ReactorHandlerProvider {
-    private final ClientLogger logger = new ClientLogger(ReactorHandlerProvider.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ReactorHandlerProvider.class);
     private final ReactorProvider provider;
 
     /**
@@ -60,7 +60,7 @@ public class ReactorHandlerProvider {
         }
 
         if (options.getTransportType() != AmqpTransportType.AMQP_WEB_SOCKETS) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException(String.format(Locale.US,
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(String.format(Locale.US,
                 "This transport type '%s' is not supported.", options.getTransportType())));
         }
 
@@ -72,21 +72,21 @@ public class ReactorHandlerProvider {
 
         // TODO (conniey): See if we this is supported later on.
         if (isCustomEndpointConfigured && (isUserProxyConfigured || isSystemProxyConfigured)) {
-            throw logger.logExceptionAsError(new UnsupportedOperationException(String.format(
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(
                 "Unable to proxy connection to custom endpoint. Custom endpoint: %s. Proxy settings: %s. "
                     + "Namespace: %s", options.getHostname(), options.getProxyOptions().getProxyAddress(),
                 options.getFullyQualifiedNamespace())));
         }
 
         if (isUserProxyConfigured) {
-            logger.info("Using user configured proxy to connect to: '{}:{}'. Proxy: {}",
+            LOGGER.info("Using user configured proxy to connect to: '{}:{}'. Proxy: {}",
                 options.getFullyQualifiedNamespace(), options.getPort(), options.getProxyOptions().getProxyAddress());
 
             final SslPeerDetails peerDetails = Proton.sslPeerDetails(options.getHostname(), options.getPort());
 
             return new WebSocketsProxyConnectionHandler(connectionId, options, options.getProxyOptions(), peerDetails);
         } else if (isSystemProxyConfigured) {
-            logger.info("System default proxy configured for hostname:port '{}:{}'. Using proxy.",
+            LOGGER.info("System default proxy configured for hostname:port '{}:{}'. Using proxy.",
                 options.getFullyQualifiedNamespace(), options.getPort());
 
             final SslPeerDetails peerDetails = Proton.sslPeerDetails(options.getHostname(), options.getPort());

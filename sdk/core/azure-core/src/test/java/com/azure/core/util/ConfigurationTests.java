@@ -12,6 +12,7 @@ import java.util.stream.Stream;
 
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_TRACING_DISABLED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.spy;
@@ -57,6 +58,7 @@ public class ConfigurationTests {
     public void configurationNotFound() {
         Configuration configuration = new Configuration();
         assertNull(configuration.get(MY_CONFIGURATION));
+        assertFalse(configuration.contains(MY_CONFIGURATION));
     }
 
     /**

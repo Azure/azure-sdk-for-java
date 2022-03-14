@@ -44,6 +44,9 @@ import static com.azure.core.implementation.TypeUtil.typeImplementsInterface;
 public final class HttpResponseBodyDecoder {
     private static final Map<Type, Boolean> RETURN_TYPE_DECODEABLE_MAP = new ConcurrentHashMap<>();
 
+    // HttpResponseBodyDecoder is a commonly used class, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(HttpResponseBodyDecoder.class);
+
     // TODO (jogiles) JavaDoc (even though it is non-public
     static Mono<Object> decode(final String body,
         final HttpResponse httpResponse,
@@ -72,7 +75,6 @@ public final class HttpResponseBodyDecoder {
         final SerializerAdapter serializer,
         final HttpResponseDecodeData decodeData) {
         ensureRequestSet(httpResponse);
-        final ClientLogger logger = new ClientLogger(HttpResponseBodyDecoder.class);
 
         return Mono.defer(() -> {
             if (isErrorStatus(httpResponse, decodeData)) {
@@ -87,7 +89,7 @@ public final class HttpResponseBodyDecoder {
                     } catch (IOException | MalformedValueException ex) {
                         // This translates in RestProxy as a RestException with no deserialized body.
                         // The response content will still be accessible via the .response() member.
-                        logger.warning("Failed to deserialize the error entity.", ex);
+                        LOGGER.warning("Failed to deserialize the error entity.", ex);
                         return Mono.empty();
                     }
                 });

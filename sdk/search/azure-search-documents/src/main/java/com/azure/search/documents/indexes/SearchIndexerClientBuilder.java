@@ -77,7 +77,7 @@ public class SearchIndexerClientBuilder implements
     EndpointTrait<SearchIndexerClientBuilder>,
     HttpTrait<SearchIndexerClientBuilder>,
     TokenCredentialTrait<SearchIndexerClientBuilder> {
-    private final ClientLogger logger = new ClientLogger(SearchIndexerClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SearchIndexerClientBuilder.class);
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
@@ -144,7 +144,7 @@ public class SearchIndexerClientBuilder implements
 
         HttpPipeline pipeline = Utility.buildHttpPipeline(clientOptions, httpLogOptions, configuration,
             retryPolicy, retryOptions, azureKeyCredential, tokenCredential, perCallPolicies, perRetryPolicies,
-            httpClient, logger);
+            httpClient, LOGGER);
 
         return new SearchIndexerAsyncClient(endpoint, buildVersion, pipeline);
     }
@@ -161,7 +161,7 @@ public class SearchIndexerClientBuilder implements
         try {
             new URL(endpoint);
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL"));
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL"));
         }
         this.endpoint = endpoint;
         return this;
@@ -290,7 +290,7 @@ public class SearchIndexerClientBuilder implements
     @Override
     public SearchIndexerClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
-            logger.info("HttpClient is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpClient is being set to 'null' when it was previously configured.");
         }
 
         this.httpClient = client;
@@ -316,7 +316,7 @@ public class SearchIndexerClientBuilder implements
     @Override
     public SearchIndexerClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
-            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
 
         this.httpPipeline = httpPipeline;

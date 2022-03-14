@@ -11,9 +11,11 @@ import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputResponse;
+import com.azure.spring.data.cosmos.Constants;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.PageTestUtils;
+import com.azure.spring.data.cosmos.common.PropertyLoader;
 import com.azure.spring.data.cosmos.common.ResponseDiagnosticsTestUtils;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.common.TestUtils;
@@ -50,6 +52,8 @@ import org.springframework.data.repository.query.parser.Part;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -702,6 +706,16 @@ public class CosmosTemplateIT {
         final CosmosAsyncDatabase database = client.getDatabase(configuredThroughputDbName);
         final ThroughputResponse response = database.readThroughput().block();
         assertEquals(expectedRequestUnits, response.getProperties().getManualThroughput());
+    }
+
+    @Test
+    public void userAgentSpringDataCosmosSuffix() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        //  getUserAgentSuffix method from CosmosClientBuilder
+        Method getUserAgentSuffix = CosmosClientBuilder.class.getDeclaredMethod("getUserAgentSuffix");
+        getUserAgentSuffix.setAccessible(true);
+        String userAgentSuffix = (String) getUserAgentSuffix.invoke(cosmosClientBuilder);
+        assertThat(userAgentSuffix).contains(Constants.USER_AGENT_SUFFIX);
+        assertThat(userAgentSuffix).contains(PropertyLoader.getProjectVersion());
     }
 
     private void deleteDatabaseIfExists(String dbName) {

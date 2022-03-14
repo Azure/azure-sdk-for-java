@@ -6,14 +6,11 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Data used for requesting a SAS. */
 @Fluent
 public final class GrantAccessData {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GrantAccessData.class);
-
     /*
      * The access property.
      */
@@ -99,9 +96,11 @@ public final class GrantAccessData {
      */
     public void validate() {
         if (access() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property access in model GrantAccessData"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GrantAccessData.class);
 }

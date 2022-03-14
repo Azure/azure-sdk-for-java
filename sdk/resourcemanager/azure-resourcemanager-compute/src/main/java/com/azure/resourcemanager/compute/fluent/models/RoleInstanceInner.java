@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.InstanceSku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** The RoleInstance model. */
 @Fluent
 public final class RoleInstanceInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleInstanceInner.class);
-
     /*
      * Resource Id
      */

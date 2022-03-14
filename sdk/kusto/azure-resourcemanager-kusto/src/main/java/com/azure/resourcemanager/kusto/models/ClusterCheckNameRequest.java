@@ -24,7 +24,7 @@ public final class ClusterCheckNameRequest {
      * The type of resource, Microsoft.Kusto/clusters.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "Microsoft.Kusto/clusters";
 
     /** Creates an instance of ClusterCheckNameRequest class. */
     public ClusterCheckNameRequest() {

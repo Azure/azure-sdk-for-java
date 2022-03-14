@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a virtual machine scale set virtual machine profile. */
 @Fluent
 public final class VirtualMachineScaleSetUpdateVMProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetUpdateVMProfile.class);
-
     /*
      * The virtual machine scale set OS profile.
      */

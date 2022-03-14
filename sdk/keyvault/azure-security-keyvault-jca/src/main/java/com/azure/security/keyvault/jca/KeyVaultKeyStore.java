@@ -118,6 +118,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      * </p>
      */
     public KeyVaultKeyStore() {
+        LOGGER.log(FINE, "Constructing KeyVaultKeyStore.");
         creationDate = new Date();
         String keyVaultUri = System.getProperty("azure.keyvault.uri");
         String tenantId = System.getProperty("azure.keyvault.tenant-id");
@@ -131,11 +132,16 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
                     .map(Boolean::parseBoolean)
                     .orElse(false);
         jreCertificates = JreCertificates.getInstance();
+        LOGGER.log(FINE, String.format("Loaded jre certificates: %s.", jreCertificates.getAliases()));
         wellKnowCertificates = SpecificPathCertificates.getSpecificPathCertificates(wellKnowPath);
+        LOGGER.log(FINE, String.format("Loaded well known certificates: %s.", wellKnowCertificates.getAliases()));
         customCertificates = SpecificPathCertificates.getSpecificPathCertificates(customPath);
+        LOGGER.log(FINE, String.format("Loaded custom certificates: %s.", customCertificates.getAliases()));
         keyVaultCertificates = new KeyVaultCertificates(
             refreshInterval, keyVaultUri, tenantId, clientId, clientSecret, managedIdentity);
+        LOGGER.log(FINE, String.format("Loaded Key Vault certificates: %s.", keyVaultCertificates.getAliases()));
         classpathCertificates = new ClasspathCertificates();
+        LOGGER.log(FINE, String.format("Loaded classpath certificates: %s.", classpathCertificates.getAliases()));
         allCertificates = Arrays.asList(
             jreCertificates, wellKnowCertificates, customCertificates, keyVaultCertificates, classpathCertificates);
     }

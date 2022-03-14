@@ -51,6 +51,38 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
   - Step-by-step guide for [creating an Event Hub using the Azure Portal][event_hubs_create]
 
 ### Include the package
+#### Include the BOM file
+
+Please include the azure-sdk-bom to your project to take dependency on the General Availability (GA) version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
+To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
+
+```xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-sdk-bom</artifactId>
+            <version>{bom_version_to_target}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
+and then include the direct dependency in the dependencies section without the version tag as shown below.
+
+```xml
+<dependencies>
+  <dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-messaging-eventhubs</artifactId>
+  </dependency>
+</dependencies>
+```
+
+#### Include direct dependency
+If you want to take dependency on a particular version of the library that is not present in the BOM,
+add the direct dependency to your project as follows.
 
 [//]: # ({x-version-update-start;com.azure:azure-messaging-eventhubs;current})
 ```xml
@@ -196,6 +228,8 @@ if (eventDataBatch.getCount() > 0) {
     producer.send(eventDataBatch);
 }
 ```
+Note that `EventDataBatch.tryAdd(EventData)` is not thread-safe. Please make sure to synchronize the method access 
+when using multiple threads to add events.
 
 #### Publish events using partition identifier
 
