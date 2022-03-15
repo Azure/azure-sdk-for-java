@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,16 +12,13 @@ import java.util.Map;
 /** Create/Update/Get common properties of the redis cache. */
 @Fluent
 public class RedisCommonProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RedisCommonProperties.class);
-
     /*
      * All Redis Settings. Few possible keys:
      * rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
      * etc.
      */
     @JsonProperty(value = "redisConfiguration")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> redisConfiguration;
+    private RedisConfiguration redisConfiguration;
 
     /*
      * Redis version. Only major version will be used in PUT/PATCH request with
@@ -86,7 +81,7 @@ public class RedisCommonProperties {
      *
      * @return the redisConfiguration value.
      */
-    public Map<String, String> redisConfiguration() {
+    public RedisConfiguration redisConfiguration() {
         return this.redisConfiguration;
     }
 
@@ -98,7 +93,7 @@ public class RedisCommonProperties {
      * @param redisConfiguration the redisConfiguration value to set.
      * @return the RedisCommonProperties object itself.
      */
-    public RedisCommonProperties withRedisConfiguration(Map<String, String> redisConfiguration) {
+    public RedisCommonProperties withRedisConfiguration(RedisConfiguration redisConfiguration) {
         this.redisConfiguration = redisConfiguration;
         return this;
     }
@@ -277,5 +272,8 @@ public class RedisCommonProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (redisConfiguration() != null) {
+            redisConfiguration().validate();
+        }
     }
 }

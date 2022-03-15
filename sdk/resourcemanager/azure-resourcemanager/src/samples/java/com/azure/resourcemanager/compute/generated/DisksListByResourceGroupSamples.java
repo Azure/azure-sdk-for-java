@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Disks ListByResourceGroup. */
 public final class DisksListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/ListManagedDisksInAResourceGroup.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/ListManagedDisksInAResourceGroup.json
      */
     /**
      * Sample code: List all managed disks in a resource group.

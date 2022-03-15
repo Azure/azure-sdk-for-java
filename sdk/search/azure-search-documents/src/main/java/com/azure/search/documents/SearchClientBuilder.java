@@ -107,7 +107,7 @@ public final class SearchClientBuilder implements
 //        }
 //    };
 
-    private final ClientLogger logger = new ClientLogger(SearchClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SearchClientBuilder.class);
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
@@ -199,7 +199,7 @@ public final class SearchClientBuilder implements
         }
 
         return Utility.buildHttpPipeline(clientOptions, httpLogOptions, configuration, retryPolicy, retryOptions,
-            azureKeyCredential, tokenCredential, perCallPolicies, perRetryPolicies, httpClient, logger);
+            azureKeyCredential, tokenCredential, perCallPolicies, perRetryPolicies, httpClient, LOGGER);
     }
 
     /**
@@ -214,7 +214,7 @@ public final class SearchClientBuilder implements
         try {
             new URL(endpoint);
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL"));
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL"));
         }
         this.endpoint = endpoint;
         return this;
@@ -255,7 +255,7 @@ public final class SearchClientBuilder implements
      */
     public SearchClientBuilder indexName(String indexName) {
         if (CoreUtils.isNullOrEmpty(indexName)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'indexName' cannot be null or empty."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'indexName' cannot be null or empty."));
         }
         this.indexName = indexName;
         return this;
@@ -370,7 +370,7 @@ public final class SearchClientBuilder implements
     @Override
     public SearchClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
-            logger.info("HttpClient is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpClient is being set to 'null' when it was previously configured.");
         }
 
         this.httpClient = client;
@@ -396,7 +396,7 @@ public final class SearchClientBuilder implements
     @Override
     public SearchClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
-            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
 
         this.httpPipeline = httpPipeline;

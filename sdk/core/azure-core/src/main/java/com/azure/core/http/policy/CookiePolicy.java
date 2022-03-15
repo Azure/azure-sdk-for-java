@@ -22,7 +22,7 @@ import java.util.Map;
  * The pipeline policy that which stores cookies based on the response "Set-Cookie" header and adds cookies to requests.
  */
 public class CookiePolicy extends HttpPipelineSynchronousPolicy {
-    private final ClientLogger logger = new ClientLogger(CookiePolicy.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CookiePolicy.class);
     private final CookieHandler cookies = new CookieManager();
 
     @Override
@@ -42,7 +42,7 @@ public class CookiePolicy extends HttpPipelineSynchronousPolicy {
             }
         } catch (URISyntaxException | IOException e) {
             // TODO (kasobol-msft) should we wrap or add throws and handle in base?
-            throw logger.logExceptionAsError(new RuntimeException(e));
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 
@@ -61,7 +61,7 @@ public class CookiePolicy extends HttpPipelineSynchronousPolicy {
             return response;
         } catch (URISyntaxException | IOException e) {
             // TODO (kasobol-msft) should we wrap or add throws and handle in base?
-            throw logger.logExceptionAsError(new RuntimeException(e));
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 }

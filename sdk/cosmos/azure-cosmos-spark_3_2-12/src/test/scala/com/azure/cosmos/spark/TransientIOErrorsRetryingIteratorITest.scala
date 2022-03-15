@@ -8,6 +8,7 @@ import com.azure.cosmos.spark.TransientIOErrorsRetryingIteratorITest.maxRetryCou
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.util.CosmosPagedIterable
 import com.fasterxml.jackson.databind.node.ObjectNode
+import reactor.util.concurrent.Queues
 
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
@@ -70,7 +71,9 @@ class TransientIOErrorsRetryingIteratorITest
             lastIdOfPage.set(lastId)
           })
       },
-      2
+      2,
+      Queues.XS_BUFFER_SIZE,
+      None
     )
     retryingIterator.maxRetryIntervalInMs = 5
     retryingIterator.maxRetryCount = maxRetryCountPerIOOperation
@@ -117,7 +120,9 @@ class TransientIOErrorsRetryingIteratorITest
     val iterator = new CosmosPagedIterable[ObjectNode](
         container
           .queryItems("SELECT * FROM c", queryOptions, classOf[ObjectNode]),
-      2).iterator()
+      2,
+      1
+    ).iterator()
 
     while (iterator.hasNext) {
       iterator.next
@@ -170,7 +175,9 @@ class TransientIOErrorsRetryingIteratorITest
             }
           })
       },
-      2
+      2,
+      Queues.XS_BUFFER_SIZE,
+      None
     )
     retryingIterator.maxRetryIntervalInMs = 5
     retryingIterator.maxRetryCount = maxRetryCountPerIOOperation

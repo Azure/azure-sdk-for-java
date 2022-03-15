@@ -14,7 +14,7 @@ import java.util.Arrays;
 /** Samples for Databases RemovePrincipals. */
 public final class DatabasesRemovePrincipalsSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoDatabaseRemovePrincipals.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoDatabaseRemovePrincipals.json
      */
     /**
      * Sample code: KustoDatabaseRemovePrincipals.
@@ -26,7 +26,7 @@ public final class DatabasesRemovePrincipalsSamples {
             .databases()
             .removePrincipalsWithResponse(
                 "kustorptest",
-                "kustoclusterrptest4",
+                "kustoCluster",
                 "KustoDatabase8",
                 new DatabasePrincipalListRequest()
                     .withValue(

@@ -54,9 +54,9 @@ public class ResponseValidationPolicyBuilder {
     /**
      * Immutable policy for asserting validations on general responses.
      */
-    public class ResponseValidationPolicy extends HttpPipelineSynchronousPolicy {
+    public static class ResponseValidationPolicy extends HttpPipelineSynchronousPolicy {
 
-        private final ClientLogger logger = new ClientLogger(ResponseValidationPolicy.class);
+        private static final ClientLogger LOGGER = new ClientLogger(ResponseValidationPolicy.class);
 
         private final Iterable<BiConsumer<HttpResponse, ClientLogger>> assertions;
 
@@ -74,7 +74,7 @@ public class ResponseValidationPolicyBuilder {
         @Override
         protected HttpResponse afterReceivedResponse(HttpPipelineCallContext context, HttpResponse response) {
             for (BiConsumer<HttpResponse, ClientLogger> assertion : assertions) {
-                assertion.accept(response, logger);
+                assertion.accept(response, LOGGER);
             }
             return response;
         }

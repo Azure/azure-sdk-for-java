@@ -257,39 +257,39 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#beginCopyModel(String, CopyAuthorization)}
+     * Code snippet for {@link DocumentModelAdministrationClient#beginCopyModelTo(String, CopyAuthorization)}
      */
     public void beginCopy() {
-        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCopyModel#string-copyAuthorization
+        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCopyModelTo#string-copyAuthorization
         String copyModelId = "copy-model";
         String targetModelId = "my-copied-model-id";
         // Get authorization to copy the model to target resource
         CopyAuthorization copyAuthorization = documentModelAdministrationClient.getCopyAuthorization(copyModelId);
         // Start copy operation from the source client
         DocumentModel documentModel =
-            documentModelAdministrationClient.beginCopyModel(copyModelId, copyAuthorization).getFinalResult();
+            documentModelAdministrationClient.beginCopyModelTo(copyModelId, copyAuthorization).getFinalResult();
         System.out.printf("Copied model has model ID: %s, was created on: %s.%n,",
             documentModel.getModelId(),
             documentModel.getCreatedOn());
-        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCopyModel#string-copyAuthorization
+        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCopyModelTo#string-copyAuthorization
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#beginCopyModel(String, CopyAuthorization, Context)}
+     * Code snippet for {@link DocumentModelAdministrationClient#beginCopyModelTo(String, CopyAuthorization, Context)}
      */
     public void beginCopyOverload() {
-        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCopyModel#string-copyAuthorization-Context
+        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCopyModelTo#string-copyAuthorization-Context
         String copyModelId = "copy-model";
         String targetModelId = "my-copied-model-id";
         // Get authorization to copy the model to target resource
         CopyAuthorization copyAuthorization = documentModelAdministrationClient.getCopyAuthorization(targetModelId);
         // Start copy operation from the source client
         DocumentModel documentModel =
-            documentModelAdministrationClient.beginCopyModel(copyModelId, copyAuthorization, Context.NONE).getFinalResult();
+            documentModelAdministrationClient.beginCopyModelTo(copyModelId, copyAuthorization, Context.NONE).getFinalResult();
         System.out.printf("Copied model has model ID: %s, was created on: %s.%n,",
             documentModel.getModelId(),
             documentModel.getCreatedOn());
-        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCopyModel#string-copyAuthorization-Context
+        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCopyModelTo#string-copyAuthorization-Context
     }
 
     /**

@@ -1660,7 +1660,6 @@ class AzureFileSystemProviderTest extends APISpec {
         def fs = createFS(config)
 
         when: "Path does not exist"
-        // Covers virtual directory, too
         fs.provider().readAttributes(fs.getPath("path"), BasicFileAttributes.class)
 
         then:
@@ -1705,15 +1704,15 @@ class AzureFileSystemProviderTest extends APISpec {
         result.keySet().size() == attrList.size()
 
         where:
-        attrStr                                          || attrList
-        "*"                                              || ["lastModifiedTime", "creationTime", "isRegularFile", "isDirectory", "isSymbolicLink", "isOther", "size"]
-        "basic:*"                                        || ["lastModifiedTime", "creationTime", "isRegularFile", "isDirectory", "isSymbolicLink", "isOther", "size"]
-        "azureBasic:*"                                   || ["lastModifiedTime", "creationTime", "isRegularFile", "isDirectory", "isSymbolicLink", "isOther", "size"]
-        "azureBlob:*"                                    || ["lastModifiedTime", "creationTime", "eTag", "blobHttpHeaders", "blobType", "copyId", "copyStatus", "copySource", "copyProgress", "copyCompletionTime", "copyStatusDescription", "isServerEncrypted", "accessTier", "isAccessTierInferred", "archiveStatus", "accessTierChangeTime", "metadata", "isRegularFile", "isDirectory", "isSymbolicLink", "isOther", "size"]
-        "lastModifiedTime,creationTime"                  || ["lastModifiedTime", "creationTime"]
-        "basic:isRegularFile,isDirectory"                || ["isRegularFile", "isDirectory"]
-        "azureBasic:size"                                || ["size"]
-        "azureBlob:eTag,blobHttpHeaders,blobType,copyId" || ["eTag", "blobHttpHeaders", "blobType", "copyId"]
+        attrStr                                               || attrList
+        "*"                                                   || ["lastModifiedTime", "creationTime", "isRegularFile", "isDirectory", "isVirtualDirectory", "isSymbolicLink", "isOther", "size"]
+        "basic:*"                                             || ["lastModifiedTime", "creationTime", "isRegularFile", "isDirectory", "isVirtualDirectory", "isSymbolicLink", "isOther", "size"]
+        "azureBasic:*"                                        || ["lastModifiedTime", "creationTime", "isRegularFile", "isDirectory", "isVirtualDirectory", "isSymbolicLink", "isOther", "size"]
+        "azureBlob:*"                                         || ["lastModifiedTime", "creationTime", "eTag", "blobHttpHeaders", "blobType", "copyId", "copyStatus", "copySource", "copyProgress", "copyCompletionTime", "copyStatusDescription", "isServerEncrypted", "accessTier", "isAccessTierInferred", "archiveStatus", "accessTierChangeTime", "metadata", "isRegularFile", "isDirectory", "isVirtualDirectory", "isSymbolicLink", "isOther", "size"]
+        "lastModifiedTime,creationTime"                       || ["lastModifiedTime", "creationTime"]
+        "basic:isRegularFile,isDirectory,isVirtualDirectory" || ["isRegularFile", "isDirectory", "isVirtualDirectory"]
+        "azureBasic:size"                                     || ["size"]
+        "azureBlob:eTag,blobHttpHeaders,blobType,copyId"      || ["eTag", "blobHttpHeaders", "blobType", "copyId"]
     }
 
     def "ReadAttributes str suppliers"() {
@@ -1769,7 +1768,6 @@ class AzureFileSystemProviderTest extends APISpec {
         def fs = createFS(config)
 
         when: "Path does not exist"
-        // Covers virtual directory, too
         fs.provider().readAttributes(fs.getPath("path"), "basic:creationTime")
 
         then:
@@ -1820,8 +1818,8 @@ class AzureFileSystemProviderTest extends APISpec {
         headers.getContentType() == contentType
 
         where:
-        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                                    | contentType
-        null         | null               | null            | null            | null                                                                                          | null
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                             | contentType
+        null         | null               | null            | null            | null                                                                                   | null
         "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(data.defaultBytes)) | "type"
     }
 

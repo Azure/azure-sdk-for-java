@@ -62,7 +62,7 @@ class OrderByDocumentProducer<T extends Resource> extends DocumentProducer<T> {
         return replacementProducers.collectList().flux().flatMap(documentProducers -> {
             RequestChargeTracker tracker = new RequestChargeTracker();
             Map<String, QueryMetrics> queryMetricsMap = new HashMap<>();
-            List<ClientSideRequestStatistics> clientSideRequestStatisticsList = new ArrayList<>();
+            List<ClientSideRequestStatistics> clientSideRequestStatisticsList = Collections.synchronizedList(new ArrayList<>());
             return OrderByUtils.orderedMerge(resourceType, consumeComparer, tracker, documentProducers, queryMetricsMap,
                     targetRangeToOrderByContinuationTokenMap, clientSideRequestStatisticsList)
                     .map(orderByQueryResult -> resultPageFrom(tracker, orderByQueryResult));

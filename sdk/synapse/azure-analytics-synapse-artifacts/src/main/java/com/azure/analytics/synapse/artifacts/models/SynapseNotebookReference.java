@@ -17,10 +17,11 @@ public final class SynapseNotebookReference {
     private NotebookReferenceType type;
 
     /*
-     * Reference notebook name.
+     * Reference notebook name. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "referenceName", required = true)
-    private String referenceName;
+    private Object referenceName;
 
     /**
      * Get the type property: Synapse notebook reference type.
@@ -43,21 +44,21 @@ public final class SynapseNotebookReference {
     }
 
     /**
-     * Get the referenceName property: Reference notebook name.
+     * Get the referenceName property: Reference notebook name. Type: string (or Expression with resultType string).
      *
      * @return the referenceName value.
      */
-    public String getReferenceName() {
+    public Object getReferenceName() {
         return this.referenceName;
     }
 
     /**
-     * Set the referenceName property: Reference notebook name.
+     * Set the referenceName property: Reference notebook name. Type: string (or Expression with resultType string).
      *
      * @param referenceName the referenceName value to set.
      * @return the SynapseNotebookReference object itself.
      */
-    public SynapseNotebookReference setReferenceName(String referenceName) {
+    public SynapseNotebookReference setReferenceName(Object referenceName) {
         this.referenceName = referenceName;
         return this;
     }

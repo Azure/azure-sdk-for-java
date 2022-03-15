@@ -3,10 +3,13 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosException
+import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.models.FeedResponse
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.util.{CosmosPagedFlux, CosmosPagedIterable}
 import com.fasterxml.jackson.databind.node.ObjectNode
+import reactor.core.scheduler.Schedulers
+import reactor.util.concurrent.Queues
 
 import java.util.concurrent.atomic.{AtomicLong, AtomicReference}
 import scala.util.Random
@@ -33,9 +36,11 @@ import scala.collection.JavaConverters._
 //  can help making the right decisions if/how to expose this in the SDK
 private class TransientIOErrorsRetryingIterator
 (
-  cosmosPagedFluxFactory: String => CosmosPagedFlux[ObjectNode],
-  pageSize: Int
-) extends Iterator[ObjectNode] with BasicLoggingTrait {
+  val cosmosPagedFluxFactory: String => CosmosPagedFlux[ObjectNode],
+  val pageSize: Int,
+  val pagePrefetchBufferSize: Int,
+  val operationContextAndListener: Option[OperationContextAndListenerTuple]
+) extends BufferedIterator[ObjectNode] with BasicLoggingTrait with AutoCloseable {
 
   private[spark] var maxRetryIntervalInMs = CosmosConstants.maxRetryIntervalForTransientFailuresInMs
   private[spark] var maxRetryCount = CosmosConstants.maxRetryCountForTransientFailures
@@ -46,9 +51,9 @@ private class TransientIOErrorsRetryingIterator
   // scalastyle:on null
   private val retryCount = new AtomicLong(0)
 
-  private[spark] var currentFeedResponseIterator: Option[Iterator[FeedResponse[ObjectNode]]] = None
-  private[spark] var currentItemIterator: Option[Iterator[ObjectNode]] = None
-
+  private[spark] var currentFeedResponseIterator: Option[BufferedIterator[FeedResponse[ObjectNode]]] = None
+  private[spark] var currentItemIterator: Option[BufferedIterator[ObjectNode]] = None
+  private val lastPagedFlux = new AtomicReference[Option[CosmosPagedFlux[ObjectNode]]](None)
   override def hasNext: Boolean = {
     executeWithRetry("hasNextInternal", () => hasNextInternal)
   }
@@ -78,20 +83,34 @@ private class TransientIOErrorsRetryingIterator
       val feedResponseIterator = currentFeedResponseIterator match {
         case Some(existing) => existing
         case None =>
-          currentFeedResponseIterator = Some(new CosmosPagedIterable[ObjectNode](
-            cosmosPagedFluxFactory.apply(lastContinuationToken.get),
-            pageSize
-          )
+          val newPagedFlux = Some(cosmosPagedFluxFactory.apply(lastContinuationToken.get))
+          lastPagedFlux.getAndSet(newPagedFlux) match {
+            case Some(oldPagedFlux) => oldPagedFlux.cancelOn(Schedulers.boundedElastic())
+            case None =>
+          }
+          currentFeedResponseIterator = Some(
+            new CosmosPagedIterable[ObjectNode](
+              newPagedFlux.get,
+              pageSize,
+              pagePrefetchBufferSize
+            )
             .iterableByPage()
+            .iterator
             .asScala
-            .iterator)
+            .buffered
+          )
 
           currentFeedResponseIterator.get
       }
 
       if (feedResponseIterator.hasNext) {
         val feedResponse = feedResponseIterator.next()
-        val iteratorCandidate = feedResponse.getResults.iterator().asScala
+        if (operationContextAndListener.isDefined) {
+          operationContextAndListener.get.getOperationListener.feedResponseProcessedListener(
+            operationContextAndListener.get.getOperationContext,
+            feedResponse)
+        }
+        val iteratorCandidate = feedResponse.getResults.iterator().asScala.buffered
         lastContinuationToken.set(feedResponse.getContinuationToken)
 
         if (iteratorCandidate.hasNext) {
@@ -123,6 +142,10 @@ private class TransientIOErrorsRetryingIterator
 
   override def next(): ObjectNode = {
     currentItemIterator.get.next()
+  }
+
+  override def head(): ObjectNode = {
+    currentItemIterator.get.head
   }
 
   private[spark] def executeWithRetry[T](methodName: String, func: () => T): T = {
@@ -166,5 +189,12 @@ private class TransientIOErrorsRetryingIterator
     }
 
     returnValue.get
+  }
+
+  override def close(): Unit = {
+    lastPagedFlux.getAndSet(None) match {
+      case Some(oldPagedFlux) => oldPagedFlux.cancelOn(Schedulers.boundedElastic())
+      case None =>
+    }
   }
 }

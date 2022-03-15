@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Specifies a list of virtual machine instance IDs from the VM scale set. */
 @Fluent
 public final class VirtualMachineScaleSetVMInstanceIDs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetVMInstanceIDs.class);
-
     /*
      * The virtual machine scale set instance ids. Omitting the virtual machine
      * scale set instance ids will result in the operation being performed on

@@ -98,8 +98,8 @@
 
         <dependency>
             <groupId>com.azure</groupId>
-            <artifactId>azure-monitor-opentelemetry-exporter</artifactId> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;dependency} -->
-            <version>1.0.0-beta.5</version>
+            <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
+            <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;dependency} -->
         </dependency>
 
         <!-- Unit Test -->
@@ -128,7 +128,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+                <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

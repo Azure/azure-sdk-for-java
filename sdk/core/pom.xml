@@ -33,7 +33,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core</artifactId>
-          <version>1.26.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+          <version>1.27.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
@@ -48,7 +48,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-experimental</artifactId>
-          <version>1.0.0-beta.25</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
+          <version>1.0.0-beta.26</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
@@ -73,7 +73,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-serializer-avro-apache</artifactId>
-          <version>1.0.0-beta.21</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-apache;current} -->
+          <version>1.0.0-beta.22</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-apache;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
@@ -88,7 +88,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-tracing-opentelemetry</artifactId>
-          <version>1.0.0-beta.21</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;current} -->
+          <version>1.0.0-beta.22</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;current} -->
         </dependency>
       </dependencies>
 
@@ -131,6 +131,7 @@
         <module>azure-core-http-netty</module>
         <module>azure-core-http-okhttp</module>
         <module>azure-core-management</module>
+        <module>azure-core-perf</module>
         <module>azure-core-serializer-avro-apache</module>
         <module>azure-core-serializer-json-gson</module>
         <module>azure-core-serializer-json-jackson</module>

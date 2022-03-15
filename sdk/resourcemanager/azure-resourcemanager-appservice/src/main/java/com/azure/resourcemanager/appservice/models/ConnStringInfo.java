@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Database connection string information. */
 @Fluent
 public final class ConnStringInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnStringInfo.class);
-
     /*
      * Name of connection string.
      */

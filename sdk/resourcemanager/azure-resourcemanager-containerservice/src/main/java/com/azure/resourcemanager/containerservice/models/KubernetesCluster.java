@@ -47,11 +47,23 @@ public interface KubernetesCluster
     /** @return the Kubernetes configuration file content with user-level privileges to the cluster */
     byte[] userKubeConfigContent();
 
+    /**
+     * @param format Only apply to AAD clusters, specifies the format of returned kubeconfig. Format 'azure' will return azure auth-provider kubeconfig; format 'exec' will return exec format kubeconfig, which requires kubelogin binary in the path.
+     * @return the Kubernetes configuration file content with user-level privileges to the cluster
+     */
+    byte[] userKubeConfigContent(Format format);
+
     /** @return the Kubernetes credentials with administrative privileges to the cluster */
     List<CredentialResult> adminKubeConfigs();
 
     /** @return the Kubernetes credentials with user-level privileges to the cluster */
     List<CredentialResult> userKubeConfigs();
+
+    /**
+     * @param format Only apply to AAD clusters, specifies the format of returned kubeconfig. Format 'azure' will return azure auth-provider kubeconfig; format 'exec' will return exec format kubeconfig, which requires kubelogin binary in the path.
+     * @return the Kubernetes credentials with user-level privileges to the cluster
+     */
+    List<CredentialResult> userKubeConfigs(Format format);
 
     /** @return the service principal client ID */
     String servicePrincipalClientId();

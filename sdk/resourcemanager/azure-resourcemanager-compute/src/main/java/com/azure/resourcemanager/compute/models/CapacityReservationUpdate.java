@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.CapacityReservationProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** Specifies information about the capacity reservation. Only tags and sku.capacity can be updated. */
 @Fluent
 public final class CapacityReservationUpdate extends UpdateResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CapacityReservationUpdate.class);
-
     /*
      * Properties of the Capacity reservation.
      */

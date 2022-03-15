@@ -5,21 +5,18 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.models.DataAccessAuthMode;
 import com.azure.resourcemanager.compute.models.Encryption;
 import com.azure.resourcemanager.compute.models.EncryptionSettingsCollection;
 import com.azure.resourcemanager.compute.models.NetworkAccessPolicy;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.PublicNetworkAccess;
 import com.azure.resourcemanager.compute.models.SupportedCapabilities;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Snapshot resource update properties. */
 @Fluent
 public final class SnapshotUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SnapshotUpdateProperties.class);
-
     /*
      * the Operating System type.
      */
@@ -75,8 +72,15 @@ public final class SnapshotUpdateProperties {
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
-     * List of supported capabilities (like accelerated networking) for the
-     * image from which the OS disk was created.
+     * Additional authentication requirements when exporting or uploading to a
+     * disk or snapshot.
+     */
+    @JsonProperty(value = "dataAccessAuthMode")
+    private DataAccessAuthMode dataAccessAuthMode;
+
+    /*
+     * List of supported capabilities for the image from which the OS disk was
+     * created.
      */
     @JsonProperty(value = "supportedCapabilities")
     private SupportedCapabilities supportedCapabilities;
@@ -253,8 +257,30 @@ public final class SnapshotUpdateProperties {
     }
 
     /**
-     * Get the supportedCapabilities property: List of supported capabilities (like accelerated networking) for the
-     * image from which the OS disk was created.
+     * Get the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a disk
+     * or snapshot.
+     *
+     * @return the dataAccessAuthMode value.
+     */
+    public DataAccessAuthMode dataAccessAuthMode() {
+        return this.dataAccessAuthMode;
+    }
+
+    /**
+     * Set the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a disk
+     * or snapshot.
+     *
+     * @param dataAccessAuthMode the dataAccessAuthMode value to set.
+     * @return the SnapshotUpdateProperties object itself.
+     */
+    public SnapshotUpdateProperties withDataAccessAuthMode(DataAccessAuthMode dataAccessAuthMode) {
+        this.dataAccessAuthMode = dataAccessAuthMode;
+        return this;
+    }
+
+    /**
+     * Get the supportedCapabilities property: List of supported capabilities for the image from which the OS disk was
+     * created.
      *
      * @return the supportedCapabilities value.
      */
@@ -263,8 +289,8 @@ public final class SnapshotUpdateProperties {
     }
 
     /**
-     * Set the supportedCapabilities property: List of supported capabilities (like accelerated networking) for the
-     * image from which the OS disk was created.
+     * Set the supportedCapabilities property: List of supported capabilities for the image from which the OS disk was
+     * created.
      *
      * @param supportedCapabilities the supportedCapabilities value to set.
      * @return the SnapshotUpdateProperties object itself.

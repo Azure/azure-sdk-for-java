@@ -14,9 +14,10 @@ import java.net.MalformedURLException;
  * The pipeline policy that adds a given protocol to each HttpRequest.
  */
 public class ProtocolPolicy extends HttpPipelineSynchronousPolicy {
+    private static final ClientLogger LOGGER = new ClientLogger(ProtocolPolicy.class);
+
     private final String protocol;
     private final boolean overwrite;
-    private final ClientLogger logger = new ClientLogger(ProtocolPolicy.class);
 
     /**
      * Creates a new ProtocolPolicy.
@@ -33,12 +34,12 @@ public class ProtocolPolicy extends HttpPipelineSynchronousPolicy {
     protected void beforeSendingRequest(HttpPipelineCallContext context) {
         final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
         if (overwrite || urlBuilder.getScheme() == null) {
-            logger.log(LogLevel.VERBOSE, () -> "Setting protocol to " + protocol);
+            LOGGER.log(LogLevel.VERBOSE, () -> "Setting protocol to " + protocol);
 
             try {
                 context.getHttpRequest().setUrl(urlBuilder.setScheme(protocol).toUrl());
             } catch (MalformedURLException e) {
-                throw logger.logExceptionAsError(new RuntimeException(
+                throw LOGGER.logExceptionAsError(new RuntimeException(
                     String.format("Failed to set the HTTP request protocol to %s.", protocol), e));
             }
         }

@@ -38,6 +38,7 @@ module com.azure.core {
         com.azure.core.http.jdk.httpclient;
 
     // exporting some packages specifically for Jackson
+    opens com.azure.core.credential to com.fasterxml.jackson.databind;
     opens com.azure.core.http to com.fasterxml.jackson.databind;
     opens com.azure.core.models to com.fasterxml.jackson.databind;
     opens com.azure.core.util to com.fasterxml.jackson.databind;

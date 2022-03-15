@@ -15,9 +15,10 @@ import java.net.MalformedURLException;
  * The pipeline policy that adds a given port to each {@link HttpRequest}.
  */
 public class PortPolicy extends HttpPipelineSynchronousPolicy {
+    private static final ClientLogger LOGGER = new ClientLogger(PortPolicy.class);
+
     private final int port;
     private final boolean overwrite;
-    private final ClientLogger logger = new ClientLogger(PortPolicy.class);
 
     /**
      * Creates a new PortPolicy object.
@@ -34,12 +35,12 @@ public class PortPolicy extends HttpPipelineSynchronousPolicy {
     protected void beforeSendingRequest(HttpPipelineCallContext context) {
         final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
         if (overwrite || urlBuilder.getPort() == null) {
-            logger.log(LogLevel.VERBOSE, () -> "Changing port to " + port);
+            LOGGER.log(LogLevel.VERBOSE, () -> "Changing port to " + port);
 
             try {
                 context.getHttpRequest().setUrl(urlBuilder.setPort(port).toUrl());
             } catch (MalformedURLException e) {
-                throw logger.logExceptionAsError(new RuntimeException(
+                throw LOGGER.logExceptionAsError(new RuntimeException(
                     String.format("Failed to set the HTTP request port to %d.", port), e));
             }
         }

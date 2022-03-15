@@ -16,7 +16,8 @@ import java.util.Objects;
  * an exception will be thrown to prevent leaking the key.
  */
 public final class AzureKeyCredentialPolicy extends HttpPipelineSynchronousPolicy {
-    private final ClientLogger logger = new ClientLogger(AzureKeyCredentialPolicy.class);
+    // AzureKeyCredentailPolicy can be a commonly used policy, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(AzureKeyCredentialPolicy.class);
 
     private final String name;
     private final AzureKeyCredential credential;
@@ -33,7 +34,7 @@ public final class AzureKeyCredentialPolicy extends HttpPipelineSynchronousPolic
         Objects.requireNonNull(credential, "'credential' cannot be null.");
         Objects.requireNonNull(name, "'name' cannot be null.");
         if (name.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'name' cannot be empty."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'name' cannot be empty."));
         }
 
         this.name = name;
@@ -43,7 +44,7 @@ public final class AzureKeyCredentialPolicy extends HttpPipelineSynchronousPolic
     @Override
     protected void beforeSendingRequest(HttpPipelineCallContext context) {
         if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalStateException("Key credentials require HTTPS to prevent leaking the key."));
         }
 

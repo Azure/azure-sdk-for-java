@@ -4,6 +4,7 @@ package com.azure.cosmos.spark.diagnostics
 
 import com.azure.cosmos.implementation.spark.OperationContext
 import com.azure.cosmos.implementation.{RxDocumentServiceRequest, RxDocumentServiceResponse}
+import com.azure.cosmos.models.FeedResponse
 import org.slf4j.{Logger, LoggerFactory}
 
 private[spark] class DefaultMinimalSlf4jLogger(classType: Class[_])
@@ -84,6 +85,18 @@ private[spark] class DefaultMinimalSlf4jLogger(classType: Class[_])
 
   override def responseListener(context: OperationContext, response: RxDocumentServiceResponse): Unit = {
   }
+
+  override def feedResponseReceivedListener
+  (
+    context: OperationContext,
+    response: FeedResponse[_]
+  ): Unit = {}
+
+  override def feedResponseProcessedListener
+  (
+    context: OperationContext,
+    response: FeedResponse[_]
+  ): Unit = {}
 
   override def exceptionListener(context: OperationContext, exception: Throwable): Unit = {
   }

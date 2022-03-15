@@ -1,6 +1,29 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.1.1 (2022-03-09)
+
+### Bug Fixes
+
+- Added validation for `tokenRefresher` in `CommunicationTokenRefreshOptions` constructors
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.25.0` to version `1.26.0`.
+- Upgraded `azure-core-http-netty` from `1.11.7` to version `1.11.8`.
+
+## 1.1.0 (2022-02-23)
 
 ### Features Added
 
@@ -11,12 +34,6 @@
     - Added `setInitialToken(String initialToken)` setter that allows setting the optional serialized JWT token
 - Added a synchronous token refresher getter `getTokenRefresherSync` for `CommunicationTokenRefreshOptions`
 - Optimization added: When the proactive refreshing is enabled and the token refresher fails to provide a token that's not about to expire soon, the subsequent refresh attempts will be scheduled for when the token reaches half of its remaining lifetime until a token with long enough validity (>10 minutes) is obtained.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.0.8 (2022-02-09)
 

@@ -7,15 +7,12 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.UpdateDomainInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The UpdateDomainListResult model. */
 @Fluent
 public final class UpdateDomainListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateDomainListResult.class);
-
     /*
      * The value property.
      */
@@ -75,11 +72,13 @@ public final class UpdateDomainListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model UpdateDomainListResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UpdateDomainListResult.class);
 }

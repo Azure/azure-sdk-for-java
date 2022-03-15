@@ -6,10 +6,10 @@ package com.azure.cosmos.encryption.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
+import com.azure.cosmos.encryption.implementation.keyprovider.EncryptionKeyStoreProviderImpl;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.EncryptionType;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.ProtectedDataEncryptionKey;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.SqlSerializerFactory;
-import com.azure.cosmos.encryption.keyprovider.EncryptionKeyWrapProvider;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.MicrosoftDataEncryptionException;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -52,15 +52,13 @@ public class EncryptionProcessor {
     private final static Logger LOGGER = LoggerFactory.getLogger(EncryptionProcessor.class);
     private CosmosEncryptionAsyncClient encryptionCosmosClient;
     private CosmosAsyncContainer cosmosAsyncContainer;
-    private EncryptionKeyWrapProvider encryptionKeyWrapProvider;
     private EncryptionSettings encryptionSettings;
     private AtomicBoolean isEncryptionSettingsInitDone;
     private ClientEncryptionPolicy clientEncryptionPolicy;
     private String containerRid;
     private String databaseRid;
+    private final EncryptionKeyStoreProviderImpl encryptionKeyStoreProviderImpl;
     private final static ImplementationBridgeHelpers.CosmosContainerPropertiesHelper.CosmosContainerPropertiesAccessor cosmosContainerPropertiesAccessor = ImplementationBridgeHelpers.CosmosContainerPropertiesHelper.getCosmosContainerPropertiesAccessor();
-    private final static EncryptionImplementationBridgeHelpers.EncryptionKeyWrapProviderHelper.EncryptionKeyWrapProviderAccessor encryptionKeyWrapProviderAccessor =
-        EncryptionImplementationBridgeHelpers.EncryptionKeyWrapProviderHelper.getEncryptionKeyWrapProviderAccessor();
     private final static EncryptionImplementationBridgeHelpers.CosmosEncryptionAsyncClientHelper.CosmosEncryptionAsyncClientAccessor cosmosEncryptionAsyncClientAccessor =
         EncryptionImplementationBridgeHelpers.CosmosEncryptionAsyncClientHelper.getCosmosEncryptionAsyncClientAccessor();
 
@@ -76,7 +74,7 @@ public class EncryptionProcessor {
         this.cosmosAsyncContainer = cosmosAsyncContainer;
         this.encryptionCosmosClient = encryptionCosmosClient;
         this.isEncryptionSettingsInitDone = new AtomicBoolean(false);
-        this.encryptionKeyWrapProvider = this.encryptionCosmosClient.getEncryptionKeyWrapProvider();
+        this.encryptionKeyStoreProviderImpl = cosmosEncryptionAsyncClientAccessor.getEncryptionKeyStoreProviderImpl(this.encryptionCosmosClient);
         this.encryptionSettings = new EncryptionSettings();
     }
 
@@ -123,7 +121,7 @@ public class EncryptionProcessor {
                                 // Encryption Key.
                                 protectedDataEncryptionKey =
                                     this.encryptionSettings.buildProtectedDataEncryptionKey(keyProperties,
-                                        encryptionKeyWrapProviderAccessor.getEncryptionKeyStoreProviderImpl(encryptionKeyWrapProvider),
+                                        this.encryptionKeyStoreProviderImpl,
                                         clientEncryptionKeyId);
                             } catch (Exception ex) {
                                 return Mono.error(ex);
@@ -219,15 +217,6 @@ public class EncryptionProcessor {
      */
     public CosmosEncryptionAsyncClient getEncryptionCosmosClient() {
         return encryptionCosmosClient;
-    }
-
-    /**
-     * Gets the provider that allows interaction with the master keys.
-     *
-     * @return encryptionKeyWrapProvider
-     */
-    public EncryptionKeyWrapProvider getEncryptionKeyWrapProvider() {
-        return encryptionKeyWrapProvider;
     }
 
     public EncryptionSettings getEncryptionSettings() {
@@ -653,5 +642,9 @@ public class EncryptionProcessor {
     }
     public AtomicBoolean getIsEncryptionSettingsInitDone(){
         return this.isEncryptionSettingsInitDone;
+    }
+
+    EncryptionKeyStoreProviderImpl getEncryptionKeyStoreProviderImpl() {
+        return encryptionKeyStoreProviderImpl;
     }
 }

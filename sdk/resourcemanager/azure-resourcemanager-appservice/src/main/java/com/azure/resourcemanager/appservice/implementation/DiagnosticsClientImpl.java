@@ -25,7 +25,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.DiagnosticsClient;
 import com.azure.resourcemanager.appservice.fluent.models.AnalysisDefinitionInner;
 import com.azure.resourcemanager.appservice.fluent.models.DetectorDefinitionResourceInner;
@@ -43,8 +42,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DiagnosticsClient. */
 public final class DiagnosticsClientImpl implements DiagnosticsClient {
-    private final ClientLogger logger = new ClientLogger(DiagnosticsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DiagnosticsService service;
 

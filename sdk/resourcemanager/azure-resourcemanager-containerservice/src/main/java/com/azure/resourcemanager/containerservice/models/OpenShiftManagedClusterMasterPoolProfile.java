@@ -6,14 +6,11 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** OpenShiftManagedClusterMaterPoolProfile contains configuration for OpenShift master VMs. */
 @Fluent
 public final class OpenShiftManagedClusterMasterPoolProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OpenShiftManagedClusterMasterPoolProfile.class);
-
     /*
      * Unique name of the master pool profile in the context of the
      * subscription and resource group.
@@ -156,10 +153,12 @@ public final class OpenShiftManagedClusterMasterPoolProfile {
      */
     public void validate() {
         if (vmSize() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property vmSize in model OpenShiftManagedClusterMasterPoolProfile"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OpenShiftManagedClusterMasterPoolProfile.class);
 }

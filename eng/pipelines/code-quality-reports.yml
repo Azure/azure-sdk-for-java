@@ -72,8 +72,6 @@ jobs:
           arguments: >
             -BuildReason $(Build.Reason)
             -SourceBranch "HEAD"
-            -TargetBranch "origin/$("$(System.PullRequest.TargetBranch)"
-            -replace "refs/heads/")"
             -LintingPipelineVariable "LintingGoals"
           pwsh: true
         displayName: 'Generate Linting Commands'

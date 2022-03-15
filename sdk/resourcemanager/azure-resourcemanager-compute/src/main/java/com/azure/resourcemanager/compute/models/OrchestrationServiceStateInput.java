@@ -6,14 +6,11 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The input for OrchestrationServiceState. */
 @Fluent
 public final class OrchestrationServiceStateInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OrchestrationServiceStateInput.class);
-
     /*
      * The name of the service.
      */
@@ -73,16 +70,18 @@ public final class OrchestrationServiceStateInput {
      */
     public void validate() {
         if (serviceName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property serviceName in model OrchestrationServiceStateInput"));
         }
         if (action() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property action in model OrchestrationServiceStateInput"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OrchestrationServiceStateInput.class);
 }

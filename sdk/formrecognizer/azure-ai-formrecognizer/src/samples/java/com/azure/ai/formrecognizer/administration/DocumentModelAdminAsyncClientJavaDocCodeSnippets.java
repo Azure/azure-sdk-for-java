@@ -276,17 +276,17 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginCopyModel(String, CopyAuthorization)}
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginCopyModelTo(String, CopyAuthorization)}
      */
     public void beginCopy() {
-        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginCopyModel#string-copyAuthorization
+        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginCopyModelTo#string-copyAuthorization
         String copyModelId = "copy-model";
         String targetModelId = "my-copied-model-id";
         // Get authorization to copy the model to target resource
         documentModelAdministrationAsyncClient.getCopyAuthorization(targetModelId)
             // Start copy operation from the source client
             // The ID of the model that needs to be copied to the target resource
-            .subscribe(copyAuthorization -> documentModelAdministrationAsyncClient.beginCopyModel(copyModelId,
+            .subscribe(copyAuthorization -> documentModelAdministrationAsyncClient.beginCopyModelTo(copyModelId,
                     copyAuthorization)
                 .filter(pollResponse -> pollResponse.getStatus().isComplete())
                 .flatMap(AsyncPollResponse::getFinalResult)
@@ -295,7 +295,7 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
                         documentModel.getModelId(),
                         documentModel.getCreatedOn())));
 
-        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginCopyModel#string-copyAuthorization
+        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginCopyModelTo#string-copyAuthorization
     }
 
     /**

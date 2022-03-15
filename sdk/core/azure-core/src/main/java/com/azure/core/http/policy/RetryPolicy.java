@@ -27,7 +27,8 @@ import static com.azure.core.util.CoreUtils.isNullOrEmpty;
  * A pipeline policy that retries when a recoverable HTTP error or exception occurs.
  */
 public class RetryPolicy implements HttpPipelinePolicy {
-    private final ClientLogger logger = new ClientLogger(RetryPolicy.class);
+    // RetryPolicy is a commonly used policy, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(RetryPolicy.class);
 
     private final RetryStrategy retryStrategy;
     private final String retryAfterHeader;
@@ -132,7 +133,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
                 if (shouldRetry(httpResponse, tryCount)) {
                     final Duration delayDuration = determineDelayDuration(httpResponse, tryCount, retryStrategy,
                         retryAfterHeader, retryAfterTimeUnit);
-                    logger.verbose("[Retrying] Try count: {}, Delay duration in seconds: {}", tryCount,
+                    LOGGER.verbose("[Retrying] Try count: {}, Delay duration in seconds: {}", tryCount,
                         delayDuration.getSeconds());
 
                     return consumeResponseBodyAsync(httpResponse)
@@ -140,18 +141,18 @@ public class RetryPolicy implements HttpPipelinePolicy {
                             .delaySubscription(delayDuration));
                 } else {
                     if (tryCount >= retryStrategy.getMaxRetries()) {
-                        logger.info("Retry attempts have been exhausted after {} attempts.", tryCount);
+                        LOGGER.info("Retry attempts have been exhausted after {} attempts.", tryCount);
                     }
                     return Mono.just(httpResponse);
                 }
             })
             .onErrorResume(err -> {
                 if (shouldRetryException(err, tryCount)) {
-                    logger.verbose("[Error Resume] Try count: {}, Error: {}", tryCount, err);
+                    LOGGER.verbose("[Error Resume] Try count: {}, Error: {}", tryCount, err);
                     return attemptAsync(context, next, originalHttpRequest, tryCount + 1)
                         .delaySubscription(retryStrategy.calculateRetryDelay(tryCount));
                 } else {
-                    logger.info("Retry attempts have been exhausted after {} attempts.", tryCount, err);
+                    LOGGER.info("Retry attempts have been exhausted after {} attempts.", tryCount, err);
                     return Mono.error(err);
                 }
             });
@@ -169,24 +170,24 @@ public class RetryPolicy implements HttpPipelinePolicy {
         } catch (RuntimeException e) {
             Throwable err = Exceptions.unwrap(e);
             if (shouldRetryException(err, tryCount)) {
-                logger.verbose("[Error Resume] Try count: {}, Error: {}", tryCount, err);
+                LOGGER.verbose("[Error Resume] Try count: {}, Error: {}", tryCount, err);
                 try {
                     Thread.sleep(retryStrategy.calculateRetryDelay(tryCount).toMillis());
                 } catch (InterruptedException ie) {
-                    throw logger.logExceptionAsError(new RuntimeException(ie));
+                    throw LOGGER.logExceptionAsError(new RuntimeException(ie));
                 }
                 return attemptSync(context, next, originalHttpRequest, tryCount + 1);
             } else {
-                logger.info("Retry attempts have been exhausted after {} attempts.", tryCount, err);
+                LOGGER.info("Retry attempts have been exhausted after {} attempts.", tryCount, err);
                 // TODO (kasobol-msft) should we throw unwrapped here ?
-                throw logger.logExceptionAsError(e);
+                throw LOGGER.logExceptionAsError(e);
             }
         }
 
         if (shouldRetry(httpResponse, tryCount)) {
             final Duration delayDuration = determineDelayDuration(httpResponse, tryCount, retryStrategy,
                 retryAfterHeader, retryAfterTimeUnit);
-            logger.verbose("[Retrying] Try count: {}, Delay duration in seconds: {}", tryCount,
+            LOGGER.verbose("[Retrying] Try count: {}, Delay duration in seconds: {}", tryCount,
                 delayDuration.getSeconds());
 
             consumeResponseBodySync(httpResponse);
@@ -194,12 +195,12 @@ public class RetryPolicy implements HttpPipelinePolicy {
             try {
                 Thread.sleep(retryStrategy.calculateRetryDelay(tryCount).toMillis());
             } catch (InterruptedException e) {
-                throw logger.logExceptionAsError(new RuntimeException(e));
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
             }
             return attemptSync(context, next, originalHttpRequest, tryCount + 1);
         } else {
             if (tryCount >= retryStrategy.getMaxRetries()) {
-                logger.info("Retry attempts have been exhausted after {} attempts.", tryCount);
+                LOGGER.info("Retry attempts have been exhausted after {} attempts.", tryCount);
             }
             return httpResponse;
         }
