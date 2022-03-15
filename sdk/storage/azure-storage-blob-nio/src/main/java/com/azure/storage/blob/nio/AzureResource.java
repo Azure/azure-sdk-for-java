@@ -40,7 +40,7 @@ import java.util.Objects;
  * AzureResource using a path and then use the getter to access the client.
  */
 final class AzureResource {
-    private final ClientLogger logger = new ClientLogger(AzureResource.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AzureResource.class);
 
     static final String DIR_METADATA_MARKER = Constants.HeaderConstants.DIRECTORY_METADATA_KEY;
 
@@ -99,7 +99,7 @@ final class AzureResource {
      */
     DirectoryStatus checkDirStatus() throws IOException {
         if (this.blobClient == null) {
-            throw LoggingUtility.logError(logger, new IllegalArgumentException("The blob client was null."));
+            throw LoggingUtility.logError(LOGGER, new IllegalArgumentException("The blob client was null."));
         }
 
         /*
@@ -113,7 +113,7 @@ final class AzureResource {
             exists = true;
         } catch (BlobStorageException e) {
             if (e.getStatusCode() != 404) {
-                throw LoggingUtility.logError(logger, new IOException(e));
+                throw LoggingUtility.logError(LOGGER, new IOException(e));
             }
         }
 
@@ -152,7 +152,7 @@ final class AzureResource {
                 return DirectoryStatus.DOES_NOT_EXIST;
             }
         } catch (BlobStorageException e) {
-            throw LoggingUtility.logError(logger, new IOException(e));
+            throw LoggingUtility.logError(LOGGER, new IOException(e));
         }
     }
 
@@ -193,7 +193,7 @@ final class AzureResource {
                     if ((attr.value() instanceof byte[])) {
                         headers.setContentMd5((byte[]) attr.value());
                     } else {
-                        throw LoggingUtility.logError(logger,
+                        throw LoggingUtility.logError(LOGGER,
                             new UnsupportedOperationException("Content-MD5 attribute must be a byte[]"));
                     }
                     break;
@@ -230,14 +230,14 @@ final class AzureResource {
 
     private void validateNotRoot() {
         if (this.path.isRoot()) {
-            throw LoggingUtility.logError(logger, new IllegalArgumentException(
-                "Root directory not supported. Path: " + this.path.toString()));
+            throw LoggingUtility.logError(LOGGER, new IllegalArgumentException(
+                "Root directory not supported. Path: " + this.path));
         }
     }
 
     private AzurePath validatePathInstanceType(Path path) {
         if (!(path instanceof AzurePath)) {
-            throw LoggingUtility.logError(logger, new IllegalArgumentException("This provider cannot operate on "
+            throw LoggingUtility.logError(LOGGER, new IllegalArgumentException("This provider cannot operate on "
                 + "subtypes of Path other than AzurePath"));
         }
         return (AzurePath) path;

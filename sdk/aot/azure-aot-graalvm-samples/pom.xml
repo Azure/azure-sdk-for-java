@@ -55,16 +55,7 @@
     </developers>
 
     <dependencies>
-        <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>azure-aot-graalvm-support</artifactId>
-            <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support;current} -->
-        </dependency>
-        <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>azure-aot-graalvm-support-netty</artifactId>
-            <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support-netty;current} -->
-        </dependency>
+        
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-data-appconfiguration</artifactId>
@@ -105,7 +96,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-cosmos</artifactId>
-            <version>4.26.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+            <version>4.27.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
@@ -217,6 +208,19 @@
                     </plugin>
                 </plugins>
             </build>
+            <dependencies>
+                <dependency>
+                    <groupId>com.azure</groupId>
+                    <artifactId>azure-aot-graalvm-support</artifactId>
+                    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support;current} -->
+                </dependency>
+                <dependency>
+                    <groupId>com.azure</groupId>
+                    <artifactId>azure-aot-graalvm-support-netty</artifactId>
+                    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support-netty;current} -->
+                </dependency>
+            </dependencies>
         </profile>
+
     </profiles>
 </project>

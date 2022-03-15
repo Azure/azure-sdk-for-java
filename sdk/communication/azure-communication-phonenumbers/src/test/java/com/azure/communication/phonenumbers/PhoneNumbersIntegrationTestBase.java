@@ -16,8 +16,11 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
@@ -33,6 +36,7 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
         Configuration.getGlobalConfiguration().get("COUNTRY_CODE", "US");
     protected static final String AREA_CODE =
         Configuration.getGlobalConfiguration().get("AREA_CODE", "833");
+    protected static final String MS_USERAGENT_OVERRIDE = Configuration.getGlobalConfiguration().get("AZURE_USERAGENT_OVERRIDE", "");
 
     protected static final String PHONE_NUMBER =
         Configuration.getGlobalConfiguration().get("AZURE_PHONE_NUMBER", "+11234567891");
@@ -46,53 +50,62 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
         Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()), Pattern.CASE_INSENSITIVE);
 
     protected PhoneNumbersClientBuilder getClientBuilder(HttpClient httpClient) {
-        if (getTestMode() == TestMode.PLAYBACK) {
-            httpClient = interceptorManager.getPlaybackClient();
-        }
-
         CommunicationConnectionString communicationConnectionString = new CommunicationConnectionString(CONNECTION_STRING);
         String communicationEndpoint = communicationConnectionString.getEndpoint();
         String communicationAccessKey = communicationConnectionString.getAccessKey(); 
 
         PhoneNumbersClientBuilder builder = new PhoneNumbersClientBuilder();
         builder
+<<<<<<< HEAD
             .httpClient(httpClient)
             .endpoint(communicationEndpoint)
             .credential(new AzureKeyCredential(communicationAccessKey));
+=======
+                .httpClient(getHttpClient(httpClient))
+                .addPolicy(getOverrideMSUserAgentPolicy())
+                .endpoint(communicationEndpoint)
+                .credential(new AzureKeyCredential(communicationAccessKey));
+>>>>>>> main
 
-        if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
-            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+        if (shouldRecord()) {
+            builder.addPolicy(getRecordPolicy());
         }
 
         return builder;
     }
 
     protected PhoneNumbersClientBuilder getClientBuilderWithConnectionString(HttpClient httpClient) {
-        if (getTestMode() == TestMode.PLAYBACK) {
-            httpClient = interceptorManager.getPlaybackClient();
-        }
-
         PhoneNumbersClientBuilder builder = new PhoneNumbersClientBuilder();
         builder
+<<<<<<< HEAD
             .httpClient(httpClient)
             .connectionString(CONNECTION_STRING);
+=======
+                .httpClient(getHttpClient(httpClient))
+                .addPolicy(getOverrideMSUserAgentPolicy())
+                .connectionString(CONNECTION_STRING);
+>>>>>>> main
 
-        if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
-            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+
+        if (shouldRecord()) {
+            builder.addPolicy(getRecordPolicy());
         }
 
         return builder;
     }
 
     protected PhoneNumbersClientBuilder getClientBuilderUsingManagedIdentity(HttpClient httpClient) {
+        
         PhoneNumbersClientBuilder builder = new PhoneNumbersClientBuilder();
         builder
+<<<<<<< HEAD
             .endpoint(new CommunicationConnectionString(CONNECTION_STRING).getEndpoint())
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+=======
+                .httpClient(getHttpClient(httpClient))
+                .addPolicy(getOverrideMSUserAgentPolicy())
+                .endpoint(new CommunicationConnectionString(CONNECTION_STRING).getEndpoint());
+>>>>>>> main
 
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new FakeCredentials());
@@ -100,19 +113,64 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
             builder.credential(new DefaultAzureCredentialBuilder().build());
         }
 
-        if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
-            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+        if (shouldRecord()) {
+            builder.addPolicy(getRecordPolicy());
         }
 
         return builder;
+    }
+
+    private HttpClient getHttpClient(HttpClient httpClient) {
+        if (httpClient == null || getTestMode() == TestMode.PLAYBACK) {
+            return interceptorManager.getPlaybackClient();
+        }     
+        return httpClient;
     }
 
     protected PhoneNumbersClientBuilder addLoggingPolicy(PhoneNumbersClientBuilder builder, String testName) {
         return builder.addPolicy((context, next) -> logHeaders(testName, next));
     }
 
+<<<<<<< HEAD
+=======
+    protected String getTestPhoneNumber() {
+        boolean skipCapabilitiesTests = Configuration.getGlobalConfiguration()
+                .get("SKIP_UPDATE_CAPABILITIES_LIVE_TESTS", "false").equals("true");
+
+        if (getTestMode() == TestMode.PLAYBACK || skipCapabilitiesTests) {
+            return getDefaultPhoneNumber();
+        }
+
+        return getPhoneNumberByTestAgent();
+    }
+
+    protected String redactIfPlaybackMode(String phoneNumber) {
+        if (getTestMode() == TestMode.PLAYBACK) {
+            phoneNumber = "+REDACTED";
+        }
+        return phoneNumber;
+    }
+
+    private boolean shouldRecord() {
+        return getTestMode() == TestMode.RECORD;
+    }
+
+    private HttpPipelinePolicy getRecordPolicy() {
+        List<Function<String, String>> redactors = new ArrayList<>();
+        redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+        return interceptorManager.getRecordPolicy(redactors);
+    }
+
+    private HttpPipelinePolicy getOverrideMSUserAgentPolicy() {
+        HttpHeaders headers = new HttpHeaders();
+        if (!MS_USERAGENT_OVERRIDE.isEmpty()) {
+            headers.add("x-ms-useragent", MS_USERAGENT_OVERRIDE);
+        }
+        
+        return new AddHeadersPolicy(headers);
+    }
+
+>>>>>>> main
     private Mono<HttpResponse> logHeaders(String testName, HttpPipelineNextPolicy next) {
         return next.process()
             .flatMap(httpResponse -> {

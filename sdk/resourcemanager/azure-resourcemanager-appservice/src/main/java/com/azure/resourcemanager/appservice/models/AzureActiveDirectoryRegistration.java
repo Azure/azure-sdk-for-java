@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The configuration settings of the Azure Active Directory app registration. */
 @Fluent
 public final class AzureActiveDirectoryRegistration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureActiveDirectoryRegistration.class);
-
     /*
      * The OpenID Connect Issuer URI that represents the entity which issues
      * access tokens for this application.

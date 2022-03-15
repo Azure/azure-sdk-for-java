@@ -78,7 +78,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 @ServiceClient(builder = EncryptedBlobClientBuilder.class, isAsync = true)
 public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
-    private final ClientLogger logger = new ClientLogger(EncryptedBlobAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EncryptedBlobAsyncClient.class);
 
     /**
      * An object of type {@link AsyncKeyEncryptionKey} that is used to wrap/unwrap the content key during encryption.
@@ -199,11 +199,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions) {
-        try {
-            return this.upload(data, parallelTransferOptions, false);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return this.upload(data, parallelTransferOptions, false);
     }
 
     /**
@@ -253,19 +249,15 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions,
         boolean overwrite) {
-        try {
-            Mono<BlockBlobItem> uploadTask = this.uploadWithResponse(data, parallelTransferOptions, null, null, null,
-                null).flatMap(FluxUtil::toMono);
+        Mono<BlockBlobItem> uploadTask = this.uploadWithResponse(data, parallelTransferOptions, null, null, null,
+            null).flatMap(FluxUtil::toMono);
 
-            if (overwrite) {
-                return uploadTask;
-            } else {
-                return exists().flatMap(exists -> exists
-                    ? monoError(logger, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
-                    : uploadTask);
-            }
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        if (overwrite) {
+            return uploadTask;
+        } else {
+            return exists().flatMap(exists -> exists
+                ? monoError(LOGGER, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
+                : uploadTask);
         }
     }
 
@@ -329,9 +321,13 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data,
         ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers, Map<String, String> metadata,
         AccessTier tier, BlobRequestConditions requestConditions) {
-        return this.uploadWithResponse(new BlobParallelUploadOptions(data)
-            .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
-            .setTier(tier).setRequestConditions(requestConditions));
+        try {
+            return this.uploadWithResponse(new BlobParallelUploadOptions(data)
+                .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
+                .setTier(tier).setRequestConditions(requestConditions));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -405,7 +401,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                 .setRequestConditions(options.getRequestConditions())
                 .setComputeMd5(options.isComputeMd5()));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -429,11 +425,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> uploadFromFile(String filePath) {
-        try {
-            return uploadFromFile(filePath, false);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return uploadFromFile(filePath, false);
     }
 
     /**
@@ -458,18 +450,14 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> uploadFromFile(String filePath, boolean overwrite) {
-        try {
-            Mono<Void> uploadTask = uploadFromFile(filePath, null, null, null, null, null);
+        Mono<Void> uploadTask = uploadFromFile(filePath, null, null, null, null, null);
 
-            if (overwrite) {
-                return uploadTask;
-            } else {
-                return exists().flatMap(exists -> exists
-                    ? monoError(logger, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
-                    : uploadTask);
-            }
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        if (overwrite) {
+            return uploadTask;
+        } else {
+            return exists().flatMap(exists -> exists
+                ? monoError(LOGGER, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
+                : uploadTask);
         }
     }
 
@@ -516,10 +504,14 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions requestConditions) {
-        return this.uploadFromFileWithResponse(new BlobUploadFromFileOptions(filePath)
-            .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
-            .setTier(tier).setRequestConditions(requestConditions))
-            .then();
+        try {
+            return this.uploadFromFileWithResponse(new BlobUploadFromFileOptions(filePath)
+                    .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
+                    .setTier(tier).setRequestConditions(requestConditions))
+                .then();
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -562,7 +554,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     public Mono<Response<BlockBlobItem>> uploadFromFileWithResponse(BlobUploadFromFileOptions options) {
         try {
             StorageImplUtils.assertNotNull("options", options);
-            return Mono.using(() -> UploadUtils.uploadFileResourceSupplier(options.getFilePath(), logger),
+            return Mono.using(() -> UploadUtils.uploadFileResourceSupplier(options.getFilePath(), LOGGER),
                 channel -> this.uploadWithResponse(new BlobParallelUploadOptions(FluxUtil.readFile(channel))
                     .setParallelTransferOptions(options.getParallelTransferOptions()).setHeaders(options.getHeaders())
                     .setMetadata(options.getMetadata()).setTags(options.getTags()).setTier(options.getTier())
@@ -571,11 +563,11 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                         try {
                             channel.close();
                         } catch (IOException e) {
-                            throw logger.logExceptionAsError(new UncheckedIOException(e));
+                            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
                         }
-                    }), channel -> UploadUtils.uploadFileCleanup(channel, logger));
+                    }), channel -> UploadUtils.uploadFileCleanup(channel, LOGGER));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -624,7 +616,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                         try {
                             encryptedBytes = cipher.update(plainTextBuffer, encryptedTextBuffer);
                         } catch (ShortBufferException e) {
-                            throw logger.logExceptionAsError(Exceptions.propagate(e));
+                            throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
                         }
                         encryptedTextBuffer.position(0);
                         encryptedTextBuffer.limit(encryptedBytes);
@@ -642,7 +634,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                 }));
         } catch (GeneralSecurityException e) {
             // These are hardcoded and guaranteed to work. There is no reason to propagate a checked exception.
-            throw logger.logExceptionAsError(new RuntimeException(e));
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 
@@ -676,7 +668,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                     encryptedBlob.getEncryptionData().toJsonString());
                 return encryptedBlob.getCiphertextFlux();
             } catch (JsonProcessingException e) {
-                throw logger.logExceptionAsError(Exceptions.propagate(e));
+                throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
             }
         });
     }
@@ -687,7 +679,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     @Override
     public Flux<ByteBuffer> query(String expression) {
         // This is eagerly thrown instead of waiting for the subscription to happen.
-        throw logger.logExceptionAsError(new UnsupportedOperationException(
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
             "Cannot query data encrypted on client side"));
     }
 
@@ -697,7 +689,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     @Override
     public Mono<BlobQueryAsyncResponse> queryWithResponse(BlobQueryOptions queryOptions) {
         // This is eagerly thrown instead of waiting for the subscription to happen.
-        throw logger.logExceptionAsError(new UnsupportedOperationException(
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
             "Cannot query data encrypted on client side"));
     }
 }

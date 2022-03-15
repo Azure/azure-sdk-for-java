@@ -7,15 +7,12 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.models.StampCapacityInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Collection of stamp capacities. */
 @Fluent
 public final class StampCapacityCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StampCapacityCollection.class);
-
     /*
      * Collection of resources.
      */
@@ -64,11 +61,13 @@ public final class StampCapacityCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model StampCapacityCollection"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(StampCapacityCollection.class);
 }

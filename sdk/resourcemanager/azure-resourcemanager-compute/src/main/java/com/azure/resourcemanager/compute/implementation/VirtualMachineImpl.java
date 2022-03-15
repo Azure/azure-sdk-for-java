@@ -72,6 +72,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineExtension;
 import com.azure.resourcemanager.compute.models.VirtualMachineIdentity;
 import com.azure.resourcemanager.compute.models.VirtualMachineInstanceView;
 import com.azure.resourcemanager.compute.models.VirtualMachinePriorityTypes;
+import com.azure.resourcemanager.compute.models.VirtualMachineScaleSet;
 import com.azure.resourcemanager.compute.models.VirtualMachineSize;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineUnmanagedDataDisk;
@@ -1810,6 +1811,14 @@ class VirtualMachineImpl
     }
 
     @Override
+    public String virtualMachineScaleSetId() {
+        if (innerModel().virtualMachineScaleSet() != null) {
+            return innerModel().virtualMachineScaleSet().id();
+        }
+        return null;
+    }
+
+    @Override
     public String provisioningState() {
         return innerModel().provisioningState();
     }
@@ -2677,6 +2686,14 @@ class VirtualMachineImpl
     public VirtualMachineImpl withPlacement(DiffDiskPlacement placement) {
         if (placement != null) {
             this.innerModel().storageProfile().osDisk().diffDiskSettings().withPlacement(placement);
+        }
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withExistingVirtualMachineScaleSet(VirtualMachineScaleSet scaleSet) {
+        if (scaleSet != null) {
+            this.innerModel().withVirtualMachineScaleSet(new SubResource().withId(scaleSet.id()));
         }
         return this;
     }

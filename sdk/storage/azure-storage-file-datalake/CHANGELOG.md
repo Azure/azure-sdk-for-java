@@ -8,6 +8,9 @@
 
 ### Bugs Fixed
 
+- Fixed a bug where `uploadFromFile(String, boolean)` used a different size to determine whether file existence should
+  be checked before using chunked upload than the size used to triggered chunked upload.
+
 ### Other Changes
 
 ## 12.8.0 (2022-03-09)

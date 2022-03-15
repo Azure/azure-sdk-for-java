@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.batch.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.batch.models.PackageState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Properties of an application package. */
 @Immutable
 public final class ApplicationPackageProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationPackageProperties.class);
-
     /*
      * The current state of the application package.
      */

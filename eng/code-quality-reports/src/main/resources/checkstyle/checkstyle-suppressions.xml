@@ -340,6 +340,7 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="IllegalImport"
             files="com.azure.cosmos.ClientSideRequestStatistics"/> <!-- Need OperatingSystemMXBean from sun to obtain cpu info -->
   <suppress checks="EnforceFinalFields" files="com.azure.spring.cloud.config.AppConfigurationPropertySourceLocator"/>
+  <suppress checks="ConstantName" files="com.azure.spring.cloud.config.AppConfigurationPropertySourceLocator"/>
 
   <!-- Checkstyle suppressions for resource manager package -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.resourcemanager.*"/>
@@ -490,4 +491,11 @@ the main ServiceBusClientBuilder. -->
 
   <!-- Suppress AVRO generated code for Schema Registry -->
   <suppress checks="." files="com.azure.data.schemaregistry.apacheavro.generatedtestsources.*.java"/>
+
+  <!-- Suppress checks for Core Perf package. -->
+  <suppress checks="Javadoc" files=".*[/\\]azure-core-perf[/\\].*\.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
+  files=".*[/\\]azure-core-perf[/\\].*\.java"/>
+  <suppress checks="GoodLogging" files=".*[/\\]azure-core-perf[/\\].*\.java"/>
+  <suppress checks="ExternalDependencyExposed" files=".*[/\\]azure-core-perf[/\\].*\.java"/>
 </suppressions>
