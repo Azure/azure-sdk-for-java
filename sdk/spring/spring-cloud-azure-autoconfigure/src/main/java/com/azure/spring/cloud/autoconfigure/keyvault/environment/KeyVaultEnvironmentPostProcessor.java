@@ -28,7 +28,8 @@ import java.util.List;
 import static org.springframework.core.env.StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME;
 
 /**
- * Leverage {@link EnvironmentPostProcessor} to add Key Vault secrets as a property source.
+ * Leverage {@link EnvironmentPostProcessor} to insert {@link KeyVaultPropertySource}s into {@link ConfigurableEnvironment}.
+ * {@link KeyVaultPropertySource}s are constructed according to {@link AzureKeyVaultSecretProperties},
  *
  * @since 4.0.0
  */
@@ -48,19 +49,15 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
     }
 
     /**
-     * Construct a {@link KeyVaultEnvironmentPostProcessor} instance with default value.
+     * Construct a {@link KeyVaultEnvironmentPostProcessor} instance with a new {@link DeferredLog}.
      */
     public KeyVaultEnvironmentPostProcessor() {
         this.logger = new DeferredLog();
     }
 
     /**
-     * Post-process the environment.
-     *
-     * <p>
-     * Here we are going to process any key vault(s) and make them as available PropertySource(s). Note this supports
-     * both the singular key vault setup, as well as the multiple key vault setup.
-     * </p>
+     * Construct {@link KeyVaultPropertySource}s according to {@link AzureKeyVaultSecretProperties},
+     * then insert these {@link KeyVaultPropertySource}s into {@link ConfigurableEnvironment}.
      *
      * @param environment the environment.
      * @param application the application.
@@ -210,7 +207,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
     }
 
     /**
-     *
+     * Get the order value of this object.
      * @return The order value.
      */
     @Override
