@@ -64,9 +64,9 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
      */
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
-        if (!keyVaultClientExistInClassPath()) {
+        if (!isKeyVaultClientOnClasspath()) {
             logger.debug("Skip configuring Key Vault PropertySource. "
-                    + "Because com.azure:azure-security-keyvault-secrets not exist in classpath.");
+                    + "Because com.azure:azure-security-keyvault-secrets doesn't exist in classpath.");
             return;
         }
 
@@ -100,16 +100,16 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
     private List<KeyVaultPropertySource> buildKeyVaultPropertySourceList(
             List<AzureKeyVaultPropertySourceProperties> propertiesList) {
         List<KeyVaultPropertySource> propertySources = new ArrayList<>();
-        for (AzureKeyVaultPropertySourceProperties properties: propertiesList) {
-            logger.debug("Configuring Key Vault PropertySource. name = " + properties.getName());
+        for (int i = 0; i < propertiesList.size(); i++) {
+            AzureKeyVaultPropertySourceProperties properties = propertiesList.get(i);
             if (!properties.isEnabled()) {
                 logger.debug("Skip configuring Key Vault PropertySource. "
-                        + "Because spring.cloud.azure.keyvault.secret.property-sources[].enabled = false.");
+                        + "Because spring.cloud.azure.keyvault.secret.property-sources[" + i + "].enabled = false.");
                 continue;
             }
             if (!StringUtils.hasText(properties.getEndpoint())) {
                 logger.debug("Skip configuring Key Vault PropertySource. "
-                        + "Because spring.cloud.azure.keyvault.secret.property-sources[].endpoint is empty.");
+                        + "Because spring.cloud.azure.keyvault.secret.property-sources[" + i + "].endpoint is empty.");
                 continue;
             }
             propertySources.add(buildKeyVaultPropertySource(properties));
@@ -201,7 +201,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
         return "azure-key-vault-secret-property-source-" + index;
     }
 
-    private boolean keyVaultClientExistInClassPath() {
+    private boolean isKeyVaultClientOnClasspath() {
         return ClassUtils.isPresent("com.azure.security.keyvault.secrets.SecretClient",
                                     KeyVaultEnvironmentPostProcessor.class.getClassLoader());
     }
