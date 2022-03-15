@@ -56,4 +56,17 @@ public final class ServiceBusMessageHeaders extends AzureHeaders {
     public static final String REPLY_TO_SESSION_ID = PREFIX + "reply_to_session_id";
     public static final String SESSION_ID = PREFIX + "session_id";
     public static final String RECEIVED_MESSAGE_CONTEXT = PREFIX + "received_message_context";
+
+    public static final String DEAD_LETTER_ERROR_DESCRIPTION = PREFIX + "dead_letter_error_description";
+    public static final String DEAD_LETTER_REASON = PREFIX + "dead_letter_reason";
+    public static final String DEAD_LETTER_SOURCE = PREFIX + "dead_letter_source";
+    public static final String DELIVERY_COUNT = PREFIX + "delivery_count";
+    public static final String ENQUEUED_SEQUENCE_NUMBER = PREFIX + "enqueued_sequence_number";
+    public static final String ENQUEUED_TIME = PREFIX + "enqueued_time";
+    public static final String EXPIRES_AT = PREFIX + "expires_at";
+    public static final String LOCK_TOKEN = PREFIX + "lock_token";
+    public static final String LOCKED_UNTIL = PREFIX + "locked_until";
+    public static final String SEQUENCE_NUMBER = PREFIX + "sequence_number";
+    public static final String STATE = PREFIX + "state";
+    public static final String SUBJECT = PREFIX + "subject";
 }

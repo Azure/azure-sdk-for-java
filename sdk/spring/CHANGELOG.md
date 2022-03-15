@@ -20,6 +20,44 @@ This section includes changes in `spring-cloud-azure-stream-binder-servicebus` m
 - Change the type of the binding producer property of `send-timeout` from `long` to `Duration` [#26625](https://github.com/Azure/azure-sdk-for-java/pull/26625).
 - Change property from `spring.cloud.stream.servicebus.bindings.<binding-name>.consumer.session-aware` to `spring.cloud.stream.servicebus.bindings.<binding-name>.consumer.session-enabled` [#27331](https://github.com/Azure/azure-sdk-for-java/pull/27331).
 - Unify the root package name of Spring libraries. [#27420](https://github.com/Azure/azure-sdk-for-java/pull/27420).
+- Remove message header of `AzureHeaders.RAW_ID`. Please use `ServiceBusMessageHeaders.MESSAGE_ID` instead [#27675](https://github.com/Azure/azure-sdk-for-java/pull/27675).
+ 
+#### Features Added
+- Support converting all headers and properties exposed directly by `ServiceBusReceivedMessage` when receiving messages [#27675](https://github.com/Azure/azure-sdk-for-java/pull/27675), newly supported headers and properties can be get according to the keys of:
+  * ServiceBusMessageHeaders.DEAD_LETTER_ERROR_DESCRIPTION
+  * ServiceBusMessageHeaders.DEAD_LETTER_REASON
+  * ServiceBusMessageHeaders.DEAD_LETTER_SOURCE
+  * ServiceBusMessageHeaders.DELIVERY_COUNT
+  * ServiceBusMessageHeaders.ENQUEUED_SEQUENCE_NUMBER
+  * ServiceBusMessageHeaders.ENQUEUED_TIME
+  * ServiceBusMessageHeaders.EXPIRES_AT
+  * ServiceBusMessageHeaders.LOCK_TOKEN
+  * ServiceBusMessageHeaders.LOCKED_UNTIL
+  * ServiceBusMessageHeaders.SEQUENCE_NUMBER
+  * ServiceBusMessageHeaders.STATE
+  * ServiceBusMessageHeaders.SUBJECT
+- Support the message header of `ServiceBusMessageHeaders.SUBJECT` to specify the AMQP property of `subject` when sending messages [#27675](https://github.com/Azure/azure-sdk-for-java/pull/27675).
+
+### Spring Integration Service Bus Starter
+
+#### Breaking Changes
+- Remove message header of `AzureHeaders.RAW_ID`. Please use `ServiceBusMessageHeaders.MESSAGE_ID` instead [#27675](https://github.com/Azure/azure-sdk-for-java/pull/27675).
+ 
+#### Features Added
+- Support converting all headers and properties exposed directly by `ServiceBusReceivedMessage` when receiving messages [#27675](https://github.com/Azure/azure-sdk-for-java/pull/27675), newly supported headers and properties can be get according to the keys of:
+  * ServiceBusMessageHeaders.DEAD_LETTER_ERROR_DESCRIPTION
+  * ServiceBusMessageHeaders.DEAD_LETTER_REASON
+  * ServiceBusMessageHeaders.DEAD_LETTER_SOURCE
+  * ServiceBusMessageHeaders.DELIVERY_COUNT
+  * ServiceBusMessageHeaders.ENQUEUED_SEQUENCE_NUMBER
+  * ServiceBusMessageHeaders.ENQUEUED_TIME
+  * ServiceBusMessageHeaders.EXPIRES_AT
+  * ServiceBusMessageHeaders.LOCK_TOKEN
+  * ServiceBusMessageHeaders.LOCKED_UNTIL
+  * ServiceBusMessageHeaders.SEQUENCE_NUMBER
+  * ServiceBusMessageHeaders.STATE
+  * ServiceBusMessageHeaders.SUBJECT
+- Support the message header of `ServiceBusMessageHeaders.SUBJECT` to specify the AMQP property of `subject` when sending messages [#27675](https://github.com/Azure/azure-sdk-for-java/pull/27675).
 
 ### Spring Cloud Stream Event Hubs Binder
 This section includes changes in `spring-cloud-azure-stream-binder-eventhubs` module.
