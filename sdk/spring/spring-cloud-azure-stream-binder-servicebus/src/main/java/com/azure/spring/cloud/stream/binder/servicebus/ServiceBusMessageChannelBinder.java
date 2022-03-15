@@ -19,7 +19,6 @@ import com.azure.spring.integration.core.instrumentation.Instrumentation;
 import com.azure.spring.integration.core.instrumentation.InstrumentationManager;
 import com.azure.spring.integration.servicebus.implementation.health.ServiceBusProcessorInstrumentation;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusInboundChannelAdapter;
-import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.messaging.servicebus.core.ServiceBusTemplate;
@@ -84,8 +83,6 @@ public class ServiceBusMessageChannelBinder extends
     private final InstrumentationManager instrumentationManager = new DefaultInstrumentationManager();
     private final Map<String, ExtendedProducerProperties<ServiceBusProducerProperties>>
         extendedProducerPropertiesMap = new ConcurrentHashMap<>();
-    private final Map<ConsumerIdentifier, ExtendedConsumerProperties<ServiceBusConsumerProperties>>
-        extendedConsumerPropertiesMap = new ConcurrentHashMap<>();
 
     private List<ServiceBusProducerFactoryCustomizer> producerFactoryCustomizers = new ArrayList<>();
     private List<ServiceBusProcessorFactoryCustomizer> processorFactoryCustomizers = new ArrayList<>();
@@ -130,7 +127,6 @@ public class ServiceBusMessageChannelBinder extends
     @Override
     protected MessageProducer createConsumerEndpoint(ConsumerDestination destination, String group,
                                                      ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
-        extendedConsumerPropertiesMap.put(new ConsumerIdentifier(destination.getName(), group), properties);
         final ServiceBusInboundChannelAdapter inboundAdapter;
 
         ServiceBusContainerProperties containerProperties = createContainerProperties(destination, group, properties);
@@ -364,7 +360,5 @@ public class ServiceBusMessageChannelBinder extends
     public void setProcessorFactoryCustomizers(List<ServiceBusProcessorFactoryCustomizer> processorFactoryCustomizers) {
         this.processorFactoryCustomizers = processorFactoryCustomizers;
     }
-
-
 
 }
