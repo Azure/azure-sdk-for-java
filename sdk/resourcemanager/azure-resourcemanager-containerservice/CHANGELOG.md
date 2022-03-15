@@ -1,5 +1,31 @@
 # Release History
 
+## 2.14.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.13.0 (2022-03-11)
+
+### Features Added
+
+- Supported `format` parameter in listing user kube configs in `KubernetesCluster` and `KubernetesClusters`.
+
+### Breaking Changes
+
+- Renamed class `Ossku` to `OSSku`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-01-01`.
+
 ## 2.13.0-beta.1 (2022-03-11)
 
 ### Features Added

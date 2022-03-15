@@ -1,5 +1,11 @@
 # Release History
 
+## 2.14.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Supported `virtualMachineSizeType()` in `VirtualMachineSize` as a typed alias of `name`.
+
 ## 2.13.0 (2022-03-11)
 
 ### Features Added
@@ -7,6 +13,7 @@
 - Supported disk encryption set in `Disk` and `VirtualMachine`.
 - Changed to use PATCH for `GalleryImage` update.
 - Supported ephemeral OS disk in `VirtualMachine`.
+- Supported creating `VirtualMachine` with existing `VirtualMachineScaleSet`.
 
 ### Other Changes
 
