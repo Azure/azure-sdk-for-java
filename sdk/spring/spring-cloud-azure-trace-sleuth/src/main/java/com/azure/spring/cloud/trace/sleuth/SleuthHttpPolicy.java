@@ -14,9 +14,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
 import com.azure.spring.cloud.trace.sleuth.implementation.HttpTraceUtil;
 import org.springframework.cloud.sleuth.Span;
-import org.springframework.cloud.sleuth.TraceContext;
 import org.springframework.cloud.sleuth.Tracer;
-import org.springframework.cloud.sleuth.propagation.Propagator;
 import org.springframework.util.Assert;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
@@ -28,7 +26,6 @@ import java.util.Optional;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.DISABLE_TRACING_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
-import static com.azure.spring.cloud.trace.sleuth.implementation.TraceContextUtil.isValid;
 
 /**
  * Pipeline policy that creates a Sleuth span which traces the service request,
@@ -38,7 +35,6 @@ public class SleuthHttpPolicy implements HttpPipelinePolicy {
 
     // Singleton Sleuth tracer capable of starting and exporting spans.
     private final Tracer tracer;
-    private final Propagator propagator;
 
     // standard attributes with http call information
     private static final String HTTP_USER_AGENT = "http.user_agent";
@@ -51,13 +47,10 @@ public class SleuthHttpPolicy implements HttpPipelinePolicy {
     /**
      * Creates a new instance of {@link SleuthHttpPolicy}.
      * @param tracer the tracer
-     * @param propagator the propagator
      */
-    public SleuthHttpPolicy(Tracer tracer, Propagator propagator) {
+    public SleuthHttpPolicy(Tracer tracer) {
         Assert.notNull(tracer, "tracer must not be null!");
-        Assert.notNull(propagator, "propagator must not be null!");
         this.tracer = tracer;
-        this.propagator = propagator;
     }
 
     @Override
@@ -71,9 +64,10 @@ public class SleuthHttpPolicy implements HttpPipelinePolicy {
 
         // Build new child span representing this outgoing request.
         final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
-
-        Span.Builder spanBuilder = tracer.spanBuilder().name(urlBuilder.getPath())
-                                         .setParent(parentSpan.context());
+        Span.Builder spanBuilder = tracer.spanBuilder().name(urlBuilder.getPath());
+        if (parentSpan != null) {
+            spanBuilder.setParent(parentSpan.context());
+        }
 
         // A span's kind can be SERVER (incoming request) or CLIENT (outgoing request);
         spanBuilder.kind(Span.Kind.CLIENT);
@@ -84,12 +78,6 @@ public class SleuthHttpPolicy implements HttpPipelinePolicy {
         // If span is sampled in, add additional TRACING attributes
         if (!span.isNoop()) {
             addSpanRequestAttributes(span, request, context); // Adds HTTP method, URL, & user-agent
-        }
-
-        // For no-op tracer, SpanContext is INVALID; inject valid span headers onto outgoing request
-        TraceContext traceContext = span.context();
-        if (isValid(traceContext)) {
-            propagator.inject(traceContext, request, contextSetter);
         }
 
         // run the next policy and handle success and error
@@ -175,8 +163,4 @@ public class SleuthHttpPolicy implements HttpPipelinePolicy {
         // Ending the span schedules it for export if sampled in or just ignores it if sampled out.
         span.end();
     }
-
-    // lambda that actually injects arbitrary header into the request
-    private final Propagator.Setter<HttpRequest> contextSetter =
-        (request, key, value) -> request.getHeaders().set(key, value);
 }

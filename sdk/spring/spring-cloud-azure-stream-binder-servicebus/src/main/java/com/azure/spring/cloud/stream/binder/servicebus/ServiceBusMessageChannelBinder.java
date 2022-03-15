@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.stream.binder.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
+import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
 import com.azure.spring.cloud.stream.binder.servicebus.config.ClientFactoryCustomizer;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusConsumerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusExtendedBindingProperties;
@@ -23,21 +24,21 @@ import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.messaging.servicebus.core.ServiceBusTemplate;
 import com.azure.spring.messaging.servicebus.core.listener.ServiceBusMessageListenerContainer;
 import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
-import com.azure.spring.messaging.servicebus.core.properties.ProcessorProperties;
 import com.azure.spring.messaging.servicebus.core.properties.ProducerProperties;
 import com.azure.spring.messaging.servicebus.core.properties.ServiceBusContainerProperties;
 import com.azure.spring.messaging.servicebus.implementation.core.DefaultServiceBusNamespaceProcessorFactory;
 import com.azure.spring.messaging.servicebus.implementation.core.DefaultServiceBusNamespaceProducerFactory;
+import com.azure.spring.messaging.servicebus.implementation.properties.merger.ProcessorPropertiesMerger;
 import com.azure.spring.messaging.servicebus.support.ServiceBusMessageHeaders;
 import com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.stream.binder.AbstractMessageChannelBinder;
-import org.springframework.cloud.stream.binder.BinderHeaders;
-import org.springframework.cloud.stream.binder.BinderSpecificPropertiesProvider;
 import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
 import org.springframework.cloud.stream.binder.ExtendedProducerProperties;
 import org.springframework.cloud.stream.binder.ExtendedPropertiesBinder;
+import org.springframework.cloud.stream.binder.BinderHeaders;
+import org.springframework.cloud.stream.binder.BinderSpecificPropertiesProvider;
 import org.springframework.cloud.stream.provisioning.ConsumerDestination;
 import org.springframework.cloud.stream.provisioning.ProducerDestination;
 import org.springframework.integration.core.MessageProducer;
@@ -52,7 +53,6 @@ import org.springframework.util.Assert;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -131,10 +131,7 @@ public class ServiceBusMessageChannelBinder extends
         extendedConsumerPropertiesMap.put(new ConsumerIdentifier(destination.getName(), group), properties);
         final ServiceBusInboundChannelAdapter inboundAdapter;
 
-        ServiceBusContainerProperties containerProperties = new ServiceBusContainerProperties();
-        containerProperties.setEntityName(destination.getName());
-        containerProperties.setSubscriptionName(group);
-
+        ServiceBusContainerProperties containerProperties = createContainerProperties(destination, group, properties);
         ServiceBusMessageListenerContainer listenerContainer = new ServiceBusMessageListenerContainer(getProcessorFactory(), containerProperties);
 
         serviceBusMessageListenerContainers.add(listenerContainer);
@@ -149,6 +146,25 @@ public class ServiceBusMessageChannelBinder extends
         inboundAdapter.setErrorChannel(errorInfrastructure.getErrorChannel());
         inboundAdapter.setMessageConverter(messageConverter);
         return inboundAdapter;
+    }
+
+    /**
+     * Create {@link ServiceBusContainerProperties} from the extended {@link ServiceBusConsumerProperties}.
+     * @param destination reference to the consumer destination.
+     * @param group the consumer group.
+     * @param properties the consumer properties.
+     * @return the {@link ServiceBusContainerProperties}.
+     */
+    ServiceBusContainerProperties createContainerProperties(
+        ConsumerDestination destination,
+        String group,
+        ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
+        ServiceBusContainerProperties containerProperties = new ServiceBusContainerProperties();
+        AzurePropertiesUtils.copyAzureCommonProperties(properties.getExtension(), containerProperties);
+        ProcessorPropertiesMerger.copyProcessorPropertiesIfNotNull(properties.getExtension(), containerProperties);
+        containerProperties.setEntityName(destination.getName());
+        containerProperties.setSubscriptionName(group);
+        return containerProperties;
     }
 
     @Override
@@ -269,8 +285,7 @@ public class ServiceBusMessageChannelBinder extends
 
     private ServiceBusProcessorFactory getProcessorFactory() {
         if (this.processorFactory == null) {
-            this.processorFactory = new DefaultServiceBusNamespaceProcessorFactory(this.namespaceProperties,
-                getProcessorPropertiesSupplier());
+            this.processorFactory = new DefaultServiceBusNamespaceProcessorFactory(this.namespaceProperties);
 
             clientFactoryCustomizers.forEach(customizer -> customizer.customize(this.processorFactory));
 
@@ -293,21 +308,6 @@ public class ServiceBusMessageChannelBinder extends
                 return producerProperties;
             } else {
                 LOGGER.debug("Can't find extended properties for {}", key);
-                return null;
-            }
-        };
-    }
-
-    private PropertiesSupplier<ConsumerIdentifier, ProcessorProperties> getProcessorPropertiesSupplier() {
-        return key -> {
-            if (this.extendedConsumerPropertiesMap.containsKey(key)) {
-                ServiceBusConsumerProperties consumerProperties = this.extendedConsumerPropertiesMap.get(key)
-                    .getExtension();
-                consumerProperties.setEntityName(key.getDestination());
-                consumerProperties.setSubscriptionName(key.getGroup());
-                return consumerProperties;
-            } else {
-                LOGGER.debug("Can't find extended properties for destination {}, group {}", key.getDestination(), key.getGroup());
                 return null;
             }
         };
@@ -353,7 +353,4 @@ public class ServiceBusMessageChannelBinder extends
         this.clientFactoryCustomizers = clientFactoryCustomizers;
     }
 
-    List<ServiceBusMessageListenerContainer> getEventHubsMessageListenerContainers() {
-        return Collections.unmodifiableList(this.serviceBusMessageListenerContainers);
-    }
 }

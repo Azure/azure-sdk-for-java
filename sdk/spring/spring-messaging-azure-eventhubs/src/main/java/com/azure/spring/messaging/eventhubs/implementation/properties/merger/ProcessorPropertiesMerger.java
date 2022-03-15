@@ -37,7 +37,7 @@ public class ProcessorPropertiesMerger implements PropertiesMerger<ProcessorProp
         return properties;
     }
 
-    static void copyProcessorPropertiesIfNotNull(ProcessorProperties source, ProcessorProperties target) {
+    public static void copyProcessorPropertiesIfNotNull(ProcessorProperties source, ProcessorProperties target) {
         PropertyMapper propertyMapper = new PropertyMapper();
 
         propertyMapper.from(source.getDomainName()).to(target::setDomainName);

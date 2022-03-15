@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.stream.binder.servicebus.config;
 
-import com.azure.identity.DefaultAzureCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration;
@@ -34,7 +34,6 @@ import org.springframework.cloud.stream.binder.Binder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.lang.Nullable;
 
 import java.util.stream.Collectors;
 
@@ -101,13 +100,13 @@ public class ServiceBusBinderConfiguration {
     public ServiceBusMessageChannelBinder serviceBusBinder(ServiceBusChannelProvisioner channelProvisioner,
                                                            ServiceBusExtendedBindingProperties bindingProperties,
                                                            ObjectProvider<NamespaceProperties> namespaceProperties,
-                                                           @Nullable ServiceBusMessageConverter messageConverter,
+                                                           ObjectProvider<ServiceBusMessageConverter> messageConverter,
                                                            ObjectProvider<ClientFactoryCustomizer> customizers) {
 
         ServiceBusMessageChannelBinder binder = new ServiceBusMessageChannelBinder(null, channelProvisioner);
         binder.setBindingProperties(bindingProperties);
         binder.setNamespaceProperties(namespaceProperties.getIfAvailable());
-        binder.setMessageConverter(messageConverter);
+        binder.setMessageConverter(messageConverter.getIfAvailable());
         binder.setClientFactoryCustomizers(customizers.orderedStream().collect(Collectors.toList()));
         return binder;
     }
@@ -116,7 +115,7 @@ public class ServiceBusBinderConfiguration {
     @ConditionalOnMissingBean
     ClientFactoryCustomizer defaultClientFactoryCustomizer(
         AzureTokenCredentialResolver azureTokenCredentialResolver,
-        @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) DefaultAzureCredential defaultAzureCredential,
+        @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultAzureCredential,
         ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> senderClientBuilderCustomizers,
         ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> processorClientBuilderCustomizers,
         ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder>> sessionProcessorClientBuilderCustomizers) {
@@ -132,13 +131,13 @@ public class ServiceBusBinderConfiguration {
      */
     static class DefaultClientFactoryCustomizer implements ClientFactoryCustomizer {
 
-        private final DefaultAzureCredential defaultAzureCredential;
+        private final TokenCredential defaultAzureCredential;
         private final AzureTokenCredentialResolver tokenCredentialResolver;
         private final ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> senderClientBuilderCustomizers;
         private final ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> processorClientBuilderCustomizers;
         private final ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder>> sessionProcessorClientBuilderCustomizers;
 
-        DefaultClientFactoryCustomizer(DefaultAzureCredential defaultAzureCredential,
+        DefaultClientFactoryCustomizer(TokenCredential defaultAzureCredential,
                                        AzureTokenCredentialResolver azureTokenCredentialResolver,
                                        ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> senderClientBuilderCustomizers,
                                        ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> processorClientBuilderCustomizers,

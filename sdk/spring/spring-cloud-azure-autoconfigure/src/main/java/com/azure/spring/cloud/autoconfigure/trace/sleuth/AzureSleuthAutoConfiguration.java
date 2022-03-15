@@ -11,7 +11,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.sleuth.Tracer;
-import org.springframework.cloud.sleuth.propagation.Propagator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Role;
@@ -30,13 +29,12 @@ public class AzureSleuthAutoConfiguration {
     /**
      * Autoconfigure the {@link HttpPipelinePolicy} for sleuth usage.
      * @param tracer the sleuth {@link Tracer}.
-     * @param propagator the sleuth {@link Propagator}
      * @return the http pipeline policy
      */
     @Bean(name = DEFAULT_SLEUTH_HTTP_POLICY_BEAN_NAME)
     @ConditionalOnMissingBean(name = DEFAULT_SLEUTH_HTTP_POLICY_BEAN_NAME)
-    public HttpPipelinePolicy azureSleuthHttpPolicy(Tracer tracer, Propagator propagator) {
-        return new SleuthHttpPolicy(tracer, propagator);
+    public HttpPipelinePolicy azureSleuthHttpPolicy(Tracer tracer) {
+        return new SleuthHttpPolicy(tracer);
     }
 
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
