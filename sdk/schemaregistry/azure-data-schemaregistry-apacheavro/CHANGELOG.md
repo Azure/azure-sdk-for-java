@@ -1,18 +1,12 @@
 # Release History
 
-## 1.0.0-beta.10 (Unreleased)
-
-### Features Added
+## 1.0.0-beta.10 (2022-03-15)
 
 ### Breaking Changes
 
 - Changed `SchemaRegistryApacheAvroEncoder` to `SchemaRegistryApacheAvroSerializer`.
 - Changed `decodeMessageData` and `decodeMessageDataAsync` to `deserializeMessageData` and `deserializeMessageDataAsync`.
 - Changed `encodeMessageData` and `encodeMessageDataAsync` to `serializeMessageData` and `serializeMessageDataAsync`.
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.0.0-beta.9 (2022-02-12)
 
