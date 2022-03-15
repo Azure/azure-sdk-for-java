@@ -13,9 +13,9 @@ import com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCard
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
- * Sample to demonstrate using {@link SchemaRegistryApacheAvroEncoder} for serialization and deserialization of data.
+ * Sample to demonstrate using {@link SchemaRegistryApacheAvroSerializer} for serialization and deserialization of data.
  */
-public class SchemaRegistryApacheAvroEncoderSample {
+public class SchemaRegistryApacheAvroSerializerSample {
     /**
      * Main method to run this sample.
      *
@@ -33,11 +33,11 @@ public class SchemaRegistryApacheAvroEncoderSample {
 
         // Create the encoder instance by configuring it with the schema registry client and
         // enabling auto registering of new schemas
-        SchemaRegistryApacheAvroEncoder encoder = new SchemaRegistryApacheAvroEncoderBuilder()
+        SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()
             .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
             .schemaGroup("{schema-group}")
             .avroSpecificReader(true)
-            .buildEncoder();
+            .buildSerializer();
 
         PlayingCard playingCard = new PlayingCard();
         playingCard.setCardValue(5);
@@ -45,7 +45,7 @@ public class SchemaRegistryApacheAvroEncoderSample {
         playingCard.setPlayingCardSuit(PlayingCardSuit.SPADES);
 
         // Serialize the playing card object and write to the output stream.
-        MessageWithMetadata message = encoder.encodeMessageData(playingCard,
+        MessageWithMetadata message = serializer.serializeMessageData(playingCard,
             TypeReference.createInstance(MessageWithMetadata.class));
     }
 }
