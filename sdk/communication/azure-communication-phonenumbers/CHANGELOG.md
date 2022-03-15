@@ -9,12 +9,6 @@
 - Upgraded `azure-communication-common` to 1.1.1
 - Upgraded `azure-identity` to 1.4.6
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 1.1.0-beta.2 (2022-02-17)
 
 ### Other Changes
