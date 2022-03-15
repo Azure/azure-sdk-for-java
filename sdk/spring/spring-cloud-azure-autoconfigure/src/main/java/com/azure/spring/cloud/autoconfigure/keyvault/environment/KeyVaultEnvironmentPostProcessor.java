@@ -65,20 +65,20 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
         if (!keyVaultClientExistInClassPath()) {
-            logger.debug("Skip configuring Key Vault PropertySource. " +
-                    "Because com.azure:azure-security-keyvault-secrets not exist in classpath.");
+            logger.debug("Skip configuring Key Vault PropertySource. "
+                    + "Because com.azure:azure-security-keyvault-secrets not exist in classpath.");
             return;
         }
 
         final AzureKeyVaultSecretProperties secretProperties = loadProperties(environment);
         if (!secretProperties.isPropertySourceEnabled()) {
-            logger.debug("Skip configuring Key Vault PropertySource. " +
-                    "Because spring.cloud.azure.keyvault.secret.property-source-enabled=false");
+            logger.debug("Skip configuring Key Vault PropertySource. "
+                    + "Because spring.cloud.azure.keyvault.secret.property-source-enabled=false");
             return;
         }
         if (secretProperties.getPropertySources().isEmpty()) {
-            logger.debug("Skip configuring Key Vault PropertySource. " +
-                    "Because spring.cloud.azure.keyvault.secret.property-sources is empty.");
+            logger.debug("Skip configuring Key Vault PropertySource. "
+                    + "Because spring.cloud.azure.keyvault.secret.property-sources is empty.");
             return;
         }
 
@@ -103,13 +103,13 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
         for (AzureKeyVaultPropertySourceProperties properties: propertiesList) {
             logger.debug("Configuring Key Vault PropertySource. name = " + properties.getName());
             if (!properties.isEnabled()) {
-                logger.debug("Skip configuring Key Vault PropertySource. " +
-                        "Because spring.cloud.azure.keyvault.secret.property-sources[].enabled = false.");
+                logger.debug("Skip configuring Key Vault PropertySource. "
+                        + "Because spring.cloud.azure.keyvault.secret.property-sources[].enabled = false.");
                 continue;
             }
             if (!StringUtils.hasText(properties.getEndpoint())) {
-                logger.debug("Skip configuring Key Vault PropertySource. " +
-                        "Because spring.cloud.azure.keyvault.secret.property-sources[].endpoint is empty.");
+                logger.debug("Skip configuring Key Vault PropertySource. "
+                        + "Because spring.cloud.azure.keyvault.secret.property-sources[].endpoint is empty.");
                 continue;
             }
             propertySources.add(buildKeyVaultPropertySource(properties));
@@ -125,7 +125,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
                     properties.getRefreshInterval(),
                     properties.getSecretKeys(),
                     properties.isCaseSensitive());
-           return new KeyVaultPropertySource(properties.getName(), keyVaultOperation);
+            return new KeyVaultPropertySource(properties.getName(), keyVaultOperation);
         } catch (final Exception exception) {
             throw new IllegalStateException("Failed to configure KeyVault property source", exception);
         }
@@ -173,7 +173,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
 
         // Name must be unique for each property source.
         // Because MutablePropertySources#add will remove property source with existing name.
-        for (int i = 0; i < list.size(); i ++) {
+        for (int i = 0; i < list.size(); i++) {
             AzureKeyVaultPropertySourceProperties propertySourceProperties = list.get(i);
             if (!StringUtils.hasText(propertySourceProperties.getName())) {
                 propertySourceProperties.setName(buildPropertySourceName(i));
