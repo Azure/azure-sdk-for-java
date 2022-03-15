@@ -163,27 +163,6 @@
           </rules>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.revapi</groupId>
-        <artifactId>revapi-maven-plugin</artifactId>
-        <version>0.14.6</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
-        <configuration>
-          <analysisConfiguration>
-            <revapi.ignore>
-              <item>
-                <code>java.method.added</code>
-                <class>com.azure.core.util.HttpClientOptions</class>
-                <justification>Transitive from Core. Not our problem</justification>
-              </item>
-              <item>
-                <code>java.method.added</code>
-                <class>com.azure.core.http.rest.PagedFlux</class>
-                <justification>Transitive from Core. Not our problem</justification>
-              </item>
-            </revapi.ignore>
-          </analysisConfiguration>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
 </project>
