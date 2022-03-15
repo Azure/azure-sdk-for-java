@@ -217,7 +217,7 @@ class KeyVaultEnvironmentPostProcessorTests {
         environment.setProperty("spring.cloud.azure.credential.username", globalUsername);
         environment.setProperty("spring.cloud.azure.profile.tenant-id", globalTenantId);
         environment.setProperty("spring.cloud.azure.proxy.hostname", globalHostname);
-        environment.setProperty("spring.cloud.azure.retry.max-retries", "" + globalMaxRetries);
+        environment.setProperty("spring.cloud.azure.retry.fixed.max-retries", "" + globalMaxRetries);
         environment.setProperty("spring.cloud.azure.keyvault.secret.property-source-enabled", "true");
         environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].enabled", "true");
         environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].name", NAME_0);
@@ -228,7 +228,7 @@ class KeyVaultEnvironmentPostProcessorTests {
         assertEquals(globalApplicationId, properties.getClient().getApplicationId());
         assertEquals(globalTenantId, properties.getProfile().getTenantId());
         assertEquals(globalHostname, properties.getProxy().getHostname());
-        assertEquals(globalMaxRetries, properties.getRetry().getMaxRetries());
+        assertEquals(globalMaxRetries, properties.getRetry().getFixed().getMaxRetries());
     }
 
     @Test
@@ -247,7 +247,7 @@ class KeyVaultEnvironmentPostProcessorTests {
         environment.setProperty("spring.cloud.azure.credential.username", globalUsername);
         environment.setProperty("spring.cloud.azure.profile.tenant-id", globalTenantId);
         environment.setProperty("spring.cloud.azure.proxy.hostname", globalHostname);
-        environment.setProperty("spring.cloud.azure.retry.max-retries", "" + globalMaxRetries);
+        environment.setProperty("spring.cloud.azure.retry.fixed.max-retries", "" + globalMaxRetries);
         environment.setProperty("spring.cloud.azure.keyvault.secret.property-source-enabled", "true");
         environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].enabled", "true");
         environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].name", NAME_0);
@@ -256,14 +256,14 @@ class KeyVaultEnvironmentPostProcessorTests {
         environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].credential.username", specificUsername);
         environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].profile.tenant-id", specificTenantId);
         environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].proxy.hostname", specificHostname);
-        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].retry.max-retries", "" + specificMaxRetries);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].retry.fixed.max-retries", "" + specificMaxRetries);
         AzureKeyVaultSecretProperties secretProperties = processor.loadProperties(environment);
         AzureKeyVaultPropertySourceProperties properties = secretProperties.getPropertySources().get(0);
         assertEquals(specificUsername, properties.getCredential().getUsername());
         assertEquals(specificApplicationId, properties.getClient().getApplicationId());
         assertEquals(specificTenantId, properties.getProfile().getTenantId());
         assertEquals(specificHostname, properties.getProxy().getHostname());
-        assertEquals(specificMaxRetries, properties.getRetry().getMaxRetries());
+        assertEquals(specificMaxRetries, properties.getRetry().getFixed().getMaxRetries());
     }
 }
 
