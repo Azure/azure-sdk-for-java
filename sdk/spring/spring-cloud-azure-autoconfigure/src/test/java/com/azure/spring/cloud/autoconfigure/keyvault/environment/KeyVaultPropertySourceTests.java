@@ -35,7 +35,7 @@ public class KeyVaultPropertySourceTests {
         when(keyVaultOperation.getProperty(anyString())).thenReturn(TEST_PROPERTY_NAME_1);
         when(keyVaultOperation.getPropertyNames()).thenReturn(propertyNameList);
 
-        keyVaultPropertySource = new KeyVaultPropertySource(keyVaultOperation);
+        keyVaultPropertySource = new KeyVaultPropertySource("azure-key-vault-secret-property-source", keyVaultOperation);
     }
 
     @AfterEach

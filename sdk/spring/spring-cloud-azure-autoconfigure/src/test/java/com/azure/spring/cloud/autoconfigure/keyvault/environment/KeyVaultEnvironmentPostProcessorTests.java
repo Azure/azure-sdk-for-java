@@ -4,8 +4,10 @@
 package com.azure.spring.cloud.autoconfigure.keyvault.environment;
 
 import com.azure.security.keyvault.secrets.SecretClient;
+import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultPropertySourceProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.springframework.boot.SpringApplication;
@@ -19,9 +21,9 @@ import org.springframework.util.ClassUtils;
 import java.util.Collections;
 import java.util.Iterator;
 
-import static com.azure.spring.cloud.autoconfigure.keyvault.environment.KeyVaultPropertySource.DEFAULT_AZURE_KEYVAULT_PROPERTYSOURCE_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
@@ -32,143 +34,256 @@ import static org.springframework.core.env.StandardEnvironment.SYSTEM_ENVIRONMEN
 
 class KeyVaultEnvironmentPostProcessorTests {
 
+    private static final String NAME_0 = "name_0";
+    private static final String NAME_1 = "name_1";
+    private static final String ENDPOINT_0 = "https://test0.vault.azure.net/";
+    private static final String ENDPOINT_1 = "https://test1.vault.azure.net/";
+
     private final SpringApplication application = new SpringApplication();
     private KeyVaultEnvironmentPostProcessor processor;
     private MockEnvironment environment;
     private MutablePropertySources propertySources;
 
     @BeforeEach
-    void setup() {
+    void beforeEach() {
         processor = spy(new KeyVaultEnvironmentPostProcessor(new DeferredLog()));
         environment = new MockEnvironment();
         propertySources = environment.getPropertySources();
+        SecretClient secretClient = mock(SecretClient.class);
+        doReturn(secretClient).when(processor).buildSecretClient(any(AzureKeyVaultSecretProperties.class));
     }
 
     @Test
     void postProcessorHasConfiguredOrder() {
-        final KeyVaultEnvironmentPostProcessor processor = new KeyVaultEnvironmentPostProcessor(new DeferredLog());
+        final KeyVaultEnvironmentPostProcessor processor = new KeyVaultEnvironmentPostProcessor();
         assertEquals(processor.getOrder(), KeyVaultEnvironmentPostProcessor.ORDER);
     }
 
     @Test
-    void keyVaultClientIsNotAvailable() {
+    void insertSinglePropertySourceTest() {
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-source-enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].name", NAME_0);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].endpoint", ENDPOINT_0);
+        processor.postProcessEnvironment(environment, application);
+        assertTrue(propertySources.contains(NAME_0));
+    }
+
+    @Test
+    void insertMultiplePropertySourceTest() {
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-source-enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].name", NAME_0);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].endpoint", ENDPOINT_0);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[1].enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[1].name", NAME_1);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[1].endpoint", ENDPOINT_1);
+        processor.postProcessEnvironment(environment, application);
+        assertTrue(propertySources.contains(NAME_0));
+        assertTrue(propertySources.contains(NAME_1));
+    }
+
+    @Test
+    void keyVaultClientNotExistInClassPathTest() {
         try (MockedStatic<ClassUtils> classUtils = mockStatic(ClassUtils.class)) {
-            classUtils.when(() ->
-                          ClassUtils.isPresent("com.azure.security.keyvault.secrets.SecretClient",
-                              this.getClass().getClassLoader()))
-                      .thenReturn(false);
-            processor.postProcessEnvironment(this.environment, this.application);
-            final MutablePropertySources sources = this.environment.getPropertySources();
-            assertFalse(sources.contains(DEFAULT_AZURE_KEYVAULT_PROPERTYSOURCE_NAME));
+            classUtils.when(() -> ClassUtils.isPresent("com.azure.security.keyvault.secrets.SecretClient", getClass().getClassLoader()))
+                    .thenReturn(false);
+            environment.setProperty("spring.cloud.azure.keyvault.secret.property-source-enabled", "true");
+            environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].enabled", "true");
+            environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].name", NAME_0);
+            environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].endpoint", ENDPOINT_0);
+            processor.postProcessEnvironment(environment, application);
+            assertFalse(propertySources.contains(NAME_0));
         }
     }
 
     @Test
-    void sourcesNotExistsWhenConfigureEnabledFalse() {
-        environment.setProperty("spring.cloud.azure.keyvault.secret.enabled", "false");
-        processor.postProcessEnvironment(this.environment, this.application);
-        final MutablePropertySources sources = this.environment.getPropertySources();
-        assertFalse(sources.contains(DEFAULT_AZURE_KEYVAULT_PROPERTYSOURCE_NAME));
+    void disableAllPropertySourceTest() {
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-source-enabled", "false");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].name", NAME_0);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].endpoint", ENDPOINT_0);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[1].enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[1].name", NAME_1);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[1].endpoint", ENDPOINT_1);
+        processor.postProcessEnvironment(environment, application);
+        assertFalse(propertySources.contains(NAME_0));
+        assertFalse(propertySources.contains(NAME_1));
     }
 
     @Test
-    void sourcesNotExistsWhenConfigurePropertySourceEnabledFalseAndPropertySourcesEmpty() {
-        environment.setProperty("spring.cloud.azure.keyvault.secret.propertySourceEnabled", "false");
-        processor.postProcessEnvironment(this.environment, this.application);
-        final MutablePropertySources sources = this.environment.getPropertySources();
-        assertFalse(sources.contains(DEFAULT_AZURE_KEYVAULT_PROPERTYSOURCE_NAME));
+    void emptyPropertySourceListTest() {
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-source-enabled", "true");
+        processor.postProcessEnvironment(environment, application);
+        assertEquals(1, propertySources.size());
     }
 
     @Test
-    void defaultPropertySourcesAdded() {
-        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].endpoint",
-            "https://test.vault.azure.net/");
-        SecretClient secretClient = mock(SecretClient.class);
-        doReturn(secretClient).when(processor).buildSecretClient(any(AzureKeyVaultSecretProperties.class));
-        processor.postProcessEnvironment(this.environment, this.application);
-        final MutablePropertySources sources = this.environment.getPropertySources();
-        assertTrue(sources.contains(DEFAULT_AZURE_KEYVAULT_PROPERTYSOURCE_NAME));
+    void disableSpecificOnePropertySourceTest() {
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-source-enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].enabled", "false");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].name", NAME_0);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].endpoint", ENDPOINT_0);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[1].enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[1].name", NAME_1);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[1].endpoint", ENDPOINT_1);
+        processor.postProcessEnvironment(environment, application);
+        assertFalse(propertySources.contains(NAME_0));
+        assertTrue(propertySources.contains(NAME_1));
     }
 
     @Test
-    void configuredPropertySourcesAddedWhenEnabled() {
-        String propertySourcesOne = "testkeyOne";
-        String propertySourcesTwo = "testkeyTwo";
-        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].name", propertySourcesOne);
-        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].endpoint",
-            "https://test.vault.azure.net/");
-        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[1].enabled", "false");
-        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[1].name", propertySourcesTwo);
-        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[1].endpoint",
-            "https://test2.vault.azure.net/");
-        SecretClient secretClient = mock(SecretClient.class);
-        doReturn(secretClient).when(processor).buildSecretClient(any(AzureKeyVaultSecretProperties.class));
-        processor.postProcessEnvironment(this.environment, this.application);
-        final MutablePropertySources sources = this.environment.getPropertySources();
-        assertTrue(sources.contains(propertySourcesOne));
-        assertFalse(sources.contains(propertySourcesTwo));
+    void enableByDefaultTest() {
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].name", NAME_0);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].endpoint", ENDPOINT_0);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[1].name", NAME_1);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[1].endpoint", ENDPOINT_1);
+        processor.postProcessEnvironment(environment, application);
+        assertTrue(propertySources.contains(NAME_0));
+        assertTrue(propertySources.contains(NAME_1));
     }
 
     @Test
-    void configuredPropertySourcesIsFirst() {
-        String sourceName = "testkey";
-        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].name", sourceName);
-        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].endpoint",
-            "https://test.vault.azure.net/");
-        SecretClient secretClient = mock(SecretClient.class);
-        doReturn(secretClient).when(processor).buildSecretClient(any(AzureKeyVaultSecretProperties.class));
-        processor.postProcessEnvironment(this.environment, this.application);
-        final MutablePropertySources sources = this.environment.getPropertySources();
-        Iterator<PropertySource<?>> iterator = sources.iterator();
-        assertTrue(iterator.next().getName().equals(sourceName));
+    void endPointNotConfiguredTest() {
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-source-enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].name", NAME_0);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[1].enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[1].name", NAME_1);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[1].endpoint", ENDPOINT_1);
+        processor.postProcessEnvironment(environment, application);
+        assertFalse(propertySources.contains(NAME_0));
+        assertTrue(propertySources.contains(NAME_1));
     }
 
     @Test
-    void configuredPropertySourcesWithEndpoint() {
-        String mockEndPoint = "https://mockendpoint.vault.azure.net";
-        environment.setProperty("spring.cloud.azure.keyvault.secret.endpoint", mockEndPoint);
-        SecretClient secretClient = mock(SecretClient.class);
-        doReturn(secretClient).when(processor).buildSecretClient(any(AzureKeyVaultSecretProperties.class));
-        processor.postProcessEnvironment(this.environment, this.application);
-        final MutablePropertySources sources = this.environment.getPropertySources();
-        Iterator<PropertySource<?>> iterator = sources.iterator();
-        assertTrue(DEFAULT_AZURE_KEYVAULT_PROPERTYSOURCE_NAME.equals(iterator.next().getName()));
+    void defaultPropertySourceNameTest() {
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-source-enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].endpoint", ENDPOINT_0);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[1].enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[1].endpoint", ENDPOINT_1);
+        processor.postProcessEnvironment(environment, application);
+        assertTrue(propertySources.contains(processor.buildPropertySourceName(0)));
+        assertTrue(propertySources.contains(processor.buildPropertySourceName(1)));
     }
 
     @Test
-    void configuredPropertySourcesIgnoreEndPoint() {
-        String mockEndPoint = "https://mockendpoint.vault.azure.net";
-        environment.setProperty("spring.cloud.azure.keyvault.secret.endpoint", mockEndPoint);
-
-        String sourceName = "testkey";
-        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].name", sourceName);
-        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].endpoint",
-            "https://test.vault.azure.net/");
-        SecretClient secretClient = mock(SecretClient.class);
-        doReturn(secretClient).when(processor).buildSecretClient(any(AzureKeyVaultSecretProperties.class));
-        processor.postProcessEnvironment(this.environment, this.application);
-        final MutablePropertySources sources = this.environment.getPropertySources();
-        Iterator<PropertySource<?>> iterator = sources.iterator();
-        assertTrue(iterator.next().getName().equals(sourceName));
+    void keyVaultPropertySourceHasHighestPriorityIfEnvironmentPropertySourceNotExistTest() {
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-source-enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].name", NAME_0);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].endpoint", ENDPOINT_0);
+        processor.postProcessEnvironment(environment, application);
+        Iterator<PropertySource<?>> iterator = propertySources.iterator();
+        assertEquals(NAME_0, iterator.next().getName());
+        assertTrue(iterator.hasNext());
     }
 
     @Test
-    void configuredPropertySourcesLocationIsAfterSystemEnvironmentPropertySources() {
-        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].endpoint",
-            "https://test.vault.azure.net/");
-        SecretClient secretClient = mock(SecretClient.class);
-        doReturn(secretClient).when(processor).buildSecretClient(any(AzureKeyVaultSecretProperties.class));
-        propertySources.addLast(new SystemEnvironmentPropertySource(SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, Collections.emptyMap()));
-        processor.postProcessEnvironment(this.environment, this.application);
-        final MutablePropertySources sources = this.environment.getPropertySources();
-        Iterator<PropertySource<?>> it = sources.iterator();
-        while (it.hasNext()) {
-            PropertySource<?> propertySource = it.next();
+    void keyVaultPropertySourceHasLowerPriorityThanEnvironmentPropertySourceTest() {
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-source-enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].name", NAME_0);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].endpoint", ENDPOINT_0);
+        propertySources.addFirst(new SystemEnvironmentPropertySource(SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, Collections.emptyMap()));
+        processor.postProcessEnvironment(environment, application);
+        Iterator<PropertySource<?>> iterator = propertySources.iterator();
+        while (iterator.hasNext()) {
+            PropertySource<?> propertySource = iterator.next();
             if (SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME.equals(propertySource.getName())) {
                 break;
             }
         }
-        assertTrue(DEFAULT_AZURE_KEYVAULT_PROPERTYSOURCE_NAME.equals(it.next().getName()));
+        assertEquals(NAME_0, iterator.next().getName());
+        assertTrue(iterator.hasNext());
+    }
+
+    @Test
+    void keyVaultPropertySourceOrderTest() {
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-source-enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].name", NAME_0);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].endpoint", ENDPOINT_0);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[1].enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[1].name", NAME_1);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[1].endpoint", ENDPOINT_1);
+        processor.postProcessEnvironment(environment, application);
+        Iterator<PropertySource<?>> iterator = propertySources.iterator();
+        assertEquals(NAME_0, iterator.next().getName());
+        assertEquals(NAME_1, iterator.next().getName());
+        assertTrue(iterator.hasNext());
+    }
+
+    @Test
+    void globalPropertiesTakeEffectIfSpecificPropertiesNotSetTest() {
+        final String globalHostname = "globalHostname";
+        final String globalApplicationId = "globalApplicationId";
+        final String globalTenantId = "globalTenantId";
+        final String globalUsername = "globalUsername";
+        final int globalMaxRetries = 1;
+        environment.setProperty("spring.cloud.azure.client.application-id", globalApplicationId);
+        environment.setProperty("spring.cloud.azure.credential.username", globalUsername);
+        environment.setProperty("spring.cloud.azure.profile.tenant-id", globalTenantId);
+        environment.setProperty("spring.cloud.azure.proxy.hostname", globalHostname);
+        environment.setProperty("spring.cloud.azure.retry.fixed.max-retries", "" + globalMaxRetries);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-source-enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].name", NAME_0);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].endpoint", ENDPOINT_0);
+        AzureKeyVaultSecretProperties secretProperties = processor.loadProperties(environment);
+        AzureKeyVaultPropertySourceProperties properties = secretProperties.getPropertySources().get(0);
+        assertEquals(globalUsername, properties.getCredential().getUsername());
+        assertEquals(globalApplicationId, properties.getClient().getApplicationId());
+        assertEquals(globalTenantId, properties.getProfile().getTenantId());
+        assertEquals(globalHostname, properties.getProxy().getHostname());
+        assertEquals(globalMaxRetries, properties.getRetry().getFixed().getMaxRetries());
+    }
+
+    @Test
+    void specificPropertiesHasHigherPriorityThanGlobalPropertiesTest() {
+        final String globalHostname = "globalHostname";
+        final String globalApplicationId = "globalApplicationId";
+        final String globalTenantId = "globalTenantId";
+        final String globalUsername = "globalUsername";
+        final int globalMaxRetries = 1;
+        final String specificHostname = "specificHostname";
+        final String specificApplicationId = "specificApplicationId";
+        final String specificTenantId = "specificTenantId";
+        final String specificUsername = "specificUsername";
+        final int specificMaxRetries = 2;
+        environment.setProperty("spring.cloud.azure.client.application-id", globalApplicationId);
+        environment.setProperty("spring.cloud.azure.credential.username", globalUsername);
+        environment.setProperty("spring.cloud.azure.profile.tenant-id", globalTenantId);
+        environment.setProperty("spring.cloud.azure.proxy.hostname", globalHostname);
+        environment.setProperty("spring.cloud.azure.retry.fixed.max-retries", "" + globalMaxRetries);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-source-enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].name", NAME_0);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].endpoint", ENDPOINT_0);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].client.application-id", specificApplicationId);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].credential.username", specificUsername);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].profile.tenant-id", specificTenantId);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].proxy.hostname", specificHostname);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].retry.fixed.max-retries", "" + specificMaxRetries);
+        AzureKeyVaultSecretProperties secretProperties = processor.loadProperties(environment);
+        AzureKeyVaultPropertySourceProperties properties = secretProperties.getPropertySources().get(0);
+        assertEquals(specificUsername, properties.getCredential().getUsername());
+        assertEquals(specificApplicationId, properties.getClient().getApplicationId());
+        assertEquals(specificTenantId, properties.getProfile().getTenantId());
+        assertEquals(specificHostname, properties.getProxy().getHostname());
+        assertEquals(specificMaxRetries, properties.getRetry().getFixed().getMaxRetries());
+    }
+
+    @Disabled("Disable it to unblock Azure Dev Ops pipeline: https://dev.azure.com/azure-sdk/public/_build/results?buildId=1434354&view=logs&j=c1fb1ddd-7688-52ac-4c5f-1467e51181f3")
+    @Test
+    void buildKeyVaultPropertySourceWithExceptionTest() {
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-source-enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].name", NAME_0);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].endpoint", ENDPOINT_0);
+        assertThrows(IllegalStateException.class,
+                () -> new KeyVaultEnvironmentPostProcessor().postProcessEnvironment(environment, application));
     }
 }
 
