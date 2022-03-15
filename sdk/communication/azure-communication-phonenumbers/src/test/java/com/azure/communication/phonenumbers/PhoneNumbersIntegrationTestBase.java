@@ -56,16 +56,10 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
 
         PhoneNumbersClientBuilder builder = new PhoneNumbersClientBuilder();
         builder
-<<<<<<< HEAD
-            .httpClient(httpClient)
-            .endpoint(communicationEndpoint)
-            .credential(new AzureKeyCredential(communicationAccessKey));
-=======
                 .httpClient(getHttpClient(httpClient))
                 .addPolicy(getOverrideMSUserAgentPolicy())
                 .endpoint(communicationEndpoint)
                 .credential(new AzureKeyCredential(communicationAccessKey));
->>>>>>> main
 
         if (shouldRecord()) {
             builder.addPolicy(getRecordPolicy());
@@ -77,14 +71,9 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
     protected PhoneNumbersClientBuilder getClientBuilderWithConnectionString(HttpClient httpClient) {
         PhoneNumbersClientBuilder builder = new PhoneNumbersClientBuilder();
         builder
-<<<<<<< HEAD
-            .httpClient(httpClient)
-            .connectionString(CONNECTION_STRING);
-=======
                 .httpClient(getHttpClient(httpClient))
                 .addPolicy(getOverrideMSUserAgentPolicy())
                 .connectionString(CONNECTION_STRING);
->>>>>>> main
 
 
         if (shouldRecord()) {
@@ -98,14 +87,9 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
         
         PhoneNumbersClientBuilder builder = new PhoneNumbersClientBuilder();
         builder
-<<<<<<< HEAD
-            .endpoint(new CommunicationConnectionString(CONNECTION_STRING).getEndpoint())
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
-=======
                 .httpClient(getHttpClient(httpClient))
                 .addPolicy(getOverrideMSUserAgentPolicy())
                 .endpoint(new CommunicationConnectionString(CONNECTION_STRING).getEndpoint());
->>>>>>> main
 
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new FakeCredentials());
@@ -131,8 +115,6 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
         return builder.addPolicy((context, next) -> logHeaders(testName, next));
     }
 
-<<<<<<< HEAD
-=======
     protected String getTestPhoneNumber() {
         boolean skipCapabilitiesTests = Configuration.getGlobalConfiguration()
                 .get("SKIP_UPDATE_CAPABILITIES_LIVE_TESTS", "false").equals("true");
@@ -170,7 +152,6 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
         return new AddHeadersPolicy(headers);
     }
 
->>>>>>> main
     private Mono<HttpResponse> logHeaders(String testName, HttpPipelineNextPolicy next) {
         return next.process()
             .flatMap(httpResponse -> {
