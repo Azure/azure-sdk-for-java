@@ -110,7 +110,7 @@ import static com.azure.cosmos.models.ModelBridgeInternal.serializeJsonToByteBuf
  */
 public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorizationTokenProvider, CpuMemoryListener,
     DiagnosticsClientContext {
-    private static final String tempMachineId = "uuid:UUID.randomUUID().toString()";
+    private static final String tempMachineId = "uuid:" + UUID.randomUUID();
     private static final AtomicInteger activeClientsCnt = new AtomicInteger(0);
     private static final AtomicInteger clientIdGenerator = new AtomicInteger(0);
     private static final Range<String> RANGE_INCLUDING_ALL_PARTITION_KEY_RANGES = new Range<>(

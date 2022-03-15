@@ -257,7 +257,7 @@ public class ClientTelemetry {
         httpResponseMono.flatMap(response -> response.bodyAsString()).map(metadataJson -> parse(metadataJson,
             AzureVMMetadata.class)).doOnSuccess(azureVMMetadata -> {
             this.clientTelemetryInfo.setApplicationRegion(azureVMMetadata.getLocation());
-            this.clientTelemetryInfo.setMachineId(azureVMMetadata.getVmId());
+            this.clientTelemetryInfo.setVmId(azureVMMetadata.getVmId());
             this.clientTelemetryInfo.setHostEnvInfo(azureVMMetadata.getOsType() + "|" + azureVMMetadata.getSku() +
                 "|" + azureVMMetadata.getVmSize() + "|" + azureVMMetadata.getAzEnvironment());
         }).onErrorResume(throwable -> {
