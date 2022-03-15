@@ -70,7 +70,7 @@ public class StorageFileInputStream extends StorageInputStream {
             this.streamFaulted = true;
             this.lastError = new IOException(e);
 
-            throw LOGGER.logExceptionAsError(new RuntimeException(this.lastError.getMessage()));
+            throw LOGGER.logExceptionAsError(new RuntimeException(this.lastError.getMessage(), e));
         }
     }
 }

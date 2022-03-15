@@ -152,7 +152,7 @@ public class DataLakeServiceClientBuilder implements
             }
         } catch (MalformedURLException ex) {
             throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("The Azure Storage endpoint url is malformed."));
+                new IllegalArgumentException("The Azure Storage endpoint url is malformed.", ex));
         }
 
         return this;

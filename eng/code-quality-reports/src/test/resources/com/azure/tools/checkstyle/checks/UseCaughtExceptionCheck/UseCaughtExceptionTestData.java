@@ -108,4 +108,14 @@ public class UseCaughtExceptionTestData {
             throw LOGGER.logExceptionAsError(new RuntimeException());
         }
     }
+
+    public validCaughtExceptionNewWrapped() {
+        try {
+            throw new PrivilegedActionException();
+        } catch (final PrivilegedActionException e) {
+            IOException ioException = new IOException(e);
+
+            throw ioException;
+        }
+    }
 }
