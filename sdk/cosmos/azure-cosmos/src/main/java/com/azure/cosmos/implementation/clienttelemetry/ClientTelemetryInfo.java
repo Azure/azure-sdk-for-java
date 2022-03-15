@@ -116,7 +116,7 @@ public class ClientTelemetryInfo {
     }
 
     public void setVmId(String vmId) {
-        this.machineId = "vmId:" + machineId;
+        this.machineId = "vmId:" + vmId;
     }
 
     public String getHostEnvInfo() {
