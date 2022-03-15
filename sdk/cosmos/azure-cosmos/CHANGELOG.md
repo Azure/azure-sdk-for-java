@@ -4,6 +4,9 @@
 #### Key Bugs Fixes
 * Added `decodeTime` in `CosmosDiagnostics` - See [PR 22808](https://github.com/Azure/azure-sdk-for-java/pull/22808)
 
+#### Features Added
+* Added the "VM Unique ID" - see [Accessing and Using Azure VM Unique ID](https://azure.microsoft.com/en-us/blog/accessing-and-using-azure-vm-unique-id/) - to the request diagnostics. This information helps to simplify investigating any network issues between an application hosted in Azure and the corresponding Cosmos DB service endpoint. - See [PR 27692](https://github.com/Azure/azure-sdk-for-java/pull/27692)  
+
 ### 4.27.0 (2022-03-10)
 #### Key Bugs Fixes
 * Fixed an issue in `CosmosPagedIterable` resulting in excessive memory consumption due to unbounded prefetch of pages when converting the `CosmosPagedIterable` into an `Iterator<FeedResponse<T>>`. - See [PR 27237](https://github.com/Azure/azure-sdk-for-java/pull/27237) and [PR 27299](https://github.com/Azure/azure-sdk-for-java/pull/27299)
