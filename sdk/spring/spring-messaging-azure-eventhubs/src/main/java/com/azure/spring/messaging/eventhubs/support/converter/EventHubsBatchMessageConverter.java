@@ -4,8 +4,8 @@ package com.azure.spring.messaging.eventhubs.support.converter;
 
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.models.EventBatchContext;
-import com.azure.spring.messaging.eventhubs.support.EventHubsHeaders;
 import com.azure.spring.messaging.converter.AbstractAzureMessageConverter;
+import com.azure.spring.messaging.eventhubs.support.EventHubsHeaders;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static com.azure.spring.messaging.implementation.converter.ObjectMapperHolder.OBJECT_MAPPER;
 
 /**
  * A converter to turn a {@link com.azure.messaging.eventhubs.models.EventBatchContext} to
@@ -30,7 +32,7 @@ public class EventHubsBatchMessageConverter extends AbstractAzureMessageConverte
      * Construct the message converter with default {@code ObjectMapper}.
      */
     public EventHubsBatchMessageConverter() {
-        this.objectMapper = OBJECT_MAPPER;
+        this(OBJECT_MAPPER);
     }
 
     /**

@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.azure.spring.messaging.implementation.converter.ObjectMapperHolder.OBJECT_MAPPER;
 import static com.azure.spring.messaging.servicebus.support.ServiceBusMessageHeaders.CORRELATION_ID;
 import static com.azure.spring.messaging.servicebus.support.ServiceBusMessageHeaders.MESSAGE_ID;
 import static com.azure.spring.messaging.servicebus.support.ServiceBusMessageHeaders.PARTITION_KEY;
@@ -49,7 +50,7 @@ public class ServiceBusMessageConverter
      * Construct the message converter with default {@code ObjectMapper}.
      */
     public ServiceBusMessageConverter() {
-        objectMapper = OBJECT_MAPPER;
+        this(OBJECT_MAPPER);
     }
 
     /**

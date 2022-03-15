@@ -20,7 +20,7 @@ import com.azure.spring.messaging.converter.AbstractAzureMessageConverter;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.messaging.servicebus.core.listener.ServiceBusMessageListenerContainer;
 import com.azure.spring.messaging.servicebus.core.properties.ServiceBusContainerProperties;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -103,7 +103,7 @@ class ServiceBusInboundChannelAdapterTests {
 
     @Test
     void setMessageConverter() {
-        TestServiceBusMessageConverter converter = new TestServiceBusMessageConverter();
+        AbstractAzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> converter = mock(ServiceBusMessageConverter.class);
         this.adapter.setMessageConverter(converter);
         assertThat(this.adapter).extracting("recordListener").extracting("messageConverter").isEqualTo(converter);
     }
@@ -197,28 +197,4 @@ class ServiceBusInboundChannelAdapterTests {
 
     }
 
-    static class TestServiceBusMessageConverter extends AbstractAzureMessageConverter<ServiceBusReceivedMessage,
-        ServiceBusMessage> {
-
-        @Override
-        protected ObjectMapper getObjectMapper() {
-            return null;
-        }
-
-        @Override
-        protected Object getPayload(ServiceBusReceivedMessage azureMessage) {
-            final BinaryData body = azureMessage.getBody();
-            return body.toBytes();
-        }
-
-        @Override
-        protected ServiceBusMessage fromString(String payload) {
-            return new ServiceBusMessage(payload);
-        }
-
-        @Override
-        protected ServiceBusMessage fromByte(byte[] payload) {
-            return new ServiceBusMessage(payload);
-        }
-    }
 }

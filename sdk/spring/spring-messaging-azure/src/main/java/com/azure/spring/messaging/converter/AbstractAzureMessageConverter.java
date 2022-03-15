@@ -7,10 +7,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.util.Assert;
 
 import java.io.IOException;
@@ -26,8 +26,6 @@ import java.util.Map;
 public abstract class AbstractAzureMessageConverter<I, O> implements AzureMessageConverter<I, O> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractAzureMessageConverter.class);
-
-    protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     /**
      * Get the object mapper.

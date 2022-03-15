@@ -4,8 +4,8 @@
 package com.azure.spring.messaging.eventhubs.support.converter;
 
 import com.azure.messaging.eventhubs.EventData;
-import com.azure.spring.messaging.eventhubs.support.EventHubsHeaders;
 import com.azure.spring.messaging.converter.AbstractAzureMessageConverter;
+import com.azure.spring.messaging.eventhubs.support.EventHubsHeaders;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import static com.azure.spring.messaging.implementation.converter.ObjectMapperHolder.OBJECT_MAPPER;
 
 /**
  * A converter to turn a {@link Message} to {@link EventData} and vice versa.
@@ -47,7 +49,7 @@ public class EventHubsMessageConverter extends AbstractAzureMessageConverter<Eve
      * Construct the message converter with default {@code ObjectMapper}.
      */
     public EventHubsMessageConverter() {
-        this.objectMapper = OBJECT_MAPPER;
+        this(OBJECT_MAPPER);
     }
 
     /**
