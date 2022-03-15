@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.3 (2022-03-11)
+## 1.1.0-beta.3 (2022-03-15)
 
 ### Features Added
 - Added interfaces from `com.azure.core.client.traits` to `PhoneNumbersClientBuilder`
