@@ -16,9 +16,9 @@ public class KeyVaultPropertySource extends EnumerablePropertySource<KeyVaultOpe
     private final KeyVaultOperation operations;
 
     /**
-     * Creates a new instance of {@link KeyVaultPropertySource}.
-     *
-     * @param operation the KeyVault operation
+     * Create a new {@code KeyVaultPropertySource} with the given name and {@link KeyVaultOperation}.
+     * @param name the associated name
+     * @param operation the {@link KeyVaultOperation}
      */
     public KeyVaultPropertySource(String name, KeyVaultOperation operation) {
         super(name, operation);
