@@ -109,13 +109,13 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties
 
         propertyMapper.from(this.processor.trackLastEnqueuedEventProperties).to(properties::setTrackLastEnqueuedEventProperties);
         propertyMapper.from(this.processor.initialPartitionEventPosition).when(c -> !CollectionUtils.isEmpty(c))
-           .to(m -> {
-               Map<String, Processor.StartPosition> eventPositionMap = m.entrySet()
-                                                                        .stream()
-                                                                        .filter(entry -> entry.getValue() != null)
-                                                                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-               properties.getInitialPartitionEventPosition().putAll(eventPositionMap);
-           });
+                      .to(m -> {
+                          Map<String, Processor.StartPosition> eventPositionMap = m.entrySet()
+                                                                                   .stream()
+                                                                                   .filter(entry -> entry.getValue() != null)
+                                                                                   .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                          properties.getInitialPartitionEventPosition().putAll(eventPositionMap);
+                      });
         propertyMapper.from(this.processor.batch.getMaxSize()).to(properties.batch::setMaxSize);
         propertyMapper.from(this.processor.batch.getMaxWaitTime()).to(properties.batch::setMaxWaitTime);
         propertyMapper.from(this.processor.loadBalancing.getStrategy()).to(properties.loadBalancing::setStrategy);
