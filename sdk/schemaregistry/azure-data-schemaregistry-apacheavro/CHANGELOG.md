@@ -6,6 +6,10 @@
 
 ### Breaking Changes
 
+- Changed `SchemaRegistryApacheAvroEncoder` to `SchemaRegistryApacheAvroSerializer`.
+- Changed `decodeMessageData` and `decodeMessageDataAsync` to `deserializeMessageData` and `deserializeMessageDataAsync`.
+- Changed `encodeMessageData` and `encodeMessageDataAsync` to `serializeMessageData` and `serializeMessageDataAsync`.
+
 ### Bugs Fixed
 
 ### Other Changes
@@ -14,7 +18,7 @@
 
 ### Features Added
 
-- Changed `SchemaRegistryApacheAvroEncoder` to deserialize `MessageWithMetadata` rather than tied to a binary format 
+- Changed `SchemaRegistryApacheAvroEncoder` to deserialize `MessageWithMetadata` rather than tied to a binary format
   with preamble. Backwards compatibility with preamble format supported for this release. See issue #26449.
 
 ### Breaking Changes
