@@ -6,20 +6,16 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.GalleryImageVersionPropertiesProvisioningState;
 import com.azure.resourcemanager.compute.models.GalleryImageVersionPublishingProfile;
 import com.azure.resourcemanager.compute.models.GalleryImageVersionStorageProfile;
 import com.azure.resourcemanager.compute.models.ReplicationStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Specifies information about the gallery image version that you want to create or update. */
 @Fluent
 public final class GalleryImageVersionInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageVersionInner.class);
-
     /*
      * Describes the properties of a gallery image version.
      */

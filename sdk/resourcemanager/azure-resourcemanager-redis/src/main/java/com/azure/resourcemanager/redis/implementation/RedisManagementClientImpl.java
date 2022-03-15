@@ -7,8 +7,8 @@ package com.azure.resourcemanager.redis.implementation;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.resourcemanager.redis.fluent.AsyncOperationStatusClient;
 import com.azure.resourcemanager.redis.fluent.FirewallRulesClient;
 import com.azure.resourcemanager.redis.fluent.LinkedServersClient;
 import com.azure.resourcemanager.redis.fluent.OperationsClient;
@@ -23,8 +23,6 @@ import java.time.Duration;
 /** Initializes a new instance of the RedisManagementClientImpl type. */
 @ServiceClient(builder = RedisManagementClientBuilder.class)
 public final class RedisManagementClientImpl extends AzureServiceClient implements RedisManagementClient {
-    private final ClientLogger logger = new ClientLogger(RedisManagementClientImpl.class);
-
     /**
      * Gets subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription ID forms
      * part of the URI for every service call.
@@ -185,6 +183,18 @@ public final class RedisManagementClientImpl extends AzureServiceClient implemen
         return this.privateLinkResources;
     }
 
+    /** The AsyncOperationStatusClient object to access its operations. */
+    private final AsyncOperationStatusClient asyncOperationStatus;
+
+    /**
+     * Gets the AsyncOperationStatusClient object to access its operations.
+     *
+     * @return the AsyncOperationStatusClient object.
+     */
+    public AsyncOperationStatusClient getAsyncOperationStatus() {
+        return this.asyncOperationStatus;
+    }
+
     /**
      * Initializes an instance of RedisManagementClient client.
      *
@@ -209,7 +219,7 @@ public final class RedisManagementClientImpl extends AzureServiceClient implemen
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-12-01";
+        this.apiVersion = "2021-06-01";
         this.operations = new OperationsClientImpl(this);
         this.redis = new RedisClientImpl(this);
         this.firewallRules = new FirewallRulesClientImpl(this);
@@ -217,5 +227,6 @@ public final class RedisManagementClientImpl extends AzureServiceClient implemen
         this.linkedServers = new LinkedServersClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
+        this.asyncOperationStatus = new AsyncOperationStatusClientImpl(this);
     }
 }

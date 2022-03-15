@@ -3,6 +3,7 @@
 
 package com.azure.identity;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.util.concurrent.ExecutorService;
@@ -13,6 +14,8 @@ import java.util.concurrent.ForkJoinPool;
  * @param <T> the type of the credential builder
  */
 public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBase<T>> extends CredentialBuilderBase<T> {
+    private static final ClientLogger LOGGER = new ClientLogger(AadCredentialBuilderBase.class);
+
     String clientId;
     String tenantId;
 
@@ -23,7 +26,7 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      */
     @SuppressWarnings("unchecked")
     public T authorityHost(String authorityHost) {
-        ValidationUtil.validateAuthHost(getClass().getSimpleName(), authorityHost);
+        ValidationUtil.validateAuthHost(authorityHost, LOGGER);
         this.identityClientOptions.setAuthorityHost(authorityHost);
         return (T) this;
     }
@@ -48,7 +51,7 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      */
     @SuppressWarnings("unchecked")
     public T tenantId(String tenantId) {
-        ValidationUtil.validateTenantIdCharacterRange(getClass().getSimpleName(), tenantId);
+        ValidationUtil.validateTenantIdCharacterRange(tenantId, LOGGER);
         this.tenantId = tenantId;
         return (T) this;
     }

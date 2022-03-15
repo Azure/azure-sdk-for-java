@@ -96,15 +96,15 @@ function GetPipelineName([string]$ArtifactId, [string]$ArtifactDirPath) {
 }
 
 function TriggerPipeline($PatchInfos, $BranchName) {
-  $distinctPipelineNames = $PatchInfos | ForEach-Object { $_.PipelineName } | Get-Unique
-  $distinctPipelineNames | ForEach-Object { 
-    Write-Output "Triggering pipeline $_"
-    $cmdOutput = az pipelines run -o json --name ""$_"" --organization "https://dev.azure.com/azure-sdk" --project "internal" --branch ""$BranchName""
-    if($LASTEXITCODE) {
-      LogError "Could not trigger the run for the pipeline $_"
-      exit $LASTEXITCODE
-    }
-  }
+  # $distinctPipelineNames = $PatchInfos | ForEach-Object { $_.PipelineName } | Get-Unique -AsString
+  # $distinctPipelineNames | ForEach-Object { 
+  #   Write-Output "Triggering pipeline $_"
+  #   $cmdOutput = az pipelines run -o json --name ""$_"" --organization "https://dev.azure.com/azure-sdk" --project "internal" --branch ""$BranchName""
+  #   if($LASTEXITCODE) {
+  #     LogError "Could not trigger the run for the pipeline $_"
+  #     exit $LASTEXITCODE
+  #   }
+  # }
 }
 
 function GetBranchName($ArtifactId) {
@@ -174,6 +174,10 @@ function GeneratePatches($ArtifactPatchInfos, [string]$BranchName, [string]$Remo
 
   TriggerPipeline  -PatchInfos $ArtifactPatchInfos -BranchName $BranchName
 }
+
+function GetCurrentBranchName() {
+  return git rev-parse --abbrev-ref HEAD
+}
   
 function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [string]$GroupId = "com.azure") {
   $artifactId = $PatchInfo.ArtifactId
@@ -198,11 +202,15 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
     Write-Output "RemoteName can't be null".
     exit 1
   }
+
+  $currentBranchName = GetCurrentBranchName
   
-  $cmdOutput = git checkout -b $BranchName $RemoteName/main 
-  if ($LASTEXITCODE -ne 0) {
-    LogError "Could not checkout branch $BranchName), please check if it already exists and delete as necessary. Exiting..."
-    exit $LASTEXITCODE
+  if ($currentBranchName -ne $BranchName) {
+    $cmdOutput = git checkout -b $BranchName $RemoteName/main 
+    if ($LASTEXITCODE -ne 0) {
+      LogError "Could not checkout branch $BranchName, please check if it already exists and delete as necessary. Exiting..."
+      exit $LASTEXITCODE
+    }
   }
   
   if (!$releaseVersion) {
@@ -264,7 +272,7 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
       
   $pomFilePath = Join-Path $artifactDirPath "pom.xml"
   $oldDependencyNameToVersion = GetDependencyToVersion -PomFilePath $pomFilePath
-  $cmdOutput = SetCurrentVersion -GroupId $GroupId -ArtifactId $artifactId -$Version $patchVersion --gi $GroupId
+  $cmdOutput = SetCurrentVersion -GroupId $GroupId -ArtifactId $artifactId -Version $patchVersion
   if ($LASTEXITCODE -ne 0) {
     LogError "Could not set the dependencies for $artifactId"
     exit $LASTEXITCODE

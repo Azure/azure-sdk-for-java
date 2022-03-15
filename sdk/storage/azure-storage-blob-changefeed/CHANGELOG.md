@@ -1,14 +1,12 @@
 # Release History
 
-## 12.0.0-beta.17 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 12.0.0-beta.17 (2022-03-09)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated blob dependency to 12.15.0
 
 ## 12.0.0-beta.16 (2022-02-11)
 

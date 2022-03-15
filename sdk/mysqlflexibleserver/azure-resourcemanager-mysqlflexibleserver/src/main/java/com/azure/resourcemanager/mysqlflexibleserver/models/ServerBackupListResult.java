@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.ServerBackupInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of server backups. */
 @Fluent
 public final class ServerBackupListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerBackupListResult.class);
-
     /*
      * The list of backups of a server.
      */

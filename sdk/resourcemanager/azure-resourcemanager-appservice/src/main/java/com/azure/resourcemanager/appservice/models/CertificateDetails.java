@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** SSL certificate details. */
 @Immutable
 public final class CertificateDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificateDetails.class);
-
     /*
      * Certificate Version.
      */

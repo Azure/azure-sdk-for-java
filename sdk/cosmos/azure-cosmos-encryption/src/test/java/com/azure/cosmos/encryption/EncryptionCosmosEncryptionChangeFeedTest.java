@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.encryption;
 
+import com.azure.core.cryptography.KeyEncryptionKeyResolver;
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
@@ -69,15 +70,15 @@ public class EncryptionCosmosEncryptionChangeFeedTest extends TestSuiteBase {
     public void beforeClass() {
         CosmosAsyncClient asyncClient = getClientBuilder().buildAsyncClient();
         CosmosClient syncClient = getClientBuilder().buildClient();
-        TestEncryptionKeyStoreProvider encryptionKeyStoreProvider = new TestEncryptionKeyStoreProvider();
+        KeyEncryptionKeyResolver keyEncryptionKeyResolver = new TestKeyEncryptionKeyResolver();
         CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient =
-            new CosmosEncryptionClientBuilder().cosmosAsyncClient(asyncClient).encryptionKeyWrapProvider(
-            encryptionKeyStoreProvider).buildAsyncClient();
+            new CosmosEncryptionClientBuilder().cosmosAsyncClient(asyncClient).keyEncryptionKeyResolver(
+                keyEncryptionKeyResolver).keyEncryptionKeyResolverName("TEST_KEY_RESOLVER").buildAsyncClient();
         cosmosEncryptionAsyncContainer = getSharedEncryptionContainer(cosmosEncryptionAsyncClient);
         cosmosEncryptionAsyncDatabase = getSharedEncryptionDatabase(cosmosEncryptionAsyncClient);
 
-        CosmosEncryptionClient cosmosEncryptionClient = new CosmosEncryptionClientBuilder().cosmosClient(syncClient).encryptionKeyWrapProvider(
-            encryptionKeyStoreProvider).buildClient();
+        CosmosEncryptionClient cosmosEncryptionClient = new CosmosEncryptionClientBuilder().cosmosClient(syncClient).keyEncryptionKeyResolver(
+            keyEncryptionKeyResolver).keyEncryptionKeyResolverName("TEST_KEY_RESOLVER").buildClient();
         cosmosEncryptionContainer = getSharedSyncEncryptionContainer(cosmosEncryptionClient);
     }
 

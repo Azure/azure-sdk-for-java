@@ -62,7 +62,7 @@ def main():
             if exist_lastest_changelog:
                 current_changelog = left
             else:
-                current_changelog = '\n\n### Other Changes\n\n#### Dependency Updates\n\n- Updated core dependency from resources\n'
+                current_changelog = '\n\n### Other Changes\n\n#### Dependency Updates\n\n- Updated core dependency from resources.\n'
 
         version: str = first_version.group().replace(
             first_version.group(2), str(date)).replace(
