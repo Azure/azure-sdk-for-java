@@ -28,13 +28,13 @@ import static com.azure.core.util.FluxUtil.monoError;
 /**
  * Schema Registry-based serializer implementation for Avro data format using Apache Avro.
  */
-public final class SchemaRegistryApacheAvroEncoder {
+public final class SchemaRegistryApacheAvroSerializer {
     static final String AVRO_MIME_TYPE = "avro/binary";
     static final byte[] RECORD_FORMAT_INDICATOR = new byte[]{0x00, 0x00, 0x00, 0x00};
     static final int RECORD_FORMAT_INDICATOR_SIZE = RECORD_FORMAT_INDICATOR.length;
     static final int SCHEMA_ID_SIZE = 32;
 
-    private final ClientLogger logger = new ClientLogger(SchemaRegistryApacheAvroEncoder.class);
+    private final ClientLogger logger = new ClientLogger(SchemaRegistryApacheAvroSerializer.class);
     private final SchemaRegistryAsyncClient schemaRegistryClient;
     private final AvroSerializer avroSerializer;
     private final SerializerOptions serializerOptions;
@@ -46,7 +46,7 @@ public final class SchemaRegistryApacheAvroEncoder {
      * @param avroSerializer Serializer implemented using Apache Avro.
      * @param serializerOptions Options to configure the serializer with.
      */
-    SchemaRegistryApacheAvroEncoder(SchemaRegistryAsyncClient schemaRegistryClient,
+    SchemaRegistryApacheAvroSerializer(SchemaRegistryAsyncClient schemaRegistryClient,
         AvroSerializer avroSerializer, SerializerOptions serializerOptions) {
         this.schemaRegistryClient = Objects.requireNonNull(schemaRegistryClient,
             "'schemaRegistryClient' cannot be null.");
@@ -56,84 +56,84 @@ public final class SchemaRegistryApacheAvroEncoder {
     }
 
     /**
-     * Encodes an object into a message.
+     * Serializes an object into a message.
      *
-     * @param object Object to encode.
+     * @param object Object to serialize.
      * @param typeReference Type of message to create.
      * @param <T> Concrete type of {@link MessageWithMetadata}.
      *
-     * @return The message encoded or {@code null} if the message could not be encoded.
+     * @return The message encoded or {@code null} if the message could not be serialized.
      *
      * @throws IllegalArgumentException if {@code messageFactory} is null and type {@code T} does not have a no
-     *     argument constructor. Or if the schema could not ve fetched from {@code T}.
+     *     argument constructor. Or if the schema could not be fetched from {@code T}.
      * @throws RuntimeException if an instance of {@code T} could not be instantiated. Or there was a problem
      *     encoding the object.
      * @throws NullPointerException if the {@code object} is null or {@code typeReference} is null.
      */
-    public <T extends MessageWithMetadata> T encodeMessageData(Object object, TypeReference<T> typeReference) {
-        return encodeMessageDataAsync(object, typeReference).block();
+    public <T extends MessageWithMetadata> T serializeMessageData(Object object, TypeReference<T> typeReference) {
+        return serializeMessageDataAsync(object, typeReference).block();
     }
 
     /**
-     * Encodes an object into a message.
+     * Serializes an object into a message.
      *
-     * @param object Object to encode.
+     * @param object Object to serialize.
      * @param typeReference Type of message to create.
      * @param messageFactory Factory to create an instance given the serialized Avro.
      * @param <T> Concrete type of {@link MessageWithMetadata}.
      *
-     * @return The message encoded or {@code null} if the message could not be encoded.
+     * @return The message encoded or {@code null} if the message could not be serialized.
      *
      * @throws IllegalArgumentException if {@code messageFactory} is null and type {@code T} does not have a no
-     *     argument constructor. Or if the schema could not ve fetched from {@code T}.
+     *     argument constructor. Or if the schema could not be fetched from {@code T}.
      * @throws RuntimeException if an instance of {@code T} could not be instantiated. Or there was a problem
      *     encoding the object.
      * @throws NullPointerException if the {@code object} is null or {@code typeReference} is null.
      */
-    public <T extends MessageWithMetadata> T encodeMessageData(Object object, TypeReference<T> typeReference,
+    public <T extends MessageWithMetadata> T serializeMessageData(Object object, TypeReference<T> typeReference,
         Function<BinaryData, T> messageFactory) {
-        return encodeMessageDataAsync(object, typeReference, messageFactory).block();
+        return serializeMessageDataAsync(object, typeReference, messageFactory).block();
     }
 
     /**
-     * Encodes an object into a message.
+     * Serializes an object into a message.
      *
-     * @param object Object to encode.
+     * @param object Object to serialize.
      * @param typeReference Type of message to create.
      * @param <T> Concrete type of {@link MessageWithMetadata}.
      *
-     * @return A Mono that completes with the encoded message.
+     * @return A Mono that completes with the serialized message.
      *
      * @throws IllegalArgumentException if {@code messageFactory} is null and type {@code T} does not have a no
-     *     argument constructor. Or if the schema could not ve fetched from {@code T}.
+     *     argument constructor. Or if the schema could not be fetched from {@code T}.
      * @throws RuntimeException if an instance of {@code T} could not be instantiated. Or there was a problem
      *     encoding the object.
      * @throws NullPointerException if the {@code object} is null or {@code typeReference} is null.
      */
-    public <T extends MessageWithMetadata> Mono<T> encodeMessageDataAsync(Object object,
+    public <T extends MessageWithMetadata> Mono<T> serializeMessageDataAsync(Object object,
         TypeReference<T> typeReference) {
 
-        return encodeMessageDataAsync(object, typeReference, null);
+        return serializeMessageDataAsync(object, typeReference, null);
     }
 
     /**
-     * Encodes an object into a message.
+     * Serializes an object into a message.
      *
-     * @param object Object to encode.
+     * @param object Object to serialize.
      * @param typeReference Type of message to create.
      * @param messageFactory Factory to create an instance given the serialized Avro. If null is passed in, then the
      *     no argument constructor will be used.
      * @param <T> Concrete type of {@link MessageWithMetadata}.
      *
-     * @return A Mono that completes with the encoded message.
+     * @return A Mono that completes with the serialized message.
      *
      * @throws IllegalArgumentException if {@code messageFactory} is null and type {@code T} does not have a no
-     *     argument constructor. Or if the schema could not ve fetched from {@code T}.
+     *     argument constructor. Or if the schema could not be fetched from {@code T}.
      * @throws RuntimeException if an instance of {@code T} could not be instantiated. Or there was a problem
      *     encoding the object.
      * @throws NullPointerException if the {@code object} is null or {@code typeReference} is null.
      */
-    public <T extends MessageWithMetadata> Mono<T> encodeMessageDataAsync(Object object,
+    public <T extends MessageWithMetadata> Mono<T> serializeMessageDataAsync(Object object,
         TypeReference<T> typeReference, Function<BinaryData, T> messageFactory) {
 
         if (object == null) {
@@ -189,25 +189,25 @@ public final class SchemaRegistryApacheAvroEncoder {
     }
 
     /**
-     * Decodes a message into its object.
+     * Deserializes a message into its object.
      *
-     * @param message Object to encode.
-     * @param typeReference Message to encode to.
+     * @param message Object to deserialize.
+     * @param typeReference Message type to deserialize to.
      * @param <T> Concrete type of {@link MessageWithMetadata}.
      *
-     * @return The message encoded.
+     * @return The message deserialized.
      *
      * @throws NullPointerException if {@code message} or {@code typeReference} is null.
      */
-    public <T> T decodeMessageData(MessageWithMetadata message, TypeReference<T> typeReference) {
-        return decodeMessageDataAsync(message, typeReference).block();
+    public <T> T deserializeMessageData(MessageWithMetadata message, TypeReference<T> typeReference) {
+        return deserializeMessageDataAsync(message, typeReference).block();
     }
 
     /**
-     * Decodes a message into its object.
+     * Deserializes a message into its object.
      *
-     * @param message Object to encode.
-     * @param typeReference Message to encode to.
+     * @param message Object to deserialize.
+     * @param typeReference Message to deserialize to.
      * @param <T> Concrete type of {@link MessageWithMetadata}.
      *
      * @return A Mono that completes when the message encoded. If {@code message.getBodyAsBinaryData()} is null or
@@ -215,7 +215,7 @@ public final class SchemaRegistryApacheAvroEncoder {
      *
      * @throws NullPointerException if {@code message} or {@code typeReference} is null.
      */
-    public <T> Mono<T> decodeMessageDataAsync(MessageWithMetadata message, TypeReference<T> typeReference) {
+    public <T> Mono<T> deserializeMessageDataAsync(MessageWithMetadata message, TypeReference<T> typeReference) {
         if (message == null) {
             return monoError(logger, new NullPointerException("'message' cannot be null."));
         } else if (typeReference == null) {
@@ -282,10 +282,10 @@ public final class SchemaRegistryApacheAvroEncoder {
             contents.reset();
         }
 
-        return decodeMessageDataAsync(schemaId, contents, typeReference);
+        return deserializeMessageDataAsync(schemaId, contents, typeReference);
     }
 
-    private <T> Mono<T> decodeMessageDataAsync(String schemaId, ByteBuffer buffer, TypeReference<T> typeReference) {
+    private <T> Mono<T> deserializeMessageDataAsync(String schemaId, ByteBuffer buffer, TypeReference<T> typeReference) {
         return this.schemaRegistryClient.getSchema(schemaId)
             .handle((registryObject, sink) -> {
                 final byte[] payloadSchema = registryObject.getDefinition().getBytes(StandardCharsets.UTF_8);
