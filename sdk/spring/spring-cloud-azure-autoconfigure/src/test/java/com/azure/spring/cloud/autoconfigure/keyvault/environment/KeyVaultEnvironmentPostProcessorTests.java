@@ -22,6 +22,7 @@ import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
@@ -107,6 +108,13 @@ class KeyVaultEnvironmentPostProcessorTests {
         processor.postProcessEnvironment(environment, application);
         assertFalse(propertySources.contains(NAME_0));
         assertFalse(propertySources.contains(NAME_1));
+    }
+
+    @Test
+    void emptyPropertySourceListTest() {
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-source-enabled", "true");
+        processor.postProcessEnvironment(environment, application);
+        assertEquals(1, propertySources.size());
     }
 
     @Test
@@ -264,6 +272,16 @@ class KeyVaultEnvironmentPostProcessorTests {
         assertEquals(specificTenantId, properties.getProfile().getTenantId());
         assertEquals(specificHostname, properties.getProxy().getHostname());
         assertEquals(specificMaxRetries, properties.getRetry().getFixed().getMaxRetries());
+    }
+
+    @Test
+    void buildKeyVaultPropertySourceWithExceptionTest() {
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-source-enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].name", NAME_0);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].endpoint", ENDPOINT_0);
+        assertThrows(IllegalStateException.class,
+                () -> new KeyVaultEnvironmentPostProcessor().postProcessEnvironment(environment, application));
     }
 }
 
