@@ -48,6 +48,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
+import java.util.regex.Pattern;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -57,6 +58,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
         extends ParallelDocumentQueryExecutionContextBase<T> {
     private final static String FormatPlaceHolder = "{documentdb-formattableorderbyquery-filter}";
     private final static String True = "true";
+    private static final Pattern QUOTE_PATTERN = Pattern.compile("\"");
     private final String collectionRid;
     private final OrderbyRowComparer<T> consumeComparer;
     private final RequestChargeTracker tracker;
@@ -433,7 +435,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
     private String getOrderByItemString(Object orderbyRawItem) {
         String orderByItemToString;
         if (orderbyRawItem instanceof String) {
-            orderByItemToString = "\"" + StringUtils.replace(orderbyRawItem.toString(), "\"", "\\\"") + "\"";
+            orderByItemToString = "\"" + QUOTE_PATTERN.matcher(orderbyRawItem.toString()).replaceAll("\\\"") + "\"";
         } else {
             if (orderbyRawItem != null) {
                 orderByItemToString = orderbyRawItem.toString();
