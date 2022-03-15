@@ -11,6 +11,7 @@ import com.azure.core.implementation.FileWriteSubscriber;
 import com.azure.core.implementation.OutputStreamWriteSubscriber;
 import com.azure.core.implementation.RetriableDownloadFlux;
 import com.azure.core.implementation.TypeUtil;
+import com.azure.core.implementation.reactor.ReactorUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LoggingEventBuilder;
 import org.reactivestreams.Subscriber;
@@ -314,7 +315,7 @@ public final class FluxUtil {
      */
     public static <T> Mono<T> withContext(Function<Context, Mono<T>> serviceCall,
         Map<String, String> contextAttributes) {
-        return Mono.deferContextual(context -> {
+        return ReactorUtils.withMonoContext(context -> {
             final Context[] azureContext = new Context[]{Context.NONE};
 
             if (!CoreUtils.isNullOrEmpty(contextAttributes)) {
@@ -333,7 +334,7 @@ public final class FluxUtil {
     /**
      * Converts the incoming content to Mono.
      *
-     * @param <T> The type of the Response, which will be returned in the Mono.
+     * @param <T> The type of the Response that will be returned by the Mono.
      * @param response whose {@link Response#getValue() value} is to be converted
      * @return The converted {@link Mono}
      */
