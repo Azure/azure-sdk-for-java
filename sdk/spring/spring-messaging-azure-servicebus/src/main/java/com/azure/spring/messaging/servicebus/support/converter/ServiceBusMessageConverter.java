@@ -107,7 +107,6 @@ public class ServiceBusMessageConverter
             .to(id -> {
                 message.setMessageId(id.toString());
                 logOverriddenHeaders(ServiceBusMessageHeaders.MESSAGE_ID, MessageHeaders.ID, headers);
-
             });
         propertyMapper
             .from(headersCopy.remove(ServiceBusMessageHeaders.TIME_TO_LIVE))
