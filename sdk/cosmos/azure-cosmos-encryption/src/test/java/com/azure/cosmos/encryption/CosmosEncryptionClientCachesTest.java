@@ -4,22 +4,12 @@
 package com.azure.cosmos.encryption;
 
 import com.azure.core.cryptography.KeyEncryptionKeyResolver;
-import com.azure.cosmos.CosmosAsyncClient;
-import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.*;
 import com.azure.cosmos.encryption.implementation.ReflectionUtils;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.caches.AsyncCache;
-import com.azure.cosmos.models.ClientEncryptionPolicy;
-import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
-import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.CosmosDatabaseProperties;
-import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.models.EncryptionKeyWrapMetadata;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.models.*;
 import org.mockito.Mockito;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -141,6 +131,41 @@ public class CosmosEncryptionClientCachesTest extends TestSuiteBase {
         cosmosEncryptionAsyncContainer.readItem(properties.getId(),
             new PartitionKey(properties.getMypk()), new CosmosItemRequestOptions(), EncryptionCodeSnippet.Pojo.class).block();
         Mockito.verify(spyCosmosEncryptionAsyncClient, Mockito.times(0)).fetchClientEncryptionKeyPropertiesAsync(Mockito.any(CosmosAsyncContainer.class), Mockito.anyString(), Mockito.any(RequestOptions.class));
+    }
+
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void clientEncryptionPropertiesAsync() {
+        CosmosAsyncClient mockAsyncClient = Mockito.mock(CosmosAsyncClient.class);
+        KeyEncryptionKeyResolver mockKeyEncryptionKeyResolver= Mockito.mock(KeyEncryptionKeyResolver.class);
+        CosmosAsyncContainer mockCosmosAsyncContainer = Mockito.mock(CosmosAsyncContainer.class);
+        CosmosAsyncDatabase mockCosmosAsyncDatabase = Mockito.mock(CosmosAsyncDatabase.class);
+        CosmosAsyncClientEncryptionKey mockCosmosAsyncClientEncryptionKey = Mockito.mock(CosmosAsyncClientEncryptionKey.class);
+        CosmosClientEncryptionKeyResponse mockKeyResponse = Mockito.mock(CosmosClientEncryptionKeyResponse.class);
+        CosmosClientEncryptionKeyProperties mockKeyProperties = Mockito.mock(CosmosClientEncryptionKeyProperties.class);
+        Mockito.when(mockCosmosAsyncContainer.getDatabase()).thenReturn(mockCosmosAsyncDatabase);
+        Mockito.when(mockCosmosAsyncDatabase.getClientEncryptionKey(Mockito.anyString())).thenReturn(mockCosmosAsyncClientEncryptionKey);
+        Mockito.when(mockCosmosAsyncClientEncryptionKey.read(Mockito.any(RequestOptions.class))).thenReturn(Mono.just(mockKeyResponse));
+        Mockito.when(mockKeyResponse.getProperties()).thenReturn(mockKeyProperties);
+
+        CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = new CosmosEncryptionAsyncClient(mockAsyncClient, mockKeyEncryptionKeyResolver, "test");
+        CosmosEncryptionAsyncClient spyEncryptionAsyncClient = Mockito.spy(cosmosEncryptionAsyncClient);
+        spyEncryptionAsyncClient.getClientEncryptionPropertiesAsync("testKey", "testDB", mockCosmosAsyncContainer, false, null, false).block();
+        Mockito.verify(spyEncryptionAsyncClient, Mockito.times(1)).fetchClientEncryptionKeyPropertiesAsync(Mockito.any(CosmosAsyncContainer.class), Mockito.anyString(), Mockito.any(RequestOptions.class));
+
+        cosmosEncryptionAsyncClient = new CosmosEncryptionAsyncClient(mockAsyncClient, mockKeyEncryptionKeyResolver, "test");
+        spyEncryptionAsyncClient = Mockito.spy(cosmosEncryptionAsyncClient);
+        spyEncryptionAsyncClient.getClientEncryptionPropertiesAsync("testKey", "testDB", mockCosmosAsyncContainer, true, null, false).block();
+        Mockito.verify(spyEncryptionAsyncClient, Mockito.times(2)).fetchClientEncryptionKeyPropertiesAsync(Mockito.any(CosmosAsyncContainer.class), Mockito.anyString(), Mockito.any(RequestOptions.class));
+
+        cosmosEncryptionAsyncClient = new CosmosEncryptionAsyncClient(mockAsyncClient, mockKeyEncryptionKeyResolver, "test");
+        spyEncryptionAsyncClient = Mockito.spy(cosmosEncryptionAsyncClient);
+        spyEncryptionAsyncClient.getClientEncryptionPropertiesAsync("testKey", "testDB", mockCosmosAsyncContainer, false, null, true).block();
+        Mockito.verify(spyEncryptionAsyncClient, Mockito.times(2)).fetchClientEncryptionKeyPropertiesAsync(Mockito.any(CosmosAsyncContainer.class), Mockito.anyString(), Mockito.any(RequestOptions.class));
+
+        cosmosEncryptionAsyncClient = new CosmosEncryptionAsyncClient(mockAsyncClient, mockKeyEncryptionKeyResolver, "test");
+        spyEncryptionAsyncClient = Mockito.spy(cosmosEncryptionAsyncClient);
+        spyEncryptionAsyncClient.getClientEncryptionPropertiesAsync("testKey", "testDB", mockCosmosAsyncContainer, true, null, true).block();
+        Mockito.verify(spyEncryptionAsyncClient, Mockito.times(2)).fetchClientEncryptionKeyPropertiesAsync(Mockito.any(CosmosAsyncContainer.class), Mockito.anyString(), Mockito.any(RequestOptions.class));
     }
 
     @AfterClass(groups = {"encryption"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
