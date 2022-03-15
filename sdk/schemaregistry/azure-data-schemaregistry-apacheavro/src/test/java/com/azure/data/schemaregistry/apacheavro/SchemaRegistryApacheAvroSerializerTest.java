@@ -212,8 +212,8 @@ public class SchemaRegistryApacheAvroSerializerTest {
             })
             .verifyComplete();
 
-        // Decoding the same message again should work.
-        StepVerifier.create(encoder.decodeMessageDataAsync(message, TypeReference.createInstance(PlayingCard.class)))
+        // Deserializing the same message again should work.
+        StepVerifier.create(encoder.deserializeMessageDataAsync(message, TypeReference.createInstance(PlayingCard.class)))
                 .assertNext(actual -> {
                     assertEquals(playingCard.getPlayingCardSuit(), actual.getPlayingCardSuit());
                     assertEquals(playingCard.getCardValue(), actual.getCardValue());

@@ -36,7 +36,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroEncoderBuilder.MAX_CACHE_SIZE;
+import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroSerializerBuilder.MAX_CACHE_SIZE;
 
 /**
  * Class containing implementation of Apache Avro serializer
