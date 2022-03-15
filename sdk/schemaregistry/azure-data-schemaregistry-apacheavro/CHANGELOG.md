@@ -8,6 +8,12 @@
 - Changed `decodeMessageData` and `decodeMessageDataAsync` to `deserializeMessageData` and `deserializeMessageDataAsync`.
 - Changed `encodeMessageData` and `encodeMessageDataAsync` to `serializeMessageData` and `serializeMessageDataAsync`.
 
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-data-schemaregistry` dependency to `1.0.3`.
+
 ## 1.0.0-beta.9 (2022-02-12)
 
 ### Features Added
