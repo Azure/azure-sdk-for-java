@@ -7,7 +7,7 @@ import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.spring.messaging.eventhubs.implementation.support.EventDataHelper;
-import com.azure.spring.messaging.checkpoint.CheckpointConfig;
+import com.azure.spring.messaging.eventhubs.core.checkpoint.CheckpointConfig;
 import org.slf4j.Logger;
 
 /**

@@ -4,20 +4,20 @@
 package com.azure.spring.messaging.servicebus.implementation.core;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.identity.DefaultAzureCredential;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
-import com.azure.spring.cloud.core.AzureSpringIdentifier;
+import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceBusProcessorClientBuilderFactory;
 import com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceBusSessionProcessorClientBuilderFactory;
+import com.azure.spring.cloud.service.listener.MessageListener;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
-import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusMessageListener;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
+import com.azure.spring.messaging.servicebus.core.listener.ServiceBusMessageListenerContainer;
 import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.servicebus.core.properties.ProcessorProperties;
 import com.azure.spring.messaging.servicebus.core.properties.ServiceBusContainerProperties;
@@ -59,7 +59,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
     private final List<ServiceBusProcessClientBuilderCustomizer> customizers = new ArrayList<>();
     private final Map<ConsumerIdentifier, List<ServiceBusProcessClientBuilderCustomizer>> dedicatedCustomizers = new HashMap<>();
     private AzureCredentialResolver<TokenCredential> tokenCredentialResolver = null;
-    private DefaultAzureCredential defaultAzureCredential = null;
+    private TokenCredential defaultAzureCredential = null;
 
     /**
      * Construct a factory with the provided namespace level properties.
@@ -89,7 +89,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
 
     @Override
     public ServiceBusProcessorClient createProcessor(String queue,
-                                                     ServiceBusMessageListener messageListener,
+                                                     MessageListener<?> messageListener,
                                                      ServiceBusErrorHandler errorHandler) {
         return doCreateProcessor(queue, null, messageListener, errorHandler, this.propertiesSupplier.getProperties(new ConsumerIdentifier(queue)));
     }
@@ -101,7 +101,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
         ProcessorProperties processorProperties = propertiesMerger.merge(containerProperties, propertiesSupplied);
 
         ServiceBusErrorHandler errorHandler = containerProperties.getErrorHandler();
-        ServiceBusMessageListener messageListener = containerProperties.getMessageListener();
+        MessageListener<?> messageListener = containerProperties.getMessageListener();
         Assert.notNull(errorHandler, "An errorHandler must be provided!");
         Assert.notNull(messageListener, "A message listener must be provided!");
 
@@ -111,7 +111,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
     @Override
     public ServiceBusProcessorClient createProcessor(String topic,
                                                      String subscription,
-                                                     ServiceBusMessageListener messageListener,
+                                                     MessageListener<?> messageListener,
                                                      ServiceBusErrorHandler errorHandler) {
         return doCreateProcessor(topic, subscription, messageListener, errorHandler,
             this.propertiesSupplier.getProperties(new ConsumerIdentifier(topic, subscription)));
@@ -126,15 +126,34 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
         ProcessorProperties processorProperties = propertiesMerger.merge(containerProperties, propertiesSupplied);
 
         ServiceBusErrorHandler errorHandler = containerProperties.getErrorHandler();
-        ServiceBusMessageListener messageListener = containerProperties.getMessageListener();
+        MessageListener<?> messageListener = containerProperties.getMessageListener();
         Assert.notNull(errorHandler, "An errorHandler must be provided!");
         Assert.notNull(messageListener, "An message listener must be provided!");
 
         return doCreateProcessor(topic, subscription, messageListener, errorHandler, processorProperties);
     }
 
-    private ServiceBusProcessorClient doCreateProcessor(String name, String subscription,
-                                                        @NonNull ServiceBusMessageListener messageListener,
+    /**
+     * Create the {@link ServiceBusProcessorClient} with given name, subscription, message listener, error handler, and
+     * properties.
+     *
+     * <p>
+     * This {@link ServiceBusProcessorClient} created from this method will disable the autocomplete, because this
+     * processor client is used as the delegate in {@link ServiceBusMessageListenerContainer} and we want the listener
+     * container or any upper layer of the {@link ServiceBusMessageListenerContainer} to handle the settlement of a
+     * Service Bus message.
+     *
+     * @param name the queue name of topic name.
+     * @param subscription the subscription name.
+     * @param messageListener the message listener.
+     * @param errorHandler the error handler.
+     * @param properties the properties of the processor.
+     *
+     * @return the processor client.
+     */
+    private ServiceBusProcessorClient doCreateProcessor(String name,
+                                                        @Nullable String subscription,
+                                                        @NonNull MessageListener<?> messageListener,
                                                         @NonNull ServiceBusErrorHandler errorHandler,
                                                         @Nullable ProcessorProperties properties) {
         ConsumerIdentifier key = new ConsumerIdentifier(name, subscription);
@@ -202,7 +221,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
      * Set the default Azure credential.
      * @param defaultAzureCredential The default Azure Credential.
      */
-    public void setDefaultAzureCredential(DefaultAzureCredential defaultAzureCredential) {
+    public void setDefaultAzureCredential(TokenCredential defaultAzureCredential) {
         this.defaultAzureCredential = defaultAzureCredential;
     }
 

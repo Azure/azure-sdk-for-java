@@ -8,25 +8,24 @@ import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
-
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
+import com.azure.spring.cloud.service.listener.MessageListener;
+import com.azure.spring.integration.core.instrumentation.Instrumentation;
+import com.azure.spring.integration.core.instrumentation.InstrumentationManager;
+import com.azure.spring.integration.eventhubs.implementation.health.EventHubsProcessorInstrumentation;
+import com.azure.spring.messaging.AzureHeaders;
+import com.azure.spring.messaging.ListenerMode;
+import com.azure.spring.messaging.checkpoint.AzureCheckpointer;
+import com.azure.spring.messaging.eventhubs.core.checkpoint.CheckpointConfig;
+import com.azure.spring.messaging.eventhubs.core.checkpoint.CheckpointMode;
+import com.azure.spring.messaging.checkpoint.Checkpointer;
+import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.messaging.eventhubs.core.listener.EventHubsMessageListenerContainer;
 import com.azure.spring.messaging.eventhubs.implementation.checkpoint.CheckpointManagers;
 import com.azure.spring.messaging.eventhubs.implementation.checkpoint.EventCheckpointManager;
 import com.azure.spring.messaging.eventhubs.implementation.core.listener.adapter.BatchMessagingMessageListenerAdapter;
 import com.azure.spring.messaging.eventhubs.implementation.core.listener.adapter.RecordMessagingMessageListenerAdapter;
 import com.azure.spring.messaging.eventhubs.support.EventHubsHeaders;
-import com.azure.spring.integration.eventhubs.implementation.health.EventHubsProcessorInstrumentation;
-import com.azure.spring.integration.core.instrumentation.Instrumentation;
-import com.azure.spring.integration.core.instrumentation.InstrumentationManager;
-import com.azure.spring.messaging.AzureHeaders;
-import com.azure.spring.messaging.ListenerMode;
-import com.azure.spring.messaging.checkpoint.AzureCheckpointer;
-import com.azure.spring.messaging.checkpoint.CheckpointConfig;
-import com.azure.spring.messaging.checkpoint.CheckpointMode;
-import com.azure.spring.messaging.checkpoint.Checkpointer;
-import com.azure.spring.messaging.converter.AzureMessageConverter;
-import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
-import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsMessageListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.integration.endpoint.MessageProducerSupport;
@@ -118,7 +117,7 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
 
     @Override
     protected void onInit() {
-        EventHubsMessageListener listener;
+        MessageListener<?> listener;
         if (ListenerMode.BATCH.equals(this.listenerMode)) {
             listener = batchListener;
         } else {
@@ -229,7 +228,7 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
     private class IntegrationRecordMessageListener extends RecordMessagingMessageListenerAdapter {
 
         @Override
-        public void onEvent(EventContext eventContext) {
+        public void onMessage(EventContext eventContext) {
             PartitionContext partition = eventContext.getPartitionContext();
 
             Map<String, Object> headers = new HashMap<>();
@@ -255,7 +254,7 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
     private class IntegrationBatchMessageListener extends BatchMessagingMessageListenerAdapter {
 
         @Override
-        public void onEventBatch(EventBatchContext eventBatchContext) {
+        public void onMessage(EventBatchContext eventBatchContext) {
             PartitionContext partition = eventBatchContext.getPartitionContext();
 
             Map<String, Object> headers = new HashMap<>();

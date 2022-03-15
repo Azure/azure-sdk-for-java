@@ -8,13 +8,15 @@ import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
-import com.azure.spring.cloud.core.AzureSpringIdentifier;
-import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
+import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
+import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsBatchMessageListener;
 import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
-import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsMessageListener;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsRecordMessageListener;
 import com.azure.spring.cloud.service.implementation.eventhubs.factory.EventProcessorClientBuilderFactory;
+import com.azure.spring.cloud.service.listener.MessageListener;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.AllNestedConditions;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -24,13 +26,14 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.Assert;
 
 /**
  * Configures a {@link EventProcessorClient}.
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(EventProcessorClientBuilder.class)
-@ConditionalOnBean({ EventHubsMessageListener.class, CheckpointStore.class, EventHubsErrorHandler.class })
+@ConditionalOnBean({ MessageListener.class, CheckpointStore.class, EventHubsErrorHandler.class })
 @Conditional(AzureEventHubsProcessorClientConfiguration.ProcessorAvailableCondition.class)
 class AzureEventHubsProcessorClientConfiguration {
 
@@ -51,12 +54,17 @@ class AzureEventHubsProcessorClientConfiguration {
     @ConditionalOnMissingBean
     EventProcessorClientBuilderFactory eventProcessorClientBuilderFactory(
         CheckpointStore checkpointStore,
-        EventHubsMessageListener messageListener,
         EventHubsErrorHandler errorHandler,
+        ObjectProvider<EventHubsRecordMessageListener> recordMessageListeners,
+        ObjectProvider<EventHubsBatchMessageListener> batchMessageListeners,
         ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.EventHubs>> connectionStringProviders,
         ObjectProvider<AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder>> customizers) {
+
+        MessageListener<?> listener = getMessageListener(recordMessageListeners, batchMessageListeners);
+        Assert.notNull(listener, "Expect only one record / batch message listener for Event Hubs.");
+
         final EventProcessorClientBuilderFactory factory =
-            new EventProcessorClientBuilderFactory(this.processorProperties, checkpointStore, messageListener, errorHandler);
+            new EventProcessorClientBuilderFactory(this.processorProperties, checkpointStore, listener, errorHandler);
 
         factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_EVENT_HUBS);
         connectionStringProviders.orderedStream().findFirst().ifPresent(factory::setConnectionStringProvider);
@@ -68,6 +76,26 @@ class AzureEventHubsProcessorClientConfiguration {
     @ConditionalOnMissingBean
     EventProcessorClientBuilder eventProcessorClientBuilder(EventProcessorClientBuilderFactory factory) {
         return factory.build();
+    }
+
+    private MessageListener<?> getMessageListener(ObjectProvider<EventHubsRecordMessageListener> recordListeners,
+                                                  ObjectProvider<EventHubsBatchMessageListener> batchListeners) {
+
+        boolean isRecordListenerPresent = recordListeners.stream().findAny().isPresent();
+        boolean isBatchListenerPresent = batchListeners.stream().findAny().isPresent();
+        if (isRecordListenerPresent && isBatchListenerPresent) {
+            throw new IllegalArgumentException("Only one type of Event Hubs message listener can be provided, either a "
+                + "'EventHubsRecordMessageListener'' or a 'EventHubsBatchMessageListener', but found both.");
+        }
+        if (!isRecordListenerPresent && !isBatchListenerPresent) {
+            throw new IllegalArgumentException("One listener of type 'EventHubsRecordMessageListener' or "
+                + "'EventHubsBatchMessageListener' must be provided.");
+        }
+        if (isRecordListenerPresent) {
+            return recordListeners.getIfUnique();
+        }
+
+        return batchListeners.getIfUnique();
     }
 
     static class ProcessorAvailableCondition extends AllNestedConditions {

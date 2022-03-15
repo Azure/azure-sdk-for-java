@@ -19,9 +19,9 @@ class AzureStorageRetryOptionsConverterTests {
     void correctlyConvertedExponential() {
         StorageRetryProperties source = new StorageRetryProperties();
         source.setSecondaryHost("localhost");
-        source.setMaxRetries(1);
-        source.setBaseDelay(Duration.ofSeconds(2));
-        source.setMaxDelay(Duration.ofSeconds(3));
+        source.getExponential().setMaxRetries(1);
+        source.getExponential().setBaseDelay(Duration.ofSeconds(2));
+        source.getExponential().setMaxDelay(Duration.ofSeconds(3));
         source.setTryTimeout(Duration.ofSeconds(4));
         source.setMode(RetryOptionsProvider.RetryMode.EXPONENTIAL);
 
@@ -40,10 +40,9 @@ class AzureStorageRetryOptionsConverterTests {
     void correctlyConvertedFixed() {
         StorageRetryProperties source = new StorageRetryProperties();
         source.setSecondaryHost("localhost");
-        source.setMaxRetries(1);
-        source.setBaseDelay(Duration.ofSeconds(2));
-        source.setMaxDelay(Duration.ofSeconds(3));
-        source.setTryTimeout(Duration.ofSeconds(4));
+        source.getFixed().setMaxRetries(1);
+        source.getFixed().setDelay(Duration.ofSeconds(2));
+        source.setTryTimeout(Duration.ofSeconds(3));
         source.setMode(RetryOptionsProvider.RetryMode.FIXED);
 
         RequestRetryOptions target = AzureStorageRetryOptionsConverter.STORAGE_RETRY_CONVERTER.convert(source);
@@ -52,8 +51,7 @@ class AzureStorageRetryOptionsConverterTests {
         assertNotNull(target);
         assertEquals(1, target.getMaxTries());
         assertEquals(2, target.getRetryDelay().getSeconds());
-        assertEquals(3, target.getMaxRetryDelay().getSeconds());
-        assertEquals(4, target.getTryTimeoutDuration().getSeconds());
+        assertEquals(3, target.getTryTimeoutDuration().getSeconds());
         assertEquals("localhost", target.getSecondaryHost());
     }
 

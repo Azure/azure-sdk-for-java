@@ -4,7 +4,7 @@
 package com.azure.spring.messaging.eventhubs.implementation.checkpoint;
 
 import com.azure.spring.messaging.ListenerMode;
-import com.azure.spring.messaging.checkpoint.CheckpointConfig;
+import com.azure.spring.messaging.eventhubs.core.checkpoint.CheckpointConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

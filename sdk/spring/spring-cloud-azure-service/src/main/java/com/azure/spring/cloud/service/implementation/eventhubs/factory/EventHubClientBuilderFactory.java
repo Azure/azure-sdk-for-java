@@ -53,7 +53,7 @@ public class EventHubClientBuilderFactory extends AbstractAzureAmqpClientBuilder
 
     @Override
     protected BiConsumer<EventHubClientBuilder, AmqpRetryOptions> consumeAmqpRetryOptions() {
-        return EventHubClientBuilder::retry;
+        return EventHubClientBuilder::retryOptions;
     }
 
     @Override

@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Spring Cloud Azure Core capabilities.
+ * Event Hubs checkpoint configs.
  */
-package com.azure.spring.cloud.core;
+package com.azure.spring.messaging.eventhubs.core.checkpoint;

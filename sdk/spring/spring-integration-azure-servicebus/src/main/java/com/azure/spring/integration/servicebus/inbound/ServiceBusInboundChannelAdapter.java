@@ -7,17 +7,15 @@ import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
+import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
 import com.azure.spring.integration.core.instrumentation.Instrumentation;
 import com.azure.spring.integration.core.instrumentation.InstrumentationManager;
 import com.azure.spring.integration.servicebus.implementation.health.ServiceBusProcessorInstrumentation;
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.ListenerMode;
 import com.azure.spring.messaging.checkpoint.AzureCheckpointer;
-import com.azure.spring.messaging.checkpoint.CheckpointConfig;
-import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.messaging.checkpoint.Checkpointer;
 import com.azure.spring.messaging.converter.AzureMessageConverter;
-import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
 import com.azure.spring.messaging.servicebus.core.listener.ServiceBusMessageListenerContainer;
 import com.azure.spring.messaging.servicebus.implementation.core.listener.adapter.RecordMessagingMessageListenerAdapter;
 import com.azure.spring.messaging.servicebus.support.ServiceBusMessageHeaders;
@@ -62,7 +60,7 @@ import java.util.Map;
  *     ServiceBusProcessorFactory processorFactory) {
  *         ServiceBusContainerProperties containerProperties = new ServiceBusContainerProperties();
  *         containerProperties.setEntityName("RECEIVE_QUEUE_NAME");
- *         containerProperties.setCheckpointConfig(new CheckpointConfig(CheckpointMode.MANUAL));
+ *         containerProperties.setAutoComplete(false);
  *         return new ServiceBusMessageListenerContainer(processorFactory, containerProperties);
  *     }
  *
@@ -79,17 +77,15 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
     private final IntegrationRecordMessageListener recordListener = new IntegrationRecordMessageListener();
     private final ServiceBusMessageListenerContainer listenerContainer;
     private final ListenerMode listenerMode;
-    private final CheckpointConfig checkpointConfig;
     private InstrumentationManager instrumentationManager;
     private String instrumentationId;
+    private final boolean isAutoComplete;
     private static final String MSG_FAIL_CHECKPOINT = "Failed to checkpoint %s";
-    private static final String MSG_SUCCESS_CHECKPOINT = "Checkpointed %s in %s mode";
 
     /**
-     * Construct a {@link ServiceBusInboundChannelAdapter} with the specified {@link ServiceBusMessageListenerContainer}
-     * and {@link CheckpointConfig}.
+     * Construct a {@link ServiceBusInboundChannelAdapter} with the specified {@link ServiceBusMessageListenerContainer}.
      *
-     * @param listenerContainer the processor container
+     * @param listenerContainer the message listener container.
      */
     public ServiceBusInboundChannelAdapter(ServiceBusMessageListenerContainer listenerContainer) {
         this(listenerContainer, ListenerMode.RECORD);
@@ -97,16 +93,16 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
 
     /**
      * Construct a {@link ServiceBusInboundChannelAdapter} with the specified {@link ServiceBusMessageListenerContainer}
-     *  ,{@link ListenerMode} and {@link CheckpointConfig}.
-     * @param listenerContainer the processor container
+     *  ,{@link ListenerMode}.
+     *
+     * @param listenerContainer the message listener container.
      * @param listenerMode the listen mode
      */
     public ServiceBusInboundChannelAdapter(ServiceBusMessageListenerContainer listenerContainer,
                                            ListenerMode listenerMode) {
         this.listenerContainer = listenerContainer;
         this.listenerMode = listenerMode;
-        CheckpointConfig containerCheckpointConfig = listenerContainer.getContainerProperties().getCheckpointConfig();
-        this.checkpointConfig = containerCheckpointConfig == null ? new CheckpointConfig() : containerCheckpointConfig;
+        this.isAutoComplete = !Boolean.FALSE.equals(listenerContainer.getContainerProperties().getAutoComplete());
     }
 
     @Override
@@ -196,7 +192,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
             Map<String, Object> headers = new HashMap<>();
             headers.put(ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT, messageContext);
 
-            if (checkpointConfig.getMode() == CheckpointMode.MANUAL) {
+            if (!isAutoComplete) {
                 headers.put(AzureHeaders.CHECKPOINTER, checkpointer);
             }
 
@@ -204,12 +200,10 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
                 payloadType);
             sendMessage(message);
 
-            if (checkpointConfig.getMode() == CheckpointMode.RECORD) {
+            if (isAutoComplete) {
                 checkpointer.success()
-                            .doOnSuccess(t ->
-                                LOGGER.debug(String.format(MSG_SUCCESS_CHECKPOINT, message, checkpointConfig.getMode())))
-                            .doOnError(t ->
-                                LOGGER.warn(String.format(MSG_FAIL_CHECKPOINT, message), t))
+                            .doOnSuccess(t -> LOGGER.debug("Settled {} with autocomplete enabled.", message))
+                            .doOnError(t -> LOGGER.warn(String.format(MSG_FAIL_CHECKPOINT, message), t))
                             .block();
             }
         }

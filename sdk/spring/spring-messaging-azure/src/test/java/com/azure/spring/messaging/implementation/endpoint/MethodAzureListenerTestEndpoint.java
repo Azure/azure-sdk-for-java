@@ -7,7 +7,7 @@ import com.azure.spring.messaging.implementation.config.AbstractAzureListenerEnd
 import com.azure.spring.messaging.implementation.config.MethodAzureListenerEndpoint;
 import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.messaging.listener.MessageListenerContainer;
-import com.azure.spring.messaging.implementation.listener.SimpleMessagingMessageListenerTestAdapter;
+import com.azure.spring.messaging.implementation.listener.SimpleMessagingMessageListener;
 import com.azure.spring.messaging.implementation.listener.adapter.MessagingMessageListenerAdapter;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -69,13 +69,13 @@ public class MethodAzureListenerTestEndpoint extends AbstractAzureListenerEndpoi
     /**
      * Create an empty {@link MessagingMessageListenerAdapter} instance.
      *
-     * @param messageConverter the converter (may be null).
+     * @param messageConverter the converter (maybe null).
      * @return the {@link MessagingMessageListenerAdapter} instance.
      */
     protected MessagingMessageListenerAdapter createMessageListenerInstance(
         @Nullable AzureMessageConverter<?, ?> messageConverter) {
 
-        MessagingMessageListenerAdapter listener = new SimpleMessagingMessageListenerTestAdapter();
+        MessagingMessageListenerAdapter listener = new SimpleMessagingMessageListener();
         listener.setMessageConverter(messageConverter);
 
         return listener;

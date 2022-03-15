@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * config class for VcapService
  */
-public class VcapServiceConfig {
+class VcapServiceConfig {
     private Map<String, String> credentials = new HashMap<>();
     private String label;
     private String name;

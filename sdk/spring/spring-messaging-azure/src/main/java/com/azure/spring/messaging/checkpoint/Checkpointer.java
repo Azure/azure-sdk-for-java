@@ -7,7 +7,8 @@ import reactor.core.publisher.Mono;
 
 /**
  * A callback to perform checkpoint for received messages.
- * When the {@link CheckpointMode#MANUAL} mode is used, {@link Checkpointer} will be put in messages as the header
+ * When a manual checkpoint mode is used in Event Hubs or autoComplete is set to false in Service Bus,
+ * {@link Checkpointer} will be put in messages as the header
  * {@link com.azure.spring.messaging.AzureHeaders#CHECKPOINTER}.
  *
  * <p>

@@ -130,7 +130,8 @@ class AzureGlobalConfigurationEnvironmentPostProcessorTests {
         assertEquals("core-sub-id", globalProperties.getProfile().getSubscriptionId());
         assertEquals(AzureProfileOptionsProvider.CloudType.OTHER, globalProperties.getProfile().getCloudType());
         assertEquals("aad", globalProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
-        assertEquals(3, globalProperties.getRetry().getMaxRetries());
+        assertEquals(3, globalProperties.getRetry().getExponential().getMaxRetries());
+        assertEquals(3, globalProperties.getRetry().getFixed().getMaxRetries());
         assertEquals(HttpLogDetailLevel.HEADERS, globalProperties.getClient().getHttp().getLogging().getLevel());
         assertEquals(Duration.ofSeconds(1), globalProperties.getClient().getHttp().getConnectTimeout());
         assertEquals(Duration.ofSeconds(2), globalProperties.getClient().getHttp().getReadTimeout());

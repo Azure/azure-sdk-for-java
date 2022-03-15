@@ -42,7 +42,11 @@ public final class AzurePropertiesUtils {
         BeanUtils.copyProperties(source.getCredential(), target.getCredential());
 
         if (source instanceof RetryOptionsProvider && target instanceof RetryOptionsProvider) {
-            BeanUtils.copyProperties(((RetryOptionsProvider) source).getRetry(), ((RetryOptionsProvider) target).getRetry());
+            RetryOptionsProvider.RetryOptions sourceRetry = ((RetryOptionsProvider) source).getRetry();
+            RetryOptionsProvider.RetryOptions targetRetry = ((RetryOptionsProvider) target).getRetry();
+            BeanUtils.copyProperties(sourceRetry, targetRetry);
+            BeanUtils.copyProperties(sourceRetry.getExponential(), targetRetry.getExponential());
+            BeanUtils.copyProperties(sourceRetry.getFixed(), targetRetry.getFixed());
         }
     }
 

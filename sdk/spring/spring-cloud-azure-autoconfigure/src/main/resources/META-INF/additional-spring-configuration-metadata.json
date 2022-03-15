@@ -796,7 +796,7 @@
       "deprecation": {
         "level": "error",
         "reason": "Deprecate to keep consistent with the unified configuration options.",
-        "replacement": "spring.cloud.azure.servicebus.retry.max-retries"
+        "replacement": "spring.cloud.azure.servicebus.retry.exponential.max-retries"
       }
     },
     {
@@ -806,7 +806,7 @@
       "deprecation": {
         "level": "error",
         "reason": "Deprecate to keep consistent with the unified configuration options.",
-        "replacement": "spring.cloud.azure.servicebus.retry.base-delay"
+        "replacement": "spring.cloud.azure.servicebus.retry.exponential.base-delay"
       }
     },
     {
@@ -816,7 +816,7 @@
       "deprecation": {
         "level": "error",
         "reason": "Deprecate to keep consistent with the unified configuration options.",
-        "replacement": "spring.cloud.azure.servicebus.retry.max-delay"
+        "replacement": "spring.cloud.azure.servicebus.retry.exponential.max-delay"
       }
     },
     {
@@ -931,6 +931,18 @@
         "reason": "The 'servicebus-queue' binder is dropped and 'servicebus' binder is provided instead with the ability of interacting with both queue and topic.",
         "replacement": "spring.cloud.stream.servicebus.bindings"
       }
+    },
+    {
+      "name": "spring.cloud.azure.active-directory.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether to enable Azure Active Directory related auto-configuration.",
+      "defaultValue": false
+    },
+    {
+      "name": "spring.cloud.azure.active-directory.b2c.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether to enable Azure Active Directory B2C related auto-configuration.",
+      "defaultValue": false
     },
     {
       "name": "spring.cloud.azure.cosmos.throttling-retry-options.max-retry-attempts-on-throttled-requests",

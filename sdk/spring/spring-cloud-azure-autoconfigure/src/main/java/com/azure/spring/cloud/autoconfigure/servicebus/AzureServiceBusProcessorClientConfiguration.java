@@ -7,14 +7,14 @@ import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
-import com.azure.spring.cloud.core.AzureSpringIdentifier;
-import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
+import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
+import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
 import com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceBusProcessorClientBuilderFactory;
 import com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceBusSessionProcessorClientBuilderFactory;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
-import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusMessageListener;
+import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusRecordMessageListener;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -28,7 +28,7 @@ import org.springframework.util.StringUtils;
  * Configuration for a {@link ServiceBusProcessorClient}.
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnBean({ ServiceBusMessageListener.class, ServiceBusErrorHandler.class })
+@ConditionalOnBean({ ServiceBusRecordMessageListener.class, ServiceBusErrorHandler.class })
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "entity-name", "processor.entity-name" })
 @Import({
     AzureServiceBusProcessorClientConfiguration.SessionProcessorClientConfiguration.class,
@@ -46,7 +46,7 @@ class AzureServiceBusProcessorClientConfiguration {
         @ConditionalOnMissingBean
         ServiceBusProcessorClientBuilderFactory serviceBusProcessorClientBuilderFactory(
             AzureServiceBusProperties serviceBusProperties,
-            ServiceBusMessageListener messageListener,
+            ServiceBusRecordMessageListener messageListener,
             ServiceBusErrorHandler errorHandler,
             ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders,
             ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders,
@@ -97,7 +97,7 @@ class AzureServiceBusProcessorClientConfiguration {
         @ConditionalOnMissingBean
         ServiceBusSessionProcessorClientBuilderFactory serviceBusSessionProcessorClientBuilderFactory(
             AzureServiceBusProperties serviceBusProperties,
-            ServiceBusMessageListener messageListener,
+            ServiceBusRecordMessageListener messageListener,
             ServiceBusErrorHandler errorHandler,
             ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders,
             ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders,

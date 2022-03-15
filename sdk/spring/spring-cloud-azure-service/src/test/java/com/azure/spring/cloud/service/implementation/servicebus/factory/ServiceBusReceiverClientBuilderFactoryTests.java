@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.service.implementation.servicebus.factory;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
-import com.azure.spring.cloud.core.properties.authentication.NamedKeyProperties;
 import com.azure.spring.cloud.service.implementation.servicebus.properties.ServiceBusReceiverClientTestProperties;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 
@@ -19,6 +18,7 @@ class ServiceBusReceiverClientBuilderFactoryTests
     @Override
     protected ServiceBusReceiverClientTestProperties createMinimalServiceProperties() {
         ServiceBusReceiverClientTestProperties properties = new ServiceBusReceiverClientTestProperties();
+        properties.setNamespace("test-namespace");
         properties.setEntityName("test");
         properties.setEntityType(ServiceBusEntityType.TOPIC);
         properties.setSubscriptionName("test-subscription");
@@ -26,51 +26,16 @@ class ServiceBusReceiverClientBuilderFactoryTests
     }
 
     @Override
-    protected ServiceBusReceiverClientBuilderFactory getMinimalClientBuilderFactory() {
-        ServiceBusReceiverClientTestProperties properties = createMinimalServiceProperties();
-        return getClientBuilderFactory(properties);
-    }
-
-    @Override
-    protected ServiceBusReceiverClientBuilderFactory getSasCredentialConfiguredClientBuilderFactory() {
-        ServiceBusReceiverClientTestProperties properties = createMinimalServiceProperties();
-        properties.setSasToken("test-token");
-        properties.setNamespace("test-namespace");
-        return getClientBuilderFactory(properties);
-    }
-
-    @Override
-    protected ServiceBusReceiverClientBuilderFactory getTokenCredentialConfiguredClientBuilderFactory() {
-        ServiceBusReceiverClientTestProperties properties = createMinimalServiceProperties();
-        properties.setNamespace("test-namespace");
-        properties.getCredential().setClientId("test-client");
-        properties.getCredential().setClientSecret("test-secret");
-        properties.getProfile().setTenantId("test-tenant");
-        return getClientBuilderFactory(properties);
-    }
-
-    @Override
-    protected ServiceBusReceiverClientBuilderFactory getNamedKeyCredentialConfiguredClientBuilderFactory() {
-        ServiceBusReceiverClientTestProperties properties = createMinimalServiceProperties();
-        properties.setNamespace("test-namespace");
-        NamedKeyProperties namedKey = new NamedKeyProperties();
-        namedKey.setKey("test-key");
-        namedKey.setName("test-name");
-        properties.setNamedKey(namedKey);
-        return getClientBuilderFactory(properties);
-    }
-
-    private ServiceBusReceiverClientBuilderFactoryExt getClientBuilderFactory(ServiceBusReceiverClientTestProperties properties) {
+    protected ServiceBusReceiverClientBuilderFactory createClientBuilderFactoryWithMockBuilder(ServiceBusReceiverClientTestProperties properties) {
         ServiceBusClientBuilder clientBuilder = mock(ServiceBusClientBuilder.class);
-        ServiceBusReceiverClientBuilderFactoryExt factory =
-            spy(new ServiceBusReceiverClientBuilderFactoryExt(clientBuilder, properties));
+        ServiceBusReceiverClientBuilderFactoryExt factory = spy(new ServiceBusReceiverClientBuilderFactoryExt(clientBuilder, properties));
         doReturn(false).when(factory).isShareServiceBusClientBuilder();
         return factory;
     }
 
     static class ServiceBusReceiverClientBuilderFactoryExt extends ServiceBusReceiverClientBuilderFactory {
         ServiceBusReceiverClientBuilderFactoryExt(ServiceBusClientBuilder serviceBusClientBuilder,
-                                                   ServiceBusReceiverClientTestProperties properties) {
+                                                  ServiceBusReceiverClientTestProperties properties) {
             super(serviceBusClientBuilder, properties);
         }
 

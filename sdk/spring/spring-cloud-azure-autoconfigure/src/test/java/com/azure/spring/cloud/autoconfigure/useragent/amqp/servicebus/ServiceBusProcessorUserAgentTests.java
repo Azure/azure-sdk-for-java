@@ -7,12 +7,11 @@ import com.azure.core.util.ClientOptions;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.servicebus.TestServiceBusRecordMessageListener;
 import com.azure.spring.cloud.autoconfigure.useragent.util.UserAgentTestUtil;
-import com.azure.spring.cloud.core.AzureSpringIdentifier;
+import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceBusProcessorClientBuilderFactory;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
-import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusMessageListener;
+import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusRecordMessageListener;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -45,7 +44,7 @@ class ServiceBusProcessorUserAgentTests {
         new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(AzureServiceBusAutoConfiguration.class))
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
-            .withBean(ServiceBusMessageListener.class, TestServiceBusRecordMessageListener::new)
+            .withBean(ServiceBusRecordMessageListener.class, () -> message -> { })
             .withBean(ServiceBusErrorHandler.class, () -> errorContext -> { })
             .withPropertyValues(propertyValues)
             .run(context -> {

@@ -10,7 +10,7 @@ import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosProperties;
-import com.azure.spring.cloud.core.AzureSpringIdentifier;
+import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.service.implementation.cosmos.CosmosClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
@@ -35,7 +35,7 @@ public class AzureCosmosAutoConfiguration extends AzureServiceConfigurationBase 
     @Bean
     @ConfigurationProperties(AzureCosmosProperties.PREFIX)
     AzureCosmosProperties azureCosmosProperties() {
-        return loadProperties(this.azureGlobalProperties, new AzureCosmosProperties());
+        return loadProperties(getAzureGlobalProperties(), new AzureCosmosProperties());
     }
 
     /**

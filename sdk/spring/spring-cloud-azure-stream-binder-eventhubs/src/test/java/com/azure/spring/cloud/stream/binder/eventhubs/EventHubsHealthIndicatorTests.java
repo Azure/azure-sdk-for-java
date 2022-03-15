@@ -4,22 +4,19 @@
 package com.azure.spring.cloud.stream.binder.eventhubs;
 
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
-import com.azure.messaging.eventhubs.models.EventBatchContext;
-import com.azure.messaging.eventhubs.models.EventContext;
+import com.azure.spring.cloud.service.eventhubs.properties.EventBatchProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsBindingProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsConsumerProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsProducerProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.core.provisioning.EventHubsChannelProvisioner;
+import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAdapter;
+import com.azure.spring.messaging.eventhubs.core.checkpoint.CheckpointConfig;
+import com.azure.spring.messaging.eventhubs.core.checkpoint.CheckpointMode;
 import com.azure.spring.messaging.eventhubs.core.EventHubsTemplate;
 import com.azure.spring.messaging.eventhubs.implementation.core.DefaultEventHubsNamespaceProducerFactory;
-import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAdapter;
-import com.azure.spring.messaging.checkpoint.CheckpointConfig;
-import com.azure.spring.messaging.checkpoint.CheckpointMode;
-import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsBatchMessageListener;
-import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsRecordMessageListener;
-import com.azure.spring.cloud.service.eventhubs.properties.EventBatchProperties;
 import com.azure.storage.blob.BlobContainerAsyncClient;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -74,9 +71,8 @@ public class EventHubsHealthIndicatorTests {
     private static final String CONNECTION_STRING = "Endpoint=sb://test.servicebus.windows.net/;"
         + "SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=key";
 
-    private EventHubsMessageChannelTestBinder binder =
-        new EventHubsMessageChannelTestBinder(BinderHeaders.STANDARD_HEADERS,
-            new EventHubsChannelProvisioner(), null, null);
+    private final EventHubsMessageChannelTestBinder binder = new EventHubsMessageChannelTestBinder(
+        BinderHeaders.STANDARD_HEADERS, new EventHubsChannelProvisioner(), null, null);
 
     @BeforeEach
     public void init() {
@@ -99,9 +95,11 @@ public class EventHubsHealthIndicatorTests {
         binder.createProducerMessageHandler(producerDestination, producerProperties, errorChannel);
         EventHubsTemplate eventHubsTemplate =
             (EventHubsTemplate) ReflectionTestUtils.getField(binder, "eventHubsTemplate");
-        DefaultEventHubsNamespaceProducerFactory producerFactory =
-            (DefaultEventHubsNamespaceProducerFactory) ReflectionTestUtils.getField(eventHubsTemplate,
-                "producerFactory");
+        Assertions.assertNotNull(eventHubsTemplate);
+
+        DefaultEventHubsNamespaceProducerFactory producerFactory = (DefaultEventHubsNamespaceProducerFactory)
+            ReflectionTestUtils.getField(eventHubsTemplate, "producerFactory");
+        Assertions.assertNotNull(producerFactory);
         producerFactory.createProducer(PRODUCER_NAME);
         final Health health = healthIndicator.health();
         assertThat(health.getStatus()).isEqualTo(Status.UP);
@@ -114,9 +112,12 @@ public class EventHubsHealthIndicatorTests {
         binder.createProducerMessageHandler(producerDestination, producerProperties, errorChannel);
         EventHubsTemplate eventHubsTemplate =
             (EventHubsTemplate) ReflectionTestUtils.getField(binder, "eventHubsTemplate");
-        DefaultEventHubsNamespaceProducerFactory producerFactory =
-            (DefaultEventHubsNamespaceProducerFactory) ReflectionTestUtils.getField(eventHubsTemplate,
-                "producerFactory");
+        Assertions.assertNotNull(eventHubsTemplate);
+
+        DefaultEventHubsNamespaceProducerFactory producerFactory = (DefaultEventHubsNamespaceProducerFactory)
+            ReflectionTestUtils.getField(eventHubsTemplate, "producerFactory");
+        Assertions.assertNotNull(producerFactory);
+
         producerFactory.createProducer(PRODUCER_NAME);
         binder.addProducerDownInstrumentation();
         final Health health = healthIndicator.health();
@@ -233,20 +234,4 @@ public class EventHubsHealthIndicatorTests {
         consumerProperties.setHeaderMode(HeaderMode.embeddedHeaders);
     }
 
-    private static class TestIntegrationRecordMessageListener implements EventHubsRecordMessageListener {
-
-        @Override
-        public void onEvent(EventContext eventContext) {
-
-        }
-
-    }
-
-    private static class TestIntegrationBatchMessageListener implements EventHubsBatchMessageListener {
-
-        @Override
-        public void onEventBatch(EventBatchContext eventBatchContext) {
-
-        }
-    }
 }

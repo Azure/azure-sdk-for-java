@@ -6,8 +6,8 @@ package com.azure.spring.cloud.core.implementation.converter;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.RetryOptions;
-import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import com.azure.spring.cloud.core.properties.retry.RetryProperties;
+import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -21,9 +21,9 @@ class AzureHttpRetryOptionsConverterTests {
     @Test
     void correctlyConvertedExponentialRetry() {
         RetryProperties source = new RetryProperties();
-        source.setMaxRetries(1);
-        source.setBaseDelay(Duration.ofSeconds(2));
-        source.setMaxDelay(Duration.ofSeconds(3));
+        source.getExponential().setMaxRetries(1);
+        source.getExponential().setBaseDelay(Duration.ofSeconds(2));
+        source.getExponential().setMaxDelay(Duration.ofSeconds(3));
         source.setMode(RetryOptionsProvider.RetryMode.EXPONENTIAL);
 
         RetryOptions target = AzureHttpRetryOptionsConverter.HTTP_RETRY_CONVERTER.convert(source);
@@ -40,9 +40,8 @@ class AzureHttpRetryOptionsConverterTests {
     @Test
     void correctlyConvertedFixedRetry() {
         RetryProperties source = new RetryProperties();
-        source.setMaxRetries(1);
-        source.setBaseDelay(Duration.ofSeconds(2));
-        source.setMaxDelay(Duration.ofSeconds(3));
+        source.getFixed().setMaxRetries(1);
+        source.getFixed().setDelay(Duration.ofSeconds(2));
         source.setMode(RetryOptionsProvider.RetryMode.FIXED);
 
         RetryOptions target = AzureHttpRetryOptionsConverter.HTTP_RETRY_CONVERTER.convert(source);

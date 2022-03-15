@@ -196,6 +196,7 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
         RetryOptions retryOptions = HTTP_RETRY_CONVERTER.convert(retry);
 
         if (retryOptions == null) {
+            LOGGER.debug("No HTTP retry properties available.");
             return;
         }
         consumeRetryPolicy().accept(builder, new RetryPolicy(retryOptions));
@@ -269,6 +270,15 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
      */
     protected HttpClientProvider getHttpClientProvider() {
         return this.httpClientProvider;
+    }
+
+    /**
+     * Get the {@link HttpClientOptions}.
+     *
+     * @return The http client options.
+     */
+    protected HttpClientOptions getHttpClientOptions() {
+        return this.httpClientOptions;
     }
 
     /**

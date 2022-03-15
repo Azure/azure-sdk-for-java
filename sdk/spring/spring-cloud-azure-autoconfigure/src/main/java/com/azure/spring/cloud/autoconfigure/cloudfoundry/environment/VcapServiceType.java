@@ -6,7 +6,7 @@ package com.azure.spring.cloud.autoconfigure.cloudfoundry.environment;
 /**
  * enum VcapServiceType
  */
-public enum VcapServiceType {
+enum VcapServiceType {
     /**
      * Azure Redis cache
      */

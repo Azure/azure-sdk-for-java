@@ -17,7 +17,7 @@ import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsP
 import com.azure.spring.cloud.stream.binder.eventhubs.core.provisioning.EventHubsChannelProvisioner;
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelResourceManagerProvisioner;
 import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAdapter;
-import com.azure.spring.messaging.checkpoint.CheckpointMode;
+import com.azure.spring.messaging.eventhubs.core.checkpoint.CheckpointMode;
 import com.azure.spring.messaging.eventhubs.core.listener.EventHubsMessageListenerContainer;
 import com.azure.spring.messaging.eventhubs.core.properties.EventHubsContainerProperties;
 import com.azure.spring.messaging.eventhubs.core.properties.NamespaceProperties;
@@ -92,29 +92,11 @@ public class EventHubsBinderConfigurationTests {
     }
 
     @Test
-    void shouldConfigureConsumerPrefetchCount() {
-        new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(TestProcessorContainerConfiguration.class))
-            .withPropertyValues(
-                "spring.cloud.stream.eventhubs.bindings.consume-in-0.consumer.prefetch-count=150",
-                "spring.cloud.stream.eventhubs.bindings.consume-in-0.consumer.destination=dest",
-                "spring.cloud.stream.eventhubs.bindings.consume-in-0.consumer.group=group",
-                "spring.cloud.stream.eventhubs.namespace=namespace"
-                )
-            .run(context -> {
-                EventHubsExtendedBindingProperties properties = context.getBean(EventHubsExtendedBindingProperties.class);
-                EventHubsConsumerProperties consumerProperties = properties.getExtendedConsumerProperties("consume-in-0");
-                assertThat(consumerProperties.getPrefetchCount()).isEqualTo(150);
-            });
-    }
-
-    @Test
     void testExtendedBindingPropertiesShouldBind() {
         String producerConnectionString = String.format(CONNECTION_STRING_FORMAT, "fake-producer-namespace");
         String consumerConnectionString = String.format(CONNECTION_STRING_FORMAT, "fake-consumer-namespace");
 
-        new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(EventHubsExtendedBindingPropertiesTestConfiguration.class))
+        this.contextRunner
             .withPropertyValues(
                 "spring.cloud.stream.eventhubs.bindings.input.consumer.domain-name=fake-consumer-domain",
                 "spring.cloud.stream.eventhubs.bindings.input.consumer.namespace=fake-consumer-namespace",
@@ -143,14 +125,12 @@ public class EventHubsBinderConfigurationTests {
                 "spring.cloud.stream.eventhubs.bindings.input.producer.send-timeout=5m"
             )
             .run(context -> {
-                assertThat(context).hasSingleBean(EventHubsExtendedBindingProperties.class);
-                EventHubsExtendedBindingProperties extendedBindingProperties =
-                    context.getBean(EventHubsExtendedBindingProperties.class);
-
-                assertThat(extendedBindingProperties.getExtendedConsumerProperties("input")).isNotNull();
+                assertThat(context).hasSingleBean(EventHubsMessageChannelBinder.class);
+                EventHubsMessageChannelBinder binder =
+                    context.getBean(EventHubsMessageChannelBinder.class);
 
                 EventHubsConsumerProperties consumerProperties =
-                    extendedBindingProperties.getExtendedConsumerProperties("input");
+                    binder.getExtendedConsumerProperties("input");
                 assertEquals("fake-consumer-domain", consumerProperties.getDomainName());
                 assertEquals("fake-consumer-namespace", consumerProperties.getNamespace());
                 assertEquals(consumerConnectionString, consumerProperties.getConnectionString());
@@ -171,7 +151,7 @@ public class EventHubsBinderConfigurationTests {
                 assertEquals(10, consumerProperties.getCheckpoint().getCount());
 
                 EventHubsProducerProperties producerProperties =
-                    extendedBindingProperties.getExtendedProducerProperties("input");
+                    binder.getExtendedProducerProperties("input");
                 assertEquals("fake-producer-domain", producerProperties.getDomainName());
                 assertEquals("fake-producer-namespace", producerProperties.getNamespace());
                 assertEquals(producerConnectionString, producerProperties.getConnectionString());

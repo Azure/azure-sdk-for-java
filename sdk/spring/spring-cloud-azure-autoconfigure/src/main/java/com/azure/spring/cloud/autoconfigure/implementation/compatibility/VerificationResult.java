@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.compatibility;
+package com.azure.spring.cloud.autoconfigure.implementation.compatibility;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -9,8 +9,8 @@ import org.springframework.core.style.ToStringCreator;
 
 final class VerificationResult implements Serializable {
     private static final long serialVersionUID = 7175132562403990299L;
-    final String description;
-    final String action;
+    private final String description;
+    private final String action;
 
     private VerificationResult() {
         this.description = "";
@@ -28,6 +28,14 @@ final class VerificationResult implements Serializable {
 
     static VerificationResult notCompatible(String errorDescription, String action) {
         return new VerificationResult(errorDescription, action);
+    }
+
+    String getDescription() {
+        return description;
+    }
+
+    String getAction() {
+        return action;
     }
 
     public boolean equals(Object o) {

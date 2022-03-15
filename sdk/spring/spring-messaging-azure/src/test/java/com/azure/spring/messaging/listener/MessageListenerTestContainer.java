@@ -3,6 +3,7 @@
 
 package com.azure.spring.messaging.listener;
 
+import com.azure.spring.cloud.service.listener.MessageListener;
 import com.azure.spring.messaging.implementation.config.AzureListenerEndpoint;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -26,7 +27,7 @@ public class MessageListenerTestContainer implements MessageListenerContainer, I
 
     private boolean destroyInvoked;
 
-    private Object messageListener;
+    private MessageListener<?> messageListener;
 
     public MessageListenerTestContainer(AzureListenerEndpoint endpoint) {
         this.endpoint = endpoint;
@@ -45,7 +46,7 @@ public class MessageListenerTestContainer implements MessageListenerContainer, I
     }
 
     @Override
-    public void setupMessageListener(Object messageListener) {
+    public void setupMessageListener(MessageListener<?> messageListener) {
         this.messageListener = messageListener;
     }
 

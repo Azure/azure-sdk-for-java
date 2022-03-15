@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.stream.binder.eventhubs.core.properties;
 
 import com.azure.spring.messaging.eventhubs.core.properties.ProcessorProperties;
-import com.azure.spring.messaging.checkpoint.CheckpointConfig;
+import com.azure.spring.messaging.eventhubs.core.checkpoint.CheckpointConfig;
 
 /**
  *

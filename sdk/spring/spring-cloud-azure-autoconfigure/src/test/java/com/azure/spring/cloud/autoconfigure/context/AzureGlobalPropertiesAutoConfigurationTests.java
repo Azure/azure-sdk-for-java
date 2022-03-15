@@ -58,9 +58,11 @@ class AzureGlobalPropertiesAutoConfigurationTests {
                 "spring.cloud.azure.proxy.password=x-password",
                 "spring.cloud.azure.proxy.http.non-proxy-hosts=127.0.0.1",
                 "spring.cloud.azure.proxy.amqp.authentication-type=basic",
-                "spring.cloud.azure.retry.max-retries=1",
-                "spring.cloud.azure.retry.base-delay=20s",
-                "spring.cloud.azure.retry.max-delay=30s",
+                "spring.cloud.azure.retry.exponential.max-retries=1",
+                "spring.cloud.azure.retry.exponential.base-delay=20s",
+                "spring.cloud.azure.retry.exponential.max-delay=30s",
+                "spring.cloud.azure.retry.fixed.max-retries=4",
+                "spring.cloud.azure.retry.fixed.delay=50s",
                 "spring.cloud.azure.retry.mode=fixed",
                 "spring.cloud.azure.retry.amqp.try-timeout=200s",
                 "spring.cloud.azure.profile.tenant-id=fake-tenant-id",
@@ -96,9 +98,11 @@ class AzureGlobalPropertiesAutoConfigurationTests {
                 assertThat(azureProperties.getProxy().getAmqp().getAuthenticationType()).isEqualTo("basic");
                 assertThat(azureProperties.getProxy().getHttp().getNonProxyHosts()).isEqualTo("127.0.0.1");
 
-                assertThat(azureProperties.getRetry().getMaxRetries()).isEqualTo(1);
-                assertThat(azureProperties.getRetry().getBaseDelay()).isEqualTo(Duration.ofSeconds(20));
-                assertThat(azureProperties.getRetry().getMaxDelay()).isEqualTo(Duration.ofSeconds(30));
+                assertThat(azureProperties.getRetry().getExponential().getMaxRetries()).isEqualTo(1);
+                assertThat(azureProperties.getRetry().getExponential().getBaseDelay()).isEqualTo(Duration.ofSeconds(20));
+                assertThat(azureProperties.getRetry().getExponential().getMaxDelay()).isEqualTo(Duration.ofSeconds(30));
+                assertThat(azureProperties.getRetry().getFixed().getMaxRetries()).isEqualTo(4);
+                assertThat(azureProperties.getRetry().getFixed().getDelay()).isEqualTo(Duration.ofSeconds(50));
                 assertThat(azureProperties.getRetry().getMode()).isEqualTo(RetryOptionsProvider.RetryMode.FIXED);
                 assertThat(azureProperties.getRetry().getAmqp().getTryTimeout()).isEqualTo(Duration.ofSeconds(200));
 

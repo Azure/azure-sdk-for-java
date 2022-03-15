@@ -6,12 +6,12 @@ package com.azure.spring.messaging.eventhubs.implementation.core.listener.adapte
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
-import com.azure.spring.messaging.eventhubs.support.EventHubsHeaders;
-import com.azure.spring.messaging.eventhubs.support.converter.EventHubsMessageConverter;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsRecordMessageListener;
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.converter.AbstractAzureMessageConverter;
+import com.azure.spring.messaging.eventhubs.support.EventHubsHeaders;
+import com.azure.spring.messaging.eventhubs.support.converter.EventHubsMessageConverter;
 import com.azure.spring.messaging.implementation.listener.adapter.MessagingMessageListenerAdapter;
-import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsRecordMessageListener;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 
@@ -32,7 +32,7 @@ public class RecordMessagingMessageListenerAdapter extends MessagingMessageListe
     }
 
     @Override
-    public void onEvent(EventContext eventContext) {
+    public void onMessage(EventContext eventContext) {
         PartitionContext partition = eventContext.getPartitionContext();
 
         Map<String, Object> headers = new HashMap<>();

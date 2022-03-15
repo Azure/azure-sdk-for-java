@@ -20,7 +20,7 @@ import java.util.Map.Entry;
  *class the result of VcapProcessor
  */
 @JsonIgnoreProperties
-public class VcapResult implements Serializable {
+class VcapResult implements Serializable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VcapResult.class);
 
@@ -46,7 +46,7 @@ public class VcapResult implements Serializable {
      * @param pojos the VCap POJOs
      * @param logFlag whether to log
      */
-    public VcapResult(ConfigurableEnvironment environment, VcapPojo[] pojos, boolean logFlag) {
+    VcapResult(ConfigurableEnvironment environment, VcapPojo[] pojos, boolean logFlag) {
         this.logFlag = logFlag;
 
         populateProperties(environment, pojos);
@@ -129,7 +129,7 @@ public class VcapResult implements Serializable {
                         + "/;"
                         + "SharedAccessKeyName="
                         + pojo.getServiceConfig().getCredentials().get(
-                        Constants.SHARED_ACCESS_NAME)
+                        Constants.SHARED_ACCESS_KEY_NAME)
                         + ";"
                         + "SharedAccessKey="
                         + pojo.getServiceConfig().getCredentials().get(

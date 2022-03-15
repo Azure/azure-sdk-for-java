@@ -17,26 +17,26 @@ public class StorageQueueProperties extends AzureHttpSdkProperties implements Qu
     /**
      * Endpoint for Azure Storage service.
      */
-    protected String endpoint;
+    private String endpoint;
     /**
      * Storage account access key.
      */
-    protected String accountKey;
+    private String accountKey;
 
     /**
      * Shared access signatures (SAS) token used to authorize requests sent to the service.
      */
-    protected String sasToken;
+    private String sasToken;
 
     /**
      * Connection string to connect to the service.
      */
-    protected String connectionString;
+    private String connectionString;
 
     /**
      * Name for the storage account.
      */
-    protected String accountName;
+    private String accountName;
 
     /**
      * Queue service version used when making API requests.

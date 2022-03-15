@@ -4,8 +4,8 @@
 package com.azure.spring.cloud.autoconfigure.eventhubs;
 
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
-import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
 import org.junit.jupiter.api.Assertions;
@@ -70,13 +70,14 @@ class AzureEventHubsAutoConfigurationTests {
         AzureGlobalProperties azureProperties = new AzureGlobalProperties();
         azureProperties.getCredential().setClientId("azure-client-id");
         azureProperties.getCredential().setClientSecret("azure-client-secret");
-        azureProperties.getRetry().setBaseDelay(Duration.ofSeconds(2));
+        azureProperties.getRetry().getExponential().setBaseDelay(Duration.ofSeconds(2));
+        azureProperties.getRetry().getFixed().setDelay(Duration.ofSeconds(3));
 
         this.contextRunner
             .withBean(AzureGlobalProperties.class, () -> azureProperties)
             .withPropertyValues(
                 "spring.cloud.azure.eventhubs.credential.client-id=eventhubs-client-id",
-                "spring.cloud.azure.eventhubs.retry.base-delay=2m",
+                "spring.cloud.azure.eventhubs.retry.exponential.base-delay=2m",
                 "spring.cloud.azure.eventhubs.connection-string=test-connection-string"
             )
             .run(context -> {
@@ -84,7 +85,8 @@ class AzureEventHubsAutoConfigurationTests {
                 final AzureEventHubsProperties properties = context.getBean(AzureEventHubsProperties.class);
                 assertThat(properties.getCredential().getClientId()).isEqualTo("eventhubs-client-id");
                 assertThat(properties.getCredential().getClientSecret()).isEqualTo("azure-client-secret");
-                assertThat(properties.getRetry().getBaseDelay()).isEqualTo(Duration.ofMinutes(2));
+                assertThat(properties.getRetry().getExponential().getBaseDelay()).isEqualTo(Duration.ofMinutes(2));
+                assertThat(properties.getRetry().getFixed().getDelay()).isEqualTo(Duration.ofSeconds(3));
                 assertThat(properties.getConnectionString()).isEqualTo("test-connection-string");
 
                 assertThat(azureProperties.getCredential().getClientId()).isEqualTo("azure-client-id");

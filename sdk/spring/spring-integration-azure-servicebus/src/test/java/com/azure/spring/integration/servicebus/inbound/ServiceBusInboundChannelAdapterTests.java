@@ -9,16 +9,14 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
+import com.azure.spring.cloud.service.listener.MessageListener;
+import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
+import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusRecordMessageListener;
 import com.azure.spring.integration.core.implementation.instrumentation.DefaultInstrumentationManager;
 import com.azure.spring.integration.core.instrumentation.Instrumentation;
 import com.azure.spring.integration.servicebus.implementation.health.ServiceBusProcessorInstrumentation;
 import com.azure.spring.messaging.ListenerMode;
-import com.azure.spring.messaging.checkpoint.CheckpointConfig;
-import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.messaging.converter.AbstractAzureMessageConverter;
-import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
-import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusMessageListener;
-import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusRecordMessageListener;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.messaging.servicebus.core.listener.ServiceBusMessageListenerContainer;
 import com.azure.spring.messaging.servicebus.core.properties.ServiceBusContainerProperties;
@@ -75,7 +73,6 @@ class ServiceBusInboundChannelAdapterTests {
 
     @Test
     void defaultRecordListenerMode() {
-        this.containerProperties.setCheckpointConfig(new CheckpointConfig(CheckpointMode.RECORD));
         ServiceBusInboundChannelAdapter channelAdapter = new ServiceBusInboundChannelAdapter(
             new ServiceBusMessageListenerContainer(this.processorFactory, this.containerProperties));
         assertThat(channelAdapter).hasFieldOrPropertyWithValue("listenerMode", ListenerMode.RECORD);
@@ -83,7 +80,6 @@ class ServiceBusInboundChannelAdapterTests {
 
     @Test
     void batchListenerModeDoesNotSupport() {
-        this.containerProperties.setCheckpointConfig(new CheckpointConfig(CheckpointMode.BATCH));
         ServiceBusInboundChannelAdapter channelAdapter = new ServiceBusInboundChannelAdapter(
             new ServiceBusMessageListenerContainer(this.processorFactory, this.containerProperties),
             ListenerMode.BATCH);
@@ -123,7 +119,6 @@ class ServiceBusInboundChannelAdapterTests {
 
     @Test
     void sendAndReceive() throws InterruptedException {
-        this.containerProperties.setCheckpointConfig(new CheckpointConfig(CheckpointMode.RECORD));
         ServiceBusMessageListenerContainer listenerContainer =
             new ServiceBusMessageListenerContainer(this.processorFactory, this.containerProperties);
         ServiceBusInboundChannelAdapter channelAdapter = new ServiceBusInboundChannelAdapter(listenerContainer);
@@ -146,7 +141,7 @@ class ServiceBusInboundChannelAdapterTests {
         channelAdapter.onInit();
         channelAdapter.doStart();
 
-        ServiceBusMessageListener messageListener = listenerContainer.getContainerProperties().getMessageListener();
+        MessageListener<?> messageListener = listenerContainer.getContainerProperties().getMessageListener();
         assertTrue(messageListener instanceof ServiceBusRecordMessageListener);
         List<String> payloads = Arrays.asList("a", "b", "c");
         payloads.stream()
@@ -169,7 +164,6 @@ class ServiceBusInboundChannelAdapterTests {
 
     @Test
     void instrumentationErrorHandler() {
-        this.containerProperties.setCheckpointConfig(new CheckpointConfig(CheckpointMode.RECORD));
         DefaultInstrumentationManager instrumentationManager = new DefaultInstrumentationManager();
         ServiceBusMessageListenerContainer listenerContainer =
             new ServiceBusMessageListenerContainer(this.processorFactory, this.containerProperties);

@@ -12,6 +12,7 @@ public interface RetryOptionsProvider {
 
     /**
      * Get the retry configuration.
+     *
      * @return the retry configuration.
      */
     RetryOptions getRetry();
@@ -21,29 +22,71 @@ public interface RetryOptionsProvider {
      */
     interface RetryOptions {
 
-        /**
-         * The maximum number of attempts.
-         * @return the max attempts.
-         */
-        Integer getMaxRetries();
-
-        /**
-         * Get the delay duration.
-         * @return the delay duration.
-         */
-        Duration getBaseDelay();
-
-        /**
-         * Get the max delay duration.
-         * @return the max delay duration.
-         */
-        Duration getMaxDelay();
 
         /**
          * Get the retry backoff mode.
+         *
          * @return the retry backoff mode.
          */
         RetryMode getMode();
+
+        /**
+         * Get the retry options of the fixed retry mode.
+         *
+         * @return the retry options of fixed retry mode.
+         */
+        FixedRetryOptions getFixed();
+
+        /**
+         * Get the retry options of the exponential retry mode.
+         *
+         * @return the retry options of exponential retry mode.
+         */
+        ExponentialRetryOptions getExponential();
+
+        /**
+         * Interface to be implemented by classes that wish to describe retry options of fixed retry mode.
+         */
+        interface FixedRetryOptions {
+
+            /**
+             * The maximum number of attempts.
+             * @return the max attempts.
+             */
+            Integer getMaxRetries();
+
+            /**
+             * Get the delay duration.
+             * @return the delay duration.
+             */
+            Duration getDelay();
+
+        }
+
+        /**
+         * Interface to be implemented by classes that wish to describe retry options of exponential retry mode.
+         */
+        interface ExponentialRetryOptions {
+
+            /**
+             * The maximum number of attempts.
+             * @return the max attempts.
+             */
+            Integer getMaxRetries();
+
+            /**
+             * Get the delay duration.
+             * @return the delay duration.
+             */
+            Duration getBaseDelay();
+
+            /**
+             * Get the max delay duration.
+             * @return the max delay duration.
+             */
+            Duration getMaxDelay();
+
+        }
     }
 
     /**

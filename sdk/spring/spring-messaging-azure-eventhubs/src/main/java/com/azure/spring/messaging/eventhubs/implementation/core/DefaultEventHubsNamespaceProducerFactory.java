@@ -4,10 +4,9 @@
 package com.azure.spring.messaging.eventhubs.implementation.core;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.identity.DefaultAzureCredential;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
-import com.azure.spring.cloud.core.AzureSpringIdentifier;
+import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.service.implementation.eventhubs.factory.EventHubClientBuilderFactory;
@@ -50,7 +49,7 @@ public final class DefaultEventHubsNamespaceProducerFactory implements EventHubs
     private final List<AzureServiceClientBuilderCustomizer<EventHubClientBuilder>> customizers = new ArrayList<>();
     private final Map<String, List<AzureServiceClientBuilderCustomizer<EventHubClientBuilder>>> dedicatedCustomizers = new HashMap<>();
     private AzureCredentialResolver<TokenCredential> tokenCredentialResolver = null;
-    private DefaultAzureCredential defaultAzureCredential = null;
+    private TokenCredential defaultAzureCredential = null;
 
     /**
      * Construct a factory with the provided namespace level configuration.
@@ -125,7 +124,7 @@ public final class DefaultEventHubsNamespaceProducerFactory implements EventHubs
      * Set the default Azure credential.
      * @param defaultAzureCredential The default Azure Credential.
      */
-    public void setDefaultAzureCredential(DefaultAzureCredential defaultAzureCredential) {
+    public void setDefaultAzureCredential(TokenCredential defaultAzureCredential) {
         this.defaultAzureCredential = defaultAzureCredential;
     }
 

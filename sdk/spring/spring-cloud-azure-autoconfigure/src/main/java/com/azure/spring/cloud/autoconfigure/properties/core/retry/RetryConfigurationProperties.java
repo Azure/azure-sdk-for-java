@@ -4,8 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.properties.core.retry;
 
 import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
-
-import java.time.Duration;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
  * Retry properties.
@@ -13,34 +12,16 @@ import java.time.Duration;
 public class RetryConfigurationProperties implements RetryOptionsProvider.RetryOptions {
 
     /**
-     * The maximum number of attempts.
-     */
-    private Integer maxRetries;
-    /**
-     * Amount of time to wait between retry attempts.
-     */
-    private Duration baseDelay;
-    /**
-     * Maximum permissible amount of time between retry attempts.
-     */
-    private Duration maxDelay;
-    /**
      * Retry backoff mode.
      */
     private RetryOptionsProvider.RetryMode mode = RetryOptionsProvider.RetryMode.EXPONENTIAL;
 
-    @Override
-    public Integer getMaxRetries() {
-        return maxRetries;
-    }
+    @NestedConfigurationProperty
+    private final ExponentialRetryConfigurationProperties exponential = new ExponentialRetryConfigurationProperties();
 
-    /**
-     * Set the maximum number of attempts.
-     * @param maxRetries the maximum number of attempts.
-     */
-    public void setMaxRetries(Integer maxRetries) {
-        this.maxRetries = maxRetries;
-    }
+    @NestedConfigurationProperty
+    private final FixedRetryConfigurationProperties fixed = new FixedRetryConfigurationProperties();
+
 
     @Override
     public RetryOptionsProvider.RetryMode getMode() {
@@ -49,6 +30,7 @@ public class RetryConfigurationProperties implements RetryOptionsProvider.RetryO
 
     /**
      * Set the mode for retry backoff.
+     *
      * @param mode the mode for retry backoff.
      */
     public void setMode(RetryOptionsProvider.RetryMode mode) {
@@ -56,28 +38,12 @@ public class RetryConfigurationProperties implements RetryOptionsProvider.RetryO
     }
 
     @Override
-    public Duration getBaseDelay() {
-        return baseDelay;
-    }
-
-    /**
-     * Set the amount of time to wait between retry attempts.
-     * @param baseDelay The delay to wait between retry attempts.
-     */
-    public void setBaseDelay(Duration baseDelay) {
-        this.baseDelay = baseDelay;
+    public ExponentialRetryConfigurationProperties getExponential() {
+        return exponential;
     }
 
     @Override
-    public Duration getMaxDelay() {
-        return maxDelay;
-    }
-
-    /**
-     * Set the maximum permissible amount of time between retry attempts.
-     * @param maxDelay The maximum permissible amount of time between retry attempts.
-     */
-    public void setMaxDelay(Duration maxDelay) {
-        this.maxDelay = maxDelay;
+    public FixedRetryConfigurationProperties getFixed() {
+        return fixed;
     }
 }

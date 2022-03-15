@@ -7,7 +7,7 @@ import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.storage.queue.AzureStorageQueueAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.queue.properties.AzureStorageQueueProperties;
 import com.azure.spring.cloud.autoconfigure.useragent.util.UserAgentTestUtil;
-import com.azure.spring.cloud.core.AzureSpringIdentifier;
+import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.implementation.storage.queue.QueueServiceClientBuilderFactory;
 import com.azure.storage.queue.QueueServiceAsyncClient;
 import com.azure.storage.queue.QueueServiceClient;

@@ -10,7 +10,7 @@ import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.appconfiguration.AzureAppConfigurationProperties;
-import com.azure.spring.cloud.core.AzureSpringIdentifier;
+import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
 import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
@@ -38,7 +38,7 @@ public class AzureAppConfigurationAutoConfiguration extends AzureServiceConfigur
     @ConfigurationProperties(prefix = AzureAppConfigurationProperties.PREFIX)
     @Bean
     AzureAppConfigurationProperties azureAppConfigurationProperties() {
-        return loadProperties(this.azureGlobalProperties, new AzureAppConfigurationProperties());
+        return loadProperties(getAzureGlobalProperties(), new AzureAppConfigurationProperties());
     }
 
     /**
