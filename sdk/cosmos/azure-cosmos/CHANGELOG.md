@@ -1,14 +1,8 @@
 ## Release History
 
 ### 4.28.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
-
-#### Other Changes
+#### Key Bugs Fixes
+* Added `decodeTime` in `CosmosDiagnostics` - See [PR 22808](https://github.com/Azure/azure-sdk-for-java/pull/22808)
 
 ### 4.27.0 (2022-03-10)
 #### Key Bugs Fixes
