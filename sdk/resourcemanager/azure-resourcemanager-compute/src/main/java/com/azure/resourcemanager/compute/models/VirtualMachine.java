@@ -5,6 +5,7 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInner;
@@ -1233,6 +1234,9 @@ public interface VirtualMachine
             /**
              * Selects the size of the virtual machine.
              *
+             * See {@link ComputeSkus#listByRegion(Region)} for virtual machine sizes in region,
+             * and {@link AvailabilitySet#listVirtualMachineSizes()} for virtual machine sizes in availability set.
+             *
              * @param sizeName the name of a size for the virtual machine as text
              * @return the next stage of the definition
              */
@@ -1240,6 +1244,10 @@ public interface VirtualMachine
 
             /**
              * Specifies the size of the virtual machine.
+             *
+             * {@link VirtualMachineSizeTypes} is not the complete list of virtual machine sizes.
+             * See {@link ComputeSkus#listByRegion(Region)} for virtual machine sizes in region,
+             * and {@link AvailabilitySet#listVirtualMachineSizes()} for virtual machine sizes in availability set.
              *
              * @param size a size from the list of available sizes for the virtual machine
              * @return the next stage of the definition
@@ -2440,6 +2448,8 @@ public interface VirtualMachine
         /**
          * Specifies a new size for the virtual machine.
          *
+         * See {@link VirtualMachine#availableSizes()} for resizing.
+         *
          * @param sizeName the name of a size for the virtual machine as text
          * @return the next stage of the update
          */
@@ -2447,6 +2457,9 @@ public interface VirtualMachine
 
         /**
          * Specifies a new size for the virtual machine.
+         *
+         * {@link VirtualMachineSizeTypes} is not the complete list of virtual machine sizes.
+         * See {@link VirtualMachine#availableSizes()} for resizing.
          *
          * @param size a size from the list of available sizes for the virtual machine
          * @return the next stage of the definition
