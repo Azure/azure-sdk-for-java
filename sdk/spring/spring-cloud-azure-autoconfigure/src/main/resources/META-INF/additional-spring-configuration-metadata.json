@@ -984,5 +984,69 @@
       "name": "spring.jms.servicebus.pool.use-anonymous-producers",
       "description": "Whether to use only one anonymous 'MessageProducer' instance. Set it to false to create one 'MessageProducer' every time one is required."
     }
+  ],
+  "hints": [
+    {
+      "name": "spring.cloud.azure.active-directory.resource-server.claim-to-authority-prefix-map.keys",
+      "values": [
+        {
+          "value": "scp",
+          "description": "The prefix for the authority started with 'SCOPE_'."
+        },
+        {
+          "value": "roles",
+          "description": "The prefix for the authority started with 'APPROLE_'."
+        }
+      ],
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    },
+    {
+      "name": "spring.cloud.azure.active-directory.authenticate-additional-parameters.keys",
+      "values": [
+        {
+          "value": "domain_hint",
+          "description": "If included, the app skips the email-based discovery process that user goes through on the sign-in page, leading to a slightly more streamlined user experience."
+        },
+        {
+          "value": "login_hint",
+          "description": "You can use this parameter to pre-fill the username and email address field of the sign-in page for the user."
+        },
+        {
+          "value": "prompt",
+          "description": "Indicates the type of user interaction that is required. Valid values are login, none, consent, and select_account."
+        }
+      ],
+      "providers": [
+      {
+        "name": "any"
+      }
+    ]
+    },
+    {
+      "name": "spring.cloud.azure.active-directory.b2c.authenticate-additional-parameters.keys",
+      "values": [
+        {
+          "value": "domain_hint",
+          "description": "If included, the app skips the email-based discovery process that user goes through on the sign-in page, leading to a slightly more streamlined user experience."
+        },
+        {
+          "value": "login_hint",
+          "description": "You can use this parameter to pre-fill the username and email address field of the sign-in page for the user."
+        },
+        {
+          "value": "prompt",
+          "description": "Indicates the type of user interaction that is required. Valid values are login, none, consent, and select_account."
+        }
+      ],
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    }
   ]
 }

@@ -81,7 +81,7 @@ public class AadB2cProperties implements InitializingBean {
     /**
      * Additional parameters for authentication.
      */
-    private Map<String, Object> authenticateAdditionalParameters;
+    private final Map<String, Object> authenticateAdditionalParameters = new HashMap<>();
 
     /**
      * User name attribute name.
@@ -111,7 +111,7 @@ public class AadB2cProperties implements InitializingBean {
     /**
      * Specify client configuration.
      */
-    private Map<String, AuthorizationClientProperties> authorizationClients = new HashMap<>();
+    private final Map<String, AuthorizationClientProperties> authorizationClients = new HashMap<>();
 
     @Override
     public void afterPropertiesSet() {
@@ -284,15 +284,6 @@ public class AadB2cProperties implements InitializingBean {
     }
 
     /**
-     * Sets the additional authenticate parameters.
-     *
-     * @param authenticateAdditionalParameters the additional authenticate parameters
-     */
-    public void setAuthenticateAdditionalParameters(Map<String, Object> authenticateAdditionalParameters) {
-        this.authenticateAdditionalParameters = authenticateAdditionalParameters;
-    }
-
-    /**
      * Gets the username attribute name.
      *
      * @return the username attribute name
@@ -416,14 +407,5 @@ public class AadB2cProperties implements InitializingBean {
      */
     public Map<String, AuthorizationClientProperties> getAuthorizationClients() {
         return authorizationClients;
-    }
-
-    /**
-     * Sets the authorization clients.
-     *
-     * @param authorizationClients the authorization clients
-     */
-    public void setAuthorizationClients(Map<String, AuthorizationClientProperties> authorizationClients) {
-        this.authorizationClients = authorizationClients;
     }
 }

@@ -108,7 +108,7 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties
         propertyMapper.from(this.processor.getConsumerGroup()).to(properties::setConsumerGroup);
 
         propertyMapper.from(this.processor.trackLastEnqueuedEventProperties).to(properties::setTrackLastEnqueuedEventProperties);
-        propertyMapper.from(this.processor.initialPartitionEventPosition).to(properties::setInitialPartitionEventPosition);
+        BeanUtils.copyProperties(processor.initialPartitionEventPosition, properties.getInitialPartitionEventPosition());
         propertyMapper.from(this.processor.batch.getMaxSize()).to(properties.batch::setMaxSize);
         propertyMapper.from(this.processor.batch.getMaxWaitTime()).to(properties.batch::setMaxWaitTime);
         propertyMapper.from(this.processor.loadBalancing.getStrategy()).to(properties.loadBalancing::setStrategy);
@@ -194,7 +194,7 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties
          * Map event position to use for each partition if a checkpoint for the partition does not exist in
          * CheckpointStore.
          */
-        private Map<String, StartPosition> initialPartitionEventPosition = new HashMap<>();
+        private final Map<String, StartPosition> initialPartitionEventPosition = new HashMap<>();
 
         private final EventBatch batch = new EventBatch();
         private final LoadBalancing loadBalancing = new LoadBalancing();
@@ -210,10 +210,6 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties
 
         public Map<String, StartPosition> getInitialPartitionEventPosition() {
             return initialPartitionEventPosition;
-        }
-
-        public void setInitialPartitionEventPosition(Map<String, StartPosition> initialPartitionEventPosition) {
-            this.initialPartitionEventPosition = initialPartitionEventPosition;
         }
 
         public EventBatch getBatch() {
