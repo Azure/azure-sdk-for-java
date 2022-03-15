@@ -56,16 +56,16 @@ public final class SchemaRegistryApacheAvroSerializer {
     }
 
     /**
-     * Encodes an object into a message.
+     * Serializes an object into a message.
      *
-     * @param object Object to encode.
+     * @param object Object to serialize.
      * @param typeReference Type of message to create.
      * @param <T> Concrete type of {@link MessageWithMetadata}.
      *
-     * @return The message encoded or {@code null} if the message could not be encoded.
+     * @return The message encoded or {@code null} if the message could not be serialized.
      *
      * @throws IllegalArgumentException if {@code messageFactory} is null and type {@code T} does not have a no
-     *     argument constructor. Or if the schema could not ve fetched from {@code T}.
+     *     argument constructor. Or if the schema could not be fetched from {@code T}.
      * @throws RuntimeException if an instance of {@code T} could not be instantiated. Or there was a problem
      *     encoding the object.
      * @throws NullPointerException if the {@code object} is null or {@code typeReference} is null.
@@ -75,17 +75,17 @@ public final class SchemaRegistryApacheAvroSerializer {
     }
 
     /**
-     * Encodes an object into a message.
+     * Serializes an object into a message.
      *
-     * @param object Object to encode.
+     * @param object Object to serialize.
      * @param typeReference Type of message to create.
      * @param messageFactory Factory to create an instance given the serialized Avro.
      * @param <T> Concrete type of {@link MessageWithMetadata}.
      *
-     * @return The message encoded or {@code null} if the message could not be encoded.
+     * @return The message encoded or {@code null} if the message could not be serialized.
      *
      * @throws IllegalArgumentException if {@code messageFactory} is null and type {@code T} does not have a no
-     *     argument constructor. Or if the schema could not ve fetched from {@code T}.
+     *     argument constructor. Or if the schema could not be fetched from {@code T}.
      * @throws RuntimeException if an instance of {@code T} could not be instantiated. Or there was a problem
      *     encoding the object.
      * @throws NullPointerException if the {@code object} is null or {@code typeReference} is null.
@@ -96,16 +96,16 @@ public final class SchemaRegistryApacheAvroSerializer {
     }
 
     /**
-     * Encodes an object into a message.
+     * Serializes an object into a message.
      *
-     * @param object Object to encode.
+     * @param object Object to serialize.
      * @param typeReference Type of message to create.
      * @param <T> Concrete type of {@link MessageWithMetadata}.
      *
-     * @return A Mono that completes with the encoded message.
+     * @return A Mono that completes with the serialized message.
      *
      * @throws IllegalArgumentException if {@code messageFactory} is null and type {@code T} does not have a no
-     *     argument constructor. Or if the schema could not ve fetched from {@code T}.
+     *     argument constructor. Or if the schema could not be fetched from {@code T}.
      * @throws RuntimeException if an instance of {@code T} could not be instantiated. Or there was a problem
      *     encoding the object.
      * @throws NullPointerException if the {@code object} is null or {@code typeReference} is null.
@@ -117,18 +117,18 @@ public final class SchemaRegistryApacheAvroSerializer {
     }
 
     /**
-     * Encodes an object into a message.
+     * Serializes an object into a message.
      *
-     * @param object Object to encode.
+     * @param object Object to serialize.
      * @param typeReference Type of message to create.
      * @param messageFactory Factory to create an instance given the serialized Avro. If null is passed in, then the
      *     no argument constructor will be used.
      * @param <T> Concrete type of {@link MessageWithMetadata}.
      *
-     * @return A Mono that completes with the encoded message.
+     * @return A Mono that completes with the serialized message.
      *
      * @throws IllegalArgumentException if {@code messageFactory} is null and type {@code T} does not have a no
-     *     argument constructor. Or if the schema could not ve fetched from {@code T}.
+     *     argument constructor. Or if the schema could not be fetched from {@code T}.
      * @throws RuntimeException if an instance of {@code T} could not be instantiated. Or there was a problem
      *     encoding the object.
      * @throws NullPointerException if the {@code object} is null or {@code typeReference} is null.
@@ -189,13 +189,13 @@ public final class SchemaRegistryApacheAvroSerializer {
     }
 
     /**
-     * Decodes a message into its object.
+     * Deserializes a message into its object.
      *
-     * @param message Object to encode.
-     * @param typeReference Message to encode to.
+     * @param message Object to deserialize.
+     * @param typeReference Message type to deserialize to.
      * @param <T> Concrete type of {@link MessageWithMetadata}.
      *
-     * @return The message encoded.
+     * @return The message deserialized.
      *
      * @throws NullPointerException if {@code message} or {@code typeReference} is null.
      */
@@ -204,10 +204,10 @@ public final class SchemaRegistryApacheAvroSerializer {
     }
 
     /**
-     * Decodes a message into its object.
+     * Deserializes a message into its object.
      *
-     * @param message Object to encode.
-     * @param typeReference Message to encode to.
+     * @param message Object to deserialize.
+     * @param typeReference Message to deserialize to.
      * @param <T> Concrete type of {@link MessageWithMetadata}.
      *
      * @return A Mono that completes when the message encoded. If {@code message.getBodyAsBinaryData()} is null or
