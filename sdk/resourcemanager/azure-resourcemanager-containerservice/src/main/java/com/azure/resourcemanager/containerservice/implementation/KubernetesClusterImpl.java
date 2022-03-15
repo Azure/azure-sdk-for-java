@@ -16,6 +16,7 @@ import com.azure.resourcemanager.containerservice.models.ContainerServiceNetwork
 import com.azure.resourcemanager.containerservice.models.ContainerServiceSshConfiguration;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceSshPublicKey;
 import com.azure.resourcemanager.containerservice.models.CredentialResult;
+import com.azure.resourcemanager.containerservice.models.Format;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusterAgentPool;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAddonProfile;
@@ -41,6 +42,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /** The implementation for KubernetesCluster and its create and update interfaces. */
@@ -52,6 +54,7 @@ public class KubernetesClusterImpl
 
     private List<CredentialResult> adminKubeConfigs;
     private List<CredentialResult> userKubeConfigs;
+    private final Map<Format, List<CredentialResult>> formatUserKubeConfigsMap = new ConcurrentHashMap<>();
 
     protected KubernetesClusterImpl(String name, ManagedClusterInner innerObject, ContainerServiceManager manager) {
         super(name, innerObject, manager);
@@ -102,6 +105,25 @@ public class KubernetesClusterImpl
     }
 
     @Override
+    public List<CredentialResult> userKubeConfigs(Format format) {
+        if (format == null) {
+            return userKubeConfigs();
+        }
+        return Collections.unmodifiableList(
+            this.formatUserKubeConfigsMap.computeIfAbsent(
+                format,
+                key -> KubernetesClusterImpl.this
+                    .manager()
+                    .kubernetesClusters()
+                    .listUserKubeConfigContent(
+                        KubernetesClusterImpl.this.resourceGroupName(),
+                        KubernetesClusterImpl.this.name(),
+                        format
+                    ))
+        );
+    }
+
+    @Override
     public byte[] adminKubeConfigContent() {
         for (CredentialResult config : adminKubeConfigs()) {
             return config.value();
@@ -112,6 +134,17 @@ public class KubernetesClusterImpl
     @Override
     public byte[] userKubeConfigContent() {
         for (CredentialResult config : userKubeConfigs()) {
+            return config.value();
+        }
+        return new byte[0];
+    }
+
+    @Override
+    public byte[] userKubeConfigContent(Format format) {
+        if (format == null) {
+            return userKubeConfigContent();
+        }
+        for (CredentialResult config : userKubeConfigs(format)) {
             return config.value();
         }
         return new byte[0];
@@ -261,7 +294,15 @@ public class KubernetesClusterImpl
             .getManagedClusters()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name())
             .flatMap(
-                managedClusterInner -> Flux.merge(adminConfig, userConfig).last().map(bytes -> managedClusterInner));
+                managedClusterInner ->
+                    Flux
+                        .merge(adminConfig, userConfig)
+                        .last()
+                        .map(
+                            bytes -> {
+                                formatUserKubeConfigsMap.clear();
+                                return managedClusterInner;
+                            }));
     }
 
     @Override

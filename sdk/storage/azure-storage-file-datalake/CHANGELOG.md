@@ -1,6 +1,6 @@
 # Release History
 
-## 12.8.0-beta.4 (Unreleased)
+## 12.9.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -8,7 +8,15 @@
 
 ### Bugs Fixed
 
+- Fixed a bug where `uploadFromFile(String, boolean)` used a different size to determine whether file existence should
+  be checked before using chunked upload than the size used to triggered chunked upload.
+
 ### Other Changes
+
+## 12.8.0 (2022-03-09)
+
+### Other Changes
+- GA release for STG 79, 80, 81
 
 ## 12.7.4 (2022-02-11)
 

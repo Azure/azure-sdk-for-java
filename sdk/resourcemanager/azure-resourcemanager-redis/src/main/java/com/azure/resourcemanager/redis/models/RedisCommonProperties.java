@@ -18,7 +18,7 @@ public class RedisCommonProperties {
      * etc.
      */
     @JsonProperty(value = "redisConfiguration")
-    private RedisCommonPropertiesRedisConfiguration redisConfiguration;
+    private RedisConfiguration redisConfiguration;
 
     /*
      * Redis version. Only major version will be used in PUT/PATCH request with
@@ -81,7 +81,7 @@ public class RedisCommonProperties {
      *
      * @return the redisConfiguration value.
      */
-    public RedisCommonPropertiesRedisConfiguration redisConfiguration() {
+    public RedisConfiguration redisConfiguration() {
         return this.redisConfiguration;
     }
 
@@ -93,7 +93,7 @@ public class RedisCommonProperties {
      * @param redisConfiguration the redisConfiguration value to set.
      * @return the RedisCommonProperties object itself.
      */
-    public RedisCommonProperties withRedisConfiguration(RedisCommonPropertiesRedisConfiguration redisConfiguration) {
+    public RedisCommonProperties withRedisConfiguration(RedisConfiguration redisConfiguration) {
         this.redisConfiguration = redisConfiguration;
         return this;
     }

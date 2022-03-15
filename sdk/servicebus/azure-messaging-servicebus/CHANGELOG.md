@@ -4,6 +4,7 @@
 
 ### Features Added
 - Added support for sending/receiving messages with `Duration`, `OffsetDateTime` and `URI` in `applicationProperties`.
+- Updated the receiver to retry to obtain a new connection if the RequestResponseChannel in the current connection is disposed.
 
 ### Breaking Changes
 

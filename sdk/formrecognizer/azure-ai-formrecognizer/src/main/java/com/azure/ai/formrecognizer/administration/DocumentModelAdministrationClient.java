@@ -87,8 +87,8 @@ public final class DocumentModelAdministrationClient {
      * <pre>
      * String trainingFilesUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
      * DocumentModel documentModel =
-     *     documentModelAdministrationClient.beginBuildModel&#40;trainingFilesUrl, &quot;my-model&quot;,
-     *         DocumentBuildMode.TEMPLATE&#41;.getFinalResult&#40;&#41;;
+     *     documentModelAdministrationClient.beginBuildModel&#40;trainingFilesUrl, DocumentBuildMode.TEMPLATE, &quot;my-model&quot;
+     *     &#41;.getFinalResult&#40;&#41;;
      * System.out.printf&#40;&quot;Model ID: %s%n&quot;, documentModel.getModelId&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Model Created on: %s%n&quot;, documentModel.getCreatedOn&#40;&#41;&#41;;
      * documentModel.getDocTypes&#40;&#41;.forEach&#40;&#40;key, docTypeInfo&#41; -&gt; &#123;
@@ -135,16 +135,21 @@ public final class DocumentModelAdministrationClient {
      * <pre>
      * String trainingFilesUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
      * String prefix = &quot;Invoice&quot;;
+     * Map&lt;String, String&gt; attrs = new HashMap&lt;String, String&gt;&#40;&#41;;
+     * attrs.put&#40;&quot;createdBy&quot;, &quot;sample&quot;&#41;;
      *
-     * DocumentModel documentModel = documentModelAdministrationClient.beginBuildModel&#40;trainingFilesUrl, &quot;my-model&quot;,
-     *         DocumentBuildMode.TEMPLATE, new BuildModelOptions&#40;&#41;
+     * DocumentModel documentModel = documentModelAdministrationClient.beginBuildModel&#40;trainingFilesUrl,
+     *         DocumentBuildMode.TEMPLATE, &quot;my-model&quot;,
+     *         new BuildModelOptions&#40;&#41;
      *             .setDescription&#40;&quot;model desc&quot;&#41;
-     *             .setPrefix&#40;prefix&#41;, Context.NONE&#41;
+     *             .setPrefix&#40;prefix&#41;
+     *             .setTags&#40;attrs&#41;, Context.NONE&#41;
      *     .getFinalResult&#40;&#41;;
      *
      * System.out.printf&#40;&quot;Model ID: %s%n&quot;, documentModel.getModelId&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Model Description: %s%n&quot;, documentModel.getDescription&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Model Created on: %s%n&quot;, documentModel.getCreatedOn&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Model assigned tags: %s%n&quot;, documentModel.getTags&#40;&#41;&#41;;
      * documentModel.getDocTypes&#40;&#41;.forEach&#40;&#40;key, docTypeInfo&#41; -&gt; &#123;
      *     docTypeInfo.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
      *         System.out.printf&#40;&quot;Field: %s&quot;, field&#41;;
@@ -276,7 +281,7 @@ public final class DocumentModelAdministrationClient {
     /**
      * Generate authorization for copying a custom model into the target Form Recognizer resource.
      * <p> This should be called by the target resource (where the model will be copied to) and the output can be passed as
-     * the target parameter into {@link DocumentModelAdministrationClient#beginCopyModel(String, CopyAuthorization)}.
+     * the target parameter into {@link DocumentModelAdministrationClient#beginCopyModelTo(String, CopyAuthorization)}.
      * </p>
      *
      * @param modelId A unique ID for your copied model. If not specified, a model ID will be created for you.
@@ -307,7 +312,7 @@ public final class DocumentModelAdministrationClient {
     /**
      * Generate authorization for copying a custom model into the target Form Recognizer resource.
      * <p> This should be called by the target resource (where the model will be copied to) and the output can be passed as
-     * the target parameter into {@link DocumentModelAdministrationClient#beginCopyModel(String, CopyAuthorization)}.
+     * the target parameter into {@link DocumentModelAdministrationClient#beginCopyModelTo(String, CopyAuthorization)}.
      * </p>
      *
      * @param modelId A unique ID for your copied model. If not specified, a model ID will be created for you.
@@ -319,9 +324,14 @@ public final class DocumentModelAdministrationClient {
      * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getCopyAuthorizationWithResponse#string-CopyAuthorizationOptions-Context -->
      * <pre>
      * String modelId = &quot;my-copied-model&quot;;
+     * Map&lt;String, String&gt; attrs = new HashMap&lt;String, String&gt;&#40;&#41;;
+     * attrs.put&#40;&quot;createdBy&quot;, &quot;sample&quot;&#41;;
+     *
      * Response&lt;CopyAuthorization&gt; copyAuthorizationResponse =
      *     documentModelAdministrationClient.getCopyAuthorizationWithResponse&#40;modelId,
-     *         new CopyAuthorizationOptions&#40;&#41;.setDescription&#40;&quot;model-desc&quot;&#41;,
+     *         new CopyAuthorizationOptions&#40;&#41;
+     *             .setDescription&#40;&quot;model-desc&quot;&#41;
+     *             .setTags&#40;attrs&#41;,
      *         Context.NONE&#41;;
      *
      * System.out.printf&#40;&quot;Copy Authorization operation returned with status: %s&quot;,
@@ -378,7 +388,7 @@ public final class DocumentModelAdministrationClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCreateComposedModel#list-String -->
      *
-     * @param modelIDs The list of models IDs to form the composed model.
+     * @param componentModelIDs The list of models IDs to form the composed model.
      * @param modelId A unique ID for your composed model. If not specified, a model ID will be created for you.
      *
      * @return A {@link SyncPoller} that polls the create composed model operation until it has completed, has failed,
@@ -389,8 +399,8 @@ public final class DocumentModelAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DocumentOperationResult, DocumentModel> beginCreateComposedModel(
-        List<String> modelIDs, String modelId) {
-        return beginCreateComposedModel(modelIDs, modelId, null, Context.NONE);
+        List<String> componentModelIDs, String modelId) {
+        return beginCreateComposedModel(componentModelIDs, modelId, null, Context.NONE);
     }
 
     /**
@@ -408,11 +418,14 @@ public final class DocumentModelAdministrationClient {
      * String modelId1 = &quot;&#123;model_Id_1&#125;&quot;;
      * String modelId2 = &quot;&#123;model_Id_2&#125;&quot;;
      * String modelId = &quot;my-composed-model&quot;;
+     * Map&lt;String, String&gt; attrs = new HashMap&lt;String, String&gt;&#40;&#41;;
+     * attrs.put&#40;&quot;createdBy&quot;, &quot;sample&quot;&#41;;
      *
      * final DocumentModel documentModel =
      *     documentModelAdministrationClient.beginCreateComposedModel&#40;Arrays.asList&#40;modelId1, modelId2&#41;, modelId,
      *             new CreateComposedModelOptions&#40;&#41;
-     *                 .setDescription&#40;&quot;my composed model name&quot;&#41;,
+     *                 .setDescription&#40;&quot;my composed model name&quot;&#41;
+     *                 .setTags&#40;attrs&#41;,
      *             Context.NONE&#41;
      *         .setPollInterval&#40;Duration.ofSeconds&#40;5&#41;&#41;
      *         .getFinalResult&#40;&#41;;
@@ -420,6 +433,7 @@ public final class DocumentModelAdministrationClient {
      * System.out.printf&#40;&quot;Model ID: %s%n&quot;, documentModel.getModelId&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Model Description: %s%n&quot;, documentModel.getDescription&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Model Created on: %s%n&quot;, documentModel.getCreatedOn&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Model assigned tags: %s%n&quot;, documentModel.getTags&#40;&#41;&#41;;
      * documentModel.getDocTypes&#40;&#41;.forEach&#40;&#40;key, docTypeInfo&#41; -&gt; &#123;
      *     docTypeInfo.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
      *         System.out.printf&#40;&quot;Field: %s&quot;, field&#41;;
@@ -430,7 +444,7 @@ public final class DocumentModelAdministrationClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCreateComposedModel#list-String-CreateComposedModelOptions-Context -->
      *
-     * @param modelIDs The list of models IDs to form the composed model.
+     * @param componentModelIDs The list of models IDs to form the composed model.
      * @param modelId A unique ID for your composed model. If not specified, a model ID will be created for you.
      * @param createComposedModelOptions The configurable {@link CreateComposedModelOptions options} to pass when
      * creating a composed model.
@@ -444,8 +458,8 @@ public final class DocumentModelAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DocumentOperationResult, DocumentModel> beginCreateComposedModel(
-        List<String> modelIDs, String modelId, CreateComposedModelOptions createComposedModelOptions, Context context) {
-        return client.beginCreateComposedModel(modelIDs, modelId, createComposedModelOptions, context).getSyncPoller();
+        List<String> componentModelIDs, String modelId, CreateComposedModelOptions createComposedModelOptions, Context context) {
+        return client.beginCreateComposedModel(componentModelIDs, modelId, createComposedModelOptions, context).getSyncPoller();
     }
 
     /**
@@ -460,7 +474,7 @@ public final class DocumentModelAdministrationClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCopyModel#string-copyAuthorization -->
+     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCopyModelTo#string-copyAuthorization -->
      * <pre>
      * String copyModelId = &quot;copy-model&quot;;
      * String targetModelId = &quot;my-copied-model-id&quot;;
@@ -468,12 +482,12 @@ public final class DocumentModelAdministrationClient {
      * CopyAuthorization copyAuthorization = documentModelAdministrationClient.getCopyAuthorization&#40;copyModelId&#41;;
      * &#47;&#47; Start copy operation from the source client
      * DocumentModel documentModel =
-     *     documentModelAdministrationClient.beginCopyModel&#40;copyModelId, copyAuthorization&#41;.getFinalResult&#40;&#41;;
+     *     documentModelAdministrationClient.beginCopyModelTo&#40;copyModelId, copyAuthorization&#41;.getFinalResult&#40;&#41;;
      * System.out.printf&#40;&quot;Copied model has model ID: %s, was created on: %s.%n,&quot;,
      *     documentModel.getModelId&#40;&#41;,
      *     documentModel.getCreatedOn&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCopyModel#string-copyAuthorization -->
+     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCopyModelTo#string-copyAuthorization -->
      *
      * @param modelId Model identifier of the model to copy to target resource.
      * @param target the copy authorization to the target Form Recognizer resource. The copy authorization can be
@@ -483,9 +497,9 @@ public final class DocumentModelAdministrationClient {
      * or has been cancelled.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<DocumentOperationResult, DocumentModel> beginCopyModel(String modelId,
-                                                                             CopyAuthorization target) {
-        return beginCopyModel(modelId, target, Context.NONE);
+    public SyncPoller<DocumentOperationResult, DocumentModel> beginCopyModelTo(String modelId,
+        CopyAuthorization target) {
+        return beginCopyModelTo(modelId, target, Context.NONE);
     }
 
     /**
@@ -500,7 +514,7 @@ public final class DocumentModelAdministrationClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCopyModel#string-copyAuthorization-Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCopyModelTo#string-copyAuthorization-Context -->
      * <pre>
      * String copyModelId = &quot;copy-model&quot;;
      * String targetModelId = &quot;my-copied-model-id&quot;;
@@ -508,12 +522,12 @@ public final class DocumentModelAdministrationClient {
      * CopyAuthorization copyAuthorization = documentModelAdministrationClient.getCopyAuthorization&#40;targetModelId&#41;;
      * &#47;&#47; Start copy operation from the source client
      * DocumentModel documentModel =
-     *     documentModelAdministrationClient.beginCopyModel&#40;copyModelId, copyAuthorization, Context.NONE&#41;.getFinalResult&#40;&#41;;
+     *     documentModelAdministrationClient.beginCopyModelTo&#40;copyModelId, copyAuthorization, Context.NONE&#41;.getFinalResult&#40;&#41;;
      * System.out.printf&#40;&quot;Copied model has model ID: %s, was created on: %s.%n,&quot;,
      *     documentModel.getModelId&#40;&#41;,
      *     documentModel.getCreatedOn&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCopyModel#string-copyAuthorization-Context -->
+     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCopyModelTo#string-copyAuthorization-Context -->
      *
      * @param modelId Model identifier of the model to copy to target resource.
      * @param target the copy authorization to the target Form Recognizer resource. The copy authorization can be
@@ -524,9 +538,9 @@ public final class DocumentModelAdministrationClient {
      * or has been cancelled.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<DocumentOperationResult, DocumentModel> beginCopyModel(String modelId,
-                                                                             CopyAuthorization target, Context context) {
-        return client.beginCopyModel(modelId, target, context).getSyncPoller();
+    public SyncPoller<DocumentOperationResult, DocumentModel> beginCopyModelTo(String modelId,
+        CopyAuthorization target, Context context) {
+        return client.beginCopyModelTo(modelId, target, context).getSyncPoller();
     }
 
     /**

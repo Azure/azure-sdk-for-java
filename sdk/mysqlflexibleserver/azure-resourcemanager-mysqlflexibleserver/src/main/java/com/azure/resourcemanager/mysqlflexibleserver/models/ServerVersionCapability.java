@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Server version capabilities. */
 @Immutable
 public final class ServerVersionCapability {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerVersionCapability.class);
-
     /*
      * server version
      */

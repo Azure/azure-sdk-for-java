@@ -6,7 +6,6 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -17,8 +16,6 @@ import java.util.Map;
  */
 @Fluent
 public class BatchPoolIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BatchPoolIdentity.class);
-
     /*
      * The type of identity used for the Batch Pool.
      */
@@ -79,7 +76,7 @@ public class BatchPoolIdentity {
      */
     public void validate() {
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property type in model BatchPoolIdentity"));
         }
@@ -94,4 +91,6 @@ public class BatchPoolIdentity {
                     });
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BatchPoolIdentity.class);
 }

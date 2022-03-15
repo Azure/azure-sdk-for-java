@@ -65,7 +65,7 @@ final class ComputeSkuImpl implements ComputeSku {
     @Override
     public VirtualMachineSizeTypes virtualMachineSizeType() {
         if (this.inner.resourceType() != null
-            && this.inner.resourceType().equalsIgnoreCase("virtualMachines")
+            && this.inner.resourceType().equalsIgnoreCase(ComputeResourceType.VIRTUALMACHINES.toString())
             && this.inner.name() != null) {
             return VirtualMachineSizeTypes.fromString(this.inner.name());
         } else {

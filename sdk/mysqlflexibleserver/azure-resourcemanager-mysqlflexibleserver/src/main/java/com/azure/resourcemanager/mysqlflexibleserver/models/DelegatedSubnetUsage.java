@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Delegated subnet usage data. */
 @Immutable
 public final class DelegatedSubnetUsage {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DelegatedSubnetUsage.class);
-
     /*
      * name of the subnet
      */
