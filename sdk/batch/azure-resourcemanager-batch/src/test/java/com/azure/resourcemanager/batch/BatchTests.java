@@ -244,9 +244,7 @@ class BatchTests extends TestBase {
             .withDeploymentConfiguration(
                 new DeploymentConfiguration()
                     .withCloudServiceConfiguration(
-                        new CloudServiceConfiguration()
-                            .withOsFamily("4")
-                            .withOsVersion("WA-GUEST-OS-4.45_201708-01")))
+                        new CloudServiceConfiguration().withOsFamily("4")))
             .withScaleSettings(
                 new ScaleSettings()
                     .withFixedScale(
@@ -255,19 +253,12 @@ class BatchTests extends TestBase {
                             .withTargetDedicatedNodes(6)
                             .withTargetLowPriorityNodes(28)
                             .withNodeDeallocationOption(ComputeNodeDeallocationOption.TASK_COMPLETION)))
-            .withVmSize("STANDARD_D4")
+            .withVmSize("Standard_D1")
             .create();
         Assertions.assertEquals(poolName, pool.name());
         Assertions.assertEquals(poolDisplayName, pool.displayName());
         Assertions.assertNull(pool.scaleSettings().autoScale());
         Assertions.assertEquals(pool.scaleSettings().fixedScale().nodeDeallocationOption(), ComputeNodeDeallocationOption.TASK_COMPLETION);
-
-        // update vm size
-        String vmSize = "STANDARD_D4";
-        pool.update()
-            .withVmSize(vmSize)
-            .apply();
-        Assertions.assertEquals(pool.vmSize(), vmSize);
 
         //delete
         batchManager.pools().delete(resourceGroup, batchAccountName, poolName);
