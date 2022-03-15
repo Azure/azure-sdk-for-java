@@ -34,6 +34,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroEncoderBuilder.MAX_CACHE_SIZE;
 
 /**
  * Class containing implementation of Apache Avro serializer
@@ -46,9 +49,9 @@ class AvroSerializer {
 
     private final ClientLogger logger = new ClientLogger(AvroSerializer.class);
     private final boolean avroSpecificReader;
-    private final Schema.Parser parser;
     private final EncoderFactory encoderFactory;
     private final DecoderFactory decoderFactory;
+    private final Map<String, Schema> parsedSchemas = new ConcurrentHashMap<>();
 
     static {
         final HashMap<Class<?>, Schema> schemas = new HashMap<>();
@@ -93,15 +96,13 @@ class AvroSerializer {
      *
      * @param avroSpecificReader flag indicating if decoder should decode records as {@link SpecificRecord
      *     SpecificRecords}.
-     * @param parser Schema parser to use.
      * @param encoderFactory Encoder factory
      * @param decoderFactory Decoder factory
      */
-    AvroSerializer(boolean avroSpecificReader, Schema.Parser parser, EncoderFactory encoderFactory,
+    AvroSerializer(boolean avroSpecificReader, EncoderFactory encoderFactory,
         DecoderFactory decoderFactory) {
 
         this.avroSpecificReader = avroSpecificReader;
-        this.parser = Objects.requireNonNull(parser, "'parser' cannot be null.");
         this.encoderFactory = Objects.requireNonNull(encoderFactory, "'encoderFactory' cannot be null.");
         this.decoderFactory = Objects.requireNonNull(decoderFactory, "'decoderFactory' cannot be null.");
     }
@@ -112,7 +113,21 @@ class AvroSerializer {
      * @return avro schema
      */
     Schema parseSchemaString(String schemaString) {
-        return this.parser.parse(schemaString);
+        // Schema.Parser "remembers" all the named schemas previously parsed and throws
+        // SchemaParseException if an attempt to parse the same schema is made.
+        // So, we create a new instance of Schema.Parser each time since this method can
+        // be called multiple times for the same schema and there's no reliable way to know from the schema string
+        // that the named schema has not already been parsed.
+
+        // We'll cache the entire schema string to minimize the need to parse the same string multiple times but we
+        // should switch to LRU cache as we don't want to store unlimited schemas and some schema strings can be very
+        // large and they should not be kept in memory if it's not actively used.
+
+        // TODO(srnagar): change to LRU cache after this PR is merged - https://github.com/Azure/azure-sdk-for-java/pull/27408
+        if (parsedSchemas.size() > MAX_CACHE_SIZE) {
+            parsedSchemas.clear();
+        }
+        return parsedSchemas.computeIfAbsent(schemaString, schema -> new Schema.Parser().parse(schema));
     }
 
     /**
