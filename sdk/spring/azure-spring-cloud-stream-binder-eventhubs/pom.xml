@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-cloud-stream-binder-eventhubs</artifactId>
-  <version>2.14.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-eventhubs;current} -->
+  <version>2.15.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-eventhubs;current} -->
 
   <name>Azure Spring Cloud Stream Event Hubs binder</name>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
@@ -34,7 +34,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-starter-eventhubs</artifactId>
-      <version>2.14.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-eventhubs;current} -->
+      <version>2.15.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-eventhubs;current} -->
     </dependency>
 
     <!-- Contains Azure Storage Blobs checkpoint store when using EventProcessorClient -->
@@ -61,7 +61,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-stream-binder-test</artifactId>
-      <version>2.14.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-test;current} -->
+      <version>2.15.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-test;current} -->
       <scope>test</scope>
     </dependency>
     <!-- Added this dependency to include necessary annotations used by reactor core.

@@ -396,7 +396,7 @@
 #/<NotInRepo>/          @jfggdl
 
 # ServiceLabel: %Event Hubs %Service Attention
-#/<NotInRepo>/          @kasun04
+#/<NotInRepo>/          @kasun04 @saglodha
 
 # ServiceLabel: %Functions %Service Attention
 #/<NotInRepo>/          @ahmedelnably @fabiocav
@@ -582,7 +582,7 @@
 #/<NotInRepo>/          @chlahav
 
 # ServiceLabel: %Service Attention %Service Bus
-#/<NotInRepo>/          @jfggdl @EldertGrootenboer
+#/<NotInRepo>/          @EldertGrootenboer @saglodha
 
 # ServiceLabel: %Service Attention %Service Fabric
 #/<NotInRepo>/          @QingChenmsft @vaishnavk @juhacket

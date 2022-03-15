@@ -13118,6 +13118,76 @@ public interface WebAppsClient
         String resourceGroupName, String name, String slot, Context context);
 
     /**
+     * Gets site's Authentication / Authorization settings for apps via the V2 format.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get the settings for the
+     *     production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return site's Authentication / Authorization settings for apps via the V2 format along with {@link Response} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<SiteAuthSettingsV2Inner>> getAuthSettingsV2WithoutSecretsSlotWithResponseAsync(
+        String resourceGroupName, String name, String slot);
+
+    /**
+     * Gets site's Authentication / Authorization settings for apps via the V2 format.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get the settings for the
+     *     production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return site's Authentication / Authorization settings for apps via the V2 format on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SiteAuthSettingsV2Inner> getAuthSettingsV2WithoutSecretsSlotAsync(
+        String resourceGroupName, String name, String slot);
+
+    /**
+     * Gets site's Authentication / Authorization settings for apps via the V2 format.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get the settings for the
+     *     production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return site's Authentication / Authorization settings for apps via the V2 format.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SiteAuthSettingsV2Inner getAuthSettingsV2WithoutSecretsSlot(String resourceGroupName, String name, String slot);
+
+    /**
+     * Gets site's Authentication / Authorization settings for apps via the V2 format.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get the settings for the
+     *     production slot.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return site's Authentication / Authorization settings for apps via the V2 format along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SiteAuthSettingsV2Inner> getAuthSettingsV2WithoutSecretsSlotWithResponse(
+        String resourceGroupName, String name, String slot, Context context);
+
+    /**
      * Description for Updates site's Authentication / Authorization settings for apps via the V2 format.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.

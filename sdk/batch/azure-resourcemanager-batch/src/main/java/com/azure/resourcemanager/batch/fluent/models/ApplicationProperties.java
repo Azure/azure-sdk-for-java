@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.batch.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties associated with the Application. */
 @Fluent
 public final class ApplicationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationProperties.class);
-
     /*
      * The display name for the application.
      */

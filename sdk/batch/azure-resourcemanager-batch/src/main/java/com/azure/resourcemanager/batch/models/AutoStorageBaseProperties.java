@@ -6,14 +6,11 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties related to the auto-storage account. */
 @Fluent
 public class AutoStorageBaseProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoStorageBaseProperties.class);
-
     /*
      * The resource ID of the storage account to be used for auto-storage
      * account.
@@ -106,7 +103,7 @@ public class AutoStorageBaseProperties {
      */
     public void validate() {
         if (storageAccountId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property storageAccountId in model AutoStorageBaseProperties"));
@@ -115,4 +112,6 @@ public class AutoStorageBaseProperties {
             nodeIdentityReference().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AutoStorageBaseProperties.class);
 }

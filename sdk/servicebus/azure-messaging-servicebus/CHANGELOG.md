@@ -3,12 +3,15 @@
 ## 7.7.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for sending/receiving messages with `Duration`, `OffsetDateTime` and `URI` in `applicationProperties`.
+- Updated the receiver to retry to obtain a new connection if the RequestResponseChannel in the current connection is disposed.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 - Removed the incorrect use of lock primitives from `ServiceBusMessageBatch.tryAddMessage()` implementation and documented that this API is not thread-safe. ([#25910](https://github.com/Azure/azure-sdk-for-java/issues/25910))
 - Fixed incorrect ordering of message when sent as a batch. ([#25112](https://github.com/Azure/azure-sdk-for-java/issues/25112), [#25599](https://github.com/Azure/azure-sdk-for-java/issues/25599))
+- Fixed a bug that messages come from azure-sdk-for-net with `DescribedType` cannot be deserialized. ([#26065](https://github.com/Azure/azure-sdk-for-java/issues/26065))
 
 ### Other Changes
 

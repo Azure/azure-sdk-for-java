@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Class representing data source used by the detectors. */
 @Fluent
 public final class DataSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataSource.class);
-
     /*
      * Instructions if any for the data source
      */

@@ -12,6 +12,7 @@ import com.azure.resourcemanager.compute.models.DiskStorageAccountTypes;
 import com.azure.resourcemanager.compute.models.Gallery;
 import com.azure.resourcemanager.compute.models.GalleryImage;
 import com.azure.resourcemanager.compute.models.GalleryImageIdentifier;
+import com.azure.resourcemanager.compute.models.GalleryImageUpdate;
 import com.azure.resourcemanager.compute.models.GalleryImageVersion;
 import com.azure.resourcemanager.compute.models.ImagePurchasePlan;
 import com.azure.resourcemanager.compute.models.OperatingSystemStateTypes;
@@ -38,6 +39,7 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
     private String resourceGroupName;
     private String galleryName;
     private String galleryImageName;
+    private GalleryImageUpdate galleryImageUpdate;
 
     GalleryImageImpl(String name, ComputeManager manager) {
         super(name, new GalleryImageInner());
@@ -106,11 +108,21 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
     }
 
     @Override
+    public GalleryImageImpl update() {
+        this.galleryImageUpdate = new GalleryImageUpdate();
+        return super.update();
+    }
+
+    @Override
     public Mono<GalleryImage> updateResourceAsync() {
+        this.galleryImageUpdate
+            .withOsState(innerModel().osState())
+            .withOsType(innerModel().osType())
+            .withIdentifier(innerModel().identifier());
         return manager()
             .serviceClient()
             .getGalleryImages()
-            .createOrUpdateAsync(this.resourceGroupName, this.galleryName, this.galleryImageName, this.innerModel())
+            .updateAsync(this.resourceGroupName, this.galleryName, this.galleryImageName, this.galleryImageUpdate)
             .map(innerToFluentMap(this));
     }
 
@@ -290,6 +302,9 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
     @Override
     public GalleryImageImpl withDescription(String description) {
         this.innerModel().withDescription(description);
+        if (isInUpdateMode()) {
+            this.galleryImageUpdate.withDescription(description);
+        }
         return this;
     }
 
@@ -312,6 +327,9 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
         if (!found) {
             this.innerModel().disallowed().diskTypes().add(diskType.toString());
         }
+        if (isInUpdateMode()) {
+            this.galleryImageUpdate.withDisallowed(this.innerModel().disallowed());
+        }
         return this;
     }
 
@@ -323,6 +341,9 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
         this.innerModel().disallowed().withDiskTypes(new ArrayList<String>());
         for (DiskSkuTypes diskType : diskTypes) {
             this.innerModel().disallowed().diskTypes().add(diskType.toString());
+        }
+        if (isInUpdateMode()) {
+            this.galleryImageUpdate.withDisallowed(this.innerModel().disallowed());
         }
         return this;
     }
@@ -343,6 +364,9 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
             if (foundIndex != -1) {
                 this.innerModel().disallowed().diskTypes().remove(foundIndex);
             }
+            if (isInUpdateMode()) {
+                this.galleryImageUpdate.withDisallowed(this.innerModel().disallowed());
+            }
         }
         return this;
     }
@@ -350,30 +374,45 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
     @Override
     public GalleryImageImpl withDisallowed(Disallowed disallowed) {
         this.innerModel().withDisallowed(disallowed);
+        if (isInUpdateMode()) {
+            this.galleryImageUpdate.withDisallowed(disallowed);
+        }
         return this;
     }
 
     @Override
     public GalleryImageImpl withEndOfLifeDate(OffsetDateTime endOfLifeDate) {
         this.innerModel().withEndOfLifeDate(endOfLifeDate);
+        if (isInUpdateMode()) {
+            this.galleryImageUpdate.withEndOfLifeDate(endOfLifeDate);
+        }
         return this;
     }
 
     @Override
     public GalleryImageImpl withEula(String eula) {
         this.innerModel().withEula(eula);
+        if (isInUpdateMode()) {
+            this.galleryImageUpdate.withEula(eula);
+        }
         return this;
     }
 
     @Override
     public GalleryImageImpl withOsState(OperatingSystemStateTypes osState) {
         this.innerModel().withOsState(osState);
+        if (isInUpdateMode()) {
+            this.galleryImageUpdate.withOsState(osState);
+        }
         return this;
     }
 
     @Override
     public GalleryImageImpl withPrivacyStatementUri(String privacyStatementUri) {
         this.innerModel().withPrivacyStatementUri(privacyStatementUri);
+        if (isInUpdateMode()) {
+            this.galleryImageUpdate.withPrivacyStatementUri(privacyStatementUri);
+        }
         return this;
     }
 
@@ -398,6 +437,9 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
             this.innerModel().recommended().withVCPUs(new ResourceRange());
         }
         this.innerModel().recommended().vCPUs().withMin(minCount);
+        if (isInUpdateMode()) {
+            this.galleryImageUpdate.withRecommended(this.innerModel().recommended());
+        }
         return this;
     }
 
@@ -410,6 +452,9 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
             this.innerModel().recommended().withVCPUs(new ResourceRange());
         }
         this.innerModel().recommended().vCPUs().withMax(maxCount);
+        if (isInUpdateMode()) {
+            this.galleryImageUpdate.withRecommended(this.innerModel().recommended());
+        }
         return this;
     }
 
@@ -421,6 +466,9 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
         this.innerModel().recommended().withVCPUs(new ResourceRange());
         this.innerModel().recommended().vCPUs().withMin(minCount);
         this.innerModel().recommended().vCPUs().withMax(maxCount);
+        if (isInUpdateMode()) {
+            this.galleryImageUpdate.withRecommended(this.innerModel().recommended());
+        }
         return this;
     }
 
@@ -433,6 +481,9 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
             this.innerModel().recommended().withMemory(new ResourceRange());
         }
         this.innerModel().recommended().memory().withMin(minMB);
+        if (isInUpdateMode()) {
+            this.galleryImageUpdate.withRecommended(this.innerModel().recommended());
+        }
         return this;
     }
 
@@ -445,6 +496,9 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
             this.innerModel().recommended().withMemory(new ResourceRange());
         }
         this.innerModel().recommended().memory().withMax(maxMB);
+        if (isInUpdateMode()) {
+            this.galleryImageUpdate.withRecommended(this.innerModel().recommended());
+        }
         return this;
     }
 
@@ -456,6 +510,9 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
         this.innerModel().recommended().withMemory(new ResourceRange());
         this.innerModel().recommended().memory().withMin(minMB);
         this.innerModel().recommended().memory().withMax(maxMB);
+        if (isInUpdateMode()) {
+            this.galleryImageUpdate.withRecommended(this.innerModel().recommended());
+        }
         return this;
     }
 
@@ -463,19 +520,32 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
     public GalleryImageImpl withRecommendedConfigurationForVirtualMachine(
         RecommendedMachineConfiguration recommendedConfig) {
         this.innerModel().withRecommended(recommendedConfig);
+        if (isInUpdateMode()) {
+            this.galleryImageUpdate.withRecommended(recommendedConfig);
+        }
         return this;
     }
 
     @Override
     public GalleryImageImpl withReleaseNoteUri(String releaseNoteUri) {
         this.innerModel().withReleaseNoteUri(releaseNoteUri);
+        if (isInUpdateMode()) {
+            this.galleryImageUpdate.withReleaseNoteUri(releaseNoteUri);
+        }
         return this;
     }
 
     @Override
     public GalleryImageImpl withTags(Map<String, String> tags) {
         this.innerModel().withTags(tags);
+        if (isInUpdateMode()) {
+            this.galleryImageUpdate.withTags(tags);
+        }
         return this;
+    }
+
+    private boolean isInUpdateMode() {
+        return !isInCreateMode();
     }
 
     private static String getValueFromIdByName(String id, String name) {

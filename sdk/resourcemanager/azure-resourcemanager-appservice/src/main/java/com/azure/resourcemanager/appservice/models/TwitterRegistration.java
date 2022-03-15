@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The configuration settings of the app registration for the Twitter provider. */
 @Fluent
 public final class TwitterRegistration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TwitterRegistration.class);
-
     /*
      * The OAuth 1.0a consumer key of the Twitter application used for sign-in.
      * This setting is required for enabling Twitter Sign-In.

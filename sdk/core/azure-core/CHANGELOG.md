@@ -1,6 +1,6 @@
 # Release History
 
-## 1.26.0-beta.1 (Unreleased)
+## 1.27.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -11,13 +11,32 @@
 
 ### Bugs Fixed
 
+### Other Changes
+
+## 1.26.0 (2022-03-04)
+
+### Features Added
+
+- Added `FluxUtil.writeToOutputStream` which provides an optimized way to write a stream of `Flux<ByteBuffer>` to an
+  `OutputStream` with minimal overhead. ([#26821](https://github.com/Azure/azure-sdk-for-java/pull/26821))
+
+### Bugs Fixed
+
 - Fixed `com.azure.core.implementation.ReflectionUtils.getLookupToUse` which fails with `java.lang.SecurityException` 
-  under `SecurityManager`
+  under `SecurityManager`. ([#27182](https://github.com/Azure/azure-sdk-for-java/pull/27182), thank you @reta!)
+- Fixed an issue where converting Azure `Context` to Reactor `Context` could result in an `IndexOutOfBoundsException`. ([#27197](https://github.com/Azure/azure-sdk-for-java/pull/27197))
 
 ### Other Changes
 
 - Added `x-ms-request-id`, `MS-CV`, `WWW-Authenticate` as default logged headers and `api-version` as a default logged
-  query parameter.
+  query parameter. ([#26973](https://github.com/Azure/azure-sdk-for-java/pull/26973))
+- Updated how `Response` types are constructed in `RestProxy` to reduce the usage of reflection. ([#27207](https://github.com/Azure/azure-sdk-for-java/pull/27207))
+- Updated all `ClientLogger`s to be static constants instead of instance variables. ([#27339](https://github.com/Azure/azure-sdk-for-java/pull/27339))
+- Updated the usage of `AZURE_LOG_LEVEL` to be constant. ([#27193](https://github.com/Azure/azure-sdk-for-java/pull/27193))
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.4.13` to `3.4.14`.
 
 ## 1.25.0 (2022-02-04)
 

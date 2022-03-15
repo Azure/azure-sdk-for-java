@@ -28,7 +28,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.AvailabilitySetsClient;
 import com.azure.resourcemanager.compute.fluent.models.AvailabilitySetInner;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineSizeInner;
@@ -47,8 +46,6 @@ public final class AvailabilitySetsClientImpl
         InnerSupportsListing<AvailabilitySetInner>,
         InnerSupportsDelete<Void>,
         AvailabilitySetsClient {
-    private final ClientLogger logger = new ClientLogger(AvailabilitySetsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AvailabilitySetsService service;
 
