@@ -14,10 +14,12 @@ import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBu
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusProducerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.core.provisioning.ServiceBusChannelProvisioner;
 import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusChannelResourceManagerProvisioner;
+import com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.cloud.stream.binder.Binder;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.Duration;
 
@@ -79,8 +81,7 @@ public class ServiceBusBinderConfigurationTests {
         String producerConnectionString = String.format(CONNECTION_STRING_FORMAT, "fake-producer-namespace");
         String consumerConnectionString = String.format(CONNECTION_STRING_FORMAT, "fake-consumer-namespace");
 
-        new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(ServiceBusExtendedBindingPropertiesTestConfiguration.class))
+        this.contextRunner
             .withPropertyValues(
                 "spring.cloud.stream.servicebus.bindings.input.consumer.domain-name=fake-consumer-domain",
                 "spring.cloud.stream.servicebus.bindings.input.consumer.namespace=fake-consumer-namespace",
@@ -107,14 +108,10 @@ public class ServiceBusBinderConfigurationTests {
                 "spring.cloud.stream.servicebus.bindings.input.producer.send-timeout=5m"
             )
             .run(context -> {
-                assertThat(context).hasSingleBean(ServiceBusExtendedBindingProperties.class);
-                ServiceBusExtendedBindingProperties extendedBindingProperties =
-                    context.getBean(ServiceBusExtendedBindingProperties.class);
-
-                assertThat(extendedBindingProperties.getExtendedConsumerProperties("input")).isNotNull();
-
+                assertThat(context).hasSingleBean(ServiceBusMessageChannelBinder.class);
+                ServiceBusMessageChannelBinder binder = context.getBean(ServiceBusMessageChannelBinder.class);
                 ServiceBusConsumerProperties consumerProperties =
-                    extendedBindingProperties.getExtendedConsumerProperties("input");
+                    binder.getExtendedConsumerProperties("input");
                 assertEquals("fake-consumer-domain", consumerProperties.getDomainName());
                 assertEquals("fake-consumer-namespace", consumerProperties.getNamespace());
                 assertEquals(consumerConnectionString, consumerProperties.getConnectionString());
@@ -131,7 +128,7 @@ public class ServiceBusBinderConfigurationTests {
                 assertTrue(consumerProperties.isRequeueRejected());
 
                 ServiceBusProducerProperties producerProperties =
-                    extendedBindingProperties.getExtendedProducerProperties("input");
+                    binder.getExtendedProducerProperties("input");
                 assertEquals("fake-producer-domain", producerProperties.getDomainName());
                 assertEquals("fake-producer-namespace", producerProperties.getNamespace());
                 assertEquals(producerConnectionString, producerProperties.getConnectionString());
@@ -143,15 +140,37 @@ public class ServiceBusBinderConfigurationTests {
     }
 
     @Test
-    void clientFactoryCustomizerShouldBeConfigured() {
+    void clientMessageConverterShouldBeConfigured() {
         this.contextRunner
-            .withBean(ServiceBusProvisioner.class, () -> mock(ServiceBusProvisioner.class))
+            .withBean(ServiceBusMessageConverter.class)
             .withPropertyValues("spring.cloud.azure.servicebus.namespace=fake-namespace")
-            .run(context -> assertThat(context).hasSingleBean(ClientFactoryCustomizer.class));
+            .run(context -> {
+                assertThat(context).hasSingleBean(ServiceBusMessageConverter.class);
+                assertThat(context).hasSingleBean(ServiceBusMessageChannelBinder.class);
+                ServiceBusMessageConverter converter = context.getBean(ServiceBusMessageConverter.class);
+                ServiceBusMessageChannelBinder binder = context.getBean(ServiceBusMessageChannelBinder.class);
+                assertThat(ReflectionTestUtils.getField(binder, "messageConverter")).isSameAs(converter);
+            });
     }
 
     @Test
-    void builderCustomizerShouldBeConfiguredToClientFactoryCustomizer() {
+    void producerFactoryCustomizerShouldBeConfigured() {
+        this.contextRunner
+            .withBean(ServiceBusProvisioner.class, () -> mock(ServiceBusProvisioner.class))
+            .withPropertyValues("spring.cloud.azure.servicebus.namespace=fake-namespace")
+            .run(context -> assertThat(context).hasSingleBean(ServiceBusProducerFactoryCustomizer.class));
+    }
+
+    @Test
+    void processorFactoryCustomizerShouldBeConfigured() {
+        this.contextRunner
+            .withBean(ServiceBusProvisioner.class, () -> mock(ServiceBusProvisioner.class))
+            .withPropertyValues("spring.cloud.azure.servicebus.namespace=fake-namespace")
+            .run(context -> assertThat(context).hasSingleBean(ServiceBusProcessorFactoryCustomizer.class));
+    }
+
+    @Test
+    void producerBuilderCustomizerShouldBeConfiguredToProducerFactoryCustomizer() {
         this.contextRunner
             .withBean(ServiceBusProvisioner.class, () -> mock(ServiceBusProvisioner.class))
             .withPropertyValues("spring.cloud.azure.servicebus.namespace=fake-namespace")
@@ -163,12 +182,33 @@ public class ServiceBusBinderConfigurationTests {
             .withBean("session-processor-customizer3", ServiceBusSessionProcessorClientBuilderCustomizer.class, ServiceBusSessionProcessorClientBuilderCustomizer::new)
             .withBean("other-customizer1", OtherBuilderCustomizer.class, OtherBuilderCustomizer::new)
             .run(context -> {
-                assertThat(context).hasSingleBean(ClientFactoryCustomizer.class);
-                ClientFactoryCustomizer clientFactoryCustomizer = context.getBean(ClientFactoryCustomizer.class);
+                assertThat(context).hasSingleBean(ServiceBusProducerFactoryCustomizer.class);
+                ServiceBusProducerFactoryCustomizer clientFactoryCustomizer = context.getBean(ServiceBusProducerFactoryCustomizer.class);
 
-                ServiceBusBinderConfiguration.DefaultClientFactoryCustomizer defaultFactoryCustomizer = (ServiceBusBinderConfiguration.DefaultClientFactoryCustomizer) clientFactoryCustomizer;
+                ServiceBusBinderConfiguration.DefaultProducerFactoryCustomizer defaultFactoryCustomizer = (ServiceBusBinderConfiguration.DefaultProducerFactoryCustomizer) clientFactoryCustomizer;
 
                 assertEquals(1, (int) defaultFactoryCustomizer.getSenderClientBuilderCustomizers().stream().count());
+            });
+    }
+
+    @Test
+    void processorBuilderCustomizerShouldBeConfiguredToProcessorFactoryCustomizer() {
+        this.contextRunner
+            .withBean(ServiceBusProvisioner.class, () -> mock(ServiceBusProvisioner.class))
+            .withPropertyValues("spring.cloud.azure.servicebus.namespace=fake-namespace")
+            .withBean("producer-customizer1", ServiceBusSenderClientBuilderCustomizer.class, ServiceBusSenderClientBuilderCustomizer::new)
+            .withBean("processor-customizer1", ServiceBusProcessorClientBuilderCustomizer.class, ServiceBusProcessorClientBuilderCustomizer::new)
+            .withBean("processor-customizer2", ServiceBusProcessorClientBuilderCustomizer.class, ServiceBusProcessorClientBuilderCustomizer::new)
+            .withBean("session-processor-customizer1", ServiceBusSessionProcessorClientBuilderCustomizer.class, ServiceBusSessionProcessorClientBuilderCustomizer::new)
+            .withBean("session-processor-customizer2", ServiceBusSessionProcessorClientBuilderCustomizer.class, ServiceBusSessionProcessorClientBuilderCustomizer::new)
+            .withBean("session-processor-customizer3", ServiceBusSessionProcessorClientBuilderCustomizer.class, ServiceBusSessionProcessorClientBuilderCustomizer::new)
+            .withBean("other-customizer1", OtherBuilderCustomizer.class, OtherBuilderCustomizer::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(ServiceBusProcessorFactoryCustomizer.class);
+                ServiceBusProcessorFactoryCustomizer clientFactoryCustomizer = context.getBean(ServiceBusProcessorFactoryCustomizer.class);
+
+                ServiceBusBinderConfiguration.DefaultProcessorFactoryCustomizer defaultFactoryCustomizer = (ServiceBusBinderConfiguration.DefaultProcessorFactoryCustomizer) clientFactoryCustomizer;
+
                 assertEquals(2, (int) defaultFactoryCustomizer.getProcessorClientBuilderCustomizers().stream().count());
                 assertEquals(3, (int) defaultFactoryCustomizer.getSessionProcessorClientBuilderCustomizers().stream().count());
             });

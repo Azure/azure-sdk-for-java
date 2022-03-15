@@ -243,7 +243,13 @@ public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProp
 
     public static class GatewayConnection implements GatewayConnectionProperties {
 
+        /**
+         * Size of the connection pool.
+         */
         private Integer maxConnectionPoolSize;
+        /**
+         * Timeout for an idle connection. After that time, the connection will be automatically closed.
+         */
         private Duration idleConnectionTimeout;
 
         @Override
@@ -267,12 +273,37 @@ public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProp
 
     public static class DirectConnection implements DirectConnectionProperties {
 
+        /**
+         * Whether to enable the direct TCP connection endpoint rediscovery.
+         */
         private Boolean connectionEndpointRediscoveryEnabled;
+        /**
+         * Connect timeout for direct client, represents timeout for establishing connections with an endpoint.
+         */
         private Duration connectTimeout;
+        /**
+         * Idle connection timeout for the direct client. Direct client doesn't close a single connection to an
+         * endpoint by default unless specified.
+         */
         private Duration idleConnectionTimeout;
+        /**
+         * Idle endpoint timeout for the direct client. If there are no requests to a specific endpoint for idle
+         * endpoint timeout duration, direct client closes all connections to that endpoint to save resources and I/O
+         * cost.
+         */
         private Duration idleEndpointTimeout;
+        /**
+         * Network request timeout interval (time to wait for response from network peer).
+         */
         private Duration networkRequestTimeout;
+        /**
+         * Max connections per endpoint, represents the size of connection pool for a specific endpoint.
+         */
         private Integer maxConnectionsPerEndpoint;
+        /**
+         * Max requests per connection, represents the number of requests that will be queued on a single connection
+         * for a specific endpoint.
+         */
         private Integer maxRequestsPerConnection;
 
         @Override

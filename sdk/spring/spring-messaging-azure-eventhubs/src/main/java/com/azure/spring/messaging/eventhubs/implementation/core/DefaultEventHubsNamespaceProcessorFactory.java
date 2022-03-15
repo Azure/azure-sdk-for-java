@@ -4,7 +4,6 @@
 package com.azure.spring.messaging.eventhubs.implementation.core;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.identity.DefaultAzureCredential;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
@@ -64,7 +63,7 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
     private final List<AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder>> customizers = new ArrayList<>();
     private final Map<String, List<AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder>>> dedicatedCustomizers = new HashMap<>();
     private AzureCredentialResolver<TokenCredential> tokenCredentialResolver = null;
-    private DefaultAzureCredential defaultAzureCredential = null;
+    private TokenCredential defaultAzureCredential = null;
 
     /**
      * Construct a factory with the provided {@link CheckpointStore}.
@@ -204,7 +203,7 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
      * Set the default Azure credential.
      * @param defaultAzureCredential The default Azure Credential.
      */
-    public void setDefaultAzureCredential(DefaultAzureCredential defaultAzureCredential) {
+    public void setDefaultAzureCredential(TokenCredential defaultAzureCredential) {
         this.defaultAzureCredential = defaultAzureCredential;
     }
 

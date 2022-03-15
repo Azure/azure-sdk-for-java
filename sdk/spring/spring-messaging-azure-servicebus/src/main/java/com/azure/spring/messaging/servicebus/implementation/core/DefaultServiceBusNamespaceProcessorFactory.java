@@ -4,7 +4,6 @@
 package com.azure.spring.messaging.servicebus.implementation.core;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.identity.DefaultAzureCredential;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
@@ -60,7 +59,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
     private final List<ServiceBusProcessClientBuilderCustomizer> customizers = new ArrayList<>();
     private final Map<ConsumerIdentifier, List<ServiceBusProcessClientBuilderCustomizer>> dedicatedCustomizers = new HashMap<>();
     private AzureCredentialResolver<TokenCredential> tokenCredentialResolver = null;
-    private DefaultAzureCredential defaultAzureCredential = null;
+    private TokenCredential defaultAzureCredential = null;
 
     /**
      * Construct a factory with the provided namespace level properties.
@@ -222,7 +221,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
      * Set the default Azure credential.
      * @param defaultAzureCredential The default Azure Credential.
      */
-    public void setDefaultAzureCredential(DefaultAzureCredential defaultAzureCredential) {
+    public void setDefaultAzureCredential(TokenCredential defaultAzureCredential) {
         this.defaultAzureCredential = defaultAzureCredential;
     }
 

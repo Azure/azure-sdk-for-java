@@ -69,7 +69,11 @@ public final class AzurePropertiesUtils {
         copyPropertiesIgnoreNull(source.getCredential(), target.getCredential());
 
         if (source instanceof RetryOptionsProvider && target instanceof RetryOptionsProvider) {
-            copyPropertiesIgnoreNull(((RetryOptionsProvider) source).getRetry(), ((RetryOptionsProvider) target).getRetry());
+            RetryOptionsProvider.RetryOptions sourceRetry = ((RetryOptionsProvider) source).getRetry();
+            RetryOptionsProvider.RetryOptions targetRetry = ((RetryOptionsProvider) target).getRetry();
+            copyPropertiesIgnoreNull(sourceRetry, targetRetry);
+            copyPropertiesIgnoreNull(sourceRetry.getExponential(), targetRetry.getExponential());
+            copyPropertiesIgnoreNull(sourceRetry.getFixed(), targetRetry.getFixed());
         }
     }
 

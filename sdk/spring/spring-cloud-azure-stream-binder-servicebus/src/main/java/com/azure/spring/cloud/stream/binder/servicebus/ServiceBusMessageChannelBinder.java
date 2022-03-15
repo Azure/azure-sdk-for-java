@@ -4,7 +4,9 @@
 package com.azure.spring.cloud.stream.binder.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
-import com.azure.spring.cloud.stream.binder.servicebus.config.ClientFactoryCustomizer;
+import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
+import com.azure.spring.cloud.stream.binder.servicebus.config.ServiceBusProcessorFactoryCustomizer;
+import com.azure.spring.cloud.stream.binder.servicebus.config.ServiceBusProducerFactoryCustomizer;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusConsumerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusProducerProperties;
@@ -17,17 +19,16 @@ import com.azure.spring.integration.core.instrumentation.Instrumentation;
 import com.azure.spring.integration.core.instrumentation.InstrumentationManager;
 import com.azure.spring.integration.servicebus.implementation.health.ServiceBusProcessorInstrumentation;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusInboundChannelAdapter;
-import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.messaging.servicebus.core.ServiceBusTemplate;
 import com.azure.spring.messaging.servicebus.core.listener.ServiceBusMessageListenerContainer;
 import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
-import com.azure.spring.messaging.servicebus.core.properties.ProcessorProperties;
 import com.azure.spring.messaging.servicebus.core.properties.ProducerProperties;
 import com.azure.spring.messaging.servicebus.core.properties.ServiceBusContainerProperties;
 import com.azure.spring.messaging.servicebus.implementation.core.DefaultServiceBusNamespaceProcessorFactory;
 import com.azure.spring.messaging.servicebus.implementation.core.DefaultServiceBusNamespaceProducerFactory;
+import com.azure.spring.messaging.servicebus.implementation.properties.merger.ProcessorPropertiesMerger;
 import com.azure.spring.messaging.servicebus.support.ServiceBusMessageHeaders;
 import com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter;
 import org.slf4j.Logger;
@@ -52,7 +53,6 @@ import org.springframework.util.Assert;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -83,10 +83,9 @@ public class ServiceBusMessageChannelBinder extends
     private final InstrumentationManager instrumentationManager = new DefaultInstrumentationManager();
     private final Map<String, ExtendedProducerProperties<ServiceBusProducerProperties>>
         extendedProducerPropertiesMap = new ConcurrentHashMap<>();
-    private final Map<ConsumerIdentifier, ExtendedConsumerProperties<ServiceBusConsumerProperties>>
-        extendedConsumerPropertiesMap = new ConcurrentHashMap<>();
 
-    private List<ClientFactoryCustomizer> clientFactoryCustomizers = new ArrayList<>();
+    private List<ServiceBusProducerFactoryCustomizer> producerFactoryCustomizers = new ArrayList<>();
+    private List<ServiceBusProcessorFactoryCustomizer> processorFactoryCustomizers = new ArrayList<>();
 
     /**
      * Construct a {@link ServiceBusMessageChannelBinder} with the specified headersToEmbed and {@link ServiceBusChannelProvisioner}.
@@ -128,13 +127,9 @@ public class ServiceBusMessageChannelBinder extends
     @Override
     protected MessageProducer createConsumerEndpoint(ConsumerDestination destination, String group,
                                                      ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
-        extendedConsumerPropertiesMap.put(new ConsumerIdentifier(destination.getName(), group), properties);
         final ServiceBusInboundChannelAdapter inboundAdapter;
 
-        ServiceBusContainerProperties containerProperties = new ServiceBusContainerProperties();
-        containerProperties.setEntityName(destination.getName());
-        containerProperties.setSubscriptionName(group);
-
+        ServiceBusContainerProperties containerProperties = createContainerProperties(destination, group, properties);
         ServiceBusMessageListenerContainer listenerContainer = new ServiceBusMessageListenerContainer(getProcessorFactory(), containerProperties);
 
         serviceBusMessageListenerContainers.add(listenerContainer);
@@ -149,6 +144,25 @@ public class ServiceBusMessageChannelBinder extends
         inboundAdapter.setErrorChannel(errorInfrastructure.getErrorChannel());
         inboundAdapter.setMessageConverter(messageConverter);
         return inboundAdapter;
+    }
+
+    /**
+     * Create {@link ServiceBusContainerProperties} from the extended {@link ServiceBusConsumerProperties}.
+     * @param destination reference to the consumer destination.
+     * @param group the consumer group.
+     * @param properties the consumer properties.
+     * @return the {@link ServiceBusContainerProperties}.
+     */
+    ServiceBusContainerProperties createContainerProperties(
+        ConsumerDestination destination,
+        String group,
+        ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
+        ServiceBusContainerProperties containerProperties = new ServiceBusContainerProperties();
+        AzurePropertiesUtils.copyAzureCommonProperties(properties.getExtension(), containerProperties);
+        ProcessorPropertiesMerger.copyProcessorPropertiesIfNotNull(properties.getExtension(), containerProperties);
+        containerProperties.setEntityName(destination.getName());
+        containerProperties.setSubscriptionName(group);
+        return containerProperties;
     }
 
     @Override
@@ -255,7 +269,7 @@ public class ServiceBusMessageChannelBinder extends
             DefaultServiceBusNamespaceProducerFactory factory = new DefaultServiceBusNamespaceProducerFactory(
                 this.namespaceProperties, getProducerPropertiesSupplier());
 
-            clientFactoryCustomizers.forEach(customizer -> customizer.customize(factory));
+            producerFactoryCustomizers.forEach(customizer -> customizer.customize(factory));
 
             factory.addListener((name, client) -> {
                 DefaultInstrumentation instrumentation = new DefaultInstrumentation(name, PRODUCER);
@@ -269,10 +283,9 @@ public class ServiceBusMessageChannelBinder extends
 
     private ServiceBusProcessorFactory getProcessorFactory() {
         if (this.processorFactory == null) {
-            this.processorFactory = new DefaultServiceBusNamespaceProcessorFactory(this.namespaceProperties,
-                getProcessorPropertiesSupplier());
+            this.processorFactory = new DefaultServiceBusNamespaceProcessorFactory(this.namespaceProperties);
 
-            clientFactoryCustomizers.forEach(customizer -> customizer.customize(this.processorFactory));
+            processorFactoryCustomizers.forEach(customizer -> customizer.customize(this.processorFactory));
 
             this.processorFactory.addListener((name, subscription, client) -> {
                 String instrumentationName = name + "/" + getGroup(subscription);
@@ -293,21 +306,6 @@ public class ServiceBusMessageChannelBinder extends
                 return producerProperties;
             } else {
                 LOGGER.debug("Can't find extended properties for {}", key);
-                return null;
-            }
-        };
-    }
-
-    private PropertiesSupplier<ConsumerIdentifier, ProcessorProperties> getProcessorPropertiesSupplier() {
-        return key -> {
-            if (this.extendedConsumerPropertiesMap.containsKey(key)) {
-                ServiceBusConsumerProperties consumerProperties = this.extendedConsumerPropertiesMap.get(key)
-                    .getExtension();
-                consumerProperties.setEntityName(key.getDestination());
-                consumerProperties.setSubscriptionName(key.getGroup());
-                return consumerProperties;
-            } else {
-                LOGGER.debug("Can't find extended properties for destination {}, group {}", key.getDestination(), key.getGroup());
                 return null;
             }
         };
@@ -346,14 +344,21 @@ public class ServiceBusMessageChannelBinder extends
     }
 
     /**
-     * Set the client factory customizers.
-     * @param clientFactoryCustomizers The client factory customizers.
+     * Set the producer factory customizers.
+     *
+     * @param producerFactoryCustomizers The producer factory customizers.
      */
-    public void setClientFactoryCustomizers(List<ClientFactoryCustomizer> clientFactoryCustomizers) {
-        this.clientFactoryCustomizers = clientFactoryCustomizers;
+    public void setProducerFactoryCustomizers(List<ServiceBusProducerFactoryCustomizer> producerFactoryCustomizers) {
+        this.producerFactoryCustomizers = producerFactoryCustomizers;
     }
 
-    List<ServiceBusMessageListenerContainer> getEventHubsMessageListenerContainers() {
-        return Collections.unmodifiableList(this.serviceBusMessageListenerContainers);
+    /**
+     * Set the processor factory customizers.
+     *
+     * @param processorFactoryCustomizers The processor factory customizers.
+     */
+    public void setProcessorFactoryCustomizers(List<ServiceBusProcessorFactoryCustomizer> processorFactoryCustomizers) {
+        this.processorFactoryCustomizers = processorFactoryCustomizers;
     }
+
 }

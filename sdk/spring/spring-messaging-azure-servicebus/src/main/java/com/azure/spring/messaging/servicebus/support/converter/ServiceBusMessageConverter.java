@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.azure.spring.messaging.implementation.converter.ObjectMapperHolder.OBJECT_MAPPER;
 
 /**
  * A converter to turn a {@link org.springframework.messaging.Message} to {@link ServiceBusMessage} and turn a {@link
@@ -42,7 +43,7 @@ public class ServiceBusMessageConverter
      * Construct the message converter with default {@code ObjectMapper}.
      */
     public ServiceBusMessageConverter() {
-        objectMapper = OBJECT_MAPPER;
+        this(OBJECT_MAPPER);
     }
 
     /**

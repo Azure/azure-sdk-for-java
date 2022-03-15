@@ -92,29 +92,11 @@ public class EventHubsBinderConfigurationTests {
     }
 
     @Test
-    void shouldConfigureConsumerPrefetchCount() {
-        new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(TestProcessorContainerConfiguration.class))
-            .withPropertyValues(
-                "spring.cloud.stream.eventhubs.bindings.consume-in-0.consumer.prefetch-count=150",
-                "spring.cloud.stream.eventhubs.bindings.consume-in-0.consumer.destination=dest",
-                "spring.cloud.stream.eventhubs.bindings.consume-in-0.consumer.group=group",
-                "spring.cloud.stream.eventhubs.namespace=namespace"
-                )
-            .run(context -> {
-                EventHubsExtendedBindingProperties properties = context.getBean(EventHubsExtendedBindingProperties.class);
-                EventHubsConsumerProperties consumerProperties = properties.getExtendedConsumerProperties("consume-in-0");
-                assertThat(consumerProperties.getPrefetchCount()).isEqualTo(150);
-            });
-    }
-
-    @Test
     void testExtendedBindingPropertiesShouldBind() {
         String producerConnectionString = String.format(CONNECTION_STRING_FORMAT, "fake-producer-namespace");
         String consumerConnectionString = String.format(CONNECTION_STRING_FORMAT, "fake-consumer-namespace");
 
-        new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(EventHubsExtendedBindingPropertiesTestConfiguration.class))
+        this.contextRunner
             .withPropertyValues(
                 "spring.cloud.stream.eventhubs.bindings.input.consumer.domain-name=fake-consumer-domain",
                 "spring.cloud.stream.eventhubs.bindings.input.consumer.namespace=fake-consumer-namespace",
@@ -143,14 +125,12 @@ public class EventHubsBinderConfigurationTests {
                 "spring.cloud.stream.eventhubs.bindings.input.producer.send-timeout=5m"
             )
             .run(context -> {
-                assertThat(context).hasSingleBean(EventHubsExtendedBindingProperties.class);
-                EventHubsExtendedBindingProperties extendedBindingProperties =
-                    context.getBean(EventHubsExtendedBindingProperties.class);
-
-                assertThat(extendedBindingProperties.getExtendedConsumerProperties("input")).isNotNull();
+                assertThat(context).hasSingleBean(EventHubsMessageChannelBinder.class);
+                EventHubsMessageChannelBinder binder =
+                    context.getBean(EventHubsMessageChannelBinder.class);
 
                 EventHubsConsumerProperties consumerProperties =
-                    extendedBindingProperties.getExtendedConsumerProperties("input");
+                    binder.getExtendedConsumerProperties("input");
                 assertEquals("fake-consumer-domain", consumerProperties.getDomainName());
                 assertEquals("fake-consumer-namespace", consumerProperties.getNamespace());
                 assertEquals(consumerConnectionString, consumerProperties.getConnectionString());
@@ -171,7 +151,7 @@ public class EventHubsBinderConfigurationTests {
                 assertEquals(10, consumerProperties.getCheckpoint().getCount());
 
                 EventHubsProducerProperties producerProperties =
-                    extendedBindingProperties.getExtendedProducerProperties("input");
+                    binder.getExtendedProducerProperties("input");
                 assertEquals("fake-producer-domain", producerProperties.getDomainName());
                 assertEquals("fake-producer-namespace", producerProperties.getNamespace());
                 assertEquals(producerConnectionString, producerProperties.getConnectionString());
@@ -182,17 +162,27 @@ public class EventHubsBinderConfigurationTests {
     }
 
     @Test
-    void clientFactoryCustomizerShouldBeConfigured() {
+    void producerFactoryCustomizerShouldBeConfigured() {
         AzureEventHubsProperties properties = new AzureEventHubsProperties();
         properties.setNamespace("fake-namespace");
         this.contextRunner
             .withBean(EventHubsProvisioner.class, () -> mock(EventHubsProvisioner.class))
             .withBean(AzureEventHubsProperties.class, () -> properties)
-            .run(context -> assertThat(context).hasSingleBean(ClientFactoryCustomizer.class));
+            .run(context -> assertThat(context).hasSingleBean(EventHubsProducerFactoryCustomizer.class));
     }
 
     @Test
-    void builderCustomizerShouldBeConfiguredToClientFactoryCustomizer() {
+    void processorFactoryCustomizerShouldBeConfigured() {
+        AzureEventHubsProperties properties = new AzureEventHubsProperties();
+        properties.setNamespace("fake-namespace");
+        this.contextRunner
+            .withBean(EventHubsProvisioner.class, () -> mock(EventHubsProvisioner.class))
+            .withBean(AzureEventHubsProperties.class, () -> properties)
+            .run(context -> assertThat(context).hasSingleBean(EventHubsProcessorFactoryCustomizer.class));
+    }
+
+    @Test
+    void producerBuilderCustomizerShouldBeConfiguredToProducerFactoryCustomizer() {
         AzureEventHubsProperties properties = new AzureEventHubsProperties();
         properties.setNamespace("fake-namespace");
         this.contextRunner
@@ -204,13 +194,32 @@ public class EventHubsBinderConfigurationTests {
             .withBean("other-customizer1", OtherBuilderCustomizer.class, OtherBuilderCustomizer::new)
             .withBean("other-customizer2", OtherBuilderCustomizer.class, OtherBuilderCustomizer::new)
             .run(context -> {
-                assertThat(context).hasSingleBean(ClientFactoryCustomizer.class);
-                ClientFactoryCustomizer clientFactoryCustomizer = context.getBean(ClientFactoryCustomizer.class);
+                assertThat(context).hasSingleBean(EventHubsProducerFactoryCustomizer.class);
+                EventHubsProducerFactoryCustomizer producerClientFactoryCustomizer = context.getBean(EventHubsProducerFactoryCustomizer.class);
+                EventHubsBinderConfiguration.DefaultProducerFactoryCustomizer defaultProducerFactoryCustomizer = (EventHubsBinderConfiguration.DefaultProducerFactoryCustomizer) producerClientFactoryCustomizer;
 
-                EventHubsBinderConfiguration.DefaultClientFactoryCustomizer defaultFactoryCustomizer = (EventHubsBinderConfiguration.DefaultClientFactoryCustomizer) clientFactoryCustomizer;
+                assertEquals(1, (int) defaultProducerFactoryCustomizer.getClientBuilderCustomizers().stream().count());
+            });
+    }
 
-                assertEquals(1, (int) defaultFactoryCustomizer.getClientBuilderCustomizers().stream().count());
-                assertEquals(2, (int) defaultFactoryCustomizer.getProcessorClientBuilderCustomizers().stream().count());
+    @Test
+    void processorBuilderCustomizerShouldBeConfiguredToProcessorFactoryCustomizer() {
+        AzureEventHubsProperties properties = new AzureEventHubsProperties();
+        properties.setNamespace("fake-namespace");
+        this.contextRunner
+            .withBean(EventHubsProvisioner.class, () -> mock(EventHubsProvisioner.class))
+            .withBean(AzureEventHubsProperties.class, () -> properties)
+            .withBean("producer-customizer1", EventHubBuilderCustomizer.class, EventHubBuilderCustomizer::new)
+            .withBean("processor-customizer1", EventProcessorBuilderCustomizer.class, EventProcessorBuilderCustomizer::new)
+            .withBean("processor-customizer2", EventProcessorBuilderCustomizer.class, EventProcessorBuilderCustomizer::new)
+            .withBean("other-customizer1", OtherBuilderCustomizer.class, OtherBuilderCustomizer::new)
+            .withBean("other-customizer2", OtherBuilderCustomizer.class, OtherBuilderCustomizer::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(EventHubsProcessorFactoryCustomizer.class);
+                EventHubsProcessorFactoryCustomizer processorClientFactoryCustomizer = context.getBean(EventHubsProcessorFactoryCustomizer.class);
+                EventHubsBinderConfiguration.DefaultProcessorFactoryCustomizer defaultProcessorFactoryCustomizer = (EventHubsBinderConfiguration.DefaultProcessorFactoryCustomizer) processorClientFactoryCustomizer;
+
+                assertEquals(2, (int) defaultProcessorFactoryCustomizer.getProcessorClientBuilderCustomizers().stream().count());
             });
     }
 

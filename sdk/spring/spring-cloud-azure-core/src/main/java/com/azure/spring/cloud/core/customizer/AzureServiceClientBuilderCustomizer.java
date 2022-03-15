@@ -8,6 +8,7 @@ package com.azure.spring.cloud.core.customizer;
  *
  * @param <T> The type of the service client builder.
  */
+@FunctionalInterface
 public interface AzureServiceClientBuilderCustomizer<T> {
 
     /**

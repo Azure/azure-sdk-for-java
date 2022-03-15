@@ -25,7 +25,7 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
 
     private static final String AMQP_URI_FORMAT = "amqps://%s?amqp.idleTimeout=%d";
     /**
-     * Connection string to connect to a Service Bus namesapce.
+     * Connection string to connect to a Service Bus namespace.
      */
     private String connectionString;
     /**
@@ -41,10 +41,8 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
      */
     private String pricingTier;
 
-    @NestedConfigurationProperty
     private final Listener listener = new Listener();
 
-    @NestedConfigurationProperty
     private final PrefetchPolicy prefetchPolicy = new PrefetchPolicy();
 
     @NestedConfigurationProperty
