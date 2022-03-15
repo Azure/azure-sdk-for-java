@@ -289,7 +289,7 @@ public final class CollectionClientBuilder {
     }
 
     /**
-     * Builds an instance of CollectionAsyncClient async client.
+     * Builds an instance of CollectionAsyncClient class.
      *
      * @return an instance of CollectionAsyncClient.
      */
@@ -299,12 +299,12 @@ public final class CollectionClientBuilder {
     }
 
     /**
-     * Builds an instance of CollectionClient sync client.
+     * Builds an instance of CollectionClient class.
      *
      * @return an instance of CollectionClient.
      */
     @Generated
     public CollectionClient buildClient() {
-        return new CollectionClient(buildInnerClient().getCollections());
+        return new CollectionClient(new CollectionAsyncClient(buildInnerClient().getCollections()));
     }
 }

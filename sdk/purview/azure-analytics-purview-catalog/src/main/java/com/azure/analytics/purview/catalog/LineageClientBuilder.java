@@ -289,7 +289,7 @@ public final class LineageClientBuilder {
     }
 
     /**
-     * Builds an instance of LineageAsyncClient async client.
+     * Builds an instance of LineageAsyncClient class.
      *
      * @return an instance of LineageAsyncClient.
      */
@@ -299,12 +299,12 @@ public final class LineageClientBuilder {
     }
 
     /**
-     * Builds an instance of LineageClient sync client.
+     * Builds an instance of LineageClient class.
      *
      * @return an instance of LineageClient.
      */
     @Generated
     public LineageClient buildClient() {
-        return new LineageClient(buildInnerClient().getLineages());
+        return new LineageClient(new LineageAsyncClient(buildInnerClient().getLineages()));
     }
 }

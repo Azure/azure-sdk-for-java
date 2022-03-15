@@ -9,7 +9,10 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -21,7 +24,7 @@ public final class EntityAsyncClient {
     @Generated private final EntitiesImpl serviceClient;
 
     /**
-     * Initializes an instance of Entities client.
+     * Initializes an instance of EntityAsyncClient class.
      *
      * @param serviceClient the service client implementation.
      */
@@ -187,6 +190,9 @@ public final class EntityAsyncClient {
      * @param entity Atlas entity with extended information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -292,6 +298,9 @@ public final class EntityAsyncClient {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return atlasEntitiesWithExtInfo along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -459,6 +468,9 @@ public final class EntityAsyncClient {
      * @param entities An array of entities to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -551,6 +563,9 @@ public final class EntityAsyncClient {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -596,6 +611,9 @@ public final class EntityAsyncClient {
      * @param request The request to associate a classification to multiple entities.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -698,6 +716,9 @@ public final class EntityAsyncClient {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return complete definition of an entity given its GUID along with {@link Response} on successful completion of
      *     {@link Mono}.
      */
@@ -800,6 +821,9 @@ public final class EntityAsyncClient {
      * @param body The value of the attribute.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -885,6 +909,9 @@ public final class EntityAsyncClient {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -926,6 +953,9 @@ public final class EntityAsyncClient {
      * @param classificationName The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return atlasClassification along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -942,6 +972,9 @@ public final class EntityAsyncClient {
      * @param classificationName The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -972,6 +1005,9 @@ public final class EntityAsyncClient {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return atlasClassifications along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -1015,6 +1051,9 @@ public final class EntityAsyncClient {
      * @param classifications An array of classifications to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -1059,6 +1098,9 @@ public final class EntityAsyncClient {
      * @param classifications An array of classifications to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -1167,6 +1209,9 @@ public final class EntityAsyncClient {
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return complete definition of an entity given its type and unique attribute. In addition to the typeName path
      *     parameter, attribute key-value pair(s) can be provided in the following format:
      *     attr:\&lt;attrName&gt;=&lt;attrValue&gt; along with {@link Response} on successful completion of {@link
@@ -1348,6 +1393,9 @@ public final class EntityAsyncClient {
      * @param atlasEntityWithExtInfo Atlas entity with extended information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -1445,6 +1493,9 @@ public final class EntityAsyncClient {
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -1469,6 +1520,9 @@ public final class EntityAsyncClient {
      * @param classificationName The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -1522,6 +1576,9 @@ public final class EntityAsyncClient {
      * @param atlasClassificationArray An array of classification to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -1575,6 +1632,9 @@ public final class EntityAsyncClient {
      * @param atlasClassificationArray An array of classification to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -1661,6 +1721,9 @@ public final class EntityAsyncClient {
      * @param entityHeaders Atlas entity headers.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return response that indicates each classification mutation result along with {@link Response} on successful
      *     completion of {@link Mono}.
      */
@@ -1780,6 +1843,9 @@ public final class EntityAsyncClient {
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return atlasEntitiesWithExtInfo along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -1853,6 +1919,9 @@ public final class EntityAsyncClient {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entity header given its GUID along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated

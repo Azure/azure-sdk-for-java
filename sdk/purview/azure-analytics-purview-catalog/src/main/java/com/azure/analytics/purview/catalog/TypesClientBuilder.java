@@ -289,7 +289,7 @@ public final class TypesClientBuilder {
     }
 
     /**
-     * Builds an instance of TypesAsyncClient async client.
+     * Builds an instance of TypesAsyncClient class.
      *
      * @return an instance of TypesAsyncClient.
      */
@@ -299,12 +299,12 @@ public final class TypesClientBuilder {
     }
 
     /**
-     * Builds an instance of TypesClient sync client.
+     * Builds an instance of TypesClient class.
      *
      * @return an instance of TypesClient.
      */
     @Generated
     public TypesClient buildClient() {
-        return new TypesClient(buildInnerClient().getTypes());
+        return new TypesClient(new TypesAsyncClient(buildInnerClient().getTypes()));
     }
 }

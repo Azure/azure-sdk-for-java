@@ -289,7 +289,7 @@ public final class DiscoveryClientBuilder {
     }
 
     /**
-     * Builds an instance of DiscoveryAsyncClient async client.
+     * Builds an instance of DiscoveryAsyncClient class.
      *
      * @return an instance of DiscoveryAsyncClient.
      */
@@ -299,12 +299,12 @@ public final class DiscoveryClientBuilder {
     }
 
     /**
-     * Builds an instance of DiscoveryClient sync client.
+     * Builds an instance of DiscoveryClient class.
      *
      * @return an instance of DiscoveryClient.
      */
     @Generated
     public DiscoveryClient buildClient() {
-        return new DiscoveryClient(buildInnerClient().getDiscoveries());
+        return new DiscoveryClient(new DiscoveryAsyncClient(buildInnerClient().getDiscoveries()));
     }
 }

@@ -289,7 +289,7 @@ public final class EntityClientBuilder {
     }
 
     /**
-     * Builds an instance of EntityAsyncClient async client.
+     * Builds an instance of EntityAsyncClient class.
      *
      * @return an instance of EntityAsyncClient.
      */
@@ -299,12 +299,12 @@ public final class EntityClientBuilder {
     }
 
     /**
-     * Builds an instance of EntityClient sync client.
+     * Builds an instance of EntityClient class.
      *
      * @return an instance of EntityClient.
      */
     @Generated
     public EntityClient buildClient() {
-        return new EntityClient(buildInnerClient().getEntities());
+        return new EntityClient(new EntityAsyncClient(buildInnerClient().getEntities()));
     }
 }

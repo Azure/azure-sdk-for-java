@@ -289,7 +289,7 @@ public final class RelationshipClientBuilder {
     }
 
     /**
-     * Builds an instance of RelationshipAsyncClient async client.
+     * Builds an instance of RelationshipAsyncClient class.
      *
      * @return an instance of RelationshipAsyncClient.
      */
@@ -299,12 +299,12 @@ public final class RelationshipClientBuilder {
     }
 
     /**
-     * Builds an instance of RelationshipClient sync client.
+     * Builds an instance of RelationshipClient class.
      *
      * @return an instance of RelationshipClient.
      */
     @Generated
     public RelationshipClient buildClient() {
-        return new RelationshipClient(buildInnerClient().getRelationships());
+        return new RelationshipClient(new RelationshipAsyncClient(buildInnerClient().getRelationships()));
     }
 }

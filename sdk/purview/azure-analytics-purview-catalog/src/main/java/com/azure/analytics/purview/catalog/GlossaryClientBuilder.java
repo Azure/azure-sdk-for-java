@@ -289,7 +289,7 @@ public final class GlossaryClientBuilder {
     }
 
     /**
-     * Builds an instance of GlossaryAsyncClient async client.
+     * Builds an instance of GlossaryAsyncClient class.
      *
      * @return an instance of GlossaryAsyncClient.
      */
@@ -299,12 +299,12 @@ public final class GlossaryClientBuilder {
     }
 
     /**
-     * Builds an instance of GlossaryClient sync client.
+     * Builds an instance of GlossaryClient class.
      *
      * @return an instance of GlossaryClient.
      */
     @Generated
     public GlossaryClient buildClient() {
-        return new GlossaryClient(buildInnerClient().getGlossaries());
+        return new GlossaryClient(new GlossaryAsyncClient(buildInnerClient().getGlossaries()));
     }
 }
