@@ -12,6 +12,7 @@
 #### Dependency Updates
 
 - Update `azure-core` dependency to `1.26.0`.
+- Update `azure-core-http-netty` dependency to `1.11.8`.
 
 ## 1.0.2 (2022-02-12)
 
