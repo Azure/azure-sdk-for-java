@@ -5,7 +5,8 @@ package com.azure.spring.cloud.stream.binder.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
-import com.azure.spring.cloud.stream.binder.servicebus.config.ClientFactoryCustomizer;
+import com.azure.spring.cloud.stream.binder.servicebus.config.ServiceBusProcessorFactoryCustomizer;
+import com.azure.spring.cloud.stream.binder.servicebus.config.ServiceBusProducerFactoryCustomizer;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusConsumerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusProducerProperties;
@@ -18,7 +19,6 @@ import com.azure.spring.integration.core.instrumentation.Instrumentation;
 import com.azure.spring.integration.core.instrumentation.InstrumentationManager;
 import com.azure.spring.integration.servicebus.implementation.health.ServiceBusProcessorInstrumentation;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusInboundChannelAdapter;
-import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.messaging.servicebus.core.ServiceBusTemplate;
@@ -34,11 +34,11 @@ import com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessage
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.stream.binder.AbstractMessageChannelBinder;
+import org.springframework.cloud.stream.binder.BinderHeaders;
+import org.springframework.cloud.stream.binder.BinderSpecificPropertiesProvider;
 import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
 import org.springframework.cloud.stream.binder.ExtendedProducerProperties;
 import org.springframework.cloud.stream.binder.ExtendedPropertiesBinder;
-import org.springframework.cloud.stream.binder.BinderHeaders;
-import org.springframework.cloud.stream.binder.BinderSpecificPropertiesProvider;
 import org.springframework.cloud.stream.provisioning.ConsumerDestination;
 import org.springframework.cloud.stream.provisioning.ProducerDestination;
 import org.springframework.integration.core.MessageProducer;
@@ -83,10 +83,9 @@ public class ServiceBusMessageChannelBinder extends
     private final InstrumentationManager instrumentationManager = new DefaultInstrumentationManager();
     private final Map<String, ExtendedProducerProperties<ServiceBusProducerProperties>>
         extendedProducerPropertiesMap = new ConcurrentHashMap<>();
-    private final Map<ConsumerIdentifier, ExtendedConsumerProperties<ServiceBusConsumerProperties>>
-        extendedConsumerPropertiesMap = new ConcurrentHashMap<>();
 
-    private List<ClientFactoryCustomizer> clientFactoryCustomizers = new ArrayList<>();
+    private List<ServiceBusProducerFactoryCustomizer> producerFactoryCustomizers = new ArrayList<>();
+    private List<ServiceBusProcessorFactoryCustomizer> processorFactoryCustomizers = new ArrayList<>();
 
     /**
      * Construct a {@link ServiceBusMessageChannelBinder} with the specified headersToEmbed and {@link ServiceBusChannelProvisioner}.
@@ -128,7 +127,6 @@ public class ServiceBusMessageChannelBinder extends
     @Override
     protected MessageProducer createConsumerEndpoint(ConsumerDestination destination, String group,
                                                      ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
-        extendedConsumerPropertiesMap.put(new ConsumerIdentifier(destination.getName(), group), properties);
         final ServiceBusInboundChannelAdapter inboundAdapter;
 
         ServiceBusContainerProperties containerProperties = createContainerProperties(destination, group, properties);
@@ -271,7 +269,7 @@ public class ServiceBusMessageChannelBinder extends
             DefaultServiceBusNamespaceProducerFactory factory = new DefaultServiceBusNamespaceProducerFactory(
                 this.namespaceProperties, getProducerPropertiesSupplier());
 
-            clientFactoryCustomizers.forEach(customizer -> customizer.customize(factory));
+            producerFactoryCustomizers.forEach(customizer -> customizer.customize(factory));
 
             factory.addListener((name, client) -> {
                 DefaultInstrumentation instrumentation = new DefaultInstrumentation(name, PRODUCER);
@@ -287,7 +285,7 @@ public class ServiceBusMessageChannelBinder extends
         if (this.processorFactory == null) {
             this.processorFactory = new DefaultServiceBusNamespaceProcessorFactory(this.namespaceProperties);
 
-            clientFactoryCustomizers.forEach(customizer -> customizer.customize(this.processorFactory));
+            processorFactoryCustomizers.forEach(customizer -> customizer.customize(this.processorFactory));
 
             this.processorFactory.addListener((name, subscription, client) -> {
                 String instrumentationName = name + "/" + getGroup(subscription);
@@ -346,11 +344,21 @@ public class ServiceBusMessageChannelBinder extends
     }
 
     /**
-     * Set the client factory customizers.
-     * @param clientFactoryCustomizers The client factory customizers.
+     * Set the producer factory customizers.
+     *
+     * @param producerFactoryCustomizers The producer factory customizers.
      */
-    public void setClientFactoryCustomizers(List<ClientFactoryCustomizer> clientFactoryCustomizers) {
-        this.clientFactoryCustomizers = clientFactoryCustomizers;
+    public void setProducerFactoryCustomizers(List<ServiceBusProducerFactoryCustomizer> producerFactoryCustomizers) {
+        this.producerFactoryCustomizers = producerFactoryCustomizers;
+    }
+
+    /**
+     * Set the processor factory customizers.
+     *
+     * @param processorFactoryCustomizers The processor factory customizers.
+     */
+    public void setProcessorFactoryCustomizers(List<ServiceBusProcessorFactoryCustomizer> processorFactoryCustomizers) {
+        this.processorFactoryCustomizers = processorFactoryCustomizers;
     }
 
 }

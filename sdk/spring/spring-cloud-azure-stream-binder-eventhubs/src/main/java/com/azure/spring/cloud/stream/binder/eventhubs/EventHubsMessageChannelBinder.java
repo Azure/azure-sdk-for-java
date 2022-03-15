@@ -5,11 +5,22 @@ package com.azure.spring.cloud.stream.binder.eventhubs;
 
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
-import com.azure.spring.cloud.stream.binder.eventhubs.config.ClientFactoryCustomizer;
+import com.azure.spring.cloud.stream.binder.eventhubs.config.EventHubsProcessorFactoryCustomizer;
+import com.azure.spring.cloud.stream.binder.eventhubs.config.EventHubsProducerFactoryCustomizer;
 import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsConsumerProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsProducerProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.core.provisioning.EventHubsChannelProvisioner;
+import com.azure.spring.integration.core.handler.DefaultMessageHandler;
+import com.azure.spring.integration.core.implementation.instrumentation.DefaultInstrumentation;
+import com.azure.spring.integration.core.implementation.instrumentation.DefaultInstrumentationManager;
+import com.azure.spring.integration.core.implementation.instrumentation.InstrumentationSendCallback;
+import com.azure.spring.integration.core.instrumentation.Instrumentation;
+import com.azure.spring.integration.core.instrumentation.InstrumentationManager;
+import com.azure.spring.integration.eventhubs.implementation.health.EventHubsProcessorInstrumentation;
+import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAdapter;
+import com.azure.spring.messaging.ListenerMode;
+import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.messaging.eventhubs.core.EventHubsTemplate;
 import com.azure.spring.messaging.eventhubs.core.listener.EventHubsMessageListenerContainer;
@@ -18,17 +29,6 @@ import com.azure.spring.messaging.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.eventhubs.core.properties.ProducerProperties;
 import com.azure.spring.messaging.eventhubs.implementation.core.DefaultEventHubsNamespaceProcessorFactory;
 import com.azure.spring.messaging.eventhubs.implementation.core.DefaultEventHubsNamespaceProducerFactory;
-import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAdapter;
-import com.azure.spring.integration.eventhubs.implementation.health.EventHubsProcessorInstrumentation;
-import com.azure.spring.integration.core.handler.DefaultMessageHandler;
-import com.azure.spring.integration.core.implementation.instrumentation.DefaultInstrumentation;
-import com.azure.spring.integration.core.implementation.instrumentation.DefaultInstrumentationManager;
-import com.azure.spring.integration.core.implementation.instrumentation.InstrumentationSendCallback;
-import com.azure.spring.integration.core.instrumentation.Instrumentation;
-import com.azure.spring.integration.core.instrumentation.InstrumentationManager;
-import com.azure.spring.messaging.ConsumerIdentifier;
-import com.azure.spring.messaging.ListenerMode;
-import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.eventhubs.implementation.properties.merger.ProcessorPropertiesMerger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,10 +82,9 @@ public class EventHubsMessageChannelBinder extends
     private EventHubsExtendedBindingProperties bindingProperties = new EventHubsExtendedBindingProperties();
     private final Map<String, ExtendedProducerProperties<EventHubsProducerProperties>>
         extendedProducerPropertiesMap = new ConcurrentHashMap<>();
-    private final Map<ConsumerIdentifier, ExtendedConsumerProperties<EventHubsConsumerProperties>>
-        extendedConsumerPropertiesMap = new ConcurrentHashMap<>();
 
-    private List<ClientFactoryCustomizer> clientFactoryCustomizers = new ArrayList<>();
+    private List<EventHubsProducerFactoryCustomizer> producerFactoryCustomizers = new ArrayList<>();
+    private List<EventHubsProcessorFactoryCustomizer> processorFactoryCustomizers = new ArrayList<>();
 
     /**
      * Construct a {@link EventHubsMessageChannelBinder} with the specified headers to embed and {@link EventHubsChannelProvisioner}.
@@ -127,7 +126,6 @@ public class EventHubsMessageChannelBinder extends
     @Override
     protected MessageProducer createConsumerEndpoint(ConsumerDestination destination, String group,
                                                      ExtendedConsumerProperties<EventHubsConsumerProperties> properties) {
-        extendedConsumerPropertiesMap.put(new ConsumerIdentifier(destination.getName(), group), properties);
         Assert.notNull(getProcessorFactory(), "processor factory can't be null when create a consumer");
 
         boolean anonymous = !StringUtils.hasText(group);
@@ -225,7 +223,7 @@ public class EventHubsMessageChannelBinder extends
             DefaultEventHubsNamespaceProducerFactory factory = new DefaultEventHubsNamespaceProducerFactory(
                 this.namespaceProperties, getProducerPropertiesSupplier());
 
-            clientFactoryCustomizers.forEach(customizer -> customizer.customize(factory));
+            producerFactoryCustomizers.forEach(customizer -> customizer.customize(factory));
 
             factory.addListener((name, producerAsyncClient) -> {
                 DefaultInstrumentation instrumentation = new DefaultInstrumentation(name, PRODUCER);
@@ -242,7 +240,7 @@ public class EventHubsMessageChannelBinder extends
             this.processorFactory = new DefaultEventHubsNamespaceProcessorFactory(
                 this.checkpointStore, this.namespaceProperties);
 
-            clientFactoryCustomizers.forEach(customizer -> customizer.customize(processorFactory));
+            processorFactoryCustomizers.forEach(customizer -> customizer.customize(processorFactory));
 
             processorFactory.addListener((name, consumerGroup, processorClient) -> {
                 String instrumentationName = name + "/" + consumerGroup;
@@ -283,11 +281,21 @@ public class EventHubsMessageChannelBinder extends
     }
 
     /**
-     * Set the client factory customizers.
-     * @param clientFactoryCustomizers The client factory customizers.
+     * Set the producer factory customizers.
+     *
+     * @param producerFactoryCustomizers The producer factory customizers.
      */
-    public void setClientFactoryCustomizers(List<ClientFactoryCustomizer> clientFactoryCustomizers) {
-        this.clientFactoryCustomizers = clientFactoryCustomizers;
+    public void setProducerFactoryCustomizers(List<EventHubsProducerFactoryCustomizer> producerFactoryCustomizers) {
+        this.producerFactoryCustomizers = producerFactoryCustomizers;
+    }
+
+    /**
+     * Set the processor factory customizers.
+     *
+     * @param processorFactoryCustomizers The processor factory customizers.
+     */
+    public void setProcessorFactoryCustomizers(List<EventHubsProcessorFactoryCustomizer> processorFactoryCustomizers) {
+        this.processorFactoryCustomizers = processorFactoryCustomizers;
     }
 
 }
