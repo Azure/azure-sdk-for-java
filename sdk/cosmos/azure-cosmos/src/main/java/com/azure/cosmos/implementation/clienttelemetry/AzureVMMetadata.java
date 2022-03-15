@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos.implementation.clienttelemetry;
+package com.azure.cosmos.implementation.clientTelemetry;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -29,6 +29,10 @@ public class AzureVMMetadata {
         return compute != null ? compute.getVmSize() : StringUtils.EMPTY;
     }
 
+    public String getVmId() {
+        return compute != null ? compute.getVmId() : StringUtils.EMPTY;
+    }
+
     public Compute getCompute() {
         return compute;
     }
@@ -44,6 +48,7 @@ public class AzureVMMetadata {
         private String azEnvironment;
         private String osType;
         private String vmSize;
+        private String vmId;
 
         public String getSku() {
             return sku;
@@ -83,6 +88,14 @@ public class AzureVMMetadata {
 
         public void setVmSize(String vmSize) {
             this.vmSize = vmSize;
+        }
+
+        public String getVmId() {
+            return vmId;
+        }
+
+        public void setVmId(String vmId) {
+            this.vmId = vmId;
         }
     }
 }

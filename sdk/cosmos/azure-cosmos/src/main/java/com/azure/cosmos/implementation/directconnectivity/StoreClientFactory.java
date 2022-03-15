@@ -9,7 +9,7 @@ import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.SessionContainer;
 import com.azure.cosmos.implementation.UserAgentContainer;
-import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.clientTelemetry.ClientTelemetry;
 
 // We suppress the "try" warning here because the close() method's signature
 // allows it to throw InterruptedException which is strongly advised against

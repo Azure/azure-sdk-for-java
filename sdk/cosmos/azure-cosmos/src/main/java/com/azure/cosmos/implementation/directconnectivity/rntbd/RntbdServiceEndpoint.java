@@ -7,7 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.clientTelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.TransportException;

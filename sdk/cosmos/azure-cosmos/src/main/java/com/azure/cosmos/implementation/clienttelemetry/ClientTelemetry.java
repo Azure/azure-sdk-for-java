@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos.implementation.clienttelemetry;
+package com.azure.cosmos.implementation.clientTelemetry;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
@@ -98,7 +98,8 @@ public class ClientTelemetry {
     private final IAuthorizationTokenProvider tokenProvider;
     private final String globalDatabaseAccountName;
 
-    public ClientTelemetry(Boolean acceleratedNetworking,
+    public ClientTelemetry(String machineId,
+                           Boolean acceleratedNetworking,
                            String clientId,
                            String processId,
                            String userAgent,
@@ -111,7 +112,7 @@ public class ClientTelemetry {
                            IAuthorizationTokenProvider tokenProvider,
                            List<String> preferredRegions
     ) {
-        clientTelemetryInfo = new ClientTelemetryInfo(clientId, processId, userAgent, connectionMode,
+        clientTelemetryInfo = new ClientTelemetryInfo(machineId, clientId, processId, userAgent, connectionMode,
             globalDatabaseAccountName, applicationRegion, hostEnvInfo, acceleratedNetworking, preferredRegions);
         this.isClosed = false;
         this.httpClient = httpClient;
@@ -256,6 +257,7 @@ public class ClientTelemetry {
         httpResponseMono.flatMap(response -> response.bodyAsString()).map(metadataJson -> parse(metadataJson,
             AzureVMMetadata.class)).doOnSuccess(azureVMMetadata -> {
             this.clientTelemetryInfo.setApplicationRegion(azureVMMetadata.getLocation());
+            this.clientTelemetryInfo.setMachineId(azureVMMetadata.getVmId());
             this.clientTelemetryInfo.setHostEnvInfo(azureVMMetadata.getOsType() + "|" + azureVMMetadata.getSku() +
                 "|" + azureVMMetadata.getVmSize() + "|" + azureVMMetadata.getAzEnvironment());
         }).onErrorResume(throwable -> {

@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos.implementation.clienttelemetry;
+package com.azure.cosmos.implementation.clientTelemetry;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.OperationType;

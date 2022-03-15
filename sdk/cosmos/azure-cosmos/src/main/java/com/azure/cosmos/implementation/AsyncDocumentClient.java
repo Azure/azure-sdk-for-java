@@ -9,7 +9,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
-import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.clientTelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfo;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;

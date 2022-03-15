@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
-import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.clientTelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint.Config;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;

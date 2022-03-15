@@ -21,7 +21,7 @@ import com.azure.cosmos.implementation.caches.SizeLimitingLRUCache;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
-import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.clientTelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
@@ -110,6 +110,7 @@ import static com.azure.cosmos.models.ModelBridgeInternal.serializeJsonToByteBuf
  */
 public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorizationTokenProvider, CpuMemoryListener,
     DiagnosticsClientContext {
+    private static final String tempMachineId = "uuid:UUID.randomUUID().toString()";
     private static final AtomicInteger activeClientsCnt = new AtomicInteger(0);
     private static final AtomicInteger clientIdGenerator = new AtomicInteger(0);
     private static final Range<String> RANGE_INCLUDING_ALL_PARTITION_KEY_RANGES = new Range<>(
@@ -457,11 +458,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 collectionCache);
 
             updateGatewayProxy();
-            clientTelemetry = new ClientTelemetry(null, UUID.randomUUID().toString(),
+            clientTelemetry = new ClientTelemetry(tempMachineId, null, UUID.randomUUID().toString(),
                 ManagementFactory.getRuntimeMXBean().getName(), userAgentContainer.getUserAgent(),
                 connectionPolicy.getConnectionMode(), globalEndpointManager.getLatestDatabaseAccount().getId(),
                 null, null, this.reactorHttpClient, connectionPolicy.isClientTelemetryEnabled(), this, this.connectionPolicy.getPreferredRegions());
             clientTelemetry.init();
+            this.diagnosticsClientConfig.withMachineId(clientTelemetry.getClientTelemetryInfo().getMachineId());
             if (this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY) {
                 this.storeModel = this.gatewayProxy;
             } else {

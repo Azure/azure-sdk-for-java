@@ -9,7 +9,7 @@ import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
-import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.clientTelemetry.ClientTelemetry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
