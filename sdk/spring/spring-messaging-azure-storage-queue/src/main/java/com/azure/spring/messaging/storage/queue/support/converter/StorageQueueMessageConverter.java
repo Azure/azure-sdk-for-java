@@ -10,6 +10,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.nio.charset.StandardCharsets;
 
+import static com.azure.spring.messaging.implementation.converter.ObjectMapperHolder.OBJECT_MAPPER;
+
 /**
  * A converter to turn a {@link org.springframework.messaging.Message} to {@link QueueMessageItem} and vice versa.
  */
@@ -21,7 +23,7 @@ public class StorageQueueMessageConverter extends AbstractAzureMessageConverter<
      * Create an instance of {@link StorageQueueMessageConverter}.
      */
     public StorageQueueMessageConverter() {
-        this.objectMapper = OBJECT_MAPPER;
+        this(OBJECT_MAPPER);
     }
 
     /**
