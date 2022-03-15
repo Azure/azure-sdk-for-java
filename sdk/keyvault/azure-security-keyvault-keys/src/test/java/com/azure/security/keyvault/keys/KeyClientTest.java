@@ -533,6 +533,9 @@ public class KeyClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     @DisabledIfSystemProperty(named = "IS_SKIP_ROTATION_POLICY_TEST", matches = "true")
     public void getKeyRotationPolicyOfNonExistentKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        // Key Rotation is not yet enabled in Managed HSM.
+        Assumptions.assumeTrue(!isHsmEnabled);
+
         createKeyClient(httpClient, serviceVersion);
 
         String keyName = testResourceNamer.randomName("nonExistentKey", 20);
