@@ -88,7 +88,7 @@ The `DefaultAzureCredential` is appropriate for most scenarios where the applica
  - Environment - The `DefaultAzureCredential` will read account information specified via [environment variables](#environment-variables) and use it to authenticate.
  - Managed Identity - If the application is deployed to an Azure host with Managed Identity enabled, the `DefaultAzureCredential` will authenticate with that account.
  - IntelliJ - If the developer has authenticated via Azure Toolkit for IntelliJ, the `DefaultAzureCredential` will authenticate with that account.
- - Visual Studio Code - If the developer has authenticated via the Visual Studio Code Azure Account plugin, the `DefaultAzureCredential` will authenticate with that account.
+ - Visual Studio Code - If the developer has authenticated via the Visual Studio Code Azure Account extension (**version 0.9.11 or earlier**), the `DefaultAzureCredential` will authenticate with that account.
  - Azure CLI - If the developer has authenticated an account via the Azure CLI `az login` command, the `DefaultAzureCredential` will authenticate with that account.
 
 ## Examples
@@ -379,7 +379,7 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
     </tr>
     <tr>
       <td><code>VisualStudioCodeCredential</code></td>
-      <td>authenticate in a development environment with the account in Visual Studio Azure Account extension</td>
+      <td>authenticate in a development environment with the account in Visual Studio Azure Account extension (**version 0.9.11 or earlier**)</td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#sign-in-visual-studio-code-azure-account-extension-for-visualstudiocodecredential">configuration</a></td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-visual-studio-code">example</a></td>
       <td><a href="https://code.visualstudio.com/docs/azure/extensions">VS Code Azure extension</a></td>
