@@ -70,7 +70,7 @@ stages:
         Artifacts: ${{ parameters.Artifacts }}
         ${{ if eq(parameters.ServiceDirectory, 'template') }}:
           TestPipeline: true
-        ArtifactName: packages
+        ArtifactName: packages-signed
         TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
         # EnableSigningStage: false
         # EnableAllDependsOn: false
