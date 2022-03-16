@@ -5,23 +5,25 @@
 package com.azure.analytics.purview.catalog.generated;
 
 import com.azure.analytics.purview.catalog.EntityClient;
-import com.azure.analytics.purview.catalog.PurviewCatalogClientBuilder;
+import com.azure.analytics.purview.catalog.EntityClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class EntityDeleteClassification {
     public static void main(String[] args) {
-        EntityClient client =
-                new PurviewCatalogClientBuilder()
+        // BEGIN: com.azure.analytics.purview.catalog.generated.entitydeleteclassification.entitydeleteclassification
+        EntityClient entityClient =
+                new EntityClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
-                        .buildEntityClient();
+                        .buildClient();
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response =
-                client.deleteClassificationWithResponse(
+                entityClient.deleteClassificationWithResponse(
                         "cc0730ba-9b30-41f0-6953-559d17626d2b",
                         "MICROSOFT.FINANCIAL.US.ABA_ROUTING_NUMBER",
                         requestOptions);
+        // END: com.azure.analytics.purview.catalog.generated.entitydeleteclassification.entitydeleteclassification
     }
 }

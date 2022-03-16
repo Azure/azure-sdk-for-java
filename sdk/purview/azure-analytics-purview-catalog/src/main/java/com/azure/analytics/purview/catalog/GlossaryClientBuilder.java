@@ -27,41 +27,26 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JacksonAdapter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/** A builder for creating a new instance of the PurviewCatalogClient type. */
-@ServiceClientBuilder(
-        serviceClients = {
-            EntityClient.class,
-            GlossaryClient.class,
-            DiscoveryClient.class,
-            LineageClient.class,
-            RelationshipClient.class,
-            TypesClient.class,
-            CollectionClient.class,
-            EntityAsyncClient.class,
-            GlossaryAsyncClient.class,
-            DiscoveryAsyncClient.class,
-            LineageAsyncClient.class,
-            RelationshipAsyncClient.class,
-            TypesAsyncClient.class,
-            CollectionAsyncClient.class
-        })
-public final class PurviewCatalogClientBuilder {
+/** A builder for creating a new instance of the GlossaryClient type. */
+@ServiceClientBuilder(serviceClients = {GlossaryClient.class, GlossaryAsyncClient.class})
+public final class GlossaryClientBuilder {
     @Generated private static final String SDK_NAME = "name";
 
     @Generated private static final String SDK_VERSION = "version";
 
-    @Generated static final String[] DEFAULT_SCOPES = new String[] {"https://purview.azure.net/.default"};
+    @Generated private static final String[] DEFAULT_SCOPES = new String[] {"https://purview.azure.net/.default"};
 
-    @Generated private final Map<String, String> properties = new HashMap<>();
-
-    /** Create an instance of the PurviewCatalogClientBuilder. */
     @Generated
-    public PurviewCatalogClientBuilder() {
+    private final Map<String, String> properties =
+            CoreUtils.getProperties("azure-analytics-purview-catalog.properties");
+
+    /** Create an instance of the GlossaryClientBuilder. */
+    @Generated
+    public GlossaryClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
 
@@ -75,10 +60,10 @@ public final class PurviewCatalogClientBuilder {
      * Sets The catalog endpoint of your Purview account. Example: https://{accountName}.purview.azure.com.
      *
      * @param endpoint the endpoint value.
-     * @return the PurviewCatalogClientBuilder.
+     * @return the GlossaryClientBuilder.
      */
     @Generated
-    public PurviewCatalogClientBuilder endpoint(String endpoint) {
+    public GlossaryClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -92,10 +77,10 @@ public final class PurviewCatalogClientBuilder {
      * Sets Service version.
      *
      * @param serviceVersion the serviceVersion value.
-     * @return the PurviewCatalogClientBuilder.
+     * @return the GlossaryClientBuilder.
      */
     @Generated
-    public PurviewCatalogClientBuilder serviceVersion(PurviewCatalogServiceVersion serviceVersion) {
+    public GlossaryClientBuilder serviceVersion(PurviewCatalogServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }
@@ -109,10 +94,10 @@ public final class PurviewCatalogClientBuilder {
      * Sets The HTTP pipeline to send requests through.
      *
      * @param pipeline the pipeline value.
-     * @return the PurviewCatalogClientBuilder.
+     * @return the GlossaryClientBuilder.
      */
     @Generated
-    public PurviewCatalogClientBuilder pipeline(HttpPipeline pipeline) {
+    public GlossaryClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -126,10 +111,10 @@ public final class PurviewCatalogClientBuilder {
      * Sets The HTTP client used to send the request.
      *
      * @param httpClient the httpClient value.
-     * @return the PurviewCatalogClientBuilder.
+     * @return the GlossaryClientBuilder.
      */
     @Generated
-    public PurviewCatalogClientBuilder httpClient(HttpClient httpClient) {
+    public GlossaryClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
@@ -144,10 +129,10 @@ public final class PurviewCatalogClientBuilder {
      * Sets The configuration store that is used during construction of the service client.
      *
      * @param configuration the configuration value.
-     * @return the PurviewCatalogClientBuilder.
+     * @return the GlossaryClientBuilder.
      */
     @Generated
-    public PurviewCatalogClientBuilder configuration(Configuration configuration) {
+    public GlossaryClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -161,10 +146,10 @@ public final class PurviewCatalogClientBuilder {
      * Sets The TokenCredential used for authentication.
      *
      * @param tokenCredential the tokenCredential value.
-     * @return the PurviewCatalogClientBuilder.
+     * @return the GlossaryClientBuilder.
      */
     @Generated
-    public PurviewCatalogClientBuilder credential(TokenCredential tokenCredential) {
+    public GlossaryClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
         return this;
     }
@@ -178,10 +163,10 @@ public final class PurviewCatalogClientBuilder {
      * Sets The logging configuration for HTTP requests and responses.
      *
      * @param httpLogOptions the httpLogOptions value.
-     * @return the PurviewCatalogClientBuilder.
+     * @return the GlossaryClientBuilder.
      */
     @Generated
-    public PurviewCatalogClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+    public GlossaryClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
     }
@@ -196,10 +181,10 @@ public final class PurviewCatalogClientBuilder {
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
      *
      * @param retryPolicy the retryPolicy value.
-     * @return the PurviewCatalogClientBuilder.
+     * @return the GlossaryClientBuilder.
      */
     @Generated
-    public PurviewCatalogClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public GlossaryClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
@@ -219,10 +204,10 @@ public final class PurviewCatalogClientBuilder {
      * Sets The client options such as application ID and custom headers to set on a request.
      *
      * @param clientOptions the clientOptions value.
-     * @return the PurviewCatalogClientBuilder.
+     * @return the GlossaryClientBuilder.
      */
     @Generated
-    public PurviewCatalogClientBuilder clientOptions(ClientOptions clientOptions) {
+    public GlossaryClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
     }
@@ -231,10 +216,10 @@ public final class PurviewCatalogClientBuilder {
      * Adds a custom Http pipeline policy.
      *
      * @param customPolicy The custom Http pipeline policy to add.
-     * @return the PurviewCatalogClientBuilder.
+     * @return the GlossaryClientBuilder.
      */
     @Generated
-    public PurviewCatalogClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+    public GlossaryClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         pipelinePolicies.add(customPolicy);
         return this;
     }
@@ -304,142 +289,22 @@ public final class PurviewCatalogClientBuilder {
     }
 
     /**
-     * Builds an instance of EntityAsyncClient async client.
-     *
-     * @return an instance of EntityAsyncClient.
-     */
-    @Generated
-    public EntityAsyncClient buildEntityAsyncClient() {
-        return new EntityAsyncClient(buildInnerClient().getEntities());
-    }
-
-    /**
-     * Builds an instance of GlossaryAsyncClient async client.
+     * Builds an instance of GlossaryAsyncClient class.
      *
      * @return an instance of GlossaryAsyncClient.
      */
     @Generated
-    public GlossaryAsyncClient buildGlossaryAsyncClient() {
+    public GlossaryAsyncClient buildAsyncClient() {
         return new GlossaryAsyncClient(buildInnerClient().getGlossaries());
     }
 
     /**
-     * Builds an instance of DiscoveryAsyncClient async client.
-     *
-     * @return an instance of DiscoveryAsyncClient.
-     */
-    @Generated
-    public DiscoveryAsyncClient buildDiscoveryAsyncClient() {
-        return new DiscoveryAsyncClient(buildInnerClient().getDiscoveries());
-    }
-
-    /**
-     * Builds an instance of LineageAsyncClient async client.
-     *
-     * @return an instance of LineageAsyncClient.
-     */
-    @Generated
-    public LineageAsyncClient buildLineageAsyncClient() {
-        return new LineageAsyncClient(buildInnerClient().getLineages());
-    }
-
-    /**
-     * Builds an instance of RelationshipAsyncClient async client.
-     *
-     * @return an instance of RelationshipAsyncClient.
-     */
-    @Generated
-    public RelationshipAsyncClient buildRelationshipAsyncClient() {
-        return new RelationshipAsyncClient(buildInnerClient().getRelationships());
-    }
-
-    /**
-     * Builds an instance of TypesAsyncClient async client.
-     *
-     * @return an instance of TypesAsyncClient.
-     */
-    @Generated
-    public TypesAsyncClient buildTypesAsyncClient() {
-        return new TypesAsyncClient(buildInnerClient().getTypes());
-    }
-
-    /**
-     * Builds an instance of CollectionAsyncClient async client.
-     *
-     * @return an instance of CollectionAsyncClient.
-     */
-    @Generated
-    public CollectionAsyncClient buildCollectionAsyncClient() {
-        return new CollectionAsyncClient(buildInnerClient().getCollections());
-    }
-
-    /**
-     * Builds an instance of EntityClient sync client.
-     *
-     * @return an instance of EntityClient.
-     */
-    @Generated
-    public EntityClient buildEntityClient() {
-        return new EntityClient(buildInnerClient().getEntities());
-    }
-
-    /**
-     * Builds an instance of GlossaryClient sync client.
+     * Builds an instance of GlossaryClient class.
      *
      * @return an instance of GlossaryClient.
      */
     @Generated
-    public GlossaryClient buildGlossaryClient() {
-        return new GlossaryClient(buildInnerClient().getGlossaries());
-    }
-
-    /**
-     * Builds an instance of DiscoveryClient sync client.
-     *
-     * @return an instance of DiscoveryClient.
-     */
-    @Generated
-    public DiscoveryClient buildDiscoveryClient() {
-        return new DiscoveryClient(buildInnerClient().getDiscoveries());
-    }
-
-    /**
-     * Builds an instance of LineageClient sync client.
-     *
-     * @return an instance of LineageClient.
-     */
-    @Generated
-    public LineageClient buildLineageClient() {
-        return new LineageClient(buildInnerClient().getLineages());
-    }
-
-    /**
-     * Builds an instance of RelationshipClient sync client.
-     *
-     * @return an instance of RelationshipClient.
-     */
-    @Generated
-    public RelationshipClient buildRelationshipClient() {
-        return new RelationshipClient(buildInnerClient().getRelationships());
-    }
-
-    /**
-     * Builds an instance of TypesClient sync client.
-     *
-     * @return an instance of TypesClient.
-     */
-    @Generated
-    public TypesClient buildTypesClient() {
-        return new TypesClient(buildInnerClient().getTypes());
-    }
-
-    /**
-     * Builds an instance of CollectionClient sync client.
-     *
-     * @return an instance of CollectionClient.
-     */
-    @Generated
-    public CollectionClient buildCollectionClient() {
-        return new CollectionClient(buildInnerClient().getCollections());
+    public GlossaryClient buildClient() {
+        return new GlossaryClient(new GlossaryAsyncClient(buildInnerClient().getGlossaries()));
     }
 }
