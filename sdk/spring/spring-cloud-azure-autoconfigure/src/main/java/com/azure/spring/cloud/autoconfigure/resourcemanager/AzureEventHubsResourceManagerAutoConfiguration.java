@@ -11,7 +11,9 @@ import com.azure.spring.cloud.resourcemanager.implementation.connectionstring.Ev
 import com.azure.spring.cloud.resourcemanager.implementation.provisioning.DefaultEventHubsProvisioner;
 import com.azure.spring.cloud.resourcemanager.provisioning.EventHubsProvisioner;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -19,10 +21,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
 
 /**
- * Auto-configuration for Azure EventHubs ResourceManager.
+ * {@link EnableAutoConfiguration Auto-configuration} for Event Hubs resource manager.
  */
 @ConditionalOnProperty(prefix = AzureEventHubsProperties.PREFIX, value = "enabled", havingValue = "true", matchIfMissing = true)
 @ConditionalOnBean(AzureResourceManager.class)
+@ConditionalOnClass(EventHubsProvisioner.class)
 @AutoConfigureAfter(AzureResourceManagerAutoConfiguration.class)
 @EnableConfigurationProperties(EventHubsResourceMetadata.class)
 public class AzureEventHubsResourceManagerAutoConfiguration extends AzureServiceResourceManagerConfigurationBase {

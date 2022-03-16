@@ -11,7 +11,9 @@ import com.azure.spring.cloud.resourcemanager.implementation.connectionstring.Se
 import com.azure.spring.cloud.resourcemanager.implementation.provisioning.DefaultServiceBusProvisioner;
 import com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -19,12 +21,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
 
 /**
- * An auto-configuration for Service Bus
- *
+ * {@link EnableAutoConfiguration Auto-configuration} for Service Bus resource manager.
  */
 @ConditionalOnProperty(prefix = AzureServiceBusProperties.PREFIX, value = "enabled", havingValue = "true", matchIfMissing = true)
 @ConditionalOnBean(AzureResourceManager.class)
 @AutoConfigureAfter(AzureResourceManagerAutoConfiguration.class)
+@ConditionalOnClass(ServiceBusProvisioner.class)
 @EnableConfigurationProperties(ServiceBusResourceMetadata.class)
 public class AzureServiceBusResourceManagerAutoConfiguration extends AzureServiceResourceManagerConfigurationBase {
 

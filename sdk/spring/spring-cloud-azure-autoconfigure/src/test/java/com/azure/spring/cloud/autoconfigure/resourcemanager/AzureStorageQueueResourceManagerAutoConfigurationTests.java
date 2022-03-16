@@ -30,7 +30,7 @@ class AzureStorageQueueResourceManagerAutoConfigurationTests {
     }
 
     @Test
-    void testAzureServiceBusResourceManagerAutoConfigurationBeans() {
+    void testStorageQueueResourceManagerAutoConfigurationBeans() {
         this.contextRunner
             .withUserConfiguration(AzureResourceManagerAutoConfiguration.class)
             .withBean(AzureResourceManager.class, () -> mock(AzureResourceManager.class))
@@ -49,5 +49,13 @@ class AzureStorageQueueResourceManagerAutoConfigurationTests {
                 assertThat(context).hasSingleBean(AzureStorageQueueResourceManagerAutoConfiguration.class);
                 assertThat(context).hasSingleBean(StorageQueueResourceMetadata.class);
             });
+    }
+
+    @Test
+    void testStorageQueueResourceManagerWithoutArmConnectionStringProviderClass() {
+        this.contextRunner
+            .withClassLoader(new FilteredClassLoader(StorageQueueArmConnectionStringProvider.class))
+            .withBean(AzureResourceManager.class, () -> mock(AzureResourceManager.class))
+            .run(context -> assertThat(context).doesNotHaveBean(AzureStorageQueueResourceManagerAutoConfiguration.class));
     }
 }
