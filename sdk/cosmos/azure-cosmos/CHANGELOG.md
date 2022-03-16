@@ -1,6 +1,9 @@
 ## Release History
 
 ### 4.28.0-beta.1 (Unreleased)
+#### Features Added
+* Added Beta API `setSuppressInitError` in `ThroughputControlGroupConfigBuilder`
+
 #### Key Bugs Fixes
 * Added `decodeTime` in `CosmosDiagnostics` - See [PR 22808](https://github.com/Azure/azure-sdk-for-java/pull/22808)
 

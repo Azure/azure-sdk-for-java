@@ -15,15 +15,15 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-public class ThroughputControlContainerProperties {
-    private static Logger logger  = LoggerFactory.getLogger(ThroughputControlContainerProperties.class);
+public class ContainerThroughputControlGroupProperties {
+    private static Logger logger  = LoggerFactory.getLogger(ContainerThroughputControlGroupProperties.class);
 
     private final AtomicReference<ThroughputControlGroupInternal> defaultGroup;
     private final Set<ThroughputControlGroupInternal> throughputControlGroupSet;
     private final Set<String> supressInitErrorGroupSet;
 
 
-    public ThroughputControlContainerProperties() {
+    public ContainerThroughputControlGroupProperties() {
         this.defaultGroup = new AtomicReference<>();
         this.throughputControlGroupSet = ConcurrentHashMap.newKeySet();
         this.supressInitErrorGroupSet = ConcurrentHashMap.newKeySet();

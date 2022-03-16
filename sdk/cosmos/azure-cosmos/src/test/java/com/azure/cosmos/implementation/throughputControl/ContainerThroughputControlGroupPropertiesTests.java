@@ -15,7 +15,7 @@ import java.util.UUID;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
-public class ThroughputControlContainerPropertiesTests {
+public class ContainerThroughputControlGroupPropertiesTests {
 
     @Test(groups = "unit")
     public void addThroughputControlGroup() {
@@ -26,7 +26,7 @@ public class ThroughputControlContainerPropertiesTests {
                     .key(TestConfigurations.MASTER_KEY)
                     .buildAsyncClient();
 
-            ThroughputControlContainerProperties throughputControlContainerProperties = new ThroughputControlContainerProperties();
+            ContainerThroughputControlGroupProperties throughputControlContainerProperties = new ContainerThroughputControlGroupProperties();
 
             CosmosAsyncContainer container = testClient.getDatabase("fakeDatabase").getContainer("fakeContainer");
 

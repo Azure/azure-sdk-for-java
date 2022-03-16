@@ -78,7 +78,7 @@ public class ThroughputControlStore {
     private final RxClientCollectionCache collectionCache;
     private final ConnectionMode connectionMode;
     private final AsyncCache<String, IThroughputContainerController> containerControllerCache;
-    private final ConcurrentHashMap<String, ThroughputControlContainerProperties> containerMap;
+    private final ConcurrentHashMap<String, ContainerThroughputControlGroupProperties> containerMap;
     private final ConcurrentHashMap<String, String> defaultGroupByContainer;
     private final RxPartitionKeyRangeCache partitionKeyRangeCache;
 
@@ -110,7 +110,7 @@ public class ThroughputControlStore {
         String containerNameLink = Utils.trimBeginningAndEndingSlashes(BridgeInternal.extractContainerSelfLink(group.getTargetContainer()));
         this.containerMap.compute(containerNameLink, (key, throughputControlContainerProperties) -> {
             if (throughputControlContainerProperties == null) {
-                throughputControlContainerProperties = new ThroughputControlContainerProperties();
+                throughputControlContainerProperties = new ContainerThroughputControlGroupProperties();
             }
 
             int groupSize = throughputControlContainerProperties.addThroughputControlGroup(group);
@@ -164,7 +164,7 @@ public class ThroughputControlStore {
 
     private boolean shouldContinue(RxDocumentServiceRequest request, String collectionNameLink, Throwable throwable) {
         if (throwable instanceof ThroughputControlInitializationException) {
-            ThroughputControlContainerProperties throughputControlContainerProperties = this.containerMap.get(collectionNameLink);
+            ContainerThroughputControlGroupProperties throughputControlContainerProperties = this.containerMap.get(collectionNameLink);
 
             checkNotNull(
                     throughputControlContainerProperties,
