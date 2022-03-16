@@ -17,17 +17,17 @@ import static com.azure.spring.cloud.actuator.storage.StorageHealthConstants.URL
 /**
  * Health indicator for file storage.
  */
-public class StorageFileHealthIndicator extends AbstractHealthIndicator {
+public class StorageFileShareHealthIndicator extends AbstractHealthIndicator {
 
     private final ShareServiceAsyncClient shareServiceAsyncClient;
     private Duration timeout = DEFAULT_HEALTH_CHECK_TIMEOUT;
 
     /**
-     * Creates a new instance of {@link StorageFileHealthIndicator}.
+     * Creates a new instance of {@link StorageFileShareHealthIndicator}.
      *
      * @param shareServiceAsyncClient the ShareServiceAsyncClient
      */
-    public StorageFileHealthIndicator(ShareServiceAsyncClient shareServiceAsyncClient) {
+    public StorageFileShareHealthIndicator(ShareServiceAsyncClient shareServiceAsyncClient) {
         this.shareServiceAsyncClient = shareServiceAsyncClient;
     }
 

@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.actuator.autoconfigure.keyvault;
 
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
-import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.spring.cloud.actuator.keyvault.KeyVaultSecretHealthIndicator;
 import com.azure.spring.cloud.autoconfigure.keyvault.secrets.AzureKeyVaultSecretAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
@@ -16,17 +15,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * configuration class of KeyVaultHealth
+ * Configuration class of Key Vault Secret Health
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnClass({ SecretClient.class, HealthIndicator.class })
+@ConditionalOnClass({ SecretAsyncClient.class, HealthIndicator.class })
 @ConditionalOnBean(SecretAsyncClient.class)
 @AutoConfigureAfter(AzureKeyVaultSecretAutoConfiguration.class)
-@ConditionalOnEnabledHealthIndicator("azure-keyvault")
-public class KeyVaultHealthConfiguration {
+@ConditionalOnEnabledHealthIndicator("azure-keyvault-secret")
+public class KeyVaultSecretHealthConfiguration {
 
     @Bean
-    KeyVaultSecretHealthIndicator keyVaultHealthIndicator(SecretAsyncClient secretAsyncClient) {
+    KeyVaultSecretHealthIndicator keyVaultSecretHealthIndicator(SecretAsyncClient secretAsyncClient) {
         return new KeyVaultSecretHealthIndicator(secretAsyncClient);
     }
 }

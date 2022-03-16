@@ -20,7 +20,8 @@ class AppConfigurationHealthIndicatorTests {
     void appconfigurationIsUp() {
         ConfigurationAsyncClient mockAsyncClient = mock(ConfigurationAsyncClient.class);
         Mono<ConfigurationSetting> response = Mono.just(new ConfigurationSetting());
-        when(mockAsyncClient.getConfigurationSetting("azure-spring-none-existing-setting", null)).thenReturn(response);
+        when(mockAsyncClient.getConfigurationSetting("spring-cloud-azure-not-existing-setting", null))
+            .thenReturn(response);
         AppConfigurationHealthIndicator indicator = new AppConfigurationHealthIndicator(mockAsyncClient);
         Health health = indicator.health();
         assertThat(health.getStatus()).isEqualTo(Status.UP);
@@ -29,7 +30,7 @@ class AppConfigurationHealthIndicatorTests {
     @Test
     void appconfigurationIsDown() {
         ConfigurationAsyncClient mockAsyncClient = mock(ConfigurationAsyncClient.class);
-        when(mockAsyncClient.getConfigurationSetting("azure-spring-none-existing-setting", null))
+        when(mockAsyncClient.getConfigurationSetting("spring-cloud-azure-not-existing-setting", null))
             .thenReturn(Mono.error(new IllegalStateException("The gremlins have cut the cable.")));
         AppConfigurationHealthIndicator indicator = new AppConfigurationHealthIndicator(mockAsyncClient);
         Health health = indicator.health();
