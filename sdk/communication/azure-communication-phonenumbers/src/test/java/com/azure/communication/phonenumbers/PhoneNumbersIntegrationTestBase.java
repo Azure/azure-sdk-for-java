@@ -182,4 +182,24 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
         return content;
     }
 
+    private String getDefaultPhoneNumber() {
+        return Configuration.getGlobalConfiguration().get("AZURE_PHONE_NUMBER", "+11234567891");
+    }
+
+    private String getPhoneNumberByTestAgent() {
+        String testAgent = Configuration.getGlobalConfiguration().get("AZURE_TEST_AGENT");
+        if (testAgent == null) {
+            throw new IllegalStateException(
+                    "AZURE_TEST_AGENT value is required to run update capabilities live tests.");
+        }
+
+        String phoneNumber = Configuration.getGlobalConfiguration().get(String.format("AZURE_PHONE_NUMBER_%s", testAgent));
+        if (phoneNumber == null) {
+            throw new IllegalStateException(
+                    "A phone number specific to the current test agent is required to run update capabilities live tests.");
+        }
+
+        return phoneNumber;
+    }
+
 }
