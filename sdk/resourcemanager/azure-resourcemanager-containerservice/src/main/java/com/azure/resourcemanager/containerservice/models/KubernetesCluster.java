@@ -446,19 +446,19 @@ public interface KubernetesCluster
             /**
              * Specifies that System Assigned Managed Service Identity needs to be enabled in the cluster.
              *
-             * @return the next stage of the web app definition
+             * @return the next stage
              */
             WithCreate withSystemAssignedManagedServiceIdentity();
         }
 
 //        /** The stage of the Kubernetes cluster definition allowing to specify Kubernetes Role-Based Access Control. */
-//        interface WithRoleBasedAccessControl {
+//        interface WithRBAC {
 //            /**
 //             * Enables Kubernetes Role-Based Access Control.
 //             *
 //             * @return the next stage
 //             */
-//            WithCreate enableRoleBasedAccessControl();
+//            WithCreate withRBACEnabled();
 //        }
 
         /**
@@ -474,7 +474,7 @@ public interface KubernetesCluster
                 WithAccessProfiles,
                 WithAutoScalerProfile,
                 WithManagedServiceIdentity,
-//                WithRoleBasedAccessControl,
+//                WithRBAC,
                 Resource.DefinitionWithTags<WithCreate> {
         }
     }
@@ -531,7 +531,7 @@ public interface KubernetesCluster
              * @param addOnProfileMap the cluster's add-on's profiles
              * @return the next stage of the update
              */
-            KubernetesCluster.Update withAddOnProfiles(Map<String, ManagedClusterAddonProfile> addOnProfileMap);
+            Update withAddOnProfiles(Map<String, ManagedClusterAddonProfile> addOnProfileMap);
         }
 
         /** The stage of the Kubernetes cluster update definition allowing to specify the cluster's network profile. */
@@ -542,7 +542,7 @@ public interface KubernetesCluster
              * @param networkProfile the cluster's networkProfile
              * @return the next stage of the update
              */
-            KubernetesCluster.Update withNetworkProfile(ContainerServiceNetworkProfile networkProfile);
+            Update withNetworkProfile(ContainerServiceNetworkProfile networkProfile);
         }
 
         /**
@@ -555,14 +555,14 @@ public interface KubernetesCluster
              *
              * @return the next stage of the update
              */
-            KubernetesCluster.Update withRBACEnabled();
+            Update withRBACEnabled();
 
             /**
              * Updates the cluster to specify the Kubernetes Role-Based Access Control is disabled.
              *
              * @return the next stage of the update
              */
-            KubernetesCluster.Update withRBACDisabled();
+            Update withRBACDisabled();
         }
 
         /** The stage of the Kubernetes cluster update allowing to specify the auto-scale profile. */
