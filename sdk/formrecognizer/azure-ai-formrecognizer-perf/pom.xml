@@ -29,7 +29,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-ai-formrecognizer</artifactId>
-      <version>4.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;current} -->
+      <version>4.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;current} -->
     </dependency>
   </dependencies>
 </project>
