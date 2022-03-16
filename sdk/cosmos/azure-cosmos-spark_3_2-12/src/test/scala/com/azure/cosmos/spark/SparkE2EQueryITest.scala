@@ -4,7 +4,7 @@ package com.azure.cosmos.spark
 
 import java.util.UUID
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
-import com.azure.cosmos.models.{CosmosItemResponse, PartitionKey}
+import com.azure.cosmos.models.PartitionKey
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 
@@ -32,6 +32,10 @@ class SparkE2EQueryITest
   // "spark.cosmos.read.partitioning.strategy" -> "Restrictive" is added to the query tests
   // to ensure we don't do sub-range feed-range
   // once emulator fixed switch back to default partitioning.
+
+  "spark items DataSource version" can "be determined" in {
+    CosmosItemsDataSource.version shouldEqual CosmosConstants.currentVersion
+  }
 
   "spark query" can "basic nested query" in {
     val cosmosEndpoint = TestConfigurations.HOST
