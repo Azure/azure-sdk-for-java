@@ -110,11 +110,11 @@ public class BatchTests extends TestBase {
             assertEquals(batchAccountName, batchAccount.name());
             assertEquals(REGION.toString(), batchAccount.location());
         } finally {
-            if (storageAccount != null) {
-                storageManager.storageAccounts().deleteById(storageAccount.id());
-            }
             if (account != null) {
                 batchManager.batchAccounts().deleteById(account.id());
+            }
+            if (storageAccount != null) {
+                storageManager.storageAccounts().deleteById(storageAccount.id());
             }
         }
     }
@@ -235,18 +235,18 @@ public class BatchTests extends TestBase {
             Assertions.assertNotNull(applicationPackage);
             Assertions.assertNull(applicationPackage.lastActivationTime());
         } finally {
-            if (storageAccount != null) {
-                storageManager.storageAccounts().deleteById(storageAccount.id());
-            }
-            if (account != null) {
-                batchManager.batchAccounts().deleteById(account.id());
-            }
             // all application packages must be deleted before the application can be deleted
             if (applicationPackage != null) {
                 batchManager.applicationPackages().deleteById(applicationPackage.id());
             }
             if (application != null) {
                 batchManager.applications().deleteById(application.id());
+            }
+            if (account != null) {
+                batchManager.batchAccounts().deleteById(account.id());
+            }
+            if (storageAccount != null) {
+                storageManager.storageAccounts().deleteById(storageAccount.id());
             }
         }
     }
@@ -293,11 +293,11 @@ public class BatchTests extends TestBase {
             Assertions.assertNull(pool.scaleSettings().autoScale());
             Assertions.assertEquals(pool.scaleSettings().fixedScale().nodeDeallocationOption(), ComputeNodeDeallocationOption.TASK_COMPLETION);
         } finally {
-            if (account != null) {
-                batchManager.batchAccounts().deleteById(account.id());
-            }
             if (pool != null) {
                 batchManager.pools().deleteById(pool.id());
+            }
+            if (account != null) {
+                batchManager.batchAccounts().deleteById(account.id());
             }
         }
     }
