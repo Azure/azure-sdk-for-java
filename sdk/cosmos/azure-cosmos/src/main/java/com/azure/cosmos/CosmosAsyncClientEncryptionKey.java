@@ -40,6 +40,7 @@ public final class CosmosAsyncClientEncryptionKey {
     /**
      * Reads a cosmos client encryption key
      *
+     * @param requestOptions  the request options.
      * @return a {@link Mono} containing the single resource response with the read client encryption key or an error.
      */
     @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)

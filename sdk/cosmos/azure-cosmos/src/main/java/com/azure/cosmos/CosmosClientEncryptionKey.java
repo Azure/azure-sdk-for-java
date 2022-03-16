@@ -38,6 +38,7 @@ public class CosmosClientEncryptionKey {
     /**
      * Reads a cosmos client encryption key
      *
+     * @param requestOptions  the request options.
      * @return the single resource response with the read client encryption key or an error.
      */
     @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
