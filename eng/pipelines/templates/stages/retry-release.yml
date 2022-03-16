@@ -73,5 +73,5 @@ stages:
         ArtifactName: packages
         TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
         TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
-        EnableSigningStage: false
-        EnableAllDependsOn: false
+        # EnableSigningStage: false
+        # EnableAllDependsOn: false
