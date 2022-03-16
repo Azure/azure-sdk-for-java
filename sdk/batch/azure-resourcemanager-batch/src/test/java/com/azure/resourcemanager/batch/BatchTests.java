@@ -283,8 +283,8 @@ public class BatchTests extends TestBase {
                         .withFixedScale(
                             new FixedScaleSettings()
                                 .withResizeTimeout(Duration.parse("PT8M"))
-                                .withTargetDedicatedNodes(6)
-                                .withTargetLowPriorityNodes(28)
+                                .withTargetDedicatedNodes(1)
+                                .withTargetLowPriorityNodes(1)
                                 .withNodeDeallocationOption(ComputeNodeDeallocationOption.TASK_COMPLETION)))
                 .withVmSize("Standard_D1")
                 .create();
