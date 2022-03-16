@@ -97,83 +97,84 @@ def sdk_automation(input_file: str, output_file: str):
         config = json.load(fin)
 
     packages = []
-    for readme in config['relatedReadmeMdFiles']:
-        match = re.search(
-            'specification/([^/]+)/resource-manager/readme.md',
-            readme,
-            re.IGNORECASE,
+    readme = config['relatedReadmeMdFile']
+    match = re.search(
+        'specification/([^/]+)/resource-manager/readme.md',
+        readme,
+        re.IGNORECASE,
+    )
+    if not match:
+        logging.info(
+            '[Skip] readme path does not format as specification/*/resource-manager/readme.md'
         )
-        if not match:
-            logging.info(
-                '[Skip] readme path does not format as specification/*/resource-manager/readme.md'
-            )
-        else:
-            spec = match.group(1)
-            service = get_and_update_service_from_api_specs(
-                api_specs_file, spec)
+    else:
+        spec = match.group(1)
+        service = get_and_update_service_from_api_specs(
+            api_specs_file, spec)
 
-            pre_suffix = SUFFIX
-            suffix = get_suffix_from_api_specs(api_specs_file, spec)
-            if suffix == None:
-                suffix = SUFFIX
-            update_parameters(suffix)
+        pre_suffix = SUFFIX
+        suffix = get_suffix_from_api_specs(api_specs_file, spec)
+        if suffix == None:
+            suffix = SUFFIX
+        update_parameters(suffix)
 
-            # TODO: use specific function to detect tag in "resources"
-            tag = None
-            if service == 'resources':
-                with open(os.path.join(config['specFolder'], readme)) as fin:
-                    tag_match = re.search('tag: (package-resources-[\S]+)',
-                                          fin.read())
-                    if tag_match:
-                        tag = tag_match.group(1)
-                    else:
-                        tag = 'package-resources-2020-10'
+        # TODO: use specific function to detect tag in "resources"
+        tag = None
+        if service == 'resources':
+            with open(os.path.join(config['specFolder'], readme)) as fin:
+                tag_match = re.search('tag: (package-resources-[\S]+)',
+                                        fin.read())
+                if tag_match:
+                    tag = tag_match.group(1)
+                else:
+                    tag = 'package-resources-2020-10'
 
-            module = ARTIFACT_FORMAT.format(service)
-            output_folder = OUTPUT_FOLDER_FORMAT.format(service)
-            namespace = NAMESPACE_FORMAT.format(service)
-            stable_version, current_version = set_or_increase_version(
-                sdk_root,
-                GROUP_ID,
-                module
-            )
-            succeeded = generate(
-                sdk_root,
-                service,
-                spec_root = config['specFolder'],
-                readme = readme,
-                autorest = AUTOREST_CORE_VERSION,
-                use = AUTOREST_JAVA,
-                output_folder = output_folder,
-                module = module,
-                namespace = namespace,
-                tag = tag,
-            )
-            if succeeded:
-                compile_package(sdk_root, module)
+        module = ARTIFACT_FORMAT.format(service)
+        output_folder = OUTPUT_FOLDER_FORMAT.format(service)
+        namespace = NAMESPACE_FORMAT.format(service)
+        stable_version, current_version = set_or_increase_version(
+            sdk_root,
+            GROUP_ID,
+            module
+        )
+        succeeded = generate(
+            sdk_root,
+            service,
+            spec_root = config['specFolder'],
+            readme = readme,
+            autorest = AUTOREST_CORE_VERSION,
+            use = AUTOREST_JAVA,
+            output_folder = output_folder,
+            module = module,
+            namespace = namespace,
+            tag = tag,
+        )
+        if succeeded:
+            compile_package(sdk_root, module)
 
-            packages.append({
-                'packageName':
-                    '{0}'.format(ARTIFACT_FORMAT.format(service)),
-                'path': [
-                    output_folder,
-                    CI_FILE_FORMAT.format(service),
-                    POM_FILE_FORMAT.format(service),
-                    'eng/versioning',
-                    'pom.xml',
-                ],
-                'readmeMd': [readme],
-                'artifacts': [
-                    '{0}/pom.xml'.format(output_folder),
-                ] + [
-                    jar for jar in glob.glob('{0}/target/*.jar'.format(
-                        output_folder))
-                ],
-                'result':
-                    'succeeded' if succeeded else 'failed',
-            })
+        packages.append({
+            'packageName':
+                '{0}'.format(ARTIFACT_FORMAT.format(service)),
+            'path': [
+                output_folder,
+                CI_FILE_FORMAT.format(service),
+                POM_FILE_FORMAT.format(service),
+                'eng/versioning',
+                'pom.xml',
+            ],
+            'artifacts': [
+                '{0}/pom.xml'.format(output_folder),
+            ] + [
+                jar for jar in glob.glob('{0}/target/*.jar'.format(
+                    output_folder))
+            ],
+            'result':
+                'succeeded' if succeeded else 'failed',
+            'packageFolder':
+                output_folder,
+        })
 
-            update_parameters(pre_suffix)
+        update_parameters(pre_suffix)
 
     if not packages:
         # try data-plane codegen
