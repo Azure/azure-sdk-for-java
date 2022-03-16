@@ -4059,7 +4059,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     public void close() {
         logger.info("Attempting to close client {}", this.clientId);
         if (!closed.getAndSet(true)) {
-            this.activeClientsCnt.decrementAndGet();
+            activeClientsCnt.decrementAndGet();
             logger.info("Shutting down ...");
             logger.info("Closing Global Endpoint Manager ...");
             LifeCycleUtils.closeQuietly(this.globalEndpointManager);
