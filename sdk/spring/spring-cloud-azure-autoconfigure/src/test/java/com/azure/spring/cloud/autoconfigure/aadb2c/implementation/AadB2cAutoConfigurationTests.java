@@ -2,11 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aadb2c.implementation;
 
+import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType;
 import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAuthorizationRequestResolver;
 import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cLogoutSuccessHandler;
 import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties;
 import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cResourceServerAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -25,6 +27,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
@@ -36,6 +39,31 @@ import static org.mockito.Mockito.verify;
 class AadB2cAutoConfigurationTests extends AbstractAadB2cOAuth2ClientTestConfigurations {
 
     private static final String SERVLET_WEB_APPLICATION_CLASS = "org.springframework.web.context.support.GenericWebApplicationContext";
+
+    @Test
+    void mapPropertiesSetting() {
+        getDefaultContextRunner()
+            .withPropertyValues(
+                "spring.cloud.azure.active-directory.b2c.enabled=true",
+                "spring.cloud.azure.active-directory.b2c.authorization-clients.test.authorizationGrantType = client_credentials",
+                "spring.cloud.azure.active-directory.b2c.authorization-clients.test.scopes = test1,test2"
+            )
+            .run(context -> {
+                AadB2cProperties properties = context.getBean(AadB2cProperties.class);
+
+                Map<String, AuthorizationClientProperties> authorizationClients = properties.getAuthorizationClients();
+                assertTrue(authorizationClients.containsKey("test"));
+                assertTrue(authorizationClients.get("test").getScopes().containsAll(Arrays.asList("test1", "test2")));
+                assertEquals(authorizationClients.get("test").getAuthorizationGrantType(), AadAuthorizationGrantType.CLIENT_CREDENTIALS);
+
+                Map<String, Object> authenticateAdditionalParameters = properties.getAuthenticateAdditionalParameters();
+                assertEquals(authenticateAdditionalParameters.size(), 2);
+                assertTrue(authenticateAdditionalParameters.containsKey("login-hint"));
+                assertTrue(authenticateAdditionalParameters.containsKey("prompt"));
+                assertEquals(authenticateAdditionalParameters.get("login-hint"), AadB2cConstants.TEST_LOGIN_HINT);
+                assertEquals(authenticateAdditionalParameters.get("prompt"), AadB2cConstants.TEST_PROMPT);
+            });
+    }
 
     @Override
     WebApplicationContextRunner getDefaultContextRunner() {

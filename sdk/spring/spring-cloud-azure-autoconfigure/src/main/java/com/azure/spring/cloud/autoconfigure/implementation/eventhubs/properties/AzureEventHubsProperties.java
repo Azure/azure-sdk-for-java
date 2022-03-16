@@ -16,15 +16,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.PropertyMapper;
+import org.springframework.util.CollectionUtils;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static com.azure.spring.cloud.service.implementation.core.PropertiesValidator.validateNamespace;
 
 /**
  * Azure Event Hubs related properties.
@@ -108,7 +108,14 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties
         propertyMapper.from(this.processor.getConsumerGroup()).to(properties::setConsumerGroup);
 
         propertyMapper.from(this.processor.trackLastEnqueuedEventProperties).to(properties::setTrackLastEnqueuedEventProperties);
-        propertyMapper.from(this.processor.initialPartitionEventPosition).to(properties::setInitialPartitionEventPosition);
+        propertyMapper.from(this.processor.initialPartitionEventPosition).when(c -> !CollectionUtils.isEmpty(c))
+                      .to(m -> {
+                          Map<String, Processor.StartPosition> eventPositionMap = m.entrySet()
+                                                                                   .stream()
+                                                                                   .filter(entry -> entry.getValue() != null)
+                                                                                   .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                          properties.getInitialPartitionEventPosition().putAll(eventPositionMap);
+                      });
         propertyMapper.from(this.processor.batch.getMaxSize()).to(properties.batch::setMaxSize);
         propertyMapper.from(this.processor.batch.getMaxWaitTime()).to(properties.batch::setMaxWaitTime);
         propertyMapper.from(this.processor.loadBalancing.getStrategy()).to(properties.loadBalancing::setStrategy);
@@ -194,7 +201,7 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties
          * Map event position to use for each partition if a checkpoint for the partition does not exist in
          * CheckpointStore.
          */
-        private Map<String, StartPosition> initialPartitionEventPosition = new HashMap<>();
+        private final Map<String, StartPosition> initialPartitionEventPosition = new HashMap<>();
 
         private final EventBatch batch = new EventBatch();
         private final LoadBalancing loadBalancing = new LoadBalancing();
@@ -210,10 +217,6 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties
 
         public Map<String, StartPosition> getInitialPartitionEventPosition() {
             return initialPartitionEventPosition;
-        }
-
-        public void setInitialPartitionEventPosition(Map<String, StartPosition> initialPartitionEventPosition) {
-            this.initialPartitionEventPosition = initialPartitionEventPosition;
         }
 
         public EventBatch getBatch() {

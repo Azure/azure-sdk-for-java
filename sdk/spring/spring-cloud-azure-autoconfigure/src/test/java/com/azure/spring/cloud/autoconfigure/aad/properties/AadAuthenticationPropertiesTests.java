@@ -5,14 +5,41 @@ package com.azure.spring.cloud.autoconfigure.aad.properties;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.Map;
+
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils.oauthClientRunner;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils.resourceServerContextRunner;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils.resourceServerWithOboContextRunner;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils.webApplicationContextRunner;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AadAuthenticationPropertiesTests {
+
+    @Test
+    void mapPropertiesSetting() {
+        webApplicationContextRunner()
+            .withPropertyValues(
+                "spring.cloud.azure.active-directory.authorization-clients.test.authorizationGrantType = authorization_code",
+                "spring.cloud.azure.active-directory.authorization-clients.test.scopes = test1,test2",
+                "spring.cloud.azure.active-directory.authenticate-additional-parameters.prompt = login"
+            )
+            .run(context -> {
+                AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
+
+                Map<String, AuthorizationClientProperties> authorizationClients = properties.getAuthorizationClients();
+                assertTrue(authorizationClients.containsKey("test"));
+                assertTrue(authorizationClients.get("test").getScopes().containsAll(Arrays.asList("test1", "test2")));
+                assertEquals(authorizationClients.get("test").getAuthorizationGrantType(), AadAuthorizationGrantType.AUTHORIZATION_CODE);
+
+                Map<String, Object> authenticateAdditionalParameters = properties.getAuthenticateAdditionalParameters();
+                assertEquals(authenticateAdditionalParameters.size(), 1);
+                assertTrue(authenticateAdditionalParameters.containsKey("prompt"));
+                assertEquals(authenticateAdditionalParameters.get("prompt"), "login");
+            });
+    }
 
     @Test
     void webAppWithOboWithExceptionTest() {

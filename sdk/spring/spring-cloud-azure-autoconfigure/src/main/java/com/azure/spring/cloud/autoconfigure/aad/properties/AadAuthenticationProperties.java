@@ -74,7 +74,7 @@ public class AadAuthenticationProperties implements InitializingBean {
     /**
      * Add additional parameters to the Authorization URL.
      */
-    private Map<String, Object> authenticateAdditionalParameters;
+    private final Map<String, Object> authenticateAdditionalParameters = new HashMap<>();
 
     /**
      * Connection Timeout for the JWKSet Remote URL call.
@@ -115,7 +115,7 @@ public class AadAuthenticationProperties implements InitializingBean {
     /**
      * The OAuth2 authorization clients.
      */
-    private Map<String, AuthorizationClientProperties> authorizationClients = new HashMap<>();
+    private final Map<String, AuthorizationClientProperties> authorizationClients = new HashMap<>();
 
     /**
      * Type of the AAD application.
@@ -320,15 +320,6 @@ public class AadAuthenticationProperties implements InitializingBean {
     }
 
     /**
-     * Sets the additional authenticate parameters.
-     *
-     * @param authenticateAdditionalParameters the additional authenticate parameters
-     */
-    public void setAuthenticateAdditionalParameters(Map<String, Object> authenticateAdditionalParameters) {
-        this.authenticateAdditionalParameters = authenticateAdditionalParameters;
-    }
-
-    /**
      * Gets the JWT connect timeout.
      *
      * @return the JWT connect timeout
@@ -472,15 +463,6 @@ public class AadAuthenticationProperties implements InitializingBean {
      */
     public Map<String, AuthorizationClientProperties> getAuthorizationClients() {
         return authorizationClients;
-    }
-
-    /**
-     * Sets the authorization clients.
-     *
-     * @param authorizationClients the authorization clients
-     */
-    public void setAuthorizationClients(Map<String, AuthorizationClientProperties> authorizationClients) {
-        this.authorizationClients = authorizationClients;
     }
 
     /**
