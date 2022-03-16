@@ -4,8 +4,8 @@
 
 package com.azure.analytics.purview.catalog.generated;
 
-import com.azure.analytics.purview.catalog.PurviewCatalogClientBuilder;
 import com.azure.analytics.purview.catalog.TypesClient;
+import com.azure.analytics.purview.catalog.TypesClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -13,13 +13,16 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class TypesGetTypeDefinitionByName {
     public static void main(String[] args) {
-        TypesClient client =
-                new PurviewCatalogClientBuilder()
+        // BEGIN:
+        // com.azure.analytics.purview.catalog.generated.typesgettypedefinitionbyname.typesgettypedefinitionbyname
+        TypesClient typesClient =
+                new TypesClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
-                        .buildTypesClient();
+                        .buildClient();
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                client.getTypeDefinitionByNameWithResponse("glossary_term_status_value", requestOptions);
+                typesClient.getTypeDefinitionByNameWithResponse("glossary_term_status_value", requestOptions);
+        // END: com.azure.analytics.purview.catalog.generated.typesgettypedefinitionbyname.typesgettypedefinitionbyname
     }
 }

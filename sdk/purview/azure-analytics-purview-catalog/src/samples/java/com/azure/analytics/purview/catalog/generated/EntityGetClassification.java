@@ -5,7 +5,7 @@
 package com.azure.analytics.purview.catalog.generated;
 
 import com.azure.analytics.purview.catalog.EntityClient;
-import com.azure.analytics.purview.catalog.PurviewCatalogClientBuilder;
+import com.azure.analytics.purview.catalog.EntityClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -13,14 +13,16 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class EntityGetClassification {
     public static void main(String[] args) {
-        EntityClient client =
-                new PurviewCatalogClientBuilder()
+        // BEGIN: com.azure.analytics.purview.catalog.generated.entitygetclassification.entitygetclassification
+        EntityClient entityClient =
+                new EntityClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
-                        .buildEntityClient();
+                        .buildClient();
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                client.getClassificationWithResponse(
+                entityClient.getClassificationWithResponse(
                         "9347abc5-7b86-4b82-a1e2-ad77c7c3cac3", "MICROSOFT.PERSONAL.DATE_OF_BIRTH", requestOptions);
+        // END: com.azure.analytics.purview.catalog.generated.entitygetclassification.entitygetclassification
     }
 }
