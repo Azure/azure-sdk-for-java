@@ -144,9 +144,9 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      * Constructor to create a sessions-enabled processor.
      *
      * @param sessionReceiverBuilder The session processor builder to create new instances of async clients.
-     * @param queueName The name of the queue this session processor is associated with.
-     * @param topicName The name of the topic this session processor is associated with.
-     * @param queueName The name of the subscription this session processor is associated with.
+     * @param queueName The name of the queue this processor is associated with.
+     * @param topicName The name of the topic this processor is associated with.
+     * @param subscriptionName The name of the subscription this processor is associated with.
      * @param processMessage The message processing callback.
      * @param processError The error handler.
      * @param processorOptions Options to configure this instance of the processor.
@@ -173,9 +173,9 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      * Constructor to create a processor.
      *
      * @param receiverBuilder The processor builder to create new instances of async clients.
-     * @param queueName The name of the queue this session processor is associated with.
-     * @param topicName The name of the topic this session processor is associated with.
-     * @param queueName The name of the subscription this session processor is associated with.
+     * @param queueName The name of the queue this processor is associated with.
+     * @param topicName The name of the topic this processor is associated with.
+     * @param subscriptionName The name of the subscription this processor is associated with.
      * @param processMessage The message processing callback.
      * @param processError The error handler.
      * @param processorOptions Options to configure this instance of the processor.
