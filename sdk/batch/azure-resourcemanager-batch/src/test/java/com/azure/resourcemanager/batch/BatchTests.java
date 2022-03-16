@@ -11,7 +11,6 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.batch.models.AccountKeyType;
@@ -81,187 +80,226 @@ public class BatchTests extends TestBase {
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void testCreateBatchAccount() {
-        // storage account
-        final String storageAccountName = "sa" + randomPadding();
-        StorageAccount storageAccount = storageManager.storageAccounts().define(storageAccountName)
-            .withRegion(REGION)
-            .withExistingResourceGroup(resourceGroup)
-            .create();
+        StorageAccount storageAccount = null;
+        BatchAccount account = null;
+        try {
+            // storage account
+            final String storageAccountName = "sa" + randomPadding();
 
-        // batch account
-        final String batchAccountName = "ba" + randomPadding();
-        BatchAccount account = batchManager
-            .batchAccounts()
-            .define(batchAccountName)
-            .withRegion(REGION)
-            .withExistingResourceGroup(resourceGroup)
-            .withAutoStorage(
-                new AutoStorageBaseProperties()
-                    .withStorageAccountId(storageAccount.id()))
-            .create();
+            storageAccount = storageManager.storageAccounts().define(storageAccountName)
+                .withRegion(REGION)
+                .withExistingResourceGroup(resourceGroup)
+                .create();
+
+            // batch account
+            final String batchAccountName = "ba" + randomPadding();
+            account = batchManager
+                .batchAccounts()
+                .define(batchAccountName)
+                .withRegion(REGION)
+                .withExistingResourceGroup(resourceGroup)
+                .withAutoStorage(
+                    new AutoStorageBaseProperties()
+                        .withStorageAccountId(storageAccount.id()))
+                .create();
 
 
-        assertNotNull(account);
+            assertNotNull(account);
 
-        BatchAccount batchAccount = batchManager.batchAccounts().getByResourceGroup(resourceGroup, batchAccountName);
-        assertEquals(batchAccountName, batchAccount.name());
-        assertEquals(REGION.toString(), batchAccount.location());
+            BatchAccount batchAccount = batchManager.batchAccounts().getByResourceGroup(resourceGroup, batchAccountName);
+            assertEquals(batchAccountName, batchAccount.name());
+            assertEquals(REGION.toString(), batchAccount.location());
+        } finally {
+            if (storageAccount != null) {
+                storageManager.storageAccounts().deleteById(storageAccount.id());
+            }
+            if (account != null) {
+                batchManager.batchAccounts().deleteById(account.id());
+            }
+        }
     }
 
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void testCRUDBatchAccount() {
-        // batch account
-        final String batchAccountName = "sa" + randomPadding();
-        BatchAccount account = batchManager
-            .batchAccounts()
-            .define(batchAccountName)
-            .withRegion(REGION)
-            .withExistingResourceGroup(resourceGroup)
-            .create();
-        Assertions.assertNull(account.autoStorage());
+        BatchAccount account = null;
+        StorageAccount storageAccount = null;
+        final String batchAccountName;
+        try {
+            // batch account
+            batchAccountName = "sa" + randomPadding();
+            account = batchManager
+                .batchAccounts()
+                .define(batchAccountName)
+                .withRegion(REGION)
+                .withExistingResourceGroup(resourceGroup)
+                .create();
+            Assertions.assertNull(account.autoStorage());
 
-        // batch account data plane access key
-        BatchAccountKeys keys = account.getKeys();
-        Assertions.assertNotNull(keys.primary());
-        Assertions.assertNotNull(keys.secondary());
+            // batch account data plane access key
+            BatchAccountKeys keys = account.getKeys();
+            Assertions.assertNotNull(keys.primary());
+            Assertions.assertNotNull(keys.secondary());
 
-        BatchAccountKeys regeneratedKeys = account.regenerateKey(new BatchAccountRegenerateKeyParameters().withKeyName(AccountKeyType.PRIMARY));
-        Assertions.assertNotNull(regeneratedKeys.primary());
-        Assertions.assertNotNull(regeneratedKeys.secondary());
+            BatchAccountKeys regeneratedKeys = account.regenerateKey(new BatchAccountRegenerateKeyParameters().withKeyName(AccountKeyType.PRIMARY));
+            Assertions.assertNotNull(regeneratedKeys.primary());
+            Assertions.assertNotNull(regeneratedKeys.secondary());
 
-        // storage account
-        final String storageAccountName = "sa" + randomPadding();
-        StorageAccount storageAccount = storageManager
-            .storageAccounts()
-            .define(storageAccountName)
-            .withRegion(REGION)
-            .withExistingResourceGroup(resourceGroup)
-            .create();
-        account
-            .update()
-            .withAutoStorage(new AutoStorageBaseProperties().withStorageAccountId(storageAccount.id()))
-            .apply();
-        Assertions.assertNotNull(account.autoStorage().storageAccountId());
-        OffsetDateTime lastKeySync = account.autoStorage().lastKeySync();
-        Assertions.assertNotNull(lastKeySync);
+            // storage account
+            final String storageAccountName = "sa" + randomPadding();
+            storageAccount = storageManager
+                .storageAccounts()
+                .define(storageAccountName)
+                .withRegion(REGION)
+                .withExistingResourceGroup(resourceGroup)
+                .create();
+            account
+                .update()
+                .withAutoStorage(new AutoStorageBaseProperties().withStorageAccountId(storageAccount.id()))
+                .apply();
+            Assertions.assertNotNull(account.autoStorage().storageAccountId());
+            OffsetDateTime lastKeySync = account.autoStorage().lastKeySync();
+            Assertions.assertNotNull(lastKeySync);
 
-        account.synchronizeAutoStorageKeys();
-        account.refresh();
+            account.synchronizeAutoStorageKeys();
+            account.refresh();
 
-        Assertions.assertNotEquals(lastKeySync, account.autoStorage().lastKeySync());
-
-        // delete
-        batchManager.batchAccounts().delete(resourceGroup, batchAccountName, Context.NONE);
+            Assertions.assertNotEquals(lastKeySync, account.autoStorage().lastKeySync());
+        } finally {
+            if (account != null) {
+                batchManager.batchAccounts().deleteById(account.id());
+            }
+            if (storageAccount != null) {
+                storageManager.storageAccounts().deleteById(storageAccount.id());
+            }
+        }
     }
 
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void testCRUDBatchApplication() {
-        // storage account
-        final String storageAccountName = "sa" + randomPadding();
-        StorageAccount storageAccount = storageManager
-            .storageAccounts().
-            define(storageAccountName)
-            .withRegion(REGION)
-            .withExistingResourceGroup(resourceGroup)
-            .create();
+        StorageAccount storageAccount = null;
+        BatchAccount account = null;
+        Application application = null;
+        ApplicationPackage applicationPackage = null;
+        final String batchAccountName;
+        final String applicationName;
+        String packageVersion;
+        try {
+            // storage account
+            final String storageAccountName = "sa" + randomPadding();
+            storageAccount = storageManager
+                .storageAccounts().
+                define(storageAccountName)
+                .withRegion(REGION)
+                .withExistingResourceGroup(resourceGroup)
+                .create();
+            // batch account
+            batchAccountName = "sa" + randomPadding();
+            account = batchManager
+                .batchAccounts()
+                .define(batchAccountName)
+                .withRegion(REGION)
+                .withExistingResourceGroup(resourceGroup)
+                .withAutoStorage(new AutoStorageBaseProperties().withStorageAccountId(storageAccount.id()))
+                .create();
 
-        // batch account
-        final String batchAccountName = "sa" + randomPadding();
-        BatchAccount account = batchManager
-            .batchAccounts()
-            .define(batchAccountName)
-            .withRegion(REGION)
-            .withExistingResourceGroup(resourceGroup)
-            .withAutoStorage(new AutoStorageBaseProperties().withStorageAccountId(storageAccount.id()))
-            .create();
+            // create application with batch account
+            applicationName = "ba" + randomPadding();
+            String displayName = "badn" + randomPadding();
+            application = batchManager
+                .applications()
+                .define(applicationName)
+                .withExistingBatchAccount(resourceGroup, batchAccountName)
+                .withDisplayName(displayName)
+                .withAllowUpdates(true)
+                .create();
+            Assertions.assertEquals(application.displayName(), displayName);
+            Assertions.assertEquals(application.name(), applicationName);
+            Assertions.assertNull(application.defaultVersion());
 
-        // create application with batch account
-        final String applicationName = "ba" + randomPadding();
-        String displayName = "badn" + randomPadding();
-        Application application = batchManager
-            .applications()
-            .define(applicationName)
-            .withExistingBatchAccount(resourceGroup, batchAccountName)
-            .withDisplayName(displayName)
-            .withAllowUpdates(true)
-            .create();
-        Assertions.assertEquals(application.displayName(), displayName);
-        Assertions.assertEquals(application.name(), applicationName);
-        Assertions.assertNull(application.defaultVersion());
-
-        // update application
-        String newDisplayName = "newbadn" + randomPadding();
-        application
-            .update()
-            .withDisplayName(newDisplayName)
-            .apply();
-        Assertions.assertNotEquals(displayName, application.displayName());
-
-        // default package version not defined yet
-        String packageVersion = "version" + randomPadding();
-        Assertions.assertThrows(
-            Exception.class,
-            () -> application
+            // update application
+            String newDisplayName = "newbadn" + randomPadding();
+            application
                 .update()
-                .withDefaultVersion(packageVersion)
-                .apply()
-        );
+                .withDisplayName(newDisplayName)
+                .apply();
+            Assertions.assertNotEquals(displayName, application.displayName());
 
-        ApplicationPackage applicationPackage = batchManager
-            .applicationPackages()
-            .define(packageVersion)
-            .withExistingApplication(resourceGroup, batchAccountName, applicationName)
-            .create();
-        Assertions.assertNotNull(applicationPackage);
-        Assertions.assertNull(applicationPackage.lastActivationTime());
-
-        // delete
-        // all application packages must be deleted before the application can be deleted
-        batchManager.applicationPackages().delete(resourceGroup, batchAccountName, applicationName, packageVersion);
-        batchManager.applications().delete(resourceGroup, batchAccountName, applicationName);
+            packageVersion = "version" + randomPadding();
+            applicationPackage = batchManager
+                .applicationPackages()
+                .define(packageVersion)
+                .withExistingApplication(resourceGroup, batchAccountName, applicationName)
+                .create();
+            Assertions.assertNotNull(applicationPackage);
+            Assertions.assertNull(applicationPackage.lastActivationTime());
+        } finally {
+            if (storageAccount != null) {
+                storageManager.storageAccounts().deleteById(storageAccount.id());
+            }
+            if (account != null) {
+                batchManager.batchAccounts().deleteById(account.id());
+            }
+            // all application packages must be deleted before the application can be deleted
+            if (applicationPackage != null) {
+                batchManager.applicationPackages().deleteById(applicationPackage.id());
+            }
+            if (application != null) {
+                batchManager.applications().deleteById(application.id());
+            }
+        }
     }
 
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void testCRUDBatchPool() {
-        // batch account
-        final String batchAccountName = "sa" + randomPadding();
-        BatchAccount account = batchManager
-            .batchAccounts()
-            .define(batchAccountName)
-            .withRegion(REGION)
-            .withExistingResourceGroup(resourceGroup)
-            .create();
-        // batch pool create
-        String poolName = "bp" + randomPadding();
-        String poolDisplayName = "bpdn" + randomPadding();
-        Pool pool = batchManager.pools()
-            .define(poolName)
-            .withExistingBatchAccount(resourceGroup, batchAccountName)
-            .withDisplayName(poolDisplayName)
-            .withDeploymentConfiguration(
-                new DeploymentConfiguration()
-                    .withCloudServiceConfiguration(
-                        new CloudServiceConfiguration().withOsFamily("4")))
-            .withScaleSettings(
-                new ScaleSettings()
-                    .withFixedScale(
-                        new FixedScaleSettings()
-                            .withResizeTimeout(Duration.parse("PT8M"))
-                            .withTargetDedicatedNodes(6)
-                            .withTargetLowPriorityNodes(28)
-                            .withNodeDeallocationOption(ComputeNodeDeallocationOption.TASK_COMPLETION)))
-            .withVmSize("Standard_D1")
-            .create();
-        Assertions.assertEquals(poolName, pool.name());
-        Assertions.assertEquals(poolDisplayName, pool.displayName());
-        Assertions.assertNull(pool.scaleSettings().autoScale());
-        Assertions.assertEquals(pool.scaleSettings().fixedScale().nodeDeallocationOption(), ComputeNodeDeallocationOption.TASK_COMPLETION);
-
-        //delete
-        batchManager.pools().delete(resourceGroup, batchAccountName, poolName);
+        BatchAccount account = null;
+        Pool pool = null;
+        final String batchAccountName;
+        String poolName;
+        try {
+            // batch account
+            batchAccountName = "sa" + randomPadding();
+            account = batchManager
+                .batchAccounts()
+                .define(batchAccountName)
+                .withRegion(REGION)
+                .withExistingResourceGroup(resourceGroup)
+                .create();
+            // batch pool create
+            poolName = "bp" + randomPadding();
+            String poolDisplayName = "bpdn" + randomPadding();
+            pool = batchManager.pools()
+                .define(poolName)
+                .withExistingBatchAccount(resourceGroup, batchAccountName)
+                .withDisplayName(poolDisplayName)
+                .withDeploymentConfiguration(
+                    new DeploymentConfiguration()
+                        .withCloudServiceConfiguration(
+                            new CloudServiceConfiguration().withOsFamily("4")))
+                .withScaleSettings(
+                    new ScaleSettings()
+                        .withFixedScale(
+                            new FixedScaleSettings()
+                                .withResizeTimeout(Duration.parse("PT8M"))
+                                .withTargetDedicatedNodes(6)
+                                .withTargetLowPriorityNodes(28)
+                                .withNodeDeallocationOption(ComputeNodeDeallocationOption.TASK_COMPLETION)))
+                .withVmSize("Standard_D1")
+                .create();
+            Assertions.assertEquals(poolName, pool.name());
+            Assertions.assertEquals(poolDisplayName, pool.displayName());
+            Assertions.assertNull(pool.scaleSettings().autoScale());
+            Assertions.assertEquals(pool.scaleSettings().fixedScale().nodeDeallocationOption(), ComputeNodeDeallocationOption.TASK_COMPLETION);
+        } finally {
+            if (account != null) {
+                batchManager.batchAccounts().deleteById(account.id());
+            }
+            if (pool != null) {
+                batchManager.pools().deleteById(pool.id());
+            }
+        }
     }
 
     private static String randomPadding() {
