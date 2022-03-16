@@ -1135,6 +1135,13 @@
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9077 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.StoreClientFactory"/>
+    <Field name="clientTelemetry"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9078 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestHeaders"/>
@@ -1976,11 +1983,8 @@
 
   <!-- False positive, equals method is implemented correctly by using equality of member variables  -->
   <Match>
-    <Or>
-      <Class name="com.azure.cosmos.implementation.clienttelemetry.ReportPayload"/>
-      <Class name="com.azure.cosmos.implementation.clientTelemetry.ReportPayload"/>
-    </Or>
-    <Method name="equals" params="Object" returns="boolean"/>
+    <Class name="com.azure.cosmos.implementation.clienttelemetry.ReportPayload"/>
+    <Method name="equals"/>
     <Bug pattern="EQ_UNUSUAL"/>
   </Match>
 
