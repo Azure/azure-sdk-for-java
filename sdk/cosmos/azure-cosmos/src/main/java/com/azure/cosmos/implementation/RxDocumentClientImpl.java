@@ -351,6 +351,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.diagnosticsClientConfig.withMultipleWriteRegionsEnabled(this.connectionPolicy.isMultipleWriteRegionsEnabled());
             this.diagnosticsClientConfig.withEndpointDiscoveryEnabled(this.connectionPolicy.isEndpointDiscoveryEnabled());
             this.diagnosticsClientConfig.withPreferredRegions(this.connectionPolicy.getPreferredRegions());
+            this.diagnosticsClientConfig.withMachineId(tempMachineId);
 
             boolean disableSessionCapturing = (ConsistencyLevel.SESSION != consistencyLevel && !sessionCapturingOverrideEnabled);
 
@@ -458,12 +459,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 collectionCache);
 
             updateGatewayProxy();
-            clientTelemetry = new ClientTelemetry(tempMachineId, null, UUID.randomUUID().toString(),
+            clientTelemetry = new ClientTelemetry(this, null, UUID.randomUUID().toString(),
                 ManagementFactory.getRuntimeMXBean().getName(), userAgentContainer.getUserAgent(),
                 connectionPolicy.getConnectionMode(), globalEndpointManager.getLatestDatabaseAccount().getId(),
                 null, null, this.reactorHttpClient, connectionPolicy.isClientTelemetryEnabled(), this, this.connectionPolicy.getPreferredRegions());
             clientTelemetry.init();
-            this.diagnosticsClientConfig.withMachineId(clientTelemetry.getClientTelemetryInfo().getMachineId());
             if (this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY) {
                 this.storeModel = this.gatewayProxy;
             } else {

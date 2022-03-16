@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.implementation.clientTelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.guava27.Strings;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
@@ -50,7 +51,7 @@ public interface DiagnosticsClientContext {
             generator.writeStartObject();
             try {
                 generator.writeNumberField("id", clientContext.getConfig().getClientId());
-                generator.writeStringField("machineId", clientContext.getConfig().getMachineId());
+                generator.writeStringField("machineId", ClientTelemetry.getMachineId(clientContext));
                 generator.writeStringField("connectionMode", clientContext.getConfig().getConnectionMode().toString());
                 generator.writeNumberField("numberOfClients", clientContext.getConfig().getActiveClientsCount());
                 generator.writeObjectFieldStart("connCfg");
