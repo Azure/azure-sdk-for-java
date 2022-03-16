@@ -40,7 +40,7 @@ stages:
     - job: SetupArtifacts
       displayName: Setup Artifacts from broken build
       variables:
-        - template: templates/variables/globals.yml
+        - template: ../variables/globals.yml
       pool:
         vmImage: 'ubuntu-20.04'
       steps:
