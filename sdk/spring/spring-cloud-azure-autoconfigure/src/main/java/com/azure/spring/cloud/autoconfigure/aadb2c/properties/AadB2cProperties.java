@@ -62,12 +62,12 @@ public class AadB2cProperties implements InitializingBean {
     /**
      * Connection Timeout for the JWKSet Remote URL call.
      */
-    private Duration jwtConnectTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT); /* milliseconds */
+    private Duration jwtConnectTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT);
 
     /**
      * Read Timeout for the JWKSet Remote URL call.
      */
-    private Duration jwtReadTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT); /* milliseconds */
+    private Duration jwtReadTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT);
 
     /**
      * Size limit in Bytes of the JWKSet Remote URL call.
