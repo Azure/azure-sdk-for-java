@@ -174,7 +174,7 @@ public final class ShareFileRenameOptions {
     }
 
     /**
-     * Gets the {@link ShareFileHttpHeaders}.
+     * Gets the {@link ShareFileHttpHeaders}. Currently, only content type is respected. Others are ignored.
      *
      * @return The {@link ShareFileHttpHeaders}.
      */
@@ -183,7 +183,7 @@ public final class ShareFileRenameOptions {
     }
 
     /**
-     * Sets the {@link ShareFileHttpHeaders}.
+     * Sets the {@link ShareFileHttpHeaders}.  Currently, only content type is respected. Others are ignored.
      *
      * @param headers {@link ShareFileHttpHeaders}
      * @return The updated options.
