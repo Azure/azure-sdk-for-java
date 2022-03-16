@@ -31,7 +31,7 @@ public class KeyVaultCertificateHealthIndicator extends AbstractHealthIndicator 
     @Override
     protected void doHealthCheck(Health.Builder builder) {
         try {
-            this.certificateAsyncClient.getCertificateWithResponse("spring-cloud-azure-none-existing-certificate")
+            this.certificateAsyncClient.getCertificateWithResponse("spring-cloud-azure-not-existing-certificate")
                 .block(timeout);
             builder.up();
         } catch (Exception e) {

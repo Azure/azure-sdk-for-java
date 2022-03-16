@@ -22,7 +22,7 @@ class KeyVaultCertificateHealthIndicatorTests {
         @SuppressWarnings("unchecked") Response<KeyVaultCertificateWithPolicy> mockResponse =
             (Response<KeyVaultCertificateWithPolicy>) mock(Response.class);
         CertificateAsyncClient mockAsyncClient = mock(CertificateAsyncClient.class);
-        Mockito.when(mockAsyncClient.getCertificateWithResponse("spring-cloud-azure-none-existing-certificate"))
+        Mockito.when(mockAsyncClient.getCertificateWithResponse("spring-cloud-azure-not-existing-certificate"))
             .thenReturn(Mono.just(mockResponse));
         KeyVaultCertificateHealthIndicator indicator = new KeyVaultCertificateHealthIndicator(mockAsyncClient);
         Health health = indicator.health();
@@ -32,7 +32,7 @@ class KeyVaultCertificateHealthIndicatorTests {
     @Test
     void certificateIsDown() {
         CertificateAsyncClient mockAsyncClient = mock(CertificateAsyncClient.class);
-        Mockito.when(mockAsyncClient.getCertificateWithResponse("spring-cloud-azure-none-existing-certificate"))
+        Mockito.when(mockAsyncClient.getCertificateWithResponse("spring-cloud-azure-not-existing-certificate"))
             .thenReturn(Mono.error(new IllegalStateException("The gremlins have cut the cable.")));
         KeyVaultCertificateHealthIndicator indicator = new KeyVaultCertificateHealthIndicator(mockAsyncClient);
         Health health = indicator.health();
