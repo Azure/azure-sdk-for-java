@@ -739,7 +739,6 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         if (synchronousMessageSubscriber.compareAndSet(null, newSubscriber)) {
             asyncClient.receiveMessagesNoBackPressure().subscribeWith(newSubscriber);
         } else {
-            newSubscriber.dispose();
             synchronousMessageSubscriber.get().queueWork(work);
         }
 

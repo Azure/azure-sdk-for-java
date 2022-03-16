@@ -236,6 +236,11 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                 numberRequested = REQUESTED.addAndGet(this, -numberConsumed);
             }
         }
+        if (numberRequested == 0L) {
+            logger.atVerbose()
+                .log("Current work is completed. Schedule next work.");
+            getOrUpdateCurrentWork();
+        }
     }
 
     /**
@@ -272,64 +277,23 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
             }
 
             currentWork = workQueue.poll();
-            while (currentWork != null) {
-                // For the terminal work, subtract the remaining number of messages from our current request
-                // count. This is so we don't keep adding credits for work that was expired, but we never
-                // received messages for.
-                if (currentWork.isTerminal()) {
-                    REQUESTED.updateAndGet(this, currentRequest -> {
-                        final int remainingEvents = currentWork.getRemainingEvents();
+            //The work in queue will not be terminated, here is double check
+            while (currentWork != null && currentWork.isTerminal()) {
+                currentWork = workQueue.poll();
+            }
 
-                        // The work had probably emitted all its messages and then terminated.
-                        // The currentRequest is fine.
-                        if (remainingEvents < 1) {
-                            return currentRequest;
-                        }
-
-                        final long difference = currentRequest - remainingEvents;
-
-                        logger.atVerbose()
-                            .addKeyValue(NUMBER_OF_REQUESTED_MESSAGES_KEY, currentRequest)
-                            .addKeyValue("remainingEvents", remainingEvents)
-                            .addKeyValue("difference", difference)
-                            .log("Updating REQUESTED because current work item is terminal.");
-
-                        return difference < 0 ? 0 : difference;
-                    });
-
-                    currentWork = workQueue.poll();
-                    continue;
-                }
-
+            if (currentWork != null) {
                 final SynchronousReceiveWork work = currentWork;
                 logger.atVerbose()
                     .addKeyValue(WORK_ID_KEY, work.getId())
                     .addKeyValue("numberOfEvents", work.getNumberOfEvents())
                     .log("Current work updated.");
 
-                //When work is completed, update next work as current work if work queue is not empty.
-                work.getCompleteEmitter().asMono()
-                    .subscribe(unused -> { },
-                        error -> {
-                            logger.atWarning()
-                                .addKeyValue(WORK_ID_KEY, work.getId())
-                                .log("Error occurred in current work. Schedule next work.", error);
-                            this.getOrUpdateCurrentWork();
-                        },
-                        () -> {
-                            logger.atVerbose()
-                                .addKeyValue(WORK_ID_KEY, work.getId())
-                                .log("Current work completed. Schedule next work.");
-                            this.getOrUpdateCurrentWork();
-                        });
-
                 work.start();
 
                 // Now that we updated REQUESTED to account for credits already on the line, we're good to
                 // place any credits for this new work item.
                 requestUpstream(work.getNumberOfEvents());
-
-                return work;
             }
 
             return currentWork;
