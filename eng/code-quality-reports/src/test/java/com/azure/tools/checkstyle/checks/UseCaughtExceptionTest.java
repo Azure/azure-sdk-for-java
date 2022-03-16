@@ -9,6 +9,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import static com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck.UNUSED_CAUGHT_EXCEPTION_ERROR;
 
 /**
@@ -36,8 +39,7 @@ public class UseCaughtExceptionTest extends AbstractModuleTestSupport {
     @Test
     public void unusedCaughtExceptionTestData() throws Exception {
         String[] expected = {
-            expectedErrorMessage(16, 13, String.format(UNUSED_CAUGHT_EXCEPTION_ERROR, "e")),
-            expectedErrorMessage(108, 13, String.format(UNUSED_CAUGHT_EXCEPTION_ERROR, "ex"))
+            expectedErrorMessage(17, 13, String.format(UNUSED_CAUGHT_EXCEPTION_ERROR, "e"))
         };
         verify(checker, getPath("UseCaughtExceptionTestData.java"), expected);
     }

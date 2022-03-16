@@ -55,18 +55,20 @@ public class UseCaughtExceptionCauseCheck extends AbstractCheck {
         final DetailAST catchStatement = catchBlockToken.findFirstToken(TokenTypes.PARAMETER_DEF);
         final String caughtExceptionVariableName = catchStatement.findFirstToken(TokenTypes.IDENT).getText();
 
+        // get all throw statements from current catch block
         final List<DetailAST> throwStatements = getThrowStatements(catchBlockToken);
 
+        // get possible exception names to which the original exception might be assigned to
         final List<String> wrappedExceptions =
             getWrappedExceptions(catchBlockToken, catchBlockToken, caughtExceptionVariableName);
 
         throwStatements.forEach(throwToken -> {
             final List<String> throwParamNames = new LinkedList<>();
             getThrowParamNames(throwToken, throwParamNames);
-            // all possible exception names to look for in throw statements
+            // include the original exception name to the list to look for in throw statements
             wrappedExceptions.add(caughtExceptionVariableName);
 
-            // throwsList = [ex, p]
+            // throwParamNames = [ex, p]
             // exceptionsList = [ex, cause]
             // Caught exception variable is used if an intersection is between the throw statements param names
             // used and the actual exception names being thrown.
@@ -125,6 +127,9 @@ public class UseCaughtExceptionCauseCheck extends AbstractCheck {
             // Get the variable definition param name to which the caught exception variable is assigned.
             if (temp.getParent().getType() == TokenTypes.VARIABLE_DEF) {
                 wrappedException = temp.getParent().findFirstToken(TokenTypes.IDENT);
+            } else if (temp.findFirstToken(TokenTypes.DOT) != null) {
+                // Get the variable name if assigned to a 'this' variable
+                wrappedException = temp.findFirstToken(TokenTypes.DOT).findFirstToken(TokenTypes.IDENT);
             } else {
                 wrappedException = temp.findFirstToken(TokenTypes.IDENT);
             }

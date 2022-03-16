@@ -5,6 +5,7 @@ import java.security.PrivilegedActionException;
 import java.util.Locale;
 
 public class UseCaughtExceptionTestData {
+    private IOException lastError;
 
     ClientLogger logger = new ClientLogger(UseCaughtExceptionTestData.class);
 
@@ -101,21 +102,22 @@ public class UseCaughtExceptionTestData {
         }
     }
 
-    public invalidMultipleCatchBlock() {
+    public validMultipleCatchBlock() {
         try {
             throw new PrivilegedActionException();
         } catch (IOException | PrivilegedActionException ex) {
-            throw LOGGER.logExceptionAsError(new RuntimeException());
+            RuntimeException p = new RuntimeException(ex);
+            throw LOGGER.logExceptionAsError(p);
         }
     }
 
-    public validCaughtExceptionNewWrapped() {
+    public validCaughtExceptionThisInitialize() {
         try {
             throw new PrivilegedActionException();
         } catch (final PrivilegedActionException e) {
-            IOException ioException = new IOException(e);
+            this.lastError = new IOException(e);
 
-            throw ioException;
+            throw this.lastError;
         }
     }
 }
