@@ -38,9 +38,6 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
         Configuration.getGlobalConfiguration().get("AREA_CODE", "833");
     protected static final String MS_USERAGENT_OVERRIDE = Configuration.getGlobalConfiguration().get("AZURE_USERAGENT_OVERRIDE", "");
 
-    protected static final String PHONE_NUMBER =
-        Configuration.getGlobalConfiguration().get("AZURE_PHONE_NUMBER", "+11234567891");
-
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT =
         new StringJoiner("\":\"|\"", "\"", "\":\"")
             .add("id")
@@ -201,5 +198,4 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
 
         return phoneNumber;
     }
-
 }
