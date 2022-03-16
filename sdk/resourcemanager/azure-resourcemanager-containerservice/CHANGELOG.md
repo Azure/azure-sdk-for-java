@@ -2,6 +2,10 @@
 
 ## 2.14.0-beta.1 (Unreleased)
 
+### Features Added
+
+- Supported enabling role-based access-control for `KubernetesCluster` during create.
+
 ### Other Changes
 
 - Changed behavior that `KubernetesCluster` no longer retrieves admin and user KubeConfig during create, update, refresh.
