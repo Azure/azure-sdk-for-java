@@ -22,40 +22,7 @@ parameters:
     default: true
 
 stages:
-  # The signing stage is responsible for submitting binaries to ESRP for our official signing
-  # where appropriate and also meeting any other signing requirements for particular artifacts,
-  # in this case we do GPG signing in order to publish to Maven Central. At the moment signing
-  # is protected by an approval check but this may be removed in the future.
-  - stage: Signing
-    dependsOn: ${{parameters.DependsOn}}
-    jobs:
-      - deployment: SignPackage
-        environment: esrp
-        timeoutInMinutes: 20
-        variables:
-          - template: ../variables/globals.yml
-        pool:
-          name: azsdk-pool-mms-ubuntu-2004-general
-          vmImage: MMSUbuntu20.04
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - checkout: none
-
-                - download: current
-                  artifact: ${{parameters.ArtifactName}}
-                  timeoutInMinutes: 5
-
-                - template: tools/java-esrp-signing/java-esrp-signing.yml@azure-sdk-build-tools
-                  parameters:
-                    Artifacts: ${{parameters.Artifacts}}
-                    ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
-
-                - publish: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
-                  artifact: ${{parameters.ArtifactName}}-signed
-                  displayName: 'Store signed packages in ${{parameters.ArtifactName}}-signed artifact'
-
+ 
   # We generate two interdependent stages for each artifact listed in the ci.yml file, creates the release
   # in GitHub. The Release stage publishes to Maven Central. Both stages require approval since they
   # effectively burn the version number. For testing of packages prior to burning the version number -
