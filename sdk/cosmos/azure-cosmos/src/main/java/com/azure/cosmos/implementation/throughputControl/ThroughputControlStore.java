@@ -26,7 +26,8 @@ import reactor.core.publisher.Mono;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.azure.cosmos.implementation.Exceptions.*;
+import static com.azure.cosmos.implementation.Exceptions.isNameCacheStale;
+import static com.azure.cosmos.implementation.Exceptions.isPartitionKeyMismatchException;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -79,7 +80,6 @@ public class ThroughputControlStore {
     private final ConnectionMode connectionMode;
     private final AsyncCache<String, IThroughputContainerController> containerControllerCache;
     private final ConcurrentHashMap<String, ContainerThroughputControlGroupProperties> containerMap;
-    private final ConcurrentHashMap<String, String> defaultGroupByContainer;
     private final RxPartitionKeyRangeCache partitionKeyRangeCache;
 
     private final LinkedCancellationTokenSource cancellationTokenSource;
@@ -97,7 +97,6 @@ public class ThroughputControlStore {
         this.connectionMode = connectionMode;
         this.containerControllerCache = new AsyncCache<>();
         this.containerMap = new ConcurrentHashMap<>();
-        this.defaultGroupByContainer = new ConcurrentHashMap<>();
         this.partitionKeyRangeCache = partitionKeyRangeCache;
 
         this.cancellationTokenSource = new LinkedCancellationTokenSource();
@@ -151,7 +150,7 @@ public class ThroughputControlStore {
             })
             .onErrorResume(throwable -> {
                if (throwable instanceof ThroughputControlInitializationException) {
-                      if (this.shouldContinue(request, collectionNameLink, throwable)) {
+                      if (this.shouldContinueRequestOnInitError(request, collectionNameLink, throwable)) {
                           return originalRequestMono;
                       }
 
@@ -162,7 +161,7 @@ public class ThroughputControlStore {
             });
     }
 
-    private boolean shouldContinue(RxDocumentServiceRequest request, String collectionNameLink, Throwable throwable) {
+    private boolean shouldContinueRequestOnInitError(RxDocumentServiceRequest request, String collectionNameLink, Throwable throwable) {
         if (throwable instanceof ThroughputControlInitializationException) {
             ContainerThroughputControlGroupProperties throughputControlContainerProperties = this.containerMap.get(collectionNameLink);
 
@@ -173,7 +172,7 @@ public class ThroughputControlStore {
                     throughputControlContainerProperties.getThroughputControlGroupSet().size() > 0,
                     "There should be more than one throughput control group");
 
-            return throughputControlContainerProperties.allowRequestContinueOnInitError(request);
+            return throughputControlContainerProperties.allowRequestToContinueOnInitError(request);
         }
 
         return false;

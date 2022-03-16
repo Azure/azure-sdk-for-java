@@ -13,7 +13,7 @@ public abstract class ThroughputControlGroupInternal {
     private final String groupName;
     private final String id;
     private final boolean isDefault;
-    private final boolean suppressInitError;
+    private final boolean continueOnInitError;
     private final CosmosAsyncContainer targetContainer;
     private final Integer targetThroughput;
     private final Double targetThroughputThreshold;
@@ -24,7 +24,7 @@ public abstract class ThroughputControlGroupInternal {
         Integer targetThroughput,
         Double targetThroughputThreshold,
         boolean isDefault,
-        boolean suppressInitError) {
+        boolean continueOnInitError) {
 
         checkArgument(StringUtils.isNotEmpty(groupName), "Group name can not be null or empty");
         checkNotNull(targetContainer, "Target container can not be null");
@@ -38,7 +38,7 @@ public abstract class ThroughputControlGroupInternal {
         this.targetThroughput = targetThroughput;
         this.targetThroughputThreshold = targetThroughputThreshold;
         this.isDefault = isDefault;
-        this.suppressInitError = suppressInitError;
+        this.continueOnInitError = continueOnInitError;
 
         this.id = String.format(
             "%s/%s/%s",
@@ -109,8 +109,8 @@ public abstract class ThroughputControlGroupInternal {
      *
      * @return {@code true} request will be allowed to continue on original request flow if throughput control failed on initialization. {@code false} otherwise.
      */
-    public boolean isSuppressInitError() {
-        return suppressInitError;
+    public boolean isContinueOnInitError() {
+        return continueOnInitError;
     }
 
     public String getId() {
@@ -131,7 +131,7 @@ public abstract class ThroughputControlGroupInternal {
 
         return StringUtils.equals(this.id, that.id)
                 && this.isDefault == that.isDefault
-                && this.suppressInitError == that.suppressInitError
+                && this.continueOnInitError == that.continueOnInitError
                 && this.targetThroughput == that.targetThroughput
                 && this.targetThroughputThreshold == that.targetThroughputThreshold;
     }
@@ -141,7 +141,7 @@ public abstract class ThroughputControlGroupInternal {
         int hash = 0;
         hash = (hash * 397) ^ this.id.hashCode();
         hash = (hash * 397) ^ Boolean.hashCode(this.isDefault);
-        hash = (hash * 397) ^ Boolean.hashCode(this.suppressInitError);
+        hash = (hash * 397) ^ Boolean.hashCode(this.continueOnInitError);
         hash = (hash * 397) ^ (this.targetThroughput == null ? 0 : Integer.hashCode(this.targetThroughput));
         hash = (hash * 397) ^ (this.targetThroughputThreshold == null ? 0 : Double.hashCode(this.targetThroughputThreshold));
         return hash;

@@ -85,7 +85,7 @@ public class ContainerThroughputControlGroupPropertiesTests {
                     newGroup.getTargetThroughput(),
                     newGroup.getTargetThroughputThreshold(),
                     newGroup.isDefault(),
-                    newGroup.isSuppressInitError());
+                    newGroup.isContinueOnInitError());
             currentGroupSize = throughputControlContainerProperties.addThroughputControlGroup(newGroupDuplicate);
             assertThat(currentGroupSize).isEqualTo(2);
         } finally {

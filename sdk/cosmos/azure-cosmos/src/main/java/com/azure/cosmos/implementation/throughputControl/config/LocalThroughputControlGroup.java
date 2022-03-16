@@ -13,7 +13,7 @@ public class LocalThroughputControlGroup extends ThroughputControlGroupInternal 
         Integer targetThroughput,
         Double targetThroughputThreshold,
         boolean isDefault,
-        boolean suppressInitError) {
-        super (groupName, targetContainer, targetThroughput, targetThroughputThreshold, isDefault, suppressInitError);
+        boolean continueOnInitError) {
+        super (groupName, targetContainer, targetThroughput, targetThroughputThreshold, isDefault, continueOnInitError);
     }
 }

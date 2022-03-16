@@ -14,19 +14,19 @@ public final class ThroughputControlGroupConfig {
     private final Integer targetThroughput;
     private final Double targetThroughputThreshold;
     private final boolean isDefault;
-    private final boolean suppressInitError;
+    private final boolean continueOnInitError;
 
     ThroughputControlGroupConfig(
             String groupName,
             Integer targetThroughput,
             Double targetThroughputThreshold,
             boolean isDefault,
-            boolean suppressInitError) {
+            boolean continueOnInitError) {
        this.groupName= groupName;
        this.targetThroughput = targetThroughput;
        this.targetThroughputThreshold = targetThroughputThreshold;
        this.isDefault = isDefault;
-       this.suppressInitError = suppressInitError;
+       this.continueOnInitError = continueOnInitError;
     }
 
     /**
@@ -88,7 +88,7 @@ public final class ThroughputControlGroupConfig {
      * @return {@code true} request will continue on original request flow if throughput control controller failed on initialization. {@code false} otherwise.
      */
     @Beta(value = Beta.SinceVersion.V4_28_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public boolean isSuppressInitError() {
-        return suppressInitError;
+    public boolean isContinueOnInitError() {
+        return continueOnInitError;
     }
 }

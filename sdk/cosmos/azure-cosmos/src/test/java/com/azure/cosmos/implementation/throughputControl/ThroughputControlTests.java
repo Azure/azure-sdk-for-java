@@ -237,7 +237,7 @@ public class ThroughputControlTests extends TestSuiteBase {
     }
 
     @Test(groups = {"emulator"}, dataProvider = "allowRequestToContinueOnInitErrorProvider", timeOut = TIMEOUT)
-    public void throughputControlFallBackOnInitError(boolean suppressInitError) {
+    public void throughputControlContinueOnInitError(boolean continueOnInitError) {
         // Purposely not creating the throughput control container so to test allowRequestContinueOnInitError
         String controlContainerId = "throughputControlContainer";
         GlobalThroughputControlConfig globalControlConfig =
@@ -255,7 +255,7 @@ public class ThroughputControlTests extends TestSuiteBase {
                 new ThroughputControlGroupConfigBuilder()
                         .setGroupName("group-" + UUID.randomUUID())
                         .setTargetThroughput(6)
-                        .setSuppressInitError(suppressInitError)
+                        .setContinueOnInitError(continueOnInitError)
                         .build();
 
         container.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig);
@@ -263,7 +263,7 @@ public class ThroughputControlTests extends TestSuiteBase {
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
         requestOptions.setThroughputControlGroupName(groupConfig.getGroupName());
 
-        if (suppressInitError) {
+        if (continueOnInitError) {
             validateItemSuccess(
                     container.createItem(TestItem.createNewItem(), requestOptions),
                     successValidator);

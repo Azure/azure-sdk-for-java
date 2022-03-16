@@ -40,7 +40,7 @@ public class ContainerThroughputControlGroupProperties {
             }
         }
 
-        if (group.isSuppressInitError()) {
+        if (group.isContinueOnInitError()) {
             this.supressInitErrorGroupSet.add(group.getGroupName());
         }
 
@@ -56,10 +56,10 @@ public class ContainerThroughputControlGroupProperties {
     }
 
     public Set<ThroughputControlGroupInternal> getThroughputControlGroupSet() {
-        return throughputControlGroupSet;
+        return this.throughputControlGroupSet;
     }
 
-    public boolean allowRequestContinueOnInitError(RxDocumentServiceRequest request) {
+    public boolean allowRequestToContinueOnInitError(RxDocumentServiceRequest request) {
         checkNotNull(request, "Request should not be null");
 
         String requestGroupName = request.getThroughputControlGroupName();
