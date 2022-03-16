@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncClientEncryptionKey;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClient;
@@ -25,6 +26,7 @@ import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkExecutionThresholdsState;
 import com.azure.cosmos.models.CosmosBulkItemResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.CosmosClientEncryptionKeyResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -38,6 +40,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.List;
@@ -784,6 +787,38 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosBatchResponseAccessor {
             List<CosmosBatchOperationResult> getResults(CosmosBatchResponse cosmosBatchResponse);
+        }
+    }
+
+    public static final class CosmosAsyncClientEncryptionKeyHelper {
+        private static CosmosAsyncClientEncryptionKeyAccessor accessor;
+
+        private CosmosAsyncClientEncryptionKeyHelper() {
+        }
+
+        static {
+            ensureClassLoaded(CosmosAsyncClientEncryptionKey.class);
+        }
+
+        public static CosmosAsyncClientEncryptionKeyAccessor getCosmosAsyncClientEncryptionKeyAccessor() {
+            if (accessor == null) {
+                throw new IllegalStateException("CosmosAsyncClientEncryptionKeyAccessor is not initialized yet!");
+            }
+
+            return accessor;
+        }
+
+        public static void setCosmosAsyncClientEncryptionKeyAccessor(final CosmosAsyncClientEncryptionKeyAccessor newAccessor) {
+            if (accessor != null) {
+                throw new IllegalStateException("CosmosAsyncClientEncryptionKeyAccessor already initialized!");
+            }
+
+            accessor = newAccessor;
+        }
+
+        public interface CosmosAsyncClientEncryptionKeyAccessor {
+            Mono<CosmosClientEncryptionKeyResponse> readClientEncryptionKey(CosmosAsyncClientEncryptionKey cosmosAsyncClientEncryptionKey,
+                                                                            RequestOptions requestOptions);
         }
     }
 

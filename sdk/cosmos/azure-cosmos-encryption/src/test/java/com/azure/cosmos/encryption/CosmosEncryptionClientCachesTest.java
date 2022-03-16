@@ -11,6 +11,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosAsyncClientEncryptionKey;
 import com.azure.cosmos.encryption.implementation.ReflectionUtils;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
@@ -44,6 +45,7 @@ public class CosmosEncryptionClientCachesTest extends TestSuiteBase {
     private CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer;
     private EncryptionKeyWrapMetadata metadata1;
     private EncryptionKeyWrapMetadata metadata2;
+    private final static ImplementationBridgeHelpers.CosmosAsyncClientEncryptionKeyHelper.CosmosAsyncClientEncryptionKeyAccessor cosmosAsyncClientEncryptionKeyAccessor = ImplementationBridgeHelpers.CosmosAsyncClientEncryptionKeyHelper.getCosmosAsyncClientEncryptionKeyAccessor();
 
     @Factory(dataProvider = "clientBuilders")
     public CosmosEncryptionClientCachesTest(CosmosClientBuilder clientBuilder) {
@@ -157,7 +159,7 @@ public class CosmosEncryptionClientCachesTest extends TestSuiteBase {
         CosmosClientEncryptionKeyProperties mockKeyProperties = Mockito.mock(CosmosClientEncryptionKeyProperties.class);
         Mockito.when(mockCosmosAsyncContainer.getDatabase()).thenReturn(mockCosmosAsyncDatabase);
         Mockito.when(mockCosmosAsyncDatabase.getClientEncryptionKey(Mockito.anyString())).thenReturn(mockCosmosAsyncClientEncryptionKey);
-        Mockito.when(mockCosmosAsyncClientEncryptionKey.read(Mockito.any(RequestOptions.class))).thenReturn(Mono.just(mockKeyResponse));
+        Mockito.when(cosmosAsyncClientEncryptionKeyAccessor.readClientEncryptionKey(mockCosmosAsyncClientEncryptionKey, Mockito.any(RequestOptions.class))).thenReturn(Mono.just(mockKeyResponse));
         Mockito.when(mockKeyResponse.getProperties()).thenReturn(mockKeyProperties);
 
         CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = new CosmosEncryptionAsyncClient(mockAsyncClient, mockKeyEncryptionKeyResolver, "test");

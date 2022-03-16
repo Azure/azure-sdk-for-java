@@ -15,6 +15,7 @@ import com.azure.cosmos.encryption.implementation.Constants;
 import com.azure.cosmos.encryption.implementation.EncryptionImplementationBridgeHelpers;
 import com.azure.cosmos.encryption.implementation.keyprovider.EncryptionKeyStoreProviderImpl;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -43,6 +44,7 @@ public final class CosmosEncryptionAsyncClient implements Closeable {
     private final KeyEncryptionKeyResolver keyEncryptionKeyResolver;
     private final String keyEncryptionKeyResolverName;
     private final EncryptionKeyStoreProviderImpl encryptionKeyStoreProviderImpl;
+    private final static ImplementationBridgeHelpers.CosmosAsyncClientEncryptionKeyHelper.CosmosAsyncClientEncryptionKeyAccessor cosmosAsyncClientEncryptionKeyAccessor = ImplementationBridgeHelpers.CosmosAsyncClientEncryptionKeyHelper.getCosmosAsyncClientEncryptionKeyAccessor();
 
     CosmosEncryptionAsyncClient(CosmosAsyncClient cosmosAsyncClient,
                                 KeyEncryptionKeyResolver keyEncryptionKeyResolver,
@@ -154,7 +156,7 @@ public final class CosmosEncryptionAsyncClient implements Closeable {
         CosmosAsyncClientEncryptionKey clientEncryptionKey =
             container.getDatabase().getClientEncryptionKey(clientEncryptionKeyId);
 
-        return clientEncryptionKey.read(requestOptions).map(cosmosClientEncryptionKeyResponse ->
+        return cosmosAsyncClientEncryptionKeyAccessor.readClientEncryptionKey(clientEncryptionKey, requestOptions).map(cosmosClientEncryptionKeyResponse ->
             cosmosClientEncryptionKeyResponse.getProperties()
         ).onErrorResume(throwable -> {
             if (!(throwable instanceof Exception)) {

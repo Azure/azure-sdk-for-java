@@ -11,6 +11,7 @@ import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.DataEncryp
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.KeyEncryptionKey;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.MicrosoftDataEncryptionException;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.ProtectedDataEncryptionKey;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyResponse;
@@ -27,6 +28,7 @@ import java.security.NoSuchAlgorithmException;
 public final class CosmosEncryptionAsyncDatabase {
     private final CosmosAsyncDatabase cosmosAsyncDatabase;
     private final CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
+    private final static ImplementationBridgeHelpers.CosmosAsyncClientEncryptionKeyHelper.CosmosAsyncClientEncryptionKeyAccessor cosmosAsyncClientEncryptionKeyAccessor = ImplementationBridgeHelpers.CosmosAsyncClientEncryptionKeyHelper.getCosmosAsyncClientEncryptionKeyAccessor();
 
     CosmosEncryptionAsyncDatabase(CosmosAsyncDatabase cosmosAsyncDatabase,
                                   CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient) {
@@ -145,7 +147,7 @@ public final class CosmosEncryptionAsyncDatabase {
         try {
             CosmosAsyncClientEncryptionKey clientEncryptionKey =
                 this.cosmosAsyncDatabase.getClientEncryptionKey(clientEncryptionKeyId);
-            return clientEncryptionKey.read(null).flatMap(cosmosClientEncryptionKeyResponse -> {
+            return cosmosAsyncClientEncryptionKeyAccessor.readClientEncryptionKey(clientEncryptionKey, null).flatMap(cosmosClientEncryptionKeyResponse -> {
                 CosmosClientEncryptionKeyProperties clientEncryptionKeyProperties =
                     cosmosClientEncryptionKeyResponse.getProperties();
                 try {

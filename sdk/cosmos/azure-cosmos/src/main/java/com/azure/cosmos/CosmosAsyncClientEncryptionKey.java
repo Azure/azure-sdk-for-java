@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.core.util.Context;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
@@ -40,11 +41,20 @@ public final class CosmosAsyncClientEncryptionKey {
     /**
      * Reads a cosmos client encryption key
      *
-     * @param requestOptions  the request options.
      * @return a {@link Mono} containing the single resource response with the read client encryption key or an error.
      */
     @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public Mono<CosmosClientEncryptionKeyResponse> read(RequestOptions requestOptions) {
+    public Mono<CosmosClientEncryptionKeyResponse> read() {
+        return withContext(context -> readInternal(context, null));
+    }
+
+    /**
+     * Reads a cosmos client encryption key
+     *
+     * @param requestOptions  the request options.
+     * @return a {@link Mono} containing the single resource response with the read client encryption key or an error.
+     */
+    Mono<CosmosClientEncryptionKeyResponse> read(RequestOptions requestOptions) {
         return withContext(context -> readInternal(context, requestOptions));
     }
 
@@ -98,5 +108,16 @@ public final class CosmosAsyncClientEncryptionKey {
         builder.append("/");
         builder.append(getId());
         return builder.toString();
+    }
+
+    static {
+        ImplementationBridgeHelpers.CosmosAsyncClientEncryptionKeyHelper.setCosmosAsyncClientEncryptionKeyAccessor(
+            new ImplementationBridgeHelpers.CosmosAsyncClientEncryptionKeyHelper.CosmosAsyncClientEncryptionKeyAccessor() {
+
+                @Override
+                public Mono<CosmosClientEncryptionKeyResponse> readClientEncryptionKey(CosmosAsyncClientEncryptionKey cosmosAsyncClientEncryptionKey, RequestOptions requestOptions) {
+                    return cosmosAsyncClientEncryptionKey.read(requestOptions);
+                }
+            });
     }
 }
