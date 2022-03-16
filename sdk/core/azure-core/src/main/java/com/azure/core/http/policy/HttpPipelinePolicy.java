@@ -35,6 +35,7 @@ public interface HttpPipelinePolicy {
      */
     // TODO (kasobol-msft) should this be default? It probably has to due to @FunctionalInterface
     default HttpResponse processSynchronously(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        // TODO (kasobol-msft) see also HttpPipelineNextPolicy.
         return process(context, next).block();
     }
 
