@@ -226,7 +226,6 @@ stages:
 
   - ${{if ne(parameters.EnableIntegrationStage, false)}}:
     - stage: Integration
-      dependsOn: Signing
       jobs:
       - job: PublishPackages
         condition: or(eq(variables['SetDevVersion'], 'true'), and(eq(variables['Build.Reason'],'Schedule'), eq(variables['System.TeamProject'], 'internal')))
