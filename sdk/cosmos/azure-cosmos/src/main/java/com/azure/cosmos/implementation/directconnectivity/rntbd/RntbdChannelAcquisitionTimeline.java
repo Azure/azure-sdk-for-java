@@ -4,8 +4,8 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.clientTelemetry.ClientTelemetry;
-import com.azure.cosmos.implementation.clientTelemetry.ReportPayload;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.clienttelemetry.ReportPayload;
 import org.HdrHistogram.ConcurrentDoubleHistogram;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
