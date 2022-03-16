@@ -71,7 +71,6 @@ stages:
         ${{ if eq(parameters.ServiceDirectory, 'template') }}:
           TestPipeline: true
         ArtifactName: packages
-        TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
         TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
         # EnableSigningStage: false
         # EnableAllDependsOn: false
