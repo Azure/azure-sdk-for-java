@@ -1977,7 +1977,7 @@
   <!-- False positive, equals method is implemented correctly by using equality of member variables  -->
   <Match>
     <Class name="com.azure.cosmos.implementation.clienttelemetry.ReportPayload"/>
-    <Method name="equals"/>
+    <Method name="equals(Object)"/>
     <Bug pattern="EQ_UNUSUAL"/>
   </Match>
 

@@ -273,7 +273,7 @@ public class ClientTelemetry {
 
     private void populateAzureVmMetaData(AzureVMMetadata azureVMMetadata) {
         this.clientTelemetryInfo.setApplicationRegion(azureVMMetadata.getLocation());
-        this.clientTelemetryInfo.setVmId(azureVMMetadata.getVmId());
+        this.clientTelemetryInfo.setMachineId("vmId:" + azureVMMetadata.getVmId());
         this.clientTelemetryInfo.setHostEnvInfo(azureVMMetadata.getOsType() + "|" + azureVMMetadata.getSku() +
             "|" + azureVMMetadata.getVmSize() + "|" + azureVMMetadata.getAzEnvironment());
     }
