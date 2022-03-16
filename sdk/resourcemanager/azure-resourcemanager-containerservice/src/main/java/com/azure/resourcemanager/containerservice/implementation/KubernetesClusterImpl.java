@@ -259,50 +259,18 @@ public class KubernetesClusterImpl
         return manager().kubernetesClusters().stopAsync(this.resourceGroupName(), this.name());
     }
 
-    private Mono<List<CredentialResult>> listAdminConfig(final KubernetesClusterImpl self) {
-        return this
-            .manager()
-            .kubernetesClusters()
-            .listAdminKubeConfigContentAsync(self.resourceGroupName(), self.name())
-            .map(
-                kubeConfigs -> {
-                    self.adminKubeConfigs = kubeConfigs;
-                    return self.adminKubeConfigs;
-                });
-    }
-
-    private Mono<List<CredentialResult>> listUserConfig(final KubernetesClusterImpl self) {
-        return this
-            .manager()
-            .kubernetesClusters()
-            .listUserKubeConfigContentAsync(self.resourceGroupName(), self.name())
-            .map(
-                kubeConfigs -> {
-                    self.userKubeConfigs = kubeConfigs;
-                    return self.userKubeConfigs;
-                });
-    }
-
     @Override
     protected Mono<ManagedClusterInner> getInnerAsync() {
         final KubernetesClusterImpl self = this;
-        final Mono<List<CredentialResult>> adminConfig = listAdminConfig(self);
-        final Mono<List<CredentialResult>> userConfig = listUserConfig(self);
         return this
             .manager()
             .serviceClient()
             .getManagedClusters()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name())
-            .flatMap(
-                managedClusterInner ->
-                    Flux
-                        .merge(adminConfig, userConfig)
-                        .last()
-                        .map(
-                            bytes -> {
-                                formatUserKubeConfigsMap.clear();
-                                return managedClusterInner;
-                            }));
+            .map(inner -> {
+                clearKubeConfig();
+                return inner;
+            });
     }
 
     @Override
@@ -311,24 +279,23 @@ public class KubernetesClusterImpl
         if (!this.isInCreateMode()) {
             this.innerModel().withServicePrincipalProfile(null);
         }
-        final Mono<List<CredentialResult>> adminConfig = listAdminConfig(self);
-        final Mono<List<CredentialResult>> userConfig = listUserConfig(self);
 
         return this
             .manager()
             .serviceClient()
             .getManagedClusters()
             .createOrUpdateAsync(self.resourceGroupName(), self.name(), self.innerModel())
-            .flatMap(
-                inner ->
-                    Flux
-                        .merge(adminConfig, userConfig)
-                        .last()
-                        .map(
-                            bytes -> {
-                                self.setInner(inner);
-                                return self;
-                            }));
+            .map(inner -> {
+                self.setInner(inner);
+                clearKubeConfig();
+                return self;
+            });
+    }
+
+    private void clearKubeConfig() {
+        this.adminKubeConfigs = null;
+        this.userKubeConfigs = null;
+        this.formatUserKubeConfigsMap.clear();
     }
 
     @Override
@@ -378,12 +345,6 @@ public class KubernetesClusterImpl
         this.innerModel().withIdentity(new ManagedClusterIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED));
         return this;
     }
-
-//    @Override
-//    public KubernetesClusterImpl enableRoleBasedAccessControl() {
-//        this.innerModel().withEnableRbac(true);
-//        return this;
-//    }
 
     @Override
     public KubernetesClusterImpl withServicePrincipalSecret(String secret) {

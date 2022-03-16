@@ -2,13 +2,9 @@
 
 ## 2.14.0-beta.1 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+- Changed behavior that `KubernetesCluster` no longer retrieves admin and user KubeConfig during create, update, refresh. They are now retrieved when calling `KubernetesCluster.adminKubeConfigs()` or `KubernetesCluster.userKubeConfigs()`.
 
 ## 2.13.0 (2022-03-11)
 
