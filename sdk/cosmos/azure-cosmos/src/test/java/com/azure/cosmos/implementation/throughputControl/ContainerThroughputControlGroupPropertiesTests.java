@@ -38,7 +38,7 @@ public class ContainerThroughputControlGroupPropertiesTests {
                     null,
                     true,
                     false);
-            
+
             int currentGroupSize = throughputControlContainerProperties.addThroughputControlGroup(throughputControlDefaultGroup);
             assertThat(currentGroupSize).isEqualTo(1);
 
@@ -52,7 +52,7 @@ public class ContainerThroughputControlGroupPropertiesTests {
                     false);
 
             assertThatThrownBy(() -> throughputControlContainerProperties.addThroughputControlGroup(throughputControlGroupDuplciate))
-                    .isInstanceOf(IllegalStateException.class);
+                    .isInstanceOf(IllegalArgumentException.class);
 
             // Test 3: add another default group
             LocalThroughputControlGroup throughputControlDefaultGroup2 = new LocalThroughputControlGroup(
@@ -63,7 +63,7 @@ public class ContainerThroughputControlGroupPropertiesTests {
                     true,
                     false);
             assertThatThrownBy(() -> throughputControlContainerProperties.addThroughputControlGroup(throughputControlDefaultGroup2))
-                    .isInstanceOf(IllegalStateException.class)
+                    .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("A default group already exists");
 
             // Test 4: add a new group

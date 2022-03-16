@@ -35,7 +35,7 @@ public class ContainerThroughputControlGroupProperties {
         if (group.isDefault()) {
             if (!this.defaultGroup.compareAndSet(null, group)) {
                 if (!this.defaultGroup.get().equals(group)) {
-                    throw new IllegalStateException("A default group already exists");
+                    throw new IllegalArgumentException("A default group already exists");
                 }
             }
         }
@@ -47,7 +47,7 @@ public class ContainerThroughputControlGroupProperties {
         // Only throw when two different groups are using the same id (databaseId + containerId + groupName)
         if (this.throughputControlGroupSet.stream()
                 .anyMatch(existingGroup -> StringUtils.equals(existingGroup.getId(), group.getId()) && !existingGroup.equals(group))) {
-            throw new IllegalStateException("Throughput control group with id " + group.getId() + " already exists");
+            throw new IllegalArgumentException("Throughput control group with id " + group.getId() + " already exists");
         }
 
         this.throughputControlGroupSet.add(group);
