@@ -290,14 +290,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
         for (ThroughputControlGroupInternal group : this.groups) {
             if (StringUtils.equals(groupName, group.getGroupName())) {
                 return this.resolveThroughputGroupController(group)
-                    .map(Utils.ValueHolder::new)
-                    .onErrorResume(throwable -> {
-                        if (!(throwable instanceof ThroughputControlInitializationException)) {
-                            return Mono.error(new ThroughputControlInitializationException(throwable));
-                        }
-
-                        return Mono.error(throwable);
-                    });
+                    .map(Utils.ValueHolder::new);
             }
         }
 

@@ -38,8 +38,7 @@ public class ContainerThroughputControlGroupPropertiesTests {
                     null,
                     true,
                     false);
-
-
+            
             int currentGroupSize = throughputControlContainerProperties.addThroughputControlGroup(throughputControlDefaultGroup);
             assertThat(currentGroupSize).isEqualTo(1);
 
