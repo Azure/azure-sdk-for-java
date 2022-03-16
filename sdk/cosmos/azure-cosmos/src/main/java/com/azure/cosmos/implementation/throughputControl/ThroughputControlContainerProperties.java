@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.throughputControl;
 
-import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
@@ -17,16 +16,14 @@ import java.util.concurrent.atomic.AtomicReference;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class ThroughputControlContainerProperties {
-
     private static Logger logger  = LoggerFactory.getLogger(ThroughputControlContainerProperties.class);
-    private final CosmosAsyncContainer container;
+
     private final AtomicReference<ThroughputControlGroupInternal> defaultGroup;
     private final Set<ThroughputControlGroupInternal> throughputControlGroupSet;
     private final Set<String> supressInitErrorGroupSet;
 
 
-    public ThroughputControlContainerProperties(CosmosAsyncContainer container) {
-        this.container = container;
+    public ThroughputControlContainerProperties() {
         this.defaultGroup = new AtomicReference<>();
         this.throughputControlGroupSet = ConcurrentHashMap.newKeySet();
         this.supressInitErrorGroupSet = ConcurrentHashMap.newKeySet();
@@ -37,8 +34,8 @@ public class ThroughputControlContainerProperties {
 
         if (group.isDefault()) {
             if (!this.defaultGroup.compareAndSet(null, group)) {
-                if (!StringUtils.equals(group.getId(), this.defaultGroup.get().getId())) {
-                    throw new IllegalArgumentException("A default group already exists");
+                if (!this.defaultGroup.get().equals(group)) {
+                    throw new IllegalStateException("A default group already exists");
                 }
             }
         }
@@ -47,9 +44,13 @@ public class ThroughputControlContainerProperties {
             this.supressInitErrorGroupSet.add(group.getGroupName());
         }
 
-        if (!this.throughputControlGroupSet.add(group)) {
-            logger.debug("Can not add duplicate group");
+        // Only throw when two different groups are using the same id (databaseId + containerId + groupName)
+        if (this.throughputControlGroupSet.stream()
+                .anyMatch(existingGroup -> StringUtils.equals(existingGroup.getId(), group.getId()) && !existingGroup.equals(group))) {
+            throw new IllegalStateException("Throughput control group with id " + group.getId() + " already exists");
         }
+
+        this.throughputControlGroupSet.add(group);
 
         return this.throughputControlGroupSet.size();
     }

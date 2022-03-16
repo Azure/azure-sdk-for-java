@@ -129,11 +129,21 @@ public abstract class ThroughputControlGroupInternal {
 
         ThroughputControlGroupInternal that = (ThroughputControlGroupInternal) other;
 
-        return StringUtils.equals(this.id, that.id);
+        return StringUtils.equals(this.id, that.id)
+                && this.isDefault == that.isDefault
+                && this.suppressInitError == that.suppressInitError
+                && this.targetThroughput == that.targetThroughput
+                && this.targetThroughputThreshold == that.targetThroughputThreshold;
     }
 
     @Override
     public int hashCode() {
-        return this.id.hashCode();
+        int hash = 0;
+        hash = (hash * 397) ^ this.id.hashCode();
+        hash = (hash * 397) ^ Boolean.hashCode(this.isDefault);
+        hash = (hash * 397) ^ Boolean.hashCode(this.suppressInitError);
+        hash = (hash * 397) ^ (this.targetThroughput == null ? 0 : Integer.hashCode(this.targetThroughput));
+        hash = (hash * 397) ^ (this.targetThroughputThreshold == null ? 0 : Double.hashCode(this.targetThroughputThreshold));
+        return hash;
     }
 }

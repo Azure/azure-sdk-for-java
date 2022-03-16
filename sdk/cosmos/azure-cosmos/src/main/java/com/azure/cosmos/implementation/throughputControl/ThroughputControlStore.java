@@ -110,7 +110,7 @@ public class ThroughputControlStore {
         String containerNameLink = Utils.trimBeginningAndEndingSlashes(BridgeInternal.extractContainerSelfLink(group.getTargetContainer()));
         this.containerMap.compute(containerNameLink, (key, throughputControlContainerProperties) -> {
             if (throughputControlContainerProperties == null) {
-                throughputControlContainerProperties = new ThroughputControlContainerProperties(group.getTargetContainer());
+                throughputControlContainerProperties = new ThroughputControlContainerProperties();
             }
 
             int groupSize = throughputControlContainerProperties.addThroughputControlGroup(group);
