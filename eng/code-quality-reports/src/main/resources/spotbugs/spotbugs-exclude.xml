@@ -1976,8 +1976,11 @@
 
   <!-- False positive, equals method is implemented correctly by using equality of member variables  -->
   <Match>
-    <Class name="com.azure.cosmos.implementation.clienttelemetry.ReportPayload"/>
-    <Method name="equals(Object)"/>
+    <Or>
+      <Class name="com.azure.cosmos.implementation.clienttelemetry.ReportPayload"/>
+      <Class name="com.azure.cosmos.implementation.clientTelemetry.ReportPayload"/>
+    </Or>
+    <Method name="equals" params="Object" returns="boolean"/>
     <Bug pattern="EQ_UNUSUAL"/>
   </Match>
 
