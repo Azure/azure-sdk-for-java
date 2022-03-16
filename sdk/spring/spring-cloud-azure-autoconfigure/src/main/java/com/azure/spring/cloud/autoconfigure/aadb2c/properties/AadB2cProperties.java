@@ -10,6 +10,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.net.MalformedURLException;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -61,12 +62,12 @@ public class AadB2cProperties implements InitializingBean {
     /**
      * Connection Timeout for the JWKSet Remote URL call.
      */
-    private int jwtConnectTimeout = RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT; /* milliseconds */
+    private Duration jwtConnectTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT);
 
     /**
      * Read Timeout for the JWKSet Remote URL call.
      */
-    private int jwtReadTimeout = RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT; /* milliseconds */
+    private Duration jwtReadTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT);
 
     /**
      * Size limit in Bytes of the JWKSet Remote URL call.
@@ -342,7 +343,7 @@ public class AadB2cProperties implements InitializingBean {
      *
      * @return the JWT connect timeout
      */
-    public int getJwtConnectTimeout() {
+    public Duration getJwtConnectTimeout() {
         return jwtConnectTimeout;
     }
 
@@ -351,7 +352,7 @@ public class AadB2cProperties implements InitializingBean {
      *
      * @param jwtConnectTimeout the JWT connect timeout
      */
-    public void setJwtConnectTimeout(int jwtConnectTimeout) {
+    public void setJwtConnectTimeout(Duration jwtConnectTimeout) {
         this.jwtConnectTimeout = jwtConnectTimeout;
     }
 
@@ -360,7 +361,7 @@ public class AadB2cProperties implements InitializingBean {
      *
      * @return the JWT read timeout
      */
-    public int getJwtReadTimeout() {
+    public Duration getJwtReadTimeout() {
         return jwtReadTimeout;
     }
 
@@ -369,7 +370,7 @@ public class AadB2cProperties implements InitializingBean {
      *
      * @param jwtReadTimeout the JWT read timeout
      */
-    public void setJwtReadTimeout(int jwtReadTimeout) {
+    public void setJwtReadTimeout(Duration jwtReadTimeout) {
         this.jwtReadTimeout = jwtReadTimeout;
     }
 
