@@ -106,7 +106,6 @@ public class ReportPayload {
         this.metricInfo = metricInfo;
     }
 
-    @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     @Override
     public boolean equals(Object obj) {
         ReportPayload reportPayload = as(obj, ReportPayload.class);

@@ -296,7 +296,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
                 return httpResponse.statusCode() == HttpConstants.StatusCodes.OK;
             }).verifyComplete();
         } finally {
-            if (cosmosClient != null && cosmosClient.getDatabase(databaseId) != null) {
+            if (cosmosClient != null) {
                 cosmosClient.getDatabase(databaseId).delete();
             }
             safeCloseSyncClient(cosmosClient);

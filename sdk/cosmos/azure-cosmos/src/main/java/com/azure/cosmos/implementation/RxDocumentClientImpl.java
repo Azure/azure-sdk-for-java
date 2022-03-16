@@ -289,7 +289,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          ApiType apiType) {
 
         activeClientsCnt.incrementAndGet();
-        this.clientId = clientIdGenerator.getAndDecrement();
+        this.clientId = clientIdGenerator.incrementAndGet();
         this.diagnosticsClientConfig = new DiagnosticsClientConfig();
         this.diagnosticsClientConfig.withClientId(this.clientId);
         this.diagnosticsClientConfig.withActiveClientCounter(activeClientsCnt);
@@ -4059,6 +4059,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     public void close() {
         logger.info("Attempting to close client {}", this.clientId);
         if (!closed.getAndSet(true)) {
+            this.activeClientsCnt.decrementAndGet();
             logger.info("Shutting down ...");
             logger.info("Closing Global Endpoint Manager ...");
             LifeCycleUtils.closeQuietly(this.globalEndpointManager);
