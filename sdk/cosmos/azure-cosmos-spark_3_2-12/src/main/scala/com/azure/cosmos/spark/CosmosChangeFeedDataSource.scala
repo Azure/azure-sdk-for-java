@@ -80,7 +80,7 @@ class CosmosChangeFeedDataSource
 object CosmosChangeFeedDataSource {
   /**
    * Easy way to validate the version of the Cosmos Data Source
-   * @return the version of teh Cosmos Data Source
+   * @return the version of the Cosmos Data Source
    */
   def version : String = {
     CosmosConstants.currentVersion
