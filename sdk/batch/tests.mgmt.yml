@@ -11,3 +11,5 @@ stages:
           groupId: com.azure.resourcemanager
           safeName: azureresourcemanagerbatch
       Clouds: 'Public'
+      MatrixFilters:
+        - pool=.*(win).*
