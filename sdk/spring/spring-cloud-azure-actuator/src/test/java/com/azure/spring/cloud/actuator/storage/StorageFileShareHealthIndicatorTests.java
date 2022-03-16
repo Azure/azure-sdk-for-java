@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class StorageFileHealthIndicatorTests {
+class StorageFileShareHealthIndicatorTests {
 
     private static final String MOCK_URL = "https://test.file.core.windows.net/";
 
@@ -26,7 +26,7 @@ class StorageFileHealthIndicatorTests {
         @SuppressWarnings("unchecked") Response<ShareServiceProperties> mockResponse =
             (Response<ShareServiceProperties>) Mockito.mock(Response.class);
         when(mockAsyncClient.getPropertiesWithResponse()).thenReturn(Mono.just(mockResponse));
-        StorageFileHealthIndicator indicator = new StorageFileHealthIndicator(mockAsyncClient);
+        StorageFileShareHealthIndicator indicator = new StorageFileShareHealthIndicator(mockAsyncClient);
         Health health = indicator.health();
         assertThat(health.getStatus()).isEqualTo(Status.UP);
     }
@@ -36,7 +36,7 @@ class StorageFileHealthIndicatorTests {
         ShareServiceAsyncClient mockAsyncClient = getMockShareServiceAsyncClient();
         when(mockAsyncClient.getPropertiesWithResponse())
             .thenReturn(Mono.error(new IllegalStateException("The gremlins have cut the cable.")));
-        StorageFileHealthIndicator indicator = new StorageFileHealthIndicator(mockAsyncClient);
+        StorageFileShareHealthIndicator indicator = new StorageFileShareHealthIndicator(mockAsyncClient);
         Health health = indicator.health();
         assertThat(health.getStatus()).isEqualTo(Status.DOWN);
     }

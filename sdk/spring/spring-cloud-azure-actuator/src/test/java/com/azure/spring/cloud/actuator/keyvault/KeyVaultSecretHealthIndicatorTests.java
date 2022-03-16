@@ -22,7 +22,7 @@ class KeyVaultSecretHealthIndicatorTests {
         @SuppressWarnings("unchecked") Response<KeyVaultSecret> mockResponse =
             (Response<KeyVaultSecret>) mock(Response.class);
         SecretAsyncClient mockAsyncClient = mock(SecretAsyncClient.class);
-        Mockito.when(mockAsyncClient.getSecretWithResponse("azure-spring-none-existing-secret", ""))
+        Mockito.when(mockAsyncClient.getSecretWithResponse("spring-cloud-azure-none-existing-secret", ""))
             .thenReturn(Mono.just(mockResponse));
         KeyVaultSecretHealthIndicator indicator = new KeyVaultSecretHealthIndicator(mockAsyncClient);
         Health health = indicator.health();
@@ -32,7 +32,7 @@ class KeyVaultSecretHealthIndicatorTests {
     @Test
     void keyvaultIsDown() {
         SecretAsyncClient mockAsyncClient = mock(SecretAsyncClient.class);
-        Mockito.when(mockAsyncClient.getSecretWithResponse("azure-spring-none-existing-secret", ""))
+        Mockito.when(mockAsyncClient.getSecretWithResponse("spring-cloud-azure-none-existing-secret", ""))
             .thenReturn(Mono.error(new IllegalStateException("The gremlins have cut the cable.")));
         KeyVaultSecretHealthIndicator indicator = new KeyVaultSecretHealthIndicator(mockAsyncClient);
         Health health = indicator.health();

@@ -25,7 +25,7 @@ class StorageBlobHealthConfigurationTests {
 
     @Test
     void runWhenDisabledShouldNotCreateIndicator() {
-        this.contextRunner.withPropertyValues("management.health.azure-storage.enabled:false")
+        this.contextRunner.withPropertyValues("management.health.azure-storage-blob.enabled:false")
             .run((context) -> assertThat(context).doesNotHaveBean(StorageBlobHealthIndicator.class));
     }
 }

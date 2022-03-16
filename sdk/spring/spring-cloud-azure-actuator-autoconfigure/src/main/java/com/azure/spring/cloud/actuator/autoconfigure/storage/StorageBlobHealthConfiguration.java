@@ -21,7 +21,7 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnClass({ BlobServiceAsyncClient.class, HealthIndicator.class })
 @ConditionalOnBean(BlobServiceAsyncClient.class)
 @AutoConfigureAfter(AzureStorageBlobAutoConfiguration.class)
-@ConditionalOnEnabledHealthIndicator("azure-storage")
+@ConditionalOnEnabledHealthIndicator("azure-storage-blob")
 public class StorageBlobHealthConfiguration {
 
     @Bean

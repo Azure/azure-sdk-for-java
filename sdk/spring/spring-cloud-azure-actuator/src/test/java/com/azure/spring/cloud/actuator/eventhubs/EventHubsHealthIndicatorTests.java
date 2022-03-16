@@ -30,14 +30,14 @@ class EventHubsHealthIndicatorTests {
     }
 
     @Test
-    void eventhubsIsUnknown() {
+    void eventHubsIsUnknown() {
         EventHubsHealthIndicator indicator = new EventHubsHealthIndicator(null, null);
         Health health = indicator.health();
         assertThat(health.getStatus()).isEqualTo(Status.UNKNOWN);
     }
 
     @Test
-    void eventhubsIsUpWhenProducerGetEventHubPropertiesNormal() {
+    void eventHubsIsUpWhenProducerGetEventHubPropertiesNormal() {
         EventHubProperties mockProperties = mock(EventHubProperties.class);
         Mockito.when(producerAsyncClient.getEventHubProperties()).thenReturn(Mono.just(mockProperties));
 
@@ -47,7 +47,7 @@ class EventHubsHealthIndicatorTests {
     }
 
     @Test
-    void eventhubsIsUpWhenConsumerGetEventHubPropertiesNormal() {
+    void eventHubsIsUpWhenConsumerGetEventHubPropertiesNormal() {
         EventHubProperties mockProperties = mock(EventHubProperties.class);
         Mockito.when(consumerAsyncClient.getEventHubProperties()).thenReturn(Mono.just(mockProperties));
         EventHubsHealthIndicator indicator = new EventHubsHealthIndicator(null, consumerAsyncClient);
@@ -56,7 +56,7 @@ class EventHubsHealthIndicatorTests {
     }
 
     @Test
-    void eventhubsIsDownWhenProducerGetEventHubPropertiesAbnormal() {
+    void eventHubsIsDownWhenProducerGetEventHubPropertiesAbnormal() {
         when(producerAsyncClient.getEventHubProperties())
             .thenReturn(Mono.error(new IllegalStateException("The gremlins have cut the cable.")));
         EventHubsHealthIndicator indicator = new EventHubsHealthIndicator(producerAsyncClient, consumerAsyncClient);
@@ -65,7 +65,7 @@ class EventHubsHealthIndicatorTests {
     }
 
     @Test
-    void eventhubsIsDownWhenConsumerGetEventHubPropertiesAbnormal() {
+    void eventHubsIsDownWhenConsumerGetEventHubPropertiesAbnormal() {
         when(consumerAsyncClient.getEventHubProperties())
             .thenReturn(Mono.error(new IllegalStateException("The gremlins have cut the cable.")));
         EventHubsHealthIndicator indicator = new EventHubsHealthIndicator(null, consumerAsyncClient);
