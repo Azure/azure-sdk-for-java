@@ -22,6 +22,7 @@ import com.azure.cosmos.implementation.throughputControl.LinkedCancellationToken
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
 import com.azure.cosmos.implementation.throughputControl.controller.group.ThroughputGroupControllerBase;
 import com.azure.cosmos.implementation.throughputControl.controller.group.ThroughputGroupControllerFactory;
+import com.azure.cosmos.implementation.throughputControl.exceptions.ThroughputControlInitializationException;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.ThroughputProperties;
@@ -289,7 +290,14 @@ public class ThroughputContainerController implements IThroughputContainerContro
         for (ThroughputControlGroupInternal group : this.groups) {
             if (StringUtils.equals(groupName, group.getGroupName())) {
                 return this.resolveThroughputGroupController(group)
-                    .map(Utils.ValueHolder::new);
+                    .map(Utils.ValueHolder::new)
+                    .onErrorResume(throwable -> {
+                        if (!(throwable instanceof ThroughputControlInitializationException)) {
+                            return Mono.error(new ThroughputControlInitializationException(throwable));
+                        }
+
+                        return Mono.error(throwable);
+                    });
             }
         }
 
@@ -316,9 +324,10 @@ public class ThroughputContainerController implements IThroughputContainerContro
 
     private Mono<ThroughputGroupControllerBase> resolveThroughputGroupController(ThroughputControlGroupInternal group) {
         return this.groupControllerCache.getAsync(
-            group.getGroupName(),
-            null,
-            () -> this.createAndInitializeGroupController(group));
+                    group.getGroupName(),
+                    null,
+                    () -> this.createAndInitializeGroupController(group))
+                .onErrorResume(throwable -> Mono.error(new ThroughputControlInitializationException(throwable)));
     }
 
     private Mono<ThroughputGroupControllerBase> createAndInitializeGroupController(ThroughputControlGroupInternal group) {

@@ -13,10 +13,12 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
  */
 @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public class ThroughputControlGroupConfigBuilder {
+    private static final boolean DEFAULT_SUPPRESS_INIT_ERROR = false;
     private String groupName;
     private Integer targetThroughput;
     private Double targetThroughputThreshold;
     private boolean isDefault;
+    private boolean suppressInitError = DEFAULT_SUPPRESS_INIT_ERROR;
 
     /**
      * Set the throughput control group name.
@@ -79,6 +81,19 @@ public class ThroughputControlGroupConfigBuilder {
     }
 
     /**
+     * Set whether allow request to continue on original request flow if throughput control controller failed on initialization.
+     * If set to true, requests will be able to fall back to original request flow if throughput control controller failed on initialization.
+     *
+     * @param suppressInitError The flag to indicate whether request is allowed to fall back to original request flow.
+     * @return The {@link ThroughputControlGroupConfigBuilder}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_28_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ThroughputControlGroupConfigBuilder setSuppressInitError(boolean suppressInitError) {
+        this.suppressInitError = suppressInitError;
+        return this;
+    }
+
+    /**
      * Validate the throughput configuration and create a new throughput control group config item.
      *
      * @return A new {@link ThroughputControlGroupConfig}.
@@ -92,6 +107,11 @@ public class ThroughputControlGroupConfigBuilder {
             throw new IllegalArgumentException("Neither targetThroughput nor targetThroughputThreshold is defined.");
         }
 
-        return new ThroughputControlGroupConfig(groupName, this.targetThroughput, this.targetThroughputThreshold, isDefault);
+        return new ThroughputControlGroupConfig(
+                this.groupName,
+                this.targetThroughput,
+                this.targetThroughputThreshold,
+                this.isDefault,
+                this.suppressInitError);
     }
 }

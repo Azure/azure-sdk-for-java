@@ -1,0 +1,71 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.cosmos.implementation.throughputControl;
+
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
+public class ThroughputControlContainerProperties {
+
+    private static Logger logger  = LoggerFactory.getLogger(ThroughputControlContainerProperties.class);
+    private final CosmosAsyncContainer container;
+    private final AtomicReference<ThroughputControlGroupInternal> defaultGroup;
+    private final Set<ThroughputControlGroupInternal> throughputControlGroupSet;
+    private final Set<String> supressInitErrorGroupSet;
+
+
+    public ThroughputControlContainerProperties(CosmosAsyncContainer container) {
+        this.container = container;
+        this.defaultGroup = new AtomicReference<>();
+        this.throughputControlGroupSet = ConcurrentHashMap.newKeySet();
+        this.supressInitErrorGroupSet = ConcurrentHashMap.newKeySet();
+    }
+
+    public int addThroughputControlGroup(ThroughputControlGroupInternal group) {
+        checkNotNull(group, "Throughput control group should not be null");
+
+        if (group.isDefault()) {
+            if (!this.defaultGroup.compareAndSet(null, group)) {
+                if (!StringUtils.equals(group.getId(), this.defaultGroup.get().getId())) {
+                    throw new IllegalArgumentException("A default group already exists");
+                }
+            }
+        }
+
+        if (group.isSuppressInitError()) {
+            this.supressInitErrorGroupSet.add(group.getGroupName());
+        }
+
+        if (!this.throughputControlGroupSet.add(group)) {
+            logger.debug("Can not add duplicate group");
+        }
+
+        return this.throughputControlGroupSet.size();
+    }
+
+    public Set<ThroughputControlGroupInternal> getThroughputControlGroupSet() {
+        return throughputControlGroupSet;
+    }
+
+    public boolean allowRequestContinueOnInitError(RxDocumentServiceRequest request) {
+        checkNotNull(request, "Request should not be null");
+
+        String requestGroupName = request.getThroughputControlGroupName();
+        if (StringUtils.isEmpty(requestGroupName)) {
+            requestGroupName = this.defaultGroup.get().getGroupName();
+        }
+
+        return this.supressInitErrorGroupSet.contains(requestGroupName);
+    }
+}

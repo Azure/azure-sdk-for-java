@@ -12,7 +12,8 @@ public class LocalThroughputControlGroup extends ThroughputControlGroupInternal 
         CosmosAsyncContainer targetContainer,
         Integer targetThroughput,
         Double targetThroughputThreshold,
-        boolean isDefault) {
-        super (groupName, targetContainer, targetThroughput, targetThroughputThreshold, isDefault);
+        boolean isDefault,
+        boolean suppressInitError) {
+        super (groupName, targetContainer, targetThroughput, targetThroughputThreshold, isDefault, suppressInitError);
     }
 }

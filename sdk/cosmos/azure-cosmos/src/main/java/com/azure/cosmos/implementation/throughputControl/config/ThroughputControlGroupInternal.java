@@ -13,6 +13,7 @@ public abstract class ThroughputControlGroupInternal {
     private final String groupName;
     private final String id;
     private final boolean isDefault;
+    private final boolean suppressInitError;
     private final CosmosAsyncContainer targetContainer;
     private final Integer targetThroughput;
     private final Double targetThroughputThreshold;
@@ -22,7 +23,8 @@ public abstract class ThroughputControlGroupInternal {
         CosmosAsyncContainer targetContainer,
         Integer targetThroughput,
         Double targetThroughputThreshold,
-        boolean isDefault) {
+        boolean isDefault,
+        boolean suppressInitError) {
 
         checkArgument(StringUtils.isNotEmpty(groupName), "Group name can not be null or empty");
         checkNotNull(targetContainer, "Target container can not be null");
@@ -36,6 +38,7 @@ public abstract class ThroughputControlGroupInternal {
         this.targetThroughput = targetThroughput;
         this.targetThroughputThreshold = targetThroughputThreshold;
         this.isDefault = isDefault;
+        this.suppressInitError = suppressInitError;
 
         this.id = String.format(
             "%s/%s/%s",
@@ -96,6 +99,18 @@ public abstract class ThroughputControlGroupInternal {
      */
     public boolean isDefault() {
         return this.isDefault;
+    }
+
+    /**
+     * Get whether allow request to continue on original request flow if throughput control failed on initialization.
+     *
+     * By default, it is false.
+     * If it is true, request will be able to continue on original request flow if throughput control failed on initialization.
+     *
+     * @return {@code true} request will be allowed to continue on original request flow if throughput control failed on initialization. {@code false} otherwise.
+     */
+    public boolean isSuppressInitError() {
+        return suppressInitError;
     }
 
     public String getId() {
