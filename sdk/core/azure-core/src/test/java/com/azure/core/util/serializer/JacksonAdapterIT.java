@@ -3,49 +3,72 @@
 package com.azure.core.util.serializer;
 
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.util.DateTimeRfc1123;
+import com.fasterxml.jackson.core.JacksonException;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeParseException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Integration tests for {@link JacksonAdapter}.
  */
 public class JacksonAdapterIT {
     @Test
-    public void stronglyTypedHeadersClassIsLazilyDeserialized() throws IOException {
-        final String expectedValue = "the-string-value";
+    public void stronglyTypedHeadersClassIsDeserialized() throws IOException {
+        final String expectedDate = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
 
-        HttpHeaders rawHeaders = new HttpHeaders().set("the-string", "the-string-value");
+        HttpHeaders rawHeaders = new HttpHeaders().set("Date", expectedDate);
 
         StronglyTypedHeaders stronglyTypedHeaders = JacksonAdapter.createDefaultSerializerAdapter()
             .deserialize(rawHeaders, StronglyTypedHeaders.class);
 
-        assertNull(stronglyTypedHeaders.theString);
-        assertEquals(expectedValue, stronglyTypedHeaders.getTheString());
+        assertEquals(expectedDate, DateTimeRfc1123.toRfc1123String(stronglyTypedHeaders.getDate()));
+    }
+
+    @Test
+    public void stronglyTypedHeadersClassThrowsEagerly() {
+        HttpHeaders rawHeaders = new HttpHeaders().set("Date", "invalid-rfc1123-date");
+
+        assertThrows(DateTimeParseException.class, () -> JacksonAdapter.createDefaultSerializerAdapter()
+            .deserialize(rawHeaders, StronglyTypedHeaders.class));
+    }
+
+    @Test
+    public void invalidStronglyTypedHeadersClassThrowsCorrectException() throws IOException {
+        try {
+            JacksonAdapter.createDefaultSerializerAdapter().deserialize(new HttpHeaders(),
+                InvalidStronglyTypedHeaders.class);
+
+            fail("An exception should have been thrown.");
+        } catch (RuntimeException ex) {
+            assertTrue(ex.getCause() instanceof JacksonException, "Exception cause type was "
+                + ex.getCause().getClass().getName() + " instead of the expected JacksonException type.");
+        }
     }
 
     public static final class StronglyTypedHeaders {
-        private final HttpHeaders rawHeaders;
-
-        private boolean hasTheStringBeenDeserialized;
-        private String theString;
+        private final DateTimeRfc1123 date;
 
         public StronglyTypedHeaders(HttpHeaders rawHeaders) {
-            this.rawHeaders = rawHeaders;
+            String dateString = rawHeaders.getValue("Date");
+            this.date = (dateString == null) ? null : new DateTimeRfc1123(dateString);
         }
 
-        String getTheString() {
-            if (hasTheStringBeenDeserialized) {
-                return theString;
-            }
+        OffsetDateTime getDate() {
+            return (date == null) ? null : date.getDateTime();
+        }
+    }
 
-            theString = rawHeaders.getValue("the-string");
-            hasTheStringBeenDeserialized = true;
-
-            return theString;
+    public static final class InvalidStronglyTypedHeaders {
+        public InvalidStronglyTypedHeaders(HttpHeaders httpHeaders) throws Exception {
+            throw new Exception();
         }
     }
 }

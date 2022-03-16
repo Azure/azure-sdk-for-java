@@ -313,6 +313,11 @@ public final class ObjectMapperShim {
                 return (T) constructor.invokeWithArguments(headers);
             }
         } catch (Throwable throwable) {
+            // invokeWithArguments will fail with a non-RuntimeException if the reflective call was invalid.
+            if (throwable instanceof RuntimeException) {
+                throw (RuntimeException) throwable;
+            }
+
             LOGGER.verbose("Failed to find or use MethodHandle Constructor that accepts HttpHeaders for "
                 + deserializedHeadersType + ".");
         }
