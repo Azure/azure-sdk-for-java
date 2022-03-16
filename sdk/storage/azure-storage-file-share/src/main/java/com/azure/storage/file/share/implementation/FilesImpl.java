@@ -25,7 +25,6 @@ import com.azure.core.util.Base64Util;
 import com.azure.core.util.Context;
 import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
-import com.azure.storage.file.share.implementation.models.FileLastWrittenMode;
 import com.azure.storage.file.share.implementation.models.FilesAbortCopyResponse;
 import com.azure.storage.file.share.implementation.models.FilesAcquireLeaseResponse;
 import com.azure.storage.file.share.implementation.models.FilesBreakLeaseResponse;
@@ -45,6 +44,7 @@ import com.azure.storage.file.share.implementation.models.FilesUploadRangeFromUR
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeResponse;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteType;
 import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
+import com.azure.storage.file.share.models.FileLastWrittenMode;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareStorageException;

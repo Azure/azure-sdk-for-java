@@ -2034,7 +2034,7 @@ public class ShareFileAsyncClient {
 
         return azureFileStorageClient.getFiles()
             .uploadRangeWithResponseAsync(shareName, filePath, range.toString(), ShareFileRangeWriteType.UPDATE,
-                options.getLength(), null, null, requestConditions.getLeaseId(), data,
+                options.getLength(), null, null, requestConditions.getLeaseId(), options.getLastWrittenMode(), data,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(ShareFileAsyncClient::uploadResponse);
     }
@@ -2199,7 +2199,8 @@ public class ShareFileAsyncClient {
 
         return azureFileStorageClient.getFiles()
             .uploadRangeFromURLWithResponseAsync(shareName, filePath, destinationRange.toString(), copySource, 0,
-                null, sourceRange.toString(), null, modifiedRequestConditions.getLeaseId(), sourceAuth, null,
+                null, sourceRange.toString(), null, modifiedRequestConditions.getLeaseId(), sourceAuth,
+                options.getLastWrittenMode(), null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(ShareFileAsyncClient::uploadRangeFromUrlResponse);
     }
@@ -2311,7 +2312,7 @@ public class ShareFileAsyncClient {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getFiles()
             .uploadRangeWithResponseAsync(shareName, filePath, range.toString(), ShareFileRangeWriteType.CLEAR,
-                0L, null, null, requestConditions.getLeaseId(), null,
+                0L, null, null, requestConditions.getLeaseId(), null, null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(ShareFileAsyncClient::uploadResponse);
     }

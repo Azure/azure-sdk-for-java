@@ -4,7 +4,6 @@
 package com.azure.storage.file.share.models;
 
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.file.share.implementation.models.FileLastWrittenMode;
 import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
