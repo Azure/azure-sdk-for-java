@@ -18,6 +18,8 @@ import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperti
 final class StateHolder {
 
     private static final int MAX_JITTER = 15;
+    
+    private static final String CLIENT_ENDPOINT = "client";
 
     private static final String FEATURE_ENDPOINT = "_feature";
 
@@ -75,13 +77,12 @@ final class StateHolder {
     }
 
     static void expireState(String endpoint) {
-        String key = endpoint;
-        State oldState = STATE.get(key);
+        State oldState = STATE.get(endpoint);
         SecureRandom random = new SecureRandom();
         long wait = (long) (random.nextDouble() * MAX_JITTER);
         long timeLeft = (int) ((oldState.getNextRefreshCheck().toEpochMilli() - (Instant.now().toEpochMilli())) / 1000);
         if (wait < timeLeft) {
-            STATE.put(key, new State(oldState.getWatchKeys(), (int) wait, oldState.getKey()));
+            STATE.put(endpoint, new State(oldState.getWatchKeys(), (int) wait, oldState.getKey()));
         }
     }
 
@@ -135,7 +136,7 @@ final class StateHolder {
      * @param properties Provider properties for min and max backoff periods.
      */
     static void resetAll(Duration refreshInterval, AppConfigurationProviderProperties properties) {
-        nextForcedRefresh = CalculatedBackoffTime.calculateBefore("client", nextForcedRefresh, refreshInterval, properties);
+        nextForcedRefresh = CalculatedBackoffTime.calculateBefore(CLIENT_ENDPOINT, nextForcedRefresh, refreshInterval, properties);
         for (Entry<String, State> entry : STATE.entrySet()) {
             Instant newRefresh = CalculatedBackoffTime.calculateBefore(entry.getKey(), entry.getValue().getNextRefreshCheck(),
                 refreshInterval, properties);
