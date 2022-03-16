@@ -11,5 +11,6 @@ stages:
           groupId: com.azure.resourcemanager
           safeName: azureresourcemanagerbatch
       Clouds: 'Public'
+      # Batch account has regional quota limit on test subscription. Only run tests on Windows to avoid exceeding.
       MatrixFilters:
         - pool=.*(win).*
