@@ -260,7 +260,6 @@ public class KubernetesClusterImpl
 
     @Override
     protected Mono<ManagedClusterInner> getInnerAsync() {
-        final KubernetesClusterImpl self = this;
         return this
             .manager()
             .serviceClient()
