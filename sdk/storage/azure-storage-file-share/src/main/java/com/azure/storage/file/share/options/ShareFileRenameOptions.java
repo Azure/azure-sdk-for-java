@@ -6,6 +6,7 @@ package com.azure.storage.file.share.options;
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.FileSmbProperties;
+import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 
 import java.util.Map;
@@ -24,6 +25,7 @@ public final class ShareFileRenameOptions {
     private String filePermission;
     private FileSmbProperties smbProperties;
     private Map<String, String> metadata;
+    private ShareFileHttpHeaders headers;
 
     /**
      * Creates a {@code ShareFileRenameOptions} object.
@@ -168,6 +170,26 @@ public final class ShareFileRenameOptions {
      */
     public ShareFileRenameOptions setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Gets the {@link ShareFileHttpHeaders}.
+     *
+     * @return The {@link ShareFileHttpHeaders}.
+     */
+    public ShareFileHttpHeaders getHeaders() {
+        return this.headers;
+    }
+
+    /**
+     * Sets the {@link ShareFileHttpHeaders}.
+     *
+     * @param headers {@link ShareFileHttpHeaders}
+     * @return The updated options.
+     */
+    public ShareFileRenameOptions setHeaders(ShareFileHttpHeaders headers) {
+        this.headers = headers;
         return this;
     }
 }
