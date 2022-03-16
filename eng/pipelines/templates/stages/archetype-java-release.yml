@@ -125,97 +125,11 @@ stages:
                     Artifact: ${{ artifact }}
                     ArtifactName: ${{ parameters.ArtifactName }}
                     ArtifactDirectory: "$(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}"
-
-          - deployment: TagRepository
-            displayName: "Create release tag"
-            condition: and(succeeded(), ne(variables['Skip.TagRepository'], 'true'))
-            environment: github
-            dependsOn: VerifyReleaseVersion
-            variables:
-              - template: ../variables/globals.yml
-            pool:
-              name: azsdk-pool-mms-win-2019-general
-              vmImage: windows-2019
-            strategy:
-              runOnce:
-                deploy:
-                  steps:
-                    - download: current
-                      displayName: 'Download Artifact: ${{parameters.ArtifactName}}-signed'
-                      artifact: ${{parameters.ArtifactName}}-signed
-                      patterns: ${{artifact.groupId}}/${{artifact.name}}/**
-                    - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-                    - template: /eng/common/pipelines/templates/steps/retain-run.yml
-                    - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
-                      parameters:
-                        ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
-                        PackageRepository: Maven
-                        ReleaseSha: $(Build.SourceVersion)
-
-          - ${{if ne(artifact.skipPublishPackage, 'true')}}:
-            - deployment: PublishPackage
-              displayName: "Publish to Maven Central"
-              condition: and(succeeded(), ne(variables['Skip.PublishPackage'], 'true'))
-              environment: maven
-              dependsOn: TagRepository
-              variables:
-                - template: ../variables/globals.yml
-              pool:
-                name: azsdk-pool-mms-win-2019-general
-                vmImage: windows-2019
-              strategy:
-                runOnce:
-                  deploy:
-                    steps:
-                      - download: current
-                        displayName: Download Artifacts
-                        artifact: ${{parameters.ArtifactName}}-signed
-                        patterns: ${{artifact.groupId}}/${{artifact.name}}/**
-                      - checkout: azure-sdk-build-tools
-                        path: azure-sdk-build-tools
-                      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-                        parameters:
-                          SkipDefaultCheckout: true
-                          Repositories:
-                            - Name: Azure/azure-sdk-for-java
-                              Commitish: $(Build.SourceVersion)
-                              WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
-                      - template: tools/gpg/gpg.yml@azure-sdk-build-tools
-                      - template: /eng/pipelines/templates/steps/java-publishing.yml
-                        parameters:
-                          ArtifactID: ${{artifact.name}}
-                          GroupID: ${{artifact.groupId}}
-                          ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-                          Target: MavenCentral
-                          BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
-                          JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
-                      - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
-                        parameters:
-                          ArtifactName: ${{parameters.ArtifactName}}-${{artifact.name}}-mavencentral-$(System.JobAttempt)
-                          ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-                      # After publishing to Maven, publish to the azure-sdk-for-java feed. The reason for
-                      # this is that the azure-sdk-for-java feed will have the package available immediately
-                      # whereas Maven can take several hours for the package to become available.
-                      - template: /eng/pipelines/templates/steps/java-publishing.yml
-                        parameters:
-                          ArtifactID: ${{artifact.name}}
-                          GroupID: ${{artifact.groupId}}
-                          ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-                          RepositoryUrl: https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1
-                          Target: JavaDevFeed
-                          BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
-                          JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
-                      - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
-                        parameters:
-                          ArtifactName: ${{parameters.ArtifactName}}-${{artifact.name}}-javadevfeed-$(System.JobAttempt)
-                          ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-
           - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
             - deployment: PublishDocsMs
               displayName: Docs.MS Release
               condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
               environment: githubio
-              dependsOn: PublishPackage
 
               pool:
                 name: azsdk-pool-mms-ubuntu-2004-general
@@ -269,7 +183,6 @@ stages:
               displayName: Publish Docs to GitHubIO Blob Storage
               condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
               environment: githubio
-              dependsOn: PublishPackage
               variables:
                 - template: ../variables/globals.yml
               pool:
@@ -303,7 +216,6 @@ stages:
               displayName: "Update Package Version"
               condition: and(succeeded(), ne(variables['Skip.UpdatePackageVersion'], 'true'))
               environment: github
-              dependsOn: PublishPackage
               variables:
                 - template: ../variables/globals.yml
               pool:
