@@ -19,7 +19,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
@@ -36,7 +35,6 @@ import com.azure.storage.file.share.implementation.models.DirectoriesSetProperti
 import com.azure.storage.file.share.implementation.models.ListFilesIncludeType;
 import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import reactor.core.publisher.Mono;
@@ -83,7 +81,7 @@ public final class DirectoriesImpl {
                 @HeaderParam("x-ms-file-attributes") String fileAttributes,
                 @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
                 @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
-                @HeaderParam("x-ms-file-change-time") DateTimeRfc1123 fileChangeTime,
+                @HeaderParam("x-ms-file-change-time") String fileChangeTime,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -130,7 +128,7 @@ public final class DirectoriesImpl {
                 @HeaderParam("x-ms-file-attributes") String fileAttributes,
                 @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
                 @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
-                @HeaderParam("x-ms-file-change-time") DateTimeRfc1123 fileChangeTime,
+                @HeaderParam("x-ms-file-change-time") String fileChangeTime,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -267,11 +265,10 @@ public final class DirectoriesImpl {
             String filePermissionKey,
             String fileCreationTime,
             String fileLastWriteTime,
-            OffsetDateTime fileChangeTime,
+            String fileChangeTime,
             Context context) {
         final String restype = "directory";
         final String accept = "application/xml";
-        DateTimeRfc1123 fileChangeTimeConverted = fileChangeTime == null ? null : new DateTimeRfc1123(fileChangeTime);
         return service.create(
                 this.client.getUrl(),
                 shareName,
@@ -285,7 +282,7 @@ public final class DirectoriesImpl {
                 fileAttributes,
                 fileCreationTime,
                 fileLastWriteTime,
-                fileChangeTimeConverted,
+                fileChangeTime,
                 accept,
                 context);
     }
@@ -389,12 +386,11 @@ public final class DirectoriesImpl {
             String filePermissionKey,
             String fileCreationTime,
             String fileLastWriteTime,
-            OffsetDateTime fileChangeTime,
+            String fileChangeTime,
             Context context) {
         final String restype = "directory";
         final String comp = "properties";
         final String accept = "application/xml";
-        DateTimeRfc1123 fileChangeTimeConverted = fileChangeTime == null ? null : new DateTimeRfc1123(fileChangeTime);
         return service.setProperties(
                 this.client.getUrl(),
                 shareName,
@@ -408,7 +404,7 @@ public final class DirectoriesImpl {
                 fileAttributes,
                 fileCreationTime,
                 fileLastWriteTime,
-                fileChangeTimeConverted,
+                fileChangeTime,
                 accept,
                 context);
     }

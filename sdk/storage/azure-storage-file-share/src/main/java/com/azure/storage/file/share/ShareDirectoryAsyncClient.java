@@ -337,11 +337,12 @@ public class ShareDirectoryAsyncClient {
         String fileAttributes = properties.setNtfsFileAttributes(FileConstants.FILE_ATTRIBUTES_NONE);
         String fileCreationTime = properties.setFileCreationTime(FileConstants.FILE_TIME_NOW);
         String fileLastWriteTime = properties.setFileLastWriteTime(FileConstants.FILE_TIME_NOW);
+        String fileChangeTime = properties.setFileChangeTime(FileConstants.FILE_TIME_NOW);
         context = context == null ? Context.NONE : context;
 
         return azureFileStorageClient.getDirectories()
-            .createWithResponseAsync(shareName, directoryPath, fileAttributes, fileCreationTime, fileLastWriteTime,
-                null, metadata, filePermission, filePermissionKey,
+            .createWithResponseAsync(shareName, directoryPath, fileAttributes, null, metadata, filePermission,
+                filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(ShareDirectoryAsyncClient::createWithRestResponse);
     }
@@ -555,11 +556,12 @@ public class ShareDirectoryAsyncClient {
         String fileAttributes = properties.setNtfsFileAttributes(FileConstants.PRESERVE);
         String fileCreationTime = properties.setFileCreationTime(FileConstants.PRESERVE);
         String fileLastWriteTime = properties.setFileLastWriteTime(FileConstants.PRESERVE);
+        String fileChangeTime = properties.setFileChangeTime(FileConstants.FILE_TIME_NOW);
 
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getDirectories()
-            .setPropertiesWithResponseAsync(shareName, directoryPath, fileAttributes, fileCreationTime,
-                fileLastWriteTime, null, filePermission, filePermissionKey,
+            .setPropertiesWithResponseAsync(shareName, directoryPath, fileAttributes, null, fileCreationTime,
+                fileLastWriteTime, fileChangeTime, filePermission, filePermissionKey,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(ShareDirectoryAsyncClient::setPropertiesResponse);
     }

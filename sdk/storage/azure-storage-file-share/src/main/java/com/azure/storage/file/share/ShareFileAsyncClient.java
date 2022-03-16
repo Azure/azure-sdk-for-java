@@ -33,20 +33,7 @@ import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
-import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
-import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
-import com.azure.storage.file.share.implementation.models.FilesCreateResponse;
-import com.azure.storage.file.share.implementation.models.FilesGetPropertiesHeaders;
-import com.azure.storage.file.share.implementation.models.FilesGetPropertiesResponse;
-import com.azure.storage.file.share.implementation.models.FilesSetHttpHeadersResponse;
-import com.azure.storage.file.share.implementation.models.FilesSetMetadataResponse;
-import com.azure.storage.file.share.implementation.models.FilesStartCopyHeaders;
-import com.azure.storage.file.share.implementation.models.FilesUploadRangeFromURLHeaders;
-import com.azure.storage.file.share.implementation.models.FilesUploadRangeFromURLResponse;
-import com.azure.storage.file.share.implementation.models.FilesUploadRangeHeaders;
-import com.azure.storage.file.share.implementation.models.FilesUploadRangeResponse;
-import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteType;
-import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
+import com.azure.storage.file.share.implementation.models.*;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
@@ -438,10 +425,11 @@ public class ShareFileAsyncClient {
         String fileAttributes = smbProperties.setNtfsFileAttributes(FileConstants.FILE_ATTRIBUTES_NONE);
         String fileCreationTime = smbProperties.setFileCreationTime(FileConstants.FILE_TIME_NOW);
         String fileLastWriteTime = smbProperties.setFileLastWriteTime(FileConstants.FILE_TIME_NOW);
+        String fileChangeTime = smbProperties.setFileChangeTime(FileConstants.FILE_TIME_NOW);
 
         return azureFileStorageClient.getFiles()
-            .createWithResponseAsync(shareName, filePath, maxSize, fileAttributes, fileCreationTime,
-                fileLastWriteTime, null, metadata, filePermission, filePermissionKey, requestConditions.getLeaseId(),
+            .createWithResponseAsync(shareName, filePath, maxSize, fileAttributes, null, metadata, filePermission,
+                filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, requestConditions.getLeaseId(),
                 httpHeaders, context)
             .map(ShareFileAsyncClient::createFileInfoResponse);
     }
@@ -1522,11 +1510,12 @@ public class ShareFileAsyncClient {
         String fileAttributes = smbProperties.setNtfsFileAttributes(FileConstants.PRESERVE);
         String fileCreationTime = smbProperties.setFileCreationTime(FileConstants.PRESERVE);
         String fileLastWriteTime = smbProperties.setFileLastWriteTime(FileConstants.PRESERVE);
+        String fileChangeTime = smbProperties.setFileChangeTime(FileConstants.FILE_TIME_NOW);
         context = context == null ? Context.NONE : context;
 
         return azureFileStorageClient.getFiles()
-            .setHttpHeadersWithResponseAsync(shareName, filePath, fileAttributes, fileCreationTime,
-                fileLastWriteTime, null, newFileSize, filePermission, filePermissionKey, requestConditions.getLeaseId(),
+            .setHttpHeadersWithResponseAsync(shareName, filePath, fileAttributes, null, newFileSize, filePermission,
+                filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, requestConditions.getLeaseId(),
                 httpHeaders, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(ShareFileAsyncClient::setPropertiesResponse);
     }

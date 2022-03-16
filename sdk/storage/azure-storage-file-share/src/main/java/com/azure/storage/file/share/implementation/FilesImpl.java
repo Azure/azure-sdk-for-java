@@ -23,7 +23,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.Base64Util;
 import com.azure.core.util.Context;
-import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
 import com.azure.storage.file.share.implementation.models.FileLastWrittenMode;
@@ -51,7 +50,6 @@ import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.SourceModifiedAccessConditions;
 import java.nio.ByteBuffer;
-import java.time.OffsetDateTime;
 import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -104,7 +102,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-file-attributes") String fileAttributes,
                 @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
                 @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
-                @HeaderParam("x-ms-file-change-time") DateTimeRfc1123 fileChangeTime,
+                @HeaderParam("x-ms-file-change-time") String fileChangeTime,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -173,7 +171,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-file-attributes") String fileAttributes,
                 @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
                 @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
-                @HeaderParam("x-ms-file-change-time") DateTimeRfc1123 fileChangeTime,
+                @HeaderParam("x-ms-file-change-time") String fileChangeTime,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -460,7 +458,7 @@ public final class FilesImpl {
             String filePermissionKey,
             String fileCreationTime,
             String fileLastWriteTime,
-            OffsetDateTime fileChangeTime,
+            String fileChangeTime,
             String leaseId,
             ShareFileHttpHeaders shareFileHttpHeaders,
             Context context) {
@@ -497,7 +495,6 @@ public final class FilesImpl {
         }
         String contentDisposition = contentDispositionInternal;
         String contentMd5Converted = Base64Util.encodeToString(contentMd5);
-        DateTimeRfc1123 fileChangeTimeConverted = fileChangeTime == null ? null : new DateTimeRfc1123(fileChangeTime);
         return service.create(
                 this.client.getUrl(),
                 shareName,
@@ -518,7 +515,7 @@ public final class FilesImpl {
                 fileAttributes,
                 fileCreationTime,
                 fileLastWriteTime,
-                fileChangeTimeConverted,
+                fileChangeTime,
                 leaseId,
                 accept,
                 context);
@@ -662,7 +659,7 @@ public final class FilesImpl {
             String filePermissionKey,
             String fileCreationTime,
             String fileLastWriteTime,
-            OffsetDateTime fileChangeTime,
+            String fileChangeTime,
             String leaseId,
             ShareFileHttpHeaders shareFileHttpHeaders,
             Context context) {
@@ -699,7 +696,6 @@ public final class FilesImpl {
         }
         String contentDisposition = contentDispositionInternal;
         String contentMd5Converted = Base64Util.encodeToString(contentMd5);
-        DateTimeRfc1123 fileChangeTimeConverted = fileChangeTime == null ? null : new DateTimeRfc1123(fileChangeTime);
         return service.setHttpHeaders(
                 this.client.getUrl(),
                 shareName,
@@ -719,7 +715,7 @@ public final class FilesImpl {
                 fileAttributes,
                 fileCreationTime,
                 fileLastWriteTime,
-                fileChangeTimeConverted,
+                fileChangeTime,
                 leaseId,
                 accept,
                 context);

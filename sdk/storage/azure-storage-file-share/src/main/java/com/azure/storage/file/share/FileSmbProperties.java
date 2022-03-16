@@ -178,6 +178,18 @@ public class FileSmbProperties {
     }
 
     /**
+     * Determines the value of the file change time header.
+     *
+     * @param defaultValue The default change time header value.
+     * @return The value of the file change time header
+     */
+    String setFileChangeTime(String defaultValue) {
+        return fileChangeTime == null
+            ? defaultValue
+            : parseFileSMBDate(fileLastWriteTime);
+    }
+
+    /**
      * Given an <code>OffsetDateTime</code>, generates a {@code String} representing a date in the format needed for
      * file SMB properties
      *

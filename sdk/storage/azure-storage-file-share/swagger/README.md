@@ -259,6 +259,10 @@ directive:
   where: $.parameters.FileLastWriteTime
   transform: >
     delete $.format;
+- from: swagger-document
+  where: $.parameters.FileChangeTime
+  transform: >
+    delete $.format;
 ```
 
 ### FileRangeWriteFromUrl Constant
