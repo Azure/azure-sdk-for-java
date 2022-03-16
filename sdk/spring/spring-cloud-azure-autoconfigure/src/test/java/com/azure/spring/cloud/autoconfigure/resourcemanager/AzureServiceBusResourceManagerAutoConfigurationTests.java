@@ -47,6 +47,14 @@ class AzureServiceBusResourceManagerAutoConfigurationTests {
     }
 
     @Test
+    void testServiceBusResourceManagerWithoutServiceBusProvisionerClass() {
+        this.contextRunner
+            .withClassLoader(new FilteredClassLoader(ServiceBusProvisioner.class))
+            .withBean(AzureResourceManager.class, () -> mock(AzureResourceManager.class))
+            .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusResourceManagerAutoConfiguration.class));
+    }
+
+    @Test
     void testServiceBusArmConnectionStringProviderBeanDisabled() {
         this.contextRunner
             .withPropertyValues(AzureServiceBusProperties.PREFIX + "." + connectionString)
