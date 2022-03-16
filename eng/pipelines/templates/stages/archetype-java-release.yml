@@ -103,20 +103,20 @@ stages:
                     steps:
                       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                       - download: current
-                        displayName: 'Download Artifact: ${{parameters.ArtifactName}}-signed'
-                        artifact: ${{parameters.ArtifactName}}-signed
+                        displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
+                        artifact: ${{parameters.ArtifactName}}
                         patterns: ${{artifact.groupId}}/${{artifact.name}}/**
                       - pwsh: |
-                          Get-ChildItem -Recurse $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
+                          Get-ChildItem -Recurse $(Pipeline.Workspace)/${{parameters.ArtifactName}}/${{artifact.groupId}}/${{artifact.name}}
                         workingDirectory: $(Pipeline.Workspace)
                         displayName: Output Visible Artifacts
                       - template: /eng/common/pipelines/templates/steps/publish-blobs.yml
                         parameters:
-                          FolderForUpload: '$(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}'
+                          FolderForUpload: '$(Pipeline.Workspace)/${{parameters.ArtifactName}}/${{artifact.groupId}}/${{artifact.name}}'
                           BlobSASKey: '$(azure-sdk-docs-prod-sas)'
                           BlobName: '$(azure-sdk-docs-prod-blob-name)'
                           TargetLanguage: 'java'
-                          ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
+                          ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}/${{artifact.groupId}}/${{artifact.name}}
                           # we override the regular script path because we have cloned the build tools repo as a separate artifact.
                           ScriptPath: 'eng/common/scripts/copy-docs-to-blobstorage.ps1'
 
@@ -193,8 +193,8 @@ stages:
                 WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
 
         - download: current
-          displayName: 'Download Artifact: ${{parameters.ArtifactName}}-signed'
-          artifact: ${{parameters.ArtifactName}}-signed
+          displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
+          artifact: ${{parameters.ArtifactName}}
         - pwsh: |
             # For safety default to publishing to the private feed.
             # Publish to https://pkgs.dev.azure.com/azure-sdk/internal/_packaging/azure-sdk-for-java-pr/maven/v1
@@ -216,14 +216,14 @@ stages:
               parameters:
                 ArtifactID: ${{artifact.name}}
                 GroupID: ${{artifact.groupId}}
-                ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
                 RepositoryUrl: $(RepositoryUrl)
                 Target: JavaDevFeed
                 JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
             - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
               parameters:
                 ArtifactName: integration-${{parameters.ArtifactName}}-${{artifact.name}}-javadevfeed-$(System.JobAttempt)
-                ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
 
       - job: PublishDocsToNightlyBranch
         dependsOn: PublishPackages
