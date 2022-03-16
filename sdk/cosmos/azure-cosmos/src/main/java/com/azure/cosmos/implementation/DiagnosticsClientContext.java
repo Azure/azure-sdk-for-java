@@ -6,7 +6,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.guava27.Strings;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
@@ -54,6 +54,7 @@ public interface DiagnosticsClientContext {
             generator.writeStartObject();
             try {
                 generator.writeNumberField("id", clientContext.getConfig().getClientId());
+                generator.writeStringField("machineId", ClientTelemetry.getMachineId(clientContext));
                 generator.writeStringField("connectionMode", clientContext.getConfig().getConnectionMode().toString());
                 generator.writeNumberField("numberOfClients", clientContext.getConfig().getActiveClientsCount());
                 generator.writeObjectFieldStart("connCfg");
@@ -91,6 +92,11 @@ public interface DiagnosticsClientContext {
         private RntbdTransportClient.Options options;
         private String rntbdConfigAsString;
         private ConnectionMode connectionMode;
+        private String machineId;
+
+        public void withMachineId(String machineId) {
+            this.machineId = machineId;
+        }
 
         public void withActiveClientCounter(AtomicInteger activeClientsCnt) {
             this.activeClientsCnt = activeClientsCnt;
@@ -181,6 +187,8 @@ public interface DiagnosticsClientContext {
         public int getClientId() {
             return this.clientId;
         }
+
+        public String getMachineId() { return this.machineId; }
 
         public int getActiveClientsCount() {
             return this.activeClientsCnt != null ? this.activeClientsCnt.get() : -1;
