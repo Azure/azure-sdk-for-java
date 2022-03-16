@@ -31,28 +31,25 @@ import reactor.core.publisher.Mono;
 
 public class PhoneNumbersIntegrationTestBase extends TestBase {
     private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
-    protected static final String COUNTRY_CODE =
+            .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
+    protected static final String COUNTRY_CODE = 
         Configuration.getGlobalConfiguration().get("COUNTRY_CODE", "US");
-    protected static final String AREA_CODE =
+    protected static final String AREA_CODE = 
         Configuration.getGlobalConfiguration().get("AREA_CODE", "833");
     protected static final String MS_USERAGENT_OVERRIDE = Configuration.getGlobalConfiguration().get("AZURE_USERAGENT_OVERRIDE", "");
 
-    protected static final String PHONE_NUMBER =
-        Configuration.getGlobalConfiguration().get("AZURE_PHONE_NUMBER", "+11234567891");
-
-    private static final StringJoiner JSON_PROPERTIES_TO_REDACT =
+    private static final StringJoiner JSON_PROPERTIES_TO_REDACT = 
         new StringJoiner("\":\"|\"", "\"", "\":\"")
             .add("id")
             .add("phoneNumber");
 
-    private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN =
+    private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN = 
         Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()), Pattern.CASE_INSENSITIVE);
 
     protected PhoneNumbersClientBuilder getClientBuilder(HttpClient httpClient) {
         CommunicationConnectionString communicationConnectionString = new CommunicationConnectionString(CONNECTION_STRING);
         String communicationEndpoint = communicationConnectionString.getEndpoint();
-        String communicationAccessKey = communicationConnectionString.getAccessKey(); 
+        String communicationAccessKey = communicationConnectionString.getAccessKey();
 
         PhoneNumbersClientBuilder builder = new PhoneNumbersClientBuilder();
         builder
@@ -154,14 +151,14 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
 
     private Mono<HttpResponse> logHeaders(String testName, HttpPipelineNextPolicy next) {
         return next.process()
-            .flatMap(httpResponse -> {
-                final HttpResponse bufferedResponse = httpResponse.buffer();
+                .flatMap(httpResponse -> {
+                    final HttpResponse bufferedResponse = httpResponse.buffer();
 
-                // Should sanitize printed reponse url
-                System.out.println("MS-CV header for " + testName + " request "
-                    + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
-                return Mono.just(bufferedResponse);
-            });
+                    // Should sanitize printed reponse url
+                    System.out.println("MS-CV header for " + testName + " request "
+                            + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
+                    return Mono.just(bufferedResponse);
+                });
     }
 
     static class FakeCredentials implements TokenCredential {
