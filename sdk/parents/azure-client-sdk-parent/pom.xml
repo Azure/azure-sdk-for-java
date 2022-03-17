@@ -188,6 +188,8 @@
     <!-- in unexpected plugin changes outside of maven-compiler-plugin. -->
     <skipCompile>false</skipCompile>
     <skipTestCompile>false</skipTestCompile>
+
+    <compiler.proc>none</compiler.proc>
   </properties>
 
   <build>
@@ -520,9 +522,6 @@
             <skipMain>${skipCompile}</skipMain>
             <skip>${skipTestCompile}</skip>
             <compilerArgs combine.children="append" combine.self="append">
-              <!-- Turn off annotation processing -->
-              <arg>-proc:none</arg>
-
               <!-- https://docs.oracle.com/javase/7/docs/technotes/tools/windows/javac.html#xlintwarnings -->
               <arg>-Xlint:cast</arg>
               <arg>-Xlint:classfile</arg>
@@ -543,6 +542,9 @@
               <arg>-Xlint:unchecked</arg>
               <arg>-Xlint:varargs</arg>
             </compilerArgs>
+
+            <!-- Default is annotation processing being off. -->
+            <proc>${compiler.proc}</proc>
           </configuration>
         </plugin>
 
