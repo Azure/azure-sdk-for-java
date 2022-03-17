@@ -256,20 +256,20 @@ public class BatchTests extends TestBase {
     public void testCRUDBatchPool() {
         BatchAccount account = null;
         Pool pool = null;
-        final String batchAccountName;
-        String poolName;
         try {
+            String batchAccountName = "sa" + randomPadding();
+            String poolName = "bp" + randomPadding();
+            String poolDisplayName = "bpdn" + randomPadding();
+            // @embedmeStart
             // batch account
-            batchAccountName = "sa" + randomPadding();
             account = batchManager
                 .batchAccounts()
                 .define(batchAccountName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroup)
                 .create();
+
             // batch pool create
-            poolName = "bp" + randomPadding();
-            String poolDisplayName = "bpdn" + randomPadding();
             pool = batchManager.pools()
                 .define(poolName)
                 .withExistingBatchAccount(resourceGroup, batchAccountName)
@@ -288,6 +288,7 @@ public class BatchTests extends TestBase {
                                 .withNodeDeallocationOption(ComputeNodeDeallocationOption.TASK_COMPLETION)))
                 .withVmSize("Standard_D1")
                 .create();
+            // @embedmeEnd
             Assertions.assertEquals(poolName, pool.name());
             Assertions.assertEquals(poolDisplayName, pool.displayName());
             Assertions.assertNull(pool.scaleSettings().autoScale());
