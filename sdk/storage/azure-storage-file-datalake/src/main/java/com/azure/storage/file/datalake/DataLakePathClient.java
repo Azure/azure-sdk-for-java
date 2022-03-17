@@ -939,18 +939,6 @@ public class DataLakePathClient {
             blockBlobClient.existsWithResponse(timeout, context), LOGGER);
     }
 
-    private DataLakePathClient getPathClient(String destinationFileSystem, String destinationPath) {
-
-        if (destinationFileSystem == null) {
-            destinationFileSystem = dataLakePathAsyncClient.getFileSystemName();
-        }
-
-        return new DataLakePathClient(
-            dataLakePathAsyncClient.getPathAsyncClient(destinationFileSystem, destinationPath),
-            dataLakePathAsyncClient.prepareBuilderReplacePath(destinationFileSystem, destinationPath)
-                .buildBlockBlobClient());
-    }
-
     BlockBlobClient getBlockBlobClient() {
         return blockBlobClient;
     }
