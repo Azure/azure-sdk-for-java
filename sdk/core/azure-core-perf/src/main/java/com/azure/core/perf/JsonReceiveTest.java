@@ -3,34 +3,29 @@
 
 package com.azure.core.perf;
 
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.rest.RestProxy;
+import com.azure.core.http.HttpClient;
+import com.azure.core.perf.core.CorePerfStressOptions;
 import com.azure.core.perf.core.MockHttpClient;
-import com.azure.core.perf.core.MyRestProxyService;
 import com.azure.core.perf.core.RestProxyTestBase;
 import com.azure.core.perf.core.TestDataFactory;
-import com.azure.perf.test.core.PerfStressOptions;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
+public class JsonReceiveTest extends RestProxyTestBase<CorePerfStressOptions> {
 
-public class JsonReceiveTest extends RestProxyTestBase<PerfStressOptions> {
-    private final MockHttpClient mockHTTPClient;
-    private final MyRestProxyService service;
-    private final byte[] bodyBytes;
+    public JsonReceiveTest(CorePerfStressOptions options) {
+        super(options, createMockHttpClient(options));
+    }
 
-    public JsonReceiveTest(PerfStressOptions options) throws IOException {
-        super(options);
-        this.bodyBytes = generateBodyBytes(options.getSize());
-        mockHTTPClient = new MockHttpClient((httpRequest) -> createMockResponse(httpRequest,
+    private static HttpClient createMockHttpClient(CorePerfStressOptions options) {
+        byte[] bodyBytes = generateBodyBytes(options.getSize());
+        return new MockHttpClient((httpRequest) -> createMockResponse(httpRequest,
             "application/json",  bodyBytes));
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(mockHTTPClient)
-            .build();
+    }
 
-        service = RestProxy.create(MyRestProxyService.class, pipeline);
+    @Override
+    public Mono<Void> globalSetupAsync() {
+        return new JsonSendTest(options).runAsync();
     }
 
     @Override
@@ -40,7 +35,7 @@ public class JsonReceiveTest extends RestProxyTestBase<PerfStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        return service.getUserDatabaseAsync()
+        return service.getUserDatabaseJsonAsync(endpoint)
             .map(userdatabase -> {
                 userdatabase.getValue().getUserList().forEach(sampleUserData -> {
                     sampleUserData.getId();
@@ -49,7 +44,7 @@ public class JsonReceiveTest extends RestProxyTestBase<PerfStressOptions> {
             }).then();
     }
 
-    private byte[] generateBodyBytes(long size) throws IOException {
+    private static byte[] generateBodyBytes(long size) {
         return serializeData(TestDataFactory.generateUserDatabase(size), new ObjectMapper());
     }
 }

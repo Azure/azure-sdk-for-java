@@ -3,31 +3,19 @@
 
 package com.azure.core.perf;
 
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.rest.RestProxy;
+import com.azure.core.perf.core.CorePerfStressOptions;
 import com.azure.core.perf.core.MockHttpReceiveClient;
-import com.azure.core.perf.core.MyRestProxyService;
 import com.azure.core.perf.core.RestProxyTestBase;
 import com.azure.core.perf.core.TestDataFactory;
 import com.azure.core.perf.models.UserDatabase;
-import com.azure.perf.test.core.PerfStressOptions;
 import reactor.core.publisher.Mono;
 
-public class JsonSendTest extends RestProxyTestBase<PerfStressOptions> {
-    private final MockHttpReceiveClient mockHttpReceiveClient;
-    private final MyRestProxyService service;
+public class JsonSendTest extends RestProxyTestBase<CorePerfStressOptions> {
     private final UserDatabase userDatabase;
 
-    public JsonSendTest(PerfStressOptions options) {
-        super(options);
+    public JsonSendTest(CorePerfStressOptions options) {
+        super(options, new MockHttpReceiveClient());
         userDatabase = TestDataFactory.generateUserDatabase(options.getSize());
-        mockHttpReceiveClient = new MockHttpReceiveClient();
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(mockHttpReceiveClient)
-            .build();
-
-        service = RestProxy.create(MyRestProxyService.class, pipeline);
     }
 
     @Override
@@ -37,6 +25,6 @@ public class JsonSendTest extends RestProxyTestBase<PerfStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        return service.setUserDatabaseJson(userDatabase).then();
+        return service.setUserDatabaseJson(endpoint, userDatabase).then();
     }
 }

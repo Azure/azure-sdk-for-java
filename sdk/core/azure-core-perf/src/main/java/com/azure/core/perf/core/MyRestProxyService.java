@@ -7,6 +7,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
+import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.http.rest.Response;
@@ -16,22 +17,28 @@ import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 
-@Host("http://unused")
+@Host("{$host}")
 @ServiceInterface(name = "MyMockService")
 public interface MyRestProxyService {
-    @Get("GetRawDataAsync")
-    Mono<Response<Flux<ByteBuffer>>> getRawDataAsync();
+    @Get("RawData")
+    Mono<Response<Flux<ByteBuffer>>> getRawDataAsync(@HostParam("$host") String endpoint);
 
-    @Get("GetUserDatabaseAsync")
-    Mono<Response<UserDatabase>> getUserDatabaseAsync();
-
-    @Put("SetRawData")
-    Mono<Void> setRawData(@BodyParam("application/octet-stream") Flux<ByteBuffer> body,
+    @Put("RawData")
+    Mono<Void> setRawData(@HostParam("$host") String endpoint,
+                          @BodyParam("application/octet-stream") Flux<ByteBuffer> body,
                           @HeaderParam("Content-Length") long length);
 
-    @Put("SetUserDatabase")
-    Mono<Void> setUserDatabaseXml(@BodyParam("application/xml") UserDatabase userDatabase);
+    @Get("UserDatabaseXml")
+    Mono<Response<UserDatabase>> getUserDatabaseXmlAsync(@HostParam("$host") String endpoint);
 
-    @Put("SetUserDatabase")
-    Mono<Void> setUserDatabaseJson(@BodyParam("application/json") UserDatabase userDatabase);
+    @Put("UserDatabaseXml")
+    Mono<Void> setUserDatabaseXml(@HostParam("$host") String endpoint,
+                                  @BodyParam("application/xml") UserDatabase userDatabase);
+
+    @Get("UserDatabaseJson")
+    Mono<Response<UserDatabase>> getUserDatabaseJsonAsync(@HostParam("$host") String endpoint);
+
+    @Put("UserDatabaseJson")
+    Mono<Void> setUserDatabaseJson(@HostParam("$host") String endpoint,
+                                   @BodyParam("application/json") UserDatabase userDatabase);
 }

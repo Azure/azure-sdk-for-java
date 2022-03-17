@@ -16,7 +16,7 @@ public class MockHttpReceiveClient implements HttpClient {
     @Override
     public Mono<HttpResponse> send(HttpRequest request) {
         String url = request.getUrl().toString();
-        if (url.endsWith("SetRawData") || url.endsWith("SetUserDatabase")) {
+        if (url.contains("RawData") || url.contains("UserDatabase") || url.contains("BinaryData")) {
             return FluxUtil.collectBytesInByteBufferStream(request.getBody())
                        .map(bytes -> {
                            receivedBytes = bytes;
