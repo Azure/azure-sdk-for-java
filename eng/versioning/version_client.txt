@@ -67,7 +67,7 @@ com.azure:azure-communication-networktraversal;1.0.0;1.1.0-beta.1
 com.azure:azure-containers-containerregistry;1.0.2;1.1.0-beta.1
 com.azure:azure-containers-containerregistry-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core;1.26.0;1.27.0-beta.1
-com.azure:azure-core-amqp;2.4.0;2.5.0-beta.1
+com.azure:azure-core-amqp;2.4.1;2.5.0-beta.1
 com.azure:azure-core-amqp-experimental;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core-experimental;1.0.0-beta.25;1.0.0-beta.26
 com.azure:azure-core-http-jdk-httpclient;1.0.0-beta.1;1.0.0-beta.1
@@ -354,9 +354,6 @@ com.azure.tools:azure-sdk-build-tool;1.0.0-beta.1;1.0.0-beta.1
 unreleased_com.azure:azure-aot-graalvm-support;1.0.0-beta.1
 unreleased_com.azure:azure-aot-graalvm-support-netty;1.0.0-beta.1
 unreleased_com.azure:azure-aot-graalvm-perf;1.0.0-beta.1
-
-
-unreleased_com.azure:azure-core-amqp;2.5.0-beta.1
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid
