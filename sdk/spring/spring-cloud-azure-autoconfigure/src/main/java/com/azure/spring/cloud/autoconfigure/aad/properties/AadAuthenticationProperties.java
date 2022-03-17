@@ -635,8 +635,8 @@ public class AadAuthenticationProperties implements InitializingBean {
                 "'spring.cloud.azure.active-directory.authorization-clients." + registrationId + ".scopes' must be configured");
         }
         // Add necessary scopes for authorization_code clients.
-        // https://docs.microsoft.com/en-us/graph/permissions-reference#remarks-17
-        // https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#openid-connect-scopes
+        // https://docs.microsoft.com/graph/permissions-reference#remarks-17
+        // https://docs.microsoft.com/azure/active-directory/develop/v2-permissions-and-consent#openid-connect-scopes
         if (properties.getAuthorizationGrantType().getValue().equals(AUTHORIZATION_CODE.getValue())) {
             if (!scopes.contains("openid")) {
                 scopes.add("openid"); // "openid" allows to request an ID token.

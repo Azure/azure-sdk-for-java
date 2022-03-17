@@ -36,7 +36,7 @@ abstract class AzureEventHubsCommonTestProperties extends AzureAmqpSdkProperties
     // FQDN = the FQDN of the EventHubs namespace you created (it includes the EventHubs namespace name followed by
     // servicebus.windows.net)
     // Endpoint=sb://<FQDN>/;SharedAccessKeyName=<KeyName>;SharedAccessKey=<KeyValue>
-    // https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-get-connection-string
+    // https://docs.microsoft.com/azure/event-hubs/event-hubs-get-connection-string
     public String getFullyQualifiedNamespace() {
         return this.namespace == null ? extractFqdnFromConnectionString() : (this.namespace + "." + domainName);
     }

@@ -14,7 +14,7 @@ import java.util.Objects;
 /**
  * This class is used to deserialize json to object.
  *
- * @see <a href="https://docs.microsoft.com/en-us/previous-versions/azure/ad/graph/api/api-catalog">reference doc</a>
+ * @see <a href="https://docs.microsoft.com/previous-versions/azure/ad/graph/api/api-catalog">reference doc</a>
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Membership implements Serializable {
