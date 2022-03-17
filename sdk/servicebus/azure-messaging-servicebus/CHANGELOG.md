@@ -149,7 +149,7 @@ Fixed the issue that the second call of `ServiceBusReceiverClient.complete` is s
 - Upgraded `azure-core` dependency to `1.15.0`.
 - Upgraded `azure-core-amqp` dependency to `2.0.4`.
 
-## 7.2.0 (2021-03-18)
+## 7.2.0-beta.1 (2021-03-18)
 ### New Features
 - Added support for distributed transactions across entities via API 'ServiceBusClientBuilder.enableCrossEntityTransactions()'.
 
