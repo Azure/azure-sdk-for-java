@@ -66,12 +66,6 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-messaging-servicebus</artifactId>
-      <version>7.6.0</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
       <version>5.11.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
       <optional>true</optional>
