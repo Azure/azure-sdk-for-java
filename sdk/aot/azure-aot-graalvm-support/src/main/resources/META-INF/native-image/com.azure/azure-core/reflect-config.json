@@ -1,0 +1,11 @@
+[
+  {
+    "name":"com.azure.core.util.logging.ClientLogger",
+    "allDeclaredFields":true,
+    "queryAllDeclaredMethods":true,
+    "queryAllDeclaredConstructors":true
+  },
+  {
+    "name":"com.azure.core.util.CoreUtils"
+  }
+]
