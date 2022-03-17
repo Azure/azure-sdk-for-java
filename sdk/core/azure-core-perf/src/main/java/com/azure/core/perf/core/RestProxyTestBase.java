@@ -11,7 +11,16 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
+import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.CookiePolicy;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.perf.models.MockHttpResponse;
 import com.azure.perf.test.core.PerfStressTest;
@@ -74,8 +83,19 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
     private HttpPipelinePolicy[] createPipelinePolicies(TOptions options) {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         if (options.getBackendType() == CorePerfStressOptions.BackendType.BLOBS) {
-            policies.add(new StorageHeadersInjectionPolicy());
+            policies.add(new AddHeadersPolicy(new HttpHeaders().add("x-ms-blob-type", "BlockBlob")));
         }
+
+        if (options.isIncludePipelinePolicies()) {
+            policies.add(new AddDatePolicy());
+            policies.add(new AddHeadersFromContextPolicy());
+            policies.add(new CookiePolicy());
+            policies.add(new UserAgentPolicy());
+            policies.add(new RetryPolicy());
+            policies.add(new RequestIdPolicy());
+            policies.add(new HttpLoggingPolicy(new HttpLogOptions()));
+        }
+
         return policies.toArray(new HttpPipelinePolicy[0]);
     }
 

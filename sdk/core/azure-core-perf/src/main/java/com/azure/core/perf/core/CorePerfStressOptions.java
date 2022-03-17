@@ -20,6 +20,10 @@ public class CorePerfStressOptions extends PerfStressOptions {
         + "Defaults to mock.")
     private BackendType backendType = BackendType.MOCK;
 
+    @Parameter(names = { "--include-pipeline-policies" },
+        description = "Includes a bunch of core pipeline policies in the test")
+    private boolean includePipelinePolicies;
+
     /**
      * The base endpoint for rest proxy tests. See {@link MyRestProxyService}.
      * @return The base endpoint for rest proxy tests.
@@ -43,6 +47,14 @@ public class CorePerfStressOptions extends PerfStressOptions {
      */
     public BackendType getBackendType() {
         return backendType;
+    }
+
+    /**
+     * Includes a bunch of core pipeline policies in the test
+     * @return Whether to include a bunch of core pipeline policies in the test
+     */
+    public boolean isIncludePipelinePolicies() {
+        return includePipelinePolicies;
     }
 
     public enum HttpClientType {
