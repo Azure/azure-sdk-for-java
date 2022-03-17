@@ -11,6 +11,7 @@
 ### Other Changes
 
 - Changed behavior that `KubernetesCluster` no longer retrieves admin and user KubeConfig during create, update, refresh.
+- Changed behavior that Linux profile is not required for `KubernetesCluster` during create.
 
 ## 2.13.0 (2022-03-11)
 
