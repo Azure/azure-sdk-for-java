@@ -42,6 +42,12 @@
 
 - Updated `api-version` to `2022-01-01`.
 
+## 2.12.2 (2022-03-17)
+
+### Other Changes
+
+- Changed behavior that `KubernetesCluster` no longer retrieves admin and user KubeConfig during create, update, refresh.
+
 ## 2.12.1 (2022-02-22)
 
 ### Bugs Fixed
