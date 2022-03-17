@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpAuthorization;
 import com.azure.core.http.RequestConditions;
 import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.BlobCopySourceTags;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -27,6 +28,7 @@ public class BlobCopyFromUrlOptions {
     private HttpAuthorization sourceAuthorization;
     private BlobImmutabilityPolicy immutabilityPolicy;
     private Boolean legalHold;
+    private BlobCopySourceTags copySourceTags;
 
     /**
      * @param copySource The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
@@ -178,6 +180,24 @@ public class BlobCopyFromUrlOptions {
      */
     public BlobCopyFromUrlOptions setLegalHold(Boolean legalHold) {
         this.legalHold = legalHold;
+        return this;
+    }
+
+    /**
+     * @return The copy source tags mode.
+     */
+    public BlobCopySourceTags getCopySourceTags() {
+        return copySourceTags;
+    }
+
+    /**
+     * Sets the copy source tags mode
+     *
+     * @param copySourceTags Indicates if a legal hold should be placed on the blob.
+     * @return The updated options.
+     */
+    public BlobCopyFromUrlOptions setCopySourceTags(BlobCopySourceTags copySourceTags) {
+        this.copySourceTags = copySourceTags;
         return this;
     }
 }
