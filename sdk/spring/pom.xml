@@ -194,9 +194,27 @@
 
     <profile>
       <id>dev</id>
+      <!--
+        This profile is only used for develop purpose.
+        You can use the following command to install all Spring Cloud Azure artifacts quickly:
+            mvn clean install \
+              -f sdk/spring/ \
+              -Pdev \
+              -T 4 \
+              -o \
+              -Dcheckstyle.skip \
+              -Dcodesnippet.skip \
+              -Denforcer.skip \
+              -Djacoco.skip \
+              -Dmaven.javadoc.skip \
+              -Dmaven.test.skip \
+              -Drevapi.skip \
+              -Dspotbugs.skip
+       -->
       <modules>
         <module>../../eng/code-quality-reports</module>
         <module>../keyvault/azure-security-keyvault-jca</module>
+        <module>../boms/spring-cloud-azure-dependencies</module>
         <module>spring-messaging-azure</module>
         <module>spring-messaging-azure-eventhubs</module>
         <module>spring-messaging-azure-servicebus</module>
