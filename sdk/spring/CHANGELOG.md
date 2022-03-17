@@ -11,16 +11,16 @@
 This section includes changes in `spring-cloud-azure-starter-active-directory` module.
 
 #### Breaking Changes
-- Remove the AAD conditional access filter. [#TBC](https://github.com/Azure/azure-sdk-for-java/pull/TBC)
+- Remove the AAD conditional access filter. [#27727](https://github.com/Azure/azure-sdk-for-java/pull/27727)
 
 #### Dependency Updates
-- Remove the dependencies `org.springframework.boot:spring-boot-starter-webflux`, `com.fasterxml.jackson.core:jackson-databind`, `io.projectreactor.netty:reactor-netty`. [#TBC](https://github.com/Azure/azure-sdk-for-java/pull/TBC)
+- Remove the dependencies `org.springframework.boot:spring-boot-starter-webflux`, `com.fasterxml.jackson.core:jackson-databind`, `io.projectreactor.netty:reactor-netty`. [#27727](https://github.com/Azure/azure-sdk-for-java/pull/27727)
 
 ### Spring Messaging Azure Storage Queue
 This section includes changes in `spring-messaging-azure-storage-queue` module.
 
 #### Dependency Updates
-- Remove the dependencies `com.fasterxml.jackson.core:jackson-databind`. [#TBC](https://github.com/Azure/azure-sdk-for-java/pull/TBC)
+- Remove the dependencies `com.fasterxml.jackson.core:jackson-databind`. [#27727](https://github.com/Azure/azure-sdk-for-java/pull/27727)
 
 
 ### Spring Cloud Azure Resource Manager
