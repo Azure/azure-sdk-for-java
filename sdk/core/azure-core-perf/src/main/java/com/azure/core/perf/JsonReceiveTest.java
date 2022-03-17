@@ -3,34 +3,42 @@
 
 package com.azure.core.perf;
 
-import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.perf.core.CorePerfStressOptions;
-import com.azure.core.perf.core.MockHttpClient;
 import com.azure.core.perf.core.RestProxyTestBase;
 import com.azure.core.perf.core.TestDataFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
+import java.util.function.Function;
+
 public class JsonReceiveTest extends RestProxyTestBase<CorePerfStressOptions> {
 
     public JsonReceiveTest(CorePerfStressOptions options) {
-        super(options, createMockHttpClient(options));
+        super(options, createMockResponseSupplier(options));
     }
 
-    private static HttpClient createMockHttpClient(CorePerfStressOptions options) {
+    private static Function<HttpRequest, HttpResponse> createMockResponseSupplier(CorePerfStressOptions options) {
         byte[] bodyBytes = generateBodyBytes(options.getSize());
-        return new MockHttpClient((httpRequest) -> createMockResponse(httpRequest,
-            "application/json",  bodyBytes));
+        return httpRequest -> createMockResponse(httpRequest,
+            "application/json",  bodyBytes);
     }
 
     @Override
     public Mono<Void> globalSetupAsync() {
-        return new JsonSendTest(options).runAsync();
+        JsonSendTest sendTest = new JsonSendTest(options);
+        return super.globalSetupAsync()
+            .then(Mono.defer(sendTest::globalSetupAsync))
+            .then(Mono.defer(sendTest::setupAsync))
+            .then(Mono.defer(sendTest::runAsync))
+            .then(Mono.defer(sendTest::cleanupAsync))
+            .then(Mono.defer(sendTest::globalCleanupAsync));
     }
 
     @Override
     public void run() {
-        throw new UnsupportedOperationException();
+        runAsync().block();
     }
 
     @Override

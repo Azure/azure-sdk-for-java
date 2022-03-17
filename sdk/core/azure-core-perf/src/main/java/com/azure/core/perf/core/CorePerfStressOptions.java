@@ -15,7 +15,8 @@ public class CorePerfStressOptions extends PerfStressOptions {
         + "Must be specified if non-mock backend type is used otherwise is ignored")
     private HttpClientType httpClient = null;
 
-    @Parameter(names = { "--backend-type"}, description = "The backend type used for tests. Options are mock or blobs. "
+    @Parameter(names = { "--backend-type"}, description = "The backend type used for tests. "
+        + "Options are mock, blobs or wiremock. "
         + "Defaults to mock.")
     private BackendType backendType = BackendType.MOCK;
 
@@ -37,7 +38,7 @@ public class CorePerfStressOptions extends PerfStressOptions {
     }
 
     /**
-     * The backend type used for tests. Options are mock or blobs. Defaults to mock.
+     * The backend type used for tests. Options are mock, blobs or wiremock. Defaults to mock.
      * @return The backend type used for tests.
      */
     public BackendType getBackendType() {
@@ -49,6 +50,6 @@ public class CorePerfStressOptions extends PerfStressOptions {
     }
 
     public enum BackendType {
-        MOCK, BLOBS
+        MOCK, BLOBS, WIREMOCK
     }
 }

@@ -12,6 +12,7 @@ import com.azure.core.annotation.Put;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.http.rest.Response;
 import com.azure.core.perf.models.UserDatabase;
+import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -26,6 +27,14 @@ public interface MyRestProxyService {
     @Put("RawData")
     Mono<Void> setRawData(@HostParam("$host") String endpoint,
                           @BodyParam("application/octet-stream") Flux<ByteBuffer> body,
+                          @HeaderParam("Content-Length") long length);
+
+    @Get("BinaryData")
+    Mono<Response<BinaryData>> getBinaryDataAsync(@HostParam("$host") String endpoint);
+
+    @Put("BinaryData")
+    Mono<Void> setBinaryData(@HostParam("$host") String endpoint,
+                          @BodyParam("application/octet-stream") BinaryData body,
                           @HeaderParam("Content-Length") long length);
 
     @Get("UserDatabaseXml")

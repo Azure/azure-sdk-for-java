@@ -4,7 +4,6 @@
 package com.azure.core.perf;
 
 import com.azure.core.perf.core.CorePerfStressOptions;
-import com.azure.core.perf.core.MockHttpReceiveClient;
 import com.azure.core.perf.core.RestProxyTestBase;
 import com.azure.core.perf.core.TestDataFactory;
 import com.azure.core.perf.models.UserDatabase;
@@ -14,7 +13,7 @@ public class JsonSendTest extends RestProxyTestBase<CorePerfStressOptions> {
     private final UserDatabase userDatabase;
 
     public JsonSendTest(CorePerfStressOptions options) {
-        super(options, new MockHttpReceiveClient());
+        super(options);
         userDatabase = TestDataFactory.generateUserDatabase(options.getSize());
     }
 
