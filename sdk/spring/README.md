@@ -15,10 +15,22 @@ cd azure-sdk-for-java
 mvn clean package -f sdk/spring/pom.xml -P dev
 ```
 
-And if you want to install jars into your local repository:
+You can use the following command to install jars into your local repository quickly:
 
 ```shell
-mvn clean install -f sdk/spring/pom.xml -P dev
+mvn clean install \
+  -f sdk/spring/ \
+  -Pdev \
+  -T 4 \
+  -o \
+  -Dcheckstyle.skip \
+  -Dcodesnippet.skip \
+  -Denforcer.skip \
+  -Djacoco.skip \
+  -Dmaven.javadoc.skip \
+  -Dmaven.test.skip \
+  -Drevapi.skip \
+  -Dspotbugs.skip
 ```
 
 
