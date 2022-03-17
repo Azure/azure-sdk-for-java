@@ -4,7 +4,9 @@
 
 ### Features Added
 
-- Supported enabling role-based access-control for `KubernetesCluster` during create.
+- Supported disabling Kubernetes Role-Based Access Control for `KubernetesCluster` during create.
+- Supported enabling Azure AD integration for `KubernetesCluster`.
+- Supported disabling local accounts for `KubernetesCluster`.
 
 ### Other Changes
 

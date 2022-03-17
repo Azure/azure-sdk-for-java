@@ -211,6 +211,29 @@ public final class BuiltInRole extends ExpandableStringEnum<BuiltInRole> {
     public static final BuiltInRole KEY_VAULT_CRYPTO_SERVICE_ENCRYPTION_USER =
         BuiltInRole.fromString("Key Vault Crypto Service Encryption User");
 
+    // AKS related roles
+    /** Lets you manage all resources in the cluster. */
+    public static final BuiltInRole AZURE_KUBERNETES_SERVICE_RBAC_CLUSTER_ADMIN =
+        BuiltInRole.fromString("Azure Kubernetes Service RBAC Cluster Admin");
+    /** Lets you manage all resources under cluster/namespace,
+     *  except update or delete resource quotas and namespaces. */
+    public static final BuiltInRole AZURE_KUBERNETES_SERVICE_RBAC_ADMIN =
+        BuiltInRole.fromString("Azure Kubernetes Service RBAC Admin");
+    /** Allows read-only access to see most objects in a namespace. It does not allow viewing roles or role bindings.
+     *  This role does not allow viewing Secrets, since reading the contents of Secrets enables access to ServiceAccount
+     *  credentials in the namespace, which would allow API access as any ServiceAccount in the namespace
+     *  (a form of privilege escalation).
+     *  Applying this role at cluster scope will give access across all namespaces. */
+    public static final BuiltInRole AZURE_KUBERNETES_SERVICE_RBAC_READER =
+        BuiltInRole.fromString("Azure Kubernetes Service RBAC Reader");
+    /** Allows read/write access to most objects in a namespace.
+     * This role does not allow viewing or modifying roles or role bindings.
+     * However, this role allows accessing Secrets and running Pods as any ServiceAccount in the namespace,
+     * so it can be used to gain the API access levels of any ServiceAccount in the namespace.
+     * Applying this role at cluster scope will give access across all namespaces. */
+    public static final BuiltInRole AZURE_KUBERNETES_SERVICE_RBAC_WRITER =
+        BuiltInRole.fromString("Azure Kubernetes Service RBAC Writer");
+
     /**
      * Finds or creates a role instance based on the specified name.
      *
