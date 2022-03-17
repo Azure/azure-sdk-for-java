@@ -20,6 +20,7 @@ import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.blob.specialized.BlobInputStream;
 import com.azure.storage.blob.specialized.BlockBlobClient;
+import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
@@ -867,10 +868,18 @@ public class DataLakeFileClient extends DataLakePathClient {
         DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destinationRequestConditions,
         Duration timeout, Context context) {
 
-        Mono<Response<DataLakePathClient>> response = renameWithResponse(destinationFileSystem, destinationPath,
-            sourceRequestConditions, destinationRequestConditions, context);
+        Mono<Response<DataLakeFileClient>> response =
+            dataLakeFileAsyncClient.renameWithResponse(destinationFileSystem, destinationPath,
+                    sourceRequestConditions, destinationRequestConditions, context)
+                .map(asyncResponse ->
+                    new SimpleResponse<>(asyncResponse.getRequest(), asyncResponse.getStatusCode(),
+                        asyncResponse.getHeaders(),
+                        new DataLakeFileClient(new DataLakeFileAsyncClient(asyncResponse.getValue()),
+                            new SpecializedBlobClientBuilder()
+                                .blobAsyncClient(asyncResponse.getValue().blockBlobAsyncClient)
+                                .buildBlockBlobClient())));
 
-        Response<DataLakePathClient> resp = StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        Response<DataLakeFileClient> resp = StorageImplUtils.blockWithOptionalTimeout(response, timeout);
         return new SimpleResponse<>(resp, new DataLakeFileClient(resp.getValue()));
     }
 
