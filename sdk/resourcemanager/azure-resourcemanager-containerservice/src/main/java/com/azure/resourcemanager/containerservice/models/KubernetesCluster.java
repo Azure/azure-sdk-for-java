@@ -488,6 +488,8 @@ public interface KubernetesCluster
              * Specified Azure AD group as the admin group of the cluster.
              *
              * Azure AD integration cannot be disabled. It will enable Kubernetes Role-Based Access Control.
+             * See {@code com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup} in
+             * azure-resourcemanager-authorization package.
              *
              * @param activeDirectoryGroupObjectId the object ID of the Azure AD group.
              * @return the next stage
