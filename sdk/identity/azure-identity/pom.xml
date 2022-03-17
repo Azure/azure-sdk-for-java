@@ -42,31 +42,6 @@
       <groupId>com.microsoft.azure</groupId>
       <artifactId>msal4j</artifactId>
       <version>1.11.0</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
-      <exclusions>
-        <exclusion>
-          <!--
-          com.nimbusds:oauth2-oidc-sdk:9.7 have version range: net.minidev:json-smart:[1.3.3,2.4.7].
-          This will bring trouble to our customer.
-          Refs: https://github.com/Azure/azure-sdk-for-java/issues/23373
-          Remove this after we used new version of oauth2-oidc-sdk which removed version range.
-          Refs: https://bitbucket.org/connect2id/oauth-2.0-sdk-with-openid-connect-extensions/issues/370/variable-range-of-netminidev-json-smart
-          -->
-          <groupId>net.minidev</groupId>
-          <artifactId>json-smart</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <!--
-      com.nimbusds:oauth2-oidc-sdk:9.7 have version range: net.minidev:json-smart:[1.3.3,2.4.7].
-      This will bring trouble to our customer.
-      Refs: https://github.com/Azure/azure-sdk-for-java/issues/23373
-      Remove this after we used new version of oauth2-oidc-sdk which removed version range.
-      Refs: https://bitbucket.org/connect2id/oauth-2.0-sdk-with-openid-connect-extensions/issues/370/variable-range-of-netminidev-json-smart
-      -->
-      <groupId>net.minidev</groupId>
-      <artifactId>json-smart</artifactId>
-      <version>2.4.7</version> <!-- {x-version-update;net.minidev:json-smart;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
@@ -108,6 +83,14 @@
       <artifactId>gson</artifactId>
       <version>2.8.9</version> <!-- {x-version-update;com.google.code.gson:gson;external_dependency} -->
       <scope>test</scope>
+    </dependency>
+
+    <!-- This dependency pins the version to 2.4.7 and is required to be pinned as part of issue https://github.com/Azure/azure-sdk-for-java/issues/22807.
+     Don't remove this until the version gets pinned in msal4j library.-->
+    <dependency>
+      <groupId>net.minidev</groupId>
+      <artifactId>json-smart</artifactId>
+      <version>2.4.7</version> <!-- {x-version-update;net.minidev:json-smart;external_dependency} -->
     </dependency>
   </dependencies>
 
