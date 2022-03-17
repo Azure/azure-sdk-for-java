@@ -1,21 +1,20 @@
 # Release History
 
-## 7.7.0-beta.1 (Unreleased)
-
+## 7.7.0 (2022-03-17)
 ### Features Added
 - Added support for sending/receiving messages with `Duration`, `OffsetDateTime` and `URI` in `applicationProperties`.
 - Updated the receiver to retry to obtain a new connection if the RequestResponseChannel in the current connection is disposed.
-- Added getter methods to `ServiceBusProcessorClient` to get the queue, topic and subscription names associated with 
+- Added getter methods to `ServiceBusProcessorClient` to get the queue, topic and subscription names associated with
   the processor.
-  
-### Breaking Changes
 
 ### Bugs Fixed
 - Removed the incorrect use of lock primitives from `ServiceBusMessageBatch.tryAddMessage()` implementation and documented that this API is not thread-safe. ([#25910](https://github.com/Azure/azure-sdk-for-java/issues/25910))
 - Fixed incorrect ordering of message when sent as a batch. ([#25112](https://github.com/Azure/azure-sdk-for-java/issues/25112), [#25599](https://github.com/Azure/azure-sdk-for-java/issues/25599))
 - Fixed a bug that messages come from azure-sdk-for-net with `DescribedType` cannot be deserialized. ([#26065](https://github.com/Azure/azure-sdk-for-java/issues/26065))
 
-### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.25.0` to `1.26.0`.
+- Upgraded `azure-core-amqp` from `2.4.0` to `2.4.1`.
 
 ## 7.6.0 (2022-02-14)
 
@@ -137,7 +136,7 @@ Fixed the issue that the second call of `ServiceBusReceiverClient.complete` is s
 - Upgraded `azure-core` dependency to `1.15.0`.
 - Upgraded `azure-core-amqp` dependency to `2.0.4`.
 
-## 7.2.0-beta.1 (2021-03-18)
+## 7.2.0 (2021-03-18)
 ### New Features
 - Added support for distributed transactions across entities via API 'ServiceBusClientBuilder.enableCrossEntityTransactions()'.
 
