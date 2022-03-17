@@ -59,8 +59,8 @@ public class CosmosEncryptionClientCachesTest extends TestSuiteBase {
         cosmosEncryptionAsyncDatabase =
             cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(cosmosDatabaseProperties.getId());
         //Create ClientEncryptionKeys
-        metadata1 = new EncryptionKeyWrapMetadata("TEST_KEY_RESOLVER", "key1", "tempmetadata1");
-        metadata2 = new EncryptionKeyWrapMetadata("TEST_KEY_RESOLVER", "key2", "tempmetadata2");
+        metadata1 = new EncryptionKeyWrapMetadata("TEST_KEY_RESOLVER", "key1", "tempmetadata1", "RSA-OAEP");
+        metadata2 = new EncryptionKeyWrapMetadata("TEST_KEY_RESOLVER", "key2", "tempmetadata2", "RSA-OAEP");
         cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key1",
             CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), metadata1).block();
         cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key2",

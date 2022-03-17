@@ -226,7 +226,7 @@ public class EncryptionProcessorAndSettingsTest {
         TextNode treeNode = new TextNode("S84PieiyZNyHxeuUuX5IXSV2KOktpt02tQM4QLhm8dI=");
         byte[] key = MAPPER.treeToValue(treeNode, byte[].class);
         EncryptionKeyWrapMetadata metadata = new EncryptionKeyWrapMetadata("TEST_KEY_RESOLVER",
-            "key1", "tempmetadata1");
+            "key1", "tempmetadata1", "RSA-OAEP");
         return new CosmosClientEncryptionKeyProperties("key1",
             CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), key, metadata);
     }

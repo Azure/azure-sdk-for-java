@@ -12,7 +12,6 @@ import com.azure.resourcemanager.appservice.models.CertificateOrderContact;
 import com.azure.resourcemanager.appservice.models.CertificateOrderStatus;
 import com.azure.resourcemanager.appservice.models.CertificateProductType;
 import com.azure.resourcemanager.appservice.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -22,9 +21,6 @@ import java.util.Map;
 /** AppServiceCertificateOrderPatchResource resource specific properties. */
 @Fluent
 public final class AppServiceCertificateOrderPatchResourceProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(AppServiceCertificateOrderPatchResourceProperties.class);
-
     /*
      * State of the Key Vault secret.
      */
@@ -430,7 +426,7 @@ public final class AppServiceCertificateOrderPatchResourceProperties {
                     });
         }
         if (productType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property productType in model"
@@ -449,4 +445,7 @@ public final class AppServiceCertificateOrderPatchResourceProperties {
             contact().validate();
         }
     }
+
+    private static final ClientLogger LOGGER =
+        new ClientLogger(AppServiceCertificateOrderPatchResourceProperties.class);
 }

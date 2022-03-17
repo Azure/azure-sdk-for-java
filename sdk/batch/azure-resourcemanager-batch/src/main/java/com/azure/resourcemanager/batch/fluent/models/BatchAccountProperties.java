@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.batch.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.batch.models.AuthenticationMode;
 import com.azure.resourcemanager.batch.models.AutoStorageProperties;
 import com.azure.resourcemanager.batch.models.EncryptionProperties;
@@ -14,15 +13,12 @@ import com.azure.resourcemanager.batch.models.PoolAllocationMode;
 import com.azure.resourcemanager.batch.models.ProvisioningState;
 import com.azure.resourcemanager.batch.models.PublicNetworkAccessType;
 import com.azure.resourcemanager.batch.models.VirtualMachineFamilyCoreQuota;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Account specific properties. */
 @Immutable
 public final class BatchAccountProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BatchAccountProperties.class);
-
     /*
      * The account endpoint used to interact with the Batch service.
      */
@@ -83,8 +79,8 @@ public final class BatchAccountProperties {
     private Integer dedicatedCoreQuota;
 
     /*
-     * The low-priority core quota for the Batch account. For accounts with
-     * PoolAllocationMode set to UserSubscription, quota is managed on the
+     * The Spot/low-priority core quota for the Batch account. For accounts
+     * with PoolAllocationMode set to UserSubscription, quota is managed on the
      * subscription so this value is not returned.
      */
     @JsonProperty(value = "lowPriorityCoreQuota", access = JsonProperty.Access.WRITE_ONLY)
@@ -220,7 +216,7 @@ public final class BatchAccountProperties {
     }
 
     /**
-     * Get the lowPriorityCoreQuota property: The low-priority core quota for the Batch account. For accounts with
+     * Get the lowPriorityCoreQuota property: The Spot/low-priority core quota for the Batch account. For accounts with
      * PoolAllocationMode set to UserSubscription, quota is managed on the subscription so this value is not returned.
      *
      * @return the lowPriorityCoreQuota value.

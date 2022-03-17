@@ -11,6 +11,8 @@ import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.MicrosoftD
 public class EncryptionKeyStoreProviderImpl extends EncryptionKeyStoreProvider {
     private final KeyEncryptionKeyResolver keyEncryptionKeyResolver;
     private final String keyEncryptionKeyProviderName;
+    public static final String RSA_OAEP = "RSA-OAEP";
+
     public EncryptionKeyStoreProviderImpl(KeyEncryptionKeyResolver keyEncryptionKeyResolver, String keyEncryptionKeyProviderName) {
         this.keyEncryptionKeyResolver = keyEncryptionKeyResolver;
         this.keyEncryptionKeyProviderName = keyEncryptionKeyProviderName;
@@ -94,7 +96,7 @@ public class EncryptionKeyStoreProviderImpl extends EncryptionKeyStoreProvider {
 
     private static String getNameForKeyEncryptionKeyAlgorithm(KeyEncryptionKeyAlgorithm keyEncryptionKeyAlgorithm) {
         if(keyEncryptionKeyAlgorithm == KeyEncryptionKeyAlgorithm.RSA_OAEP) {
-            return "RSA-OAEP";
+            return RSA_OAEP;
         }
 
         throw new IllegalArgumentException(String.format("Unexpected algorithm '%s'", keyEncryptionKeyAlgorithm));

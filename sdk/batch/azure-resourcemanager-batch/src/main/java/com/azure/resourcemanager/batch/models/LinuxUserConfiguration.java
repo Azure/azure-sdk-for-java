@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties used to create a user account on a Linux node. */
 @Fluent
 public final class LinuxUserConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LinuxUserConfiguration.class);
-
     /*
      * The user ID of the user account. The uid and gid properties must be
      * specified together or not at all. If not specified the underlying

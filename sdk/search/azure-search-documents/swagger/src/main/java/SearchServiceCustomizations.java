@@ -645,9 +645,9 @@ public class SearchServiceCustomizations extends Customization {
             .addImport("com.fasterxml.jackson.annotation.JsonIgnore");
 
         FieldDeclaration clientLoggerDeclaration = new FieldDeclaration()
-            .addVariable(new VariableDeclarator(StaticJavaParser.parseType("ClientLogger"), "logger")
+            .addVariable(new VariableDeclarator(StaticJavaParser.parseType("ClientLogger"), "LOGGER")
                 .setInitializer("new ClientLogger(" + clazz.getName().asString() + ".class)"))
-            .setModifiers(Modifier.Keyword.PRIVATE, Modifier.Keyword.FINAL)
+            .setModifiers(Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL)
             .addMarkerAnnotation("JsonIgnore");
 
         // Always make ClientLogger the first field declaration in the class.
@@ -727,7 +727,7 @@ public class SearchServiceCustomizations extends Customization {
      *
      * <pre>
      * if (a != null && b == c) {
-     *     throw logger.logExceptionAsError(new Exception(exceptionMessage));
+     *     throw LOGGER.logExceptionAsError(new Exception(exceptionMessage));
      * }
      * </pre>
      *
@@ -746,7 +746,7 @@ public class SearchServiceCustomizations extends Customization {
 
         // Create throw block in the if.
         BlockStmt throwBlock = new BlockStmt(new NodeList<>(new ThrowStmt(
-            createLogAndThrowCall("logger", "logExceptionAsError",
+            createLogAndThrowCall("LOGGER", "logExceptionAsError",
                 createExceptionWithMessage(exceptionType, exceptionMessage)))));
 
         return new IfStmt(conditional, throwBlock, null);

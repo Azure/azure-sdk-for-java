@@ -25,9 +25,9 @@ public class PurviewCatalogClientTestBase extends TestBase {
         return endpoint;
     }
 
-    PurviewCatalogClientBuilder builderSetUp() {
-        PurviewCatalogClientBuilder builder =
-            new PurviewCatalogClientBuilder()
+    GlossaryClientBuilder builderSetUp() {
+        GlossaryClientBuilder builder =
+            new GlossaryClientBuilder()
                 .httpClient(HttpClient.createDefault())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         if (getTestMode() == TestMode.PLAYBACK) {

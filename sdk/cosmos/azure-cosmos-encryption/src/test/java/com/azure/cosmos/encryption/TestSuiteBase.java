@@ -232,8 +232,8 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
             CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = new CosmosEncryptionClientBuilder().cosmosAsyncClient(houseKeepingClient).keyEncryptionKeyResolver(
                 new TestKeyEncryptionKeyResolver()).keyEncryptionKeyResolverName("TEST_KEY_RESOLVER").buildAsyncClient();
 
-            EncryptionKeyWrapMetadata metadata1 = new EncryptionKeyWrapMetadata(cosmosEncryptionAsyncClient.getKeyEncryptionKeyResolverName(), "key1", "tempmetadata1");
-            EncryptionKeyWrapMetadata metadata2 = new EncryptionKeyWrapMetadata(cosmosEncryptionAsyncClient.getKeyEncryptionKeyResolverName(), "key2", "tempmetadata2");
+            EncryptionKeyWrapMetadata metadata1 = new EncryptionKeyWrapMetadata(cosmosEncryptionAsyncClient.getKeyEncryptionKeyResolverName(), "key1", "tempmetadata1", "RSA-OAEP");
+            EncryptionKeyWrapMetadata metadata2 = new EncryptionKeyWrapMetadata(cosmosEncryptionAsyncClient.getKeyEncryptionKeyResolverName(), "key2", "tempmetadata2", "RSA-OAEP");
             SHARED_ENCRYPTION_DATABASE = cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(SHARED_DATABASE.getId());
             SHARED_ENCRYPTION_DATABASE.createClientEncryptionKey("key1",
                 CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), metadata1).block();

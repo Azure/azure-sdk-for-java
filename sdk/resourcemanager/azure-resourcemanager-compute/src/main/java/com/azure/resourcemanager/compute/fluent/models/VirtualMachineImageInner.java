@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.ArchitectureTypes;
 import com.azure.resourcemanager.compute.models.AutomaticOSUpgradeProperties;
 import com.azure.resourcemanager.compute.models.DataDiskImage;
@@ -15,7 +14,6 @@ import com.azure.resourcemanager.compute.models.HyperVGenerationTypes;
 import com.azure.resourcemanager.compute.models.OSDiskImage;
 import com.azure.resourcemanager.compute.models.PurchasePlan;
 import com.azure.resourcemanager.compute.models.VirtualMachineImageFeature;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -23,8 +21,6 @@ import java.util.Map;
 /** Describes a Virtual Machine Image. */
 @Fluent
 public final class VirtualMachineImageInner extends VirtualMachineImageResourceInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineImageInner.class);
-
     /*
      * Describes the properties of a Virtual Machine Image.
      */

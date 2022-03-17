@@ -6,20 +6,16 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.ApiError;
 import com.azure.resourcemanager.compute.models.RollingUpgradePolicy;
 import com.azure.resourcemanager.compute.models.RollingUpgradeProgressInfo;
 import com.azure.resourcemanager.compute.models.RollingUpgradeRunningStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The status of the latest virtual machine scale set rolling upgrade. */
 @Fluent
 public final class RollingUpgradeStatusInfoInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RollingUpgradeStatusInfoInner.class);
-
     /*
      * The status of the latest virtual machine scale set rolling upgrade.
      */

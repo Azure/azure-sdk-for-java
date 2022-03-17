@@ -211,7 +211,7 @@ public final class MetricsQueryAsyncClient {
         if (!CoreUtils.isNullOrEmpty(options.getAggregations())) {
             aggregation = options.getAggregations()
                     .stream()
-                    .map(type -> String.valueOf(type.ordinal()))
+                    .map(type -> type.toString())
                     .collect(Collectors.joining(","));
         }
         String timespan = options.getTimeInterval() == null ? null

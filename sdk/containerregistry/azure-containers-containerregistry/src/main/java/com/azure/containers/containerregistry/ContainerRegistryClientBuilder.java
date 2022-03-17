@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.containers.containerregistry;
 
+import com.azure.containers.containerregistry.implementation.UtilsImpl;
 import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -155,11 +156,9 @@ public final class ContainerRegistryClientBuilder implements
      * Sets the audience for the Azure Container Registry service.
      *
      * @param audience ARM management scope associated with the given registry.
-     * @throws NullPointerException If {@code audience} is null.
      * @return The updated {@link ContainerRegistryClientBuilder} object.
      */
     public ContainerRegistryClientBuilder audience(ContainerRegistryAudience audience) {
-        Objects.requireNonNull(audience, "'audience' can't be null");
         this.audience = audience;
         return this;
     }
@@ -381,14 +380,13 @@ public final class ContainerRegistryClientBuilder implements
      * are used to create the {@link ContainerRegistryAsyncClient client}. All other builder settings are ignored.
      *
      * @return A {@link ContainerRegistryAsyncClient} with the options set from the builder.
-     * @throws NullPointerException If {@code endpoint} or {@code audience} is null.
+     * @throws NullPointerException If {@code endpoint} is null.
      * You can set the values by calling {@link #endpoint(String)} and {@link #audience(ContainerRegistryAudience)} respectively.
      * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public ContainerRegistryAsyncClient buildAsyncClient() {
         Objects.requireNonNull(endpoint, "'endpoint' can't be null");
-        Objects.requireNonNull(audience, "'audience' can't be null");
 
         // Service version
         ContainerRegistryServiceVersion serviceVersion = (version != null)
@@ -406,7 +404,7 @@ public final class ContainerRegistryClientBuilder implements
             return httpPipeline;
         }
 
-        return Utils.buildHttpPipeline(
+        return UtilsImpl.buildHttpPipeline(
             this.clientOptions,
             this.httpLogOptions,
             this.configuration,

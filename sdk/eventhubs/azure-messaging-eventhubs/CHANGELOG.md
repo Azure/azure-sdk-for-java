@@ -10,6 +10,7 @@
 ### Bugs Fixed
 
 - Removed the incorrect lock from `EventDataBatch.tryAdd()` implementation and documented that this API is not thread-safe. ([#25910](https://github.com/Azure/azure-sdk-for-java/issues/25910))
+- Fixed a bug where users get a NullPointerException when getting `LastEnqueuedEventProperties` for an empty window. ([#27121](https://github.com/Azure/azure-sdk-for-java/issues/27121))
 
 ### Other Changes
 

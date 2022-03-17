@@ -6,7 +6,6 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.AutomaticRepairsPolicy;
 import com.azure.resourcemanager.compute.models.OrchestrationMode;
@@ -14,15 +13,12 @@ import com.azure.resourcemanager.compute.models.ScaleInPolicy;
 import com.azure.resourcemanager.compute.models.SpotRestorePolicy;
 import com.azure.resourcemanager.compute.models.UpgradePolicy;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProfile;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Describes the properties of a Virtual Machine Scale Set. */
 @Fluent
 public final class VirtualMachineScaleSetProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetProperties.class);
-
     /*
      * The upgrade policy.
      */
