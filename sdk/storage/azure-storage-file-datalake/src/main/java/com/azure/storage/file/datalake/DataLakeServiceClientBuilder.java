@@ -61,7 +61,7 @@ public class DataLakeServiceClientBuilder implements
     HttpTrait<DataLakeServiceClientBuilder>,
     ConfigurationTrait<DataLakeServiceClientBuilder>,
     EndpointTrait<DataLakeServiceClientBuilder> {
-    private final ClientLogger logger = new ClientLogger(DataLakeServiceClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DataLakeServiceClientBuilder.class);
 
     private final BlobServiceClientBuilder blobServiceClientBuilder;
 
@@ -113,7 +113,7 @@ public class DataLakeServiceClientBuilder implements
     public DataLakeServiceAsyncClient buildAsyncClient() {
         if (Objects.isNull(storageSharedKeyCredential) && Objects.isNull(tokenCredential)
             && Objects.isNull(azureSasCredential)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Data Lake Service Client cannot be accessed "
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Data Lake Service Client cannot be accessed "
                 + "anonymously. Please provide a form of authentication"));
         }
         DataLakeServiceVersion serviceVersion = version != null ? version : DataLakeServiceVersion.getLatest();
@@ -121,7 +121,7 @@ public class DataLakeServiceClientBuilder implements
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, azureSasCredential,
             endpoint, retryOptions, coreRetryOptions, logOptions,
-            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
+            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, LOGGER);
 
         return new DataLakeServiceAsyncClient(pipeline, endpoint, serviceVersion, accountName,
             blobServiceClientBuilder.buildAsyncClient(), azureSasCredential);
@@ -150,7 +150,7 @@ public class DataLakeServiceClientBuilder implements
                 this.sasToken(sasToken);
             }
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("The Azure Storage endpoint url is malformed."));
         }
 
@@ -254,7 +254,7 @@ public class DataLakeServiceClientBuilder implements
     public DataLakeServiceClientBuilder httpClient(HttpClient httpClient) {
         blobServiceClientBuilder.httpClient(httpClient);
         if (this.httpClient != null && httpClient == null) {
-            logger.info("'httpClient' is being set to 'null' when it was previously configured.");
+            LOGGER.info("'httpClient' is being set to 'null' when it was previously configured.");
         }
 
         this.httpClient = httpClient;
@@ -387,7 +387,7 @@ public class DataLakeServiceClientBuilder implements
     public DataLakeServiceClientBuilder pipeline(HttpPipeline httpPipeline) {
         blobServiceClientBuilder.pipeline(httpPipeline);
         if (this.httpPipeline != null && httpPipeline == null) {
-            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
 
         this.httpPipeline = httpPipeline;

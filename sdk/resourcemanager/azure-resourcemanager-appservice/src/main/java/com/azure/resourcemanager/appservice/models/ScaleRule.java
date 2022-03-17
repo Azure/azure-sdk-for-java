@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Container App container scaling rule. */
 @Fluent
 public final class ScaleRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScaleRule.class);
-
     /*
      * Scale Rule Name
      */

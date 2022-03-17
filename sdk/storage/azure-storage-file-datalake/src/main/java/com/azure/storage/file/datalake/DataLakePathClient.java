@@ -46,7 +46,7 @@ import java.util.Map;
  */
 @ServiceClient(builder = DataLakePathClientBuilder.class)
 public class DataLakePathClient {
-    private final ClientLogger logger = new ClientLogger(DataLakePathClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DataLakePathClient.class);
 
     final DataLakePathAsyncClient dataLakePathAsyncClient;
     final BlockBlobClient blockBlobClient;
@@ -129,7 +129,7 @@ public class DataLakePathClient {
     }
 
     /**
-     * Creates a resource. By default this method will not overwrite an existing path.
+     * Creates a resource. By default, this method will not overwrite an existing path.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -166,7 +166,7 @@ public class DataLakePathClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
      * Docs</a></p>
      *
-     * @param overwrite Whether or not to overwrite, should data exist on the path.
+     * @param overwrite Whether to overwrite, should data exist on the path.
      *
      * @return Information about the created resource.
      */
@@ -281,11 +281,11 @@ public class DataLakePathClient {
         DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() ->
             blockBlobClient.setMetadataWithResponse(metadata, Transforms.toBlobRequestConditions(requestConditions),
-                timeout, context), logger);
+                timeout, context), LOGGER);
     }
 
     /**
-     * Changes a resources's HTTP header properties. If only one HTTP header is updated, the others will all be erased.
+     * Changes a resource's HTTP header properties. If only one HTTP header is updated, the others will all be erased.
      * In order to preserve existing values, they must be passed alongside the header being changed.
      *
      * <p><strong>Code Samples</strong></p>
@@ -309,7 +309,7 @@ public class DataLakePathClient {
     }
 
     /**
-     * Changes a resources's HTTP header properties. If only one HTTP header is updated, the others will all be erased.
+     * Changes a resource's HTTP header properties. If only one HTTP header is updated, the others will all be erased.
      * In order to preserve existing values, they must be passed alongside the header being changed.
      *
      * <p><strong>Code Samples</strong></p>
@@ -340,7 +340,7 @@ public class DataLakePathClient {
         DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() ->
             blockBlobClient.setHttpHeadersWithResponse(Transforms.toBlobHttpHeaders(headers),
-                Transforms.toBlobRequestConditions(requestConditions), timeout, context), logger);
+                Transforms.toBlobRequestConditions(requestConditions), timeout, context), LOGGER);
     }
 
     /**
@@ -838,7 +838,7 @@ public class DataLakePathClient {
     }
 
     /**
-     * Returns the resources's metadata and properties.
+     * Returns the resource's metadata and properties.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -891,7 +891,7 @@ public class DataLakePathClient {
             Response<BlobProperties> response = blockBlobClient.getPropertiesWithResponse(
                 Transforms.toBlobRequestConditions(requestConditions), timeout, context);
             return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue()));
-        }, logger);
+        }, LOGGER);
     }
 
     /**
@@ -936,7 +936,7 @@ public class DataLakePathClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> existsWithResponse(Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() ->
-            blockBlobClient.existsWithResponse(timeout, context), logger);
+            blockBlobClient.existsWithResponse(timeout, context), LOGGER);
     }
 
     private DataLakePathClient getPathClient(String destinationFileSystem, String destinationPath) {

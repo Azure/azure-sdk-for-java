@@ -4,8 +4,8 @@
 
 package com.azure.analytics.purview.catalog.generated;
 
-import com.azure.analytics.purview.catalog.PurviewCatalogClientBuilder;
 import com.azure.analytics.purview.catalog.TypesClient;
+import com.azure.analytics.purview.catalog.TypesClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -13,13 +13,18 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class TypesGetEntityDefinitionByGuid {
     public static void main(String[] args) {
-        TypesClient client =
-                new PurviewCatalogClientBuilder()
+        // BEGIN:
+        // com.azure.analytics.purview.catalog.generated.typesgetentitydefinitionbyguid.typesgetentitydefinitionbyguid
+        TypesClient typesClient =
+                new TypesClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
-                        .buildTypesClient();
+                        .buildClient();
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                client.getEntityDefinitionByGuidWithResponse("4bc54c37-98a8-4de8-9ee8-182610859d43", requestOptions);
+                typesClient.getEntityDefinitionByGuidWithResponse(
+                        "4bc54c37-98a8-4de8-9ee8-182610859d43", requestOptions);
+        // END:
+        // com.azure.analytics.purview.catalog.generated.typesgetentitydefinitionbyguid.typesgetentitydefinitionbyguid
     }
 }

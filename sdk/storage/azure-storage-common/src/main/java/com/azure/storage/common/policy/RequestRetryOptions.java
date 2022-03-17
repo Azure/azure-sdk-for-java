@@ -18,7 +18,7 @@ import java.util.Objects;
  * Configuration options for {@link RequestRetryPolicy}.
  */
 public final class RequestRetryOptions {
-    private final ClientLogger logger = new ClientLogger(RequestRetryOptions.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RequestRetryOptions.class);
 
     private final int maxTries;
     private final Duration tryTimeout;
@@ -116,7 +116,7 @@ public final class RequestRetryOptions {
 
         if ((retryDelay == null && maxRetryDelay != null)
             || (retryDelay != null && maxRetryDelay == null)) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("Both retryDelay and maxRetryDelay must be null or neither can be null"));
         }
 
@@ -136,7 +136,7 @@ public final class RequestRetryOptions {
                     this.retryDelay = Duration.ofSeconds(30);
                     break;
                 default:
-                    throw logger.logExceptionAsError(new IllegalArgumentException("Invalid 'RetryPolicyType'."));
+                    throw LOGGER.logExceptionAsError(new IllegalArgumentException("Invalid 'RetryPolicyType'."));
             }
             this.maxRetryDelay = Duration.ofSeconds(120);
         }
@@ -224,7 +224,7 @@ public final class RequestRetryOptions {
                 delay = tryCount > 1 ? this.retryDelay.toMillis() : 0;
                 break;
             default:
-                throw logger.logExceptionAsError(new IllegalArgumentException("Invalid retry policy type."));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Invalid retry policy type."));
         }
 
         return Math.min(delay, this.maxRetryDelay.toMillis());

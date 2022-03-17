@@ -70,11 +70,9 @@ public class AvroSerializerTest {
     @Test
     public void constructorNull() {
         assertThrows(NullPointerException.class,
-            () -> new AvroSerializer(true, null, encoderFactory, decoderFactory));
+            () -> new AvroSerializer(true, null, decoderFactory));
         assertThrows(NullPointerException.class,
-            () -> new AvroSerializer(true, parser, null, decoderFactory));
-        assertThrows(NullPointerException.class,
-            () -> new AvroSerializer(true, parser, encoderFactory, null));
+            () -> new AvroSerializer(true, encoderFactory, null));
     }
 
     public static Stream<Arguments> getSchemaStringPrimitive() {
@@ -129,8 +127,7 @@ public class AvroSerializerTest {
     @Test
     public void encodesObject() throws IOException {
         // Arrange
-        final AvroSerializer registryUtils = new AvroSerializer(false, parser,
-            encoderFactory, decoderFactory);
+        final AvroSerializer registryUtils = new AvroSerializer(false, encoderFactory, decoderFactory);
 
         final PlayingCard card = PlayingCard.newBuilder()
             .setPlayingCardSuit(PlayingCardSuit.DIAMONDS)
@@ -157,14 +154,13 @@ public class AvroSerializerTest {
     @Test
     public void encodesAndDecodesObject() {
         // Arrange
-        final AvroSerializer registryUtils = new AvroSerializer(false, parser,
-            encoderFactory, decoderFactory);
+        final AvroSerializer registryUtils = new AvroSerializer(false, encoderFactory, decoderFactory);
 
         final PlayingCard expected = PlayingCard.newBuilder()
-            .setPlayingCardSuit(PlayingCardSuit.DIAMONDS)
-            .setIsFaceCard(true)
-            .setCardValue(13)
-            .build();
+                .setPlayingCardSuit(PlayingCardSuit.DIAMONDS)
+                .setIsFaceCard(true)
+                .setCardValue(13)
+                .build();
 
         // Using the raw message encoder because the default card.getByteBuffer() uses BinaryMessageEncoder which adds
         // a header.
@@ -173,7 +169,7 @@ public class AvroSerializerTest {
 
         // Act
         final PlayingCard actual = registryUtils.decode(ByteBuffer.wrap(encoded), schemaBytes,
-            TypeReference.createInstance(PlayingCard.class));
+                TypeReference.createInstance(PlayingCard.class));
 
         // Assert
         assertCardEquals(expected, actual);
@@ -187,8 +183,7 @@ public class AvroSerializerTest {
     @Test
     public void decodeSingleObjectEncodedObject() throws IOException {
         // Arrange
-        final AvroSerializer registryUtils = new AvroSerializer(false, parser,
-            encoderFactory, decoderFactory);
+        final AvroSerializer registryUtils = new AvroSerializer(false, encoderFactory, decoderFactory);
 
         final PlayingCard card = PlayingCard.newBuilder()
             .setPlayingCardSuit(PlayingCardSuit.DIAMONDS)
@@ -221,11 +216,10 @@ public class AvroSerializerTest {
         expected.getCards().forEach(expectedCard -> {
             final int expectedSize = list.size() - 1;
 
-            assertTrue(list.removeIf(playingCard -> {
-                return expectedCard.getIsFaceCard() == playingCard.getIsFaceCard()
-                    && expectedCard.getCardValue() == playingCard.getCardValue()
-                    && expectedCard.getPlayingCardSuit() == playingCard.getPlayingCardSuit();
-            }));
+            assertTrue(list.removeIf(playingCard ->
+                expectedCard.getIsFaceCard() == playingCard.getIsFaceCard()
+                && expectedCard.getCardValue() == playingCard.getCardValue()
+                && expectedCard.getPlayingCardSuit() == playingCard.getPlayingCardSuit()));
 
             assertEquals(expectedSize, list.size());
         });
@@ -348,8 +342,7 @@ public class AvroSerializerTest {
     @ParameterizedTest
     public <T> void getSchemaForTypeReference(TypeReference<T> typeReference, Schema expected) {
         // Arrange
-        final AvroSerializer registryUtils = new AvroSerializer(false, parser,
-            encoderFactory, decoderFactory);
+        final AvroSerializer registryUtils = new AvroSerializer(false, encoderFactory, decoderFactory);
         final Class<T> clazz = typeReference.getJavaClass();
 
         // Act

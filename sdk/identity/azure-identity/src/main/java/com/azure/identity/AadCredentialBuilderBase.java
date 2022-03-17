@@ -82,8 +82,8 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      * @return An updated instance of this builder with authority validation disabled.
      */
     @SuppressWarnings("unchecked")
-    public T disableAuthorityValidation() {
-        this.identityClientOptions.disableAuthorityValidation();
+    public T disableAuthorityValidationSafetyCheck() {
+        this.identityClientOptions.disableAuthorityValidationSafetyCheck();
         return (T) this;
     }
 }

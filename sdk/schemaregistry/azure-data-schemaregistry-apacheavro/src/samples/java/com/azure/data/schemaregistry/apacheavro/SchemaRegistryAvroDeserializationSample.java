@@ -37,16 +37,16 @@ public class SchemaRegistryAvroDeserializationSample {
 
         // Create the encoder instance by configuring it with the schema registry client and
         // enabling auto registering of new schemas
-        SchemaRegistryApacheAvroEncoder encoder = new SchemaRegistryApacheAvroEncoderBuilder()
+        SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializerBuilder()
             .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
             .schemaGroup("{schema-group}")
             .avroSpecificReader(true)
             .autoRegisterSchema(true)
-            .buildEncoder();
+            .buildSerializer();
 
         // Get serialized avro data to deserialize into strongly-typed object.
         MessageWithMetadata inputStream = getMessageToDeserialize();
-        PlayingCard deserializedObject = encoder.decodeMessageData(inputStream,
+        PlayingCard deserializedObject = encoder.deserializeMessageData(inputStream,
             TypeReference.createInstance(PlayingCard.class));
     }
 

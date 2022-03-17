@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ConfigReferenceSource;
 import com.azure.resourcemanager.appservice.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.appservice.models.ResolveStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** ApiKVReference resource specific properties. */
 @Fluent
 public final class ApiKVReferenceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiKVReferenceProperties.class);
-
     /*
      * The reference property.
      */

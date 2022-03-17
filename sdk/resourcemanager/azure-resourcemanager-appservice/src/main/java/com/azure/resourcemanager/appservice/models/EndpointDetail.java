@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Current TCP connectivity information from the App Service Environment to a single endpoint. */
 @Fluent
 public final class EndpointDetail {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EndpointDetail.class);
-
     /*
      * An IP Address that Domain Name currently resolves to.
      */
