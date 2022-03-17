@@ -79,7 +79,7 @@ public abstract class AadWebSecurityConfigurerAdapter extends WebSecurityConfigu
     /**
      * Return the filter to handle conditional access exception.
      * No conditional access filter is provided by default.
-     * @see <a href="https://github.com/moarychan/azure-spring-boot-samples/blob/fef19e3f9c0f902e1d2ae8064194cdebb66d9318/aad/spring-cloud-azure-starter-active-directory/aad-web-application/src/main/java/com/azure/spring/sample/aad/security/AadHandleConditionalAccessFilter.java">Sample for AAD handle conditional access filter</a>
+     * @see <a href="https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.0.0/aad/spring-cloud-azure-starter-active-directory/aad-web-application/src/main/java/com/azure/spring/sample/aad/security/AadConditionalAccessFilter.java">Sample for AAD conditional access filter</a>
      * @see <a href="https://microsoft.github.io/spring-cloud-azure/4.0.0/4.0.0/reference/html/index.html#support-conditional-access-in-web-application">reference doc</a>
      * @return a filter that handles conditional access exception.
      */
