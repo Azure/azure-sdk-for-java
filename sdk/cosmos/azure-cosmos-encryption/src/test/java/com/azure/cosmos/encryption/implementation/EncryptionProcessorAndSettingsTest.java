@@ -147,7 +147,7 @@ public class EncryptionProcessorAndSettingsTest {
         assertThat(cachedEncryptionSettings.getEncryptionSettingTimeToLive()).isBefore(Instant.now().plus(Duration.ofMinutes(61)));
 
         spyEncryptionSettings.setEncryptionSettingForProperty("sensitiveString", cachedEncryptionSettings,
-            Instant.now());
+            Instant.now().minus(Duration.ofSeconds(5)));
         // fetchCachedEncryptionSettingsAsync should be called for second time as cached encryption setting is expired
         spyEncryptionSettings.getEncryptionSettingForPropertyAsync("sensitiveString", encryptionProcessor).block();
         Mockito.verify(spyEncryptionSettings, Mockito.times(2)).fetchCachedEncryptionSettingsAsync(Mockito.anyString(), Mockito.any(EncryptionProcessor.class));
