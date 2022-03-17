@@ -226,7 +226,7 @@ public final class ServiceBusAdministrationClientBuilder implements
         try {
             url = new URL(Objects.requireNonNull(endpoint, "'endpoint' cannot be null."));
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL"));
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
         }
 
         this.endpoint = url.getHost();
