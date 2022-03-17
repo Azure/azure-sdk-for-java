@@ -260,7 +260,6 @@ public class KubernetesClusterImpl
     private void clearKubeConfig() {
         this.adminKubeConfigs = null;
         this.userKubeConfigs = null;
-        this.formatUserKubeConfigsMap.clear();
     }
 
     @Override
