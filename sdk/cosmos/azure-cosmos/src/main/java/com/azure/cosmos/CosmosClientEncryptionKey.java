@@ -3,7 +3,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyResponse;
 import com.azure.cosmos.util.Beta;
 
