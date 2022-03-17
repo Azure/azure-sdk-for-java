@@ -1911,7 +1911,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withExistingVirtualMachineScaleSet(flexVMSS)
             .create();
         Assertions.assertEquals(vm.virtualMachineScaleSetId(), flexVMSS.id());
-        // flex vmss can have a mixed ephemeral and non-ephemeral os disk vms
+        // flex vmss can have a mixed set of VMs with ephemeral and non-ephemeral os disk
         // which contradicts the FAQ: https://docs.microsoft.com/en-us/azure/virtual-machines/ephemeral-os-disks#frequently-asked-questions
         Assertions.assertFalse(vm.isOSDiskEphemeral());
     }
