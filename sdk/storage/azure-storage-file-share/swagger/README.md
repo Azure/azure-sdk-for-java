@@ -248,7 +248,7 @@ directive:
     $.enum = [ "2019-07-07" ];
 ```
 
-### Convert FileCreationTime and FileLastWriteTime to String to Support 'now'
+### Convert FileCreationTime and FileLastWriteTime and FileChangeTime to String to Support 'now'
 ``` yaml
 directive:
 - from: swagger-document
@@ -379,5 +379,35 @@ directive:
     delete $["x-ms-pageable"];
 ```
 
+### Remove CopyFileSmbInfoChangeTime from directory rename
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+    const op = $["/{shareName}/{directory}?restype=directory&comp=rename"];
+    op.put.parameters.splice(10,1);
+```
+
+### Remove CopyFileSmbInfoChangeTime from file copy
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+    const op = $["/{shareName}/{fileName}?comp=copy"];
+    op.put.parameters.splice(11,1);
+```
+
+### Remove CopyFileSmbInfoChangeTime from file rename
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+    const op = $["/{shareName}/{fileName}?comp=rename"];
+    op.put.parameters.splice(10,1);
+```
+        
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-file-share%2Fswagger%2FREADME.png)
 
