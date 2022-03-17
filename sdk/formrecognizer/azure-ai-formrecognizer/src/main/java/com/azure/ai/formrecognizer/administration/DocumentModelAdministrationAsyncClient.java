@@ -172,8 +172,9 @@ public final class DocumentModelAdministrationAsyncClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-String -->
      *
-     * @param trainingFilesUrl source URL parameter that is an externally accessible Azure
-     * storage blob container Url (preferably a Shared Access Signature Url).
+     * @param trainingFilesUrl an Azure Storage blob container's SAS URI. A container URI (without SAS)
+     * can be used if the container is public or has a managed identity configured. For more information on
+     * setting up a training data set, see: <a href="https://aka.ms/azsdk/formrecognizer/buildtrainingset">here</a>.
      * @param buildMode the preferred technique for creating models. For faster training of models use
      * {@link DocumentBuildMode#TEMPLATE}. See <a href="https://aka.ms/azsdk/formrecognizer/buildmode">here</a>
      * for more information on building mode for custom documents.
@@ -231,8 +232,9 @@ public final class DocumentModelAdministrationAsyncClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-String-BuildModelOptions -->
      *
-     * @param trainingFilesUrl source URL parameter that is an externally accessible Azure
-     * storage blob container Url (preferably a Shared Access Signature Url).
+     * @param trainingFilesUrl an Azure Storage blob container's SAS URI. A container URI (without SAS)
+     * can be used if the container is public or has a managed identity configured. For more information on
+     * setting up a training data set, see: <a href="https://aka.ms/azsdk/formrecognizer/buildtrainingset">here</a>.
      * @param buildMode the preferred technique for creating models. For faster training of models use
      * {@link DocumentBuildMode#TEMPLATE}. See <a href="https://aka.ms/azsdk/formrecognizer/buildmode">here</a>
      * for more information on building mode for custom documents.

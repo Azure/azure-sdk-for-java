@@ -101,10 +101,9 @@ public final class DocumentModelAdministrationClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-String -->
      *
-     * @param trainingFilesUrl an externally accessible Azure storage blob container Url (preferably a Shared Access
-     * Signature Url).
-     * For instructions on setting up forms for administration in an Azure Storage Blob Container, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/build-training-data-set#upload-your-training-data">here</a>.
+     * @param trainingFilesUrl an Azure Storage blob container's SAS URI. A container URI (without SAS)
+     * can be used if the container is public or has a managed identity configured. For more information on
+     * setting up a training data set, see: <a href="https://aka.ms/azsdk/formrecognizer/buildtrainingset">here</a>.
      * @param buildMode the preferred technique for creating models. For faster training of models use
      * {@link DocumentBuildMode#TEMPLATE}. See <a href="https://aka.ms/azsdk/formrecognizer/buildmode">here</a>
      * for more information on building mode for custom documents.
@@ -160,10 +159,9 @@ public final class DocumentModelAdministrationClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#string-String-BuildModelOptions-Context -->
      *
-     * @param trainingFilesUrl an externally accessible Azure storage blob container Url (preferably a Shared Access
-     * Signature Url).
-     * For instructions on setting up forms for administration in an Azure Storage Blob Container, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/build-training-data-set#upload-your-training-data">here</a>.
+     * @param trainingFilesUrl an Azure Storage blob container's SAS URI. A container URI (without SAS)
+     * can be used if the container is public or has a managed identity configured. For more information on
+     * setting up a training data set, see: <a href="https://aka.ms/azsdk/formrecognizer/buildtrainingset">here</a>.
      * @param buildMode the preferred technique for creating models. For faster training of models use
      * {@link DocumentBuildMode#TEMPLATE}. See <a href="https://aka.ms/azsdk/formrecognizer/buildmode">here</a>
      * for more information on building mode for custom documents.
