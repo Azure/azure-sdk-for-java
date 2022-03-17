@@ -29,11 +29,19 @@ public enum CosmosEncryptionType {
         this.encryptionType = encryptionType;
     }
 
+    /**
+     * Returns the encryptionType name
+     * @return encryptionType
+     */
     @Override
     public String toString() {
         return this.encryptionType;
     }
 
+    /**
+     * Returns the encryptionType name
+     * @return encryptionType
+     */
     public String getName() {
         return this.encryptionType;
     }
@@ -49,6 +57,11 @@ public enum CosmosEncryptionType {
         ENUM_MAP = Collections.unmodifiableMap(map);
     }
 
+    /**
+     *  Gets the CosmosEncryptionType enum back from the string value
+     * @param name the string value
+     * @return CosmosEncryptionType enum
+     */
     public static CosmosEncryptionType get(String name) {
         return ENUM_MAP.get(name);
     }

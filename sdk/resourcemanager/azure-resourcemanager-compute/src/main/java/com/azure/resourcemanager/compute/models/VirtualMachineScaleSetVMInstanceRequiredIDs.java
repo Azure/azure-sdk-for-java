@@ -6,15 +6,12 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Specifies a list of virtual machine instance IDs from the VM scale set. */
 @Fluent
 public final class VirtualMachineScaleSetVMInstanceRequiredIDs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetVMInstanceRequiredIDs.class);
-
     /*
      * The virtual machine scale set instance ids.
      */
@@ -48,10 +45,12 @@ public final class VirtualMachineScaleSetVMInstanceRequiredIDs {
      */
     public void validate() {
         if (instanceIds() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property instanceIds in model VirtualMachineScaleSetVMInstanceRequiredIDs"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineScaleSetVMInstanceRequiredIDs.class);
 }

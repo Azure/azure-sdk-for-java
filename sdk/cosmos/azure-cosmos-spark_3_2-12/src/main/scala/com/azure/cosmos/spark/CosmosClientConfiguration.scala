@@ -10,6 +10,8 @@ private[spark] case class CosmosClientConfiguration (
                                                       applicationName: String,
                                                       useGatewayMode: Boolean,
                                                       useEventualConsistency: Boolean,
+                                                      enableClientTelemetry: Boolean,
+                                                      clientTelemetryEndpoint: Option[String],
                                                       preferredRegionsList: Option[Array[String]])
 
 private[spark] object CosmosClientConfiguration {
@@ -27,12 +29,16 @@ private[spark] object CosmosClientConfiguration {
       applicationName = s"$applicationName ${cosmosAccountConfig.applicationName.get}"
     }
 
+    val diagnosticsConfig = DiagnosticsConfig.parseDiagnosticsConfig(config)
+
     CosmosClientConfiguration(
       cosmosAccountConfig.endpoint,
       cosmosAccountConfig.key,
       applicationName,
       cosmosAccountConfig.useGatewayMode,
       useEventualConsistency,
+      enableClientTelemetry = diagnosticsConfig.isClientTelemetryEnabled,
+      diagnosticsConfig.clientTelemetryEndpoint,
       cosmosAccountConfig.preferredRegionsList)
   }
 

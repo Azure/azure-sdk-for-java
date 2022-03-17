@@ -86,10 +86,6 @@
           },
           {
             "matcher": "java-package",
-            "match": "/com\\.azure\\.spring(\\..*)?/"
-          },
-          {
-            "matcher": "java-package",
             "match": "/org\\.apache\\.avro(\\..*)?/"
           },
           {
@@ -109,6 +105,36 @@
     "configuration": {
       "ignore": true,
       "differences": [
+        {
+          "regex": true,
+          "code": "java.class.defaultSerializationChanged",
+          "new": "class org.springframework.beans.factory.support.DefaultListableBeanFactory",
+          "justification": "We allow this in org.springframework.beans.factory.support.DefaultListableBeanFactory"
+        },
+        {
+          "regex": true,
+          "code": "java.class.nonPublicPartOfAPI",
+          "new": "class com.azure.spring.messaging.container.DefaultMessageListenerContainer",
+          "justification": "We allow this in azure.spring.messaging."
+        },
+        {
+          "regex": true,
+          "code": "java.method.addedToInterface",
+          "new": "method <A extends java.lang.annotation.Annotation> A org.springframework.beans.factory.ListableBeanFactory..*",
+          "justification": "springframework are allowed to add methods.."
+        },
+        {
+          "regex": true,
+          "code": "java.class.nonPublicPartOfAPI",
+          "new": "(class|interface) org.springframework..*",
+          "justification": "We allow this in springframework"
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "old": "method com.azure.spring.messaging.container.ListenerContainerFactory<? extends com.azure.spring.messaging.container.MessageListenerContainer> com.azure.spring.messaging.config.AzureMessagingConfiguration::azureListenerContainerFactory(com.azure.spring.integration.core.api.SubscribeByGroupOperation)",
+          "new": "method com.azure.spring.messaging.container.ListenerContainerFactory<? extends com.azure.spring.messaging.container.MessageListenerContainer> com.azure.spring.messaging.config.AzureMessagingConfiguration::azureListenerContainerFactory(com.azure.spring.integration.core.api.SubscribeByGroupOperation, org.springframework.beans.factory.ObjectProvider<org.springframework.util.ErrorHandler>)",
+          "justification": "In order to support configuration of error handler for message listener container"
+        },
         {
           "regex": true,
           "code": "java.class.nonPublicPartOfAPI",
@@ -131,7 +157,7 @@
         {
           "regex": true,
           "code": "java\\.class\\.externalClassExposedInAPI",
-          "new": "(interface|class|enum) com\\.azure\\.(communication\\.common|core|cosmos|data\\.schemaregistry|messaging\\.eventgrid|resourcemanager|security\\.keyvault|storage).*",
+          "new": "(interface|class|enum) com\\.azure\\.(communication\\.common|core|cosmos|data\\.schemaregistry|messaging\\.eventgrid|messaging.servicebus|resourcemanager|security\\.keyvault|storage).*",
           "justification": "SDK classes are allowed to be exposed by dependencies using them."
         },
         {
@@ -166,6 +192,12 @@
         },
         {
           "regex": true,
+          "code": "java\\.class\\.externalClassExposedInAPI",
+          "new": "(interface|class) org\\.springframework.util\\.ErrorHandler",
+          "justification": "Azure Spring Cloud Messaging need the Spring's public interface for error handler registration, it is a common class for users to handle runtime errors."
+        },
+        {
+          "regex": true,
           "code": "java\\.annotation\\.added",
           "old": ".*",
           "annotationType": "com\\.azure\\.core\\.annotation\\.Service(Method|Client)",
@@ -182,6 +214,18 @@
           "code": "java\\.annotation\\.(added|attributeValueChanged|attributeAdded)",
           "new": "(class|method void|parameter void) com\\.azure\\.search\\.documents\\.indexes\\.models\\..*",
           "justification": "Generated classes were moved into public API, these annotations were already being used in implementation used during serialization and deserialization."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.added",
+          "new": "(class|interface|method|parameter) org\\.springframework\\.data\\.repository\\.query\\..*",
+          "justification": "Spring Data Commons framework 2.6.1 added Nullable annotations to its interfaces."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.added",
+          "new": "(class|interface|method|parameter) com\\.azure\\.spring\\.data\\.cosmos\\.repository\\.query\\..*",
+          "justification": "Spring Data Commons framework 2.6.1 added Nullable annotations to its interfaces which are implemented by Cosmos Spring Data SDK for internal usage."
         },
         {
           "code": "java.method.added",

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Disks GetByResourceGroup. */
 public final class DisksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/GetInformationAboutAManagedDisk.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/GetInformationAboutAManagedDisk.json
      */
     /**
      * Sample code: Get information about a managed disk.

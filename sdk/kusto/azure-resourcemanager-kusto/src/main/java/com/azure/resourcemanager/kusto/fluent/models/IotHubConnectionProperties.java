@@ -6,6 +6,7 @@ package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.kusto.models.DatabaseRouting;
 import com.azure.resourcemanager.kusto.models.IotHubDataFormat;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -61,6 +62,13 @@ public final class IotHubConnectionProperties {
      */
     @JsonProperty(value = "sharedAccessPolicyName", required = true)
     private String sharedAccessPolicyName;
+
+    /*
+     * Indication for database routing information from the data connection, by
+     * default only database routing information is allowed
+     */
+    @JsonProperty(value = "databaseRouting")
+    private DatabaseRouting databaseRouting;
 
     /*
      * The provisioned state of the resource.
@@ -211,6 +219,28 @@ public final class IotHubConnectionProperties {
      */
     public IotHubConnectionProperties withSharedAccessPolicyName(String sharedAccessPolicyName) {
         this.sharedAccessPolicyName = sharedAccessPolicyName;
+        return this;
+    }
+
+    /**
+     * Get the databaseRouting property: Indication for database routing information from the data connection, by
+     * default only database routing information is allowed.
+     *
+     * @return the databaseRouting value.
+     */
+    public DatabaseRouting databaseRouting() {
+        return this.databaseRouting;
+    }
+
+    /**
+     * Set the databaseRouting property: Indication for database routing information from the data connection, by
+     * default only database routing information is allowed.
+     *
+     * @param databaseRouting the databaseRouting value to set.
+     * @return the IotHubConnectionProperties object itself.
+     */
+    public IotHubConnectionProperties withDatabaseRouting(DatabaseRouting databaseRouting) {
+        this.databaseRouting = databaseRouting;
         return this;
     }
 

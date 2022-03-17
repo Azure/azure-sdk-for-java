@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifies the hardware settings for the virtual machine scale set. */
 @Fluent
 public final class VirtualMachineScaleSetHardwareProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetHardwareProfile.class);
-
     /*
      * Specifies the properties for customizing the size of the virtual
      * machine. Minimum api-version: 2021-11-01. <br><br> Please follow the

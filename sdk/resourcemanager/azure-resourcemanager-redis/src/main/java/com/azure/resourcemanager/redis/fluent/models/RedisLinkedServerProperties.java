@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.redis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redis.models.ReplicationRole;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of a linked server to be returned in get/put response. */
 @Fluent
 public final class RedisLinkedServerProperties extends RedisLinkedServerCreateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RedisLinkedServerProperties.class);
-
     /*
      * Terminal state of the link between primary and secondary redis cache.
      */

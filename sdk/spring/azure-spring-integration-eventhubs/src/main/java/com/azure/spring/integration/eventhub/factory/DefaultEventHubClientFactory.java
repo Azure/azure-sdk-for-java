@@ -68,7 +68,7 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
         this.checkpointStorageContainer = checkpointStorageContainer;
     }
 
-    private EventHubConsumerAsyncClient createEventHubClient(String eventHubName, String consumerGroup) {
+    EventHubConsumerAsyncClient createEventHubClient(String eventHubName, String consumerGroup) {
         return new EventHubClientBuilder()
             .connectionString(eventHubConnectionString, eventHubName)
             .consumerGroup(consumerGroup)
@@ -76,14 +76,22 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
             .buildAsyncConsumerClient();
     }
 
-    private EventHubProducerAsyncClient createProducerClient(String eventHubName) {
+    EventHubProducerAsyncClient createProducerClient(String eventHubName) {
         return new EventHubClientBuilder()
             .connectionString(eventHubConnectionString, eventHubName)
             .clientOptions(new ClientOptions().setApplicationId(SPRING_EVENT_HUB_APPLICATION_ID))
             .buildAsyncProducerClient();
     }
 
-    private EventProcessorClient createEventProcessorClientInternal(String eventHubName, String consumerGroup,
+    BlobContainerAsyncClient createBlobClient(String containerName) {
+        return new BlobContainerClientBuilder()
+            .connectionString(checkpointStorageConnectionString)
+            .containerName(containerName)
+            .httpLogOptions(new HttpLogOptions().setApplicationId(SPRING_EVENT_HUB_APPLICATION_ID))
+            .buildAsyncClient();
+    }
+
+    EventProcessorClient createEventProcessorClientInternal(String eventHubName, String consumerGroup,
                                                                     EventHubProcessor eventHubProcessor,
                                                                     BatchConsumerConfig batchConsumerConfig) {
         Assert.hasText(checkpointStorageConnectionString, "checkpointConnectionString can't be null or empty, check "
@@ -92,11 +100,7 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
         // the container automatically if not exists
         String containerName = checkpointStorageContainer == null ? eventHubName : checkpointStorageContainer;
 
-        BlobContainerAsyncClient blobClient = new BlobContainerClientBuilder()
-            .connectionString(checkpointStorageConnectionString)
-            .containerName(containerName)
-            .httpLogOptions(new HttpLogOptions().setApplicationId(SPRING_EVENT_HUB_APPLICATION_ID))
-            .buildAsyncClient();
+        BlobContainerAsyncClient blobClient = createBlobClient(containerName);
 
         final Boolean isContainerExist = blobClient.exists().block();
         if (isContainerExist == null || !isContainerExist) {

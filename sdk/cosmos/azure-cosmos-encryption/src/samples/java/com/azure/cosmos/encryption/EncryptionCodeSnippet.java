@@ -3,10 +3,11 @@
 
 package com.azure.cosmos.encryption;
 
+import com.azure.core.cryptography.KeyEncryptionKey;
+import com.azure.core.cryptography.KeyEncryptionKeyResolver;
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.encryption.keyprovider.EncryptionKeyWrapProvider;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
@@ -35,8 +36,8 @@ public class EncryptionCodeSnippet {
                                           .buildAsyncClient();
         createContainerWithClientEncryptionPolicy(client); //creating container with client encryption policy
 
-        CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient =
-            CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(client, new SimpleEncryptionKeyStoreProvider());
+        CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = new CosmosEncryptionClientBuilder().cosmosAsyncClient(client).keyEncryptionKeyResolver(
+            new SimpleKeyEncryptionKeyResolver()).keyEncryptionKeyResolverName(CosmosEncryptionClientBuilder.KEY_RESOLVER_NAME_AZURE_KEY_VAULT).buildAsyncClient();
         CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase =
             cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase("myDb");
         CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer =
@@ -75,44 +76,44 @@ public class EncryptionCodeSnippet {
         ClientEncryptionIncludedPath includedPath1 = new ClientEncryptionIncludedPath();
         includedPath1.setClientEncryptionKeyId("key1");
         includedPath1.setPath("/sensitive");
-        includedPath1.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
-        includedPath1.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
+        includedPath1.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+        includedPath1.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
         ClientEncryptionIncludedPath includedPath2 = new ClientEncryptionIncludedPath();
         includedPath2.setClientEncryptionKeyId("key2");
         includedPath2.setPath("/nonValidPath");
-        includedPath2.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
-        includedPath2.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
+        includedPath2.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+        includedPath2.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
         ClientEncryptionIncludedPath includedPath3 = new ClientEncryptionIncludedPath();
         includedPath3.setClientEncryptionKeyId("key1");
         includedPath3.setPath("/sensitiveInt");
-        includedPath3.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
-        includedPath3.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
+        includedPath3.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+        includedPath3.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
         ClientEncryptionIncludedPath includedPath4 = new ClientEncryptionIncludedPath();
         includedPath4.setClientEncryptionKeyId("key2");
         includedPath4.setPath("/sensitiveFloat");
-        includedPath4.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
-        includedPath4.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
+        includedPath4.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+        includedPath4.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
         ClientEncryptionIncludedPath includedPath5 = new ClientEncryptionIncludedPath();
         includedPath5.setClientEncryptionKeyId("key1");
         includedPath5.setPath("/sensitiveLong");
-        includedPath5.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
-        includedPath5.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
+        includedPath5.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+        includedPath5.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
         ClientEncryptionIncludedPath includedPath6 = new ClientEncryptionIncludedPath();
         includedPath6.setClientEncryptionKeyId("key2");
         includedPath6.setPath("/sensitiveDouble");
-        includedPath6.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
-        includedPath6.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
+        includedPath6.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+        includedPath6.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
         ClientEncryptionIncludedPath includedPath7 = new ClientEncryptionIncludedPath();
         includedPath7.setClientEncryptionKeyId("key1");
         includedPath7.setPath("/sensitiveBoolean");
-        includedPath7.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
-        includedPath7.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
+        includedPath7.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+        includedPath7.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
         List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
         paths.add(includedPath1);
@@ -131,36 +132,55 @@ public class EncryptionCodeSnippet {
     }
 
     void createClientEncryptionKey(CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase) {
-        EncryptionKeyWrapMetadata metadata1 = new EncryptionKeyWrapMetadata("custom", "key1", "tempmetadata1");
-        EncryptionKeyWrapMetadata metadata2 = new EncryptionKeyWrapMetadata("custom", "key2", "tempmetadata2");
-        new EncryptionKeyWrapMetadata("custom", "key1", "tempmetadata1");
+        EncryptionKeyWrapMetadata metadata1 = new EncryptionKeyWrapMetadata("custom", "key1", "tempmetadata1", "RSA-OAEP");
+        EncryptionKeyWrapMetadata metadata2 = new EncryptionKeyWrapMetadata("custom", "key2", "tempmetadata2", "RSA-OAEP");
+        new EncryptionKeyWrapMetadata("custom", "key1", "tempmetadata1", "RSA-OAEP");
         cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key1",
-            CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256, metadata1).block().getProperties();
+            CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), metadata1).block().getProperties();
         cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key2",
-            CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256, metadata2).block().getProperties();
+            CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), metadata2).block().getProperties();
     }
 
-    class SimpleEncryptionKeyStoreProvider extends EncryptionKeyWrapProvider {
-        // this is a naive data encryption key store provider which always uses the same data encryption key from the
+    class SimpleKeyEncryptionKey implements KeyEncryptionKey {
+        // this is a naive data encryption key which always uses the same data encryption key from the
         // service.
-        // the user should implement EncryptionKeyStoreProvider as per use case;
-        // To use key value please use AzureKeyVaultKeyStoreProvider
+        // the user should implement KeyEncryptionKey as per use case;
+        // To use key vault please use KeyEncryptionKeyClient from azure-security-keyvault-keys
 
-        @Override
-        public String getProviderName() {
-            return "SimpleEncryptionKeyStoreProvider";
+        private final String keyId;
+        public SimpleKeyEncryptionKey(String keyId) {
+            this.keyId = keyId;
         }
 
         @Override
-        public byte[] unwrapKey(String s, String keyEncryptionKeyAlgorithm, byte[] encryptedBytes) {
-            return encryptedBytes;
+        public String getKeyId() {
+            return this.keyId;
         }
 
         @Override
-        public byte[] wrapKey(String s, String keyEncryptionKeyAlgorithm, byte[] key) {
-            return key;
+        public byte[] wrapKey(String s, byte[] bytes) {
+            return bytes;
+        }
+
+        @Override
+        public byte[] unwrapKey(String s, byte[] bytes) {
+            return bytes;
         }
     }
+
+    class SimpleKeyEncryptionKeyResolver implements KeyEncryptionKeyResolver {
+        // this is a naive data encryption key resolver which always uses the same data encryption key from the
+        // service.
+        // the user should implement KeyEncryptionKeyResolver as per use case;
+        // To use key vault please use KeyEncryptionKeyClientBuilder from azure-security-keyvault-keys
+
+        @Override
+        public KeyEncryptionKey buildKeyEncryptionKey(String s) {
+            return new SimpleKeyEncryptionKey("SimpleEncryptionKeyStoreProvider");
+        }
+    }
+
+
 
     public static class Pojo {
         public String id;

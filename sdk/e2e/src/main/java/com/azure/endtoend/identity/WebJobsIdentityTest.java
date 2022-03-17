@@ -30,6 +30,7 @@ class WebJobsIdentityTest {
     private static final Configuration CONFIGURATION = Configuration.getGlobalConfiguration().clone();
     private static final String PROPERTY_IDENTITY_ENDPOINT = "IDENTITY_ENDPOINT";
     private static final String PROPERTY_IDENTITY_HEADER = "IDENTITY_HEADER";
+    private static final String RESOURCE_ID = "RESOURCE_ID";
     private final ClientLogger logger = new ClientLogger(WebJobsIdentityTest.class);
 
     /**
@@ -38,8 +39,8 @@ class WebJobsIdentityTest {
      */
     void run() throws IllegalStateException {
         if (CoreUtils.isNullOrEmpty(CONFIGURATION.get(AZURE_WEBJOBS_TEST_MODE))) {
-            throw logger.logExceptionAsError(new IllegalStateException("Webjobs Test mode is not set. Set environemnt "
-                                                + "variable AZURE_WEBJOBS_TEST_MODE to user or system"));
+            throw logger.logExceptionAsError(new IllegalStateException("Webjobs Test mode is not set. Set environment "
+                                                + "variable AZURE_WEBJOBS_TEST_MODE to user, userresourceid, or system"));
         }
 
         String mode = CONFIGURATION.get(AZURE_WEBJOBS_TEST_MODE).toLowerCase(Locale.ENGLISH);
@@ -48,6 +49,10 @@ class WebJobsIdentityTest {
             case "user":
                 identityTest.testMSIEndpointWithUserAssigned();
                 identityTest.testMSIEndpointWithUserAssignedAccessKeyVault();
+                break;
+            case "userresourceid":
+                identityTest.testMSIEndpointWithUserAssignedByResourceId();
+                identityTest.testMSIEndpointWithUserAssignedAccessKeyVaultByResourceId();
                 break;
             case "system":
                 identityTest.testMSIEndpointWithSystemAssigned();
@@ -62,8 +67,8 @@ class WebJobsIdentityTest {
     }
 
     private void testMSIEndpointWithSystemAssigned() {
-        if (CoreUtils.isNullOrEmpty(CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT))
-                && CoreUtils.isNullOrEmpty(CONFIGURATION.get(Configuration.PROPERTY_MSI_SECRET)))  {
+        if (CoreUtils.isNullOrEmpty(CONFIGURATION.get(Configuration.PROPERTY_IDENTITY_ENDPOINT))
+                && CoreUtils.isNullOrEmpty(CONFIGURATION.get(Configuration.PROPERTY_IDENTITY_HEADER)))  {
             throw logger.logExceptionAsError(
                 new IllegalStateException("testMSIEndpointWithUserAssigned - MSIEndpoint and Identity Point not"
                                               + "configured in the environment. At least one should be configured"));
@@ -123,11 +128,11 @@ class WebJobsIdentityTest {
     }
 
     private void testMSIEndpointWithUserAssigned() {
-        if (CoreUtils.isNullOrEmpty(CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT))
-            && CoreUtils.isNullOrEmpty(CONFIGURATION.get(Configuration.PROPERTY_MSI_SECRET)))  {
+        if (CoreUtils.isNullOrEmpty(CONFIGURATION.get(Configuration.PROPERTY_IDENTITY_ENDPOINT))
+            && CoreUtils.isNullOrEmpty(CONFIGURATION.get(Configuration.PROPERTY_IDENTITY_HEADER)))  {
             throw logger.logExceptionAsError(
                 new IllegalStateException("testMSIEndpointWithUserAssigned - MSIEndpoint and Identity Point not"
-                    + "configured in the environment. Atleast one should be configuured"));
+                    + "configured in the environment. At least one should be configured"));
         }
         assertConfigPresence(Configuration.PROPERTY_AZURE_CLIENT_ID,
             "testMSIEndpointWithUserAssigned - Client is not configured in the environment.");
@@ -194,17 +199,89 @@ class WebJobsIdentityTest {
             "Error: Secret name didn't match expected name - testMSIEndpointWithUserAssignedAccessKeyVault - failed");
     }
 
-    private void assertExpectedValue(String expected, String actual, String success, String faiure) {
+    private void testMSIEndpointWithUserAssignedByResourceId() {
+        if (CoreUtils.isNullOrEmpty(CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT))
+            && CoreUtils.isNullOrEmpty(CONFIGURATION.get(Configuration.PROPERTY_MSI_SECRET)))  {
+            throw logger.logExceptionAsError(
+                new IllegalStateException("testMSIEndpointWithUserAssignedByResourceId - MSIEndpoint and Identity Point not"
+                    + "configured in the environment. At least one should be configured"));
+        }
+        assertConfigPresence(RESOURCE_ID,
+            "testMSIEndpointWithUserAssignedByResourceId - Resource ID is not configured in the environment.");
+        assertConfigPresence(AZURE_VAULT_URL,
+            "testMSIEndpointWithUserAssignedByResourceId - Vault URL is not configured in the environment.");
+
+        IdentityClient client = new IdentityClientBuilder()
+                                    .resourceId(CONFIGURATION.get(RESOURCE_ID))
+                                    .build();
+
+        AccessToken accessToken = client.authenticateToManagedIdentityEndpoint(
+            CONFIGURATION.get(PROPERTY_IDENTITY_ENDPOINT),
+            CONFIGURATION.get(PROPERTY_IDENTITY_HEADER),
+            CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT),
+            CONFIGURATION.get(Configuration.PROPERTY_MSI_SECRET),
+            new TokenRequestContext().addScopes("https://management.azure.com/.default"))
+                                      .flatMap(token -> {
+                                          if (token == null || token.getToken() == null) {
+                                              return Mono.error(logger.logExceptionAsError(new IllegalStateException(
+                                                      "Access Token not returned from System Assigned Identity")));
+                                          } else {
+                                              return Mono.just(token);
+                                          }
+                                      }).block();
+
+        if (accessToken == null) {
+            System.out.println("Error: Access token is null.");
+            return;
+        }
+
+        System.out.printf("Received token with length %d and expiry at %s %n "
+                              + "testMSIEndpointWithUserAssignedByResourceId - succeeded %n",
+            accessToken.getToken().length(), accessToken.getExpiresAt().format(DateTimeFormatter.ISO_DATE_TIME));
+    }
+
+    private void testMSIEndpointWithUserAssignedAccessKeyVaultByResourceId() {
+
+        if (CoreUtils.isNullOrEmpty(CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT) )
+                                        && CoreUtils.isNullOrEmpty(CONFIGURATION.get("IDENTITY_ENDPOINT"))) {
+
+        }
+
+        assertConfigPresence(Configuration.PROPERTY_MSI_ENDPOINT,
+            "testMSIEndpointWithUserAssignedKeyVaultByResourceId - MSIEndpoint not configured in the environment.");
+        assertConfigPresence(RESOURCE_ID,
+            "testMSIEndpointWithUserAssignedKeyVaultByResourceId - Resource ID is not configured in the environment.");
+        assertConfigPresence(AZURE_VAULT_URL,
+            "testMSIEndpointWithUserAssignedKeyVaultByResourceId - Vault URL is not configured in the environment.");
+
+        ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder()
+                                                   .resourceId(CONFIGURATION.get(RESOURCE_ID))
+                                                   .build();
+        SecretClient client = new SecretClientBuilder()
+                                  .credential(credential)
+                                  .vaultUrl(CONFIGURATION.get(AZURE_VAULT_URL))
+                                  .buildClient();
+
+        KeyVaultSecret secret = client.getSecret(VAULT_SECRET_NAME);
+        System.out.printf("testMSIEndpointWithSystemAssignedAccessKeyVault - "
+                              + "Retrieved Secret with name %s and value %s %n",
+            secret.getName(), secret.getValue());
+        assertExpectedValue(VAULT_SECRET_NAME, secret.getName(),
+            "SUCCESS: Secret matched - testMSIEndpointWithUserAssignedAccessKeyVault - succeeded",
+            "Error: Secret name didn't match expected name - testMSIEndpointWithUserAssignedAccessKeyVault - failed");
+    }
+
+    private void assertExpectedValue(String expected, String actual, String success, String failure) {
         if (expected.equals(actual)) {
             System.out.println(success);
             return;
         }
-        System.out.println(faiure);
+        System.out.println(failure);
     }
 
 
-    private void assertConfigPresence(String identitfer, String errorMessage) {
-        if (CoreUtils.isNullOrEmpty(CONFIGURATION.get(identitfer))) {
+    private void assertConfigPresence(String identifier, String errorMessage) {
+        if (CoreUtils.isNullOrEmpty(CONFIGURATION.get(identifier))) {
             throw logger.logExceptionAsError(new IllegalStateException(errorMessage));
         }
     }

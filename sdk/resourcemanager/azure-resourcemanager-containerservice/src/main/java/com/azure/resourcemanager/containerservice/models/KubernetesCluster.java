@@ -47,11 +47,23 @@ public interface KubernetesCluster
     /** @return the Kubernetes configuration file content with user-level privileges to the cluster */
     byte[] userKubeConfigContent();
 
+    /**
+     * @param format Only apply to AAD clusters, specifies the format of returned kubeconfig. Format 'azure' will return azure auth-provider kubeconfig; format 'exec' will return exec format kubeconfig, which requires kubelogin binary in the path.
+     * @return the Kubernetes configuration file content with user-level privileges to the cluster
+     */
+    byte[] userKubeConfigContent(Format format);
+
     /** @return the Kubernetes credentials with administrative privileges to the cluster */
     List<CredentialResult> adminKubeConfigs();
 
     /** @return the Kubernetes credentials with user-level privileges to the cluster */
     List<CredentialResult> userKubeConfigs();
+
+    /**
+     * @param format Only apply to AAD clusters, specifies the format of returned kubeconfig. Format 'azure' will return azure auth-provider kubeconfig; format 'exec' will return exec format kubeconfig, which requires kubelogin binary in the path.
+     * @return the Kubernetes credentials with user-level privileges to the cluster
+     */
+    List<CredentialResult> userKubeConfigs(Format format);
 
     /** @return the service principal client ID */
     String servicePrincipalClientId();
@@ -446,19 +458,19 @@ public interface KubernetesCluster
             /**
              * Specifies that System Assigned Managed Service Identity needs to be enabled in the cluster.
              *
-             * @return the next stage of the web app definition
+             * @return the next stage
              */
             WithCreate withSystemAssignedManagedServiceIdentity();
         }
 
 //        /** The stage of the Kubernetes cluster definition allowing to specify Kubernetes Role-Based Access Control. */
-//        interface WithRoleBasedAccessControl {
+//        interface WithRBAC {
 //            /**
 //             * Enables Kubernetes Role-Based Access Control.
 //             *
 //             * @return the next stage
 //             */
-//            WithCreate enableRoleBasedAccessControl();
+//            WithCreate withRBACEnabled();
 //        }
 
         /**
@@ -474,7 +486,7 @@ public interface KubernetesCluster
                 WithAccessProfiles,
                 WithAutoScalerProfile,
                 WithManagedServiceIdentity,
-//                WithRoleBasedAccessControl,
+//                WithRBAC,
                 Resource.DefinitionWithTags<WithCreate> {
         }
     }
@@ -531,7 +543,7 @@ public interface KubernetesCluster
              * @param addOnProfileMap the cluster's add-on's profiles
              * @return the next stage of the update
              */
-            KubernetesCluster.Update withAddOnProfiles(Map<String, ManagedClusterAddonProfile> addOnProfileMap);
+            Update withAddOnProfiles(Map<String, ManagedClusterAddonProfile> addOnProfileMap);
         }
 
         /** The stage of the Kubernetes cluster update definition allowing to specify the cluster's network profile. */
@@ -542,7 +554,7 @@ public interface KubernetesCluster
              * @param networkProfile the cluster's networkProfile
              * @return the next stage of the update
              */
-            KubernetesCluster.Update withNetworkProfile(ContainerServiceNetworkProfile networkProfile);
+            Update withNetworkProfile(ContainerServiceNetworkProfile networkProfile);
         }
 
         /**
@@ -555,14 +567,14 @@ public interface KubernetesCluster
              *
              * @return the next stage of the update
              */
-            KubernetesCluster.Update withRBACEnabled();
+            Update withRBACEnabled();
 
             /**
              * Updates the cluster to specify the Kubernetes Role-Based Access Control is disabled.
              *
              * @return the next stage of the update
              */
-            KubernetesCluster.Update withRBACDisabled();
+            Update withRBACDisabled();
         }
 
         /** The stage of the Kubernetes cluster update allowing to specify the auto-scale profile. */

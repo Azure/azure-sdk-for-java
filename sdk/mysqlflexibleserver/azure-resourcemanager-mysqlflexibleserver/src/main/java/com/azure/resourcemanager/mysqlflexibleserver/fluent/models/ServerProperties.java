@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.mysqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Backup;
 import com.azure.resourcemanager.mysqlflexibleserver.models.CreateMode;
+import com.azure.resourcemanager.mysqlflexibleserver.models.DataEncryption;
 import com.azure.resourcemanager.mysqlflexibleserver.models.HighAvailability;
 import com.azure.resourcemanager.mysqlflexibleserver.models.MaintenanceWindow;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Network;
@@ -15,15 +15,12 @@ import com.azure.resourcemanager.mysqlflexibleserver.models.ReplicationRole;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ServerState;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ServerVersion;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Storage;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The properties of a server. */
 @Fluent
 public final class ServerProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerProperties.class);
-
     /*
      * The administrator's login name of a server. Can only be specified when
      * the server is being created (and is required for creation).
@@ -79,6 +76,12 @@ public final class ServerProperties {
      */
     @JsonProperty(value = "replicaCapacity", access = JsonProperty.Access.WRITE_ONLY)
     private Integer replicaCapacity;
+
+    /*
+     * The Data Encryption for CMK.
+     */
+    @JsonProperty(value = "dataEncryption")
+    private DataEncryption dataEncryption;
 
     /*
      * The state of a server.
@@ -298,6 +301,26 @@ public final class ServerProperties {
     }
 
     /**
+     * Get the dataEncryption property: The Data Encryption for CMK.
+     *
+     * @return the dataEncryption value.
+     */
+    public DataEncryption dataEncryption() {
+        return this.dataEncryption;
+    }
+
+    /**
+     * Set the dataEncryption property: The Data Encryption for CMK.
+     *
+     * @param dataEncryption the dataEncryption value to set.
+     * @return the ServerProperties object itself.
+     */
+    public ServerProperties withDataEncryption(DataEncryption dataEncryption) {
+        this.dataEncryption = dataEncryption;
+        return this;
+    }
+
+    /**
      * Get the state property: The state of a server.
      *
      * @return the state value.
@@ -421,6 +444,9 @@ public final class ServerProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (dataEncryption() != null) {
+            dataEncryption().validate();
+        }
         if (storage() != null) {
             storage().validate();
         }

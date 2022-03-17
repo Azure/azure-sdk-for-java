@@ -12,10 +12,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ErrorHandler;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.util.AssertionErrors.assertNotNull;
-
 
 /**
  * @author Warren Zhu
@@ -31,6 +31,9 @@ public abstract class AbstractAzureMessagingAnnotationDrivenTests {
 
     @Test
     public abstract void fullConfigurableConfiguration();
+
+    @Test
+    public abstract void errorHandlerConfiguration();
 
     @Test
     public abstract void customConfiguration();
@@ -74,6 +77,19 @@ public abstract class AbstractAzureMessagingAnnotationDrivenTests {
         assertEquals("queueIn", endpoint.getDestination());
         assertEquals("group1", endpoint.getGroup());
         assertEquals("1-10", endpoint.getConcurrency());
+    }
+
+    /**
+     * Test for {@link ErrorHandler} discovery. In this case, an error handler bean is provided. This shows that the default factory is only retrieved if it needs to be.
+     */
+    public void testErrorHandlerConfiguration(ApplicationContext context) {
+        AzureListenerContainerTestFactory errorHandlerListenerContainerFactory =
+            context.getBean("errorHandlerListenerContainerFactory", AzureListenerContainerTestFactory.class);
+        assertEquals(1, errorHandlerListenerContainerFactory.getListenerContainers().size());
+        MessageListenerTestContainer container =
+            errorHandlerListenerContainerFactory.getListenerContainers().get(0);
+        assertEquals("errorHandlerTest", container.getEndpoint().getId());
+        assertNotNull("Error handler should be registered", container.getErrorHandler());
     }
 
     /**
@@ -173,6 +189,14 @@ public abstract class AbstractAzureMessagingAnnotationDrivenTests {
     static class CustomBean {
 
         @AzureMessageListener(id = "listenerId", containerFactory = "customFactory", destination = "myQueue")
+        public void customHandle(String msg) {
+        }
+    }
+
+    @Component
+    static class ErrorHandlerBean {
+
+        @AzureMessageListener(id = "errorHandlerTest", containerFactory = "errorHandlerListenerContainerFactory", destination = "myQueue")
         public void customHandle(String msg) {
         }
     }

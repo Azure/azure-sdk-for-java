@@ -3,8 +3,11 @@
 
 package com.azure.cosmos.encryption.implementation;
 
+import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.AeadAes256CbcHmac256EncryptionAlgorithm;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.EncryptionKeyStoreProvider;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.EncryptionType;
+import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.KeyEncryptionKey;
+import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.MicrosoftDataEncryptionException;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.ProtectedDataEncryptionKey;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.implementation.Utils;
@@ -12,11 +15,6 @@ import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.encryption.EncryptionBridgeInternal;
-import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.AeadAes256CbcHmac256EncryptionAlgorithm;
-import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.KeyEncryptionKey;
-import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.MicrosoftDataEncryptionException;
-import com.azure.cosmos.encryption.keyprovider.KeyProviderBridgeHelpers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -39,8 +37,8 @@ public final class EncryptionSettings {
     private AeadAes256CbcHmac256EncryptionAlgorithm aeadAes256CbcHmac256EncryptionAlgorithm;
     private EncryptionType encryptionType;
     private String databaseRid;
-    private final static KeyProviderBridgeHelpers.EncryptionKeyWrapProviderHelper.EncryptionKeyWrapProviderAccessor encryptionKeyWrapProviderAccessor =
-        KeyProviderBridgeHelpers.EncryptionKeyWrapProviderHelper.getEncryptionKeyWrapProviderAccessor();
+    private final static EncryptionImplementationBridgeHelpers.CosmosEncryptionAsyncClientHelper.CosmosEncryptionAsyncClientAccessor cosmosEncryptionAsyncClientAccessor =
+        EncryptionImplementationBridgeHelpers.CosmosEncryptionAsyncClientHelper.getCosmosEncryptionAsyncClientAccessor();
 
     public Mono<EncryptionSettings> getEncryptionSettingForPropertyAsync(
         String propertyName,
@@ -70,14 +68,14 @@ public final class EncryptionSettings {
     Mono<CachedEncryptionSettings> fetchCachedEncryptionSettingsAsync(String propertyName,
                                                                       EncryptionProcessor encryptionProcessor) {
         Mono<CosmosContainerProperties> containerPropertiesMono =
-            EncryptionBridgeInternal.getContainerPropertiesMono(encryptionProcessor.getEncryptionCosmosClient(),
+            cosmosEncryptionAsyncClientAccessor.getContainerPropertiesAsync(encryptionProcessor.getEncryptionCosmosClient(),
                 encryptionProcessor.getCosmosAsyncContainer(), false);
         AtomicBoolean forceRefreshClientEncryptionKey = new AtomicBoolean(false);
         return containerPropertiesMono.flatMap(cosmosContainerProperties -> {
             if (cosmosContainerProperties.getClientEncryptionPolicy() != null) {
                 for (ClientEncryptionIncludedPath propertyToEncrypt : cosmosContainerProperties.getClientEncryptionPolicy().getIncludedPaths()) {
                     if (propertyToEncrypt.getPath().substring(1).equals(propertyName)) {
-                        return EncryptionBridgeInternal.getClientEncryptionPropertiesAsync(encryptionProcessor.getEncryptionCosmosClient(),
+                        return cosmosEncryptionAsyncClientAccessor.getClientEncryptionPropertiesAsync(encryptionProcessor.getEncryptionCosmosClient(),
                             propertyToEncrypt.getClientEncryptionKeyId(),
                             this.databaseRid,
                             encryptionProcessor.getCosmosAsyncContainer(),
@@ -87,7 +85,7 @@ public final class EncryptionSettings {
                                 ProtectedDataEncryptionKey protectedDataEncryptionKey;
                                 try {
                                     protectedDataEncryptionKey = buildProtectedDataEncryptionKey(keyProperties,
-                                        encryptionKeyWrapProviderAccessor.getEncryptionKeyStoreProviderImpl(encryptionProcessor.getEncryptionKeyWrapProvider()),
+                                        encryptionProcessor.getEncryptionKeyStoreProviderImpl(),
                                         propertyToEncrypt.getClientEncryptionKeyId());
                                 } catch (Exception ex) {
                                     return Mono.error(ex);

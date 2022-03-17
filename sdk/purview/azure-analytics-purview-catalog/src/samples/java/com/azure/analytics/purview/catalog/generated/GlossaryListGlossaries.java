@@ -5,7 +5,7 @@
 package com.azure.analytics.purview.catalog.generated;
 
 import com.azure.analytics.purview.catalog.GlossaryClient;
-import com.azure.analytics.purview.catalog.PurviewCatalogClientBuilder;
+import com.azure.analytics.purview.catalog.GlossaryClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -13,15 +13,17 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class GlossaryListGlossaries {
     public static void main(String[] args) {
-        GlossaryClient client =
-                new PurviewCatalogClientBuilder()
+        // BEGIN: com.azure.analytics.purview.catalog.generated.glossarylistglossaries.glossarylistglossaries
+        GlossaryClient glossaryClient =
+                new GlossaryClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
-                        .buildGlossaryClient();
+                        .buildClient();
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.addQueryParam("limit", "1");
-        requestOptions.addQueryParam("sort", "ASC");
         requestOptions.addQueryParam("offset", "0");
-        Response<BinaryData> response = client.listGlossariesWithResponse(requestOptions);
+        requestOptions.addQueryParam("sort", "ASC");
+        Response<BinaryData> response = glossaryClient.listGlossariesWithResponse(requestOptions);
+        // END: com.azure.analytics.purview.catalog.generated.glossarylistglossaries.glossarylistglossaries
     }
 }

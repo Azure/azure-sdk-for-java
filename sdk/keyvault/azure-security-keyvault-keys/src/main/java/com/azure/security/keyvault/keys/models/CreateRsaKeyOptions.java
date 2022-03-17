@@ -169,6 +169,7 @@ public class CreateRsaKeyOptions extends CreateKeyOptions {
      *
      * @return The updated {@link CreateRsaKeyOptions} object.
      */
+    @Override
     public CreateRsaKeyOptions setEnabled(Boolean enabled) {
         super.setEnabled(enabled);
 

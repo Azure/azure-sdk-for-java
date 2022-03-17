@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Undefined;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
@@ -47,6 +48,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
+import java.util.regex.Pattern;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -56,11 +58,12 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
         extends ParallelDocumentQueryExecutionContextBase<T> {
     private final static String FormatPlaceHolder = "{documentdb-formattableorderbyquery-filter}";
     private final static String True = "true";
+    private static final Pattern QUOTE_PATTERN = Pattern.compile("\"");
     private final String collectionRid;
     private final OrderbyRowComparer<T> consumeComparer;
     private final RequestChargeTracker tracker;
     private final ConcurrentMap<String, QueryMetrics> queryMetricMap;
-    List<ClientSideRequestStatistics> clientSideRequestStatisticsList;
+    private final List<ClientSideRequestStatistics> clientSideRequestStatisticsList;
     private Flux<OrderByRowResult<T>> orderByObservable;
     private final Map<FeedRangeEpkImpl, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap;
 
@@ -84,8 +87,8 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
         this.consumeComparer = consumeComparer;
         this.tracker = new RequestChargeTracker();
         this.queryMetricMap = new ConcurrentHashMap<>();
-        this.clientSideRequestStatisticsList = new ArrayList<>();
-        targetRangeToOrderByContinuationTokenMap = new HashMap<>();
+        this.clientSideRequestStatisticsList = Collections.synchronizedList(new ArrayList<>());
+        targetRangeToOrderByContinuationTokenMap = new ConcurrentHashMap<>();
     }
 
     public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
@@ -204,7 +207,10 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                                               String filter) {
         for (Map.Entry<FeedRangeEpkImpl, OrderByContinuationToken> entry :
             rangeToTokenMapping.entrySet()) {
-            targetRangeToOrderByContinuationTokenMap.put(entry.getKey(), entry.getValue());
+            //  only put the entry if the value is not null
+            if (entry.getValue() != null) {
+                targetRangeToOrderByContinuationTokenMap.put(entry.getKey(), entry.getValue());
+            }
             Map<FeedRangeEpkImpl, String> partitionKeyRangeToContinuationToken = new HashMap<FeedRangeEpkImpl, String>();
             partitionKeyRangeToContinuationToken.put(entry.getKey(), null);
             super.initialize(collectionRid,
@@ -429,8 +435,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
     private String getOrderByItemString(Object orderbyRawItem) {
         String orderByItemToString;
         if (orderbyRawItem instanceof String) {
-            orderByItemToString = "\"" + orderbyRawItem.toString().replaceAll("\"",
-                "\\\"") + "\"";
+            orderByItemToString = "\"" + QUOTE_PATTERN.matcher(orderbyRawItem.toString()).replaceAll("\\\"") + "\"";
         } else {
             if (orderbyRawItem != null) {
                 orderByItemToString = orderbyRawItem.toString();

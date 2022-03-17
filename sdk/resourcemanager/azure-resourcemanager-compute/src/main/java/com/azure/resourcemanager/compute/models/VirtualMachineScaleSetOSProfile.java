@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes a virtual machine scale set OS profile. */
 @Fluent
 public final class VirtualMachineScaleSetOSProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetOSProfile.class);
-
     /*
      * Specifies the computer name prefix for all of the virtual machines in
      * the scale set. Computer name prefixes must be 1 to 15 characters long.

@@ -396,6 +396,7 @@
       <Class name="com.azure.core.util.FluxUtil"/>
       <Class name="com.azure.core.util.FluxUtil$1"/>
       <Class name="com.azure.core.implementation.FileWriteSubscriber"/>
+      <Class name="com.azure.core.implementation.OutputStreamWriteSubscriber"/>
     </Or>
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
@@ -716,6 +717,16 @@
       <Class name="com.azure.storage.file.datalake.implementation.models.PathAppendDataHeaders"/>
     </Or>
     <Bug pattern="NM_CONFUSING"/>
+  </Match>
+
+  <!-- Returning null is correct in these cases as it represents the not-applicable case -->
+  <Match>
+    <Class name="com.azure.storage.blob.nio.AzureBlobFileAttributes"/>
+    <Or>
+      <Method name="isServerEncrypted"/>
+      <Method name="isAccessTierInferred"/>
+    </Or>
+    <Bug pattern="NP_BOOLEAN_RETURN_NULL"/>
   </Match>
 
   <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
@@ -2173,7 +2184,7 @@
     UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR,
     UWF_UNWRITTEN_FIELD"/>
   </Match>
-  
+
     <!-- Exclude AAP source code types from spotbug -->
   <Match>
     <Class name="~com\.azure\.cosmos\.encryption\.implementation\.mdesrc(.+)"/>
@@ -2305,6 +2316,12 @@
       </Or>
     </And>
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
+  <!-- Exception needs to be caught here.-->
+  <Match>
+    <Class name="com.azure.spring.cloud.config.AppConfigurationPropertySourceLocator"/>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
 
   <!-- Exclude from spring related classes -->

@@ -141,6 +141,7 @@ public class CreateOctKeyOptions extends CreateKeyOptions {
      *
      * @return The updated {@link CreateOctKeyOptions} object.
      */
+    @Override
     public CreateOctKeyOptions setEnabled(Boolean enabled) {
         super.setEnabled(enabled);
 

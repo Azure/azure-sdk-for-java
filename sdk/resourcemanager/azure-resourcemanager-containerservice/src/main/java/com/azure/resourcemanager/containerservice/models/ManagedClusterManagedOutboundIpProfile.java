@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Profile of the managed outbound IP resources of the managed cluster. */
 @Fluent
 public final class ManagedClusterManagedOutboundIpProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterManagedOutboundIpProfile.class);
-
     /*
      * The desired number of outbound IPs created/managed by Azure. Allowed
      * values must be in the range of 1 to 16 (inclusive). The default value is

@@ -6,11 +6,9 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
 import com.azure.resourcemanager.compute.models.ProximityPlacementGroupType;
 import com.azure.resourcemanager.compute.models.SubResourceWithColocationStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -18,8 +16,6 @@ import java.util.Map;
 /** Specifies information about the proximity placement group. */
 @Fluent
 public final class ProximityPlacementGroupInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProximityPlacementGroupInner.class);
-
     /*
      * Describes the properties of a Proximity Placement Group.
      */

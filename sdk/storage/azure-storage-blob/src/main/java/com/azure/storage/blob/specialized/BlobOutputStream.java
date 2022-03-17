@@ -293,7 +293,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
         private static final String INVALID_NUMBER_OF_BYTES_IN_THE_BUFFER =
             "Page data must be a multiple of 512 bytes. Buffer currently contains %d bytes.";
 
-        private final ClientLogger logger = new ClientLogger(PageBlobOutputStream.class);
+        private static final ClientLogger LOGGER = new ClientLogger(PageBlobOutputStream.class);
         private final PageBlobAsyncClient client;
         private final PageBlobRequestConditions pageBlobRequestConditions;
         private final PageRange pageRange;
@@ -342,7 +342,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
             long pageOffset = pageRange.getStart();
             if (pageOffset + writeLength - 1 > pageRange.getEnd()) {
-                throw logger.logExceptionAsError(
+                throw LOGGER.logExceptionAsError(
                     new RuntimeException("The input data length is larger than the page range."));
             }
             pageRange.setStart(pageRange.getStart() + writeLength);

@@ -5,7 +5,6 @@ package com.azure.cosmos.encryption;
 
 import com.azure.cosmos.CosmosContainer;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.encryption.util.Beta;
 import com.azure.cosmos.encryption.models.SqlQuerySpecWithEncryption;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
@@ -36,7 +35,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * CosmosContainer with encryption capabilities.
  */
-public class CosmosEncryptionContainer {
+public final class CosmosEncryptionContainer {
     private final CosmosContainer cosmosContainer;
     private final CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer;
 
@@ -68,7 +67,6 @@ public class CosmosEncryptionContainer {
      * @param options the options.
      * @return the cosmos item response.
      */
-
     public <T> CosmosItemResponse<T> createItem(T item, CosmosItemRequestOptions options) {
         return this.blockItemResponse(this.cosmosEncryptionAsyncContainer.createItem(item, options));
     }
@@ -83,7 +81,6 @@ public class CosmosEncryptionContainer {
      * @param requestOptions the options.
      * @return the Cosmos item response.
      */
-    @SuppressWarnings("unchecked")
     public <T> CosmosItemResponse<T> createItem(T item,
                                                 PartitionKey partitionKey,
                                                 CosmosItemRequestOptions requestOptions) {
@@ -126,8 +123,8 @@ public class CosmosEncryptionContainer {
      * @param options the options.
      * @return the Cosmos item response
      */
-    @Beta(value = Beta.SinceVersion.V1, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public CosmosItemResponse<Object> deleteAllItemsByPartitionKey(PartitionKey partitionKey, CosmosItemRequestOptions options) {
+    // TODO Make this api public once it is GA in cosmos core library
+    CosmosItemResponse<Object> deleteAllItemsByPartitionKey(PartitionKey partitionKey, CosmosItemRequestOptions options) {
         return this.blockDeleteItemResponse(this.cosmosEncryptionAsyncContainer.deleteAllItemsByPartitionKey(partitionKey, options));
     }
 
@@ -280,9 +277,8 @@ public class CosmosEncryptionContainer {
      * @param classType the class type.
      * @return a {@link CosmosPagedFlux} containing one feed response page
      */
-    @Beta(value = Beta.SinceVersion.V1, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public <T> CosmosPagedIterable<T> queryChangeFeed(
+    // TODO Make this api public once it is GA in cosmos core library
+    <T> CosmosPagedIterable<T> queryChangeFeed(
         CosmosChangeFeedRequestOptions options,
         Class<T> classType) {
         checkNotNull(options, "Argument 'options' must not be null.");

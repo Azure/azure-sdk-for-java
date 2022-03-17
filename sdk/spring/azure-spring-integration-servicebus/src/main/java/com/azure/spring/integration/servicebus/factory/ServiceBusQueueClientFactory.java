@@ -30,5 +30,12 @@ public interface ServiceBusQueueClientFactory extends ServiceBusSenderFactory {
                                                    ServiceBusMessageProcessor<ServiceBusReceivedMessageContext,
                                                                                  ServiceBusErrorContext> messageProcessor);
 
-
+    /**
+     * Remove the {@link ServiceBusProcessorClient} that subscribe to the queue.
+     * @param name The queue name.
+     * @return if the processor client has been removed.
+     */
+    default ServiceBusProcessorClient removeProcessor(String name) {
+        return null;
+    }
 }

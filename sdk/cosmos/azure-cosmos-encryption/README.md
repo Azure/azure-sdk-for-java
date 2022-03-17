@@ -56,9 +56,10 @@ CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
     .endpoint("<YOUR ENDPOINT HERE>")
     .key("<YOUR KEY HERE>")
     .buildAsyncClient();
+KeyEncryptionKeyClientBuilder keyEncryptionKeyClientBuilder = new KeyEncryptionKeyClientBuilder().credential(tokenCredentials);
 CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient =
-    CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(cosmosAsyncClient,
-        new AzureKeyVaultKeyWrapProvider(tokenCredentials));
+    new CosmosEncryptionClientBuilder().cosmosAsyncClient(cosmosAsyncClient).keyEncryptionKeyResolver(
+        keyEncryptionKeyClientBuilder).keyEncryptionKeyResolverName(CosmosEncryptionClientBuilder.KEY_RESOLVER_NAME_AZURE_KEY_VAULT).buildAsyncClient();
 ```
 
 ### Create Cosmos Encryption Database
@@ -81,9 +82,9 @@ You need to first create Container with ClientEncryptionPolicy and using cosmos 
 
 ```java readme-sample-createCosmosEncryptionContainer
 //Create Client Encryption Key
-EncryptionKeyWrapMetadata metadata = new EncryptionKeyWrapMetadata(encryptionKeyWrapProvider.getProviderName(), "key", "tempmetadata");
+EncryptionKeyWrapMetadata metadata = new EncryptionKeyWrapMetadata(this.cosmosEncryptionAsyncClient.getKeyEncryptionKeyResolverName(), "key", "tempmetadata", EncryptionAlgorithm.RSA_OAEP.toString());
 CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer = cosmosEncryptionAsyncDatabase
-    .createClientEncryptionKey("key", CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256, metadata)
+    .createClientEncryptionKey("key", CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), metadata)
     // TIP: Our APIs are Reactor Core based, so try to chain your calls
     .then(Mono.defer(() -> {
         //Create Encryption Container
@@ -91,7 +92,7 @@ CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer = cosmosEncryption
         includedPath.setClientEncryptionKeyId("key");
         includedPath.setPath("/sensitiveString");
         includedPath.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
-        includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
+        includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
         List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
         paths.add(includedPath);

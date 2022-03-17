@@ -40,7 +40,7 @@ import java.util.Objects;
  * AzureResource using a path and then use the getter to access the client.
  */
 final class AzureResource {
-    private final ClientLogger logger = new ClientLogger(AzureResource.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AzureResource.class);
 
     static final String DIR_METADATA_MARKER = Constants.HeaderConstants.DIRECTORY_METADATA_KEY;
 
@@ -84,15 +84,23 @@ final class AzureResource {
         return dirStatus.equals(DirectoryStatus.EMPTY) || dirStatus.equals(DirectoryStatus.NOT_EMPTY);
     }
 
+    /*
+    This method will check specifically whether there is a virtual directory at this location. It must be known before
+    that there is no file present at the destination.
+     */
+    boolean checkVirtualDirectoryExists() throws IOException {
+        DirectoryStatus dirStatus = this.checkDirStatus(false);
+        return dirStatus.equals(DirectoryStatus.NOT_EMPTY); // Virtual directories cannot be empty
+    }
+
     /**
      * This method will check if a directory is extant and/or empty and accommodates virtual directories. This method
      * will not check the status of root directories.
      */
     DirectoryStatus checkDirStatus() throws IOException {
         if (this.blobClient == null) {
-            throw LoggingUtility.logError(logger, new IllegalArgumentException("The blob client was null."));
+            throw LoggingUtility.logError(LOGGER, new IllegalArgumentException("The blob client was null."));
         }
-        BlobContainerClient containerClient = this.getContainerClient();
 
         /*
          * Do a get properties first on the directory name. This will determine if it is concrete&&exists or is either
@@ -105,7 +113,7 @@ final class AzureResource {
             exists = true;
         } catch (BlobStorageException e) {
             if (e.getStatusCode() != 404) {
-                throw LoggingUtility.logError(logger, new IOException(e));
+                throw LoggingUtility.logError(LOGGER, new IOException(e));
             }
         }
 
@@ -113,6 +121,16 @@ final class AzureResource {
         if (exists && !props.getMetadata().containsKey(AzureResource.DIR_METADATA_MARKER)) {
             return DirectoryStatus.NOT_A_DIRECTORY;
         }
+
+        return checkDirStatus(exists);
+    }
+
+    /*
+    This method will determine the status of the directory given it is already known whether or not there is an object
+    at the target.
+     */
+    DirectoryStatus checkDirStatus(boolean exists) throws IOException {
+        BlobContainerClient containerClient = this.getContainerClient();
 
         // List on the directory name + '/' so that we only get things under the directory if any
         ListBlobsOptions listOptions = new ListBlobsOptions().setMaxResultsPerPage(2)
@@ -134,7 +152,7 @@ final class AzureResource {
                 return DirectoryStatus.DOES_NOT_EXIST;
             }
         } catch (BlobStorageException e) {
-            throw LoggingUtility.logError(logger, new IOException(e));
+            throw LoggingUtility.logError(LOGGER, new IOException(e));
         }
     }
 
@@ -175,7 +193,7 @@ final class AzureResource {
                     if ((attr.value() instanceof byte[])) {
                         headers.setContentMd5((byte[]) attr.value());
                     } else {
-                        throw LoggingUtility.logError(logger,
+                        throw LoggingUtility.logError(LOGGER,
                             new UnsupportedOperationException("Content-MD5 attribute must be a byte[]"));
                     }
                     break;
@@ -212,14 +230,14 @@ final class AzureResource {
 
     private void validateNotRoot() {
         if (this.path.isRoot()) {
-            throw LoggingUtility.logError(logger, new IllegalArgumentException(
-                "Root directory not supported. Path: " + this.path.toString()));
+            throw LoggingUtility.logError(LOGGER, new IllegalArgumentException(
+                "Root directory not supported. Path: " + this.path));
         }
     }
 
     private AzurePath validatePathInstanceType(Path path) {
         if (!(path instanceof AzurePath)) {
-            throw LoggingUtility.logError(logger, new IllegalArgumentException("This provider cannot operate on "
+            throw LoggingUtility.logError(LOGGER, new IllegalArgumentException("This provider cannot operate on "
                 + "subtypes of Path other than AzurePath"));
         }
         return (AzurePath) path;
