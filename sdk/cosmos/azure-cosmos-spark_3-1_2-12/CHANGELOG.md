@@ -10,6 +10,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Reduced GC (Garbage Collection) pressure when executing queries returning many documents by pushing down type conversion. - See [PR 27440](https://github.com/Azure/azure-sdk-for-java/pull/27440)
 
 ### 4.7.0 (2022-03-11)
 
