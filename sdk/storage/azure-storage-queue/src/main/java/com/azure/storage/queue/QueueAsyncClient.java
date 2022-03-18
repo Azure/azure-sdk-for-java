@@ -284,7 +284,12 @@ public final class QueueAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createIfNotExistsWithResponse(Map<String, String> metadata) {
-        return createIfNotExistsWithResponse(metadata, null);
+        try {
+            return createIfNotExistsWithResponse(metadata, null);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+
     }
 
     Mono<Response<Void>> createIfNotExistsWithResponse(Map<String, String> metadata, Context context) {

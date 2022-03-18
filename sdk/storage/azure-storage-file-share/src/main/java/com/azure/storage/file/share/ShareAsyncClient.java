@@ -486,7 +486,11 @@ public class ShareAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareInfo>> createIfNotExistsWithResponse(ShareCreateOptions options) {
-        return createIfNotExistsWithResponse(options, null);
+        try {
+            return createIfNotExistsWithResponse(options, null);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<ShareInfo>> createIfNotExistsWithResponse(ShareCreateOptions options, Context context) {

@@ -7,7 +7,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -301,11 +300,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppendBlobItem> createIfNotExists() {
-        try {
-            return createIfNotExistsWithResponse(null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return this.createIfNotExistsWithResponse(new BlobHttpHeaders(), null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -333,8 +328,12 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AppendBlobItem>> createIfNotExistsWithResponse(BlobHttpHeaders headers, Map<String,
         String> metadata) {
-        return this.createIfNotExistsWithResponse(new AppendBlobCreateOptions().setHeaders(headers)
-            .setMetadata(metadata));
+        try {
+            return this.createIfNotExistsWithResponse(new AppendBlobCreateOptions().setHeaders(headers)
+                .setMetadata(metadata));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**

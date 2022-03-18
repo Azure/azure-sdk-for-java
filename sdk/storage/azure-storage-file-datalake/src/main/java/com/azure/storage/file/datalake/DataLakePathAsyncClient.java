@@ -405,8 +405,7 @@ public class DataLakePathAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathInfo> createIfNotExists() {
         try {
-            return createIfNotExistsWithResponse(null, null, null, null)
-                .flatMap(FluxUtil::toMono);
+            return createIfNotExistsWithResponse(null, null, null, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -477,13 +476,39 @@ public class DataLakePathAsyncClient {
      * already exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PathInfo>> createIfNotExistsWithResponse(String permissions, String umask, PathHttpHeaders headers, Map<String, String> metadata, Context context) {
+    public Mono<Response<PathInfo>> createIfNotExistsWithResponse(String permissions, String umask,
+        PathHttpHeaders headers, Map<String, String> metadata, Context context) {
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
             .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         return createWithResponse(permissions, umask, pathResourceType,
             headers, metadata, requestConditions, context)
             .onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException) t).getStatusCode() == 409,
                 t -> Mono.empty());
+    }
+
+    /**
+     * Package-private delete method for use by {@link DataLakeFileAsyncClient} and {@link DataLakeDirectoryAsyncClient}
+     *
+     * @param recursive Whether or not to delete all paths beneath the directory.
+     * @param requestConditions {@link DataLakeRequestConditions}
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Mono} containing containing status code and HTTP headers
+     */
+    Mono<Response<Void>> deleteWithResponse(Boolean recursive, DataLakeRequestConditions requestConditions,
+        Context context) {
+        requestConditions = requestConditions == null ? new DataLakeRequestConditions() : requestConditions;
+
+        LeaseAccessConditions lac = new LeaseAccessConditions().setLeaseId(requestConditions.getLeaseId());
+        ModifiedAccessConditions mac = new ModifiedAccessConditions()
+            .setIfMatch(requestConditions.getIfMatch())
+            .setIfNoneMatch(requestConditions.getIfNoneMatch())
+            .setIfModifiedSince(requestConditions.getIfModifiedSince())
+            .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
+
+        context = context == null ? Context.NONE : context;
+        return this.dataLakeStorage.getPaths().deleteWithResponseAsync(null, null, recursive, null, lac, mac,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -506,7 +531,12 @@ public class DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteIfExists() {
-        return deleteIfExistsWithResponse(false, null, null).flatMap(FluxUtil::toMono);
+        try {
+            return deleteIfExistsWithResponse(false, null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex){
+            return monoError(logger, ex);
+        }
+
     }
 
     /**
@@ -537,32 +567,7 @@ public class DataLakePathAsyncClient {
     public Mono<Response<Void>> deleteIfExistsWithResponse(boolean recursive, DataLakeRequestConditions requestConditions, Context context) {
         return deleteWithResponse(recursive, requestConditions, context)
             .onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException) t).getStatusCode() == 404,
-            t -> Mono.empty());
-    }
-
-    /**
-     * Package-private delete method for use by {@link DataLakeFileAsyncClient} and {@link DataLakeDirectoryAsyncClient}
-     *
-     * @param recursive Whether or not to delete all paths beneath the directory.
-     * @param requestConditions {@link DataLakeRequestConditions}
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Mono} containing containing status code and HTTP headers
-     */
-    Mono<Response<Void>> deleteWithResponse(Boolean recursive, DataLakeRequestConditions requestConditions,
-        Context context) {
-        requestConditions = requestConditions == null ? new DataLakeRequestConditions() : requestConditions;
-
-        LeaseAccessConditions lac = new LeaseAccessConditions().setLeaseId(requestConditions.getLeaseId());
-        ModifiedAccessConditions mac = new ModifiedAccessConditions()
-            .setIfMatch(requestConditions.getIfMatch())
-            .setIfNoneMatch(requestConditions.getIfNoneMatch())
-            .setIfModifiedSince(requestConditions.getIfModifiedSince())
-            .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
-
-        context = context == null ? Context.NONE : context;
-        return this.dataLakeStorage.getPaths().deleteWithResponseAsync(null, null, recursive, null, lac, mac,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(response -> new SimpleResponse<>(response, null));
+                t -> Mono.empty());
     }
 
     /**

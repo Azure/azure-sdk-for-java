@@ -355,12 +355,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageBlobItem> createIfNotExists(long size) {
-        PageBlobCreateOptions pageBlobCreateOptions = new PageBlobCreateOptions(size);
-        try {
-            return createIfNotExistsWithResponse(pageBlobCreateOptions).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return createIfNotExistsWithResponse(size, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -399,8 +394,13 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PageBlobItem>> createIfNotExistsWithResponse(long size, Long sequenceNumber,
         BlobHttpHeaders headers, Map<String, String> metadata) {
-        return this.createIfNotExistsWithResponse(new PageBlobCreateOptions(size).setSequenceNumber(sequenceNumber)
-            .setHeaders(headers).setMetadata(metadata));
+        try {
+            return this.createIfNotExistsWithResponse(new PageBlobCreateOptions(size).setSequenceNumber(sequenceNumber)
+                .setHeaders(headers).setMetadata(metadata));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+
     }
 
     /**
@@ -433,7 +433,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PageBlobItem>> createIfNotExistsWithResponse(PageBlobCreateOptions options) {
-        return createIfNotExistsWithResponse(options, null);
+        try {
+            return createIfNotExistsWithResponse(options, null);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<PageBlobItem>> createIfNotExistsWithResponse(PageBlobCreateOptions options, Context context) {

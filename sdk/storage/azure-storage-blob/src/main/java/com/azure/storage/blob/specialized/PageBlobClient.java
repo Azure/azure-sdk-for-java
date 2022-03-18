@@ -13,7 +13,6 @@ import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.*;
-import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;

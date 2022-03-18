@@ -423,8 +423,6 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
             DataLakeFileAsyncClient dataLakeFileAsyncClient = getFileAsyncClient(fileName);
 
         return dataLakeFileAsyncClient.createIfNotExistsWithResponse(permissions, umask, headers, metadata)
-            .onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException) t)
-                .getStatusCode() == 409, t -> Mono.empty())
                 .map(response -> new SimpleResponse<>(response, dataLakeFileAsyncClient));
     }
 
@@ -533,7 +531,12 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName, DataLakeRequestConditions requestConditions) {
-        return deleteFileIfExistsWithResponse(fileName, requestConditions, null);
+        try {
+            return deleteFileIfExistsWithResponse(fileName, requestConditions, null);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+
     }
 
     /**
@@ -560,9 +563,12 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName, DataLakeRequestConditions requestConditions, Context context) {
-        return getFileAsyncClient(fileName).deleteWithResponse(null, requestConditions, context)
-            .onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException)t).getStatusCode() == 404,
-                t -> Mono.empty());
+        try {
+            return getFileAsyncClient(fileName).deleteIfExistsWithResponse(false, requestConditions, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+
     }
 
     /**

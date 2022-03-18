@@ -414,7 +414,11 @@ public class ShareDirectoryAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareDirectoryInfo>> createIfNotExistsWithResponse(FileSmbProperties smbProperties, String filePermission,
         Map<String, String> metadata) {
-        return createIfNotExistsWithResponse(smbProperties, filePermission, metadata, null);
+        try {
+            return createIfNotExistsWithResponse(smbProperties, filePermission, metadata, null);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     public Mono<Response<ShareDirectoryInfo>> createIfNotExistsWithResponse(FileSmbProperties smbProperties, String filePermission,
@@ -1907,7 +1911,12 @@ public class ShareDirectoryAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName) {
-        return this.deleteFileIfExistsWithResponse(fileName, null);
+        try {
+            return this.deleteFileIfExistsWithResponse(fileName, null);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+
     }
 
     /**

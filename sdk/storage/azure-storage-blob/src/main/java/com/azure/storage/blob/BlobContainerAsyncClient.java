@@ -454,11 +454,7 @@ public final class BlobContainerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createIfNotExists() {
-        try {
-            return createIfNotExistsWithResponse(null, null, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return createIfNotExistsWithResponse(null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -483,7 +479,11 @@ public final class BlobContainerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createIfNotExistsWithResponse(Map<String, String> metadata, PublicAccessType accessType) {
-        return createIfNotExistsWithResponse(metadata, accessType, null);
+        try {
+            return createIfNotExistsWithResponse(metadata, accessType, null);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> createIfNotExistsWithResponse(Map<String, String> metadata, PublicAccessType accessType, Context context) {
@@ -587,7 +587,12 @@ public final class BlobContainerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteIfExists() {
-        return deleteIfExistsWithResponse(null).flatMap(FluxUtil::toMono);
+        try {
+            return deleteIfExistsWithResponse(null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+
     }
 
     /**
