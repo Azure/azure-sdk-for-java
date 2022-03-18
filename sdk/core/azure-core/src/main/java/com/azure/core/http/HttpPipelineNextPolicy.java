@@ -75,8 +75,8 @@ public class HttpPipelineNextPolicy {
 
         this.currentPolicyIndex++;
         if (this.currentPolicyIndex == size) {
-            // TODO (kasobol-msft) this should be calling into sync http client at some point.
-            return this.pipeline.getHttpClient().send(this.context.getHttpRequest(), this.context.getContext()).block();
+            return this.pipeline.getHttpClient().sendSynchronously(
+                this.context.getHttpRequest(), this.context.getContext());
         } else {
             return this.pipeline.getPolicy(this.currentPolicyIndex).processSynchronously(this.context, this);
         }

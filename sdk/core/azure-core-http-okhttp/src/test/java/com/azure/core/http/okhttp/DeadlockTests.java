@@ -6,6 +6,8 @@ package com.azure.core.http.okhttp;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
@@ -65,6 +67,21 @@ public class DeadlockTests {
                     assertArrayEquals(expectedGetBytes, responseTuple.getT1());
                 })
                 .verifyComplete();
+        }
+    }
+
+    @Test
+    public void attemptToDeadlockSync() {
+        HttpClient httpClient = new OkHttpAsyncClientProvider().createInstance();
+
+        String endpoint = server.baseUrl() + GET_ENDPOINT;
+
+        for (int i = 0; i < 100; i++) {
+            HttpResponse response = httpClient.sendSynchronously(
+                new HttpRequest(HttpMethod.GET, endpoint), Context.NONE);
+            byte[] bytes = response.getContent().toBytes();
+            assertEquals(200, response.getStatusCode());
+            assertArrayEquals(expectedGetBytes, bytes);
         }
     }
 }
