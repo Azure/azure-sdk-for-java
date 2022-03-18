@@ -486,19 +486,20 @@ public interface KubernetesCluster
         interface WithAAD {
             /**
              * Specified Azure AD group as the admin group of the cluster.
-             *
+             * <p>
              * Azure AD integration cannot be disabled. It will enable Kubernetes Role-Based Access Control.
-             * See {@code com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup} in
-             * azure-resourcemanager-authorization package.
              *
              * @param activeDirectoryGroupObjectId the object ID of the Azure AD group.
+             * <p>
+             * See {@code com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup} in
+             * azure-resourcemanager-authorization package.
              * @return the next stage
              */
             WithCreate withAzureActiveDirectoryGroup(String activeDirectoryGroupObjectId);
 
             /**
              * Enables Azure Role-Based Access Control for Kubernetes authorization.
-             *
+             * <p>
              * Azure AD integration cannot be disabled. It will enable Kubernetes Role-Based Access Control.
              *
              * @return the next stage
@@ -647,6 +648,9 @@ public interface KubernetesCluster
              * Azure AD integration cannot be disabled. It will enable Kubernetes Role-Based Access Control.
              *
              * @param activeDirectoryGroupObjectId the object ID of the Azure AD group.
+             * <p>
+             * See {@code com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup} in
+             * azure-resourcemanager-authorization package.
              * @return the next stage
              */
             Update withAzureActiveDirectoryGroup(String activeDirectoryGroupObjectId);
