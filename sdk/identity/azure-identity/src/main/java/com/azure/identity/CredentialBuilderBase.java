@@ -122,7 +122,7 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
     public T identityLogOptions(IdentityLogOptions identityLogOptions) {
         identityClientOptions
             .getIdentityLogOptionsImpl()
-            .setAllowAccountIdentifierLogs(identityLogOptions.isLoggingAccountIdentifiersAllowed());
+            .setLoggingAccountIdentifiersAllowed(identityLogOptions.isLoggingAccountIdentifiersAllowed());
         return (T) this;
     }
 }

@@ -114,10 +114,9 @@ class HttpPipelineAdapter implements IHttpClient {
                     CLIENT_LOGGER.log(LogLevel.INFORMATIONAL, () -> MessageFormat
                         .format(ACCOUNT_IDENTIFIER_LOG_MESSAGE,
                             getAccountIdentifierMessage(APPLICATION_IDENTIFIER, appId),
-                            getAccountIdentifierMessage(OBJECT_ID, objectId),
                             getAccountIdentifierMessage(TENANT_ID, tenantId),
-                            getAccountIdentifierMessage(USER_PRINCIPAL_NAME,
-                                userPrincipalName)));
+                            getAccountIdentifierMessage(USER_PRINCIPAL_NAME, userPrincipalName),
+                            getAccountIdentifierMessage(OBJECT_ID, objectId)));
                 }
             }
         } catch (IOException e) {

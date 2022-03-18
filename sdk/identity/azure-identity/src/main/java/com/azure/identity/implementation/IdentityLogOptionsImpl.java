@@ -21,7 +21,7 @@ public class IdentityLogOptionsImpl {
         return runtimeExceptionLogLevel;
     }
 
-    public IdentityLogOptionsImpl setAllowAccountIdentifierLogs(boolean allowAccountIdentifierLogs) {
+    public IdentityLogOptionsImpl setLoggingAccountIdentifiersAllowed(boolean allowAccountIdentifierLogs) {
         this.allowAccountIdentifierLogs = allowAccountIdentifierLogs;
         return this;
     }
