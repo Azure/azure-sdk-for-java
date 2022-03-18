@@ -33,6 +33,11 @@ mvn clean install \
   -Dspotbugs.skip
 ```
 
+If you are using PowerShell, please use the following command instead:
+```shell
+mvn clean install -f sdk/spring/ -Pdev -T 4 -o "-Dcheckstyle.skip" "-Dcodesnippet.skip" "-Denforcer.skip" "-Djacoco.skip" "-Dmaven.javadoc.skip" "-Dmaven.test.skip" "-Drevapi.skip" "-Dspotbugs.skip"
+```
+
 
 
 ## Modules
