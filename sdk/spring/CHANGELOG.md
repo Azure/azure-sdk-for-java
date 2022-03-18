@@ -22,7 +22,7 @@ This section includes changes in `spring-cloud-azure-stream-binder-servicebus` m
 - Unify the root package name of Spring libraries. [#27420](https://github.com/Azure/azure-sdk-for-java/pull/27420).
 - Remove message header of `AzureHeaders.RAW_ID`. Please use `ServiceBusMessageHeaders.MESSAGE_ID` instead [#27675](https://github.com/Azure/azure-sdk-for-java/pull/27675).
 - Change the property of `spring.cloud.stream.servicebus.bindings.<binding-name>.consumer.checkpoint-mode` to `spring.cloud.stream.servicebus.bindings.<binding-name>.consumer.auto-complete`. 
-To disable the auto-complete mode is equivalent to `MANUAL` checkpoint mode and to enable it will trigger the `RECORD` mode [#27646](https://github.com/Azure/azure-sdk-for-java/pull/27646).
+To disable the auto-complete mode is equivalent to `MANUAL` checkpoint mode and to enable it will trigger the `RECORD` mode [#27615](https://github.com/Azure/azure-sdk-for-java/pull/27615), [#27646](https://github.com/Azure/azure-sdk-for-java/pull/27646).
 
 
 #### Features Added
@@ -48,7 +48,7 @@ This section includes changes in the `spring-integration-azure-servicebus` modul
 - Remove message header of `AzureHeaders.RAW_ID`. Please use `ServiceBusMessageHeaders.MESSAGE_ID` instead [#27675](https://github.com/Azure/azure-sdk-for-java/pull/27675).
 - Drop class `CheckpointConfig`. To set the checkpoint configuration for `ServiceBusInboundChannelAdapter`, 
 users can call the method `ServiceBusContainerProperties#setAutoComplete` instead. To disable the auto-complete mode is 
-equivalent to `MANUAL` checkpoint mode and to enable it will trigger the `RECORD` mode [#27646](https://github.com/Azure/azure-sdk-for-java/pull/27646).
+equivalent to `MANUAL` checkpoint mode and to enable it will trigger the `RECORD` mode [#27615](https://github.com/Azure/azure-sdk-for-java/pull/27615), [#27646](https://github.com/Azure/azure-sdk-for-java/pull/27646).
 
 #### Features Added
 - Support converting all headers and properties exposed directly by `ServiceBusReceivedMessage` when receiving messages [#27675](https://github.com/Azure/azure-sdk-for-java/pull/27675), newly supported headers and properties can be get according to the keys of:
