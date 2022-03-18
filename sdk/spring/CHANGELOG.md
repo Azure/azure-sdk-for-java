@@ -41,31 +41,6 @@ To disable the auto-complete mode is equivalent to `MANUAL` checkpoint mode and 
   * ServiceBusMessageHeaders.SUBJECT
 - Support the message header of `ServiceBusMessageHeaders.SUBJECT` to specify the AMQP property of `subject` when sending messages [#27675](https://github.com/Azure/azure-sdk-for-java/pull/27675).
 
-### Spring Cloud Azure Starter Integration Service Bus
-This section includes changes in the `spring-cloud-azure-starter-integration-servicebus` module.
-
-#### Breaking Changes
-- Remove message header of `AzureHeaders.RAW_ID`. Please use `ServiceBusMessageHeaders.MESSAGE_ID` instead [#27675](https://github.com/Azure/azure-sdk-for-java/pull/27675).
-- Drop class `CheckpointConfig`. To set the checkpoint configuration for `ServiceBusInboundChannelAdapter`, 
-users can call the method `ServiceBusContainerProperties#setAutoComplete` instead. To disable the auto-complete mode is 
-equivalent to `MANUAL` checkpoint mode and to enable it will trigger the `RECORD` mode [#27646](https://github.com/Azure/azure-sdk-for-java/pull/27646).
-
-#### Features Added
-- Support converting all headers and properties exposed directly by `ServiceBusReceivedMessage` when receiving messages [#27675](https://github.com/Azure/azure-sdk-for-java/pull/27675), newly supported headers and properties can be get according to the keys of:
-  * ServiceBusMessageHeaders.DEAD_LETTER_ERROR_DESCRIPTION
-  * ServiceBusMessageHeaders.DEAD_LETTER_REASON
-  * ServiceBusMessageHeaders.DEAD_LETTER_SOURCE
-  * ServiceBusMessageHeaders.DELIVERY_COUNT
-  * ServiceBusMessageHeaders.ENQUEUED_SEQUENCE_NUMBER
-  * ServiceBusMessageHeaders.ENQUEUED_TIME
-  * ServiceBusMessageHeaders.EXPIRES_AT
-  * ServiceBusMessageHeaders.LOCK_TOKEN
-  * ServiceBusMessageHeaders.LOCKED_UNTIL
-  * ServiceBusMessageHeaders.SEQUENCE_NUMBER
-  * ServiceBusMessageHeaders.STATE
-  * ServiceBusMessageHeaders.SUBJECT
-- Support the message header of `ServiceBusMessageHeaders.SUBJECT` to specify the AMQP property of `subject` when sending messages [#27675](https://github.com/Azure/azure-sdk-for-java/pull/27675).
-
 ### Spring Integration Azure Service Bus
 This section includes changes in the `spring-integration-azure-servicebus` module.
 
@@ -96,12 +71,6 @@ This section includes changes in `spring-cloud-azure-stream-binder-eventhubs` mo
 
 #### Breaking Changes
 - Change the type of the binding producer property of `send-timeout` from `long` to `Duration` [#26625](https://github.com/Azure/azure-sdk-for-java/pull/26625).
-- Change the message header prefix from `azure_eventhub` to `azure_eventhubs_` [#27746](https://github.com/Azure/azure-sdk-for-java/pull/27746).
-
-### Spring Cloud Azure Starter Integration Event Hubs
-This section includes changes in the `spring-cloud-azure-starter-integration-eventhubs` module.
-
-#### Breaking Changes
 - Change the message header prefix from `azure_eventhub` to `azure_eventhubs_` [#27746](https://github.com/Azure/azure-sdk-for-java/pull/27746).
 
 ### Spring Integration Azure Event Hubs
