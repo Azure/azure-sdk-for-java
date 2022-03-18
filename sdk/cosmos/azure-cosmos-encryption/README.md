@@ -1,5 +1,5 @@
 # Encryption plugin library for Azure Cosmos DB Java SDK for Java
-The Azure Cosmos Encryption Plugin is used for encrypting data with user provided key before saving into CosmosDB and decrypting it when reading back from the database.
+The Azure Cosmos Encryption Plugin is used for encrypting data with a user-provided key before saving into CosmosDB and decrypting it when reading back from the database.
 
 [Source code][encryption_source_code] | [Package (Maven)][cosmos_encryption_maven] | [API reference documentation][encryption_api_documentation] | [Product documentation][cosmos_docs] |
 [Samples][getting_started_encryption]
@@ -25,21 +25,21 @@ Refer to [javadocs][encryption_api_documentation] for more details on the packag
 ### Prerequisites
 
 - [Java Development Kit (JDK) with version 8 or above][jdk]
-- An active Azure account. If you don't have one, you can sign up for a [free account][azure_subscription]. Alternatively, you can use the [Azure Cosmos DB Emulator](https://azure.microsoft.com/documentation/articles/documentdb-nosql-local-emulator) for development and testing. As emulator https certificate is self signed, you need to import its certificate to java trusted cert store as [explained here](https://docs.microsoft.com/azure/cosmos-db/local-emulator-export-ssl-certificates)
+- An active Azure account. If you don't have one, you can sign up for a [free account][azure_subscription]. Alternatively, you can use the [Azure Cosmos DB Emulator](https://azure.microsoft.com/documentation/articles/documentdb-nosql-local-emulator) for development and testing. As emulator HTTPS certificate is self-signed, you need to import its certificate to java trusted cert store as [explained here](https://docs.microsoft.com/azure/cosmos-db/local-emulator-export-ssl-certificates)
 - (Optional) SLF4J is a logging facade.
 - (Optional) [SLF4J binding](https://www.slf4j.org/manual.html) is used to associate a specific logging framework with SLF4J.
 - (Optional) [Maven][maven]
 
 SLF4J is only needed if you plan to use logging, please also download an SLF4J binding which will link the SLF4J API with the logging implementation of your choice. See the [SLF4J user manual](https://www.slf4j.org/manual.html) for more information.
 
-The SDK provides Reactor Core based async APIs. You can read more about Reactor Core and [Flux/Mono types here](https://projectreactor.io/docs/core/release/api/)
+The SDK provides Reactor Core-based async APIs. You can read more about Reactor Core and [Flux/Mono types here](https://projectreactor.io/docs/core/release/api/)
 
 ## Key concepts
 
-The Azure Cosmos Encryption Plugin is used for encrypting data with user provided key before saving into CosmosDB and decrypting it when reading back from the database. Underneath it uses Azure Cosmos DB Java SDK which provides client-side logical representation to access the Azure Cosmos DB SQL API.
+The Azure Cosmos Encryption Plugin is used for encrypting data with a user-provided key before saving into CosmosDB and decrypting it when reading back from the database. Underneath it uses Azure Cosmos DB Java SDK which provides client-side logical representation to access the Azure Cosmos DB SQL API.
 A Cosmos DB account contains zero or more databases, a database (DB) contains zero or more containers, and a container contains zero or more items.
-You may read more about databases, containers and items [here](https://docs.microsoft.com/azure/cosmos-db/databases-containers-items).
-A few important properties defined at the level of the container, among them are provisioned throughput and partition key.
+You may read more about databases, containers, and items [here](https://docs.microsoft.com/azure/cosmos-db/databases-containers-items).
+A few important properties are defined at the level of the container, among them are provisioned throughput and partition key.
 
 ## Examples
 The following section provides several code snippets covering some of the most common Cosmos Encryption API tasks, including:
@@ -63,7 +63,7 @@ CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient =
 ```
 
 ### Create Cosmos Encryption Database
-You need to first create Database and using cosmos encryption client created in previous example, you can create cosmos encryption database proxy object like this:
+You need to first create a Database and using the cosmos encryption client created in the previous example, you can create a cosmos encryption database proxy object like this:
 
 ```java readme-sample-createCosmosEncryptionDatabase
 // This will create a database with the regular cosmosAsyncClient.
@@ -78,7 +78,7 @@ CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase = cosmosEncryptionAs
 ```
 
 ### Create Cosmos Encryption Container
-You need to first create Container with ClientEncryptionPolicy and using cosmos encryption database object created in previous example, you can create cosmos encryption container proxy object like this:
+You need to first create a Container with ClientEncryptionPolicy and using the cosmos encryption database object created in the previous example, you can create a cosmos encryption container proxy object like this:
 
 ```java readme-sample-createCosmosEncryptionContainer
 //Create Client Encryption Key
@@ -149,7 +149,7 @@ However, because Azure Cosmos DB is accessed via network calls there are client-
 
 - [Performance][perf_guide] guide covers these client-side optimizations.
 
-- [Troubleshooting guide][troubleshooting] covers common issues, workarounds, diagnostic steps, and tools when you use Azure Cosmos DB Java SDK v4 with Azure Cosmos DB SQL API accounts.
+- [Troubleshooting Guide][troubleshooting] covers common issues, workarounds, diagnostic steps, and tools when you use Azure Cosmos DB Java SDK v4 with Azure Cosmos DB SQL API accounts.
 
 ### Enable Client Logging
 Azure Cosmos DB Java SDK v4 uses SLF4j as the logging facade that supports logging into popular logging frameworks such as log4j and logback.
@@ -169,7 +169,7 @@ For example, if you want to use log4j as the logging framework, add the followin
 </dependency>
 ```
 
-Also add a log4j config.
+Also, add a log4j config.
 
 ```properties
 # this is a sample log4j configuration
