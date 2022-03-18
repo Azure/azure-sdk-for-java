@@ -1,9 +1,14 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.identity;
 
-import com.azure.core.util.ClientOptions;
-import com.azure.core.util.Header;
+import com.azure.core.annotation.Fluent;
 
-public final class IdentityClientOptions extends ClientOptions {
+/**
+ * Represents the Identity Log options used to configure logging on the Token Credentials.
+ */
+@Fluent
+public final class IdentityLogOptions {
     private boolean allowLoggingAccountIdentifiers;
 
     /**
@@ -17,7 +22,7 @@ public final class IdentityClientOptions extends ClientOptions {
      * enabled or not.
      * @return The updated IdentityClientOptions object.
      */
-    public IdentityClientOptions setAllowLoggingAccountIdentifiers(boolean allowLoggingAccountIdentifiers) {
+    public IdentityLogOptions setAllowLoggingAccountIdentifiers(boolean allowLoggingAccountIdentifiers) {
         this.allowLoggingAccountIdentifiers = allowLoggingAccountIdentifiers;
         return this;
     }
@@ -29,21 +34,5 @@ public final class IdentityClientOptions extends ClientOptions {
      */
     public boolean isLoggingAccountIdentifiersAllowed() {
         return allowLoggingAccountIdentifiers;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public IdentityClientOptions setApplicationId(String applicationId) {
-        super.setApplicationId(applicationId);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public IdentityClientOptions setHeaders(Iterable<Header> headers) {
-        super.setHeaders(headers);
-        return this;
     }
 }

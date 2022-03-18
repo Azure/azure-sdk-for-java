@@ -11,6 +11,7 @@ import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.util.LoggingUtil;
+import jdk.nashorn.internal.ir.annotations.Immutable;
 import reactor.core.publisher.Mono;
 
 import java.util.function.Supplier;
@@ -18,6 +19,7 @@ import java.util.function.Supplier;
 /**
  * Authenticates a service principal with AAD using a client assertion.
  */
+@Immutable
 public class ClientAssertionCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(ClientAssertionCredential.class);
     private final IdentityClient identityClient;

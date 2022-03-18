@@ -1506,15 +1506,15 @@ public class IdentityClient {
         // as they should directly be set on the pipeline.
         HttpPipeline httpPipeline = options.getHttpPipeline();
         if (httpPipeline != null) {
-            httpPipelineAdapter = new HttpPipelineAdapter(httpPipeline);
+            httpPipelineAdapter = new HttpPipelineAdapter(httpPipeline, options);
         } else {
             // If http client is set on the credential, then it should override the proxy options if any configured.
             HttpClient httpClient = options.getHttpClient();
             if (httpClient != null) {
-                httpPipelineAdapter = new HttpPipelineAdapter(setupPipeline(httpClient));
+                httpPipelineAdapter = new HttpPipelineAdapter(setupPipeline(httpClient), options);
             } else if (options.getProxyOptions() == null) {
                 //Http Client is null, proxy options are not set, use the default client and build the pipeline.
-                httpPipelineAdapter = new HttpPipelineAdapter(setupPipeline(HttpClient.createDefault()));
+                httpPipelineAdapter = new HttpPipelineAdapter(setupPipeline(HttpClient.createDefault()), options);
             }
         }
     }

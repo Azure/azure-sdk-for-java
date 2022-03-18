@@ -109,21 +109,20 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
     }
 
     /**
-     * Sets the {@link ClientOptions} which enables various options to be set on the client. For example configuring
-     * {@code accountIdentifierLogging} using
-     * {@link com.azure.identity.IdentityClientOptions#setAllowLoggingAccountIdentifiers(boolean)} to allow account
+     * Sets the {@link IdentityLogOptions} which enables identity logging options to be set on the client. For example
+     * configuring {@code accountIdentifierLogging} using
+     * {@link com.azure.identity.IdentityLogOptions#setAllowLoggingAccountIdentifiers(boolean)} to allow account
      * identifier logs to be enabled on client side debugging/monitoring purposes.
      *
-     * @param options the {@link ClientOptions} to be set on the credential client.
+     * @param identityLogOptions the {@link IdentityLogOptions} to be set on the credential client.
      *
      * @return An updated instance of this builder with the {@link ClientOptions} set as specified.
      */
     @SuppressWarnings("unchecked")
-    public T clientOptions(ClientOptions options) {
-        if (options instanceof com.azure.identity.IdentityClientOptions) {
-            this.identityClientOptions.setAllowAccountIdentifierLogging(((com.azure.identity.IdentityClientOptions) options)
-                .isLoggingAccountIdentifiersAllowed());
-        }
+    public T identityLogOptions(IdentityLogOptions identityLogOptions) {
+        identityClientOptions
+            .getIdentityLogOptionsImpl()
+            .setAllowAccountIdentifierLogs(identityLogOptions.isLoggingAccountIdentifiersAllowed());
         return (T) this;
     }
 }
