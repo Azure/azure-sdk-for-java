@@ -19,9 +19,9 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class AzureADGraphClientTests {
+class AadGraphClientTests {
 
-    private AzureADGraphClient client;
+    private AadGraphClient client;
 
     @Mock
     private AadAuthorizationServerEndpoints endpoints;
@@ -32,7 +32,7 @@ class AzureADGraphClientTests {
         activeDirectoryGroups.add("Test_Group");
         AadAuthenticationProperties aadAuthenticationProperties = new AadAuthenticationProperties();
         aadAuthenticationProperties.getUserGroup().setAllowedGroupNames(activeDirectoryGroups);
-        client = new AzureADGraphClient("client", "pass", aadAuthenticationProperties, endpoints);
+        client = new AadGraphClient("client", "pass", aadAuthenticationProperties, endpoints);
     }
 
     @Test

@@ -110,7 +110,7 @@ public class AadClientRegistrationRepository implements ClientRegistrationReposi
         result.add("profile"); // "profile" allows to return additional claims in the ID token.
         result.add("offline_access"); // "offline_access" allows to request a refresh token.
         // About "Directory.Read.All" and "User.Read", please refer to:
-        // 1. https://docs.microsoft.com/en-us/graph/permissions-reference
+        // 1. https://docs.microsoft.com/graph/permissions-reference
         // 2. https://github.com/Azure/azure-sdk-for-java/issues/21284#issuecomment-888725241
         if (properties.isAllowedGroupNamesConfigured()) {
             // "Directory.Read.All" allows to get group id and group name.

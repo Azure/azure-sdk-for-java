@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.autoconfigure.aad;
 
 import com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AadClientRegistrationRepository;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.webapp.AadHandleConditionalAccessFilter;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapp.AadOAuth2AuthorizationCodeGrantRequestEntityConverter;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapp.AadOAuth2AuthorizationRequestResolver;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
@@ -24,6 +23,8 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.util.StringUtils;
 
+import javax.servlet.Filter;
+
 /**
  * Abstract configuration class, used to make AzureClientRegistrationRepository and AuthzCodeGrantRequestEntityConverter
  * take effect.
@@ -34,6 +35,7 @@ public abstract class AadWebSecurityConfigurerAdapter extends WebSecurityConfigu
 
     @Autowired
     private ClientRegistrationRepository repo;
+
     @Autowired
     private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService;
 
@@ -65,10 +67,24 @@ public abstract class AadWebSecurityConfigurerAdapter extends WebSecurityConfigu
                     .and()
                 .and()
             .logout()
-                .logoutSuccessHandler(oidcLogoutSuccessHandler())
-                .and()
-            .addFilterAfter(new AadHandleConditionalAccessFilter(), OAuth2AuthorizationRequestRedirectFilter.class);
+                .logoutSuccessHandler(oidcLogoutSuccessHandler());
         // @formatter:off
+
+        Filter conditionalAccessFilter = conditionalAccessFilter();
+        if (conditionalAccessFilter != null) {
+            http.addFilterAfter(conditionalAccessFilter, OAuth2AuthorizationRequestRedirectFilter.class);
+        }
+    }
+
+    /**
+     * Return the filter to handle conditional access exception.
+     * No conditional access filter is provided by default.
+     * @see <a href="https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.0.0/aad/spring-cloud-azure-starter-active-directory/aad-web-application/src/main/java/com/azure/spring/sample/aad/security/AadConditionalAccessFilter.java">Sample for AAD conditional access filter</a>
+     * @see <a href="https://microsoft.github.io/spring-cloud-azure/4.0.0/4.0.0/reference/html/index.html#support-conditional-access-in-web-application">reference doc</a>
+     * @return a filter that handles conditional access exception.
+     */
+    protected Filter conditionalAccessFilter() {
+        return null;
     }
 
     /**

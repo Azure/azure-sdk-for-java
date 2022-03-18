@@ -42,7 +42,7 @@ abstract class CommonProperties extends AzureAmqpSdkProperties implements EventH
     // FQDN = the FQDN of the EventHubs namespace you created (it includes the EventHubs namespace name followed by
     // servicebus.windows.net)
     // Endpoint=sb://<FQDN>/;SharedAccessKeyName=<KeyName>;SharedAccessKey=<KeyValue>
-    // https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-get-connection-string
+    // https://docs.microsoft.com/azure/event-hubs/event-hubs-get-connection-string
     @Override
     public String getFullyQualifiedNamespace() {
         return this.namespace == null ? extractFqdnFromConnectionString() : (this.namespace + "." + domainName);

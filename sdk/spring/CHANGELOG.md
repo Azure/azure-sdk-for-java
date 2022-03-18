@@ -5,7 +5,23 @@
 - Support Spring Cloud version: 2020.0.3+ and 2021.0.0.
 
 ### Dependency Updates
-Upgrade dependency according to spring-boot-dependencies:2.6.3 and spring-cloud-dependencies:2021.0.0.
+- Upgrade dependency according to spring-boot-dependencies:2.6.3 and spring-cloud-dependencies:2021.0.0.
+
+### Spring Cloud Azure Starter Active Directory
+This section includes changes in `spring-cloud-azure-starter-active-directory` module.
+
+#### Breaking Changes
+- Remove the AAD conditional access filter. [#27727](https://github.com/Azure/azure-sdk-for-java/pull/27727)
+
+#### Dependency Updates
+- Remove the dependencies `org.springframework.boot:spring-boot-starter-webflux`, `com.fasterxml.jackson.core:jackson-databind`, `io.projectreactor.netty:reactor-netty`. [#27727](https://github.com/Azure/azure-sdk-for-java/pull/27727)
+
+### Spring Messaging Azure Storage Queue
+This section includes changes in `spring-messaging-azure-storage-queue` module.
+
+#### Dependency Updates
+- Remove the dependencies `com.fasterxml.jackson.core:jackson-databind`. [#27727](https://github.com/Azure/azure-sdk-for-java/pull/27727)
+
 
 ### Spring Cloud Azure Resource Manager
 This section includes changes in the `spring-cloud-azure-resourcemanager` module.
@@ -37,6 +53,7 @@ This section includes changes in `spring-cloud-azure-stream-binder-servicebus` m
   * ServiceBusMessageHeaders.STATE
   * ServiceBusMessageHeaders.SUBJECT
 - Support the message header of `ServiceBusMessageHeaders.SUBJECT` to specify the AMQP property of `subject` when sending messages [#27675](https://github.com/Azure/azure-sdk-for-java/pull/27675).
+- Add Key Vault Certificate health indicator for SDK client. [#27706](https://github.com/Azure/azure-sdk-for-java/pull/27706)
 
 ### Spring Integration Service Bus Starter
 
