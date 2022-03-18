@@ -44,7 +44,7 @@ public class BuildModelAsync {
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
         PollerFlux<DocumentOperationResult, DocumentModel> buildModelPoller =
             client.beginBuildModel(trainingFilesUrl,
-                DocumentBuildMode.TEMPLATE, "my-document-analysis-model",
+                DocumentBuildMode.TEMPLATE,
                 new BuildModelOptions().setDescription("my custom model desc"));
 
         Mono<DocumentModel> customFormModelResult = buildModelPoller

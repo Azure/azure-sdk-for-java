@@ -5,19 +5,19 @@ package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.DocumentAnalysisClient;
 import com.azure.ai.formrecognizer.DocumentAnalysisClientBuilder;
-import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
-import com.azure.ai.formrecognizer.models.DocumentModelOperationException;
-import com.azure.ai.formrecognizer.models.DocumentOperationResult;
-import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.administration.models.AccountProperties;
 import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorizationOptions;
 import com.azure.ai.formrecognizer.administration.models.CreateComposedModelOptions;
+import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
 import com.azure.ai.formrecognizer.administration.models.DocumentModel;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
 import com.azure.ai.formrecognizer.administration.models.ModelOperation;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationInfo;
+import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
+import com.azure.ai.formrecognizer.models.DocumentModelOperationException;
+import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -83,11 +83,11 @@ public final class DocumentModelAdministrationClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-String -->
+     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentBuildMode -->
      * <pre>
      * String trainingFilesUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
      * DocumentModel documentModel =
-     *     documentModelAdministrationClient.beginBuildModel&#40;trainingFilesUrl, DocumentBuildMode.TEMPLATE, &quot;my-model&quot;
+     *     documentModelAdministrationClient.beginBuildModel&#40;trainingFilesUrl, DocumentBuildMode.TEMPLATE
      *     &#41;.getFinalResult&#40;&#41;;
      * System.out.printf&#40;&quot;Model ID: %s%n&quot;, documentModel.getModelId&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Model Created on: %s%n&quot;, documentModel.getCreatedOn&#40;&#41;&#41;;
@@ -99,7 +99,7 @@ public final class DocumentModelAdministrationClient {
      *     &#125;&#41;;
      * &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-String -->
+     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentBuildMode -->
      *
      * @param trainingFilesUrl an Azure Storage blob container's SAS URI. A container URI (without SAS)
      * can be used if the container is public or has a managed identity configured. For more information on
@@ -107,8 +107,6 @@ public final class DocumentModelAdministrationClient {
      * @param buildMode the preferred technique for creating models. For faster training of models use
      * {@link DocumentBuildMode#TEMPLATE}. See <a href="https://aka.ms/azsdk/formrecognizer/buildmode">here</a>
      * for more information on building mode for custom documents.
-     * @param modelId unique model identifier. If not specified, a model ID will be created for you.
-     *
      * @return A {@link SyncPoller} that polls the building model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns the trained {@link DocumentModel custom document analysis model}.
      * @throws DocumentModelOperationException If building model fails with {@link OperationStatus#FAILED} is created.
@@ -116,8 +114,8 @@ public final class DocumentModelAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DocumentOperationResult, DocumentModel> beginBuildModel(
-        String trainingFilesUrl, DocumentBuildMode buildMode, String modelId) {
-        return beginBuildModel(trainingFilesUrl, buildMode, modelId, null, Context.NONE);
+        String trainingFilesUrl, DocumentBuildMode buildMode) {
+        return beginBuildModel(trainingFilesUrl, buildMode, null, Context.NONE);
     }
 
     /**
@@ -130,7 +128,7 @@ public final class DocumentModelAdministrationClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#string-String-BuildModelOptions-Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#string-DocumentBuildMode-BuildModelOptions-Context -->
      * <pre>
      * String trainingFilesUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
      * String prefix = &quot;Invoice&quot;;
@@ -138,7 +136,7 @@ public final class DocumentModelAdministrationClient {
      * attrs.put&#40;&quot;createdBy&quot;, &quot;sample&quot;&#41;;
      *
      * DocumentModel documentModel = documentModelAdministrationClient.beginBuildModel&#40;trainingFilesUrl,
-     *         DocumentBuildMode.TEMPLATE, &quot;my-model&quot;,
+     *         DocumentBuildMode.TEMPLATE,
      *         new BuildModelOptions&#40;&#41;
      *             .setDescription&#40;&quot;model desc&quot;&#41;
      *             .setPrefix&#40;prefix&#41;
@@ -157,7 +155,7 @@ public final class DocumentModelAdministrationClient {
      *     &#125;&#41;;
      * &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#string-String-BuildModelOptions-Context -->
+     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#string-DocumentBuildMode-BuildModelOptions-Context -->
      *
      * @param trainingFilesUrl an Azure Storage blob container's SAS URI. A container URI (without SAS)
      * can be used if the container is public or has a managed identity configured. For more information on
@@ -165,7 +163,6 @@ public final class DocumentModelAdministrationClient {
      * @param buildMode the preferred technique for creating models. For faster training of models use
      * {@link DocumentBuildMode#TEMPLATE}. See <a href="https://aka.ms/azsdk/formrecognizer/buildmode">here</a>
      * for more information on building mode for custom documents.
-     * @param modelId unique model identifier. If not specified, a model ID will be created for you.
      * @param buildModelOptions The configurable {@link BuildModelOptions options} to pass when
      * building a custom document analysis model.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -177,10 +174,10 @@ public final class DocumentModelAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DocumentOperationResult, DocumentModel> beginBuildModel(
-        String trainingFilesUrl, DocumentBuildMode buildMode, String modelId,
+        String trainingFilesUrl, DocumentBuildMode buildMode,
         BuildModelOptions buildModelOptions,
         Context context) {
-        return client.beginBuildModel(trainingFilesUrl, buildMode, modelId, buildModelOptions, context)
+        return client.beginBuildModel(trainingFilesUrl, buildMode, buildModelOptions, context)
             .getSyncPoller();
     }
 
@@ -364,13 +361,13 @@ public final class DocumentModelAdministrationClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCreateComposedModel#list-String -->
+     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCreateComposedModel#list -->
      * <pre>
      * String modelId1 = &quot;&#123;model_Id_1&#125;&quot;;
      * String modelId2 = &quot;&#123;model_Id_2&#125;&quot;;
      * String modelId = &quot;my-composed-model&quot;;
      * final DocumentModel documentModel
-     *     = documentModelAdministrationClient.beginCreateComposedModel&#40;Arrays.asList&#40;modelId1, modelId2&#41;, modelId&#41;
+     *     = documentModelAdministrationClient.beginCreateComposedModel&#40;Arrays.asList&#40;modelId1, modelId2&#41;&#41;
      *     .getFinalResult&#40;&#41;;
      *
      * System.out.printf&#40;&quot;Model ID: %s%n&quot;, documentModel.getModelId&#40;&#41;&#41;;
@@ -384,11 +381,9 @@ public final class DocumentModelAdministrationClient {
      *     &#125;&#41;;
      * &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCreateComposedModel#list-String -->
+     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCreateComposedModel#list -->
      *
      * @param componentModelIDs The list of models IDs to form the composed model.
-     * @param modelId A unique ID for your composed model. If not specified, a model ID will be created for you.
-     *
      * @return A {@link SyncPoller} that polls the create composed model operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns the {@link DocumentModel composed model}.
      * @throws DocumentModelOperationException If create composed model operation fails and model with
@@ -397,8 +392,8 @@ public final class DocumentModelAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DocumentOperationResult, DocumentModel> beginCreateComposedModel(
-        List<String> componentModelIDs, String modelId) {
-        return beginCreateComposedModel(componentModelIDs, modelId, null, Context.NONE);
+        List<String> componentModelIDs) {
+        return beginCreateComposedModel(componentModelIDs, null, Context.NONE);
     }
 
     /**
@@ -411,7 +406,7 @@ public final class DocumentModelAdministrationClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCreateComposedModel#list-String-CreateComposedModelOptions-Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCreateComposedModel#list-CreateComposedModelOptions-Context -->
      * <pre>
      * String modelId1 = &quot;&#123;model_Id_1&#125;&quot;;
      * String modelId2 = &quot;&#123;model_Id_2&#125;&quot;;
@@ -420,7 +415,7 @@ public final class DocumentModelAdministrationClient {
      * attrs.put&#40;&quot;createdBy&quot;, &quot;sample&quot;&#41;;
      *
      * final DocumentModel documentModel =
-     *     documentModelAdministrationClient.beginCreateComposedModel&#40;Arrays.asList&#40;modelId1, modelId2&#41;, modelId,
+     *     documentModelAdministrationClient.beginCreateComposedModel&#40;Arrays.asList&#40;modelId1, modelId2&#41;,
      *             new CreateComposedModelOptions&#40;&#41;
      *                 .setDescription&#40;&quot;my composed model name&quot;&#41;
      *                 .setTags&#40;attrs&#41;,
@@ -440,10 +435,9 @@ public final class DocumentModelAdministrationClient {
      *     &#125;&#41;;
      * &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCreateComposedModel#list-String-CreateComposedModelOptions-Context -->
+     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCreateComposedModel#list-CreateComposedModelOptions-Context -->
      *
      * @param componentModelIDs The list of models IDs to form the composed model.
-     * @param modelId A unique ID for your composed model. If not specified, a model ID will be created for you.
      * @param createComposedModelOptions The configurable {@link CreateComposedModelOptions options} to pass when
      * creating a composed model.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
@@ -456,8 +450,9 @@ public final class DocumentModelAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DocumentOperationResult, DocumentModel> beginCreateComposedModel(
-        List<String> componentModelIDs, String modelId, CreateComposedModelOptions createComposedModelOptions, Context context) {
-        return client.beginCreateComposedModel(componentModelIDs, modelId, createComposedModelOptions, context).getSyncPoller();
+        List<String> componentModelIDs, CreateComposedModelOptions createComposedModelOptions,
+        Context context) {
+        return client.beginCreateComposedModel(componentModelIDs, createComposedModelOptions, context).getSyncPoller();
     }
 
     /**

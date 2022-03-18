@@ -58,13 +58,12 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginBuildModel(String, DocumentBuildMode, String)}
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginBuildModel(String, DocumentBuildMode)}
      */
     public void beginBuildModel() {
-        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-String
+        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentBuildMode
         String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
-        documentModelAdministrationAsyncClient.beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE,
-                "model-name"
+        documentModelAdministrationAsyncClient.beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE
             )
             // if polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
@@ -79,21 +78,21 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
                     });
                 });
             });
-        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-String
+        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentBuildMode
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginBuildModel(String, DocumentBuildMode, String, BuildModelOptions)}
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginBuildModel(String, DocumentBuildMode, BuildModelOptions)}
      * with options
      */
     public void beginBuildModelWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-String-BuildModelOptions
+        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentBuildMode-BuildModelOptions
         String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
         Map<String, String> attrs = new HashMap<String, String>();
         attrs.put("createdBy", "sample");
 
         documentModelAdministrationAsyncClient.beginBuildModel(trainingFilesUrl,
-                DocumentBuildMode.TEMPLATE, "model-name",
+                DocumentBuildMode.TEMPLATE,
                 new BuildModelOptions()
                     .setDescription("model desc")
                     .setPrefix("Invoice")
@@ -113,7 +112,7 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
                     });
                 });
             });
-        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-String-BuildModelOptions
+        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentBuildMode-BuildModelOptions
     }
 
     /**
@@ -219,14 +218,14 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginCreateComposedModel(List, String)}
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginCreateComposedModel(List)}
      */
     public void beginCreateComposedModel() {
-        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginCreateComposedModel#list-String
+        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginCreateComposedModel#list
         String modelId1 = "{model_Id_1}";
         String modelId2 = "{model_Id_2}";
-        documentModelAdministrationAsyncClient.beginCreateComposedModel(Arrays.asList(modelId1, modelId2),
-                "my-composed-model")
+        documentModelAdministrationAsyncClient.beginCreateComposedModel(Arrays.asList(modelId1, modelId2)
+            )
             // if polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(documentModel -> {
@@ -240,22 +239,21 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
                     });
                 });
             });
-        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginCreateComposedModel#list-String
+        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginCreateComposedModel#list
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginCreateComposedModel(List, String, CreateComposedModelOptions)}
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginCreateComposedModel(List, CreateComposedModelOptions)}
      * with options
      */
     public void beginCreateComposedModelWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginCreateComposedModel#list-String-createComposedModelOptions
+        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginCreateComposedModel#list-createComposedModelOptions
         String modelId1 = "{model_Id_1}";
         String modelId2 = "{model_Id_2}";
         Map<String, String> attrs = new HashMap<String, String>();
         attrs.put("createdBy", "sample");
 
         documentModelAdministrationAsyncClient.beginCreateComposedModel(Arrays.asList(modelId1, modelId2),
-                "my-composed-model",
                 new CreateComposedModelOptions().setDescription("model-desc").setTags(attrs))
             // if polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
@@ -272,7 +270,7 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
                     });
                 });
             });
-        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginCreateComposedModel#list-String-createComposedModelOptions
+        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginCreateComposedModel#list-createComposedModelOptions
     }
 
     /**

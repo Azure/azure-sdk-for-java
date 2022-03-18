@@ -43,7 +43,7 @@ public class BuildModel {
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
         SyncPoller<DocumentOperationResult, DocumentModel> buildOperationPoller =
             client.beginBuildModel(trainingFilesUrl,
-                DocumentBuildMode.TEMPLATE, "my-build-model",
+                DocumentBuildMode.TEMPLATE,
                 new BuildModelOptions().setDescription("model desc"), Context.NONE);
 
         DocumentModel documentModel = buildOperationPoller.getFinalResult();
