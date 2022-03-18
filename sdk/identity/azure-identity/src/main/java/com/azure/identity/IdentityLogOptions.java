@@ -16,6 +16,9 @@ public final class IdentityLogOptions {
      * The default value is false.
      * <p>
      * The Account Identifier logs can contain sensitive information and should be enabled on protected machines only.
+     * Enabling this logs Application ID, Object ID, Tenant ID and User Principal Name at INFO level when an
+     * access token is successfully retrieved. So ensure that INFO level logs are enabled to
+     * see the account identifier logs.
      * <p>
      *
      * @param allowLoggingAccountIdentifiers The flag indicating if client side account identifier logging should be

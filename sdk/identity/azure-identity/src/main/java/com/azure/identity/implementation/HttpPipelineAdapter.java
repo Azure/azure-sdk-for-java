@@ -83,7 +83,8 @@ class HttpPipelineAdapter implements IHttpClient {
     }
 
     private void logAccounIdentifiersIfConfigured(String body) {
-        if (!identityClientOptions.getIdentityLogOptionsImpl().isLoggingAccountIdentifiersAllowed()) {
+        if (identityClientOptions != null &&
+            !identityClientOptions.getIdentityLogOptionsImpl().isLoggingAccountIdentifiersAllowed()) {
             return;
         }
         try {
@@ -111,13 +112,13 @@ class HttpPipelineAdapter implements IHttpClient {
             }
         } catch (JsonProcessingException e) {
             CLIENT_LOGGER.log(LogLevel.WARNING, () -> "allowLoggingAccountIdentifiers Log option was set,"
-                    + " but the account information could not be logged. Exception: " + e.getMessage());
+                    + " but the account information could not be logged.", e);
         }
     }
 
     private String getAccountIdentifierMessage(String identifierName, JsonNode identifierValue) {
         if (identifierValue == null) {
-            return String.format("No %s available.", identifierName);
+            return "No" + identifierName + " available.";
         }
         return identifierValue.asText();
     }
