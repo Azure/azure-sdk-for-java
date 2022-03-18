@@ -7,7 +7,13 @@ import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Collection;
 
-/** Defines values for roles. */
+/**
+ * Defines values for roles.
+ * <p>
+ * It is not the complete list of roles.
+ * See {@link RoleDefinitions#listByScope(String)} for all viable roles,
+ * and {@link RoleDefinition#roleName()} as {@link BuiltInRole}.
+ */
 public final class BuiltInRole extends ExpandableStringEnum<BuiltInRole> {
     /** A role that can manage API Management service and the APIs. */
     public static final BuiltInRole API_MANAGEMENT_SERVICE_CONTRIBUTOR =
