@@ -5,7 +5,7 @@
 package com.azure.analytics.purview.catalog.generated;
 
 import com.azure.analytics.purview.catalog.EntityClient;
-import com.azure.analytics.purview.catalog.PurviewCatalogClientBuilder;
+import com.azure.analytics.purview.catalog.EntityClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -13,14 +13,18 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class EntityDeleteByUniqueAttribute {
     public static void main(String[] args) {
-        EntityClient client =
-                new PurviewCatalogClientBuilder()
+        // BEGIN:
+        // com.azure.analytics.purview.catalog.generated.entitydeletebyuniqueattribute.entitydeletebyuniqueattribute
+        EntityClient entityClient =
+                new EntityClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
-                        .buildEntityClient();
+                        .buildClient();
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.addQueryParam("attr:qualifiedName", "https://exampleaccount.core.windows.net");
         Response<BinaryData> response =
-                client.deleteByUniqueAttributeWithResponse("azure_storage_account", requestOptions);
+                entityClient.deleteByUniqueAttributeWithResponse("azure_storage_account", requestOptions);
+        // END:
+        // com.azure.analytics.purview.catalog.generated.entitydeletebyuniqueattribute.entitydeletebyuniqueattribute
     }
 }

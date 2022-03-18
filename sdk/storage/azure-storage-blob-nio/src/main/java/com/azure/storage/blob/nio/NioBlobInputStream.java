@@ -14,7 +14,7 @@ import java.nio.file.Path;
  * Provides an InputStream to read a file stored as an Azure Blob.
  */
 public final class NioBlobInputStream extends InputStream {
-    private final ClientLogger logger = new ClientLogger(NioBlobInputStream.class);
+    private static final ClientLogger LOGGER = new ClientLogger(NioBlobInputStream.class);
 
     private final BlobInputStream blobInputStream;
     private final Path path;
@@ -88,7 +88,7 @@ public final class NioBlobInputStream extends InputStream {
             so we can't do any better than re-wrapping it in an IOException.
              */
         } catch (RuntimeException e) {
-            throw LoggingUtility.logError(logger, new IOException(e));
+            throw LoggingUtility.logError(LOGGER, new IOException(e));
         }
     }
 
@@ -121,7 +121,7 @@ public final class NioBlobInputStream extends InputStream {
         try {
             return this.blobInputStream.read(b);
         } catch (RuntimeException e) {
-            throw LoggingUtility.logError(logger, new IOException(e));
+            throw LoggingUtility.logError(LOGGER, new IOException(e));
         }
     }
 
@@ -161,12 +161,12 @@ public final class NioBlobInputStream extends InputStream {
     public int read(final byte[] b, final int off, final int len) throws IOException {
         AzurePath.ensureFileSystemOpen(path);
         if (off < 0 || len < 0 || len > b.length - off) {
-            throw logger.logExceptionAsError(new IndexOutOfBoundsException());
+            throw LOGGER.logExceptionAsError(new IndexOutOfBoundsException());
         }
         try {
             return this.blobInputStream.read(b, off, len);
         } catch (RuntimeException e) {
-            throw LoggingUtility.logError(logger, new IOException(e));
+            throw LoggingUtility.logError(LOGGER, new IOException(e));
         }
     }
 
@@ -183,9 +183,9 @@ public final class NioBlobInputStream extends InputStream {
             this.blobInputStream.reset();
         } catch (RuntimeException e) {
             if (e.getMessage().equals("Stream mark expired.")) {
-                throw LoggingUtility.logError(logger, new IOException(e));
+                throw LoggingUtility.logError(LOGGER, new IOException(e));
             }
-            throw LoggingUtility.logError(logger, e);
+            throw LoggingUtility.logError(LOGGER, e);
         }
     }
 

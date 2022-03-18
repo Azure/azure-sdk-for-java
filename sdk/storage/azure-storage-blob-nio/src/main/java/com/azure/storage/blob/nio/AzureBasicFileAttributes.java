@@ -3,8 +3,6 @@
 
 package com.azure.storage.blob.nio;
 
-import com.azure.core.util.logging.ClientLogger;
-
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -26,8 +24,6 @@ import java.util.Set;
  * If the target file is a virtual directory, most attributes will be set to null.
  */
 public final class AzureBasicFileAttributes implements BasicFileAttributes {
-    private final ClientLogger logger = new ClientLogger(AzureBasicFileAttributes.class);
-
     // For verifying parameters on FileSystemProvider.readAttributes
     static final Set<String> ATTRIBUTE_STRINGS;
     static {

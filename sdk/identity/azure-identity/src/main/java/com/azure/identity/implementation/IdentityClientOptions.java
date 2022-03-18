@@ -85,7 +85,7 @@ public final class IdentityClientOptions {
      * Disables authority validation when required for Azure Active Directory token endpoint.
      * @return IdentityClientOptions
      */
-    public IdentityClientOptions disableAuthorityValidation() {
+    public IdentityClientOptions disableAuthorityValidationSafetyCheck() {
         validateAuthority = false;
         return this;
     }
@@ -93,7 +93,7 @@ public final class IdentityClientOptions {
     /**
      * @return The authority validation policy for Azure Active Directory token endpoint.
      */
-    public boolean getAuthorityValidation() {
+    public boolean getAuthorityValidationSafetyCheck() {
         return validateAuthority;
     }
 

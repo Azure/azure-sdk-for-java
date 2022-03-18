@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The configuration settings of the Google provider. */
 @Fluent
 public final class Google {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Google.class);
-
     /*
      * <code>false</code> if the Google provider should not be enabled despite
      * the set registration; otherwise, <code>true</code>.

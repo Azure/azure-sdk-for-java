@@ -1,6 +1,6 @@
 # Release History
 
-## 11.5.0-beta.7 (Unreleased)
+## 11.5.0-beta.8 (Unreleased)
 
 ### Features Added
 
@@ -10,15 +10,33 @@
 
 ### Other Changes
 
-## 11.4.7 (2022-02-08)
+## 11.5.0-beta.7 (2022-03-10)
+
+### Features Added
+
+- Added support to create, update and delete aliases via the `SearchIndexClient`.
 
 ### Other Changes
 
+- Updated all `ClientLogger`s to be static constants instead of instance variables.
+
 #### Dependency Updates
 
-- Upgraded `azure-core` from `1.24.1` to version `1.25.0`.
-- Upgraded `azure-core-http-netty` from `1.11.6` to version `1.11.7`.
-- Upgraded `azure-core-serializer-json-jackson` from `1.2.12` to version `1.2.13`.
+- Upgraded `azure-core` from `1.25.0` to version `1.26.0`.
+- Upgraded `azure-core-http-netty` from `1.11.7` to version `1.11.8`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.13` to version `1.2.14`.
+
+## 11.4.8 (2022-03-10)
+
+### Other Changes
+
+- Updated all `ClientLogger`s to be static constants instead of instance variables.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.25.0` to version `1.26.0`.
+- Upgraded `azure-core-http-netty` from `1.11.7` to version `1.11.8`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.13` to version `1.2.14`.
 
 ## 11.5.0-beta.6 (2022-02-08)
 
@@ -32,6 +50,16 @@
   an AML skill integrates it into AI enrichment.
 - Added interfaces from `com.azure.core.client.traits` to `SearchIndexerClientBuilder`, `SearchIndexClientBuilder` 
   and `SearchClientBuilder`
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.1` to version `1.25.0`.
+- Upgraded `azure-core-http-netty` from `1.11.6` to version `1.11.7`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.12` to version `1.2.13`.
+
+## 11.4.7 (2022-02-08)
 
 ### Other Changes
 

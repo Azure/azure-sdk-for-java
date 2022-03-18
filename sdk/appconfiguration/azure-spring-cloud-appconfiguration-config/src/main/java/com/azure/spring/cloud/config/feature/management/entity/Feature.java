@@ -40,7 +40,7 @@ public final class Feature {
         this.key = key;
         List<FeatureFlagFilter> filterMapper = featureItem.getClientFilters();
 
-        enabledFor = new HashMap<Integer, FeatureFlagFilter>();
+        enabledFor = new HashMap<>();
 
         for (int i = 0; i < filterMapper.size(); i++) {
             enabledFor.put(i, filterMapper.get(i));
