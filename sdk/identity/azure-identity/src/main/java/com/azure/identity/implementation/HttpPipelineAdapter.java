@@ -66,7 +66,7 @@ class HttpPipelineAdapter implements IHttpClient {
         return httpPipeline.send(request)
             .flatMap(response -> response.getBodyAsString()
                 .map(body -> {
-                    logAccounIdentifiersIfConfigured(body);
+                    logAccountIdentifiersIfConfigured(body);
                     com.microsoft.aad.msal4j.HttpResponse httpResponse = new com.microsoft.aad.msal4j.HttpResponse()
                         .body(body)
                         .statusCode(response.getStatusCode());
@@ -85,9 +85,9 @@ class HttpPipelineAdapter implements IHttpClient {
             .block();
     }
 
-    private void logAccounIdentifiersIfConfigured(String body) {
-        if (identityClientOptions != null
-            && !identityClientOptions.getIdentityLogOptionsImpl().isLoggingAccountIdentifiersAllowed()) {
+    private void logAccountIdentifiersIfConfigured(String body) {
+        if (identityClientOptions == null ||
+            !identityClientOptions.getIdentityLogOptionsImpl().isLoggingAccountIdentifiersAllowed()) {
             return;
         }
         try {
