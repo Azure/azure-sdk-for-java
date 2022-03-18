@@ -95,7 +95,7 @@ class UserPrincipalMicrosoftGraphTests {
     @Test
     void getGroups() throws Exception {
         properties.getUserGroup().setAllowedGroupNames(Arrays.asList("group1", "group2", "group3"));
-        AzureAdGraphClient graphClientMock = new AzureAdGraphClient(clientId, clientSecret, properties,
+        AadGraphClient graphClientMock = new AadGraphClient(clientId, clientSecret, properties,
             endpoints);
         stubFor(get(urlEqualTo("/v1.0/me/memberOf"))
             .withHeader(ACCEPT, equalTo(APPLICATION_JSON_VALUE))

@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.aad.filter;
 
 import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadJwtClaimNames;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.graph.AzureAdGraphClient;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.graph.AadGraphClient;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
 import com.microsoft.aad.msal4j.MsalServiceException;
@@ -48,7 +48,7 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
     private static final String CURRENT_USER_PRINCIPAL = "CURRENT_USER_PRINCIPAL";
 
     private final UserPrincipalManager userPrincipalManager;
-    private final AzureAdGraphClient azureAdGraphClient;
+    private final AadGraphClient aadGraphClient;
 
     /**
      * Creates a new instance of {@link AadAuthenticationFilter}.
@@ -108,7 +108,7 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
                                    AadAuthorizationServerEndpoints endpoints,
                                    UserPrincipalManager userPrincipalManager) {
         this.userPrincipalManager = userPrincipalManager;
-        this.azureAdGraphClient = new AzureAdGraphClient(
+        this.aadGraphClient = new AadGraphClient(
             aadAuthenticationProperties.getCredential().getClientId(),
             aadAuthenticationProperties.getCredential().getClientSecret(),
             aadAuthenticationProperties,
@@ -147,17 +147,17 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
             ) {
                 userPrincipal = userPrincipalManager.buildUserPrincipal(aadIssuedBearerToken);
                 String tenantId = userPrincipal.getClaim(AadJwtClaimNames.TID).toString();
-                String accessTokenForGraphApi = azureAdGraphClient
+                String accessTokenForGraphApi = aadGraphClient
                     .acquireTokenForGraphApi(aadIssuedBearerToken, tenantId)
                     .accessToken();
                 userPrincipal.setAccessTokenForGraphApi(accessTokenForGraphApi);
-                userPrincipal.setGroups(azureAdGraphClient.getGroups(accessTokenForGraphApi));
+                userPrincipal.setGroups(aadGraphClient.getGroups(accessTokenForGraphApi));
                 httpSession.setAttribute(CURRENT_USER_PRINCIPAL, userPrincipal);
             }
             final Authentication authentication = new PreAuthenticatedAuthenticationToken(
                 userPrincipal,
                 null,
-                azureAdGraphClient.toGrantedAuthoritySet(userPrincipal.getGroups())
+                aadGraphClient.toGrantedAuthoritySet(userPrincipal.getGroups())
             );
             LOGGER.info("Request token verification success. {}", authentication);
             SecurityContextHolder.getContext().setAuthentication(authentication);
