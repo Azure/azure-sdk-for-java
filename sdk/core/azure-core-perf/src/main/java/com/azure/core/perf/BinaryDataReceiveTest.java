@@ -5,29 +5,31 @@ package com.azure.core.perf;
 
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.Response;
 import com.azure.core.perf.core.CorePerfStressOptions;
 import com.azure.core.perf.core.RestProxyTestBase;
-import com.azure.core.perf.core.TestDataFactory;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Mono;
 
+import java.util.Random;
 import java.util.function.Function;
 
-public class XmlReceiveTest extends RestProxyTestBase<CorePerfStressOptions> {
+public class BinaryDataReceiveTest extends RestProxyTestBase<CorePerfStressOptions> {
 
-    public XmlReceiveTest(CorePerfStressOptions options) {
+    public BinaryDataReceiveTest(CorePerfStressOptions options) {
         super(options, createMockResponseSupplier(options));
     }
 
     private static Function<HttpRequest, HttpResponse> createMockResponseSupplier(CorePerfStressOptions options) {
-        byte[] bodyBytes = generateBodyBytes(options.getSize());
+        byte[] bodyBytes = new byte[(int) options.getSize()];
+        new Random(0).nextBytes(bodyBytes);
         return httpRequest -> createMockResponse(httpRequest,
-            "application/xml",  bodyBytes);
+            "application/octet-stream", bodyBytes);
     }
 
     @Override
     public Mono<Void> globalSetupAsync() {
-        XmlSendTest sendTest = new XmlSendTest(options);
+        BinaryDataSendTest sendTest = new BinaryDataSendTest(options);
         return super.globalSetupAsync()
             .then(Mono.defer(sendTest::globalSetupAsync))
             .then(Mono.defer(sendTest::setupAsync))
@@ -43,14 +45,8 @@ public class XmlReceiveTest extends RestProxyTestBase<CorePerfStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        return service.getUserDatabaseXmlAsync(endpoint)
-            .map(userdatabase -> {
-                userdatabase.getValue();
-                return 1;
-            }).then();
-    }
-
-    private static byte[] generateBodyBytes(long size) {
-        return serializeData(TestDataFactory.generateUserDatabase(size), new XmlMapper());
+        return service.getBinaryDataAsync(endpoint)
+           .map(Response::getValue)
+           .map(BinaryData::toBytes).then();
     }
 }
