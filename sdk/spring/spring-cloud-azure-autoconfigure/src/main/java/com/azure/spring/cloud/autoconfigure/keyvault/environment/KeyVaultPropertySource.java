@@ -35,7 +35,4 @@ public class KeyVaultPropertySource extends EnumerablePropertySource<KeyVaultOpe
         return operations.getProperty(name);
     }
 
-    boolean isUp() {
-        return operations.isUp();
-    }
 }
