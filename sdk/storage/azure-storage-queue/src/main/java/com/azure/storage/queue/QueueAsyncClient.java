@@ -227,6 +227,29 @@ public final class QueueAsyncClient {
             .map(response -> new SimpleResponse<>(response, null));
     }
 
+    /**
+     * Creates a new queue.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Create a queue</p>
+     *
+     * <!-- src_embed com.azure.storage.queue.queueAsyncClient.createIfNotExists -->
+     * <pre>
+     * client.createIfNotExists&#40;&#41;.subscribe&#40;
+     *     response -&gt; &#123;
+     *     &#125;,
+     *     error -&gt; System.err.print&#40;error.toString&#40;&#41;&#41;,
+     *     &#40;&#41; -&gt; System.out.println&#40;&quot;Complete creating the queue!&quot;&#41;
+     * &#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueAsyncClient.createIfNotExists -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-queue4">Azure Docs</a>.</p>
+     *
+     * @return An empty response, or null if queue already exists.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createIfNotExists() {
         try {
@@ -236,6 +259,29 @@ public final class QueueAsyncClient {
         }
     }
 
+    /**
+     * Creates a new queue.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Create a queue with metadata "queue:metadataMap"</p>
+     *
+     * <!-- src_embed com.azure.storage.queue.queueAsyncClient.createIfNotExistsWithResponse#map -->
+     * <pre>
+     * client.createIfNotExistsWithResponse&#40;Collections.singletonMap&#40;&quot;queue&quot;, &quot;metadataMap&quot;&#41;&#41;.subscribe&#40;
+     *     response -&gt; System.out.println&#40;&quot;Complete creating the queue with status code:&quot; + response.getStatusCode&#40;&#41;&#41;,
+     *     error -&gt; System.err.print&#40;error.toString&#40;&#41;&#41;
+     * &#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueAsyncClient.createIfNotExistsWithResponse#map -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-queue4">Azure Docs</a>.</p>
+     *
+     * @param metadata Metadata to associate with the queue. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
+     * @return A response that only contains headers and response status code, or null if queue already exists.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createIfNotExistsWithResponse(Map<String, String> metadata) {
         return createIfNotExistsWithResponse(metadata, null);
@@ -243,8 +289,8 @@ public final class QueueAsyncClient {
 
     Mono<Response<Void>> createIfNotExistsWithResponse(Map<String, String> metadata, Context context) {
         return createWithResponse(metadata, context)
-            .onErrorResume(t -> t instanceof QueueStorageException && ((QueueStorageException)t).getStatusCode() == 409, t -> Mono.empty())
-            .filter(res -> res.getStatusCode() != 204);
+            .onErrorResume(t -> t instanceof QueueStorageException && ((QueueStorageException)t).getStatusCode() == 409,
+                t -> Mono.empty()).filter(res -> res.getStatusCode() != 204);
     }
 
     /**
@@ -314,6 +360,26 @@ public final class QueueAsyncClient {
             .map(response -> new SimpleResponse<>(response, null));
     }
 
+    /**
+     * Permanently deletes the queue if it exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete a queue</p>
+     *
+     * <!-- src_embed com.azure.storage.queue.queueAsyncClient.deleteIfExists -->
+     * <pre>
+     * client.deleteIfExists&#40;&#41;.doOnSuccess&#40;
+     *     response -&gt; System.out.println&#40;&quot;Deleting the queue completed.&quot;&#41;
+     * &#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueAsyncClient.deleteIfExists -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-queue3">Azure Docs</a>.</p>
+     *
+     * @return An empty response, or null if queue does not exist
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteIfExists() {
         try {
@@ -323,8 +389,28 @@ public final class QueueAsyncClient {
         }
     }
 
+    /**
+     * Permanently deletes the queue if it exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete a queue</p>
+     *
+     * <!-- src_embed com.azure.storage.queue.queueAsyncClient.deleteIfExistsWithResponse -->
+     * <pre>
+     * client.deleteIfExistsWithResponse&#40;&#41;.subscribe&#40;
+     *     response -&gt; System.out.println&#40;&quot;Deleting the queue completed with status code: &quot; + response.getStatusCode&#40;&#41;&#41;
+     * &#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueAsyncClient.deleteIfExistsWithResponse -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-queue3">Azure Docs</a>.</p>
+     *
+     * @return A response that only contains headers and response status code, or null if queue does not exist.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteIfExistsWithResponse() { // remember that there is a 30 sec buffer, if a new one is created within 30 secs there will be a 409. else 404
+    public Mono<Response<Void>> deleteIfExistsWithResponse() {
         try {
             return withContext(this::deleteIfExistsWithResponse);
         } catch (RuntimeException ex) {

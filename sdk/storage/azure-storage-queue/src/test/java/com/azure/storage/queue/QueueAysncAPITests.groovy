@@ -71,6 +71,25 @@ class QueueAysncAPITests extends APISpec {
 
     }
 
+    def "Create if not exists queue with shared key"() {
+        expect:
+        StepVerifier.create(queueAsyncClient.createIfNotExistsWithResponse(null)).assertNext {
+            assert QueueTestHelper.assertResponseStatusCode(it, 201) }
+            .verifyComplete()
+    }
+
+    def "Create if not exists queue that already exists"() {
+        setup:
+        def initialResponse = queueAsyncClient.createIfNotExistsWithResponse(null).block()
+
+        when:
+        def secondResponse = queueAsyncClient.createIfNotExistsWithResponse(null).block()
+
+        then:
+        QueueTestHelper.assertResponseStatusCode(initialResponse, 201)
+        secondResponse == null
+    }
+
     def "Delete exist queue"() {
         given:
         queueAsyncClient.createWithResponse(null).block()
@@ -89,6 +108,24 @@ class QueueAysncAPITests extends APISpec {
         deleteQueueVerifier.verifyErrorSatisfies {
             assert QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, QueueErrorCode.QUEUE_NOT_FOUND)
         }
+    }
+
+    def "Delete if exists queue"() {
+        given:
+        queueAsyncClient.createWithResponse(null).block()
+        when:
+        def deleteQueueVerifier = StepVerifier.create(queueAsyncClient.deleteIfExistsWithResponse())
+        then:
+        deleteQueueVerifier.assertNext {
+            assert QueueTestHelper.assertResponseStatusCode(it, 204) }
+            .verifyComplete()
+    }
+
+    def "Delete if exists queue that does not exist"() {
+        when:
+        def response = queueAsyncClient.deleteIfExistsWithResponse().block()
+        then:
+        response == null
     }
 
     def "Get properties"() {

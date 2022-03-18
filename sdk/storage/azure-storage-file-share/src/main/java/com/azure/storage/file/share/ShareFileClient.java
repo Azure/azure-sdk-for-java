@@ -339,6 +339,29 @@ public class ShareFileClient {
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ShareFileInfo createIfNotExists(long maxSize) {
+        Response<ShareFileInfo> response = createIfNotExistsWithResponse(maxSize, null, null, null, null, null, Context.NONE);
+        return response == null ? null : response.getValue();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ShareFileInfo> createIfNotExistsWithResponse(long maxSize, ShareFileHttpHeaders httpHeaders,
+                                                      FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout,
+                                                      Context context) {
+        return this.createIfNotExistsWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, null, timeout,
+            context);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ShareFileInfo> createIfNotExistsWithResponse(long maxSize, ShareFileHttpHeaders httpHeaders,
+                                                      FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata,
+                                                      ShareRequestConditions requestConditions, Duration timeout, Context context) {
+        Mono<Response<ShareFileInfo>> response = shareFileAsyncClient
+            .createIfNotExistsWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, requestConditions,
+                context);
+        return response == null ? null : StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+    }
     /**
      * Copies a blob or file to a destination file within the storage account.
      *
@@ -884,6 +907,23 @@ public class ShareFileClient {
         Context context) {
         Mono<Response<Void>> response = shareFileAsyncClient.deleteWithResponse(requestConditions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteIfExists() {
+        deleteIfExistsWithResponse(null, Context.NONE);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteIfExistsWithResponse(Duration timeout, Context context) {
+        return this.deleteIfExistsWithResponse(null, timeout, context);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteIfExistsWithResponse(ShareRequestConditions requestConditions, Duration timeout,
+                                             Context context) {
+        Mono<Response<Void>> response = shareFileAsyncClient.deleteIfExistsWithResponse(requestConditions, context);
+        return response == null ? null : StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**

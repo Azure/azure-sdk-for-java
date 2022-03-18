@@ -1687,4 +1687,78 @@ class FileAPITests extends APISpec {
         notThrown(ShareStorageException)
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
+
+    def "Create if not exists"() {
+        def client = shareClient.getFileClient(generateShareName())
+
+        when:
+        def result = client.createIfNotExists(1024)
+
+        then:
+        result != null
+        client.exists() == true
+    }
+
+    def "Create if not exists with response"() {
+        def client = shareClient.getFileClient(generateShareName())
+
+        when:
+        def response = client.createIfNotExistsWithResponse(1024, httpHeaders, null, null, null, null, null)
+
+        then:
+        response != null
+        FileTestHelper.assertResponseStatusCode(response, 201)
+        client.exists() == true
+    }
+
+    def "Create file that already exists"() {
+        def client = shareClient.getFileClient(generateShareName())
+        def initialResponse = client.createIfNotExistsWithResponse(1024, httpHeaders, null, null, null, null, null)
+
+
+        when:
+        def secondResponse = client.createIfNotExistsWithResponse(1024, httpHeaders, null, null, null, null, null)
+
+        then:
+        initialResponse != null
+        FileTestHelper.assertResponseStatusCode(initialResponse, 201)
+        client.exists() == true
+        secondResponse == null // this becomes null.. maybe createifnotexists is not supported. revisit
+    }
+
+    def "Delete file if exists"() {
+        def client = shareClient.getFileClient(generateShareName())
+        client.create(1024)
+
+        when:
+         client.deleteIfExists()
+        client.getProperties()
+
+        then:
+        thrown(ShareStorageException)
+        client.exists() == false
+    }
+
+    def "Delete file if exists with response"() {
+        def client = shareClient.getFileClient(generateShareName())
+        client.create(1024)
+
+        when:
+        def response = client.deleteIfExistsWithResponse(null, null)
+
+        then:
+        FileTestHelper.assertResponseStatusCode(response, 202)
+        client.exists() == false
+    }
+
+    def "Delete file that does not exist"() {
+        def client = shareClient.getFileClient(generateShareName())
+
+        when:
+        def response = client.deleteIfExistsWithResponse(null, null)
+
+        then:
+        response == null
+        client.exists() == false
+    }
 }

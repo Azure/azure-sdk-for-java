@@ -411,5 +411,24 @@ public class DataLakeFileClientJavaDocSamples {
         // END: com.azure.storage.file.datalake.DataLakeFileClient.scheduleDeletionWithResponse#FileScheduleDeletionOptions-Duration-Context
     }
 
+    /**
+     * Code snippets for {@link DataLakeFileClient#deleteIfExists()}  and
+     * {@link DataLakeFileClient#deleteIfExistsWithResponse(DataLakeRequestConditions, Duration, Context)}
+     */
+    public void deleteIfExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.deleteIfExists
+        client.deleteIfExists();
+        System.out.println("Delete request completed");
+        // END: com.azure.storage.file.datalake.DataLakeFileClient.deleteIfExists
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.deleteIfExistsWithResponse#DataLakeRequestConditions-Duration-Context
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId);
+
+        client.deleteIfExistsWithResponse(requestConditions, timeout, new Context(key1, value1));
+        System.out.println("Delete request completed");
+        // END: com.azure.storage.file.datalake.DataLakeFileClient.deleteIfExistsWithResponse#DataLakeRequestConditions-Duration-Context
+    }
+
 }
 

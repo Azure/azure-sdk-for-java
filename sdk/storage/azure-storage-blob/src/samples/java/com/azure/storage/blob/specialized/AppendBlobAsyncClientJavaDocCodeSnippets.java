@@ -187,4 +187,38 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
             .subscribe(response -> System.out.println("Sealed AppendBlob"));
         // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.sealWithResponse#AppendBlobSealOptions
     }
+
+    /**
+     * Code snippet for {@link AppendBlobAsyncClient#createIfNotExists()},
+     * {@link AppendBlobAsyncClient#createIfNotExistsWithResponse(BlobHttpHeaders, Map)} and
+     * {@link AppendBlobAsyncClient#createIfNotExistsWithResponse(AppendBlobCreateOptions)}
+     */
+    public void createIfNotExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExists
+        client.createIfNotExists().subscribe(response ->
+            System.out.printf("Created AppendBlob at %s%n", response.getLastModified()));
+        // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExists
+
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExistsWithResponse#BlobHttpHeaders-Map
+        BlobHttpHeaders headers = new BlobHttpHeaders()
+            .setContentType("binary")
+            .setContentLanguage("en-US");
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+
+        client.createIfNotExistsWithResponse(headers, metadata).subscribe(response ->
+            System.out.printf("Created AppendBlob at %s%n", response.getValue().getLastModified()));
+        // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExistsWithResponse#BlobHttpHeaders-Map
+
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#AppendBlobCreateOptions
+        BlobHttpHeaders httpHeaders = new BlobHttpHeaders()
+            .setContentType("binary")
+            .setContentLanguage("en-US");
+        Map<String, String> metaData = Collections.singletonMap("metadata", "value");
+        Map<String, String> tags = Collections.singletonMap("tag", "value");
+
+        client.createIfNotExistsWithResponse(new AppendBlobCreateOptions().setHeaders(httpHeaders).setMetadata(metaData)
+            .setTags(tags)).subscribe(response ->
+            System.out.printf("Created AppendBlob at %s%n", response.getValue().getLastModified()));
+        // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#AppendBlobCreateOptions
+    }
 }

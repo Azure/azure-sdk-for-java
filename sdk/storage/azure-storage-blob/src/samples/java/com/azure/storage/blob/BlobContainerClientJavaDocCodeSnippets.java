@@ -457,6 +457,46 @@ public class BlobContainerClientJavaDocCodeSnippets {
         client.generateUserDelegationSas(values, userDelegationKey, accountName, new Context("key", "value"));
         // END: com.azure.storage.blob.BlobContainerClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey-String-Context
     }
+
+    /**
+     * Code snippet for {@link BlobContainerClient#createIfNotExists()} and
+     * {@link BlobContainerClient#createIfNotExistsWithResponse(Map, PublicAccessType, Duration, Context)}
+     */
+    public void createIfNotExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.createIfNotExists
+        client.createIfNotExists();
+        System.out.printf("Create completed%n");
+        // END: com.azure.storage.blob.BlobContainerClient.createIfNotExists
+
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.createIfNotExistsWithResponse#Map-PublicAccessType-Duration-Context
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        Context context = new Context("Key", "Value");
+
+        System.out.printf("Create completed with status %d%n",
+            client.createIfNotExistsWithResponse(metadata, PublicAccessType.CONTAINER, timeout, context).getStatusCode());
+        // END: com.azure.storage.blob.BlobContainerClient.createIfNotExistsWithResponse#Map-PublicAccessType-Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link BlobContainerClient#deleteIfExists()} and
+     * {@link BlobContainerClient#deleteIfExistsWithResponse(BlobRequestConditions, Duration, Context)}
+     */
+    public void deleteIfExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.deleteIfExists
+        client.deleteIfExists();
+        System.out.printf("Delete completed%n");
+        // END: com.azure.storage.blob.BlobContainerClient.deleteIfExists
+
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.deleteIfExistsWithResponse#BlobRequestConditions-Duration-Context
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+        Context context = new Context("Key", "Value");
+
+        System.out.printf("Delete completed with status %d%n", client.deleteIfExistsWithResponse(
+            requestConditions, timeout, context).getStatusCode());
+        // END: com.azure.storage.blob.BlobContainerClient.deleteIfExistsWithResponse#BlobRequestConditions-Duration-Context
+    }
 //
 //    /**
 //     * Code snippet for {@link BlobContainerClient#rename(String)}

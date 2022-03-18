@@ -320,6 +320,22 @@ public class DataLakeFileSystemAsyncClient {
         }
     }
 
+    /**
+     * Creates a new file system within a storage account if it does not exist. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createIfNotExists -->
+     * <pre>
+     * client.createIfNotExists&#40;&#41;.subscribe&#40;
+     *     response -&gt; System.out.printf&#40;&quot;Create completed%n&quot;&#41;,
+     *     error -&gt; System.out.printf&#40;&quot;Error while creating file system %s%n&quot;, error&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createIfNotExists -->
+     *
+     * @return A reactive response signalling completion, or null if the file system already exists.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createIfNotExists() {
         try {
@@ -329,6 +345,26 @@ public class DataLakeFileSystemAsyncClient {
         }
     }
 
+    /**
+     * Creates a new file system within a storage account if it does not exist. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createIfNotExistsWithResponse#Map-PublicAccessType -->
+     * <pre>
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * client.createIfNotExistsWithResponse&#40;metadata, PublicAccessType.CONTAINER&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createIfNotExistsWithResponse#Map-PublicAccessType -->
+     *
+     * @param metadata Metadata to associate with the file system. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
+     * @param accessType Specifies how the data in this file system is available to the public. See the
+     * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
+     * @return A reactive response signalling completion, or null if the file system already exists.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createIfNotExistsWithResponse(Map<String, String> metadata, PublicAccessType accessType) {
         try {
@@ -399,6 +435,23 @@ public class DataLakeFileSystemAsyncClient {
         }
     }
 
+    /**
+     * Marks the specified file system for deletion if it exists. The file system and any files/directories contained within it are
+     * later deleted during garbage collection. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteIfExists -->
+     * <pre>
+     * client.deleteIfExists&#40;&#41;.subscribe&#40;
+     *     response -&gt; System.out.printf&#40;&quot;Delete completed%n&quot;&#41;,
+     *     error -&gt; System.out.printf&#40;&quot;Delete failed: %s%n&quot;, error&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteIfExists -->
+     *
+     * @return A reactive response signalling completion.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteIfExists() {
         try {
@@ -408,6 +461,29 @@ public class DataLakeFileSystemAsyncClient {
         }
     }
 
+    /**
+     * Marks the specified file system for deletion if it exists. The file system and any files/directories contained within it are
+     * later deleted during garbage collection. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteIfExistsWithResponse#DataLakeRequestConditions -->
+     * <pre>
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     *
+     * client.deleteIfExistsWithResponse&#40;requestConditions&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteIfExistsWithResponse#DataLakeRequestConditions -->
+     *
+     * @param requestConditions {@link DataLakeRequestConditions}
+     * @return A reactive response signalling completion, or null if the file system does not exist.
+     * @throws UnsupportedOperationException If either {@link DataLakeRequestConditions#getIfMatch()} or
+     * {@link DataLakeRequestConditions#getIfNoneMatch()} is set.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteIfExistsWithResponse(DataLakeRequestConditions requestConditions) {
         try {
@@ -835,19 +911,60 @@ public class DataLakeFileSystemAsyncClient {
         }
     }
 
+    /**
+     * Creates a new file within a file system if it does not exist. For more
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFileIfNotExists#String -->
+     * <pre>
+     * Mono&lt;DataLakeFileAsyncClient&gt; fileClient = client.createFileIfNotExists&#40;fileName&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFileIfNotExists#String -->
+     *
+     * @param fileName Name of the file to create. If the path name contains special characters, pass in the url encoded
+     * version of the path name.
+     * @return A {@link Mono} containing a {@link DataLakeFileAsyncClient} used to interact with the file created, or null if the specified file already exists.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataLakeFileAsyncClient> createFileIfNotExists(String fileName) {
-        return createFileIfNotExistsWithResponse(fileName, null, null, null, null, null)
+        return createFileIfNotExistsWithResponse(fileName, null, null, null, null)
             .flatMap(FluxUtil::toMono);
     }
 
+    /**
+     * Creates a new file within a file system if it does not exist. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFileIfNotExistsWithResponse#String-String-String-PathHttpHeaders-Map -->
+     * <pre>
+     * PathHttpHeaders httpHeaders = new PathHttpHeaders&#40;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     * String permissions = &quot;permissions&quot;;
+     * String umask = &quot;umask&quot;;
+     * Mono&lt;Response&lt;DataLakeFileAsyncClient&gt;&gt; newFileClient = client.createFileIfNotExistsWithResponse&#40;fileName, permissions,
+     *     umask, httpHeaders, Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;, requestConditions&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFileIfNotExistsWithResponse#String-String-String-PathHttpHeaders-Map -->
+     *
+     * @param fileName Name of the file to create. If the path name contains special characters, pass in the url encoded
+     * version of the path name.
+     * @param permissions POSIX access permissions for the file owner, the file owning group, and others.
+     * @param umask Restricts permissions of the file to be created.
+     * @param headers {@link PathHttpHeaders}
+     * @param metadata Metadata to associate with the file. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
+     * DataLakeFileAsyncClient} used to interact with the file created, or null if the specified file already exists.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataLakeFileAsyncClient>> createFileIfNotExistsWithResponse(String fileName,
-                                                                                     String permissions, String umask, PathHttpHeaders headers,
-                                                                                     Map<String, String> metadata,
-                                                                                     DataLakeRequestConditions requestConditions) {
-        requestConditions = requestConditions == null ?
-            new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD) : requestConditions;
+        String permissions, String umask, PathHttpHeaders headers, Map<String, String> metadata) {
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         return createFileWithResponse(fileName, permissions, umask, headers, metadata, requestConditions).onErrorResume(t -> t
             instanceof DataLakeStorageException && ((DataLakeStorageException)t).getStatusCode() == 409, t -> Mono.empty());
     }
@@ -908,6 +1025,60 @@ public class DataLakeFileSystemAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    /**
+     * Deletes the specified file in the file system if it exists.
+     * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteFileIfExists#String -->
+     * <pre>
+     * client.deleteFileIfExists&#40;fileName&#41;.subscribe&#40;response -&gt;
+     *     System.out.println&#40;&quot;Delete request completed&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteFileIfExists#String -->
+     *
+     * @param fileName Name of the file to delete. If the path name contains special characters, pass in the url encoded
+     * version of the path name.
+     * @return A reactive response signalling completion, or null if the specified file does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteFileIfExists(String fileName) {
+        try {
+            return deleteFileIfExistsWithResponse(fileName, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Deletes the specified file in the file system if it exists.
+     * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteFileIfExistsWithResponse#String-DataLakeRequestConditions -->
+     * <pre>
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;;
+     *
+     * client.deleteFileIfExistsWithResponse&#40;fileName, requestConditions&#41;
+     *     .subscribe&#40;response -&gt; System.out.println&#40;&quot;Delete request completed&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteFileIfExistsWithResponse#String-DataLakeRequestConditions -->
+     *
+     * @param fileName Name of the file to delete. If the path name contains special characters, pass in the url encoded
+     * version of the path name.
+     * @param requestConditions {@link DataLakeRequestConditions}
+     * @return A {@link Mono} containing containing status code and HTTP headers
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName, DataLakeRequestConditions requestConditions) {
+        return getFileAsyncClient(fileName).deleteIfExistsWithResponse(requestConditions);
     }
 
     /**
@@ -1012,18 +1183,62 @@ public class DataLakeFileSystemAsyncClient {
         }
     }
 
+    /**
+     * Creates a new directory within a file system if it does not exist.
+     * For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryIfNotExists#String -->
+     * <pre>
+     * Mono&lt;DataLakeDirectoryAsyncClient&gt; directoryClient = client.createDirectoryIfNotExists&#40;directoryName&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryIfNotExists#String -->
+     *
+     * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
+     * url encoded version of the path name.
+     * @return A {@link Mono} containing a {@link DataLakeDirectoryAsyncClient} used to interact with the directory
+     * created, or null if the specified directory already exists.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataLakeDirectoryAsyncClient> createDirectoryIfNotExists(String directoryName) {
-        return createDirectoryIfNotExistsWithResponse(directoryName, null, null, null, null,
-            new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD)).flatMap(FluxUtil::toMono);
+        return createDirectoryIfNotExistsWithResponse(directoryName, null, null, null, null).flatMap(FluxUtil::toMono);
     }
 
+    /**
+     * Creates a new directory within a file system if it does not exist. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryIfNotExistsWithResponse#String-String-String-PathHttpHeaders-Map -->
+     * <pre>
+     * PathHttpHeaders httpHeaders = new PathHttpHeaders&#40;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     * String permissions = &quot;permissions&quot;;
+     * String umask = &quot;umask&quot;;
+     * Mono&lt;Response&lt;DataLakeDirectoryAsyncClient&gt;&gt; newDirectoryClient = client.createDirectoryIfNotExistsWithResponse&#40;
+     *     directoryName, permissions, umask, httpHeaders, Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryIfNotExistsWithResponse#String-String-String-PathHttpHeaders-Map -->
+     *
+     * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
+     * url encoded version of the path name.
+     * @param permissions POSIX access permissions for the directory owner, the directory owning group, and others.
+     * @param umask Restricts permissions of the directory to be created.
+     * @param headers {@link PathHttpHeaders}
+     * @param metadata Metadata to associate with the resource. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
+     * DataLakeDirectoryAsyncClient} used to interact with the directory created, or null if the directory already exists.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataLakeDirectoryAsyncClient>> createDirectoryIfNotExistsWithResponse(String directoryName,
-                                                                                    String permissions, String umask,
-                                                                                               PathHttpHeaders headers, Map<String, String> metadata,
-                                                                                               DataLakeRequestConditions requestConditions) {
-        return createDirectoryWithResponse(directoryName, permissions, umask, headers, metadata, requestConditions)
+        String permissions, String umask, PathHttpHeaders headers, Map<String, String> metadata) {
+
+        return createDirectoryWithResponse(directoryName, permissions, umask, headers, metadata,
+            new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD))
             .onErrorResume(t -> t instanceof DataLakeStorageException
             && ((DataLakeStorageException)t).getStatusCode() == 409, t -> Mono.empty());
     }
@@ -1079,6 +1294,59 @@ public class DataLakeFileSystemAsyncClient {
     public Mono<Response<Void>> deleteDirectoryWithResponse(String directoryName, boolean recursive,
         DataLakeRequestConditions requestConditions) {
         return getDirectoryAsyncClient(directoryName).deleteWithResponse(recursive, requestConditions);
+    }
+
+    /**
+     * Deletes the specified directory in the file system if it exists.
+     * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteDirectoryIfExists#String -->
+     * <pre>
+     * client.deleteDirectoryIfExists&#40;directoryName&#41;.subscribe&#40;response -&gt;
+     *     System.out.println&#40;&quot;Delete request completed&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteDirectoryIfExists#String -->
+     *
+     * @param directoryName Name of the directory to delete. If the path name contains special characters, pass in the
+     * url encoded version of the path name.
+     * @return A reactive response signalling completion, or null if the directory does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteDirectoryIfExists(String directoryName) {
+        return deleteDirectoryIfExistsWithResponse(directoryName, false, null).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deletes the specified directory in the file system if it exists.
+     * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteDirectoryIfExistsWithResponse#String-boolean-DataLakeRequestConditions -->
+     * <pre>
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;;
+     * boolean recursive = false; &#47;&#47; Default value
+     *
+     * client.deleteDirectoryIfExistsWithResponse&#40;directoryName, recursive, requestConditions&#41;
+     *     .subscribe&#40;response -&gt; System.out.println&#40;&quot;Delete request completed&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteDirectoryIfExistsWithResponse#String-boolean-DataLakeRequestConditions -->
+     *
+     * @param directoryName Name of the directory to delete. If the path name contains special characters, pass in the
+     * url encoded version of the path name.
+     * @param recursive Whether or not to delete all paths beneath the directory.
+     * @param requestConditions {@link DataLakeRequestConditions}
+     * @return A {@link Mono} containing containing status code and HTTP headers, or null if the specified directory does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteDirectoryIfExistsWithResponse(String directoryName, boolean recursive,
+                                                            DataLakeRequestConditions requestConditions) {
+        return getDirectoryAsyncClient(directoryName).deleteIfExistsWithResponse(recursive, requestConditions);
     }
 
     /**

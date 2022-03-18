@@ -212,28 +212,6 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         }
     }
 
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobItem> createIfNotExists(long size) {
-        PageBlobCreateOptions pageBlobCreateOptions = new PageBlobCreateOptions(size);
-        try {
-            return createIfNotExistsWithResponse(pageBlobCreateOptions).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PageBlobItem>> createIfNotExistsWithResponse(PageBlobCreateOptions options) {
-        return createIfNotExistsWithResponse(options, null);
-    }
-
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PageBlobItem>> createIfNotExistsWithResponse(PageBlobCreateOptions options, Context context) {
-        options.setRequestConditions(new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD).setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
-        return createWithResponse(options, context).onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 409,
-            t -> Mono.empty());
-    }
-
     /**
      * Creates a page blob of the specified length. Call PutPage to upload data data to a page blob. For more
      * information, see the
@@ -353,6 +331,117 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                     null, hd.getXMsVersionId());
                 return new SimpleResponse<>(rb, item);
             });
+    }
+
+    /**
+     * Creates a page blob of the specified length if it does not exist.
+     * Call PutPage to upload data to a page blob. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.PageBlobAsyncClient.createIfNotExists#long -->
+     * <pre>
+     * client.createIfNotExists&#40;size&#41;.subscribe&#40;response -&gt; System.out.printf&#40;
+     *     &quot;Created page blob with sequence number %s%n&quot;, response.getBlobSequenceNumber&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.PageBlobAsyncClient.createIfNotExists#long -->
+     *
+     * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
+     * 512-byte boundary.
+     *
+     * @return A reactive response containing the information of the created page blob, or null if the page blob
+     * already exists.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PageBlobItem> createIfNotExists(long size) {
+        PageBlobCreateOptions pageBlobCreateOptions = new PageBlobCreateOptions(size);
+        try {
+            return createIfNotExistsWithResponse(pageBlobCreateOptions).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Creates a page blob of the specified length if it does not exist. Call PutPage to upload data to a page blob.
+     * For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobAsyncClient.createIfNotExistsWithResponse#long-Long-BlobHttpHeaders-Map -->
+     * <pre>
+     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     *
+     * client.createIfNotExistsWithResponse&#40;size, sequenceNumber, headers, metadata&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;
+     *         &quot;Created page blob with sequence number %s%n&quot;, response.getValue&#40;&#41;.getBlobSequenceNumber&#40;&#41;&#41;&#41;;
+     *
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobAsyncClient.createIfNotExistsWithResponse#long-Long-BlobHttpHeaders-Map -->
+     *
+     * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
+     * 512-byte boundary.
+     * @param sequenceNumber A user-controlled value that you can use to track requests. The value of the sequence
+     * number must be between 0 and 2^63 - 1.The default value is 0.
+     * @param headers {@link BlobHttpHeaders}
+     * @param metadata Metadata to associate with the blob. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
+     * @return A reactive response containing the information of the created page blob, or null if the page blob
+     * already exists.
+     *
+     * @throws IllegalArgumentException If {@code size} isn't a multiple of {@link PageBlobAsyncClient#PAGE_BYTES} or
+     * {@code sequenceNumber} isn't null and is less than 0.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PageBlobItem>> createIfNotExistsWithResponse(long size, Long sequenceNumber,
+        BlobHttpHeaders headers, Map<String, String> metadata) {
+        return this.createIfNotExistsWithResponse(new PageBlobCreateOptions(size).setSequenceNumber(sequenceNumber)
+            .setHeaders(headers).setMetadata(metadata));
+    }
+
+    /**
+     * Creates a page blob of the specified length if it does not exist. Call PutPage to upload data to a page blob.
+     * For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobAsyncClient.createIfNotExistsWithResponse#PageBlobCreateOptions -->
+     * <pre>
+     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     *
+     * client.createIfNotExistsWithResponse&#40;new PageBlobCreateOptions&#40;size&#41;.setSequenceNumber&#40;sequenceNumber&#41;
+     *     .setHeaders&#40;headers&#41;.setMetadata&#40;metadata&#41;.setTags&#40;tags&#41;&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;
+     *         &quot;Created page blob with sequence number %s%n&quot;, response.getValue&#40;&#41;.getBlobSequenceNumber&#40;&#41;&#41;&#41;;
+     *
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobAsyncClient.createIfNotExistsWithResponse#PageBlobCreateOptions -->
+     *
+     * @param options {@link PageBlobCreateOptions}
+     * @return A reactive response containing the information of the created page blob, or null if the page blob
+     * already exists.
+     *
+     * @throws IllegalArgumentException If {@code size} isn't a multiple of {@link PageBlobAsyncClient#PAGE_BYTES} or
+     * {@code sequenceNumber} isn't null and is less than 0.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PageBlobItem>> createIfNotExistsWithResponse(PageBlobCreateOptions options) {
+        return createIfNotExistsWithResponse(options, null);
+    }
+
+    Mono<Response<PageBlobItem>> createIfNotExistsWithResponse(PageBlobCreateOptions options, Context context) {
+        options.setRequestConditions(new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD)
+            .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
+        return createWithResponse(options, context).onErrorResume(t -> t instanceof BlobStorageException
+                && ((BlobStorageException) t).getStatusCode() == 409,
+            t -> Mono.empty());
     }
 
     /**

@@ -764,4 +764,21 @@ public class BlobClientBaseJavaDocCodeSnippets {
             new Context(key1, value1)));
         // END: com.azure.storage.blob.specialized.BlobClientBase.setLegalHoldWithResponse#boolean-Duration-Context
     }
+
+    /**
+     * Code snippets for {@link BlobClientBase#deleteIfExists()} and
+     * {@link BlobClientBase#deleteIfExistsWithResponse(DeleteSnapshotsOptionType, BlobRequestConditions, Duration, Context)}
+     */
+    public void deleteIfExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.deleteIfExists
+        client.deleteIfExists();
+        System.out.println("Delete completed.");
+        // END: com.azure.storage.blob.specialized.BlobClientBase.deleteIfExists
+
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.deleteIfExistsWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions-Duration-Context
+        System.out.printf("Delete completed with status %d%n",
+            client.deleteIfExistsWithResponse(DeleteSnapshotsOptionType.INCLUDE, null, timeout,
+                new Context(key1, value1)).getStatusCode());
+        // END: com.azure.storage.blob.specialized.BlobClientBase.deleteIfExistsWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions-Duration-Context
+    }
 }

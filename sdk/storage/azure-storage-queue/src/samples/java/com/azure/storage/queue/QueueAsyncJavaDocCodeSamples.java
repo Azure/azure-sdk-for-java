@@ -573,4 +573,45 @@ public class QueueAsyncJavaDocCodeSamples {
         client.generateSas(values, new Context("key", "value"));
         // END: com.azure.storage.queue.QueueAsyncClient.generateSas#QueueServiceSasSignatureValues-Context
     }
+
+    /**
+     * Generates a code sample for using {@link QueueAsyncClient#createIfNotExists()} and
+     * {@link QueueAsyncClient#createIfNotExistsWithResponse(Map)}
+     */
+    public void createIfNotExistsQueueAsyncCodeSnippets() {
+        // BEGIN: com.azure.storage.queue.queueAsyncClient.createIfNotExists
+        client.createIfNotExists().subscribe(
+            response -> {
+            },
+            error -> System.err.print(error.toString()),
+            () -> System.out.println("Complete creating the queue!")
+        );
+        // END: com.azure.storage.queue.queueAsyncClient.createIfNotExists
+
+        // BEGIN: com.azure.storage.queue.queueAsyncClient.createIfNotExistsWithResponse#map
+        client.createIfNotExistsWithResponse(Collections.singletonMap("queue", "metadataMap")).subscribe(
+            response -> System.out.println("Complete creating the queue with status code:" + response.getStatusCode()),
+            error -> System.err.print(error.toString())
+        );
+        // END: com.azure.storage.queue.queueAsyncClient.createIfNotExistsWithResponse#map
+    }
+
+    /**
+     * Generates a code sample for using {@link QueueAsyncClient#deleteIfExists()} and
+     * {@link QueueAsyncClient#deleteIfExistsWithResponse()}
+     */
+    public void deleteQueueIfExistsAsyncCodeSippets() {
+        // BEGIN: com.azure.storage.queue.queueAsyncClient.deleteIfExists
+        client.deleteIfExists().doOnSuccess(
+            response -> System.out.println("Deleting the queue completed.")
+        );
+        // END: com.azure.storage.queue.queueAsyncClient.deleteIfExists
+
+        // BEGIN: com.azure.storage.queue.queueAsyncClient.deleteIfExistsWithResponse
+        client.deleteIfExistsWithResponse().subscribe(
+            response -> System.out.println("Deleting the queue completed with status code: " + response.getStatusCode())
+        );
+        // END: com.azure.storage.queue.queueAsyncClient.deleteIfExistsWithResponse
+    }
+
 }

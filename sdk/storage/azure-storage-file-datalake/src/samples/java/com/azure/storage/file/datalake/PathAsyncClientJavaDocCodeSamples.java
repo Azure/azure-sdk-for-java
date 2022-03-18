@@ -19,6 +19,7 @@ import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveO
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import com.azure.storage.file.datalake.sas.PathSasPermission;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -452,5 +453,53 @@ public class PathAsyncClientJavaDocCodeSamples {
 
         client.generateUserDelegationSas(values, userDelegationKey, accountName, new Context("key", "value"));
         // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey-String-Context
+    }
+
+    /**
+     * Code snippets for {@link DataLakePathAsyncClient#createIfNotExists()},
+     * {@link DataLakePathAsyncClient#createIfNotExistsWithResponse(String, String, PathHttpHeaders, Map)} and
+     * {@link DataLakePathAsyncClient#createIfNotExistsWithResponse(String, String, PathHttpHeaders, Map, Context)}
+     */
+    public void createIfNotExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExists
+        client.createIfNotExists().subscribe(response ->
+            System.out.printf("Last Modified Time:%s", response.getLastModified()));
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExists
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExistsWithResponse#String-String-PathHttpHeaders-Map
+        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+        String permissions = "permissions";
+        String umask = "umask";
+
+        client.createIfNotExistsWithResponse(permissions, umask, httpHeaders, Collections.singletonMap("metadata", "value"))
+            .subscribe(response -> System.out.printf("Last Modified Time:%s", response.getValue().getLastModified()));
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExistsWithResponse#String-String-PathHttpHeaders-Map
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExistsWithResponse#String-String-PathHttpHeaders-Map-Context
+        client.createIfNotExistsWithResponse(permissions, umask, httpHeaders, Collections.singletonMap("metadata", "value"),
+                new Context("key1", "value1")).subscribe(response ->
+            System.out.printf("Last Modified Time:%s", response.getValue().getLastModified()));
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExistsWithResponse#String-String-PathHttpHeaders-Map-Context
+    }
+
+    /**
+     * Code snippets for {@link DataLakePathAsyncClient#deleteIfExists()} and
+     * {@link DataLakePathAsyncClient#deleteIfExistsWithResponse(boolean, DataLakeRequestConditions, Context)}
+     */
+    public void deleteIfExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.deleteIfExists
+        client.deleteIfExists().subscribe(
+            response -> System.out.printf("Delete completed%n"),
+            error -> System.out.printf("Delete failed: %s%n", error));
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.deleteIfExists
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.deleteIfExistsWithResponse#boolean-DataLakeRequestConditions-Context
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId);
+        client.deleteIfExistsWithResponse(false, requestConditions, new Context("key1", "value1")).subscribe(response ->
+            System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.deleteIfExistsWithResponse#boolean-DataLakeRequestConditions-Context
     }
 }

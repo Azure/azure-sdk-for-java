@@ -491,6 +491,135 @@ public class FileSystemClientJavaDocCodeSamples {
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey-String-Context
     }
 
+    /**
+     * Code snippet for {@link DataLakeFileSystemClient#createIfNotExists()} and
+     * {@link DataLakeFileSystemClient#createIfNotExistsWithResponse(Map, PublicAccessType, Duration, Context)}
+     */
+    public void createIfNotExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.createIfNotExists
+        client.createIfNotExists();
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.createIfNotExists
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.createIfNotExistsWithResponse#Map-PublicAccessType-Duration-Context
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        Context context = new Context("Key", "Value");
+
+        Response<Void> response = client.createIfNotExistsWithResponse(metadata, PublicAccessType.CONTAINER, timeout, context);
+        if (response != null) {
+            System.out.printf("Create completed with status %d%n", response.getStatusCode());
+        } else {
+            System.out.println("File system already exists.");
+        }
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.createIfNotExistsWithResponse#Map-PublicAccessType-Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link DataLakeFileSystemClient#deleteIfExists()} and
+     * {@link DataLakeFileSystemClient#deleteIfExistsWithResponse(DataLakeRequestConditions, Duration, Context)}
+     */
+    public void deleteIfExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteIfExists
+        client.deleteIfExists();
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteIfExists
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteIfExistsWithResponse#DataLakeRequestConditions-Duration-Context
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+        Context context = new Context("Key", "Value");
+
+        Response<Void> response = client.deleteIfExistsWithResponse(requestConditions, timeout, context);
+        if (response != null) {
+            System.out.printf("Delete completed with status %d%n", response.getStatusCode());
+        } else {
+            System.out.println("File system does not exist.");
+        }
+
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteIfExistsWithResponse#DataLakeRequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link DataLakeFileSystemClient#createFileIfNotExists(String)} and
+     * {@link DataLakeFileSystemClient#createFileIfNotExistsWithResponse(String, String, String, PathHttpHeaders, Map, Duration, Context)}
+     */
+    public void createFileIfNotExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileIfNotExists#String
+        DataLakeFileClient fileClient = client.createFile(fileName);
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileIfNotExists#String
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-Duration-Context
+        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+        String permissions = "permissions";
+        String umask = "umask";
+        Response<DataLakeFileClient> newFileClient = client.createFileIfNotExistsWithResponse(fileName, permissions, umask, httpHeaders,
+            Collections.singletonMap("metadata", "value"),
+            timeout, new Context(key1, value1));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link DataLakeFileSystemClient#deleteFileIfExists(String)} and
+     * {@link DataLakeFileSystemClient#deleteFileIfExistsWithResponse(String, DataLakeRequestConditions, Duration, Context)}
+     */
+    public void deleteFileIfExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteFileIfExists#String
+        client.deleteFile(fileName);
+        System.out.println("Delete request completed");
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteFileIfExists#String
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteFileIfExistsWithResponse#String-DataLakeRequestConditions-Duration-Context
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId);
+
+        client.deleteFileWithResponse(fileName, requestConditions, timeout, new Context(key1, value1));
+        System.out.println("Delete request completed");
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteFileIfExistsWithResponse#String-DataLakeRequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link DataLakeFileSystemClient#createDirectoryIfNotExists(String)} and
+     * {@link DataLakeFileSystemClient#createDirectoryIfNotExistsWithResponse(String, String, String, PathHttpHeaders, Map, Duration, Context)}
+     */
+    public void createDirectoryIfNotExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryIfNotExists#String
+        DataLakeDirectoryClient directoryClient = client.createDirectoryIfNotExists(directoryName);
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryIfNotExists#String
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse#String-String-String-PathHttpHeaders-Map-Duration-Context
+        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+        String permissions = "permissions";
+        String umask = "umask";
+        Response<DataLakeDirectoryClient> newDirectoryClient = client.createDirectoryIfNotExistsWithResponse(directoryName,
+            permissions, umask, httpHeaders, Collections.singletonMap("metadata", "value"),
+            timeout, new Context(key1, value1));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse#String-String-String-PathHttpHeaders-Map-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link DataLakeFileSystemClient#deleteDirectoryIfExists(String)} and
+     * {@link DataLakeFileSystemClient#deleteDirectoryIfExistsWithResponse(String, boolean, DataLakeRequestConditions, Duration, Context)}
+     */
+    public void deleteDirectoryIfExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectoryIfExists#String
+        client.deleteDirectoryIfExists(directoryName);
+        System.out.println("Delete request completed");
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectoryIfExists#String
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectoryIfExistsWithResponse#String-boolean-DataLakeRequestConditions-Duration-Context
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId);
+        boolean recursive = false; // Default value
+
+        client.deleteDirectoryIfExistsWithResponse(directoryName, recursive, requestConditions, timeout,
+            new Context(key1, value1));
+        System.out.println("Delete request completed");
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectoryIfExistsWithResponse#String-boolean-DataLakeRequestConditions-Duration-Context
+    }
+
 //    /**
 //     * Code snippet for {@link DataLakeFileSystemClient#rename(String)}
 //     */

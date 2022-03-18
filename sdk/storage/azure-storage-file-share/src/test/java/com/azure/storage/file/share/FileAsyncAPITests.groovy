@@ -1265,4 +1265,40 @@ class FileAsyncAPITests extends APISpec {
         expect:
         filePath == primaryFileAsyncClient.getFilePath()
     }
+
+    def "Delete file if exists"() {
+        def client = primaryFileAsyncClient.getFileAsyncClient(generateShareName())
+        client.create(1024).block()
+
+        when:
+        client.deleteIfExists().block()
+        client.getProperties().block()
+
+        then:
+        thrown(ShareStorageException)
+        client.exists().block() == false
+    }
+
+    def "Delete file if exists with response"() {
+        def client = primaryFileAsyncClient.getFileAsyncClient(generateShareName())
+        client.create(1024).block()
+
+        when:
+        def response = client.deleteIfExistsWithResponse(null, null).block()
+
+        then:
+        FileTestHelper.assertResponseStatusCode(response, 202)
+        client.exists().block() == false
+    }
+
+    def "Delete file that does not exist"() {
+        def client = primaryFileAsyncClient.getFileAsyncClient(generateShareName())
+
+        when:
+        def response = client.deleteIfExistsWithResponse(null, null).block()
+
+        then:
+        response == null
+        client.exists().block() == false
+    }
 }

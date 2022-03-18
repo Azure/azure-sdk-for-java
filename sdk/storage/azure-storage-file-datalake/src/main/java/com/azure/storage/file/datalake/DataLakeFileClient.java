@@ -179,19 +179,59 @@ public class DataLakeFileClient extends DataLakePathClient {
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
-/*
+
+    /**
+     * Deletes a file if it exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileClient.deleteIfExists -->
+     * <pre>
+     * client.deleteIfExists&#40;&#41;;
+     * System.out.println&#40;&quot;Delete request completed&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileClient.deleteIfExists -->
+     *
+     * <p>For more information see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * Docs</a></p>
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteIfExists() {
-        deleteIfExistsWithResponse(null, null, Context.NONE);
+        deleteIfExistsWithResponse(false,null, null, Context.NONE);
     }
 
+    /**
+     * Deletes a file if it exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileClient.deleteIfExistsWithResponse#DataLakeRequestConditions-Duration-Context -->
+     * <pre>
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;;
+     *
+     * client.deleteIfExistsWithResponse&#40;requestConditions, timeout, new Context&#40;key1, value1&#41;&#41;;
+     * System.out.println&#40;&quot;Delete request completed&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileClient.deleteIfExistsWithResponse#DataLakeRequestConditions-Duration-Context -->
+     *
+     * <p>For more information see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * Docs</a></p>
+     *
+     * @param requestConditions {@link DataLakeRequestConditions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A response containing status code and HTTP headers, or null if specified file does not exist.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteIfExistsWithResponse(DataLakeRequestConditions requestConditions, Duration timeout,
-                                             Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(dataLakeFileAsyncClient.deleteIfExistsWithResponse(requestConditions, context), timeout);
+        Context context) {
+        return StorageImplUtils.blockWithOptionalTimeout(dataLakeFileAsyncClient.deleteIfExistsWithResponse(false, requestConditions, context), timeout);
     }
 
- */
 
     /**
      * Creates a new file. By default this method will not overwrite an existing file.

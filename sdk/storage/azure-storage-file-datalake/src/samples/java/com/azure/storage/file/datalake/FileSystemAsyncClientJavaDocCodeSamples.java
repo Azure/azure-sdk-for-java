@@ -452,6 +452,124 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
         // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey-String-Context
     }
 
+    /**
+     * Code snippet for {@link DataLakeFileSystemAsyncClient#createIfNotExists()} and
+     * for {@link DataLakeFileSystemAsyncClient#createIfNotExistsWithResponse(Map, PublicAccessType)}
+     */
+    public void createIfNotExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createIfNotExists
+        client.createIfNotExists().subscribe(
+            response -> System.out.printf("Create completed%n"),
+            error -> System.out.printf("Error while creating file system %s%n", error));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createIfNotExists
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createIfNotExistsWithResponse#Map-PublicAccessType
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        client.createIfNotExistsWithResponse(metadata, PublicAccessType.CONTAINER).subscribe(response ->
+            System.out.printf("Create completed with status %d%n", response.getStatusCode()));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createIfNotExistsWithResponse#Map-PublicAccessType
+    }
+
+    /**
+     * Code snippet for {@link DataLakeFileSystemAsyncClient#deleteIfExists()} and
+     * for {@link DataLakeFileSystemAsyncClient#deleteIfExistsWithResponse(DataLakeRequestConditions)}
+     */
+    public void deleteIfExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteIfExists
+        client.deleteIfExists().subscribe(
+            response -> System.out.printf("Delete completed%n"),
+            error -> System.out.printf("Delete failed: %s%n", error));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteIfExists
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteIfExistsWithResponse#DataLakeRequestConditions
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+
+        client.deleteIfExistsWithResponse(requestConditions).subscribe(response ->
+            System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteIfExistsWithResponse#DataLakeRequestConditions
+    }
+
+    /**
+     * Code snippets for {@link DataLakeFileSystemAsyncClient#createFileIfNotExists(String)} and
+     * {@link DataLakeFileSystemAsyncClient#createFileIfNotExistsWithResponse(String, String, String, PathHttpHeaders, Map)}
+     */
+    public void createFileIfNotExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFileIfNotExists#String
+        Mono<DataLakeFileAsyncClient> fileClient = client.createFileIfNotExists(fileName);
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFileIfNotExists#String
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFileIfNotExistsWithResponse#String-String-String-PathHttpHeaders-Map
+        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+        String permissions = "permissions";
+        String umask = "umask";
+        Mono<Response<DataLakeFileAsyncClient>> newFileClient = client.createFileIfNotExistsWithResponse(fileName, permissions,
+            umask, httpHeaders, Collections.singletonMap("metadata", "value"));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFileIfNotExistsWithResponse#String-String-String-PathHttpHeaders-Map
+    }
+
+    /**
+     * Code snippets for {@link DataLakeFileSystemAsyncClient#deleteFileIfExists(String)} (String)} and
+     * {@link DataLakeFileSystemAsyncClient#deleteFileIfExistsWithResponse(String, DataLakeRequestConditions)}
+     */
+    public void deleteFileIfExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteFileIfExists#String
+        client.deleteFileIfExists(fileName).subscribe(response ->
+            System.out.println("Delete request completed"));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteFileIfExists#String
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteFileIfExistsWithResponse#String-DataLakeRequestConditions
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId);
+
+        client.deleteFileIfExistsWithResponse(fileName, requestConditions)
+            .subscribe(response -> System.out.println("Delete request completed"));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteFileIfExistsWithResponse#String-DataLakeRequestConditions
+    }
+
+    /**
+     * Code snippets for {@link DataLakeFileSystemAsyncClient#createDirectoryIfNotExists(String)} (String)} and
+     * {@link DataLakeFileSystemAsyncClient#createDirectoryIfNotExistsWithResponse(String, String, String, PathHttpHeaders, Map)}
+     */
+    public void createDirectoryIfNotExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryIfNotExists#String
+        Mono<DataLakeDirectoryAsyncClient> directoryClient = client.createDirectoryIfNotExists(directoryName);
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryIfNotExists#String
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryWithResponse#String-String-String-PathHttpHeaders-Map
+        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+        String permissions = "permissions";
+        String umask = "umask";
+        Mono<Response<DataLakeDirectoryAsyncClient>> newDirectoryClient = client.createDirectoryIfNotExistsWithResponse(
+            directoryName, permissions, umask, httpHeaders, Collections.singletonMap("metadata", "value"));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryWithResponse#String-String-String-PathHttpHeaders-Map
+    }
+
+    /**
+     * Code snippets for {@link DataLakeFileSystemAsyncClient#deleteDirectoryIfExists(String)} and
+     * {@link DataLakeFileSystemAsyncClient#deleteDirectoryIfExistsWithResponse(String, boolean, DataLakeRequestConditions)}
+     */
+    public void deleteDirectoryIfExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteDirectoryIfExists#String
+        client.deleteDirectoryIfExists(directoryName).subscribe(response ->
+            System.out.println("Delete request completed"));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteDirectoryIfExists#String
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteDirectoryIfExistsWithResponse#String-boolean-DataLakeRequestConditions
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId);
+        boolean recursive = false; // Default value
+
+        client.deleteDirectoryIfExistsWithResponse(directoryName, recursive, requestConditions)
+            .subscribe(response -> System.out.println("Delete request completed"));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteDirectoryIfExistsWithResponse#String-boolean-DataLakeRequestConditions
+    }
+
 //    /**
 //     * Code snippet for {@link DataLakeFileSystemAsyncClient#rename(String)}
 //     */

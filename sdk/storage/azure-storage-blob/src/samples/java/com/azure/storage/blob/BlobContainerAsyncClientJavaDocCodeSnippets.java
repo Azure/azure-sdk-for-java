@@ -440,6 +440,45 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
         // END: com.azure.storage.blob.BlobContainerAsyncClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey-String-Context
     }
 
+    /**
+     * Code snippet for {@link BlobContainerAsyncClient#createIfNotExists()} and
+     * {@link BlobContainerAsyncClient#createIfNotExistsWithResponse(Map, PublicAccessType)}
+     */
+    public void createIfNotExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExists
+        client.createIfNotExists().subscribe(
+            response -> System.out.printf("Create completed%n"),
+            error -> System.out.printf("Error while creating container %s%n", error));
+        // END: com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExists
+
+        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExistsWithResponse#Map-PublicAccessType
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        client.createIfNotExistsWithResponse(metadata, PublicAccessType.CONTAINER).subscribe(response ->
+            System.out.printf("Create completed with status %d%n", response.getStatusCode()));
+        // END: com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExistsWithResponse#Map-PublicAccessType
+    }
+
+    /**
+     * Code snippet for {@link BlobContainerAsyncClient#deleteIfExists()} and
+     * {@link BlobContainerAsyncClient#deleteIfExistsWithResponse(BlobRequestConditions)}
+     */
+    public void deleteIfExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExists
+        client.deleteIfExists().subscribe(
+            response -> System.out.printf("Delete completed%n"),
+            error -> System.out.printf("Delete failed: %s%n", error));
+        // END: com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExists
+
+        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExistsWithResponse#BlobRequestConditions
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+
+        client.deleteIfExistsWithResponse(requestConditions).subscribe(response ->
+            System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
+        // END: com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExistsWithResponse#BlobRequestConditions
+    }
+
 //    /**
 //     * Code snippet for {@link BlobContainerAsyncClient#rename(String)}
 //     */

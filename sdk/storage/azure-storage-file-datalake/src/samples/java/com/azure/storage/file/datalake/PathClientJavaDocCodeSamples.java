@@ -482,4 +482,62 @@ public class PathClientJavaDocCodeSamples {
         // END: com.azure.storage.file.datalake.DataLakePathClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey-String-Context
     }
 
+    /**
+     * Code snippets for {@link DataLakePathClient#createIfNotExists()} and
+     * {@link DataLakePathClient#createIfNotExistsWithResponse(String, String, PathHttpHeaders, Map, Duration, Context)}
+     */
+    public void createIfNotExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.createIfNotExists
+        PathInfo pathInfo = client.createIfNotExists();
+        if (pathInfo != null) {
+            System.out.printf("Last Modified Time:%s", pathInfo.getLastModified());
+        } else {
+            System.out.println("already exists.");
+        }
+        // END: com.azure.storage.file.datalake.DataLakePathClient.createIfNotExists
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.createIfNotExistsWithResponse#String-String-PathHttpHeaders-Map-Duration-Context
+        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+        String permissions = "permissions";
+        String umask = "umask";
+
+        Response<PathInfo> response = client.createIfNotExistsWithResponse(permissions, umask, httpHeaders,
+            Collections.singletonMap("metadata", "value"), timeout,
+            new Context(key1, value1));
+
+        if (response != null) {
+            System.out.printf("Last Modified Time:%s", response.getValue().getLastModified());
+        } else {
+            System.out.println("already exists.");
+        }
+        // END: com.azure.storage.file.datalake.DataLakePathClient.createIfNotExistsWithResponse#String-String-PathHttpHeaders-Map-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link DataLakePathClient#deleteIfExists()} and
+     * {@link DataLakePathClient#deleteIfExistsWithResponse(boolean, DataLakeRequestConditions, Duration, Context)}
+     */
+    public void deleteIfExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.deleteIfExists
+        client.create();
+        client.deleteIfExists();
+        System.out.println("Delete complete.");
+        // END: com.azure.storage.file.datalake.DataLakePathClient.deleteIfExists
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.deleteIfExistsWithResponse#boolean-DataLakeRequestConditions-Duration-Context
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId);
+        Response<Void> response = client.deleteIfExistsWithResponse(false, requestConditions, timeout,
+            new Context(key1, value1));
+
+        if (response != null) {
+            System.out.printf("Delete completed with status %d%n", response.getStatusCode());
+        } else {
+            System.out.println("Does not exist.");
+        }
+        // END: com.azure.storage.file.datalake.DataLakePathClient.deleteIfExistsWithResponse#boolean-DataLakeRequestConditions-Duration-Context
+    }
+
 }

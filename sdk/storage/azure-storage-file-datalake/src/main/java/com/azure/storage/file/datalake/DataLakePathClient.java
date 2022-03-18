@@ -231,30 +231,140 @@ public class DataLakePathClient {
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
+    /**
+     * Creates a resource if a path does not exist.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClient.createIfNotExists -->
+     * <pre>
+     * PathInfo pathInfo = client.createIfNotExists&#40;&#41;;
+     *      if &#40;pathInfo != null&#41; &#123;
+     *          System.out.printf&#40;&quot;Last Modified Time:%s&quot;, pathInfo.getLastModified&#40;&#41;&#41;;
+     *      &#125; else &#123;
+     *          System.out.println&#40;&quot;already exists.&quot;&#41;;
+     *      &#125;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathClient.createIfNotExists -->
+     *
+     * <p>For more information see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * Docs</a></p>
+     *
+     * @return Information about the created resource, or null if a resource already exists at the specified path.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PathInfo createIfNotExists() {
         Response<PathInfo> response = createIfNotExistsWithResponse(null, null, null, null, null, null);
         return response == null ? null : response.getValue();
     }
 
+    /**
+     * Creates a resource if a path does not exist.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClient.createIfNotExistsWithResponse#String-String-PathHttpHeaders-Map-Duration-Context -->
+     * <pre>
+     * PathHttpHeaders httpHeaders = new PathHttpHeaders&#40;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     * String permissions = &quot;permissions&quot;;
+     * String umask = &quot;umask&quot;;
+     *
+     * Response&lt;PathInfo&gt; response = client.createIfNotExistsWithResponse&#40;permissions, umask, httpHeaders,
+     *      Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;), timeout, new Context&#40;key1, value1));
+     *
+     * if &#40;response != null&#41; &#123;
+     *             System.out.printf&#40;&quot;Last Modified Time:%s&quot;, response.getValue&#40;&#41;.getLastModified&#40;&#41;&#41;;
+     *         &#125; else &#123;
+     *             System.out.println&#40;&quot;already exists.&quot;&#41;;
+     *         &#125;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathClient.createIfNotExistsWithResponse#String-String-PathHttpHeaders-Map-Duration-Context -->
+     *
+     * <p>For more information see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * Docs</a></p>
+     *
+     * @param permissions POSIX access permissions for the resource owner, the resource owning group, and others.
+     * @param umask Restricts permissions of the resource to be created.
+     * @param headers {@link PathHttpHeaders}
+     * @param metadata Metadata to associate with the resource. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing information about the created resource, or null if the resource exists on the specified path.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PathInfo> createIfNotExistsWithResponse(String permissions, String umask, PathHttpHeaders headers,
                                                  Map<String, String> metadata, Duration timeout, Context context) {
-        Mono<Response<PathInfo>> response = dataLakePathAsyncClient.createIfNotExistsWithResponse(
-            permissions, umask, headers, metadata, context);
-        //if (response == null) return null;
-
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(dataLakePathAsyncClient.createIfNotExistsWithResponse(
+            permissions, umask, headers, metadata, context), timeout);
     }
 
+    /**
+     * Deletes paths under the resource if it exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClient.deleteIfExists -->
+     * <pre>
+     * client.create&#40;&#41;;
+     * client.deleteIfExists&#40;&#41;;
+     * System.out.println&#40;&quot;Delete complete.&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathClient.deleteIfExists -->
+     *
+     * <p>For more information see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * Docs</a></p>
+     *
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteIfExists() {
-        deleteIfExistsWithResponse(null, null, null);
+        deleteIfExistsWithResponse(false, null, null, null);
     }
 
+    /**
+     * Deletes all paths under the specified resource if exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClient.deleteIfExistsWithResponse#boolean-DataLakeRequestConditions-Duration-Context -->
+     * <pre>
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;;
+     * Response&lt;Void&gt; response = client.deleteIfExistsWithResponse&#40;false, requestConditions, timeout,
+     *      new Context&#40;key1, value1&#41;&#41;;
+     *
+     * if &#40;response != null&#41; &#123;
+     *      System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * &#125; else &#123;
+     *      System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     * &#125;
+     *
+     * client.deleteIfExistsWithResponse&#40;requestConditions, timeout, new Context&#40;key1, value1&#41;&#41;;
+     * System.out.println&#40;&quot;Delete request completed&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathClient.deleteIfExistsWithResponse#boolean-DataLakeRequestConditions-Duration-Context -->
+     *
+     * <p>For more information see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * Docs</a></p>
+     *
+     * @param recursive Whether or not to delete all paths beneath the directory.
+     * @param requestConditions {@link DataLakeRequestConditions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A response containing status code and HTTP headers, or null if specified resource does not exist.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteIfExistsWithResponse(DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(dataLakePathAsyncClient.deleteIfExistsWithResponse(requestConditions, context), timeout);
+    public Response<Void> deleteIfExistsWithResponse(boolean recursive, DataLakeRequestConditions requestConditions,
+        Duration timeout, Context context) {
+        return StorageImplUtils.blockWithOptionalTimeout(dataLakePathAsyncClient
+            .deleteIfExistsWithResponse(recursive, requestConditions, context), timeout);
     }
 
     /**

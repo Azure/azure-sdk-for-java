@@ -426,4 +426,23 @@ public class DataLakeFileAsyncClientJavaDocSamples {
         // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.scheduleDeletionWithResponse#FileScheduleDeletionOptions
     }
 
+    /**
+     * Code snippets for {@link DataLakeFileAsyncClient#deleteIfExists()} and
+     * {@link DataLakeFileAsyncClient#deleteIfExistsWithResponse(DataLakeRequestConditions)}
+     */
+    public void deleteIfExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.deleteIfExists
+        client.deleteIfExists().subscribe(response ->
+            System.out.println("Delete request completed"));
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.deleteIfExists
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.deleteIfExistsWithResponse#DataLakeRequestConditions
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId);
+
+        client.deleteIfExistsWithResponse(requestConditions)
+            .subscribe(response -> System.out.println("Delete request completed"));
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.deleteIfExistsWithResponse#DataLakeRequestConditions
+    }
+
 }

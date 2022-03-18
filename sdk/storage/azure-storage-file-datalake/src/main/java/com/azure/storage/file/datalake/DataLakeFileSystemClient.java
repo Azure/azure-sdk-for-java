@@ -267,14 +267,54 @@ public class DataLakeFileSystemClient {
                 context), logger);
     }
 
+    /**
+     * Creates a new file system within a storage account if it does not exist. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.createIfNotExists -->
+     * <pre>
+     * client.createIfNotExists&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createIfNotExists -->
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void createIfNotExists() {
         createIfNotExistsWithResponse(null, null, null, Context.NONE);
     }
 
+    /**
+     * Creates a new file system within a storage account if it does not exist. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.createIfNotExistsWithResponse#Map-PublicAccessType-Duration-Context -->
+     * <pre>
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
+     *
+     * Response&lt;Void&gt; response = client.createIfNotExistsWithResponse&#40;metadata, PublicAccessType.CONTAINER, timeout, context&#41;
+     * if &#40;response != null&#41; &#123;
+     *      System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * &#125; else &#123;
+     *      System.out.println&#40;&quot;File system already exists.&quot;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createIfNotExistsWithResponse#Map-PublicAccessType-Duration-Context -->
+     *
+     * @param metadata Metadata to associate with the file system. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
+     * @param accessType Specifies how the data in this file system is available to the public. See the
+     * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers, or null if file system with the same name already exists.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createIfNotExistsWithResponse(Map<String, String> metadata, PublicAccessType accessType,
-                                             Duration timeout, Context context) {
+        Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() ->
             blobContainerClient.createIfNotExistsWithResponse(metadata, Transforms.toBlobPublicAccessType(accessType), timeout,
                 context), logger);
@@ -337,11 +377,52 @@ public class DataLakeFileSystemClient {
                 context), logger);
     }
 
+    /**
+     * Marks the specified file system for deletion if it exists. The file system and any files/directories contained within it are
+     * later deleted during garbage collection. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteIfExists -->
+     * <pre>
+     * client.deleteIfExists&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteIfExists -->
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteIfExists() {
         deleteIfExistsWithResponse(null, null, Context.NONE);
     }
 
+    /**
+     * Marks the specified file system for deletion if it exists. The file system and any files/directories contained within it are
+     * later deleted during garbage collection. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteIfExistsWithResponse#DataLakeRequestConditions-Duration-Context -->
+     * <pre>
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
+     *
+     * Response&lt;Void&gt; response = client.deleteIfExistsWithResponse&#40;requestConditions, timeout, context&#41;;
+     * if &#40;response != null&#41; &#123;
+     *      System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * &#125; else &#123;
+     *      System.out.println&#40;&quot;File system does not exist.&quot;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteIfExistsWithResponse#DataLakeRequestConditions-Duration-Context -->
+     *
+     * @param requestConditions {@link DataLakeRequestConditions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers, or null if specified file system does not exist.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteIfExistsWithResponse(DataLakeRequestConditions requestConditions, Duration timeout,
                                              Context context) {
@@ -661,6 +742,22 @@ public class DataLakeFileSystemClient {
             requestConditions, timeout, context), dataLakeFileClient);
     }
 
+    /**
+     * Creates a new file within a file system if it does not exist. For more
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileIfNotExists#String -->
+     * <pre>
+     * DataLakeFileClient fileClient = client.createFileIfNotExists&#40;fileName&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileIfNotExists#String -->
+     *
+     * @param fileName Name of the file to create. If the path name contains special characters, pass in the url encoded
+     *  version of the path name.
+     * @return A {@link DataLakeFileClient} used to interact with the file created, or null if the file with the specified name already exists.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataLakeFileClient createFileIfNotExists(String fileName) {
         Response<DataLakeFileClient> response = createFileIfNotExistsWithResponse(fileName, null, null, null,
@@ -668,14 +765,45 @@ public class DataLakeFileSystemClient {
         return response == null ? null : response.getValue();
     }
 
+    /**
+     * Creates a new file within a file system if it does not exist.
+     * For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileIfNotExistsWithResponse#String-String-String-PathHttpHeaders-Map-Duration-Context -->
+     * <pre>
+     * PathHttpHeaders httpHeaders = new PathHttpHeaders&#40;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     * String permissions = &quot;permissions&quot;;
+     * String umask = &quot;umask&quot;;
+     * Response&lt;DataLakeFileClient&gt; newFileClient = client.createFileIfNotExistsWithResponse&#40;fileName, permissions, umask, httpHeaders,
+     *     Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;,
+     *     timeout, new Context&#40;key1, value1&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileIfNotExistsWithResponse#String-String-String-PathHttpHeaders-Map-Duration-Context -->
+     *
+     * @param fileName Name of the file to create. If the path name contains special characters, pass in the url encoded
+     * version of the path name.
+     * @param permissions POSIX access permissions for the file owner, the file owning group, and others.
+     * @param umask Restricts permissions of the file to be created.
+     * @param headers {@link PathHttpHeaders}
+     * @param metadata Metadata to associate with the file. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link DataLakeFileClient} used
+     * to interact with the file created. Response will be null if a file already exists with the specified name.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataLakeFileClient> createFileIfNotExistsWithResponse(String fileName, String permissions, String umask,
                                                                PathHttpHeaders headers, Map<String, String> metadata,
                                                                Duration timeout, Context context) {
         DataLakeFileClient dataLakeFileClient = getFileClient(fileName);
-
-        return new SimpleResponse<>(dataLakeFileClient.createIfNotExistsWithResponse(permissions, umask, headers, metadata, timeout, context),
-            dataLakeFileClient);
+        Response<PathInfo> response = dataLakeFileClient.createIfNotExistsWithResponse(permissions, umask, headers, metadata, timeout, context);
+        return response == null ? null : new SimpleResponse<>(response, dataLakeFileClient);
     }
 
     /**
@@ -730,14 +858,55 @@ public class DataLakeFileSystemClient {
         return getFileClient(fileName).deleteWithResponse(requestConditions, timeout, context);
     }
 
+    /**
+     * Deletes the specified file in the file system if it exists.
+     * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteFileIfExists#String -->
+     * <pre>
+     * client.deleteFileIfExists&#40;fileName&#41;;
+     * System.out.println&#40;&quot;Delete request completed&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteFileIfExists#String -->
+     *
+     * @param fileName Name of the file to delete. If the path name contains special characters, pass in the url encoded
+     * version of the path name.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteFileIfExists(String fileName) {
         deleteFileIfExistsWithResponse(fileName, null, null, Context.NONE).getValue();
     }
 
+    /**
+     * Deletes the specified file in the file system if it exists.
+     * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteFileIfExistsWithResponse#String-DataLakeRequestConditions-Duration-Context -->
+     * <pre>
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;;
+     *
+     * client.deleteFileIfExistsWithResponse&#40;fileName, requestConditions, timeout, new Context&#40;key1, value1&#41;&#41;;
+     * System.out.println&#40;&quot;Delete request completed&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteFileIfExistsWithResponse#String-DataLakeRequestConditions-Duration-Context -->
+     *
+     * @param fileName Name of the file to delete. If the path name contains special characters, pass in the url encoded
+     * version of the path name.
+     * @param requestConditions {@link DataLakeRequestConditions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers, or null if the specified file does not exist.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteFileIfExistsWithResponse(String fileName, DataLakeRequestConditions requestConditions,
-                                                 Duration timeout, Context context) {
+        Duration timeout, Context context) {
         return getFileClient(fileName).deleteIfExistsWithResponse(requestConditions, timeout, context);
     }
             /**
@@ -836,6 +1005,24 @@ public class DataLakeFileSystemClient {
             requestConditions, timeout, context), dataLakeDirectoryClient);
     }
 
+    /**
+     * Creates a new directory within a file system if it does not exist.
+     * For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryIfNotExists#String -->
+     * <pre>
+     * DataLakeDirectoryClient directoryClient = client.createDirectoryIfNotExists&#40;directoryName&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryIfNotExists#String -->
+     *
+     * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
+     * url encoded version of the path name.
+     * @return A {@link DataLakeDirectoryClient} used to interact with the directory created, or null if the directory
+     * with the specified name already exists.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataLakeDirectoryClient createDirectoryIfNotExists(String directoryName) {
         Response<DataLakeDirectoryClient> response = createDirectoryIfNotExistsWithResponse(directoryName,
@@ -843,11 +1030,45 @@ public class DataLakeFileSystemClient {
         return response == null ? null : response.getValue();
     }
 
+    /**
+     * Creates a new directory within a file system if it does not exist. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse#String-String-String-PathHttpHeaders-Map-Duration-Context -->
+     * <pre>
+     * PathHttpHeaders httpHeaders = new PathHttpHeaders&#40;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     * String permissions = &quot;permissions&quot;;
+     * String umask = &quot;umask&quot;;
+     * Response&lt;DataLakeDirectoryClient&gt; newDirectoryClient = client.createDirectoryIfNotExistsWithResponse&#40;directoryName,
+     *     permissions, umask, httpHeaders, Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;,
+     *     timeout, new Context&#40;key1, value1&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse#String-String-String-PathHttpHeaders-Map-Duration-Context -->
+     *
+     * @param directoryName Name of the directory to create.  If the path name contains special characters, pass in the
+     * url encoded version of the path name.
+     * @param permissions POSIX access permissions for the directory owner, the directory owning group, and others.
+     * @param umask Restricts permissions of the directory to be created.
+     * @param headers {@link PathHttpHeaders}
+     * @param metadata Metadata to associate with the resource. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A {@link Response} whose {@link Response#getValue() value} contains a {@link DataLakeDirectoryClient}
+     * used to interact with the directory created, or null if the directory with the specified name already exists.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataLakeDirectoryClient> createDirectoryIfNotExistsWithResponse(String directoryName, String permissions,
-                                                                         String umask, PathHttpHeaders headers, Map<String, String> metadata, Duration timeout, Context context) {
+        String umask, PathHttpHeaders headers, Map<String, String> metadata, Duration timeout, Context context) {
         DataLakeDirectoryClient dataLakeDirectoryClient = getDirectoryClient(directoryName);
-        return new SimpleResponse<>(dataLakeDirectoryClient.createIfNotExistsWithResponse(permissions, umask, headers, metadata, timeout, context), dataLakeDirectoryClient);
+        Response<PathInfo> response = dataLakeDirectoryClient
+            .createIfNotExistsWithResponse(permissions, umask, headers, metadata, timeout, context);
+        return response == null ? null : new SimpleResponse<>(response, dataLakeDirectoryClient);
     }
 
     /**
@@ -903,6 +1124,61 @@ public class DataLakeFileSystemClient {
     public Response<Void> deleteDirectoryWithResponse(String directoryName, boolean recursive,
         DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
         return getDirectoryClient(directoryName).deleteWithResponse(recursive, requestConditions, timeout, context);
+    }
+
+    /**
+     * Deletes the specified directory in the file system if it exists.
+     * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectoryIfExists#String -->
+     * <pre>
+     * client.deleteDirectoryIfExists&#40;directoryName&#41;;
+     * System.out.println&#40;&quot;Delete request completed&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectoryIfExists#String -->
+     *
+     * @param directoryName Name of the directory to delete.  If the path name contains special characters, pass in the
+     * url encoded version of the path name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteDirectoryIfExists(String directoryName) {
+        deleteDirectoryWithResponse(directoryName, false, null, null, Context.NONE);
+    }
+
+    /**
+     * Deletes the specified directory in the file system if it exists.
+     * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectoryIfExistsWithResponse#String-boolean-DataLakeRequestConditions-Duration-Context -->
+     * <pre>
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;;
+     * boolean recursive = false; &#47;&#47; Default value
+     *
+     * client.deleteDirectoryIfExistsWithResponse&#40;directoryName, recursive, requestConditions, timeout,
+     *     new Context&#40;key1, value1&#41;&#41;;
+     * System.out.println&#40;&quot;Delete request completed&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectoryIfExistsWithResponse#String-boolean-DataLakeRequestConditions-Duration-Context -->
+     *
+     * @param directoryName Name of the directory to delete. If the path name contains special characters, pass in the
+     * url encoded version of the path name.
+     * @param recursive Whether or not to delete all paths beneath the directory.
+     * @param requestConditions {@link DataLakeRequestConditions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers, or null if the specified directory does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteDirectoryIfExistsWithResponse(String directoryName, boolean recursive,
+                                                      DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
+        return getDirectoryClient(directoryName).deleteIfExistsWithResponse(recursive, requestConditions, timeout, context);
     }
 
     /**

@@ -1290,7 +1290,7 @@ public class ShareFileAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteIfExists() {
         try {
-            return deleteWithResponse(null).flatMap(FluxUtil::toMono);
+            return deleteIfExistsWithResponse().flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1298,7 +1298,21 @@ public class ShareFileAsyncClient {
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteIfExistsWithResponse() {
-        return deleteWithResponse(null);
+        return deleteIfExistsWithResponse(null);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteIfExistsWithResponse(ShareRequestConditions requestConditions) {
+        try {
+            return withContext(context -> this.deleteIfExistsWithResponse(requestConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<Void>> deleteIfExistsWithResponse(ShareRequestConditions requestConditions, Context context) {
+        return deleteWithResponse(requestConditions, context).onErrorResume(t -> t instanceof ShareStorageException
+            && ((ShareStorageException)t).getStatusCode() == 404, t -> Mono.empty());
     }
 
     /**

@@ -284,7 +284,7 @@ public class ShareDirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareDirectoryClient#deleteFile(String)} ()}
+     * Generates a code sample for using {@link ShareDirectoryClient#deleteFile(String)}
      */
     public void deleteFile() {
         ShareDirectoryClient shareDirectoryClient = createClientWithSASToken();
@@ -619,4 +619,113 @@ public class ShareDirectoryJavaDocCodeSamples {
         shareDirectoryClient.generateSas(values, new Context("key", "value"));
         // END: com.azure.storage.file.share.ShareDirectoryClient.generateSas#ShareServiceSasSignatureValues-Context
     }
+
+    /**
+     * Generates a code sample for using {@link ShareDirectoryClient#createIfNotExists()} and
+     * {@link ShareDirectoryClient#createIfNotExistsWithResponse(FileSmbProperties, String, Map, Duration, Context)}
+     */
+    public void createDirectoryIfNotExistsCodeSnippets() {
+
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.createIfNotExists
+        ShareDirectoryClient shareDirectoryClient = createClientWithSASToken();
+        shareDirectoryClient.createIfNotExists();
+        System.out.println("Completed creating the directory. ");
+        // END: com.azure.storage.file.share.ShareDirectoryClient.createIfNotExists
+
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.createIfNotExistsWithResponse#FileSmbProperties-String-Map-Duration-Context
+        ShareDirectoryClient directoryClient = createClientWithSASToken();
+        FileSmbProperties smbProperties = new FileSmbProperties();
+        String filePermission = "filePermission";
+        Response<ShareDirectoryInfo> response = directoryClient.createIfNotExistsWithResponse(smbProperties, filePermission,
+            Collections.singletonMap("directory", "metadata"), Duration.ofSeconds(1), new Context(key1, value1));
+        System.out.println("Completed creating the directory with status code: " + response.getStatusCode());
+        // END: com.azure.storage.file.share.ShareDirectoryClient.createIfNotExistsWithResponse#FileSmbProperties-String-Map-Duration-Context
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareDirectoryClient#deleteIfExists()} and
+     * {@link ShareDirectoryClient#deleteIfExistsWithResponse(Duration, Context)}
+     */
+    public void deleteDirectoryIfExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.deleteIfExists
+        ShareDirectoryClient shareDirectoryClient = createClientWithSASToken();
+        shareDirectoryClient.deleteIfExists();
+        System.out.println("Completed deleting the file.");
+        // END: com.azure.storage.file.share.ShareDirectoryClient.deleteIfExists
+
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.deleteIfExistsWithResponse#duration-context
+        Response<Void> response = shareDirectoryClient.deleteIfExistsWithResponse(Duration.ofSeconds(1), new Context(key1, value1));
+        System.out.println("Completed deleting the file with status code: " + response.getStatusCode());
+        // END: com.azure.storage.file.share.ShareDirectoryClient.deleteIfExistsWithResponse#duration-context
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareDirectoryClient#createSubdirectoryIfNotExists(String)} and
+     * {@link ShareDirectoryClient#createSubdirectoryIfNotExistsWithResponse(String, FileSmbProperties, String, Map, Duration, Context)}
+     */
+    public void createIfNotExistsSubdirectoryCodeSnippets() {
+        ShareDirectoryClient shareDirectoryClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.createSubdirectoryIfNotExists#string
+        shareDirectoryClient.createSubdirectoryIfNotExists("subdir");
+        System.out.println("Completed creating the subdirectory.");
+        // END: com.azure.storage.file.share.ShareDirectoryClient.createSubdirectoryIfNotExists#string
+
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.createSubdirectoryIfNotExistsWithResponse#String-FileSmbProperties-String-Map-Duration-Context
+        FileSmbProperties smbProperties = new FileSmbProperties();
+        String filePermission = "filePermission";
+        Response<ShareDirectoryClient> response = shareDirectoryClient.createSubdirectoryIfNotExistsWithResponse("subdir",
+            smbProperties, filePermission, Collections.singletonMap("directory", "metadata"),
+            Duration.ofSeconds(1), new Context(key1, value1));
+        System.out.printf("Creating the sub directory completed with status code %d", response.getStatusCode());
+        // END: com.azure.storage.file.share.ShareDirectoryClient.createSubdirectoryIfNotExistsWithResponse#String-FileSmbProperties-String-Map-Duration-Context
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareDirectoryClient#deleteSubdirectoryIfExists(String)} and
+     * {@link ShareDirectoryClient#deleteSubdirectoryIfExistsWithResponse(String, Duration, Context)}
+     */
+    public void deleteSubdirectoryIfExistsCodeSnippets() {
+        ShareDirectoryClient shareDirectoryClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.deleteSubdirectoryIfExists#string
+        shareDirectoryClient.deleteSubdirectoryIfExists("mysubdirectory");
+        System.out.println("Complete deleting the subdirectory.");
+        // END: com.azure.storage.file.share.ShareDirectoryClient.deleteSubdirectoryIfExists#string
+
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.deleteSubdirectoryIfExistsWithResponse#string-duration-context
+        Response<Void> response = shareDirectoryClient.deleteSubdirectoryIfExistsWithResponse("mysubdirectory",
+            Duration.ofSeconds(1), new Context(key1, value1));
+        System.out.println("Completed deleting the subdirectory with status code: " + response.getStatusCode());
+        // END: com.azure.storage.file.share.ShareDirectoryClient.deleteSubdirectoryIfExistsWithResponse#string-duration-context
+    }
+
+    // CREATE FILE IF NOT EXISTS TESTS HERE
+
+    /**
+     * Generates a code sample for using {@link ShareDirectoryClient#deleteFileIfExists(String)},
+     * {@link ShareDirectoryClient#deleteFileIfExistsWithResponse(String, Duration, Context)} and
+     * {@link ShareDirectoryClient#deleteFileIfExistsWithResponse(String, ShareRequestConditions, Duration, Context)}
+     */
+    public void deleteFileIfExistsCodeSnippets() {
+        ShareDirectoryClient shareDirectoryClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExists#string
+        shareDirectoryClient.deleteFileIfExists("myfile");
+        System.out.println("Completed deleting the file.");
+        // END: com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExists#string
+
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExistsWithResponse#string-duration-context
+        Response<Void> response = shareDirectoryClient.deleteFileIfExistsWithResponse("myfile",
+            Duration.ofSeconds(1), new Context(key1, value1));
+        System.out.println("Completed deleting the file with status code: " + response.getStatusCode());
+        // END: com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExistsWithResponse#string-duration-context
+
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExistsWithResponse#string-ShareRequestConditions-duration-context
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+        Response<Void> fileResponse = shareDirectoryClient.deleteFileWithResponse("myfile", requestConditions,
+            Duration.ofSeconds(1), new Context(key1, value1));
+        System.out.println("Completed deleting the file with status code: " + fileResponse.getStatusCode());
+        // END: com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExistsWithResponse#string-ShareRequestConditions-duration-context
+
+    }
+
+
 }

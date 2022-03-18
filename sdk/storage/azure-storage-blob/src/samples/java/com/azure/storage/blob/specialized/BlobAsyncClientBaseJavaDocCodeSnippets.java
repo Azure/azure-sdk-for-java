@@ -794,4 +794,19 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
             System.out.println("Legal hold status: " + response.getValue().hasLegalHold()));
         // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.setLegalHoldWithResponse#boolean
     }
+
+    /**
+     * Code snippets for {@link BlobAsyncClientBase#deleteIfExists()} and
+     * {@link BlobAsyncClientBase#deleteIfExistsWithResponse(DeleteSnapshotsOptionType, BlobRequestConditions)}
+     */
+    public void deleteIfExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteIfExists
+        client.deleteIfExists().doOnSuccess(response -> System.out.println("Completed delete"));
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteIfExists
+
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteIfExistsWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions
+        client.deleteIfExistsWithResponse(DeleteSnapshotsOptionType.INCLUDE, null)
+            .subscribe(response -> System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteIfExistsWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions
+    }
 }

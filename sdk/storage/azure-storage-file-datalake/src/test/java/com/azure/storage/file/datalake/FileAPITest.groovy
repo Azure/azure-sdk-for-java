@@ -260,6 +260,113 @@ class FileAPITest extends APISpec {
         fc.createWithResponse(permissions, umask, null, null, null, null, Context.NONE).getStatusCode() == 201
     }
 
+    def "Create if not exists min"() {
+        when:
+        fc = fsc.getFileClient(generatePathName())
+        fc.createIfNotExists()
+
+        then:
+        notThrown(DataLakeStorageException)
+        fc.exists()
+    }
+
+    def "Create if not exists defaults"() {
+        setup:
+        fc = fsc.getFileClient(generatePathName())
+
+        when:
+        def createResponse = fc.createIfNotExistsWithResponse(null, null, null, null, null, null)
+
+        then:
+        createResponse.getStatusCode() == 201
+        validateBasicHeaders(createResponse.getHeaders())
+    }
+
+    def "Create if not exists overwrite"() {
+        when:
+        fc = fsc.getFileClient(generatePathName())
+        def initialResponse = fc.createIfNotExistsWithResponse(null, null, null, null, null, null)
+
+        // Try to create the resource again
+        def secondResponse = fc.createIfNotExistsWithResponse(null, null, null, null, null, null)
+
+        then:
+        initialResponse.getStatusCode() == 201
+        fc.exists()
+        secondResponse == null
+    }
+
+    def "Create if not exists Exists"() {
+        when:
+        fc = fsc.getFileClient(generatePathName())
+        fc.createIfNotExists()
+
+        then:
+        fc.exists()
+    }
+
+    @Unroll
+    def "Create if not exists headers"() {
+        // Create does not set md5
+        setup:
+        def headers = new PathHttpHeaders().setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentType(contentType)
+        fc = fsc.getFileClient(generatePathName())
+
+        when:
+        fc.createIfNotExistsWithResponse(null, null, headers, null, null, null)
+        def response = fc.getPropertiesWithResponse(null, null, null)
+
+        // If the value isn't set the service will automatically set it
+        contentType = (contentType == null) ? "application/octet-stream" : contentType
+
+        then:
+        validatePathProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, null, contentType)
+
+        where:
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentType
+        null         | null               | null            | null            | null
+        "control"    | "disposition"      | "encoding"      | "language"      | "type"
+    }
+
+    @Unroll
+    def "Create if not exists metadata"() {
+        setup:
+        def metadata = new HashMap<String, String>()
+        if (key1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null) {
+            metadata.put(key2, value2)
+        }
+
+        when:
+        def client = fsc.getFileClient(generatePathName())
+        client.createIfNotExistsWithResponse(null, null, null, metadata, null, Context.NONE)
+        def response = client.getProperties()
+
+        then:
+        response.getMetadata() == metadata
+
+        where:
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
+    }
+
+    def "Create if not exists permissions and umask"() {
+        setup:
+        def permissions = "0777"
+        def umask = "0057"
+
+        expect:
+        def client = fsc.getFileClient(generatePathName())
+        client.createIfNotExistsWithResponse(permissions, umask, null, null, null, Context.NONE).getStatusCode() == 201
+    }
+
     def "Delete min"() {
         expect:
         fc.deleteWithResponse(null, null, null).getStatusCode() == 200
@@ -315,6 +422,83 @@ class FileAPITest extends APISpec {
 
         when:
         fc.deleteWithResponse(drc, null, null).getStatusCode()
+
+        then:
+        thrown(DataLakeStorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Delete if exists min"() {
+        expect:
+        fc.deleteIfExistsWithResponse(null, null, null).getStatusCode() == 200
+    }
+
+    def "Delete if exists file does not exist anymore"() {
+        when:
+        def response = fc.deleteIfExistsWithResponse(null, null, null)
+        fc.getPropertiesWithResponse(null, null, null)
+
+        then:
+        thrown(DataLakeStorageException)
+        response.getStatusCode() == 200
+    }
+
+    def "Delete if exists file that does not exist"() {
+        when:
+        def initialResponse = fc.deleteIfExistsWithResponse(null, null, null)
+        def secondResponse = fc.deleteIfExistsWithResponse(null, null, null)
+
+        then:
+        initialResponse.getStatusCode() == 200
+        secondResponse == null
+    }
+
+    @Unroll
+    def "Delete if exists AC"() {
+        setup:
+        match = setupPathMatchCondition(fc, match)
+        leaseID = setupPathLeaseCondition(fc, leaseID)
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+
+        expect:
+        fc.deleteIfExistsWithResponse(drc, null, null).getStatusCode() == 200
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Delete if exists AC fail"() {
+        setup:
+        noneMatch = setupPathMatchCondition(fc, noneMatch)
+        setupPathLeaseCondition(fc, leaseID)
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+
+        when:
+        fc.deleteIfExistsWithResponse(drc, null, null).getStatusCode()
 
         then:
         thrown(DataLakeStorageException)
@@ -4007,72 +4191,4 @@ class FileAPITest extends APISpec {
         response.getHeaders().getValue("x-ms-version") == "2019-02-02"
     }
 
-    def "Create file client if not exists"() {
-        setup:
-        def fileName = generatePathName()
-        def client = fsc.getFileClient(fileName)
-
-        when:
-        def result = client.createIfNotExists()
-
-        then:
-        result != null
-    }
-
-    def "Create file client if not exists with response"() {
-        setup:
-        def fileName = generatePathName()
-        def client = fsc.getFileClient(fileName)
-
-        when:
-        def response = client.createIfNotExistsWithResponse(null, null, null, null, null, null)
-
-        then:
-        response != null
-        response.getValue() != null
-        response.getStatusCode() == 201
-    }
-
-    def "Create file that already exists"() {
-        setup:
-        def fileName = generatePathName()
-        def client = fsc.getFileClient(fileName)
-        def initialResponse = client.createIfNotExistsWithResponse(null, null, null, null, null, null)
-
-        when:
-        def secondResponse = client.createIfNotExistsWithResponse(null, null, null, null, null, null)
-
-        then:
-        initialResponse != null
-        initialResponse.getStatusCode() == 201
-        secondResponse == null
-    }
-
-    def "Delete file that exists"() {
-        setup:
-        def fileName = generatePathName()
-        def client = fsc.getFileClient(fileName)
-        client.create()
-
-        when:
-        client.deleteIfExists()
-
-        then:
-        client.exists() == false
-    }
-
-    def "Delete file that exists with response"() {
-        setup:
-        def fileName = generatePathName()
-        def client = fsc.getFileClient(fileName)
-        client.create()
-
-        when:
-        def response = client.deleteIfExistsWithResponse(null, null, null)
-
-        then:
-        response != null
-        response.getStatusCode() == 200
-        client.exists() == false
-    }
 }

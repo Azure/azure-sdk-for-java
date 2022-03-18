@@ -478,4 +478,37 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
         // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.copyIncrementalWithResponse#PageBlobCopyIncrementalOptions
     }
 
+    /**
+     * Code snippets for {@link PageBlobAsyncClient#createIfNotExists(long)},
+     * {@link PageBlobAsyncClient#createIfNotExistsWithResponse(long, Long, BlobHttpHeaders, Map)} and
+     * {@link PageBlobAsyncClient#createIfNotExistsWithResponse(PageBlobCreateOptions)}
+     */
+    public void createIfNotExistsCodeSnippet() {
+        // BEGIN: com.azure.storage.blob.PageBlobAsyncClient.createIfNotExists#long
+        client.createIfNotExists(size).subscribe(response -> System.out.printf(
+            "Created page blob with sequence number %s%n", response.getBlobSequenceNumber()));
+        // END: com.azure.storage.blob.PageBlobAsyncClient.createIfNotExists#long
+
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.createIfNotExistsWithResponse#long-Long-BlobHttpHeaders-Map
+        BlobHttpHeaders headers = new BlobHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+
+        client.createIfNotExistsWithResponse(size, sequenceNumber, headers, metadata)
+            .subscribe(response -> System.out.printf(
+                "Created page blob with sequence number %s%n", response.getValue().getBlobSequenceNumber()));
+        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.createIfNotExistsWithResponse#long-Long-BlobHttpHeaders-Map
+
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.createIfNotExistsWithResponse#PageBlobCreateOptions
+        BlobHttpHeaders httpHeaders = new BlobHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+
+        client.createIfNotExistsWithResponse(new PageBlobCreateOptions(size).setSequenceNumber(sequenceNumber)
+                .setHeaders(headers).setMetadata(metadata).setTags(tags))
+            .subscribe(response -> System.out.printf(
+                "Created page blob with sequence number %s%n", response.getValue().getBlobSequenceNumber()));
+        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.createIfNotExistsWithResponse#PageBlobCreateOptions
+    }
+
 }

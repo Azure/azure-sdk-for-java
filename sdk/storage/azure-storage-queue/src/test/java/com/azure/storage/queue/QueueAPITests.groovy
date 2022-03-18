@@ -64,6 +64,39 @@ class QueueAPITests extends APISpec {
         QueueTestHelper.assertResponseStatusCode(queueClient.createWithResponse(null, null, null), 201)
     }
 
+    def "Create if not exists queue with shared key"() {
+        expect:
+        QueueTestHelper.assertResponseStatusCode(queueClient.createIfNotExistsWithResponse(null, null, null), 201)
+    }
+
+    def "Create if not exists min"() {
+        setup:
+        queueName = namer.getRandomName(60)
+        def client = primaryQueueServiceClient.getQueueClient(queueName)
+
+        when:
+        client.createIfNotExists()
+
+        then:
+        client.getQueueName() == queueName
+        client.getProperties() != null
+    }
+
+    def "Create if not exists with conflicting metadata on a queue client that already exists"() {
+        setup:
+        queueName = namer.getRandomName(60)
+        def client = primaryQueueServiceClient.getQueueClient(queueName)
+        def initialResponse = client.createIfNotExistsWithResponse(testMetadata, null, null)
+
+        when:
+        def secondResponse = client.createIfNotExistsWithResponse(null, null, null)
+
+        then:
+        initialResponse != null
+        initialResponse.getStatusCode() == 201
+        secondResponse == null
+    }
+
     def "Delete exist queue"() {
         given:
         queueClient.create()
@@ -80,6 +113,30 @@ class QueueAPITests extends APISpec {
         then:
         def e = thrown(QueueStorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, QueueErrorCode.QUEUE_NOT_FOUND)
+    }
+
+    def "Delete if exists queue"() {
+        given:
+        queueClient.create()
+        when:
+        def deleteQueueResponse = queueClient.deleteIfExistsWithResponse(null, null)
+        then:
+        QueueTestHelper.assertResponseStatusCode(deleteQueueResponse, 204)
+
+    }
+
+    def "Delete if exists with response on a queue client that does not exist"() {
+        setup:
+        queueName = namer.getRandomName(60)
+        def client = primaryQueueServiceClient.getQueueClient(queueName)
+
+        when:
+        def response = client.deleteIfExistsWithResponse(null, null)
+        client.getProperties()
+
+        then:
+        thrown(QueueStorageException)
+        response == null
     }
 
     def "Get properties"() {
@@ -807,105 +864,4 @@ class QueueAPITests extends APISpec {
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
 
-    def "Create queue client if not exists"() {
-        setup:
-        queueName = namer.getRandomName(60)
-        def client = primaryQueueServiceClient.getQueueClient(queueName)
-
-        when:
-        client.createIfNotExists()
-
-        then:
-        client.getQueueName() == queueName
-        client.getProperties() != null
-    }
-
-    def "Create queue client if not exists with response"() {
-        setup:
-        queueName = namer.getRandomName(60)
-        def client = primaryQueueServiceClient.getQueueClient(queueName)
-
-        when:
-        def response = client.createIfNotExistsWithResponse(null, null, null)
-
-        then:
-        response != null
-        response.getStatusCode() == 201
-        client.getQueueName() == queueName
-        client.getProperties() != null
-    }
-
-    def "Create if not exists with same metadata on a queue client that already exists"() {
-        setup:
-        queueName = namer.getRandomName(60)
-        def client = primaryQueueServiceClient.getQueueClient(queueName)
-        def initialResponse = client.createIfNotExistsWithResponse(null, null, null)
-
-        when:
-        def secondResponse = client.createIfNotExistsWithResponse(null, null, null)
-
-        then:
-        initialResponse != null
-        initialResponse.getStatusCode() == 201
-        secondResponse == null
-    }
-
-    def "Create if not exists with conflicting metadata on a queue client that already exists"() {
-        setup:
-        queueName = namer.getRandomName(60)
-        def client = primaryQueueServiceClient.getQueueClient(queueName)
-        def initialResponse = client.createIfNotExistsWithResponse(testMetadata, null, null)
-
-        when:
-        def secondResponse = client.createIfNotExistsWithResponse(null, null, null)
-
-        then:
-        initialResponse != null
-        initialResponse.getStatusCode() == 201
-        secondResponse == null
-    }
-
-    def "Delete if exists on a queue client"() {
-        setup:
-        queueName = namer.getRandomName(60)
-        def client = primaryQueueServiceClient.getQueueClient(queueName)
-        client.create()
-
-        when:
-        client.deleteIfExists()
-        client.getProperties()
-
-        then:
-        thrown(QueueStorageException)
-    }
-
-    def "Delete if exists with response on a queue client"() {
-        setup:
-        queueName = namer.getRandomName(60)
-        def client = primaryQueueServiceClient.getQueueClient(queueName)
-        client.create()
-
-        when:
-        def response = client.deleteIfExistsWithResponse(null, null)
-        client.getProperties()
-
-        then:
-        thrown(QueueStorageException)
-        response != null
-        response.getStatusCode() == 204
-    }
-
-    def "Delete if exists with response on a queue client that does not exist"() {
-        setup:
-        queueName = namer.getRandomName(60)
-        def client = primaryQueueServiceClient.getQueueClient(queueName)
-
-        when:
-        def response = client.deleteIfExistsWithResponse(null, null)
-        client.getProperties()
-
-        then:
-        thrown(QueueStorageException)
-        response == null
-    }
 }

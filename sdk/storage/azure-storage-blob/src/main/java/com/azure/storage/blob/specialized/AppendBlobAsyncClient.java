@@ -188,26 +188,6 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         }
     }
 
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AppendBlobItem> createIfNotExists() {
-        try {
-            return createIfNotExistsWithResponse(new AppendBlobCreateOptions()).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    public Mono<Response<AppendBlobItem>> createIfNotExistsWithResponse(AppendBlobCreateOptions options) {
-        return createIfNotExistsWithResponse(options, null);
-    }
-
-    Mono<Response<AppendBlobItem>> createIfNotExistsWithResponse(AppendBlobCreateOptions options, Context context) {
-        options.setRequestConditions(new AppendBlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
-        return createWithResponse(options, context).onErrorResume(t -> t instanceof BlobStorageException &&
-                ((BlobStorageException) t).getStatusCode() == 409,
-            t -> Mono.empty());
-    }
-
     /**
      * Creates a 0-length append blob. Call appendBlock to append data to an append blob.
      * <p>
@@ -302,6 +282,99 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
                     null, null, hd.getXMsVersionId());
                 return new SimpleResponse<>(rb, item);
             });
+    }
+
+    /**
+     * Creates a 0-length append blob if it does not exist. Call appendBlock to append data to an append blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExists -->
+     * <pre>
+     * client.createIfNotExists&#40;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Created AppendBlob at %s%n&quot;, response.getLastModified&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExists -->
+     *
+     * @return A {@link Mono} containing the information of the created appended blob, or null if the blob
+     * already exists.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AppendBlobItem> createIfNotExists() {
+        try {
+            return createIfNotExistsWithResponse(null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Creates a 0-length append blob if it does not exist. Call appendBlock to append data to an append blob.
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExistsWithResponse#BlobHttpHeaders-Map -->
+     * <pre>
+     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;;
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     *
+     * client.createIfNotExistsWithResponse&#40;headers, metadata&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Created AppendBlob at %s%n&quot;, response.getValue&#40;&#41;.getLastModified&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExistsWithResponse#BlobHttpHeaders-Map -->
+     *
+     * @param headers {@link BlobHttpHeaders}
+     * @param metadata Metadata to associate with the blob. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
+     * @return A {@link Mono} containing {@link Response} whose {@link Response#getValue() value} contains the created
+     * appended blob, or null if the blob already exists.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<AppendBlobItem>> createIfNotExistsWithResponse(BlobHttpHeaders headers, Map<String,
+        String> metadata) {
+        return this.createIfNotExistsWithResponse(new AppendBlobCreateOptions().setHeaders(headers)
+            .setMetadata(metadata));
+    }
+
+    /**
+     * Creates a 0-length append blob if it does not exist. Call appendBlock to append data to an append blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExistsWithResponse#AppendBlobCreateOptions -->
+     * <pre>
+     * BlobHttpHeaders httpHeaders = new BlobHttpHeaders&#40;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;;
+     * Map&lt;String, String&gt; metaData = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * Map&lt;String, String&gt; tags = Collections.singletonMap&#40;&quot;tag&quot;, &quot;value&quot;&#41;;
+     *
+     * client.createIfNotExistsWithResponse&#40;new AppendBlobCreateOptions&#40;&#41;.setHeaders&#40;httpHeaders&#41;.setMetadata&#40;metaData&#41;
+     *     .setTags&#40;tags&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Created AppendBlob at %s%n&quot;, response.getValue&#40;&#41;.getLastModified&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExistsWithResponse#AppendBlobCreateOptions -->
+     *
+     * @param options {@link AppendBlobCreateOptions}
+     * @return A {@link Mono} containing {@link Response} whose {@link Response#getValue() value} contains the created
+     * appended blob.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<AppendBlobItem>> createIfNotExistsWithResponse(AppendBlobCreateOptions options) {
+        try {
+            return withContext(context -> createIfNotExistsWithResponse(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<AppendBlobItem>> createIfNotExistsWithResponse(AppendBlobCreateOptions options, Context context) {
+        options.setRequestConditions(new AppendBlobRequestConditions()
+            .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
+        return createWithResponse(options, context).onErrorResume(t -> t instanceof BlobStorageException &&
+                ((BlobStorageException) t).getStatusCode() == 409,
+            t -> Mono.empty());
     }
 
     /**

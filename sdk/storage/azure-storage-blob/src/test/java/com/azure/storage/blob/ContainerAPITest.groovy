@@ -132,6 +132,95 @@ class ContainerAPITest extends APISpec {
         e.getServiceMessage().contains("The specified container already exists.")
     }
 
+    def "Create if not exists all null"() {
+        setup:
+        // Overwrite the existing cc, which has already been created
+        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+
+        when:
+        def response = cc.createIfNotExistsWithResponse(null, null, null, null)
+
+        then:
+        response.getStatusCode() == 201
+        validateBasicHeaders(response.getHeaders())
+    }
+
+    def "Create if not exists min"() {
+        when:
+        def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName()) // add createifnotexists for blobservice
+
+        then:
+        cc.exists()
+    }
+
+    @Unroll
+    def "Create if not exists metadata if not exists"() {
+        setup:
+        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+        def metadata = new HashMap<String, String>()
+        if (key1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null) {
+            metadata.put(key2, value2)
+        }
+
+        when:
+        cc.createIfNotExistsWithResponse(metadata, null, null, null)
+        def response = cc.getPropertiesWithResponse(null, null, null)
+
+        then:
+        response.getValue().getMetadata() == metadata
+
+        where:
+        key1      | value1    | key2       | value2
+        null      | null      | null       | null
+        "foo"     | "bar"     | "fizz"     | "buzz"
+        "testFoo" | "testBar" | "testFizz" | "testBuzz"
+    }
+
+    @Unroll
+    def "Create if not exists publicAccess"() {
+        setup:
+        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+
+        when:
+        cc.createWithResponse(null, publicAccess, null, null)
+        def access = cc.getProperties().getBlobPublicAccess()
+
+        then:
+        access == publicAccess
+
+        where:
+        publicAccess               | _
+        PublicAccessType.BLOB      | _
+        PublicAccessType.CONTAINER | _
+        null                       | _
+    }
+
+    def "Create if not exists error"() {
+        when:
+        cc.create()
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getResponse().getStatusCode() == 409
+        e.getErrorCode() == BlobErrorCode.CONTAINER_ALREADY_EXISTS
+        e.getServiceMessage().contains("The specified container already exists.")
+    }
+
+    def "Create if not exists on a container that already exists 2"() {
+        setup:
+        def cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+        def initialResponse = cc.createIfNotExistsWithResponse(null, null, null, null)
+
+        when:
+        def secondResponse = cc.createIfNotExistsWithResponse(null, null, null, null)
+
+        then:
+        initialResponse.getStatusCode() == 201
+        secondResponse == null
+    }
 
     def "Get properties null"() {
         when:
@@ -578,6 +667,94 @@ class ContainerAPITest extends APISpec {
 
         then:
         thrown(BlobStorageException)
+    }
+
+    def "Delete if exists"() {
+        when:
+        def response = cc.deleteIfExistsWithResponse(null, null, null)
+
+        then:
+        response.getStatusCode() == 202
+        response.getHeaders().getValue("x-ms-request-id") != null
+        response.getHeaders().getValue("x-ms-version") != null
+        response.getHeaders().getValue("Date") != null
+    }
+
+    def "Delete if exists min"() {
+        when:
+        cc.deleteIfExists()
+
+        then:
+        !cc.exists()
+    }
+
+    @Unroll
+    def "Delete if exists AC"() {
+        setup:
+        leaseID = setupContainerLeaseCondition(cc, leaseID)
+        def cac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+
+        expect:
+        cc.deleteIfExistsWithResponse(cac, null, null).getStatusCode() == 202
+
+        where:
+        modified | unmodified | leaseID
+        null     | null       | null
+        oldDate  | null       | null
+        null     | newDate    | null
+        null     | null       | receivedLeaseID
+    }
+
+    @Unroll
+    def "Delete if exists AC fail"() {
+        setup:
+        def cac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+
+        when:
+        cc.deleteIfExistsWithResponse(cac, null, null)
+
+        then:
+        thrown(BlobStorageException)
+
+        where:
+        modified | unmodified | leaseID
+        newDate  | null       | null
+        null     | oldDate    | null
+        null     | null       | garbageLeaseID
+    }
+
+    @Unroll
+    def "Delete if exists AC illegal"() {
+        setup:
+        def mac = new BlobRequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
+
+        when:
+        cc.deleteIfExistsWithResponse(mac, null, null)
+
+        then:
+        thrown(UnsupportedOperationException)
+
+        where:
+        match        | noneMatch
+        receivedEtag | null
+        null         | garbageEtag
+    }
+
+    def "Delete if exists on a container that does not exist"() {
+        setup:
+        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+
+        when:
+        def response = cc.deleteIfExistsWithResponse(new BlobRequestConditions(), null, null)
+
+        then:
+        response == null
     }
 
     def "List block blobs flat"() {
@@ -1985,99 +2162,6 @@ class ContainerAPITest extends APISpec {
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
 
-    def "create if not exists"() {
-        setup:
-        def cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
-
-        when:
-        cc.createIfNotExists()
-
-        then:
-        cc.exists()
-    }
-
-    def "create if not exists with response"() {
-        setup:
-        def cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
-
-        when:
-        def response = cc.createIfNotExistsWithResponse(null, null, null, null)
-
-        then:
-        cc.exists()
-        response != null
-        response.getStatusCode() == 201
-    }
-
-    def "Create if not exists on a container that already exists"() {
-        setup:
-        def cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
-        def initialResponse = cc.createIfNotExistsWithResponse(null, null, null, null)
-
-        when:
-        def secondResponse = cc.createIfNotExistsWithResponse(null, null, null, null)
-
-        then:
-        initialResponse.getStatusCode() == 201
-        secondResponse == null
-    }
-
-    def "Delete container that exists"() {
-        setup:
-        def cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
-        cc.create()
-
-        when:
-        cc.deleteIfExists()
-
-        then:
-        cc.exists() == false
-    }
-
-    def "Delete container that exists with response"() {
-        setup:
-        def cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
-        cc.create()
-
-        when:
-        def response = cc.deleteIfExistsWithResponse(new BlobRequestConditions(), null, null)
-
-        then:
-        response != null
-        response.getStatusCode() == 202
-        cc.exists() == false
-    }
-
-    def "Delete container that was already deleted"() {
-        setup:
-        def cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
-        cc.create()
-        def initialResponse = cc.deleteIfExistsWithResponse(new BlobRequestConditions(), null, null)
-        sleepIfRecord(45000);
-
-        when:
-        def secondResponse = cc.deleteIfExistsWithResponse(new BlobRequestConditions(), null, null)
-
-        then:
-        initialResponse != null
-        secondResponse == null
-        initialResponse.getStatusCode() == 202
-        cc.exists() == false
-
-    }
-
-    def "Delete container that does not exist" () {
-        setup:
-        def cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
-
-        when:
-        def response = cc.deleteIfExistsWithResponse(new BlobRequestConditions(), null, null)
-
-        then:
-        response == null
-        cc.exists() == false
-
-    }
 //    def "Rename"() {
 //        setup:
 //        def newName = generateContainerName()

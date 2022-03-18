@@ -193,6 +193,127 @@ class AppendBlobAPITest extends APISpec {
         null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
     }
 
+    def "Create if not exists defaults"() {
+        setup:
+        def blobName = cc.getBlobClient(generateBlobName()).getBlobName()
+        bc = cc.getBlobClient(blobName).getAppendBlobClient()
+
+        when:
+        def createResponse = bc.createIfNotExistsWithResponse(null, null, null, null)
+
+        then:
+        createResponse.getStatusCode() == 201
+        validateBasicHeaders(createResponse.getHeaders())
+        createResponse.getValue().getContentMd5() == null
+        createResponse.getValue().isServerEncrypted()
+    }
+
+    def "Create if not exists min"() {
+        setup:
+        def blobName = cc.getBlobClient(generateBlobName()).getBlobName()
+        bc = cc.getBlobClient(blobName).getAppendBlobClient()
+
+        expect:
+        bc.createIfNotExistsWithResponse(null, null, null, null).getStatusCode() == 201
+    }
+
+    def "Create if not exists on a blob that already exists"() {
+        setup:
+        def blobName = cc.getBlobClient(generateBlobName()).getBlobName()
+        bc = cc.getBlobClient(blobName).getAppendBlobClient()
+        def initialResponse = bc.createIfNotExistsWithResponse(new AppendBlobCreateOptions(), null, null)
+
+        when:
+        def secondResponse = bc.createIfNotExistsWithResponse(new AppendBlobCreateOptions(), null, null)
+
+        then:
+        initialResponse.getStatusCode() == 201
+        initialResponse.getValue() != null
+        secondResponse == null
+    }
+
+    @Unroll
+    def "Create if not exists headers"() {
+        setup:
+        def blobName = cc.getBlobClient(generateBlobName()).getBlobName()
+        bc = cc.getBlobClient(blobName).getAppendBlobClient()
+
+        def headers = new BlobHttpHeaders().setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentMd5(contentMD5)
+            .setContentType(contentType)
+
+        when:
+        bc.createIfNotExistsWithResponse(headers, null, null, null)
+        def response = bc.getPropertiesWithResponse(null, null, null)
+
+        // If the value isn't set the service will automatically set it
+        contentType = (contentType == null) ? "application/octet-stream" : contentType
+
+        then:
+        validateBlobProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
+
+        where:
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                                       | contentType
+        null         | null               | null            | null            | null                                                                                             | null
+        "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(data.defaultText.getBytes())) | "type"
+    }
+
+    @Unroll
+    def "Create if not exists metadata"() {
+        setup:
+        def blobName = cc.getBlobClient(generateBlobName()).getBlobName()
+        bc = cc.getBlobClient(blobName).getAppendBlobClient()
+
+        def metadata = new HashMap<String, String>()
+        if (key1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null) {
+            metadata.put(key2, value2)
+        }
+
+        when:
+        bc.createIfNotExistsWithResponse(null, metadata, null, Context.NONE)
+        def response = bc.getProperties()
+
+        then:
+        response.getMetadata() == metadata
+
+        where:
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
+    @Unroll
+    def "Create if not exists tags"() {
+        setup:
+        def tags = new HashMap<String, String>()
+        if (key1 != null) {
+            tags.put(key1, value1)
+        }
+        if (key2 != null) {
+            tags.put(key2, value2)
+        }
+
+        when:
+        bc.createIfNotExistsWithResponse(new AppendBlobCreateOptions().setTags(tags), null, Context.NONE)
+        def response = bc.getTagsWithResponse(new BlobGetTagsOptions(), null, null)
+
+        then:
+        response.getValue() == tags
+
+        where:
+        key1                | value1     | key2   | value2
+        null                | null       | null   | null
+        "foo"               | "bar"      | "fizz" | "buzz"
+        " +-./:=_  +-./:=_" | " +-./:=_" | null   | null
+    }
+
     def "Append block defaults"() {
         setup:
         def appendResponse = bc.appendBlockWithResponse(data.defaultInputStream, data.defaultDataSize, null, null, null,
@@ -709,46 +830,6 @@ class AppendBlobAPITest extends APISpec {
         then:
         notThrown(BlobStorageException)
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
-    }
-
-    def "Create if not exists"() {
-        setup:
-        bc = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
-
-        when:
-        def result = bc.createIfNotExists()
-
-        then:
-        result != null
-        bc.exists() == true
-    }
-
-    def "Create if not exists with response"() {
-        setup:
-        bc = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
-        def options = new AppendBlobCreateOptions()
-
-        when:
-        def response = bc.createIfNotExistsWithResponse(options)
-
-        then:
-        response.getValue() != null
-        response.getStatusCode() == 201
-    }
-
-    def "Create if not exists on a blob that already exists"() {
-        setup:
-        def blobName = cc.getBlobClient(generateBlobName()).getBlobName()
-        bc = cc.getBlobClient(blobName).getAppendBlobClient()
-        def initialResponse = bc.createIfNotExistsWithResponse(new AppendBlobCreateOptions())
-
-        when:
-        def secondResponse = bc.createIfNotExistsWithResponse(new AppendBlobCreateOptions())
-
-        then:
-        initialResponse.getStatusCode() == 201
-        initialResponse.getValue() != null
-        secondResponse == null
     }
 
 }
