@@ -41,6 +41,7 @@ import com.azure.storage.file.datalake.models.AccessControlChangeCounters;
 import com.azure.storage.file.datalake.models.AccessControlChangeFailure;
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
 import com.azure.storage.file.datalake.models.AccessControlChanges;
+import com.azure.storage.file.datalake.models.CpkInfo;
 import com.azure.storage.file.datalake.models.DataLakeAclChangeFailedException;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
@@ -93,6 +94,7 @@ public class DataLakePathAsyncClient {
     private final String fileSystemName;
     final String pathName;
     private final DataLakeServiceVersion serviceVersion;
+    private final CpkInfo customerProvidedKey;
 
     final PathResourceType pathResourceType;
 
@@ -111,7 +113,7 @@ public class DataLakePathAsyncClient {
      */
     DataLakePathAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
         String accountName, String fileSystemName, String pathName, PathResourceType pathResourceType,
-        BlockBlobAsyncClient blockBlobAsyncClient) {
+        BlockBlobAsyncClient blockBlobAsyncClient, CpkInfo customerProvidedKey) {
         this.accountName = accountName;
         this.fileSystemName = fileSystemName;
         this.pathName = Utility.urlDecode(pathName);
@@ -141,6 +143,8 @@ public class DataLakePathAsyncClient {
             .fileSystem(fileSystemName)
             .version(serviceVersion.getVersion())
             .buildClient();
+
+        this.customerProvidedKey = customerProvidedKey;
     }
 
     /**
@@ -251,6 +255,15 @@ public class DataLakePathAsyncClient {
      */
     public DataLakeServiceVersion getServiceVersion() {
         return serviceVersion;
+    }
+
+    /**
+     * Gets the {@link CpkInfo} used to encrypt this path's content on the server.
+     *
+     * @return the customer provided key used for encryption.
+     */
+    public CpkInfo getCustomerProvidedKey() {
+        return customerProvidedKey;
     }
 
     /**
@@ -365,7 +378,7 @@ public class DataLakePathAsyncClient {
 
         context = context == null ? Context.NONE : context;
         return this.dataLakeStorage.getPaths().createWithResponseAsync(null, null, resourceType, null, null, null, null,
-            buildMetadataString(metadata), permissions, umask, headers, lac, mac, null,
+            buildMetadataString(metadata), permissions, umask, headers, lac, mac, null, customerProvidedKey,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
                 response.getDeserializedHeaders().getLastModified())));
@@ -1316,7 +1329,7 @@ public class DataLakePathAsyncClient {
             null /* request id */, null /* timeout */, null /* pathResourceType */,
             null /* continuation */, PathRenameMode.LEGACY, renameSource, sourceRequestConditions.getLeaseId(),
             null /* metadata */, null /* permissions */, null /* umask */,
-            null /* pathHttpHeaders */, destLac, destMac, sourceConditions,
+            null /* pathHttpHeaders */, destLac, destMac, sourceConditions, customerProvidedKey,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, dataLakePathAsyncClient));
     }
@@ -1337,7 +1350,8 @@ public class DataLakePathAsyncClient {
 
         return new DataLakePathAsyncClient(getHttpPipeline(), getAccountUrl(), serviceVersion, accountName,
             destinationFileSystem, destinationPath, pathResourceType,
-            prepareBuilderReplacePath(destinationFileSystem, destinationPath).buildBlockBlobAsyncClient());
+            prepareBuilderReplacePath(destinationFileSystem, destinationPath).buildBlockBlobAsyncClient(),
+            customerProvidedKey);
     }
 
     /**

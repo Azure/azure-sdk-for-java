@@ -35,6 +35,9 @@ import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.ConsistentReadControl;
+import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.models.CustomerProvidedKey;
+import com.azure.storage.blob.models.EncryptionAlgorithmType;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.StaticWebsite;
 import com.azure.storage.blob.options.BlobInputStreamOptions;
@@ -788,5 +791,21 @@ class Transforms {
 
     static PathDeletedItem toPathDeletedItem(BlobPrefix blobPrefix) {
         return new PathDeletedItem(blobPrefix.getName(), true, null, null, null);
+    }
+
+    static CpkInfo toBlobCpkInfo(com.azure.storage.file.datalake.models.CpkInfo cpkInfo) {
+        return new CpkInfo().setEncryptionAlgorithm(toBlobEncryptionAlgorithmType(cpkInfo.getEncryptionAlgorithm()))
+            .setEncryptionKeySha256(cpkInfo.getEncryptionKeySha256())
+            .setEncryptionKey(cpkInfo.getEncryptionKey());
+    }
+
+    private static EncryptionAlgorithmType toBlobEncryptionAlgorithmType(
+        com.azure.storage.file.datalake.models.EncryptionAlgorithmType type) {
+        return EncryptionAlgorithmType.valueOf(type.toString());
+    }
+
+    static CustomerProvidedKey toBlobCustomerProvidedKey(
+        com.azure.storage.file.datalake.models.CustomerProvidedKey key) {
+        return new CustomerProvidedKey(key.getKey());
     }
 }
