@@ -74,6 +74,35 @@ See [API design][design] for general introduction on design and key concepts on 
 
 ## Examples
 
+```java
+// batch account
+account = batchManager
+    .batchAccounts()
+    .define(batchAccountName)
+    .withRegion(REGION)
+    .withExistingResourceGroup(resourceGroup)
+    .create();
+
+// batch pool create
+pool = batchManager.pools()
+    .define(poolName)
+    .withExistingBatchAccount(resourceGroup, batchAccountName)
+    .withDisplayName(poolDisplayName)
+    .withDeploymentConfiguration(
+        new DeploymentConfiguration()
+            .withCloudServiceConfiguration(
+                new CloudServiceConfiguration().withOsFamily("4")))
+    .withScaleSettings(
+        new ScaleSettings()
+            .withFixedScale(
+                new FixedScaleSettings()
+                    .withResizeTimeout(Duration.parse("PT8M"))
+                    .withTargetDedicatedNodes(1)
+                    .withTargetLowPriorityNodes(1)
+                    .withNodeDeallocationOption(ComputeNodeDeallocationOption.TASK_COMPLETION)))
+    .withVmSize("Standard_D1")
+    .create();
+```
 [Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/batch/azure-resourcemanager-batch/SAMPLE.md)
 
 
