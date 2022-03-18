@@ -96,19 +96,19 @@ This section includes changes in `spring-cloud-azure-stream-binder-eventhubs` mo
 
 #### Breaking Changes
 - Change the type of the binding producer property of `send-timeout` from `long` to `Duration` [#26625](https://github.com/Azure/azure-sdk-for-java/pull/26625).
-- Change the message header prefix from `azure_eventhub` to `azure_eventhubs_`.
+- Change the message header prefix from `azure_eventhub` to `azure_eventhubs_` [#27746](https://github.com/Azure/azure-sdk-for-java/pull/27746).
 
 ### Spring Cloud Azure Starter Integration Event Hubs
 This section includes changes in the `spring-cloud-azure-starter-integration-eventhubs` module.
 
 #### Breaking Changes
-- Change the message header prefix from `azure_eventhub` to `azure_eventhubs_`.
+- Change the message header prefix from `azure_eventhub` to `azure_eventhubs_` [#27746](https://github.com/Azure/azure-sdk-for-java/pull/27746).
 
 ### Spring Integration Azure Event Hubs
 This section includes changes in the `spring-integration-azure-eventhubs` module.
 
 #### Breaking Changes
-- Change the message header prefix from `azure_eventhub` to `azure_eventhubs_`.
+- Change the message header prefix from `azure_eventhub` to `azure_eventhubs_` [#27746](https://github.com/Azure/azure-sdk-for-java/pull/27746).
 
 ### Spring Cloud Azure Event Hubs Starter
 This section includes changes in `spring-cloud-azure-starter-eventhubs` module.
@@ -128,7 +128,7 @@ This section includes changes in `spring-cloud-azure-starter-eventhubs` module.
 - Change class from `com.azure.spring.messaging.PartitionSupplier` to `com.azure.spring.messaging.eventhubs.core.PartitionSupplier` [#27422](https://github.com/Azure/azure-sdk-for-java/issues/27422).
 - Remove parameter of `PartitionSupplier` from the sending API for a single message in `EventHubsTemplate`. 
 Please use message headers of `com.azure.spring.messaging.AzureHeaders.PARTITION_ID` and `com.azure.spring.messaging.AzureHeaders.PARTITION_KEY` instead [#27422](https://github.com/Azure/azure-sdk-for-java/issues/27422).
-- Change the message header prefix from `azure_eventhub` to `azure_eventhubs_`.
+- Change the message header prefix from `azure_eventhub` to `azure_eventhubs_` [#27746](https://github.com/Azure/azure-sdk-for-java/pull/27746).
 
 ### Spring Messaging Azure Service Bus
 
