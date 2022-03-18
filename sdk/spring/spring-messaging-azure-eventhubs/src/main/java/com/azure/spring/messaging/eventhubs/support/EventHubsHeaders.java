@@ -13,7 +13,7 @@ public final class EventHubsHeaders extends AzureHeaders {
 
     }
 
-    private static final String PREFIX = AzureHeaders.PREFIX + "eventhub_";
+    private static final String PREFIX = AzureHeaders.PREFIX + "eventhubs_";
 
     public static final String ENQUEUED_TIME = PREFIX + "enqueued_time";
     public static final String BATCH_CONVERTED_ENQUEUED_TIME = PREFIX + "batch_converted_enqueued_time";

@@ -37,7 +37,10 @@ This section includes changes in `spring-cloud-azure-stream-binder-servicebus` m
 - Change property from `spring.cloud.stream.servicebus.bindings.<binding-name>.consumer.session-aware` to `spring.cloud.stream.servicebus.bindings.<binding-name>.consumer.session-enabled` [#27331](https://github.com/Azure/azure-sdk-for-java/pull/27331).
 - Unify the root package name of Spring libraries. [#27420](https://github.com/Azure/azure-sdk-for-java/pull/27420).
 - Remove message header of `AzureHeaders.RAW_ID`. Please use `ServiceBusMessageHeaders.MESSAGE_ID` instead [#27675](https://github.com/Azure/azure-sdk-for-java/pull/27675).
- 
+- Change the property of `spring.cloud.stream.servicebus.bindings.<binding-name>.consumer.checkpoint-mode` to `spring.cloud.stream.servicebus.bindings.<binding-name>.consumer.auto-complete`. 
+To disable the auto-complete mode is equivalent to `MANUAL` checkpoint mode and to enable it will trigger the `RECORD` mode [#27615](https://github.com/Azure/azure-sdk-for-java/pull/27615), [#27646](https://github.com/Azure/azure-sdk-for-java/pull/27646).
+
+
 #### Features Added
 - Support converting all headers and properties exposed directly by `ServiceBusReceivedMessage` when receiving messages [#27675](https://github.com/Azure/azure-sdk-for-java/pull/27675), newly supported headers and properties can be get according to the keys of:
   * ServiceBusMessageHeaders.DEAD_LETTER_ERROR_DESCRIPTION
@@ -55,11 +58,15 @@ This section includes changes in `spring-cloud-azure-stream-binder-servicebus` m
 - Support the message header of `ServiceBusMessageHeaders.SUBJECT` to specify the AMQP property of `subject` when sending messages [#27675](https://github.com/Azure/azure-sdk-for-java/pull/27675).
 - Add Key Vault Certificate health indicator for SDK client. [#27706](https://github.com/Azure/azure-sdk-for-java/pull/27706)
 
-### Spring Integration Service Bus Starter
+### Spring Integration Azure Service Bus
+This section includes changes in the `spring-integration-azure-servicebus` module.
 
 #### Breaking Changes
 - Remove message header of `AzureHeaders.RAW_ID`. Please use `ServiceBusMessageHeaders.MESSAGE_ID` instead [#27675](https://github.com/Azure/azure-sdk-for-java/pull/27675).
- 
+- Drop class `CheckpointConfig`. To set the checkpoint configuration for `ServiceBusInboundChannelAdapter`, 
+users can call the method `ServiceBusContainerProperties#setAutoComplete` instead. To disable the auto-complete mode is 
+equivalent to `MANUAL` checkpoint mode and to enable it will trigger the `RECORD` mode [#27615](https://github.com/Azure/azure-sdk-for-java/pull/27615), [#27646](https://github.com/Azure/azure-sdk-for-java/pull/27646).
+
 #### Features Added
 - Support converting all headers and properties exposed directly by `ServiceBusReceivedMessage` when receiving messages [#27675](https://github.com/Azure/azure-sdk-for-java/pull/27675), newly supported headers and properties can be get according to the keys of:
   * ServiceBusMessageHeaders.DEAD_LETTER_ERROR_DESCRIPTION
@@ -81,6 +88,13 @@ This section includes changes in `spring-cloud-azure-stream-binder-eventhubs` mo
 
 #### Breaking Changes
 - Change the type of the binding producer property of `send-timeout` from `long` to `Duration` [#26625](https://github.com/Azure/azure-sdk-for-java/pull/26625).
+- Change the message header prefix from `azure_eventhub` to `azure_eventhubs_` [#27746](https://github.com/Azure/azure-sdk-for-java/pull/27746).
+
+### Spring Integration Azure Event Hubs
+This section includes changes in the `spring-integration-azure-eventhubs` module.
+
+#### Breaking Changes
+- Change the message header prefix from `azure_eventhub` to `azure_eventhubs_` [#27746](https://github.com/Azure/azure-sdk-for-java/pull/27746).
 
 ### Spring Cloud Azure Event Hubs Starter
 This section includes changes in `spring-cloud-azure-starter-eventhubs` module.
@@ -100,12 +114,30 @@ This section includes changes in `spring-cloud-azure-starter-eventhubs` module.
 - Change class from `com.azure.spring.messaging.PartitionSupplier` to `com.azure.spring.messaging.eventhubs.core.PartitionSupplier` [#27422](https://github.com/Azure/azure-sdk-for-java/issues/27422).
 - Remove parameter of `PartitionSupplier` from the sending API for a single message in `EventHubsTemplate`. 
 Please use message headers of `com.azure.spring.messaging.AzureHeaders.PARTITION_ID` and `com.azure.spring.messaging.AzureHeaders.PARTITION_KEY` instead [#27422](https://github.com/Azure/azure-sdk-for-java/issues/27422).
+- Change the message header prefix from `azure_eventhub` to `azure_eventhubs_` [#27746](https://github.com/Azure/azure-sdk-for-java/pull/27746).
 
 ### Spring Messaging Azure Service Bus
 
 #### Breaking Changes
 - Remove parameter of `PartitionSupplier` from the sending API for a single message in `ServiceBusTemplate`.
 Please use message header of `com.azure.spring.messaging.AzureHeaders.PARTITION_KEY` instead [#27422](https://github.com/Azure/azure-sdk-for-java/issues/27422).
+- Remove message header of `AzureHeaders.RAW_ID`. Please use `ServiceBusMessageHeaders.MESSAGE_ID` instead [#27675](https://github.com/Azure/azure-sdk-for-java/pull/27675).
+
+#### Features Added
+- Support converting all headers and properties exposed directly by `ServiceBusReceivedMessage` when receiving messages [#27675](https://github.com/Azure/azure-sdk-for-java/pull/27675), newly supported headers and properties can be get according to the keys of:
+  * ServiceBusMessageHeaders.DEAD_LETTER_ERROR_DESCRIPTION
+  * ServiceBusMessageHeaders.DEAD_LETTER_REASON
+  * ServiceBusMessageHeaders.DEAD_LETTER_SOURCE
+  * ServiceBusMessageHeaders.DELIVERY_COUNT
+  * ServiceBusMessageHeaders.ENQUEUED_SEQUENCE_NUMBER
+  * ServiceBusMessageHeaders.ENQUEUED_TIME
+  * ServiceBusMessageHeaders.EXPIRES_AT
+  * ServiceBusMessageHeaders.LOCK_TOKEN
+  * ServiceBusMessageHeaders.LOCKED_UNTIL
+  * ServiceBusMessageHeaders.SEQUENCE_NUMBER
+  * ServiceBusMessageHeaders.STATE
+  * ServiceBusMessageHeaders.SUBJECT
+- Support the message header of `ServiceBusMessageHeaders.SUBJECT` to specify the AMQP property of `subject` when sending messages [#27675](https://github.com/Azure/azure-sdk-for-java/pull/27675).
 
 ### Spring Messaging Azure Storage Queue
 
@@ -274,6 +306,7 @@ Please refer to [Spring Cloud Azure Migration Guide for 4.0][Spring-Cloud-Azure-
 - Change artifact id from `azure-spring-cloud-starter-eventhubs` to
   `spring-cloud-azure-starter-integration-eventhubs`.
 - Annotation of `@AzureMessageListeners`, `@AzureMessageListener` and `@EnableAzureMessaging` are dropped.
+- Drop `RxJava` support of `EventHubRxOperation` and `EventHubRxTemplate` and support `Reactor` only.
 - Drop `EventHubOperation`, and move its `subscribe` API to class of `EventHubsProcessorContainer`.
 - Rename `EventHubsInboundChannelAdapter` as `EventHubsInboundChannelAdapter` to keep consistent with the service of
   Azure
@@ -288,6 +321,7 @@ Please refer to [Spring Cloud Azure Migration Guide for 4.0][Spring-Cloud-Azure-
 - Change artifact id from `azure-spring-integration-eventhubs` to
   `spring-integration-azure-eventhubs`.
 - Annotation of `@AzureMessageListeners`, `@AzureMessageListener` and `@EnableAzureMessaging` are dropped.
+- Drop `RxJava` support of `EventHubRxOperation` and `EventHubRxTemplate` and support `Reactor` only.
 - Drop `EventHubOperation`, and move its `subscribe` API to class of `EventHubsProcessorContainer`.
 - Rename `EventHubsInboundChannelAdapter` as `EventHubsInboundChannelAdapter` to keep consistent with the service of
   Azure
@@ -300,9 +334,8 @@ Please refer to [Spring Cloud Azure Migration Guide for 4.0][Spring-Cloud-Azure-
 #### Breaking Changes
 
 - Change artifact id from `azure-spring-cloud-starter-servicebus` to `spring-cloud-azure-starter-integration-servicebus`.
-- Annotation of `@AzureMessageListeners`, `@AzureMessageListener` and `@EnableAzureMessaging` are dropped.
 - Combine the original `ServiceBusQueueTemplate#sendAsync` and `ServiceBusTopicTemplate#sendAsync` as `ServiceBusTemplate#sendAsync` and drop classes of `ServiceBusQueueTemplate` and `ServiceBusTopicTemplate`.
-- Drop `RxJava` and `CompletableFuture` support of ServiceBusTemplate and support `Reactor` instead.
+- Drop `CompletableFuture` support of ServiceBusTemplate and support `Reactor` instead.
 - Drop interface of `ServiceBusQueueOperation` and `ServiceBusTopicOperation`.
 - Drop API of `ServiceBusQueueOperation#abandon` and `ServiceBusQueueOperation#deadletter`.
 - Combine the original `ServiceBusQueueTemplate#subscribe` and `ServiceBusTopicTemplate#subscribe` as `ServiceBusProcessorClient#subscribe`.
@@ -321,7 +354,7 @@ Please refer to [Spring Cloud Azure Migration Guide for 4.0][Spring-Cloud-Azure-
 
 - Change artifact id from `azure-spring-integration-servicebus` to `spring-integration-azure-servicebus`.
 - Combine the original `ServiceBusQueueTemplate#sendAsync` and `ServiceBusTopicTemplate#sendAsync` as `ServiceBusTemplate#sendAsync` and drop classes of `ServiceBusQueueTemplate` and `ServiceBusTopicTemplate`.
-- Drop `RxJava` and `CompletableFuture` support of ServiceBusTemplate and support `Reactor` instead.
+- Drop and `CompletableFuture` support of ServiceBusTemplate and support `Reactor` instead.
 - Drop interface of `ServiceBusQueueOperation` and `ServiceBusTopicOperation`.
 - Drop API of `ServiceBusQueueOperation#abandon` and `ServiceBusQueueOperation#deadletter`.
 - Combine the original `ServiceBusQueueTemplate#subscribe` and `ServiceBusTopicTemplate#subscribe` as `ServiceBusProcessorClient#subscribe`.
