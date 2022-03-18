@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ResourceMetricAvailability;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** ResourceMetricDefinition resource specific properties. */
 @Immutable
 public final class ResourceMetricDefinitionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceMetricDefinitionProperties.class);
-
     /*
      * Unit of the metric.
      */

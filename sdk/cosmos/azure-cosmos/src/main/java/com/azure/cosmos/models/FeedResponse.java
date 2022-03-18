@@ -25,6 +25,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
+import java.util.regex.Pattern;
 
 /**
  * The type Feed response.
@@ -33,6 +34,7 @@ import java.util.function.Function;
  */
 public class FeedResponse<T> implements ContinuablePage<String, T> {
 
+    private static final Pattern DELIMITER_CHARS_PATTERN = Pattern.compile(Constants.Quota.DELIMITER_CHARS);
     private final List<T> results;
     private final Map<String, String> header;
     private final HashMap<String, Long> usageHeaders;
@@ -483,8 +485,8 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
 
     private void populateQuotaHeader(String headerMaxQuota,
                                      String headerCurrentUsage) {
-        String[] headerMaxQuotaWords = headerMaxQuota.split(Constants.Quota.DELIMITER_CHARS, -1);
-        String[] headerCurrentUsageWords = headerCurrentUsage.split(Constants.Quota.DELIMITER_CHARS, -1);
+        String[] headerMaxQuotaWords = DELIMITER_CHARS_PATTERN.split(headerMaxQuota, -1);
+        String[] headerCurrentUsageWords = DELIMITER_CHARS_PATTERN.split(headerCurrentUsage, -1);
 
         for (int i = 0; i < headerMaxQuotaWords.length; ++i) {
             if (headerMaxQuotaWords[i].equalsIgnoreCase(Constants.Quota.DATABASE)) {

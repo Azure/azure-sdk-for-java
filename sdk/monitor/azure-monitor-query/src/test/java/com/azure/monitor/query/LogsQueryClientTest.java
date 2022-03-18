@@ -12,6 +12,7 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
+import com.azure.core.util.serializer.TypeReference;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.monitor.query.models.LogsBatchQuery;
 import com.azure.monitor.query.models.LogsBatchQueryResult;
@@ -30,6 +31,7 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -214,5 +216,26 @@ public class LogsQueryClientTest extends TestBase {
                 }
             }
         }
+    }
+
+    @Test
+    public void testVisualization() {
+        String query = "datatable (s: string, i: long) [ \"a\", 1, \"b\", 2, \"c\", 3 ] "
+                + "| render columnchart with (title=\"the chart title\", xtitle=\"the x axis title\")";
+        LogsQueryResult queryResults = client.queryWorkspaceWithResponse(WORKSPACE_ID,
+                query, null, new LogsQueryOptions().setIncludeStatistics(true).setIncludeVisualization(true),
+                Context.NONE).getValue();
+
+        assertEquals(1, queryResults.getAllTables().size());
+        assertNotNull(queryResults.getVisualization());
+
+        LinkedHashMap<String, Object> linkedHashMap =
+                queryResults.getVisualization().toObject(new TypeReference<LinkedHashMap<String, Object>>() { });
+        String title = linkedHashMap.get("title").toString();
+        String xTitle = linkedHashMap.get("xTitle").toString();
+
+        assertEquals("the chart title", title);
+        assertEquals("the x axis title", xTitle);
+
     }
 }

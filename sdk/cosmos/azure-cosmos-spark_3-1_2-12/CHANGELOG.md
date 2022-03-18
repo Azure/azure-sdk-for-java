@@ -1,15 +1,23 @@
 ## Release History
 
-### 4.7.0-beta.1 (Unreleased)
+### 4.8.0-beta.1 (Unreleased)
 
 #### Features Added
-* Added patch support - See [PR 27435](https://github.com/Azure/azure-sdk-for-java/pull/27435)
+* Added an API to determine installed version of the Cosmos Spark connector (`CosmosItemsDataSource.version`/`CosmosChangeFeedDataSource.version`).See [PR 27709](https://github.com/Azure/azure-sdk-for-java/pull/27709)
 
 #### Breaking Changes
 
 #### Bugs Fixed
 
 #### Other Changes
+
+### 4.7.0 (2022-03-11)
+
+#### Features Added
+* Added patch support - See [PR 27435](https://github.com/Azure/azure-sdk-for-java/pull/27435)
+
+#### Bugs Fixed
+* Fixed an issue causing errors deserializing offsets when using Cosmos change feed in Spark structured streaming jobs and upgrading from version 4.2.0 - 4.4.1 to later versions. - See [PR 27455](https://github.com/Azure/azure-sdk-for-java/pull/27455)
 
 ### 4.6.2 (2022-02-16)
 #### Key Bug Fixes

@@ -1,5 +1,15 @@
 ## Release History
 
+### 3.20.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
 ### 3.19.0 (2022-03-10)
 #### Features Added
 * Updated `Spring Boot` to version `2.6.3`.

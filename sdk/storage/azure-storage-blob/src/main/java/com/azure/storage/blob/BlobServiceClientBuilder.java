@@ -70,7 +70,7 @@ public final class BlobServiceClientBuilder implements
     HttpTrait<BlobServiceClientBuilder>,
     ConfigurationTrait<BlobServiceClientBuilder>,
     EndpointTrait<BlobServiceClientBuilder> {
-    private final ClientLogger logger = new ClientLogger(BlobServiceClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BlobServiceClientBuilder.class);
 
     private String endpoint;
     private String accountName;
@@ -122,12 +122,12 @@ public final class BlobServiceClientBuilder implements
      * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public BlobServiceAsyncClient buildAsyncClient() {
-        BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, logger);
+        BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, LOGGER);
 
         boolean anonymousAccess = false;
 
         if (Objects.nonNull(customerProvidedKey) && Objects.nonNull(encryptionScope)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Customer provided key and encryption "
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Customer provided key and encryption "
                 + "scope cannot both be set"));
         }
 
@@ -135,7 +135,7 @@ public final class BlobServiceClientBuilder implements
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
             endpoint, retryOptions, coreRetryOptions, logOptions,
-            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
+            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, LOGGER);
 
         boolean foundCredential = false;
         for (int i = 0; i < pipeline.getPolicyCount(); i++) {
@@ -178,7 +178,7 @@ public final class BlobServiceClientBuilder implements
                 this.sasToken(sasToken);
             }
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("The Azure Storage endpoint url is malformed."));
         }
 
@@ -318,10 +318,10 @@ public final class BlobServiceClientBuilder implements
     @Override
     public BlobServiceClientBuilder connectionString(String connectionString) {
         StorageConnectionString storageConnectionString
-                = StorageConnectionString.create(connectionString, logger);
+                = StorageConnectionString.create(connectionString, LOGGER);
         StorageEndpoint endpoint = storageConnectionString.getBlobEndpoint();
         if (endpoint == null || endpoint.getPrimaryUri() == null) {
-            throw logger
+            throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException(
                             "connectionString missing required settings to derive blob service endpoint."));
         }
@@ -355,7 +355,7 @@ public final class BlobServiceClientBuilder implements
     @Override
     public BlobServiceClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
-            logger.info("'httpClient' is being set to 'null' when it was previously configured.");
+            LOGGER.info("'httpClient' is being set to 'null' when it was previously configured.");
         }
 
         this.httpClient = httpClient;
@@ -508,7 +508,7 @@ public final class BlobServiceClientBuilder implements
     @Override
     public BlobServiceClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
-            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
 
         this.httpPipeline = httpPipeline;

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.models.VnetValidationTestFailureProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A class that describes a test that failed during NSG and UDR validation. */
 @Fluent
 public final class VnetValidationTestFailure extends ProxyOnlyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VnetValidationTestFailure.class);
-
     /*
      * VnetValidationTestFailure resource specific properties
      */
