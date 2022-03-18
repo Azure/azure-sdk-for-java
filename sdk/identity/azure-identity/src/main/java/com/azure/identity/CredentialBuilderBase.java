@@ -111,7 +111,7 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
     /**
      * Sets the {@link IdentityLogOptions} which enables identity logging options to be set on the client. For example
      * configuring {@code accountIdentifierLogging} using
-     * {@link com.azure.identity.IdentityLogOptions#setAllowLoggingAccountIdentifiers(boolean)} to allow account
+     * {@link com.azure.identity.IdentityLogOptions#setLoggingAccountIdentifiersAllowed(boolean)} to allow account
      * identifier logs to be enabled on client side debugging/monitoring purposes.
      *
      * @param identityLogOptions the {@link IdentityLogOptions} to be set on the credential client.

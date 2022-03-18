@@ -22,7 +22,7 @@ public final class IdentityLogOptions {
      * enabled or not.
      * @return The updated IdentityClientOptions object.
      */
-    public IdentityLogOptions setAllowLoggingAccountIdentifiers(boolean allowLoggingAccountIdentifiers) {
+    public IdentityLogOptions setLoggingAccountIdentifiersAllowed(boolean allowLoggingAccountIdentifiers) {
         this.allowLoggingAccountIdentifiers = allowLoggingAccountIdentifiers;
         return this;
     }
