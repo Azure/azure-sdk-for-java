@@ -55,6 +55,12 @@ public final class Path {
     private String permissions;
 
     /*
+     * The name of the encryption scope under which the blob is encrypted.
+     */
+    @JsonProperty(value = "EncryptionScope")
+    private String encryptionScope;
+
+    /*
      * The etag property.
      */
     @JsonProperty(value = "etag")
@@ -197,6 +203,26 @@ public final class Path {
      */
     public Path setPermissions(String permissions) {
         this.permissions = permissions;
+        return this;
+    }
+
+    /**
+     * Get the encryptionScope property: The name of the encryption scope under which the blob is encrypted.
+     *
+     * @return the encryptionScope value.
+     */
+    public String getEncryptionScope() {
+        return this.encryptionScope;
+    }
+
+    /**
+     * Set the encryptionScope property: The name of the encryption scope under which the blob is encrypted.
+     *
+     * @param encryptionScope the encryptionScope value to set.
+     * @return the Path object itself.
+     */
+    public Path setEncryptionScope(String encryptionScope) {
+        this.encryptionScope = encryptionScope;
         return this;
     }
 
