@@ -60,6 +60,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
 
     /* To hold each receive work item to be processed.*/
     private final AtomicReference<SynchronousMessageSubscriber> synchronousMessageSubscriber = new AtomicReference<>();
+    /* To make sure only create one synchronousMessageSubscriber.*/
+    private final Object newSubscriberLock = new Object();
 
     /**
      * Creates a synchronous receiver given its asynchronous counterpart.
@@ -719,27 +721,30 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
 
         final long id = idGenerator.getAndIncrement();
         final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maxWaitTime, emitter);
-        final SynchronousMessageSubscriber messageSubscriber = synchronousMessageSubscriber.get();
+        SynchronousMessageSubscriber messageSubscriber = synchronousMessageSubscriber.get();
 
         if (messageSubscriber != null) {
             messageSubscriber.queueWork(work);
             return;
         }
 
-        final SynchronousMessageSubscriber newSubscriber = new SynchronousMessageSubscriber(asyncClient,
-            work,
-            isPrefetchDisabled,
-            operationTimeout);
-
         // NOTE: We asynchronously send the credit to the service as soon as receiveMessage() API is called (for first
         // time).
         // This means that there may be messages internally buffered before users start iterating the IterableStream.
         // If users do not iterate through the stream and their lock duration expires, it is possible that the
         // Service Bus message's delivery count will be incremented.
-        if (synchronousMessageSubscriber.compareAndSet(null, newSubscriber)) {
-            asyncClient.receiveMessagesNoBackPressure().subscribeWith(newSubscriber);
-        } else {
-            synchronousMessageSubscriber.get().queueWork(work);
+        synchronized (newSubscriberLock) {
+            messageSubscriber = synchronousMessageSubscriber.get();
+            if (messageSubscriber == null) {
+                final SynchronousMessageSubscriber newSubscriber = new SynchronousMessageSubscriber(asyncClient,
+                    work,
+                    isPrefetchDisabled,
+                    operationTimeout);
+                synchronousMessageSubscriber.compareAndSet(null, newSubscriber);
+                asyncClient.receiveMessagesNoBackPressure().subscribeWith(newSubscriber);
+            } else {
+                messageSubscriber.queueWork(work);
+            }
         }
 
         logger.atVerbose()
