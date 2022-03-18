@@ -21,6 +21,13 @@ This section includes changes in `spring-cloud-azure-stream-binder-servicebus` m
 - Change property from `spring.cloud.stream.servicebus.bindings.<binding-name>.consumer.session-aware` to `spring.cloud.stream.servicebus.bindings.<binding-name>.consumer.session-enabled` [#27331](https://github.com/Azure/azure-sdk-for-java/pull/27331).
 - Unify the root package name of Spring libraries. [#27420](https://github.com/Azure/azure-sdk-for-java/pull/27420).
 - Remove message header of `AzureHeaders.RAW_ID`. Please use `ServiceBusMessageHeaders.MESSAGE_ID` instead [#27675](https://github.com/Azure/azure-sdk-for-java/pull/27675).
+- `KeyVaultPropertySource`'s configuration properties changed. [27651](https://github.com/Azure/azure-sdk-for-java/pull/27651)
+  + Property `spring.cloud.azure.keyvault.secret.enabled` only used to disable autoconfigure `SecretClient` bean, it can't be used to disable inserting `KeyVaultPropertySource`. Use `spring.cloud.azure.keyvault.secret.property-source-enabled` to disable inserting `KeyVaultPropertySource`.
+  + Property `spring.cloud.azure.keyvault.secret.endpoint` only used to autoconfigure `SecretClient` bean, it can't be used to configure `KeyVaultPropertySource`. Use `spring.cloud.azure.keyvault.secret.property-sources[].endpoint` to configure `KeyVaultPropertySource`.
+  + For properties like `credential`, `profile`, `client`, `proxy`, `retry`, if `spring.cloud.azure.keyvault.secret.property-sources[].xxx` is not configured, it will only take value from `spring.cloud.azure.xxx`, not take value from `spring.cloud.azure.keyvault.secret.xxx` anymore.
+  + Conclusion: 
+    - Here are all `SecretClient` bean related properties: `spring.cloud.azure.keyvault.secret.enabled`, `spring.cloud.azure.keyvault.secret.xxx`, `spring.cloud.azure.xxx`.
+    - Here are all `KeyVaultPropertySource` related properties: `spring.cloud.azure.keyvault.secret.property-source-enabled`, `spring.cloud.azure.keyvault.secret.property-sources[].xxx`, `spring.cloud.azure.xxx`.
  
 #### Features Added
 - Support converting all headers and properties exposed directly by `ServiceBusReceivedMessage` when receiving messages [#27675](https://github.com/Azure/azure-sdk-for-java/pull/27675), newly supported headers and properties can be get according to the keys of:
