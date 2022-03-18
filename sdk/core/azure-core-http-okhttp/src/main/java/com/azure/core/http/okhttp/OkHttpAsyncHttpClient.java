@@ -19,6 +19,7 @@ import com.azure.core.implementation.util.InputStreamContent;
 import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.StreamUtils;
 import com.azure.core.util.logging.ClientLogger;
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -33,7 +34,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
@@ -191,6 +191,8 @@ class OkHttpAsyncHttpClient implements HttpClient {
             return RequestBody.create(toByteString(content.toStream()), mediaType);
         } else {
             // TODO (kasobol-msft) is there better way than just block? perhaps throw?
+            // Perhaps we could consider using one of storage's stream implementation on top of flux?
+            // Or maybe implement that OkHttp sink and get rid off reading to string altogether.
             return toByteString(bodyContent.toFluxByteBuffer()).map(bs -> RequestBody.create(bs, mediaType)).block();
         }
     }
@@ -258,17 +260,12 @@ class OkHttpAsyncHttpClient implements HttpClient {
      * @return Aggregated ByteString
      */
     private static ByteString toByteString(InputStream inputStream) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        int nRead;
-        byte[] buffer = new byte[8192];
         try (InputStream closeableInputStream = inputStream) {
-            while ((nRead = closeableInputStream.read(buffer, 0, buffer.length)) != -1) {
-                outputStream.write(buffer, 0, nRead);
-            }
+            byte[] content = StreamUtils.INSTANCE.readAllBytes(closeableInputStream);
+            return ByteString.of(content);
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }
-        return ByteString.of(outputStream.toByteArray());
     }
 
     private static HttpResponse fromOkHttpResponse(
