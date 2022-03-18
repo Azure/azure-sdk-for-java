@@ -45,9 +45,9 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.constants.
 /**
  * Microsoft Graph client encapsulation.
  */
-public class AzureADGraphClient {
+public class AzureAdGraphClient {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AzureADGraphClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AzureAdGraphClient.class);
     private static final String MICROSOFT_GRAPH_SCOPE = "User.Read";
     // We use "aadfeed5" as suffix when client library is ADAL, upgrade to "aadfeed6" for MSAL
     private static final String REQUEST_ID_SUFFIX = "aadfeed6";
@@ -58,14 +58,14 @@ public class AzureADGraphClient {
     private final AadAuthenticationProperties aadAuthenticationProperties;
 
     /**
-     * Creates a new instance of {@link AzureADGraphClient}.
+     * Creates a new instance of {@link AzureAdGraphClient}.
      *
      * @param clientId the client ID
      * @param clientSecret the client secret
      * @param aadAuthenticationProperties the AAD authentication properties
      * @param endpoints the AAF authorization server endpoints
      */
-    public AzureADGraphClient(String clientId,
+    public AzureAdGraphClient(String clientId,
                               String clientSecret,
                               AadAuthenticationProperties aadAuthenticationProperties,
                               AadAuthorizationServerEndpoints endpoints) {
