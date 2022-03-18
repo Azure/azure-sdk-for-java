@@ -1,6 +1,6 @@
 ## Release History
 
-### 1.0.0-beta.11
+### 1.0.0 (2022-03-18)
 #### Features Added
 * Released GA version 1.0.0 of Cosmos Encryption project.
 
