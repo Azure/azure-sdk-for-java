@@ -7,6 +7,8 @@
 ### Breaking Changes
 - Renamed `modelIDs` in method `beginCreateComposedModel` to `componentModelIds`
 - Renamed method `beginCopyModel` to `beginCopyModelTo`
+- Removed `modelId` as a required parameter from`beginBuildModel` and `beginCreateComposedModel` and moved to 
+`BuildModelOptions` and `CreateComposedModelOptions` respectively
 
 ### Bugs Fixed
 
