@@ -1,5 +1,11 @@
 # Release History
 
+## 1.2.0 (2021-03-18)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+
 ## 1.1.1 (2021-02-18)
 
 ### Dependency Updates
