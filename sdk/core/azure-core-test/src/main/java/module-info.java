@@ -3,6 +3,7 @@
 
 module com.azure.core.test {
     requires transitive com.azure.core;
+    requires transitive com.azure.core.test.junit.extensions;
 
     requires org.junit.jupiter.api;
     requires org.junit.jupiter.params;
