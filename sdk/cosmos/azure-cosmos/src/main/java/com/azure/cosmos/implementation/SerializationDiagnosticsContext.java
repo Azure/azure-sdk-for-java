@@ -18,6 +18,16 @@ import java.util.List;
 public class SerializationDiagnosticsContext {
     public volatile List<SerializationDiagnosticsContext.SerializationDiagnostics> serializationDiagnosticsList;
 
+    public SerializationDiagnosticsContext() {
+    }
+
+    public SerializationDiagnosticsContext(SerializationDiagnosticsContext toBeCloned) {
+        if (toBeCloned.serializationDiagnosticsList != null) {
+            this.serializationDiagnosticsList = Collections.synchronizedList(
+                new ArrayList<>(toBeCloned.serializationDiagnosticsList));
+        }
+    }
+
     public void addSerializationDiagnostics(SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics) {
         if (serializationDiagnosticsList == null) {
             serializationDiagnosticsList = Collections.synchronizedList(new ArrayList<>());

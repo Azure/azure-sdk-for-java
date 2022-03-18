@@ -7,6 +7,10 @@
 #### Key Bugs Fixes
 * Added `decodeTime` in `CosmosDiagnostics` - See [PR 22808](https://github.com/Azure/azure-sdk-for-java/pull/22808)
 
+#### Other Changes
+* Reduced CPU usage for some String operations by switching to APIs that don't compile a pattern for each call. - See [PR 27654](https://github.com/Azure/azure-sdk-for-java/pull/27654)
+* Reduced GC (Garbage Collection) pressure when executing queries returning many documents by pushing down type conversion. - See [PR 27440](https://github.com/Azure/azure-sdk-for-java/pull/27440) 
+
 ### 4.27.0 (2022-03-10)
 #### Key Bugs Fixes
 * Fixed an issue in `CosmosPagedIterable` resulting in excessive memory consumption due to unbounded prefetch of pages when converting the `CosmosPagedIterable` into an `Iterator<FeedResponse<T>>`. - See [PR 27237](https://github.com/Azure/azure-sdk-for-java/pull/27237) and [PR 27299](https://github.com/Azure/azure-sdk-for-java/pull/27299)
