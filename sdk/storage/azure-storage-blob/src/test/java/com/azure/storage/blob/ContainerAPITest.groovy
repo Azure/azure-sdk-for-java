@@ -147,10 +147,30 @@ class ContainerAPITest extends APISpec {
 
     def "Create if not exists min"() {
         when:
-        def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName()) // add createifnotexists for blobservice
+        def cc = primaryBlobServiceClient.createBlobContainerIfNotExists(generateContainerName())
 
         then:
         cc.exists()
+    }
+
+    def "Create if not exists with response"() {
+        when:
+        def response = primaryBlobServiceClient.createBlobContainerIfNotExistsWithResponse(generateContainerName(), null, null, null)
+
+        then:
+        response.getStatusCode() == 201
+    }
+
+    def "Create if not exists blob service that already exists"() {
+        setup:
+        def containerName = generateContainerName()
+        when:
+        def response = primaryBlobServiceClient.createBlobContainerIfNotExistsWithResponse(containerName, null, null, null)
+        def secondResponse = primaryBlobServiceClient.createBlobContainerIfNotExistsWithResponse(containerName, null, null, null)
+
+        then:
+        response.getStatusCode() == 201
+        secondResponse == null
     }
 
     @Unroll
@@ -752,6 +772,26 @@ class ContainerAPITest extends APISpec {
 
         when:
         def response = cc.deleteIfExistsWithResponse(new BlobRequestConditions(), null, null)
+
+        then:
+        response == null
+    }
+
+    def "Delete if exists service container min"() {
+        setup:
+        def containerName = generateContainerName()
+        primaryBlobServiceClient.createBlobContainer(containerName)
+
+        when:
+        premiumBlobServiceClient.deleteBlobContainerIfExists(containerName)
+
+        then:
+        premiumBlobServiceClient.getBlobContainerClient(containerName).exists() == false
+    }
+
+    def "Delete if exists service container that does not exist"() {
+        when:
+        def response = premiumBlobServiceClient.deleteBlobContainerIfExistsWithResponse(generateContainerName(), null)
 
         then:
         response == null
