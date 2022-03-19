@@ -18,7 +18,6 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -174,7 +173,7 @@ public final class AzureDigitalTwinsAPIImplBuilder {
      */
     public AzureDigitalTwinsAPIImpl buildClient() {
         if (host == null) {
-            this.host = "https://digitaltwins-name.digitaltwins.azure.net";
+            this.host = "https://digitaltwins-hostname";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
