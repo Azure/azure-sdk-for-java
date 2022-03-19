@@ -155,6 +155,7 @@ public class CreateEcKeyOptions extends CreateKeyOptions {
      *
      * @return The updated {@link CreateEcKeyOptions} object.
      */
+    @Override
     public CreateEcKeyOptions setExportable(Boolean exportable) {
         super.setExportable(exportable);
 
@@ -168,6 +169,7 @@ public class CreateEcKeyOptions extends CreateKeyOptions {
      *
      * @return The updated {@link CreateEcKeyOptions} object.
      */
+    @Override
     public CreateEcKeyOptions setReleasePolicy(KeyReleasePolicy releasePolicy) {
         super.setReleasePolicy(releasePolicy);
 

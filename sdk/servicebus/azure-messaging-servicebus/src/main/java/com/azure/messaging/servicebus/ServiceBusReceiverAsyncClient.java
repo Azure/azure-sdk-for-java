@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.RequestResponseChannelClosedException;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TracerProvider;
@@ -42,10 +43,16 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
+import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
+import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPERATION_DISPOSED_RECEIVER;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DISPOSITION_STATUS_KEY;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.ENTITY_TYPE_KEY;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.LOCK_TOKEN_KEY;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SEQUENCE_NUMBER_KEY;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SESSION_ID_KEY;
 
 /**
  * An <b>asynchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage messages} from a specific
@@ -260,8 +267,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         this.managementNodeLocks = new LockContainer<>(cleanupInterval);
         this.renewalContainer = new LockContainer<>(Duration.ofMinutes(2), renewal -> {
-            logger.verbose("Closing expired renewal operation. lockToken[{}]. status[{}]. throwable[{}].",
-                renewal.getLockToken(), renewal.getStatus(), renewal.getThrowable());
+            logger.atVerbose()
+                .addKeyValue(LOCK_TOKEN_KEY, renewal.getLockToken())
+                .addKeyValue("status", renewal.getStatus())
+                .log("Closing expired renewal operation.", renewal.getThrowable());
             renewal.close();
         });
 
@@ -285,8 +294,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         this.managementNodeLocks = new LockContainer<>(cleanupInterval);
         this.renewalContainer = new LockContainer<>(Duration.ofMinutes(2), renewal -> {
-            logger.info("Closing expired renewal operation. sessionId[{}]. status[{}]. throwable[{}]",
-                renewal.getSessionId(), renewal.getStatus(), renewal.getThrowable());
+            logger.atInfo()
+                .addKeyValue(SESSION_ID_KEY, renewal.getSessionId())
+                .addKeyValue("status", renewal.getStatus())
+                .log("Closing expired renewal operation.", renewal.getThrowable());
             renewal.close();
         });
     }
@@ -556,14 +567,20 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             .flatMap(channel -> {
                 final long sequence = lastPeekedSequenceNumber.get() + 1;
 
-                logger.verbose("Peek message from sequence number: {}", sequence);
+                logger.atVerbose()
+                    .addKeyValue(SEQUENCE_NUMBER_KEY, sequence)
+                    .log("Peek message.");
+
                 return channel.peek(sequence, sessionId, getLinkName(sessionId));
             })
             .handle((message, sink) -> {
                 final long current = lastPeekedSequenceNumber
                     .updateAndGet(value -> Math.max(value, message.getSequenceNumber()));
 
-                logger.verbose("Updating last peeked sequence number: {}", current);
+                logger.atVerbose()
+                    .addKeyValue(SEQUENCE_NUMBER_KEY, current)
+                    .log("Updating last peeked sequence number.");
+
                 sink.next(message);
             });
     }
@@ -642,7 +659,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMapMany(node -> {
                 final long nextSequenceNumber = lastPeekedSequenceNumber.get() + 1;
-                logger.verbose("Peek batch from sequence number: {}", nextSequenceNumber);
+                logger.atVerbose().addKeyValue(SEQUENCE_NUMBER_KEY, nextSequenceNumber).log("Peek batch.");
 
                 final Flux<ServiceBusReceivedMessage> messages =
                     node.peek(nextSequenceNumber, sessionId, getLinkName(sessionId), maxMessages);
@@ -661,7 +678,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                         final long current = lastPeekedSequenceNumber
                             .updateAndGet(value -> Math.max(value, last.getSequenceNumber()));
 
-                        logger.verbose("Last peeked sequence number in batch: {}", current);
+                        logger.atVerbose().addKeyValue(SEQUENCE_NUMBER_KEY, current).log("Last peeked sequence number in batch.");
                         sink.complete();
                     });
 
@@ -1297,8 +1314,12 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             sessionIdToUse = sessionId;
         }
 
-        logger.verbose("{}: Update started. Disposition: {}. Lock: {}. SessionId: {}.", entityPath, dispositionStatus,
-            lockToken, sessionIdToUse);
+        logger.atVerbose()
+            .addKeyValue(LOCK_TOKEN_KEY, lockToken)
+            .addKeyValue(ENTITY_PATH_KEY, entityPath)
+            .addKeyValue(SESSION_ID_KEY, sessionIdToUse)
+            .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
+            .log("Update started.");
 
         // This operation is not kicked off until it is subscribed to.
         final Mono<Void> performOnManagement = connectionProcessor
@@ -1306,8 +1327,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             .flatMap(node -> node.updateDisposition(lockToken, dispositionStatus, deadLetterReason,
                 deadLetterErrorDescription, propertiesToModify, sessionId, getLinkName(sessionId), transactionContext))
             .then(Mono.fromRunnable(() -> {
-                logger.info("{}: Management node Update completed. Disposition: {}. Lock: {}.",
-                    entityPath, dispositionStatus, lockToken);
+                logger.atInfo()
+                    .addKeyValue(LOCK_TOKEN_KEY, lockToken)
+                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                    .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
+                    .log("Management node Update completed.");
 
                 message.setIsSettled();
                 managementNodeLocks.remove(lockToken);
@@ -1336,8 +1360,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 updateDispositionOperation = existingConsumer.updateDisposition(lockToken, dispositionStatus,
                     deadLetterReason, deadLetterErrorDescription, propertiesToModify, transactionContext)
                     .then(Mono.fromRunnable(() -> {
-                        logger.verbose("{}: Update completed. Disposition: {}. Lock: {}.",
-                            entityPath, dispositionStatus, lockToken);
+                        logger.atVerbose()
+                            .addKeyValue(LOCK_TOKEN_KEY, lockToken)
+                            .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                            .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
+                            .log("Update completed.");
 
                         message.setIsSettled();
                         renewalContainer.remove(lockToken);
@@ -1369,29 +1396,61 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
 
         final String linkName = StringUtil.getRandomString(entityPath);
-        logger.info("{}: Creating consumer for link '{}'", entityPath, linkName);
+        logger.atInfo()
+            .addKeyValue(LINK_NAME_KEY, linkName)
+            .addKeyValue(ENTITY_PATH_KEY, entityPath)
+            .log("Creating consumer.");
 
-        // Use withRetry below to retry transient errors like connection lost.
-        final Flux<ServiceBusReceiveLink> receiveLink = withRetry(connectionProcessor.flatMap(connection -> {
+        // The Mono, when subscribed, creates a ServiceBusReceiveLink in the ServiceBusAmqpConnection emitted by the connectionProcessor
+        //
+        final Mono<ServiceBusReceiveLink> receiveLinkMono = connectionProcessor.flatMap(connection -> {
             if (receiverOptions.isSessionReceiver()) {
                 return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(),
-                    null, entityType, receiverOptions.getSessionId());
+                        null, entityType, receiverOptions.getSessionId());
             } else {
                 return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(),
                     null, entityType);
             }
-        })
-            .doOnNext(next -> {
-                final String format = "Created consumer for Service Bus resource: [{}] mode: [{}]"
-                    + " sessionEnabled? {} transferEntityPath: [{}], entityType: [{}]";
-                logger.verbose(format, next.getEntityPath(), receiverOptions.getReceiveMode(),
-                    CoreUtils.isNullOrEmpty(receiverOptions.getSessionId()), "N/A", entityType);
-            }),
-            connectionProcessor.getRetryOptions(), "Failed to create receive link " + linkName, true)
-            .repeat();
+        }).doOnNext(next -> {
+            logger.atVerbose()
+                .addKeyValue(LINK_NAME_KEY, linkName)
+                .addKeyValue(ENTITY_PATH_KEY, next.getEntityPath())
+                .addKeyValue("mode", receiverOptions.getReceiveMode())
+                .addKeyValue("isSessionEnabled", CoreUtils.isNullOrEmpty(receiverOptions.getSessionId()))
+                .addKeyValue(ENTITY_TYPE_KEY, entityType)
+                .log("Created consumer for Service Bus resource.");
+        });
+
+        // A Mono that resubscribes to 'receiveLinkMono' to retry the creation of ServiceBusReceiveLink.
+        //
+        // The scenarios where this retry helps are -
+        // [1]. When we try to create a link on a session being disposed but connection is healthy, the retry can
+        //      eventually create a new session then the link.
+        // [2]. When we try to create a new session (to host the new link) but on a connection being disposed,
+        //      the retry can eventually receive a new connection and then proceed with creating session and link.
+        //
+        final Mono<ServiceBusReceiveLink> retryableReceiveLinkMono = RetryUtil.withRetry(receiveLinkMono.onErrorMap(
+                RequestResponseChannelClosedException.class,
+                e -> {
+                    // When the current connection is being disposed, the connectionProcessor can produce
+                    // a new connection if downstream request.
+                    // In this context, treat RequestResponseChannelClosedException from the RequestResponseChannel scoped
+                    // to the current connection being disposed as retry-able so that retry can obtain new connection.
+                    return new AmqpException(true, e.getMessage(), e, null);
+                }),
+            connectionProcessor.getRetryOptions(),
+            "Failed to create receive link " + linkName,
+            true);
+
+        // A Flux that produces a new AmqpReceiveLink each time it receives a request from the below
+        // 'AmqpReceiveLinkProcessor'. Obviously, the processor requests a link when there is a downstream subscriber.
+        // It also requests a new link (i.e. retry) when the current link it holds gets terminated
+        // (e.g., when the service decides to close that link).
+        //
+        final Flux<ServiceBusReceiveLink> receiveLinkFlux = retryableReceiveLinkMono.repeat();
 
         final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionProcessor.getRetryOptions());
-        final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLink.subscribeWith(
+        final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLinkFlux.subscribeWith(
             new ServiceBusReceiveLinkProcessor(receiverOptions.getPrefetchCount(), retryPolicy));
 
         final ServiceBusAsyncConsumer newConsumer = new ServiceBusAsyncConsumer(linkName, linkMessageProcessor,

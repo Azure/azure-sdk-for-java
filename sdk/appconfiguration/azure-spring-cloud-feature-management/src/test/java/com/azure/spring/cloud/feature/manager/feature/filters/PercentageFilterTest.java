@@ -43,6 +43,16 @@ public class PercentageFilterTest {
         context.setParameters(parameters);
         assertFalse(filter.evaluate(context));
     }
+    
+    @Test
+    public void hundredPercentageInteger() {
+        PercentageFilter filter = new PercentageFilter();
+        FeatureFilterEvaluationContext context = new FeatureFilterEvaluationContext();
+        LinkedHashMap<String, Object> parameters = new LinkedHashMap<String, Object>();
+        parameters.put(PERCENTAGE_FILTER_SETTING, 100);
+        context.setParameters(parameters);
+        assertTrue(filter.evaluate(context));
+    }
 
     @Test
     public void nullPercentage() {

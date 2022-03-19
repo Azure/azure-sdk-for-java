@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Triggered Web Job Run Information. */
 @Fluent
 public final class TriggeredJobRun {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggeredJobRun.class);
-
     /*
      * Job ID.
      */

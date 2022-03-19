@@ -21,8 +21,8 @@ import java.util.Locale;
  * failure.
  */
 public class MetadataValidationPolicy implements HttpPipelinePolicy {
-
-    private final ClientLogger logger = new ClientLogger(MetadataValidationPolicy.class);
+    private static final ClientLogger LOGGER = new ClientLogger(MetadataValidationPolicy.class);
+    private static final int X_MS_META_LENGTH = Constants.HeaderConstants.X_MS_META.length();
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
@@ -31,18 +31,19 @@ public class MetadataValidationPolicy implements HttpPipelinePolicy {
                 .filter(header -> header.getName().toLowerCase(Locale.ROOT)
                     .startsWith(Constants.HeaderConstants.X_MS_META))
                 .forEach(header -> {
-                    boolean foundWhitespace = Character.isWhitespace(header.getName()
-                        .charAt(Constants.HeaderConstants.X_MS_META.length()))
-                        || Character.isWhitespace(header.getName().charAt(header.getName().length() - 1))
-                        || Character.isWhitespace(header.getValue().charAt(0))
-                        || Character.isWhitespace(header.getValue().charAt(header.getValue().length() - 1));
+                    String name = header.getName();
+                    String value = header.getValue();
+                    boolean foundWhitespace = Character.isWhitespace(name.charAt(X_MS_META_LENGTH))
+                        || Character.isWhitespace(name.charAt(name.length() - 1))
+                        || Character.isWhitespace(value.charAt(0))
+                        || Character.isWhitespace(value.charAt(value.length() - 1));
                     if (foundWhitespace) {
-                        throw logger.logExceptionAsError(new IllegalArgumentException("Metadata keys and values "
+                        throw LOGGER.logExceptionAsError(new IllegalArgumentException("Metadata keys and values "
                             + "can not contain leading or trailing whitespace. Please remove or encode them."));
                     }
                 });
         } catch (IllegalArgumentException ex) {
-            return FluxUtil.monoError(logger, ex);
+            return FluxUtil.monoError(LOGGER, ex);
         }
 
         return next.process();

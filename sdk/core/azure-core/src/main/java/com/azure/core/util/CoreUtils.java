@@ -36,6 +36,8 @@ import java.util.stream.Collectors;
  * This class contains utility methods useful for building client libraries.
  */
 public final class CoreUtils {
+    // CoreUtils is a commonly used utility, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(CoreUtils.class);
     private static final String COMMA = ",";
     private static final Charset UTF_32BE = Charset.forName("UTF-32BE");
     private static final Charset UTF_32LE = Charset.forName("UTF-32LE");
@@ -202,7 +204,6 @@ public final class CoreUtils {
      * @return an immutable {@link Map}.
      */
     public static Map<String, String> getProperties(String propertiesFileName) {
-        ClientLogger logger = new ClientLogger(CoreUtils.class);
         try (InputStream inputStream = CoreUtils.class.getClassLoader()
             .getResourceAsStream(propertiesFileName)) {
             if (inputStream != null) {
@@ -213,7 +214,7 @@ public final class CoreUtils {
                         entry -> (String) entry.getValue())));
             }
         } catch (IOException ex) {
-            logger.warning("Failed to get properties from " + propertiesFileName, ex);
+            LOGGER.warning("Failed to get properties from " + propertiesFileName, ex);
         }
         return Collections.emptyMap();
     }

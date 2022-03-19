@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
 import com.azure.resourcemanager.compute.models.ProximityPlacementGroupType;
 import com.azure.resourcemanager.compute.models.SubResourceWithColocationStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes the properties of a Proximity Placement Group. */
 @Fluent
 public final class ProximityPlacementGroupProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProximityPlacementGroupProperties.class);
-
     /*
      * Specifies the type of the proximity placement group. <br><br> Possible
      * values are: <br><br> **Standard** : Co-locate resources within an Azure

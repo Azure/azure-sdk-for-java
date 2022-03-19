@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Windows operating system settings to apply to the virtual machine. */
 @Fluent
 public final class WindowsConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WindowsConfiguration.class);
-
     /*
      * Whether automatic updates are enabled on the virtual machine. If
      * omitted, the default value is true.

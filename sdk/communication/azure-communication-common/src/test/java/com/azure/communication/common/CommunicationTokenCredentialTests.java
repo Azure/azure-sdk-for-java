@@ -56,6 +56,19 @@ public class CommunicationTokenCredentialTests {
         tokenCredential.close();
     }
 
+    @Test
+    public void constructCommunicationTokenRefreshOptionsWithoutRefresherShouldThrowException() {
+        assertThrows(Exception.class, () -> {
+            new CommunicationTokenRefreshOptions(null);
+        }, "'tokenRefresher' cannot be null.");
+        assertThrows(Exception.class, () -> {
+            new CommunicationTokenRefreshOptions(null, false);
+        }, "'tokenRefresher' cannot be null.");
+        assertThrows(Exception.class, () -> {
+            new CommunicationTokenRefreshOptions(null, true, "token");
+        }, "'tokenRefresher' cannot be null.");
+    }
+
     class MockImmediateRefresher implements Supplier<String> {
         private int numCalls = 0;
         private String refreshedToken;

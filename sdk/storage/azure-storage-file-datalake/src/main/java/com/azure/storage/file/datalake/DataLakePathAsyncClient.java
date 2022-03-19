@@ -6,6 +6,7 @@ package com.azure.storage.file.datalake;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
@@ -84,7 +85,7 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 @ServiceClient(builder = DataLakePathClientBuilder.class, isAsync = true)
 public class DataLakePathAsyncClient {
 
-    private final ClientLogger logger = new ClientLogger(DataLakePathAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DataLakePathAsyncClient.class);
 
     final AzureDataLakeStorageRestAPIImpl dataLakeStorage;
     final AzureDataLakeStorageRestAPIImpl fileSystemDataLakeStorage;
@@ -102,6 +103,8 @@ public class DataLakePathAsyncClient {
 
     final BlockBlobAsyncClient blockBlobAsyncClient;
 
+    private final AzureSasCredential sasToken;
+
     /**
      * Package-private constructor for use by {@link DataLakePathClientBuilder}.
      *
@@ -115,12 +118,13 @@ public class DataLakePathAsyncClient {
      */
     DataLakePathAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
         String accountName, String fileSystemName, String pathName, PathResourceType pathResourceType,
-        BlockBlobAsyncClient blockBlobAsyncClient) {
+        BlockBlobAsyncClient blockBlobAsyncClient, AzureSasCredential sasToken) {
         this.accountName = accountName;
         this.fileSystemName = fileSystemName;
         this.pathName = Utility.urlDecode(pathName);
         this.pathResourceType = pathResourceType;
         this.blockBlobAsyncClient = blockBlobAsyncClient;
+        this.sasToken = sasToken;
         this.dataLakeStorage = new AzureDataLakeStorageRestAPIImplBuilder()
             .pipeline(pipeline)
             .url(url)
@@ -257,8 +261,12 @@ public class DataLakePathAsyncClient {
         return serviceVersion;
     }
 
+    AzureSasCredential getSasToken() {
+        return this.sasToken;
+    }
+
     /**
-     * Creates a resource. By default this method will not overwrite an existing path.
+     * Creates a resource. By default, this method will not overwrite an existing path.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -277,11 +285,7 @@ public class DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathInfo> create() {
-        try {
-            return create(false);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return create(false);
     }
 
     /**
@@ -301,21 +305,17 @@ public class DataLakePathAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
      * Docs</a></p>
      *
-     * @param overwrite Whether or not to overwrite, should data exist on the file.
+     * @param overwrite Whether to overwrite, should data exist on the file.
      *
      * @return A reactive response containing information about the created resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathInfo> create(boolean overwrite) {
-        try {
-            DataLakeRequestConditions requestConditions = new DataLakeRequestConditions();
-            if (!overwrite) {
-                requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
-            }
-            return createWithResponse(null, null, null, null, requestConditions).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions();
+        if (!overwrite) {
+            requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
+        return createWithResponse(null, null, null, null, requestConditions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -359,7 +359,7 @@ public class DataLakePathAsyncClient {
             return withContext(context -> createWithResponse(permissions, umask, pathResourceType,
                 headers, metadata, requestConditions, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -489,10 +489,10 @@ public class DataLakePathAsyncClient {
     /**
      * Package-private delete method for use by {@link DataLakeFileAsyncClient} and {@link DataLakeDirectoryAsyncClient}
      *
-     * @param recursive Whether or not to delete all paths beneath the directory.
+     * @param recursive Whether to delete all paths beneath the directory.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Mono} containing containing status code and HTTP headers
+     * @return A {@link Mono} containing status code and HTTP headers
      */
     Mono<Response<Void>> deleteWithResponse(Boolean recursive, DataLakeRequestConditions requestConditions,
         Context context) {
@@ -592,11 +592,7 @@ public class DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setMetadata(Map<String, String> metadata) {
-        try {
-            return setMetadataWithResponse(metadata, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return setMetadataWithResponse(metadata, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -626,13 +622,9 @@ public class DataLakePathAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata,
         DataLakeRequestConditions requestConditions) {
-        try {
-            return this.blockBlobAsyncClient.setMetadataWithResponse(metadata,
-                Transforms.toBlobRequestConditions(requestConditions))
-                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return this.blockBlobAsyncClient.setMetadataWithResponse(metadata,
+            Transforms.toBlobRequestConditions(requestConditions))
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
     }
 
     /**
@@ -657,15 +649,11 @@ public class DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setHttpHeaders(PathHttpHeaders headers) {
-        try {
-            return setHttpHeadersWithResponse(headers, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return setHttpHeadersWithResponse(headers, null).flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Changes a resources's HTTP header properties. If only one HTTP header is updated, the others will all be erased.
+     * Changes a resource's HTTP header properties. If only one HTTP header is updated, the others will all be erased.
      * In order to preserve existing values, they must be passed alongside the header being changed.
      *
      * <p><strong>Code Samples</strong></p>
@@ -691,17 +679,13 @@ public class DataLakePathAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setHttpHeadersWithResponse(PathHttpHeaders headers,
         DataLakeRequestConditions requestConditions) {
-        try {
-            return this.blockBlobAsyncClient.setHttpHeadersWithResponse(Transforms.toBlobHttpHeaders(headers),
+        return this.blockBlobAsyncClient.setHttpHeadersWithResponse(Transforms.toBlobHttpHeaders(headers),
                 Transforms.toBlobRequestConditions(requestConditions))
-                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
     }
 
     /**
-     * Returns the resources's metadata and properties.
+     * Returns the resource's metadata and properties.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -719,11 +703,7 @@ public class DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathProperties> getProperties() {
-        try {
-            return getPropertiesWithResponse(null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getPropertiesWithResponse(null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -749,13 +729,9 @@ public class DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PathProperties>> getPropertiesWithResponse(DataLakeRequestConditions requestConditions) {
-        try {
-            return blockBlobAsyncClient.getPropertiesWithResponse(Transforms.toBlobRequestConditions(requestConditions))
-                .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
-                .map(response -> new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue())));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return blockBlobAsyncClient.getPropertiesWithResponse(Transforms.toBlobRequestConditions(requestConditions))
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
+            .map(response -> new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue())));
     }
 
     /**
@@ -776,11 +752,7 @@ public class DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> exists() {
-        try {
-            return existsWithResponse().flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return existsWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -801,12 +773,7 @@ public class DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> existsWithResponse() {
-        try {
-            return blockBlobAsyncClient.existsWithResponse()
-                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return blockBlobAsyncClient.existsWithResponse().onErrorMap(DataLakeImplUtils::transformBlobStorageException);
     }
 
     /**
@@ -840,11 +807,7 @@ public class DataLakePathAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathInfo> setAccessControlList(List<PathAccessControlEntry> accessControlList, String group,
         String owner) {
-        try {
-            return setAccessControlListWithResponse(accessControlList, group, owner, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return setAccessControlListWithResponse(accessControlList, group, owner, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -884,7 +847,7 @@ public class DataLakePathAsyncClient {
             return withContext(context -> setAccessControlWithResponse(accessControlList,
                 null, group, owner, requestConditions, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -917,11 +880,7 @@ public class DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathInfo> setPermissions(PathPermissions permissions, String group, String owner) {
-        try {
-            return setPermissionsWithResponse(permissions, group, owner, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return setPermissionsWithResponse(permissions, group, owner, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -960,7 +919,7 @@ public class DataLakePathAsyncClient {
             return withContext(context -> setAccessControlWithResponse(null, permissions, group, owner,
                 requestConditions, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1021,12 +980,8 @@ public class DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessControlChangeResult> setAccessControlRecursive(List<PathAccessControlEntry> accessControlList) {
-        try {
-            return setAccessControlRecursiveWithResponse(new PathSetAccessControlRecursiveOptions(accessControlList))
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return setAccessControlRecursiveWithResponse(new PathSetAccessControlRecursiveOptions(accessControlList))
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1075,14 +1030,14 @@ public class DataLakePathAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessControlChangeResult>> setAccessControlRecursiveWithResponse(
         PathSetAccessControlRecursiveOptions options) {
-        StorageImplUtils.assertNotNull("options", options);
         try {
+            StorageImplUtils.assertNotNull("options", options);
             return withContext(context -> setAccessControlRecursiveWithResponse(
                 PathAccessControlEntry.serializeList(options.getAccessControlList()), options.getProgressHandler(),
                 PathSetAccessControlRecursiveMode.SET, options.getBatchSize(), options.getMaxBatches(),
                 options.isContinueOnFailure(), options.getContinuationToken(), context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1117,13 +1072,8 @@ public class DataLakePathAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessControlChangeResult> updateAccessControlRecursive(
         List<PathAccessControlEntry> accessControlList) {
-        try {
-            return updateAccessControlRecursiveWithResponse(
-                new PathUpdateAccessControlRecursiveOptions(accessControlList))
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return updateAccessControlRecursiveWithResponse(new PathUpdateAccessControlRecursiveOptions(accessControlList))
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1172,14 +1122,14 @@ public class DataLakePathAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessControlChangeResult>> updateAccessControlRecursiveWithResponse(
         PathUpdateAccessControlRecursiveOptions options) {
-        StorageImplUtils.assertNotNull("options", options);
         try {
+            StorageImplUtils.assertNotNull("options", options);
             return withContext(context -> setAccessControlRecursiveWithResponse(
                 PathAccessControlEntry.serializeList(options.getAccessControlList()), options.getProgressHandler(),
                 PathSetAccessControlRecursiveMode.MODIFY, options.getBatchSize(), options.getMaxBatches(),
                 options.isContinueOnFailure(), options.getContinuationToken(), context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1213,13 +1163,8 @@ public class DataLakePathAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessControlChangeResult> removeAccessControlRecursive(
         List<PathRemoveAccessControlEntry> accessControlList) {
-        try {
-            return removeAccessControlRecursiveWithResponse(
-                new PathRemoveAccessControlRecursiveOptions(accessControlList))
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return removeAccessControlRecursiveWithResponse(new PathRemoveAccessControlRecursiveOptions(accessControlList))
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1267,14 +1212,14 @@ public class DataLakePathAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessControlChangeResult>> removeAccessControlRecursiveWithResponse(
         PathRemoveAccessControlRecursiveOptions options) {
-        StorageImplUtils.assertNotNull("options", options);
         try {
+            StorageImplUtils.assertNotNull("options", options);
             return withContext(context -> setAccessControlRecursiveWithResponse(
                 PathRemoveAccessControlEntry.serializeList(options.getAccessControlList()),
                 options.getProgressHandler(), PathSetAccessControlRecursiveMode.REMOVE, options.getBatchSize(),
                 options.getMaxBatches(), options.isContinueOnFailure(), options.getContinuationToken(), context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1296,10 +1241,10 @@ public class DataLakePathAsyncClient {
             continuationToken, continueOnFailure, batchSize, accessControlList, null, contextFinal)
             .onErrorMap(e -> {
                 if (e instanceof DataLakeStorageException) {
-                    return logger.logExceptionAsError(ModelHelper.changeAclRequestFailed((DataLakeStorageException) e,
+                    return LOGGER.logExceptionAsError(ModelHelper.changeAclRequestFailed((DataLakeStorageException) e,
                         continuationToken));
                 } else if (e instanceof Exception) {
-                    return logger.logExceptionAsError(ModelHelper.changeAclFailed((Exception) e, continuationToken));
+                    return LOGGER.logExceptionAsError(ModelHelper.changeAclFailed((Exception) e, continuationToken));
                 }
                 return e;
             })
@@ -1408,10 +1353,10 @@ public class DataLakePathAsyncClient {
             effectiveNextToken, continueOnFailure, batchSize, accessControlStr, null, context)
             .onErrorMap(e -> {
                 if (e instanceof DataLakeStorageException) {
-                    return logger.logExceptionAsError(ModelHelper.changeAclRequestFailed((DataLakeStorageException) e,
+                    return LOGGER.logExceptionAsError(ModelHelper.changeAclRequestFailed((DataLakeStorageException) e,
                         effectiveNextToken));
                 } else if (e instanceof Exception) {
-                    return logger.logExceptionAsError(ModelHelper.changeAclFailed((Exception) e, effectiveNextToken));
+                    return LOGGER.logExceptionAsError(ModelHelper.changeAclFailed((Exception) e, effectiveNextToken));
                 }
                 return e;
             })
@@ -1441,11 +1386,7 @@ public class DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathAccessControl> getAccessControl() {
-        try {
-            return getAccessControlWithResponse(false, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getAccessControlWithResponse(false, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1480,7 +1421,7 @@ public class DataLakePathAsyncClient {
             return withContext(context -> getAccessControlWithResponse(userPrincipalNameReturned,
                 requestConditions, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1520,6 +1461,7 @@ public class DataLakePathAsyncClient {
     Mono<Response<DataLakePathAsyncClient>> renameWithResponse(String destinationFileSystem, String destinationPath,
         DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destinationRequestConditions,
         Context context) {
+        context = context == null ? Context.NONE : context;
 
         destinationRequestConditions = destinationRequestConditions == null ? new DataLakeRequestConditions()
             : destinationRequestConditions;
@@ -1544,6 +1486,7 @@ public class DataLakePathAsyncClient {
         DataLakePathAsyncClient dataLakePathAsyncClient = getPathAsyncClient(destinationFileSystem, destinationPath);
 
         String renameSource = "/" + this.fileSystemName + "/" + Utility.urlEncode(pathName);
+        renameSource = this.sasToken != null ? renameSource + "?" + this.sasToken.getSignature() : renameSource;
 
         return dataLakePathAsyncClient.dataLakeStorage.getPaths().createWithResponseAsync(
             null /* request id */, null /* timeout */, null /* pathResourceType */,
@@ -1565,12 +1508,12 @@ public class DataLakePathAsyncClient {
             destinationFileSystem = getFileSystemName();
         }
         if (CoreUtils.isNullOrEmpty(destinationPath)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'destinationPath' can not be set to null"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'destinationPath' can not be set to null"));
         }
 
         return new DataLakePathAsyncClient(getHttpPipeline(), getAccountUrl(), serviceVersion, accountName,
             destinationFileSystem, destinationPath, pathResourceType,
-            prepareBuilderReplacePath(destinationFileSystem, destinationPath).buildBlockBlobAsyncClient());
+            prepareBuilderReplacePath(destinationFileSystem, destinationPath).buildBlockBlobAsyncClient(), sasToken);
     }
 
     /**

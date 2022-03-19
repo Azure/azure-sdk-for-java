@@ -5,7 +5,7 @@
 package com.azure.analytics.purview.catalog.generated;
 
 import com.azure.analytics.purview.catalog.GlossaryClient;
-import com.azure.analytics.purview.catalog.PurviewCatalogClientBuilder;
+import com.azure.analytics.purview.catalog.GlossaryClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -13,13 +13,15 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class GlossaryGetDetailedGlossary {
     public static void main(String[] args) {
-        GlossaryClient client =
-                new PurviewCatalogClientBuilder()
+        // BEGIN: com.azure.analytics.purview.catalog.generated.glossarygetdetailedglossary.glossarygetdetailedglossary
+        GlossaryClient glossaryClient =
+                new GlossaryClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
-                        .buildGlossaryClient();
+                        .buildClient();
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                client.getDetailedGlossaryWithResponse("c018ddaf-7c21-4b37-a838-dae5f110c3d8", requestOptions);
+                glossaryClient.getDetailedGlossaryWithResponse("c018ddaf-7c21-4b37-a838-dae5f110c3d8", requestOptions);
+        // END: com.azure.analytics.purview.catalog.generated.glossarygetdetailedglossary.glossarygetdetailedglossary
     }
 }

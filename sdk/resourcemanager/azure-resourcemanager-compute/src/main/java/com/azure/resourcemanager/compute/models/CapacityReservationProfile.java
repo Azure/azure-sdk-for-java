@@ -6,15 +6,11 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters of a capacity reservation Profile. */
 @Fluent
 public final class CapacityReservationProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CapacityReservationProfile.class);
-
     /*
      * Specifies the capacity reservation group resource id that should be used
      * for allocating the virtual machine or scaleset vm instances provided

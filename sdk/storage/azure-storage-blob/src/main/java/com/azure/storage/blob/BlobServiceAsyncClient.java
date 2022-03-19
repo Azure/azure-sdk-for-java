@@ -71,7 +71,7 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
  */
 @ServiceClient(builder = BlobServiceClientBuilder.class, isAsync = true)
 public final class BlobServiceAsyncClient {
-    private final ClientLogger logger = new ClientLogger(BlobServiceAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BlobServiceAsyncClient.class);
 
     private final AzureBlobStorageImpl azureBlobStorage;
 
@@ -94,7 +94,7 @@ public final class BlobServiceAsyncClient {
      * {@code null} to allow the service to use its own encryption.
      * @param encryptionScope Encryption scope used during encryption of the blob's data on the server, pass
      * {@code null} to allow the service to use its own encryption.
-     * @param anonymousAccess Whether or not the client was built with anonymousAccess
+     * @param anonymousAccess Whether the client was built with anonymousAccess
      */
     BlobServiceAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
         CpkInfo customerProvidedKey, EncryptionScope encryptionScope,
@@ -104,7 +104,7 @@ public final class BlobServiceAsyncClient {
         try {
             URI.create(url);
         } catch (IllegalArgumentException ex) {
-            throw logger.logExceptionAsError(ex);
+            throw LOGGER.logExceptionAsError(ex);
         }
         this.azureBlobStorage = new AzureBlobStorageImplBuilder()
             .pipeline(pipeline)
@@ -183,11 +183,7 @@ public final class BlobServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobContainerAsyncClient> createBlobContainer(String containerName) {
-        try {
-            return createBlobContainerWithResponse(containerName, null, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return createBlobContainerWithResponse(containerName, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -221,7 +217,7 @@ public final class BlobServiceAsyncClient {
             return withContext(context -> createBlobContainerWithResponse(containerName, metadata, accessType,
                 context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -316,15 +312,11 @@ public final class BlobServiceAsyncClient {
      * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainer#String -->
      *
      * @param containerName Name of the container to delete
-     * @return A {@link Mono} containing containing status code and HTTP headers
+     * @return A {@link Mono} containing status code and HTTP headers
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteBlobContainer(String containerName) {
-        try {
-            return deleteBlobContainerWithResponse(containerName).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return deleteBlobContainerWithResponse(containerName).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -350,7 +342,7 @@ public final class BlobServiceAsyncClient {
         try {
             return withContext(context -> deleteBlobContainerWithResponse(containerName, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -443,11 +435,7 @@ public final class BlobServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BlobContainerItem> listBlobContainers() {
-        try {
-            return this.listBlobContainers(new ListBlobContainersOptions());
-        } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
-        }
+        return this.listBlobContainers(new ListBlobContainersOptions());
     }
 
     /**
@@ -474,7 +462,7 @@ public final class BlobServiceAsyncClient {
         try {
             return listBlobContainersWithOptionalTimeout(options, null);
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -554,7 +542,7 @@ public final class BlobServiceAsyncClient {
         try {
             return findBlobsByTags(options, null);
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -623,7 +611,7 @@ public final class BlobServiceAsyncClient {
             || blobContainerListDetails.getRetrieveDeleted()
             || blobContainerListDetails.getRetrieveSystemContainers());
         if (hasDetails) {
-            List<ListBlobContainersIncludeType> flags = new ArrayList<>(2);
+            List<ListBlobContainersIncludeType> flags = new ArrayList<>(3);
             if (blobContainerListDetails.getRetrieveDeleted()) {
                 flags.add(ListBlobContainersIncludeType.DELETED);
             }
@@ -658,11 +646,7 @@ public final class BlobServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobServiceProperties> getProperties() {
-        try {
-            return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -688,7 +672,7 @@ public final class BlobServiceAsyncClient {
         try {
             return withContext(this::getPropertiesWithResponse);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -738,11 +722,7 @@ public final class BlobServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setProperties(BlobServiceProperties properties) {
-        try {
-            return setPropertiesWithResponse(properties).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return setPropertiesWithResponse(properties).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -784,7 +764,7 @@ public final class BlobServiceAsyncClient {
         try {
             return withContext(context -> setPropertiesWithResponse(properties, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -906,12 +886,7 @@ public final class BlobServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UserDelegationKey> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
-        try {
-            return withContext(context -> getUserDelegationKeyWithResponse(start, expiry, context))
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getUserDelegationKeyWithResponse(start, expiry).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -940,7 +915,7 @@ public final class BlobServiceAsyncClient {
         try {
             return withContext(context -> getUserDelegationKeyWithResponse(start, expiry, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -948,7 +923,7 @@ public final class BlobServiceAsyncClient {
         Context context) {
         StorageImplUtils.assertNotNull("expiry", expiry);
         if (start != null && !start.isBefore(expiry)) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("`start` must be null or a datetime before `expiry`."));
         }
         throwOnAnonymousAccess();
@@ -981,11 +956,7 @@ public final class BlobServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobServiceStatistics> getStatistics() {
-        try {
-            return getStatisticsWithResponse().flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getStatisticsWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1011,7 +982,7 @@ public final class BlobServiceAsyncClient {
         try {
             return withContext(this::getStatisticsWithResponse);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1036,15 +1007,11 @@ public final class BlobServiceAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.getAccountInfo -->
      *
-     * @return A {@link Mono} containing containing the storage account info.
+     * @return A {@link Mono} containing the storage account info.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StorageAccountInfo> getAccountInfo() {
-        try {
-            return getAccountInfoWithResponse().flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getAccountInfoWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1069,7 +1036,7 @@ public final class BlobServiceAsyncClient {
         try {
             return withContext(this::getAccountInfoWithResponse);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1164,7 +1131,7 @@ public final class BlobServiceAsyncClient {
      */
     private void throwOnAnonymousAccess() {
         if (anonymousAccess) {
-            throw logger.logExceptionAsError(new IllegalStateException("Service client cannot be accessed without "
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Service client cannot be accessed without "
                 + "credentials"));
         }
     }
@@ -1198,11 +1165,15 @@ public final class BlobServiceAsyncClient {
      * to interact with the restored container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlobContainerAsyncClient> undeleteBlobContainer(
-        String deletedContainerName, String deletedContainerVersion) {
-        return this.undeleteBlobContainerWithResponse(new UndeleteBlobContainerOptions(deletedContainerName,
-            deletedContainerVersion)
-        ).flatMap(FluxUtil::toMono);
+    public Mono<BlobContainerAsyncClient> undeleteBlobContainer(String deletedContainerName,
+        String deletedContainerVersion) {
+        try {
+            return this.undeleteBlobContainerWithResponse(new UndeleteBlobContainerOptions(deletedContainerName,
+                deletedContainerVersion))
+                .flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -1241,7 +1212,7 @@ public final class BlobServiceAsyncClient {
         try {
             return withContext(context -> undeleteBlobContainerWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 

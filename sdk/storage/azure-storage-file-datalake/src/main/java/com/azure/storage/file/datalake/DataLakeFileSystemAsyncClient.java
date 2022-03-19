@@ -6,6 +6,7 @@ package com.azure.storage.file.datalake;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
@@ -83,7 +84,7 @@ public class DataLakeFileSystemAsyncClient {
 
     private static final String ROOT_DIRECTORY_NAME = "";
 
-    private final ClientLogger logger = new ClientLogger(DataLakeFileSystemAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DataLakeFileSystemAsyncClient.class);
     private final AzureDataLakeStorageRestAPIImpl azureDataLakeStorage;
     private final AzureDataLakeStorageRestAPIImpl blobDataLakeStorageFs; // Just for list deleted paths
     private final BlobContainerAsyncClient blobContainerAsyncClient;
@@ -91,6 +92,7 @@ public class DataLakeFileSystemAsyncClient {
     private final String accountName;
     private final String fileSystemName;
     private final DataLakeServiceVersion serviceVersion;
+    private final AzureSasCredential sasToken;
 
     /**
      * Package-private constructor for use by {@link DataLakeFileSystemClientBuilder}.
@@ -103,7 +105,8 @@ public class DataLakeFileSystemAsyncClient {
      * @param blobContainerAsyncClient The underlying {@link BlobContainerAsyncClient}
      */
     DataLakeFileSystemAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
-        String accountName, String fileSystemName, BlobContainerAsyncClient blobContainerAsyncClient) {
+        String accountName, String fileSystemName, BlobContainerAsyncClient blobContainerAsyncClient,
+        AzureSasCredential sasToken) {
         this.azureDataLakeStorage = new AzureDataLakeStorageRestAPIImplBuilder()
             .pipeline(pipeline)
             .url(url)
@@ -123,6 +126,7 @@ public class DataLakeFileSystemAsyncClient {
         this.accountName = accountName;
         this.fileSystemName = fileSystemName;
         this.blobContainerAsyncClient = blobContainerAsyncClient;
+        this.sasToken = sasToken;
     }
 
     /**
@@ -150,7 +154,7 @@ public class DataLakeFileSystemAsyncClient {
             null).getBlockBlobAsyncClient();
 
         return new DataLakeFileAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
-            getFileSystemName(), fileName, blockBlobAsyncClient);
+            getFileSystemName(), fileName, blockBlobAsyncClient, sasToken);
     }
 
     /**
@@ -177,7 +181,7 @@ public class DataLakeFileSystemAsyncClient {
         BlockBlobAsyncClient blockBlobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(directoryName,
             null).getBlockBlobAsyncClient();
         return new DataLakeDirectoryAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
-            getAccountName(), getFileSystemName(), directoryName, blockBlobAsyncClient);
+            getAccountName(), getFileSystemName(), directoryName, blockBlobAsyncClient, sasToken);
     }
 
     /**
@@ -282,11 +286,7 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> create() {
-        try {
-            return createWithResponse(null, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return createWithResponse(null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -312,12 +312,8 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createWithResponse(Map<String, String> metadata, PublicAccessType accessType) {
-        try {
-            return blobContainerAsyncClient.createWithResponse(metadata, Transforms.toBlobPublicAccessType(accessType))
-                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return blobContainerAsyncClient.createWithResponse(metadata, Transforms.toBlobPublicAccessType(accessType))
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
     }
 
     /**
@@ -394,11 +390,7 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> delete() {
-        try {
-            return deleteWithResponse(null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return deleteWithResponse(null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -426,13 +418,8 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponse(DataLakeRequestConditions requestConditions) {
-        try {
-            return blobContainerAsyncClient.deleteWithResponse(
-                Transforms.toBlobRequestConditions(requestConditions))
-                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return blobContainerAsyncClient.deleteWithResponse(Transforms.toBlobRequestConditions(requestConditions))
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
     }
 
     /**
@@ -516,11 +503,7 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileSystemProperties> getProperties() {
-        try {
-            return getPropertiesWithResponse(null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getPropertiesWithResponse(null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -545,14 +528,9 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<FileSystemProperties>> getPropertiesWithResponse(String leaseId) {
-        try {
-            return blobContainerAsyncClient.getPropertiesWithResponse(leaseId)
-                .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
-                .map(response -> new SimpleResponse<>(response,
-                    Transforms.toFileSystemProperties(response.getValue())));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return blobContainerAsyncClient.getPropertiesWithResponse(leaseId)
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
+            .map(response -> new SimpleResponse<>(response, Transforms.toFileSystemProperties(response.getValue())));
     }
 
     /**
@@ -576,15 +554,11 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setMetadata(Map<String, String> metadata) {
-        try {
-            return setMetadataWithResponse(metadata, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return setMetadataWithResponse(metadata, null).flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Sets the file systems's metadata. For more information, see the
+     * Sets the file system's metadata. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-metadata">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -613,13 +587,9 @@ public class DataLakeFileSystemAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata,
         DataLakeRequestConditions requestConditions) {
-        try {
-            return blobContainerAsyncClient.setMetadataWithResponse(metadata,
+        return blobContainerAsyncClient.setMetadataWithResponse(metadata,
                 Transforms.toBlobRequestConditions(requestConditions))
-                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
     }
 
     /**
@@ -638,11 +608,7 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PathItem> listPaths() {
-        try {
-            return this.listPaths(new ListPathsOptions());
-        } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
-        }
+        return this.listPaths(new ListPathsOptions());
     }
 
     /**
@@ -666,7 +632,11 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PathItem> listPaths(ListPathsOptions options) {
-        return listPathsWithOptionalTimeout(options, null);
+        try {
+            return listPathsWithOptionalTimeout(options, null);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(LOGGER, ex);
+        }
     }
 
     PagedFlux<PathItem> listPathsWithOptionalTimeout(ListPathsOptions options,
@@ -734,11 +704,7 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PathDeletedItem> listDeletedPaths() {
-        try {
-            return this.listDeletedPaths(null);
-        } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
-        }
+        return this.listDeletedPaths(null);
     }
 
     /**
@@ -772,7 +738,7 @@ public class DataLakeFileSystemAsyncClient {
                 (marker, pageSize) -> withContext(context -> listDeletedPaths(marker, pageSize, prefix, null,
                     context)));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -814,7 +780,7 @@ public class DataLakeFileSystemAsyncClient {
     }
 
     /**
-     * Creates a new file within a file system. By default this method will not overwrite an existing file. For more
+     * Creates a new file within a file system. By default, this method will not overwrite an existing file. For more
      * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -849,7 +815,7 @@ public class DataLakeFileSystemAsyncClient {
      *
      * @param fileName Name of the file to create. If the path name contains special characters, pass in the url encoded
      * version of the path name.
-     * @param overwrite Whether or not to overwrite, should a file exist.
+     * @param overwrite Whether to overwrite, should a file exist.
      * @return A {@link Mono} containing a {@link DataLakeFileAsyncClient} used to interact with the file created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -858,12 +824,8 @@ public class DataLakeFileSystemAsyncClient {
         if (!overwrite) {
             requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
-        try {
-            return createFileWithResponse(fileName, null, null, null, null, requestConditions)
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+
+        return createFileWithResponse(fileName, null, null, null, null, requestConditions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -902,13 +864,15 @@ public class DataLakeFileSystemAsyncClient {
     public Mono<Response<DataLakeFileAsyncClient>> createFileWithResponse(String fileName,
         String permissions, String umask, PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions requestConditions) {
+        DataLakeFileAsyncClient dataLakeFileAsyncClient;
         try {
-            DataLakeFileAsyncClient dataLakeFileAsyncClient = getFileAsyncClient(fileName);
-            return dataLakeFileAsyncClient.createWithResponse(permissions, umask, headers, metadata, requestConditions)
-                .map(response -> new SimpleResponse<>(response, dataLakeFileAsyncClient));
+            dataLakeFileAsyncClient = getFileAsyncClient(fileName);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
+
+        return dataLakeFileAsyncClient.createWithResponse(permissions, umask, headers, metadata, requestConditions)
+            .map(response -> new SimpleResponse<>(response, dataLakeFileAsyncClient));
     }
 
     /**
@@ -995,11 +959,7 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteFile(String fileName) {
-        try {
-            return deleteFileWithResponse(fileName, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return deleteFileWithResponse(fileName, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1022,15 +982,18 @@ public class DataLakeFileSystemAsyncClient {
      * @param fileName Name of the file to delete. If the path name contains special characters, pass in the url encoded
      * version of the path name.
      * @param requestConditions {@link DataLakeRequestConditions}
-     * @return A {@link Mono} containing containing status code and HTTP headers
+     * @return A {@link Mono} containing status code and HTTP headers
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteFileWithResponse(String fileName, DataLakeRequestConditions requestConditions) {
+        DataLakeFileAsyncClient dataLakeFileAsyncClient;
         try {
-            return getFileAsyncClient(fileName).deleteWithResponse(requestConditions);
+            dataLakeFileAsyncClient = getFileAsyncClient(fileName);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
+
+        return dataLakeFileAsyncClient.deleteWithResponse(requestConditions);
     }
 
     /**
@@ -1124,7 +1087,7 @@ public class DataLakeFileSystemAsyncClient {
      *
      * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
      * url encoded version of the path name.
-     * @param overwrite Whether or not to overwrite, should a directory exist.
+     * @param overwrite Whether to overwrite, should a directory exist.
      * @return A {@link Mono} containing a {@link DataLakeDirectoryAsyncClient} used to interact with the directory
      * created.
      */
@@ -1134,12 +1097,9 @@ public class DataLakeFileSystemAsyncClient {
         if (!overwrite) {
             requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
-        try {
-            return createDirectoryWithResponse(directoryName, null, null, null, null, requestConditions)
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+
+        return createDirectoryWithResponse(directoryName, null, null, null, null, requestConditions)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1179,14 +1139,15 @@ public class DataLakeFileSystemAsyncClient {
     public Mono<Response<DataLakeDirectoryAsyncClient>> createDirectoryWithResponse(String directoryName,
         String permissions, String umask, PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions requestConditions) {
+        DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient;
         try {
-            DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient = getDirectoryAsyncClient(directoryName);
-
-            return dataLakeDirectoryAsyncClient.createWithResponse(permissions, umask, headers, metadata,
-                requestConditions).map(response -> new SimpleResponse<>(response, dataLakeDirectoryAsyncClient));
+            dataLakeDirectoryAsyncClient = getDirectoryAsyncClient(directoryName);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
+
+        return dataLakeDirectoryAsyncClient.createWithResponse(permissions, umask, headers, metadata, requestConditions)
+            .map(response -> new SimpleResponse<>(response, dataLakeDirectoryAsyncClient));
     }
 
     /**
@@ -1297,14 +1258,21 @@ public class DataLakeFileSystemAsyncClient {
      *
      * @param directoryName Name of the directory to delete. If the path name contains special characters, pass in the
      * url encoded version of the path name.
-     * @param recursive Whether or not to delete all paths beneath the directory.
+     * @param recursive Whether to delete all paths beneath the directory.
      * @param requestConditions {@link DataLakeRequestConditions}
-     * @return A {@link Mono} containing containing status code and HTTP headers
+     * @return A {@link Mono} containing status code and HTTP headers
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDirectoryWithResponse(String directoryName, boolean recursive,
         DataLakeRequestConditions requestConditions) {
-        return getDirectoryAsyncClient(directoryName).deleteWithResponse(recursive, requestConditions);
+        DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient;
+        try {
+            dataLakeDirectoryAsyncClient = getDirectoryAsyncClient(directoryName);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+
+        return dataLakeDirectoryAsyncClient.deleteWithResponse(recursive, requestConditions);
     }
 
     /**
@@ -1416,7 +1384,7 @@ public class DataLakeFileSystemAsyncClient {
         try {
             return withContext(context -> undeletePathWithResponse(deletedPath, deletionId, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1448,13 +1416,13 @@ public class DataLakeFileSystemAsyncClient {
                         serviceVersion, accountName, fileSystemName, deletedPath,
                         PathResourceType.fromString(response.getDeserializedHeaders().getXMsResourceType()),
                         blobContainerAsyncClient.getBlobAsyncClient(deletedPath, null)
-                            .getBlockBlobAsyncClient());
+                            .getBlockBlobAsyncClient(), sasToken);
                     if (PathResourceType.DIRECTORY.equals(client.pathResourceType)) {
                         return new SimpleResponse<>(response, new DataLakeDirectoryAsyncClient(client));
                     } else if (PathResourceType.FILE.equals(client.pathResourceType)) {
                         return new SimpleResponse<>(response, new DataLakeFileAsyncClient(client));
                     } else {
-                        throw logger.logExceptionAsError(new IllegalStateException("'pathClient' expected to be either "
+                        throw LOGGER.logExceptionAsError(new IllegalStateException("'pathClient' expected to be either "
                             + "a file or directory client."));
                     }
                 });
@@ -1494,11 +1462,7 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setAccessPolicy(PublicAccessType accessType, List<DataLakeSignedIdentifier> identifiers) {
-        try {
-            return setAccessPolicyWithResponse(accessType, identifiers, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return setAccessPolicyWithResponse(accessType, identifiers, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1543,13 +1507,9 @@ public class DataLakeFileSystemAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setAccessPolicyWithResponse(PublicAccessType accessType,
         List<DataLakeSignedIdentifier> identifiers, DataLakeRequestConditions requestConditions) {
-        try {
-            return blobContainerAsyncClient.setAccessPolicyWithResponse(Transforms.toBlobPublicAccessType(accessType),
+        return blobContainerAsyncClient.setAccessPolicyWithResponse(Transforms.toBlobPublicAccessType(accessType),
                 Transforms.toBlobIdentifierList(identifiers), Transforms.toBlobRequestConditions(requestConditions))
-                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
     }
 
     /**
@@ -1577,11 +1537,7 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileSystemAccessPolicies> getAccessPolicy() {
-        try {
-            return getAccessPolicyWithResponse(null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getAccessPolicyWithResponse(null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1610,14 +1566,10 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<FileSystemAccessPolicies>> getAccessPolicyWithResponse(String leaseId) {
-        try {
-            return blobContainerAsyncClient.getAccessPolicyWithResponse(leaseId)
-                .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
-                .map(response -> new SimpleResponse<>(response,
+        return blobContainerAsyncClient.getAccessPolicyWithResponse(leaseId)
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
+            .map(response -> new SimpleResponse<>(response,
                 Transforms.toFileSystemAccessPolicies(response.getValue())));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
     }
 
 //    /**

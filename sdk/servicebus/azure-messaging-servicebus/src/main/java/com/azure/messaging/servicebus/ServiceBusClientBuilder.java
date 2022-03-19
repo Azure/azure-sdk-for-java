@@ -61,6 +61,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
+import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
+
 /**
  * The builder to create Service Bus clients:
  *
@@ -291,9 +293,12 @@ public final class ServiceBusClientBuilder implements
 
         this.fullyQualifiedNamespace = properties.getEndpoint().getHost();
 
-        if (properties.getEntityPath() != null && !properties.getEntityPath().isEmpty()) {
-            logger.info("Setting 'entityName' [{}] from connectionString.", properties.getEntityPath());
-            this.connectionStringEntityName = properties.getEntityPath();
+        String entityPath = properties.getEntityPath();
+        if (CoreUtils.isNullOrEmpty(entityPath)) {
+            logger.atInfo()
+                .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                .log("Setting entity from connection string.");
+            this.connectionStringEntityName = entityPath;
         }
 
         return credential(properties.getEndpoint().getHost(), tokenCredential);
@@ -610,17 +615,22 @@ public final class ServiceBusClientBuilder implements
     void onClientClose() {
         synchronized (connectionLock) {
             final int numberOfOpenClients = openClients.decrementAndGet();
-            logger.info("Closing a dependent client. # of open clients: {}", numberOfOpenClients);
+            logger.atInfo()
+                .addKeyValue("numberOfOpenClients", numberOfOpenClients)
+                .log("Closing a dependent client.");
 
             if (numberOfOpenClients > 0) {
                 return;
             }
 
             if (numberOfOpenClients < 0) {
-                logger.warning("There should not be less than 0 clients. actual: {}", numberOfOpenClients);
+                logger.atWarning()
+                    .addKeyValue("numberOfOpenClients", numberOfOpenClients)
+                    .log("There should not be less than 0 clients.");
             }
 
-            logger.info("No more open clients, closing shared connection [{}].", sharedConnection);
+            logger.info("No more open clients, closing shared connection.");
+
             if (sharedConnection != null) {
                 sharedConnection.dispose();
                 sharedConnection = null;
@@ -1181,6 +1191,8 @@ public final class ServiceBusClientBuilder implements
          */
         public ServiceBusProcessorClient buildProcessorClient() {
             return new ServiceBusProcessorClient(sessionReceiverClientBuilder,
+                sessionReceiverClientBuilder.queueName, sessionReceiverClientBuilder.topicName,
+                sessionReceiverClientBuilder.subscriptionName,
                 Objects.requireNonNull(processMessage, "'processMessage' cannot be null"),
                 Objects.requireNonNull(processError, "'processError' cannot be null"), processorClientOptions);
         }
@@ -1676,6 +1688,8 @@ public final class ServiceBusClientBuilder implements
          */
         public ServiceBusProcessorClient buildProcessorClient() {
             return new ServiceBusProcessorClient(serviceBusReceiverClientBuilder,
+                    serviceBusReceiverClientBuilder.queueName, serviceBusReceiverClientBuilder.topicName,
+                    serviceBusReceiverClientBuilder.subscriptionName,
                 Objects.requireNonNull(processMessage, "'processMessage' cannot be null"),
                 Objects.requireNonNull(processError, "'processError' cannot be null"), processorClientOptions);
         }

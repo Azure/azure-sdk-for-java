@@ -5,6 +5,7 @@ package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.MsalServiceException;
 import org.junit.Assert;
@@ -82,6 +83,8 @@ public class ClientSecretCredentialTest {
         when(badIdentityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
         when(identityClient.authenticateWithConfidentialClient(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
         when(badIdentityClient.authenticateWithConfidentialClient(request)).thenReturn(Mono.error(new MsalServiceException("bad secret", "BadSecret")));
+        when(identityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
+        when(badIdentityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
         PowerMockito.whenNew(IdentityClient.class).withArguments(eq(TENANT_ID), eq(CLIENT_ID), eq(secret), isNull(), isNull(), isNull(), isNull(), isNull(), isNull(), eq(false), isNull(), any()).thenReturn(identityClient);
         PowerMockito.whenNew(IdentityClient.class).withArguments(eq(TENANT_ID), eq(CLIENT_ID), eq(badSecret), isNull(), isNull(), isNull(), isNull(), isNull(), isNull(), eq(false), isNull(), any()).thenReturn(badIdentityClient);
 

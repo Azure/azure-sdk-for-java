@@ -32,7 +32,7 @@ final class ResponseConstructorsCache {
 
     private static final Map<Class<?>, MethodHandle> CACHE = new ConcurrentHashMap<>();
 
-    private final ClientLogger logger = new ClientLogger(ResponseConstructorsCache.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ResponseConstructorsCache.class);
 
     /**
      * Identify the suitable {@link MethodHandle} to construct the given response class.
@@ -68,7 +68,7 @@ final class ResponseConstructorsCache {
         try {
             lookupToUse = ReflectionUtilsApi.INSTANCE.getLookupToUse(responseClass);
         } catch (Throwable t) {
-            throw logger.logExceptionAsError(new RuntimeException(t));
+            throw LOGGER.logExceptionAsError(new RuntimeException(t));
         }
 
         /*
@@ -94,7 +94,7 @@ final class ResponseConstructorsCache {
                      */
                     return lookupToUse.unreflectConstructor(constructor);
                 } catch (Throwable t) {
-                    throw logger.logExceptionAsError(new RuntimeException(t));
+                    throw LOGGER.logExceptionAsError(new RuntimeException(t));
                 }
             }
         }
@@ -119,16 +119,16 @@ final class ResponseConstructorsCache {
         final int paramCount = handle.type().parameterCount();
         switch (paramCount) {
             case 3:
-                return constructResponse(handle, THREE_PARAM_ERROR, logger, httpRequest, responseStatusCode,
+                return constructResponse(handle, THREE_PARAM_ERROR, LOGGER, httpRequest, responseStatusCode,
                     responseHeaders);
             case 4:
-                return constructResponse(handle, FOUR_PARAM_ERROR, logger, httpRequest, responseStatusCode,
+                return constructResponse(handle, FOUR_PARAM_ERROR, LOGGER, httpRequest, responseStatusCode,
                     responseHeaders, bodyAsObject);
             case 5:
-                return constructResponse(handle, FIVE_PARAM_ERROR, logger, httpRequest, responseStatusCode,
+                return constructResponse(handle, FIVE_PARAM_ERROR, LOGGER, httpRequest, responseStatusCode,
                     responseHeaders, bodyAsObject, decodedResponse.getDecodedHeaders());
             default:
-                return monoError(logger, new IllegalStateException(INVALID_PARAM_COUNT));
+                return monoError(LOGGER, new IllegalStateException(INVALID_PARAM_COUNT));
         }
     }
 

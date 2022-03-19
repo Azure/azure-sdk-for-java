@@ -49,7 +49,7 @@ import java.util.Objects;
  */
 @ServiceClient(builder = DataLakeFileSystemClientBuilder.class)
 public class DataLakeFileSystemClient {
-    private final ClientLogger logger = new ClientLogger(DataLakeFileSystemClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DataLakeFileSystemClient.class);
 
     private final DataLakeFileSystemAsyncClient dataLakeFileSystemAsyncClient;
     private final BlobContainerClient blobContainerClient;
@@ -264,7 +264,7 @@ public class DataLakeFileSystemClient {
         Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() ->
             blobContainerClient.createWithResponse(metadata, Transforms.toBlobPublicAccessType(accessType), timeout,
-                context), logger);
+                context), LOGGER);
     }
 
     /**
@@ -374,7 +374,7 @@ public class DataLakeFileSystemClient {
         Context context) {
         return DataLakeImplUtils.returnOrConvertException(() ->
             blobContainerClient.deleteWithResponse(Transforms.toBlobRequestConditions(requestConditions), timeout,
-                context), logger);
+                context), LOGGER);
     }
 
     /**
@@ -484,7 +484,7 @@ public class DataLakeFileSystemClient {
             Response<BlobContainerProperties> response = blobContainerClient.getPropertiesWithResponse(leaseId, timeout,
                 context);
             return new SimpleResponse<>(response, Transforms.toFileSystemProperties(response.getValue()));
-        }, logger);
+        }, LOGGER);
     }
 
     /**
@@ -543,7 +543,7 @@ public class DataLakeFileSystemClient {
         DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() ->
             blobContainerClient.setMetadataWithResponse(metadata, Transforms.toBlobRequestConditions(requestConditions),
-                timeout, context), logger);
+                timeout, context), LOGGER);
     }
 
     /**
@@ -684,7 +684,7 @@ public class DataLakeFileSystemClient {
      *
      * @param fileName Name of the file to create. If the path name contains special characters, pass in the url encoded
      * version of the path name.
-     * @param overwrite Whether or not to overwrite, should a file exist.
+     * @param overwrite Whether to overwrite, should a file exist.
      * @return A {@link DataLakeFileClient} used to interact with the file created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -946,7 +946,7 @@ public class DataLakeFileSystemClient {
      *
      * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
      * url encoded version of the path name.
-     * @param overwrite Whether or not to overwrite, should a directory exist.
+     * @param overwrite Whether to overwrite, should a directory exist.
      * @return A {@link DataLakeDirectoryClient} used to interact with the directory created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1114,7 +1114,7 @@ public class DataLakeFileSystemClient {
      *
      * @param directoryName Name of the directory to delete. If the path name contains special characters, pass in the
      * url encoded version of the path name.
-     * @param recursive Whether or not to delete all paths beneath the directory.
+     * @param recursive Whether to delete all paths beneath the directory.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -1249,7 +1249,7 @@ public class DataLakeFileSystemClient {
                 asyncClientResponse.getHeaders(),
                 new DataLakeFileClient((DataLakeFileAsyncClient) pathAsyncClient, blockBlobClient));
         } else {
-            throw logger.logExceptionAsError(new IllegalStateException("'pathClient' expected to be either a file "
+            throw LOGGER.logExceptionAsError(new IllegalStateException("'pathClient' expected to be either a file "
                 + "or directory client."));
         }
     }
@@ -1315,7 +1315,7 @@ public class DataLakeFileSystemClient {
             Response<BlobContainerAccessPolicies> response = blobContainerClient.getAccessPolicyWithResponse(leaseId,
                 timeout, context);
             return new SimpleResponse<>(response, Transforms.toFileSystemAccessPolicies(response.getValue()));
-        }, logger);
+        }, LOGGER);
     }
 
     /**
@@ -1409,7 +1409,7 @@ public class DataLakeFileSystemClient {
             blobContainerClient
             .setAccessPolicyWithResponse(Transforms.toBlobPublicAccessType(accessType),
                 Transforms.toBlobIdentifierList(identifiers), Transforms.toBlobRequestConditions(requestConditions),
-                timeout, context), logger);
+                timeout, context), LOGGER);
     }
 
 //    /**

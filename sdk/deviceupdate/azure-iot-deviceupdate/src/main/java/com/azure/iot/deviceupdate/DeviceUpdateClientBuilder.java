@@ -32,19 +32,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /** A builder for creating a new instance of the DeviceUpdateClient type. */
-@ServiceClientBuilder(
-        serviceClients = {
-            DeviceUpdateClient.class,
-            DeviceManagementClient.class,
-            DeviceUpdateAsyncClient.class,
-            DeviceManagementAsyncClient.class
-        })
+@ServiceClientBuilder(serviceClients = {DeviceUpdateClient.class, DeviceUpdateAsyncClient.class})
 public final class DeviceUpdateClientBuilder {
     @Generated private static final String SDK_NAME = "name";
 
     @Generated private static final String SDK_VERSION = "version";
 
-    @Generated static final String[] DEFAULT_SCOPES = new String[] {"https://api.adu.microsoft.com/.default"};
+    @Generated private static final String[] DEFAULT_SCOPES = new String[] {"https://api.adu.microsoft.com/.default"};
 
     @Generated
     private final Map<String, String> properties = CoreUtils.getProperties("azure-iot-deviceupdate.properties");
@@ -319,18 +313,8 @@ public final class DeviceUpdateClientBuilder {
      * @return an instance of DeviceUpdateAsyncClient.
      */
     @Generated
-    public DeviceUpdateAsyncClient buildDeviceUpdateAsyncClient() {
+    public DeviceUpdateAsyncClient buildAsyncClient() {
         return new DeviceUpdateAsyncClient(buildInnerClient().getDeviceUpdates());
-    }
-
-    /**
-     * Builds an instance of DeviceManagementAsyncClient async client.
-     *
-     * @return an instance of DeviceManagementAsyncClient.
-     */
-    @Generated
-    public DeviceManagementAsyncClient buildDeviceManagementAsyncClient() {
-        return new DeviceManagementAsyncClient(buildInnerClient().getDeviceManagements());
     }
 
     /**
@@ -339,17 +323,7 @@ public final class DeviceUpdateClientBuilder {
      * @return an instance of DeviceUpdateClient.
      */
     @Generated
-    public DeviceUpdateClient buildDeviceUpdateClient() {
+    public DeviceUpdateClient buildClient() {
         return new DeviceUpdateClient(buildInnerClient().getDeviceUpdates());
-    }
-
-    /**
-     * Builds an instance of DeviceManagementClient sync client.
-     *
-     * @return an instance of DeviceManagementClient.
-     */
-    @Generated
-    public DeviceManagementClient buildDeviceManagementClient() {
-        return new DeviceManagementClient(buildInnerClient().getDeviceManagements());
     }
 }

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifies which Redis access keys to reset. */
 @Fluent
 public final class RedisRegenerateKeyParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RedisRegenerateKeyParameters.class);
-
     /*
      * The Redis access key to regenerate.
      */
@@ -47,10 +44,12 @@ public final class RedisRegenerateKeyParameters {
      */
     public void validate() {
         if (keyType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property keyType in model RedisRegenerateKeyParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RedisRegenerateKeyParameters.class);
 }
