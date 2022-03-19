@@ -1,5 +1,15 @@
 # Release History
 
+## 7.8.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 7.7.0 (2022-03-17)
 ### Features Added
 - Added support for sending/receiving messages with `Duration`, `OffsetDateTime` and `URI` in `applicationProperties`.
