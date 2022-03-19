@@ -1,38 +1,40 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/eventroutes?api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/eventroutes?api-version=2021-06-30-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "555a2130-2631-4ad5-9c94-63d9167250f6"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.3.0-beta.1 (12.0.2; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f3ac9353-dddf-49e9-9fd9-cf0f4b77debf"
     },
     "Response" : {
+      "content-length" : "28",
       "Strict-Transport-Security" : "max-age=2592000",
+      "traceresponse" : "00-19ecc13d77b0f74e957686f86160732c-eff781337c9c514f-01",
       "retry-after" : "0",
-      "Content-Length" : "28",
       "StatusCode" : "200",
       "Body" : "{\"value\":[],\"nextLink\":null}",
-      "Date" : "Wed, 13 Jan 2021 20:05:45 GMT",
+      "Date" : "Sat, 19 Mar 2022 02:04:05 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/eventroutes/758877bc-e1b1-489c-b01a-db5e09a2da82?api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/eventroutes/ec7212cc-8e2c-4974-9313-067173cb8ae8?api-version=2021-06-30-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "1952a4bd-e720-45eb-867a-b455ad6ea09a"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.3.0-beta.1 (12.0.2; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f9a346df-391d-4121-8e22-7adf55d518eb"
     },
     "Response" : {
+      "content-length" : "223",
       "Strict-Transport-Security" : "max-age=2592000",
+      "traceresponse" : "00-6f0c48cf992ce2438285e62990427a29-e9af8db838becb44-01",
       "retry-after" : "0",
-      "Content-Length" : "222",
       "StatusCode" : "404",
-      "Body" : "{\"error\":{\"code\":\"EventRouteNotFound\",\"message\":\"There is no route available that matches the provided input. Check for all valid event routes by calling EventRoute_List. See Swagger example (http://aka.ms/RouteSwSmpl).\"}}",
-      "Date" : "Wed, 13 Jan 2021 20:05:45 GMT",
+      "Body" : "{\"error\":{\"code\":\"EventRouteNotFound\",\"message\":\"There is no route available that matches the provided input. Check for all valid event routes by calling EventRoute_List. See Swagger example (https://aka.ms/RouteSwSmpl).\"}}",
+      "Date" : "Sat, 19 Mar 2022 02:04:05 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "758877bc-e1b1-489c-b01a-db5e09a2da82" ]
+  "variables" : [ "ec7212cc-8e2c-4974-9313-067173cb8ae8" ]
 }
