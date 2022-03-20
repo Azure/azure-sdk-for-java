@@ -3,7 +3,7 @@
 ## 7.8.0-beta.1 (Unreleased)
 
 ### Features Added
-- Implemented equals and hoshCode methods for CorrelationRuleFilter and SqlRuleFilter objects
+- Implemented equals and hashCode methods for CorrelationRuleFilter and SqlRuleFilter objects
 
 ### Breaking Changes
 
