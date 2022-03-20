@@ -5,11 +5,7 @@ package com.azure.messaging.servicebus.administration.models;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests for {@link CorrelationRuleFilter}.
@@ -137,5 +133,104 @@ class CorrelationRuleFilterTest {
         assertTrue(toString.contains(value1));
         assertTrue(toString.contains(key2));
         assertTrue(toString.contains(value2));
+    }
+
+    @Test
+    void testEqualsAndHashCode() {
+        CorrelationRuleFilter filter1 = new CorrelationRuleFilter();
+        CorrelationRuleFilter filter2 = new CorrelationRuleFilter();
+        assertEquals(filter1, filter2);
+        assertEquals(filter1.hashCode(), filter2.hashCode());
+
+        filter1 = new CorrelationRuleFilter("id1");
+        assertNotEquals(filter1, filter2);
+        assertNotEquals(filter1.hashCode(), filter2.hashCode());
+        filter2 = new CorrelationRuleFilter("id2");
+        assertNotEquals(filter1, filter2);
+        assertNotEquals(filter1.hashCode(), filter2.hashCode());
+        filter2 = new CorrelationRuleFilter("id1");
+        assertEquals(filter1, filter2);
+        assertEquals(filter1.hashCode(), filter2.hashCode());
+
+        filter1.setContentType("myContent");
+        assertNotEquals(filter1, filter2);
+        assertNotEquals(filter1.hashCode(), filter2.hashCode());
+        filter2.setContentType("anotherType");
+        assertNotEquals(filter1, filter2);
+        assertNotEquals(filter1.hashCode(), filter2.hashCode());
+        filter2.setContentType("myContent");
+        assertEquals(filter1, filter2);
+        assertEquals(filter1.hashCode(), filter2.hashCode());
+
+        filter1.setLabel("thisLabel");
+        assertNotEquals(filter1, filter2);
+        assertNotEquals(filter1.hashCode(), filter2.hashCode());
+        filter2.setLabel("anotherLabel");
+        assertNotEquals(filter1, filter2);
+        assertNotEquals(filter1.hashCode(), filter2.hashCode());
+        filter2.setLabel("thisLabel");
+        assertEquals(filter1, filter2);
+        assertEquals(filter1.hashCode(), filter2.hashCode());
+
+        filter1.setMessageId("1234");
+        assertNotEquals(filter1, filter2);
+        assertNotEquals(filter1.hashCode(), filter2.hashCode());
+        filter2.setMessageId("5678");
+        assertNotEquals(filter1, filter2);
+        assertNotEquals(filter1.hashCode(), filter2.hashCode());
+        filter2.setMessageId("1234");
+        assertEquals(filter1, filter2);
+        assertEquals(filter1.hashCode(), filter2.hashCode());
+
+        filter1.getProperties().put("key", "value");
+        assertNotEquals(filter1, filter2);
+        assertNotEquals(filter1.hashCode(), filter2.hashCode());
+        filter2.getProperties().put("key", "eulav");
+        assertNotEquals(filter1, filter2);
+        assertNotEquals(filter1.hashCode(), filter2.hashCode());
+        filter2.getProperties().put("key", "value");
+        assertEquals(filter1, filter2);
+        assertEquals(filter1.hashCode(), filter2.hashCode());
+
+        filter1.setReplyTo("replyToAddress");
+        assertNotEquals(filter1, filter2);
+        assertNotEquals(filter1.hashCode(), filter2.hashCode());
+        filter2.setReplyTo("smething else");
+        assertNotEquals(filter1, filter2);
+        assertNotEquals(filter1.hashCode(), filter2.hashCode());
+        filter2.setReplyTo("replyToAddress");
+        assertEquals(filter1, filter2);
+        assertEquals(filter1.hashCode(), filter2.hashCode());
+
+        filter1.setReplyToSessionId("9876");
+        assertNotEquals(filter1, filter2);
+        assertNotEquals(filter1.hashCode(), filter2.hashCode());
+        filter2.setReplyToSessionId("5432");
+        assertNotEquals(filter1, filter2);
+        assertNotEquals(filter1.hashCode(), filter2.hashCode());
+        filter2.setReplyToSessionId("9876");
+        assertEquals(filter1, filter2);
+        assertEquals(filter1.hashCode(), filter2.hashCode());
+
+        filter1.setSessionId("ThisSession");
+        assertNotEquals(filter1, filter2);
+        assertNotEquals(filter1.hashCode(), filter2.hashCode());
+        filter2.setSessionId("ThatSession");
+        assertNotEquals(filter1, filter2);
+        assertNotEquals(filter1.hashCode(), filter2.hashCode());
+        filter2.setSessionId("ThisSession");
+        assertEquals(filter1, filter2);
+        assertEquals(filter1.hashCode(), filter2.hashCode());
+
+        filter1.setTo("Fred");
+        assertNotEquals(filter1, filter2);
+        assertNotEquals(filter1.hashCode(), filter2.hashCode());
+        filter2.setTo("Barney");
+        assertNotEquals(filter1, filter2);
+        assertNotEquals(filter1.hashCode(), filter2.hashCode());
+        filter2.setTo("Fred");
+        assertEquals(filter1, filter2);
+        assertEquals(filter1.hashCode(), filter2.hashCode());
+
     }
 }

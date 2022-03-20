@@ -9,6 +9,7 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Represents the correlation rule filter expression. It holds a set of conditions that are matched against one or more
@@ -283,6 +284,44 @@ public class CorrelationRuleFilter extends RuleFilter {
         }
 
         return builder.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof CorrelationRuleFilter)) {
+            return false;
+        }
+
+        CorrelationRuleFilter otherFilter = (CorrelationRuleFilter) o;
+
+        return Objects.equals(properties, otherFilter.properties)
+            && Objects.equals(correlationId, otherFilter.correlationId)
+            && Objects.equals(contentType, otherFilter.contentType)
+            && Objects.equals(label, otherFilter.label)
+            && Objects.equals(messageId, otherFilter.messageId)
+            && Objects.equals(replyTo, otherFilter.replyTo)
+            && Objects.equals(replyToSessionId, otherFilter.replyToSessionId)
+            && Objects.equals(sessionId, otherFilter.sessionId)
+            && Objects.equals(to, otherFilter.to);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+            properties,
+            correlationId,
+            contentType,
+            label,
+            messageId,
+            replyTo,
+            replyToSessionId,
+            sessionId,
+            to
+        );
     }
 
     private static boolean appendPropertyExpression(boolean isFirstExpression, StringBuilder builder, String display,
