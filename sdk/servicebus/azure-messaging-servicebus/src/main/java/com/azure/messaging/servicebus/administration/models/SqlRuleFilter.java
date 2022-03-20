@@ -8,6 +8,7 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Represents a filter which is a composition of an expression and an action that is executed in the pub/sub pipeline.
@@ -98,5 +99,27 @@ public class SqlRuleFilter extends RuleFilter {
      */
     public String getSqlExpression() {
         return sqlExpression;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof SqlRuleFilter)) {
+            return false;
+        }
+
+        SqlRuleFilter otherFilter = (SqlRuleFilter) o;
+
+        return Objects.equals(sqlExpression, otherFilter.sqlExpression)
+            && Objects.equals(compatibilityLevel, otherFilter.compatibilityLevel)
+            && Objects.equals(requiresPreprocessing, otherFilter.requiresPreprocessing);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sqlExpression, compatibilityLevel, requiresPreprocessing);
     }
 }
