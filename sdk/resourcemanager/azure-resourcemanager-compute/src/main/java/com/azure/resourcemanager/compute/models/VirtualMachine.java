@@ -1219,7 +1219,7 @@ public interface VirtualMachine
             WithEphemeralOSDisk withEphemeralOSDisk();
         }
 
-        /** The stage of a virtual machine definition allowing to select Ephemeral OS disk placement. */
+        /** The stage of a virtual machine definition allowing to set OS disk to be ephemeral. */
         interface WithEphemeralOSDisk {
             /**
              * Selects where you want to place the Ephemeral OS disk.
