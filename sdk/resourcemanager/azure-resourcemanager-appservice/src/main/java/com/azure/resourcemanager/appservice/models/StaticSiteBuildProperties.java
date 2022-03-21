@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Build properties for the static site. */
 @Fluent
 public final class StaticSiteBuildProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StaticSiteBuildProperties.class);
-
     /*
      * The path to the app code within the repository.
      */

@@ -3,20 +3,21 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.communication.azure.com/phoneNumbers/+REDACTED?api-version=2022-01-11-preview2",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.1 (17.0.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "8c502a0f-9d47-4cfa-b2f5-0a568165277b"
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.3 (17.0.2; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "d6d040ef-1982-4b7e-a7bf-bf1156aae15f"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "X-Cache" : "CONFIG_NOCACHE",
       "api-supported-versions" : "2021-03-07, 2022-01-11-preview2",
-      "X-Processing-Time" : "3213ms",
-      "MS-CV" : "SekeWPUW3EWmGYnNmkFkEw.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0N7XhYQAAAADhdju0KEOLQJLzX3GSVcDZU0FPMDNFREdFMDkwOQA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "StatusCode" : "200",
-      "Body" : "{\"id\":\"REDACTED\",\"phoneNumber\":\"+REDACTED\",\"countryCode\":\"US\",\"phoneNumberType\":\"tollFree\",\"capabilities\":{\"calling\":\"outbound\",\"sms\":\"inbound+outbound\"},\"assignmentType\":\"application\",\"purchaseDate\":\"2021-06-23T23:38:41.0997634+00:00\",\"cost\":{\"amount\":2.0,\"currencyCode\":\"USD\",\"billingFrequency\":\"monthly\"}}",
-      "Date" : "Fri, 14 Jan 2022 17:39:06 GMT",
+      "Date" : "Wed, 09 Mar 2022 16:10:39 GMT",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "X-Processing-Time" : "918ms",
+      "MS-CV" : "OgWqMTM5e0+vZRBmEStOHQ.0",
+      "X-Azure-Ref" : "0ftEoYgAAAAA6hqUr0/WOQIbHaXVONW1bU0FPMzFFREdFMTIxMgA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "Body" : "{\"id\":\"REDACTED\",\"phoneNumber\":\"+REDACTED\",\"countryCode\":\"US\",\"phoneNumberType\":\"tollFree\",\"capabilities\":{\"calling\":\"outbound\",\"sms\":\"outbound\"},\"assignmentType\":\"application\",\"purchaseDate\":\"2021-06-23T23:38:41.0997634+00:00\",\"cost\":{\"amount\":2.0,\"currencyCode\":\"USD\",\"billingFrequency\":\"monthly\"}}",
       "Content-Type" : "application/json; charset=utf-8",
       "Request-Context" : "appId="
     },

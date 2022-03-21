@@ -5,14 +5,18 @@ package com.azure.resourcemanager.compute;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
+import com.azure.resourcemanager.compute.models.ApiErrorException;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
 import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.DeleteOptions;
+import com.azure.resourcemanager.compute.models.DiffDiskPlacement;
 import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.DiskState;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
@@ -22,20 +26,25 @@ import com.azure.resourcemanager.compute.models.PowerState;
 import com.azure.resourcemanager.compute.models.ProximityPlacementGroupType;
 import com.azure.resourcemanager.compute.models.RunCommandInputParameter;
 import com.azure.resourcemanager.compute.models.RunCommandResult;
+import com.azure.resourcemanager.compute.models.UpgradeMode;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineEvictionPolicyTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineInstanceView;
 import com.azure.resourcemanager.compute.models.VirtualMachinePriorityTypes;
+import com.azure.resourcemanager.compute.models.VirtualMachineScaleSet;
+import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetSkuTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineUnmanagedDataDisk;
+import com.azure.resourcemanager.network.models.LoadBalancer;
+import com.azure.resourcemanager.network.models.LoadBalancerSkuType;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
 import com.azure.resourcemanager.network.models.NicIpConfiguration;
+import com.azure.resourcemanager.network.models.PublicIPSkuType;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 import com.azure.resourcemanager.network.models.Subnet;
-import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
@@ -1256,6 +1265,184 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         vm.deallocate();
         vm.refreshInstanceView();
         Assertions.assertEquals(PowerState.DEALLOCATED, vm.powerState());
+    }
+
+    @Test
+    public void canCreateVirtualMachineWithEphemeralOSDisk() {
+        VirtualMachine vm = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(Region.US_WEST3)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+            .withRootUsername("Foo12")
+            .withSsh(sshPublicKey())
+            .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
+            .withEphemeralOSDisk()
+            .withPlacement(DiffDiskPlacement.CACHE_DISK)
+            .withNewDataDisk(1, 1, CachingTypes.READ_WRITE)
+            .withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions.DELETE)
+            .create();
+
+        Assertions.assertNull(vm.osDiskDiskEncryptionSetId());
+        Assertions.assertTrue(vm.osDiskSize() > 0);
+        Assertions.assertEquals(vm.osDiskDeleteOptions(), DeleteOptions.DELETE);
+        Assertions.assertEquals(vm.osDiskCachingType(), CachingTypes.READ_ONLY);
+        Assertions.assertFalse(CoreUtils.isNullOrEmpty(vm.dataDisks()));
+        Assertions.assertTrue(vm.isOSDiskEphemeral());
+        Assertions.assertNotNull(vm.osDiskId());
+
+        String osDiskId = vm.osDiskId();
+
+        vm.update()
+            .withoutDataDisk(1)
+            .withNewDataDisk(1, 2, CachingTypes.NONE)
+            .withNewDataDisk(1)
+            .apply();
+        Assertions.assertEquals(vm.dataDisks().size(), 2);
+
+        vm.powerOff();
+        vm.start();
+        vm.refresh();
+        Assertions.assertEquals(osDiskId, vm.osDiskId());
+
+        // deallocate not supported on vm with ephemeral os disk
+        Assertions.assertThrows(Exception.class, vm::deallocate);
+    }
+
+    @Test
+    public void canCreateVirtualMachineWithExistingScaleSet() throws Exception {
+        // can add regular vm to vmss
+        final String vmssName = generateRandomResourceName("vmss", 10);
+        Network network =
+            this
+                .networkManager
+                .networks()
+                .define("vmssvnet")
+                .withRegion(region.name())
+                .withNewResourceGroup(rgName)
+                .withAddressSpace("10.0.0.0/28")
+                .withSubnet("subnet1", "10.0.0.0/28")
+                .create();
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().getByName(rgName);
+        LoadBalancer publicLoadBalancer = createHttpLoadBalancers(region, resourceGroup, "1", LoadBalancerSkuType.STANDARD, PublicIPSkuType.STANDARD, true);
+        VirtualMachineScaleSet flexibleVMSS = this.computeManager
+            .virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withFlexibleOrchestrationMode()
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_DS1_V2)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
+            .withoutPrimaryInternalLoadBalancer()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .withCapacity(1)
+            .withUpgradeMode(UpgradeMode.AUTOMATIC)
+            .create();
+
+        String regularVMName = generateRandomResourceName("vm", 10);
+        final String pipDnsLabel = generateRandomResourceName("pip", 10);
+        VirtualMachine regularVM = this.computeManager
+            .virtualMachines()
+            .define(regularVMName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.1.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withNewPrimaryPublicIPAddress(pipDnsLabel)
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+            .withRootUsername("jvuser2")
+            .withSsh(sshPublicKey())
+            .withExistingVirtualMachineScaleSet(flexibleVMSS)
+            .create();
+        flexibleVMSS.refresh();
+        Assertions.assertEquals(flexibleVMSS.id(), regularVM.virtualMachineScaleSetId());
+        Assertions.assertEquals(2, flexibleVMSS.capacity());
+        // Flexible vmss vm instance ids are all null, which means VMs in flexible vmss can only be operated by individual `VirtualMachine` APIs.
+        Assertions.assertTrue(flexibleVMSS.virtualMachines().list().stream().allMatch(vm -> vm.instanceId() == null));
+
+        regularVM.deallocate();
+        Assertions.assertEquals(regularVM.powerState(), PowerState.DEALLOCATED);
+
+        this.computeManager
+            .virtualMachines().deleteById(regularVM.id());
+        flexibleVMSS.refresh();
+        Assertions.assertEquals(flexibleVMSS.capacity(), 1);
+
+        // can't add vm with unmanaged disk to vmss
+        final String storageAccountName = generateRandomResourceName("stg", 17);
+        Assertions.assertThrows(
+            ApiErrorException.class,
+            () -> computeManager
+                .virtualMachines()
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withNewPrimaryNetwork("10.0.1.0/28")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
+                .withLatestLinuxImage("Canonical", "UbuntuServer", "14.04.2-LTS")
+                .withRootUsername("jvuser3")
+                .withSsh(sshPublicKey())
+                .withUnmanagedDisks() /* UN-MANAGED OS and DATA DISKS */
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .withNewStorageAccount(storageAccountName)
+                .withOSDiskCaching(CachingTypes.READ_WRITE)
+                .withExistingVirtualMachineScaleSet(flexibleVMSS)
+                .create()
+        );
+
+        // can't add vm to `UNIFORM` vmss
+        final String vmssName2 = generateRandomResourceName("vmss", 10);
+        Network network2 =
+            this
+                .networkManager
+                .networks()
+                .define("vmssvnet2")
+                .withRegion(region.name())
+                .withExistingResourceGroup(rgName)
+                .withAddressSpace("192.168.0.0/28")
+                .withSubnet("subnet2", "192.168.0.0/28")
+                .create();
+        LoadBalancer publicLoadBalancer2 = createHttpLoadBalancers(region, resourceGroup, "2", LoadBalancerSkuType.STANDARD, PublicIPSkuType.STANDARD, true);
+        VirtualMachineScaleSet uniformVMSS = this.computeManager
+            .virtualMachineScaleSets()
+            .define(vmssName2)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withExistingPrimaryNetworkSubnet(network2, "subnet2")
+            .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer2)
+            .withoutPrimaryInternalLoadBalancer()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser4")
+            .withSsh(sshPublicKey())
+            .withCapacity(1)
+            .create();
+        Assertions.assertTrue(uniformVMSS.virtualMachines().list().stream().allMatch(v -> v.instanceId() != null));
+
+        String regularVMName2 = generateRandomResourceName("vm", 10);
+        Assertions.assertThrows(
+            ApiErrorException.class,
+            () -> this.computeManager
+                .virtualMachines()
+                .define(regularVMName2)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withNewPrimaryNetwork("10.0.1.0/28")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+                .withRootUsername("jvuser5")
+                .withSsh(sshPublicKey())
+                .withExistingVirtualMachineScaleSet(uniformVMSS)
+                .create()
+        );
     }
 
     private CreatablesInfo prepareCreatableVirtualMachines(

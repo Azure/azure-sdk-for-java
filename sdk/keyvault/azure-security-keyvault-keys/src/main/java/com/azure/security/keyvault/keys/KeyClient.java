@@ -1571,7 +1571,7 @@ public final class KeyClient {
      * is equivalent to calling {@link KeyAsyncClient#releaseKey(String, String)}, with the latest key version being
      * released.
      * @param targetAttestationToken The attestation assertion for the target of the key release.
-     * @param options Additional {@link ReleaseKeyOptions options} for releasing a {@link KeyVaultKey key}.
+     * @param releaseKeyOptions Additional {@link ReleaseKeyOptions options} for releasing a {@link KeyVaultKey key}.
      * @param context Additional {@link Context} that is passed through the {@link HttpPipeline} during the service
      * call.
      *
@@ -1583,8 +1583,8 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ReleaseKeyResult> releaseKeyWithResponse(String name, String version, String targetAttestationToken,
-                                                             ReleaseKeyOptions options, Context context) {
-        return client.releaseKeyWithResponse(name, version, targetAttestationToken, options, context).block();
+                                                             ReleaseKeyOptions releaseKeyOptions, Context context) {
+        return client.releaseKeyWithResponse(name, version, targetAttestationToken, releaseKeyOptions, context).block();
     }
 
     /**
@@ -1663,7 +1663,7 @@ public final class KeyClient {
      * </pre>
      * <!-- end com.azure.security.keyvault.keys.KeyClient.getKeyRotationPolicy#String -->
      *
-     * @param name The name of the {@link KeyVaultKey key}.
+     * @param keyName The name of the {@link KeyVaultKey key}.
      *
      * @return The {@link KeyRotationPolicy} for the {@link KeyVaultKey key}.
      *
@@ -1671,8 +1671,8 @@ public final class KeyClient {
      * @throws ResourceNotFoundException If the {@link KeyVaultKey key} for the provided {@code name} does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyRotationPolicy getKeyRotationPolicy(String name) {
-        return client.getKeyRotationPolicy(name).block();
+    public KeyRotationPolicy getKeyRotationPolicy(String keyName) {
+        return client.getKeyRotationPolicy(keyName).block();
     }
 
     /**
@@ -1692,7 +1692,7 @@ public final class KeyClient {
      * </pre>
      * <!-- end com.azure.security.keyvault.keys.KeyClient.getKeyRotationPolicyWithResponse#String-Context -->
      *
-     * @param name The name of the {@link KeyVaultKey key}.
+     * @param keyName The name of the {@link KeyVaultKey key}.
      * @param context Additional {@link Context} that is passed through the {@link HttpPipeline} during the service
      * call.
      *
@@ -1703,8 +1703,8 @@ public final class KeyClient {
      * @throws ResourceNotFoundException If the {@link KeyVaultKey key} for the provided {@code name} does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyRotationPolicy> getKeyRotationPolicyWithResponse(String name, Context context) {
-        return client.getKeyRotationPolicyWithResponse(name, context).block();
+    public Response<KeyRotationPolicy> getKeyRotationPolicyWithResponse(String keyName, Context context) {
+        return client.getKeyRotationPolicyWithResponse(keyName, context).block();
     }
 
     /**
@@ -1736,7 +1736,7 @@ public final class KeyClient {
      * </pre>
      * <!-- end com.azure.security.keyvault.keys.KeyClient.updateKeyRotationPolicy#String-KeyRotationPolicy -->
      *
-     * @param name The name of the {@link KeyVaultKey key}.
+     * @param keyName The name of the {@link KeyVaultKey key}.
      * @param keyRotationPolicy The {@link KeyRotationPolicy} for the ke{@link KeyVaultKey key}y.
      *
      * @return The {@link KeyRotationPolicy} for the {@link KeyVaultKey key}.
@@ -1745,8 +1745,8 @@ public final class KeyClient {
      * @throws ResourceNotFoundException If the {@link KeyVaultKey key} for the provided {@code name} does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyRotationPolicy updateKeyRotationPolicy(String name, KeyRotationPolicy keyRotationPolicy) {
-        return client.updateKeyRotationPolicy(name, keyRotationPolicy).block();
+    public KeyRotationPolicy updateKeyRotationPolicy(String keyName, KeyRotationPolicy keyRotationPolicy) {
+        return client.updateKeyRotationPolicy(keyName, keyRotationPolicy).block();
     }
 
     /**
@@ -1779,7 +1779,7 @@ public final class KeyClient {
      * </pre>
      * <!-- end com.azure.security.keyvault.keys.KeyClient.updateKeyRotationPolicyWithResponse#String-KeyRotationPolicy-Context -->
      *
-     * @param name The name of the {@link KeyVaultKey key}.
+     * @param keyName The name of the {@link KeyVaultKey key}.
      * @param keyRotationPolicy The {@link KeyRotationPolicy} for the key.
      * @param context Additional {@link Context} that is passed through the {@link HttpPipeline} during the service
      * call.
@@ -1791,7 +1791,9 @@ public final class KeyClient {
      * @throws ResourceNotFoundException If the {@link KeyVaultKey key} for the provided {@code name} does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyRotationPolicy> updateKeyRotationPolicyWithResponse(String name, KeyRotationPolicy keyRotationPolicy, Context context) {
-        return client.updateKeyRotationPolicyWithResponse(name, keyRotationPolicy, context).block();
+    public Response<KeyRotationPolicy> updateKeyRotationPolicyWithResponse(String keyName,
+                                                                           KeyRotationPolicy keyRotationPolicy,
+                                                                           Context context) {
+        return client.updateKeyRotationPolicyWithResponse(keyName, keyRotationPolicy, context).block();
     }
 }

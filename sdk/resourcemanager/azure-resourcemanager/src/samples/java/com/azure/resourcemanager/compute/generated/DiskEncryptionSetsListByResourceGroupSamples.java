@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DiskEncryptionSets ListByResourceGroup. */
 public final class DiskEncryptionSetsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/ListDiskEncryptionSetsInAResourceGroup.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/ListDiskEncryptionSetsInAResourceGroup.json
      */
     /**
      * Sample code: List all disk encryption sets in a resource group.

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DiskAccesses Delete. */
 public final class DiskAccessesDeleteSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/DeleteADiskAccess.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/DeleteADiskAccess.json
      */
     /**
      * Sample code: Delete a disk access resource.

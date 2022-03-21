@@ -32,7 +32,9 @@ final class JsonConfigurationParser {
                 if (subType.contains("+")) {
                     List<String> subtypes = Arrays.asList(subType.split("\\+"));
                     return subtypes.contains(acceptedSubType);
-                } else return subType.equalsIgnoreCase(acceptedSubType);
+                } else {
+                    return subType.equalsIgnoreCase(acceptedSubType);
+                }
             }
         }
 

@@ -20,7 +20,6 @@ import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncContainer;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncDatabase;
 import com.azure.cosmos.encryption.CosmosEncryptionClientBuilder;
-import com.azure.cosmos.encryption.keyprovider.AzureKeyVaultKeyWrapProvider;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -36,6 +35,8 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.security.keyvault.keys.cryptography.KeyEncryptionKeyClientBuilder;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.CsvReporter;
 import com.codahale.metrics.Meter;
@@ -84,7 +85,6 @@ public abstract class AsyncEncryptionBenchmark<T> {
 
     private CosmosAsyncContainer cosmosAsyncContainer;
     private CosmosAsyncDatabase cosmosAsyncDatabase;
-    private AzureKeyVaultKeyWrapProvider azureKeyVaultKeyWrapProvider = null;
     private Properties keyVaultProperties;
 
     final Logger logger;
@@ -425,8 +425,9 @@ public abstract class AsyncEncryptionBenchmark<T> {
         // This application must have keys/wrapKey and keys/unwrapKey permissions
         // on the keys that will be used for encryption.
         TokenCredential tokenCredentials = getTokenCredential(keyVaultProperties);
-        azureKeyVaultKeyWrapProvider = new AzureKeyVaultKeyWrapProvider(tokenCredentials);
-        return new CosmosEncryptionClientBuilder().cosmosAsyncClient(cosmosClient).encryptionKeyWrapProvider(azureKeyVaultKeyWrapProvider).buildAsyncClient();
+        KeyEncryptionKeyClientBuilder keyEncryptionKeyClientBuilder = new KeyEncryptionKeyClientBuilder();
+        keyEncryptionKeyClientBuilder.credential(tokenCredentials);
+        return new CosmosEncryptionClientBuilder().cosmosAsyncClient(cosmosClient).keyEncryptionKeyResolver(keyEncryptionKeyClientBuilder).keyEncryptionKeyResolverName(CosmosEncryptionClientBuilder.KEY_RESOLVER_NAME_AZURE_KEY_VAULT).buildAsyncClient();
     }
 
     private TokenCredential getTokenCredential(Properties properties) {
@@ -497,8 +498,8 @@ public abstract class AsyncEncryptionBenchmark<T> {
                 }
 
                 EncryptionKeyWrapMetadata metadata =
-                    new EncryptionKeyWrapMetadata(azureKeyVaultKeyWrapProvider.getProviderName(), dataEncryptionKeyId,
-                        masterKeyUrlFromConfig);
+                    new EncryptionKeyWrapMetadata(cosmosEncryptionAsyncClient.getKeyEncryptionKeyResolverName(), dataEncryptionKeyId,
+                        masterKeyUrlFromConfig, EncryptionAlgorithm.RSA_OAEP.toString());
                 /// Generates an encryption key, wraps it using the key wrap metadata provided
                 /// and saves the wrapped encryption key as an asynchronous operation in the Azure Cosmos service.
                 CosmosClientEncryptionKeyProperties keyProperties =

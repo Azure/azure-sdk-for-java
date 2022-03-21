@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core</artifactId>
   <packaging>jar</packaging>
-  <version>1.26.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+  <version>1.27.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
 
   <name>Microsoft Azure Java Core Library</name>
   <description>This package contains core types for Azure Java clients.</description>
@@ -73,6 +73,9 @@
 
       --add-reads com.azure.core=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+
+    <!-- If JMH benchmarking was ran Checkstyle may fail on jmh_benchmark generated classes, ignore them. -->
+    <checkstyle.excludes>**/generated/**/*.java</checkstyle.excludes>
   </properties>
 
   <developers>
@@ -372,6 +375,40 @@
       <properties>
         <boring-ssl-classifier>windows-x86_64</boring-ssl-classifier>
       </properties>
+    </profile>
+
+    <profile>
+      <id>jmh-benchmark</id>
+      <activation>
+        <property>
+          <name>jmh-benchmark</name>
+        </property>
+      </activation>
+
+      <properties>
+        <!-- JMH needs annotation processing on, so disable proc == none -->
+        <compiler.proc></compiler.proc>
+      </properties>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <configuration>
+              <!-- Add the JMH annotation processor to the classpath. -->
+              <annotationProcessorPaths>
+                <path>
+                  <groupId>org.openjdk.jmh</groupId>
+                  <artifactId>jmh-generator-annprocess</artifactId>
+                  <version>1.22</version> <!-- {x-version-update;org.openjdk.jmh:jmh-generator-annprocess;external_dependency} -->
+                </path>
+              </annotationProcessorPaths>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
   </profiles>
 </project>

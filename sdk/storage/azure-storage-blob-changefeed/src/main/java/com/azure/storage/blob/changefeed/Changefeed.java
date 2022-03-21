@@ -34,7 +34,7 @@ import java.util.Objects;
  */
 class Changefeed {
 
-    private final ClientLogger logger = new ClientLogger(Changefeed.class);
+    private static final ClientLogger LOGGER = new ClientLogger(Changefeed.class);
 
     private static final String SEGMENT_PREFIX = "idx/segments/";
     private static final String METADATA_SEGMENT_PATH = "meta/segments.json";
@@ -60,17 +60,17 @@ class Changefeed {
         try {
             urlHost = new URL(client.getBlobContainerUrl()).getHost();
         } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e));
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
         this.changefeedCursor = new ChangefeedCursor(urlHost, this.endTime);
 
         /* Validate the cursor. */
         if (userCursor != null) {
             if (userCursor.getCursorVersion() != 1) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("Unsupported cursor version."));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unsupported cursor version."));
             }
             if (!Objects.equals(urlHost, userCursor.getUrlHost())) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("Cursor URL host does not match "
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Cursor URL host does not match "
                     + "container URL host."));
             }
         }
@@ -101,7 +101,7 @@ class Changefeed {
         return this.client.exists()
             .flatMap(exists -> {
                 if (exists == null || !exists) {
-                    return FluxUtil.monoError(logger, new RuntimeException("Changefeed has not been enabled for "
+                    return FluxUtil.monoError(LOGGER, new RuntimeException("Changefeed has not been enabled for "
                         + "this account."));
                 }
                 return Mono.just(true);

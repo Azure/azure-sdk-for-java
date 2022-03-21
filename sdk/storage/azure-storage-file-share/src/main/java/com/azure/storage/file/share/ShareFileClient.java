@@ -12,7 +12,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -73,8 +72,6 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
  */
 @ServiceClient(builder = ShareFileClientBuilder.class)
 public class ShareFileClient {
-    private final ClientLogger logger = new ClientLogger(ShareFileClient.class);
-
     private final ShareFileAsyncClient shareFileAsyncClient;
 
     /**
@@ -413,8 +410,8 @@ public class ShareFileClient {
      * @param smbProperties The user settable file smb properties.
      * @param filePermission The file permission of the file.
      * @param filePermissionCopyMode Mode of file permission acquisition.
-     * @param ignoreReadOnly Whether or not to copy despite target being read only. (default is false)
-     * @param setArchiveAttribute Whether or not the archive attribute is to be set on the target. (default is true)
+     * @param ignoreReadOnly Whether to copy despite target being read only. (default is false)
+     * @param setArchiveAttribute Whether the archive attribute is to be set on the target. (default is true)
      * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the
      * naming rules.
      * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
@@ -887,7 +884,7 @@ public class ShareFileClient {
     }
 
     /**
-     * Retrieves the properties of the storage account's file. The properties includes file metadata, last modified
+     * Retrieves the properties of the storage account's file. The properties include file metadata, last modified
      * date, is server encrypted, and eTag.
      *
      * <p><strong>Code Samples</strong></p>
@@ -912,7 +909,7 @@ public class ShareFileClient {
     }
 
     /**
-     * Retrieves the properties of the storage account's file. The properties includes file metadata, last modified
+     * Retrieves the properties of the storage account's file. The properties include file metadata, last modified
      * date, is server encrypted, and eTag.
      *
      * <p><strong>Code Samples</strong></p>
@@ -943,7 +940,7 @@ public class ShareFileClient {
     }
 
     /**
-     * Retrieves the properties of the storage account's file. The properties includes file metadata, last modified
+     * Retrieves the properties of the storage account's file. The properties include file metadata, last modified
      * date, is server encrypted, and eTag.
      *
      * <p><strong>Code Samples</strong></p>
@@ -1561,7 +1558,7 @@ public class ShareFileClient {
      * <!-- end com.azure.storage.file.share.ShareFileClient.uploadRangeFromUrl#long-long-long-String -->
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range-from-url">Azure Docs</a>.</p>
      *
      * @param length Specifies the number of bytes being transmitted in the request body.
      * @param destinationOffset Starting point of the upload range on the destination.
@@ -1569,7 +1566,6 @@ public class ShareFileClient {
      * @param sourceUrl Specifies the URL of the source file.
      * @return The {@link ShareFileUploadRangeFromUrlInfo file upload range from url info}
      */
-    // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareFileUploadRangeFromUrlInfo uploadRangeFromUrl(long length, long destinationOffset, long sourceOffset,
                                                               String sourceUrl) {
@@ -1593,7 +1589,7 @@ public class ShareFileClient {
      * <!-- end com.azure.storage.file.share.ShareFileClient.uploadRangeFromUrlWithResponse#long-long-long-String-Duration-Context -->
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range-from-url">Azure Docs</a>.</p>
      *
      * @param length Specifies the number of bytes being transmitted in the request body.
      * @param destinationOffset Starting point of the upload range on the destination.
@@ -1606,7 +1602,6 @@ public class ShareFileClient {
      * headers and response status code.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileUploadRangeFromUrlInfo> uploadRangeFromUrlWithResponse(long length, long destinationOffset,
         long sourceOffset, String sourceUrl, Duration timeout, Context context) {
@@ -1631,7 +1626,7 @@ public class ShareFileClient {
      * <!-- end com.azure.storage.file.share.ShareFileClient.uploadRangeFromUrlWithResponse#long-long-long-String-ShareRequestConditions-Duration-Context -->
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range-from-url">Azure Docs</a>.</p>
      *
      * @param length Specifies the number of bytes being transmitted in the request body.
      * @param destinationOffset Starting point of the upload range on the destination.
@@ -1645,7 +1640,6 @@ public class ShareFileClient {
      * headers and response status code.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileUploadRangeFromUrlInfo> uploadRangeFromUrlWithResponse(long length, long destinationOffset,
         long sourceOffset, String sourceUrl, ShareRequestConditions requestConditions, Duration timeout,
@@ -1672,7 +1666,7 @@ public class ShareFileClient {
      * <!-- end com.azure.storage.file.share.ShareFileClient.uploadRangeFromUrlWithResponse#ShareFileUploadRangeFromUrlOptions-Duration-Context -->
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range-from-url">Azure Docs</a>.</p>
      *
      * @param options argument collection
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
@@ -1682,7 +1676,6 @@ public class ShareFileClient {
      * headers and response status code.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileUploadRangeFromUrlInfo> uploadRangeFromUrlWithResponse(
         ShareFileUploadRangeFromUrlOptions options, Duration timeout, Context context) {

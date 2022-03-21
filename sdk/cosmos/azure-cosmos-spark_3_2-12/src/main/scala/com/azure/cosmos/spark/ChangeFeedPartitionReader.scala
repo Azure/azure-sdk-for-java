@@ -4,7 +4,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
-import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, ImplementationBridgeHelpers, SparkBridgeImplementationInternal, Strings}
+import com.azure.cosmos.implementation.{ChangeFeedSparkRowItem, CosmosClientMetadataCachesSnapshot, ImplementationBridgeHelpers, SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, ModelBridgeInternal}
 import com.azure.cosmos.spark.ChangeFeedPartitionReader.LsnPropertyName
 import com.azure.cosmos.spark.CosmosPredicates.requireNotNull
@@ -66,9 +66,24 @@ private case class ChangeFeedPartitionReader
     log.logDebug(
       s"Request options for Range '${partition.feedRange.min}-${partition.feedRange.max}' LSN '$startLsn'")
 
-    CosmosChangeFeedRequestOptions
+    val options = CosmosChangeFeedRequestOptions
       .createForProcessingFromContinuation(this.partition.continuationState.get)
       .setMaxItemCount(readConfig.maxItemCount)
+
+    ImplementationBridgeHelpers
+      .CosmosChangeFeedRequestOptionsHelper
+      .getCosmosChangeFeedRequestOptionsAccessor
+      .setItemFactoryMethod(
+        options,
+        jsonNode => {
+          val objectNode = cosmosRowConverter.ensureObjectNode(jsonNode)
+
+          val row = cosmosRowConverter.fromObjectNodeToRow(readSchema,
+            objectNode,
+            readConfig.schemaConversionMode)
+
+          ChangeFeedSparkRowItem(row, objectNode.get(LsnPropertyName).asText())
+        })
   }
 
   private val rowSerializer: ExpressionEncoder.Serializer[Row] = RowSerializerPool.getOrCreateSerializer(readSchema)
@@ -102,8 +117,8 @@ private case class ChangeFeedPartitionReader
     }
   }
 
-  private lazy val iterator: TransientIOErrorsRetryingIterator =
-    new TransientIOErrorsRetryingIterator(
+  private lazy val iterator: TransientIOErrorsRetryingIterator[ChangeFeedSparkRowItem] =
+    new TransientIOErrorsRetryingIterator[ChangeFeedSparkRowItem](
       continuationToken => {
         if (!Strings.isNullOrWhiteSpace(continuationToken)) {
           ModelBridgeInternal.setChangeFeedRequestOptionsContinuation(continuationToken, changeFeedRequestOptions)
@@ -112,7 +127,7 @@ private case class ChangeFeedPartitionReader
           ModelBridgeInternal.setChangeFeedRequestOptionsContinuation(null, changeFeedRequestOptions)
           // scalastyle:on null
         }
-        cosmosAsyncContainer.queryChangeFeed(changeFeedRequestOptions, classOf[ObjectNode])
+        cosmosAsyncContainer.queryChangeFeed(changeFeedRequestOptions, classOf[ChangeFeedSparkRowItem])
       },
       readConfig.maxItemCount,
       readConfig.prefetchBufferSize,
@@ -132,21 +147,16 @@ private case class ChangeFeedPartitionReader
       case Some(endLsn) =>
         // In streaming mode we only continue until we hit the endOffset's continuation Lsn
         val node = this.iterator.head()
-        assert(node.get(LsnPropertyName) != null, "Change feed responses must have _lsn property.")
-        assert(node.get(LsnPropertyName).asText("") != "", "Change feed responses must have non empty _lsn.")
-        val nextLsn = SparkBridgeImplementationInternal.toLsn(node.get(LsnPropertyName).asText())
+        assert(node.lsn != null, "Change feed responses must have _lsn property.")
+        assert(node.lsn != "", "Change feed responses must have non empty _lsn.")
+        val nextLsn = SparkBridgeImplementationInternal.toLsn(node.lsn)
 
         nextLsn <= endLsn
     }
   }
 
   override def get(): InternalRow = {
-    val objectNode = this.iterator.next()
-    cosmosRowConverter.fromObjectNodeToInternalRow(
-      readSchema,
-      rowSerializer,
-      objectNode,
-      readConfig.schemaConversionMode)
+    cosmosRowConverter.fromRowToInternalRow(this.iterator.next().row, rowSerializer)
   }
 
   override def close(): Unit = {
