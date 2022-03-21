@@ -1,8 +1,10 @@
 # Release History
 
-## 1.5.0-beta.2 (Unreleased)
+## 1.5.0-beta.2 (2022-03-21)
 
 ### Features Added
+- Added ability to configure `IdentityLogOptions` on Credential Builders to make account Identifier logging configurable.
+- Added the option `disableAuthoriyValidaionSafetyCheck` on Credential Builders.
 
 ### Breaking Changes
 

@@ -87,15 +87,15 @@ public final class LoggingUtil {
 
     public static CredentialUnavailableException logCredentialUnavailableException(ClientLogger logger,
                                        IdentityClientOptions options, CredentialUnavailableException exception) {
-        logger.log(options.getIdentityLogOptions().getRuntimeExceptionLogLevel(), exception::getMessage, exception);
+        logger.log(options.getIdentityLogOptionsImpl().getRuntimeExceptionLogLevel(), exception::getMessage, exception);
         return exception;
     }
 
     public static void logError(ClientLogger logger, IdentityClientOptions options, String message) {
-        logger.log(options.getIdentityLogOptions().getRuntimeExceptionLogLevel(), () -> message);
+        logger.log(options.getIdentityLogOptionsImpl().getRuntimeExceptionLogLevel(), () -> message);
     }
 
     public static void logError(ClientLogger logger, IdentityClientOptions options, Supplier<String> messageSupplier) {
-        logger.log(options.getIdentityLogOptions().getRuntimeExceptionLogLevel(), messageSupplier);
+        logger.log(options.getIdentityLogOptionsImpl().getRuntimeExceptionLogLevel(), messageSupplier);
     }
 }
