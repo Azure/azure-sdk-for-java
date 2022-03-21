@@ -6,6 +6,9 @@
 
 - Updated Azure SDK dependency versions to the latest releases.
 
+#### Breaking Changes
+Removed `azure-communication-networktraversal` from the BOM. If you depend on this library please take a direct dependency on it.
+
 ## 1.1.1 (2021-02-18)
 
 ### Dependency Updates
