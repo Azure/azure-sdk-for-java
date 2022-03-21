@@ -40,9 +40,9 @@ public class IdentityClientOptionsTest {
     }
 
     @Test
-    public void testDisableAuthorityValidation() {
+    public void testDisableAuthorityValidationSafetyCheck() {
         IdentityClientOptions identityClientOptions = new IdentityClientOptions();
-        identityClientOptions.disableAuthorityValidation();
-        Assert.assertFalse(identityClientOptions.getAuthorityValidation());
+        identityClientOptions.disableAuthorityValidationSafetyCheck();
+        Assert.assertFalse(identityClientOptions.getAuthorityValidationSafetyCheck());
     }
 }

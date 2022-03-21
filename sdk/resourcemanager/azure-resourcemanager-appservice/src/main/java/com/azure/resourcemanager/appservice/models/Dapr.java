@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Container App Dapr configuration. */
 @Fluent
 public final class Dapr {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Dapr.class);
-
     /*
      * Boolean indicating if the Dapr side car is enabled
      */

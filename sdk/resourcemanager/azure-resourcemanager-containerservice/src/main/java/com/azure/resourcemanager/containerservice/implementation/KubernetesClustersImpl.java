@@ -13,6 +13,7 @@ import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterIn
 import com.azure.resourcemanager.containerservice.fluent.models.OrchestratorVersionProfileListResultInner;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceResourceTypes;
 import com.azure.resourcemanager.containerservice.models.CredentialResult;
+import com.azure.resourcemanager.containerservice.models.Format;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusters;
 import com.azure.resourcemanager.containerservice.models.OrchestratorVersionProfile;
@@ -176,6 +177,11 @@ public class KubernetesClustersImpl
     }
 
     @Override
+    public List<CredentialResult> listUserKubeConfigContent(String resourceGroupName, String kubernetesClusterName, Format format) {
+        return listUserKubeConfigContentAsync(resourceGroupName, kubernetesClusterName, format).block();
+    }
+
+    @Override
     public Mono<List<CredentialResult>> listUserKubeConfigContentAsync(
             String resourceGroupName, String kubernetesClusterName) {
         return this
@@ -183,6 +189,17 @@ public class KubernetesClustersImpl
             .serviceClient()
             .getManagedClusters()
             .listClusterUserCredentialsAsync(resourceGroupName, kubernetesClusterName)
+            .map(CredentialResultsInner::kubeconfigs);
+    }
+
+    @Override
+    public Mono<List<CredentialResult>> listUserKubeConfigContentAsync(
+        String resourceGroupName, String kubernetesClusterName, Format format) {
+        return this
+            .manager()
+            .serviceClient()
+            .getManagedClusters()
+            .listClusterUserCredentialsAsync(resourceGroupName, kubernetesClusterName, null, format)
             .map(CredentialResultsInner::kubeconfigs);
     }
 

@@ -4,6 +4,9 @@
 
 ### Features Added
 
+- Added support for strongly-typed HTTP header objects to be deserialized lazily on a per-field basis rather than all
+  at once during construction.
+
 ### Breaking Changes
 
 ### Bugs Fixed

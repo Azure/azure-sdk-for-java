@@ -20,6 +20,8 @@ class AppServiceMsiCredential extends ManagedIdentityServiceCredential {
 
     private final String identityEndpoint;
     private final String identityHeader;
+    private final String msiEndpoint;
+    private final String msiSecret;
 
     /**
      * Creates an instance of {@link AppServiceMsiCredential}.
@@ -32,8 +34,13 @@ class AppServiceMsiCredential extends ManagedIdentityServiceCredential {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
         this.identityEndpoint = configuration.get(Configuration.PROPERTY_IDENTITY_ENDPOINT);
         this.identityHeader = configuration.get(Configuration.PROPERTY_IDENTITY_HEADER);
+        this.msiEndpoint = configuration.get(Configuration.PROPERTY_MSI_ENDPOINT);
+        this.msiSecret = configuration.get(Configuration.PROPERTY_MSI_SECRET);
         if (identityEndpoint != null) {
             validateEndpointProtocol(this.identityEndpoint, "MSI", LOGGER);
+        }
+        if (msiEndpoint != null) {
+            validateEndpointProtocol(this.msiEndpoint, "MSI", LOGGER);
         }
     }
 
@@ -45,6 +52,7 @@ class AppServiceMsiCredential extends ManagedIdentityServiceCredential {
      */
     public Mono<AccessToken> authenticate(TokenRequestContext request) {
         return identityClient.authenticateToManagedIdentityEndpoint(identityEndpoint, identityHeader,
+            msiEndpoint, msiSecret,
             request);
     }
 }

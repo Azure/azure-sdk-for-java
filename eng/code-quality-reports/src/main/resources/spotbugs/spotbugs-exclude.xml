@@ -2318,6 +2318,12 @@
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
 
+  <!-- Exception needs to be caught here.-->
+  <Match>
+    <Class name="com.azure.spring.cloud.config.AppConfigurationPropertySourceLocator"/>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+
   <!-- Exclude from spring related classes -->
   <Match>
     <Or>

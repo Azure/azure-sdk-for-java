@@ -48,7 +48,7 @@ final class StateHolder {
     /**
      * @param endpoint the stores endpoint
      * @param watchKeys list of configuration watch keys that can trigger a refresh event
-     * @param monitoring refresh configurations
+     * @param duration refresh duration.
      */
     static void setState(String endpoint, List<ConfigurationSetting> watchKeys,
         Duration duration) {
@@ -58,7 +58,7 @@ final class StateHolder {
     /**
      * @param endpoint the stores endpoint
      * @param watchKeys list of configuration watch keys that can trigger a refresh event
-     * @param monitoring refresh configurations
+     * @param duration refresh duration.
      */
     static void setStateFeatureFlag(String endpoint, List<ConfigurationSetting> watchKeys,
         Duration duration) {
@@ -99,14 +99,14 @@ final class StateHolder {
     }
 
     /**
-     * @param LOAD_STATE the loadState to set
+     * @param name the loadState name to set
      */
     static void setLoadState(String name, Boolean loaded) {
         LOAD_STATE.put(name, loaded);
     }
 
     /**
-     * @param LOAD_STATE the loadState to set
+     * @param name the loadState feature flag name to set
      */
     static void setLoadStateFeatureFlag(String name, Boolean loaded) {
         setLoadState(name + FEATURE_ENDPOINT, loaded);

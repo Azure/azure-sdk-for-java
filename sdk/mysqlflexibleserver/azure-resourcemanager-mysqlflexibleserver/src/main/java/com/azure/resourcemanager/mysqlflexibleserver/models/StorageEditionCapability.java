@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** storage edition capability. */
 @Immutable
 public final class StorageEditionCapability {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageEditionCapability.class);
-
     /*
      * storage edition name
      */

@@ -24,7 +24,7 @@ public class ModelHelper {
     /**
      * Indicates the default size above which the upload will be broken into blocks and parallelized.
      */
-    private static final long FILE_DEFAULT_MAX_SINGLE_UPLOAD_SIZE = 100L * Constants.MB;
+    public static final long FILE_DEFAULT_MAX_SINGLE_UPLOAD_SIZE = 100L * Constants.MB;
 
     /**
      * The block size to use if none is specified in parallel operations.

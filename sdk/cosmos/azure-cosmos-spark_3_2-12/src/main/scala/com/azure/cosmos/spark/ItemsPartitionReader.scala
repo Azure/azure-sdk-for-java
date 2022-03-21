@@ -4,7 +4,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
-import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, ImplementationBridgeHelpers, SparkBridgeImplementationInternal, Strings}
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, ImplementationBridgeHelpers, SparkBridgeImplementationInternal, SparkRowItem, Strings}
 import com.azure.cosmos.models.{CosmosParameterizedQuery, CosmosQueryRequestOptions, ModelBridgeInternal}
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
 import com.fasterxml.jackson.databind.node.ObjectNode
@@ -87,6 +87,19 @@ private case class ItemsPartitionReader
 
   queryOptions.setFeedRange(SparkBridgeImplementationInternal.toFeedRange(feedRange))
 
+  ImplementationBridgeHelpers
+    .CosmosQueryRequestOptionsHelper
+    .getCosmosQueryRequestOptionsAccessor
+    .setItemFactoryMethod(
+      queryOptions,
+      jsonNode => {
+        val row = cosmosRowConverter.fromObjectNodeToRow(readSchema,
+          cosmosRowConverter.ensureObjectNode(jsonNode),
+          readConfig.schemaConversionMode)
+
+        SparkRowItem(row)
+      })
+
   private lazy val iterator = new TransientIOErrorsRetryingIterator(
     continuationToken => {
 
@@ -115,7 +128,7 @@ private case class ItemsPartitionReader
           queryOptions,
           diagnosticsContext.correlationActivityId)
 
-      cosmosAsyncContainer.queryItems(cosmosQuery.toSqlQuerySpec, queryOptions, classOf[ObjectNode])
+      cosmosAsyncContainer.queryItems(cosmosQuery.toSqlQuerySpec, queryOptions, classOf[SparkRowItem])
     },
     readConfig.maxItemCount,
     readConfig.prefetchBufferSize,
@@ -127,12 +140,7 @@ private case class ItemsPartitionReader
   override def next(): Boolean = iterator.hasNext
 
   override def get(): InternalRow = {
-    val objectNode = iterator.next()
-    cosmosRowConverter.fromObjectNodeToInternalRow(
-      readSchema,
-      rowSerializer,
-      objectNode,
-      readConfig.schemaConversionMode)
+    cosmosRowConverter.fromRowToInternalRow(iterator.next().row, rowSerializer)
   }
 
   override def close(): Unit = {

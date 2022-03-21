@@ -71,7 +71,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
         this.clientStore = clientStore;
         this.eventDataInfo = "";
         this.clientHealth = new HashMap<>();
-        configStores.stream().forEach(store -> {
+        configStores.forEach(store -> {
             if (getStoreHealthState(store)) {
                 this.clientHealth.put(store.getEndpoint(), AppConfigurationStoreHealth.UP);
             } else {
@@ -123,7 +123,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
         if (running.compareAndSet(false, true)) {
             BaseAppConfigurationPolicy.setWatchRequests(true);
             Map<String, AppConfigurationStoreHealth> clientHealthUpdate = new HashMap<>();
-            configStores.stream().forEach(store -> {
+            configStores.forEach(store -> {
                 if (getStoreHealthState(store)) {
                     clientHealthUpdate.put(store.getEndpoint(), AppConfigurationStoreHealth.DOWN);
                 } else {

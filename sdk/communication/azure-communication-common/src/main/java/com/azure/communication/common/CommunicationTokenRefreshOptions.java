@@ -4,6 +4,7 @@ package com.azure.communication.common;
 
 import reactor.core.publisher.Mono;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
 /**
@@ -47,6 +48,7 @@ public final class CommunicationTokenRefreshOptions {
      */
     @Deprecated
     public CommunicationTokenRefreshOptions(Supplier<Mono<String>> tokenRefresher, boolean refreshProactively, String initialToken) {
+        Objects.requireNonNull(tokenRefresher, "'tokenRefresher' cannot be null.");
         this.asyncTokenRefresher = tokenRefresher;
         this.tokenRefresher = null;
         this.refreshProactively = refreshProactively;
@@ -63,6 +65,7 @@ public final class CommunicationTokenRefreshOptions {
      *                       must be set in the future).
      */
     public CommunicationTokenRefreshOptions(Supplier<String> tokenRefresher) {
+        Objects.requireNonNull(tokenRefresher, "'tokenRefresher' cannot be null.");
         this.tokenRefresher = tokenRefresher;
         this.asyncTokenRefresher = null;
         this.refreshProactively = false;

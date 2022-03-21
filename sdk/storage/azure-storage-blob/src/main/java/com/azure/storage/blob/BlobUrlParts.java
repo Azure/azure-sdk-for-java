@@ -24,7 +24,7 @@ import java.util.Map;
  * #toUrl()}.
  */
 public final class BlobUrlParts {
-    private final ClientLogger logger = new ClientLogger(BlobUrlParts.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BlobUrlParts.class);
 
     private String scheme;
     private String host;
@@ -104,7 +104,7 @@ public final class BlobUrlParts {
         try {
             this.isIpUrl = ModelHelper.determineAuthorityIsIpStyle(host);
         } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(new IllegalStateException("Authority is malformed. Host: "
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Authority is malformed. Host: "
                 + host));
         }
         return this;
@@ -323,7 +323,7 @@ public final class BlobUrlParts {
         try {
             return url.toUrl();
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsError(new IllegalStateException("The URL parts created a malformed URL.", ex));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("The URL parts created a malformed URL.", ex));
         }
     }
 
@@ -374,7 +374,7 @@ public final class BlobUrlParts {
                 parseNonIpUrl(url, parts);
             }
         } catch (MalformedURLException e) {
-            throw parts.logger.logExceptionAsError(new IllegalStateException("Authority is malformed. Host: "
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Authority is malformed. Host: "
                 + url.getAuthority()));
         }
 

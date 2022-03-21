@@ -90,7 +90,7 @@ public class VirtualMachineEncryptionTests extends ResourceManagerTestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true) // requires client ID and generating a key
+    @DoNotRecord(skipInPlayback = true) // requires generating a key
     public void canCreateVirtualMachineWithDiskEncryptionSet() {
         String clientId = this.clientIdFromFile();
 

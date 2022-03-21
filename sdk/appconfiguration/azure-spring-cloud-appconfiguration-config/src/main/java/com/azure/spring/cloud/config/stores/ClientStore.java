@@ -64,7 +64,7 @@ public final class ClientStore {
         this.pool = pool;
         this.tokenCredentialProvider = tokenCredentialProvider;
         this.clientProvider = clientProvider;
-        this.clients = new HashMap<String, ConfigurationClient>();
+        this.clients = new HashMap<>();
         this.isDev = isDev;
         this.isKeyVaultConfigurated = isKeyVaultConfigured;
     }
