@@ -6,7 +6,6 @@ package com.azure.data.schemaregistry.apacheavro;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
-import org.apache.avro.Schema;
 import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.io.EncoderFactory;
 import org.apache.avro.specific.SpecificDatumReader;
@@ -21,7 +20,7 @@ import java.util.Objects;
  */
 public final class SchemaRegistryApacheAvroSerializerBuilder {
     private static final boolean AVRO_SPECIFIC_READER_DEFAULT = false;
-    private static final int MAX_CACHE_SIZE = 128;
+    static final int MAX_CACHE_SIZE = 128;
 
     private final ClientLogger logger = new ClientLogger(SchemaRegistryApacheAvroSerializerBuilder.class);
     private Boolean autoRegisterSchemas;
@@ -121,10 +120,9 @@ public final class SchemaRegistryApacheAvroSerializerBuilder {
 
         final boolean useAvroSpecificReader = avroSpecificReader == null
                 ? AVRO_SPECIFIC_READER_DEFAULT : avroSpecificReader;
-        final Schema.Parser parser = new Schema.Parser();
-        final AvroSerializer codec = new AvroSerializer(useAvroSpecificReader, parser,
-                EncoderFactory.get(), DecoderFactory.get());
         final SerializerOptions options = new SerializerOptions(schemaGroup, isAutoRegister, MAX_CACHE_SIZE);
+        final AvroSerializer codec = new AvroSerializer(useAvroSpecificReader, EncoderFactory.get(),
+                DecoderFactory.get());
 
         return new SchemaRegistryApacheAvroSerializer(schemaRegistryAsyncClient, codec, options);
     }

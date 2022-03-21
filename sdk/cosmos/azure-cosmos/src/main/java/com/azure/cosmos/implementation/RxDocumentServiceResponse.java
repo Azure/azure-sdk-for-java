@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * This is core Transport/Connection agnostic response for the Azure Cosmos DB database service.
@@ -54,7 +55,7 @@ public class RxDocumentServiceResponse {
         this.gatewayHttpRequestTimeline = gatewayHttpRequestTimeline;
     }
 
-    public static <T extends Resource> String getResourceKey(Class<T> c) {
+    private static <T> String getResourceKey(Class<T> c) {
         if (c.equals(Conflict.class)) {
             return InternalConstants.ResourceKeys.CONFLICTS;
         } else if (c.equals(Database.class)) {
@@ -83,7 +84,7 @@ public class RxDocumentServiceResponse {
             return InternalConstants.ResourceKeys.CLIENT_ENCRYPTION_KEYS;
         }
 
-        throw new IllegalArgumentException("c");
+        return InternalConstants.ResourceKeys.DOCUMENTS;
     }
 
     public int getStatusCode() {
@@ -125,16 +126,13 @@ public class RxDocumentServiceResponse {
         return resource;
     }
 
-    @SuppressWarnings("unchecked")
-    // Given cls (where cls == Class<T>), objectNode is first decoded to cls and then casted to T.
-    public <T extends Resource> List<T> getQueryResponse(Class<T> c) {
+    private ArrayNode extractQueryResponseNodes(String resourceKey) {
         byte[] responseBody = this.getResponseBodyAsByteArray();
         if (responseBody == null) {
-            return new ArrayList<T>();
+            return null;
         }
 
         JsonNode jobject = fromJson(responseBody);
-        String resourceKey = RxDocumentServiceResponse.getResourceKey(c);
         ArrayNode jTokenArray = (ArrayNode) jobject.get(resourceKey);
 
         // Aggregate queries may return a nested array
@@ -143,21 +141,37 @@ public class RxDocumentServiceResponse {
             jTokenArray = innerArray;
         }
 
+        return jTokenArray;
+    }
+
+    @SuppressWarnings("unchecked")
+    // Given cls (where cls == Class<T>), objectNode is first decoded to cls and then casted to T.
+    public <T> List<T> getQueryResponse(
+        Function<JsonNode, T> factoryMethod,
+        Class<T> c) {
+
+        String resourceKey = RxDocumentServiceResponse.getResourceKey(c);
+        ArrayNode jTokenArray = this.extractQueryResponseNodes(resourceKey);
+        if (jTokenArray == null) {
+            return new ArrayList<T>();
+        }
+
         List<T> queryResults = new ArrayList<T>();
 
-        if (jTokenArray != null) {
-            for (int i = 0; i < jTokenArray.size(); ++i) {
-                JsonNode jToken = jTokenArray.get(i);
-                // Aggregate on single partition collection may return the aggregated value only
-                // In that case it needs to encapsulated in a special document
+        for (int i = 0; i < jTokenArray.size(); ++i) {
+            JsonNode jToken = jTokenArray.get(i);
+            // Aggregate on single partition collection may return the aggregated value only
+            // In that case it needs to encapsulated in a special document
 
-                JsonNode resourceJson = jToken.isValueNode() || jToken.isArray()// to add nulls, arrays, objects
-                        ? fromJson(String.format("{\"%s\": %s}", Constants.Properties.VALUE, jToken.toString()))
-                                : jToken;
+            ObjectNode resourceJson = jToken.isValueNode() || jToken.isArray()// to add nulls, arrays, objects
+                ? (ObjectNode) fromJson(String.format("{\"%s\": %s}", Constants.Properties.VALUE, jToken))
+                : (ObjectNode) jToken;
 
-               T resource = (T) JsonSerializable.instantiateFromObjectNodeAndType((ObjectNode) resourceJson, c);
-               queryResults.add(resource);
-            }
+            T resource = factoryMethod == null ?
+                (T) JsonSerializable.instantiateFromObjectNodeAndType(resourceJson, c):
+                factoryMethod.apply(resourceJson);
+
+            queryResults.add(resource);
         }
 
         return queryResults;

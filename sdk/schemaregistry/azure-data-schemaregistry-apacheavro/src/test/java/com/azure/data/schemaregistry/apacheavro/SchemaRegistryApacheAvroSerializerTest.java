@@ -82,7 +82,6 @@ public class SchemaRegistryApacheAvroSerializerTest {
     private static final EncoderFactory ENCODER_FACTORY = EncoderFactory.get();
 
     private InterceptorManager interceptorManager;
-    private Schema.Parser parser;
     private AutoCloseable mocksCloseable;
     private TestInfo testInfo;
 
@@ -108,7 +107,6 @@ public class SchemaRegistryApacheAvroSerializerTest {
 
         this.testInfo = testInfo;
         this.mocksCloseable = MockitoAnnotations.openMocks(this);
-        this.parser = new Schema.Parser();
     }
 
     @AfterEach
@@ -125,7 +123,7 @@ public class SchemaRegistryApacheAvroSerializerTest {
     @Test
     public void testRegistryGuidPrefixedToPayload() {
         // manually add SchemaRegistryObject into mock registry client cache
-        final AvroSerializer avroSerializer = new AvroSerializer(false, new Schema.Parser(),
+        final AvroSerializer avroSerializer = new AvroSerializer(false,
             ENCODER_FACTORY, DECODER_FACTORY);
         final PlayingCard playingCard = new PlayingCard(true, 10, PlayingCardSuit.DIAMONDS);
         final Schema playingClassSchema = PlayingCard.getClassSchema();
@@ -152,7 +150,7 @@ public class SchemaRegistryApacheAvroSerializerTest {
     @Test
     public void testNullPayloadThrowsSerializationException() {
         // Arrange
-        final AvroSerializer avroSerializer = new AvroSerializer(false, parser, ENCODER_FACTORY,
+        final AvroSerializer avroSerializer = new AvroSerializer(false, ENCODER_FACTORY,
             DECODER_FACTORY);
         final SerializerOptions serializerOptions = new SerializerOptions(MOCK_SCHEMA_GROUP, false, MOCK_CACHE_SIZE);
         final SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializer(client, avroSerializer,
@@ -168,7 +166,7 @@ public class SchemaRegistryApacheAvroSerializerTest {
     @Test
     public void testIfRegistryNullThenThrow() {
         // Arrange
-        AvroSerializer encoder = new AvroSerializer(false, parser, ENCODER_FACTORY,
+        AvroSerializer encoder = new AvroSerializer(false, ENCODER_FACTORY,
             DECODER_FACTORY);
         final SerializerOptions serializerOptions = new SerializerOptions(MOCK_SCHEMA_GROUP, false, MOCK_CACHE_SIZE);
 
@@ -180,7 +178,7 @@ public class SchemaRegistryApacheAvroSerializerTest {
     @Test
     void testGetSchemaAndDeserialize() throws IOException {
         // manually add SchemaRegistryObject to cache
-        final AvroSerializer decoder = new AvroSerializer(false, parser, ENCODER_FACTORY,
+        final AvroSerializer decoder = new AvroSerializer(false, ENCODER_FACTORY,
             DECODER_FACTORY);
         final PlayingCard playingCard = new PlayingCard(true, 10, PlayingCardSuit.DIAMONDS);
         final String playingClassSchema = PlayingCard.getClassSchema().toString();
@@ -213,6 +211,15 @@ public class SchemaRegistryApacheAvroSerializerTest {
                 assertEquals(playingCard.getIsFaceCard(), actual.getIsFaceCard());
             })
             .verifyComplete();
+
+        // Deserializing the same message again should work.
+        StepVerifier.create(encoder.deserializeMessageDataAsync(message, TypeReference.createInstance(PlayingCard.class)))
+                .assertNext(actual -> {
+                    assertEquals(playingCard.getPlayingCardSuit(), actual.getPlayingCardSuit());
+                    assertEquals(playingCard.getCardValue(), actual.getCardValue());
+                    assertEquals(playingCard.getIsFaceCard(), actual.getIsFaceCard());
+                })
+                .verifyComplete();
     }
 
     public static Stream<Arguments> testEmptyPayload() {
@@ -230,7 +237,7 @@ public class SchemaRegistryApacheAvroSerializerTest {
     @ParameterizedTest
     public void testEmptyPayload(MessageWithMetadata message) {
         // Arrange
-        final AvroSerializer avroSerializer = new AvroSerializer(false, parser, ENCODER_FACTORY, DECODER_FACTORY);
+        final AvroSerializer avroSerializer = new AvroSerializer(false, ENCODER_FACTORY, DECODER_FACTORY);
         final SerializerOptions serializerOptions = new SerializerOptions(MOCK_SCHEMA_GROUP, true, MOCK_CACHE_SIZE);
 
         final SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializer(client,
@@ -248,7 +255,7 @@ public class SchemaRegistryApacheAvroSerializerTest {
     @Test
     public void testEmptyPayloadSync() {
         // Arrange
-        final AvroSerializer avroSerializer = new AvroSerializer(false, parser, ENCODER_FACTORY, DECODER_FACTORY);
+        final AvroSerializer avroSerializer = new AvroSerializer(false, ENCODER_FACTORY, DECODER_FACTORY);
         final SerializerOptions serializerOptions = new SerializerOptions(MOCK_SCHEMA_GROUP, true, MOCK_CACHE_SIZE);
         final MockMessage message = new MockMessage();
 
@@ -267,7 +274,7 @@ public class SchemaRegistryApacheAvroSerializerTest {
      */
     @Test
     public void testNullPayload() {
-        final AvroSerializer avroSerializer = new AvroSerializer(false, parser, ENCODER_FACTORY, DECODER_FACTORY);
+        final AvroSerializer avroSerializer = new AvroSerializer(false, ENCODER_FACTORY, DECODER_FACTORY);
         final SerializerOptions serializerOptions = new SerializerOptions(MOCK_SCHEMA_GROUP, true, MOCK_CACHE_SIZE);
 
         final SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializer(client,
@@ -284,7 +291,7 @@ public class SchemaRegistryApacheAvroSerializerTest {
      */
     @Test
     public void testNullPayloadSync() {
-        final AvroSerializer avroSerializer = new AvroSerializer(false, parser, ENCODER_FACTORY, DECODER_FACTORY);
+        final AvroSerializer avroSerializer = new AvroSerializer(false, ENCODER_FACTORY, DECODER_FACTORY);
         final SerializerOptions serializerOptions = new SerializerOptions(MOCK_SCHEMA_GROUP, true, MOCK_CACHE_SIZE);
 
         SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializer(
@@ -394,7 +401,7 @@ public class SchemaRegistryApacheAvroSerializerTest {
     @Test
     public void throwsWhenConstructorNotAvailable() {
         // Arrange
-        final AvroSerializer avroSerializer = new AvroSerializer(false, parser, ENCODER_FACTORY, DECODER_FACTORY);
+        final AvroSerializer avroSerializer = new AvroSerializer(false, ENCODER_FACTORY, DECODER_FACTORY);
         final SerializerOptions serializerOptions = new SerializerOptions(MOCK_SCHEMA_GROUP, true, MOCK_CACHE_SIZE);
         final SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializer(
             client, avroSerializer, serializerOptions);
@@ -421,7 +428,7 @@ public class SchemaRegistryApacheAvroSerializerTest {
             .build();
         final SchemaRegistrySchema schemaResponse = new SchemaRegistrySchema(
             new SchemaProperties(MOCK_GUID, SchemaFormat.AVRO), expected.getSchema().toString());
-        final AvroSerializer avroSerializer = new AvroSerializer(true, parser, ENCODER_FACTORY,
+        final AvroSerializer avroSerializer = new AvroSerializer(true, ENCODER_FACTORY,
             DECODER_FACTORY);
         final SerializerOptions serializerOptions = new SerializerOptions(MOCK_SCHEMA_GROUP, true, MOCK_CACHE_SIZE);
         final SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializer(client, avroSerializer,
@@ -497,11 +504,9 @@ public class SchemaRegistryApacheAvroSerializerTest {
             tokenCredential = mock(TokenCredential.class);
 
             // Sometimes it throws an "NotAMockException", so we had to change from thenReturn to thenAnswer.
-            when(tokenCredential.getToken(any(TokenRequestContext.class))).thenAnswer(invocationOnMock -> {
-                return Mono.fromCallable(() -> {
-                    return new AccessToken("foo", OffsetDateTime.now().plusMinutes(20));
-                });
-            });
+            when(tokenCredential.getToken(any(TokenRequestContext.class)))
+                    .thenAnswer(invocationOnMock -> Mono.fromCallable(() ->
+                            new AccessToken("foo", OffsetDateTime.now().plusMinutes(20))));
 
             endpoint = PLAYBACK_ENDPOINT;
         } else {

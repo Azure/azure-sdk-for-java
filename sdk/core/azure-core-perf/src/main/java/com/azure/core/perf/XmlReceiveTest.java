@@ -3,51 +3,54 @@
 
 package com.azure.core.perf;
 
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.rest.RestProxy;
-import com.azure.core.perf.core.MockHttpClient;
-import com.azure.core.perf.core.MyRestProxyService;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.perf.core.CorePerfStressOptions;
 import com.azure.core.perf.core.RestProxyTestBase;
 import com.azure.core.perf.core.TestDataFactory;
-import com.azure.perf.test.core.PerfStressOptions;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
+import java.util.function.Function;
 
-public class XmlReceiveTest extends RestProxyTestBase<PerfStressOptions> {
-    private final MockHttpClient mockHTTPClient;
-    private final MyRestProxyService service;
-    private final byte[] bodyBytes;
+public class XmlReceiveTest extends RestProxyTestBase<CorePerfStressOptions> {
 
-    public XmlReceiveTest(PerfStressOptions options) throws IOException {
-        super(options);
-        this.bodyBytes = generateBodyBytes(options.getSize());
-        mockHTTPClient = new MockHttpClient((httpRequest) -> createMockResponse(httpRequest,
-            "application/xml", bodyBytes));
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(mockHTTPClient)
-            .build();
+    public XmlReceiveTest(CorePerfStressOptions options) {
+        super(options, createMockResponseSupplier(options));
+    }
 
-        service = RestProxy.create(MyRestProxyService.class, pipeline);
+    private static Function<HttpRequest, HttpResponse> createMockResponseSupplier(CorePerfStressOptions options) {
+        byte[] bodyBytes = generateBodyBytes(options.getSize());
+        return httpRequest -> createMockResponse(httpRequest,
+            "application/xml",  bodyBytes);
+    }
+
+    @Override
+    public Mono<Void> globalSetupAsync() {
+        XmlSendTest sendTest = new XmlSendTest(options);
+        return super.globalSetupAsync()
+            .then(Mono.defer(sendTest::globalSetupAsync))
+            .then(Mono.defer(sendTest::setupAsync))
+            .then(Mono.defer(sendTest::runAsync))
+            .then(Mono.defer(sendTest::cleanupAsync))
+            .then(Mono.defer(sendTest::globalCleanupAsync));
     }
 
     @Override
     public void run() {
-        throw new UnsupportedOperationException();
+        runAsync().block();
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return service.getUserDatabaseAsync()
+        return service.getUserDatabaseXmlAsync(endpoint)
             .map(userdatabase -> {
                 userdatabase.getValue();
                 return 1;
             }).then();
     }
 
-    private byte[] generateBodyBytes(long size) throws IOException {
+    private static byte[] generateBodyBytes(long size) {
         return serializeData(TestDataFactory.generateUserDatabase(size), new XmlMapper());
     }
 }

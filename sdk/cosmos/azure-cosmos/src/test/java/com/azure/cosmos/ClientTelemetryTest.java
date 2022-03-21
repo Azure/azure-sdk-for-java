@@ -244,6 +244,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
         String databaseId = UUID.randomUUID().toString();
         try {
             String whiteListedAccountForTelemetry = System.getProperty("COSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT");
+            assertThat(whiteListedAccountForTelemetry).isNotNull();
             String[] credentialList = whiteListedAccountForTelemetry.split(";");
             String host = credentialList[0].substring("AccountEndpoint=".length());
             String key = credentialList[1].substring("AccountKey=".length());
@@ -295,7 +296,9 @@ public class ClientTelemetryTest extends TestSuiteBase {
                 return httpResponse.statusCode() == HttpConstants.StatusCodes.OK;
             }).verifyComplete();
         } finally {
-            cosmosClient.getDatabase(databaseId).delete();
+            if (cosmosClient != null) {
+                cosmosClient.getDatabase(databaseId).delete();
+            }
             safeCloseSyncClient(cosmosClient);
         }
     }
