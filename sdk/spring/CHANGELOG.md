@@ -23,6 +23,17 @@ This section includes changes in `spring-messaging-azure-storage-queue` module.
 - Remove the dependencies `com.fasterxml.jackson.core:jackson-databind`. [#27727](https://github.com/Azure/azure-sdk-for-java/pull/27727)
 
 
+### Spring CLoud Azure Autoconfigure
+
+#### Breaking Changes
+- `KeyVaultPropertySource`'s configuration properties changed. [27651](https://github.com/Azure/azure-sdk-for-java/pull/27651)
+  + Property `spring.cloud.azure.keyvault.secret.enabled` only used to disable autoconfigure `SecretClient` bean, it can't be used to disable inserting `KeyVaultPropertySource`. Use `spring.cloud.azure.keyvault.secret.property-source-enabled` to disable inserting `KeyVaultPropertySource`.
+  + Property `spring.cloud.azure.keyvault.secret.endpoint` only used to autoconfigure `SecretClient` bean, it can't be used to configure `KeyVaultPropertySource`. Use `spring.cloud.azure.keyvault.secret.property-sources[].endpoint` to configure `KeyVaultPropertySource`.
+  + For properties like `credential`, `profile`, `client`, `proxy`, `retry`, if `spring.cloud.azure.keyvault.secret.property-sources[].xxx` is not configured, it will only take value from `spring.cloud.azure.xxx`, not take value from `spring.cloud.azure.keyvault.secret.xxx` anymore.
+  + Conclusion:
+    - Here are all `SecretClient` bean related properties: `spring.cloud.azure.keyvault.secret.enabled`, `spring.cloud.azure.keyvault.secret.xxx`, `spring.cloud.azure.xxx`.
+    - Here are all `KeyVaultPropertySource` related properties: `spring.cloud.azure.keyvault.secret.property-source-enabled`, `spring.cloud.azure.keyvault.secret.property-sources[].xxx`, `spring.cloud.azure.xxx`.
+
 ### Spring Cloud Azure Resource Manager
 This section includes changes in the `spring-cloud-azure-resourcemanager` module.
 
