@@ -20,6 +20,12 @@ public class CorePerfStressOptions extends PerfStressOptions {
         + "Defaults to mock.")
     private BackendType backendType = BackendType.MOCK;
 
+    @Parameter(names = { "--binary-data-source"}, description =
+        "The binary data source used for tests that use BinaryData. "
+        + "Options are bytes, file or stream. "
+        + "Defaults to file.")
+    private BinaryDataSource binaryDataSource = BinaryDataSource.FILE;
+
     @Parameter(names = { "--include-pipeline-policies" },
         description = "Includes a bunch of core pipeline policies in the test")
     private boolean includePipelinePolicies;
@@ -57,11 +63,26 @@ public class CorePerfStressOptions extends PerfStressOptions {
         return includePipelinePolicies;
     }
 
+    /**
+     * The binary data source used for tests that use BinaryData.
+     * Options are bytes, file or stream.
+     * Defaults to file.
+     * @return The binary data source used for tests that use BinaryData.
+     */
+    public BinaryDataSource getBinaryDataSource() {
+        return binaryDataSource;
+    }
+
     public enum HttpClientType {
         NETTY, OKHTTP
     }
 
     public enum BackendType {
         MOCK, BLOBS, WIREMOCK
+    }
+
+    public enum BinaryDataSource {
+        // TODO (kasobol-msft) add FLUX when there's an option to provide it lazily.
+        BYTES, FILE, STREAM
     }
 }
