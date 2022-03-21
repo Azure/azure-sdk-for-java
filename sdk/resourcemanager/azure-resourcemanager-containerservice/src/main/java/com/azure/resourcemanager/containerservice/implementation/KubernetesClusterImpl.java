@@ -6,6 +6,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.ContainerServiceManager;
 import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterInner;
@@ -19,6 +20,7 @@ import com.azure.resourcemanager.containerservice.models.CredentialResult;
 import com.azure.resourcemanager.containerservice.models.Format;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusterAgentPool;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterAadProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAddonProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServerAccessProfile;
@@ -34,6 +36,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpoint
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -236,6 +239,27 @@ public class KubernetesClusterImpl
             }
         }
         return objectId;
+    }
+
+    @Override
+    public List<String> azureActiveDirectoryGroupIds() {
+        if (innerModel().aadProfile() == null
+            || CoreUtils.isNullOrEmpty(innerModel().aadProfile().adminGroupObjectIDs())) {
+            return Collections.emptyList();
+        } else {
+            return Collections.unmodifiableList(innerModel().aadProfile().adminGroupObjectIDs());
+        }
+    }
+
+    @Override
+    public boolean isLocalAccountsEnabled() {
+        return !ResourceManagerUtils.toPrimitiveBoolean(innerModel().disableLocalAccounts());
+    }
+
+    @Override
+    public boolean isAzureRbacEnabled() {
+        return innerModel().aadProfile() != null
+            && ResourceManagerUtils.toPrimitiveBoolean(innerModel().aadProfile().enableAzureRbac());
     }
 
     @Override
@@ -477,6 +501,49 @@ public class KubernetesClusterImpl
                 .collect(Collectors.toList())));
 
         return PagedConverter.convertListToPagedFlux(retList);
+    }
+
+    @Override
+    public KubernetesClusterImpl withAzureActiveDirectoryGroup(String activeDirectoryGroupObjectId) {
+        this.withRBACEnabled();
+
+        if (innerModel().aadProfile() == null) {
+            innerModel().withAadProfile(new ManagedClusterAadProfile().withManaged(true));
+        }
+        if (innerModel().aadProfile().adminGroupObjectIDs() == null) {
+            innerModel().aadProfile().withAdminGroupObjectIDs(new ArrayList<>());
+        }
+        innerModel().aadProfile().adminGroupObjectIDs().add(activeDirectoryGroupObjectId);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterImpl enableAzureRbac() {
+        this.withRBACEnabled();
+
+        if (innerModel().aadProfile() == null) {
+            innerModel().withAadProfile(new ManagedClusterAadProfile().withManaged(true));
+        }
+        innerModel().aadProfile().withEnableAzureRbac(true);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterImpl enableLocalAccounts() {
+        innerModel().withDisableLocalAccounts(false);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterImpl disableLocalAccounts() {
+        innerModel().withDisableLocalAccounts(true);
+        return this;
+    }
+
+    @Override
+    public KubernetesCluster.DefinitionStages.WithCreate disableKubernetesRbac() {
+        this.innerModel().withEnableRbac(false);
+        return this;
     }
 
     private static final class PrivateLinkResourceImpl implements PrivateLinkResource {
