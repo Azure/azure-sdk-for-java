@@ -134,8 +134,8 @@ public abstract class ThroughputControlGroupInternal {
         return Objects.equals(this.id, that.id)
                 && this.isDefault == that.isDefault
                 && this.continueOnInitError == that.continueOnInitError
-                && this.targetThroughput == that.targetThroughput
-                && this.targetThroughputThreshold == that.targetThroughputThreshold;
+                && Objects.equals(this.targetThroughput, that.targetThroughput)
+                && Objects.equals(this.targetThroughputThreshold, that.targetThroughputThreshold);
     }
 
     @Override
