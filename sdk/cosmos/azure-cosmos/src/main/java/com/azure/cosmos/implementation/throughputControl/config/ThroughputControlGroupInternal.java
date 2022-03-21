@@ -129,7 +129,7 @@ public abstract class ThroughputControlGroupInternal {
 
         ThroughputControlGroupInternal that = (ThroughputControlGroupInternal) other;
 
-        return StringUtils.equals(this.id, that.id)
+        return this.id.equals(that.id)
                 && this.isDefault == that.isDefault
                 && this.continueOnInitError == that.continueOnInitError
                 && this.targetThroughput == that.targetThroughput

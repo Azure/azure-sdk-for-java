@@ -14,7 +14,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * This exception wraps the true underlying exception
  * if request should fail, then {@link ThroughputControlStore} will be responsible for throw the underlying exception to upcaller.
  */
-public class ThroughputControlInitializationException extends Exception {
+public class ThroughputControlInitializationException extends RuntimeException {
     private final Throwable cause;
 
     public ThroughputControlInitializationException(Throwable throwable) {

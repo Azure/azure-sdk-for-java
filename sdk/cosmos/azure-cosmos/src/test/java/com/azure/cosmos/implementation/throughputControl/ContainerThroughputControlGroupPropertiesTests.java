@@ -18,7 +18,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 public class ContainerThroughputControlGroupPropertiesTests {
 
     @Test(groups = "unit")
-    public void addThroughputControlGroup() {
+    public void enableThroughputControlGroup() {
         CosmosAsyncClient testClient = null;
         try {
             testClient = new CosmosClientBuilder()
@@ -39,7 +39,7 @@ public class ContainerThroughputControlGroupPropertiesTests {
                     true,
                     false);
 
-            int currentGroupSize = throughputControlContainerProperties.addThroughputControlGroup(throughputControlDefaultGroup);
+            int currentGroupSize = throughputControlContainerProperties.enableThroughputControlGroup(throughputControlDefaultGroup);
             assertThat(currentGroupSize).isEqualTo(1);
 
             // Test 2: add throughput control group with same id
@@ -51,7 +51,7 @@ public class ContainerThroughputControlGroupPropertiesTests {
                     false,
                     false);
 
-            assertThatThrownBy(() -> throughputControlContainerProperties.addThroughputControlGroup(throughputControlGroupDuplciate))
+            assertThatThrownBy(() -> throughputControlContainerProperties.enableThroughputControlGroup(throughputControlGroupDuplciate))
                     .isInstanceOf(IllegalArgumentException.class);
 
             // Test 3: add another default group
@@ -62,7 +62,7 @@ public class ContainerThroughputControlGroupPropertiesTests {
                     null,
                     true,
                     false);
-            assertThatThrownBy(() -> throughputControlContainerProperties.addThroughputControlGroup(throughputControlDefaultGroup2))
+            assertThatThrownBy(() -> throughputControlContainerProperties.enableThroughputControlGroup(throughputControlDefaultGroup2))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("A default group already exists");
 
@@ -74,7 +74,7 @@ public class ContainerThroughputControlGroupPropertiesTests {
                     null,
                     false,
                     false);
-            currentGroupSize = throughputControlContainerProperties.addThroughputControlGroup(newGroup);
+            currentGroupSize = throughputControlContainerProperties.enableThroughputControlGroup(newGroup);
             assertThat(currentGroupSize).isEqualTo(2);
 
             // Test 5: add a same group as step 4
@@ -85,7 +85,7 @@ public class ContainerThroughputControlGroupPropertiesTests {
                     newGroup.getTargetThroughputThreshold(),
                     newGroup.isDefault(),
                     newGroup.isContinueOnInitError());
-            currentGroupSize = throughputControlContainerProperties.addThroughputControlGroup(newGroupDuplicate);
+            currentGroupSize = throughputControlContainerProperties.enableThroughputControlGroup(newGroupDuplicate);
             assertThat(currentGroupSize).isEqualTo(2);
         } finally {
             if (testClient != null) {

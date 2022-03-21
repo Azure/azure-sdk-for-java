@@ -112,7 +112,7 @@ public class ThroughputControlStore {
                 throughputControlContainerProperties = new ContainerThroughputControlGroupProperties();
             }
 
-            int groupSize = throughputControlContainerProperties.addThroughputControlGroup(group);
+            int groupSize = throughputControlContainerProperties.enableThroughputControlGroup(group);
 
             if (groupSize == 1) {
                 // This is the first enabled group for the target container
@@ -148,6 +148,7 @@ public class ThroughputControlStore {
                 // while fall back to original request Mono for the second scenario.
                 return this.updateControllerAndRetry(collectionNameLink, request, originalRequestMono);
             })
+            .onErrorMap(Exceptions::unwrap)
             .onErrorResume(throwable -> {
                if (throwable instanceof ThroughputControlInitializationException) {
                       if (this.shouldContinueRequestOnInitError(request, collectionNameLink, throwable)) {

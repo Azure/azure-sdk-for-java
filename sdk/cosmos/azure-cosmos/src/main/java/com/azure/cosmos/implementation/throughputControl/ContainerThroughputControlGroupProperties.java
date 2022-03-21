@@ -28,7 +28,14 @@ public class ContainerThroughputControlGroupProperties {
         this.supressInitErrorGroupSet = ConcurrentHashMap.newKeySet();
     }
 
-    public int addThroughputControlGroup(ThroughputControlGroupInternal group) {
+    /***
+     * Enable a throughput control group.
+     *
+     * @param group a {@link  ThroughputControlGroupInternal}.
+     *
+     * @return the total size of distinct throughput control groups enabled on the container.
+     */
+    public int enableThroughputControlGroup(ThroughputControlGroupInternal group) {
         checkNotNull(group, "Throughput control group should not be null");
 
         if (group.isDefault()) {
@@ -45,7 +52,7 @@ public class ContainerThroughputControlGroupProperties {
 
         // Only throw when two different groups are using the same id (databaseId + containerId + groupName)
         if (this.throughputControlGroupSet.stream()
-                .anyMatch(existingGroup -> StringUtils.equals(existingGroup.getId(), group.getId()) && !existingGroup.equals(group))) {
+                .anyMatch(existingGroup -> existingGroup.getId().equals(group.getId()) && !existingGroup.equals(group))) {
             throw new IllegalArgumentException("Throughput control group with id " + group.getId() + " already exists");
         }
 
