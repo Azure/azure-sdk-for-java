@@ -22,7 +22,6 @@ public class ContainerThroughputControlGroupProperties {
     private final Set<ThroughputControlGroupInternal> throughputControlGroupSet;
     private final Set<String> supressInitErrorGroupSet;
 
-
     public ContainerThroughputControlGroupProperties() {
         this.defaultGroup = new AtomicReference<>();
         this.throughputControlGroupSet = ConcurrentHashMap.newKeySet();
