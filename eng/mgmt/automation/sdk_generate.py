@@ -99,16 +99,16 @@ def sdk_automation(input_file: str, output_file: str):
     packages = []
     readme = config['relatedReadmeMdFile']
     match = re.search(
-        'specification/([^/]+)/resource-manager/readme.md',
+        '(specification)?/?([^/]+)/resource-manager/readme.md',
         readme,
         re.IGNORECASE,
     )
     if not match:
         logging.info(
-            '[Skip] readme path does not format as specification/*/resource-manager/readme.md'
+            '[Skip] readme path does not format as */resource-manager/readme.md'
         )
     else:
-        spec = match.group(1)
+        spec = match.group(2)
         service = get_and_update_service_from_api_specs(
             api_specs_file, spec)
 
