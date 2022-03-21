@@ -7,7 +7,7 @@
 ### Dependency Updates
 Upgrade dependency according to spring-boot-dependencies:2.6.3 and spring-cloud-dependencies:2021.0.0.
 
-### Spring CLoud Azure AutoConfigure
+### Spring CLoud Azure Autoconfigure
 
 #### Breaking Changes
 - `KeyVaultPropertySource`'s configuration properties changed. [27651](https://github.com/Azure/azure-sdk-for-java/pull/27651)
