@@ -97,19 +97,17 @@ public interface ServiceBusProcessorFactory {
          * The callback method that the processor has been added.
          *
          * @param name the name for the processor.
-         * @param subscription the subscription for the processor.
          * @param client the client for the processor.
          */
-        void processorAdded(String name, String subscription, ServiceBusProcessorClient client);
+        void processorAdded(String name, ServiceBusProcessorClient client);
 
         /**
          * The default callback method that the processor has been removed.
          *
          * @param name the name for the processor.
-         * @param subscription the subscription for the processor.
          * @param client the client for the processor.
          */
-        default void processorRemoved(String name, String subscription, ServiceBusProcessorClient client) {
+        default void processorRemoved(String name, ServiceBusProcessorClient client) {
         }
 
     }
