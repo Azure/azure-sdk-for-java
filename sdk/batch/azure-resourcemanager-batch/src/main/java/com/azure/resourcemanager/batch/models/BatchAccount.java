@@ -124,7 +124,7 @@ public interface BatchAccount {
     Integer dedicatedCoreQuota();
 
     /**
-     * Gets the lowPriorityCoreQuota property: The low-priority core quota for the Batch account. For accounts with
+     * Gets the lowPriorityCoreQuota property: The Spot/low-priority core quota for the Batch account. For accounts with
      * PoolAllocationMode set to UserSubscription, quota is managed on the subscription so this value is not returned.
      *
      * @return the lowPriorityCoreQuota value.
@@ -480,7 +480,7 @@ public interface BatchAccount {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> synchronizeAutoStorageKeysWithResponse(Context context);
 
@@ -509,7 +509,7 @@ public interface BatchAccount {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a set of Azure Batch account keys.
+     * @return a set of Azure Batch account keys along with {@link Response}.
      */
     Response<BatchAccountKeys> regenerateKeyWithResponse(
         BatchAccountRegenerateKeyParameters parameters, Context context);
@@ -534,7 +534,7 @@ public interface BatchAccount {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a set of Azure Batch account keys.
+     * @return a set of Azure Batch account keys along with {@link Response}.
      */
     Response<BatchAccountKeys> getKeysWithResponse(Context context);
 }

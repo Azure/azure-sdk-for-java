@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
@@ -18,6 +19,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
+import java.net.SocketException;
 import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
@@ -82,6 +84,9 @@ public class RxGatewayStoreModelTest {
         Mockito.doReturn(Mono.error(ReadTimeoutException.INSTANCE))
                 .when(httpClient).send(any(HttpRequest.class), any(Duration.class));
 
+        GatewayServiceConfigurationReader gatewayServiceConfigurationReader = Mockito.mock(GatewayServiceConfigurationReader.class);
+        Mockito.doReturn(ConsistencyLevel.SESSION)
+            .when(gatewayServiceConfigurationReader).getDefaultConsistencyLevel();
         RxGatewayStoreModel storeModel = new RxGatewayStoreModel(clientContext,
                 sessionContainer,
                 ConsistencyLevel.SESSION,
@@ -89,7 +94,8 @@ public class RxGatewayStoreModelTest {
                 userAgentContainer,
                 globalEndpointManager,
                 httpClient,
-                null);
+            null);
+        storeModel.setGatewayServiceConfigurationReader(gatewayServiceConfigurationReader);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(clientContext,
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
@@ -102,9 +108,52 @@ public class RxGatewayStoreModelTest {
                 .instanceOf(CosmosException.class)
                 .causeInstanceOf(ReadTimeoutException.class)
                 .documentClientExceptionHeaderRequestContainsEntry("key", "value")
-                .statusCode(0).build());
+                .statusCode(HttpConstants.StatusCodes.REQUEST_TIMEOUT)
+                .subStatusCode(HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT)
+                .build());
     }
 
+    @Test(groups = "unit")
+    public void serviceUnavailable() throws Exception {
+        DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
+        ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
+        QueryCompatibilityMode queryCompatibilityMode = QueryCompatibilityMode.Default;
+        UserAgentContainer userAgentContainer = new UserAgentContainer();
+        GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
+        Mockito.doReturn(new URI("https://localhost"))
+               .when(globalEndpointManager).resolveServiceEndpoint(any());
+        HttpClient httpClient = Mockito.mock(HttpClient.class);
+        Mockito.doReturn(Mono.error(new SocketException("Dummy SocketException")))
+               .when(httpClient).send(any(HttpRequest.class), any(Duration.class));
+
+        GatewayServiceConfigurationReader gatewayServiceConfigurationReader = Mockito.mock(GatewayServiceConfigurationReader.class);
+        Mockito.doReturn(ConsistencyLevel.SESSION)
+               .when(gatewayServiceConfigurationReader).getDefaultConsistencyLevel();
+        RxGatewayStoreModel storeModel = new RxGatewayStoreModel(clientContext,
+            sessionContainer,
+            ConsistencyLevel.SESSION,
+            queryCompatibilityMode,
+            userAgentContainer,
+            globalEndpointManager,
+            httpClient,
+            null);
+        storeModel.setGatewayServiceConfigurationReader(gatewayServiceConfigurationReader);
+
+        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(clientContext,
+            OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
+        dsr.getHeaders().put("key", "value");
+        dsr.requestContext = new DocumentServiceRequestContext();
+
+
+        Mono<RxDocumentServiceResponse> resp = storeModel.processMessage(dsr);
+        validateFailure(resp, FailureValidator.builder()
+                                              .instanceOf(CosmosException.class)
+                                              .causeInstanceOf(SocketException.class)
+                                              .documentClientExceptionHeaderRequestContainsEntry("key", "value")
+                                              .statusCode(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE)
+                                              .subStatusCode(HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE)
+                                              .build());
+    }
 
     @Test(groups = "unit", dataProvider = "sessionTokenConfigProvider")
     public void applySessionToken(
@@ -130,6 +179,10 @@ public class RxGatewayStoreModelTest {
         Mockito.doReturn(Mono.error(ReadTimeoutException.INSTANCE))
             .when(httpClient).send(any(HttpRequest.class), any(Duration.class));
 
+        GatewayServiceConfigurationReader gatewayServiceConfigurationReader = Mockito.mock(GatewayServiceConfigurationReader.class);
+        Mockito.doReturn(defaultConsistency)
+            .when(gatewayServiceConfigurationReader).getDefaultConsistencyLevel();
+
         RxGatewayStoreModel storeModel = new RxGatewayStoreModel(
             clientContext,
             sessionContainer,
@@ -139,6 +192,7 @@ public class RxGatewayStoreModelTest {
             globalEndpointManager,
             httpClient,
             apiType);
+        storeModel.setGatewayServiceConfigurationReader(gatewayServiceConfigurationReader);
 
         httpClient = ReflectionUtils.getHttpClient(storeModel);
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
@@ -157,12 +211,22 @@ public class RxGatewayStoreModelTest {
         validateFailure(resp, FailureValidator.builder()
             .instanceOf(CosmosException.class)
             .causeInstanceOf(ReadTimeoutException.class)
-            .statusCode(0).build());
+            .statusCode(HttpConstants.StatusCodes.REQUEST_TIMEOUT).build());
 
         if (finalSessionTokenType == SessionTokenType.USER) {
-            assertThat(dsr.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(userControlledSessionToken);
+            // Session token is passed only for read request, unless its batch operation, or its multi master create
+            if(!dsr.isReadOnlyRequest() && dsr.getOperationType() != OperationType.Batch){
+                assertThat(dsr.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isNull();
+            } else {
+                assertThat(dsr.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(userControlledSessionToken);
+            }
         } else if(finalSessionTokenType == SessionTokenType.SDK) {
-            assertThat(dsr.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(sdkGlobalSessionToken);
+            // Session token is passed only for read request, unless its batch operation, or its multi master create
+            if(!dsr.isReadOnlyRequest() && dsr.getOperationType() != OperationType.Batch){
+                assertThat(dsr.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isNull();
+            } else {
+                assertThat(dsr.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isEqualTo(sdkGlobalSessionToken);
+            }
         } else {
             assertThat(dsr.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isNull();
         }

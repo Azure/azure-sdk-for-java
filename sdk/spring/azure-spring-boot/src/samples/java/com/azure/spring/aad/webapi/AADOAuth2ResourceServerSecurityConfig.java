@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
+// BEGIN: readme-sample-AADOAuth2ResourceServerSecurityConfig
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class AADOAuth2ResourceServerSecurityConfig extends AADResourceServerWebSecurityConfigurerAdapter {
@@ -19,3 +20,4 @@ public class AADOAuth2ResourceServerSecurityConfig extends AADResourceServerWebS
         http.authorizeRequests((requests) -> requests.anyRequest().authenticated());
     }
 }
+// END: readme-sample-AADOAuth2ResourceServerSecurityConfig

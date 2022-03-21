@@ -50,6 +50,12 @@ public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
     @JsonProperty(value = "timeZone")
     private String timeZone;
 
+    /*
+     * The policyType property.
+     */
+    @JsonProperty(value = "policyType")
+    private IaasvmPolicyType policyType;
+
     /**
      * Get the instantRPDetails property: The instantRPDetails property.
      *
@@ -147,6 +153,26 @@ public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
      */
     public AzureIaaSvmProtectionPolicy withTimeZone(String timeZone) {
         this.timeZone = timeZone;
+        return this;
+    }
+
+    /**
+     * Get the policyType property: The policyType property.
+     *
+     * @return the policyType value.
+     */
+    public IaasvmPolicyType policyType() {
+        return this.policyType;
+    }
+
+    /**
+     * Set the policyType property: The policyType property.
+     *
+     * @param policyType the policyType value to set.
+     * @return the AzureIaaSvmProtectionPolicy object itself.
+     */
+    public AzureIaaSvmProtectionPolicy withPolicyType(IaasvmPolicyType policyType) {
+        this.policyType = policyType;
         return this;
     }
 

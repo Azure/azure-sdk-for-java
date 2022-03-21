@@ -229,6 +229,13 @@ public final class MabContainer extends ProtectionContainer {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public MabContainer withProtectableObjectType(String protectableObjectType) {
+        super.withProtectableObjectType(protectableObjectType);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

@@ -17,6 +17,7 @@ import com.azure.resourcemanager.storage.fluent.DeletedAccountsClient;
 import com.azure.resourcemanager.storage.fluent.EncryptionScopesClient;
 import com.azure.resourcemanager.storage.fluent.FileServicesClient;
 import com.azure.resourcemanager.storage.fluent.FileSharesClient;
+import com.azure.resourcemanager.storage.fluent.LocalUsersOperationsClient;
 import com.azure.resourcemanager.storage.fluent.ManagementPoliciesClient;
 import com.azure.resourcemanager.storage.fluent.ObjectReplicationPoliciesOperationsClient;
 import com.azure.resourcemanager.storage.fluent.OperationsClient;
@@ -229,6 +230,18 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
         return this.objectReplicationPoliciesOperations;
     }
 
+    /** The LocalUsersOperationsClient object to access its operations. */
+    private final LocalUsersOperationsClient localUsersOperations;
+
+    /**
+     * Gets the LocalUsersOperationsClient object to access its operations.
+     *
+     * @return the LocalUsersOperationsClient object.
+     */
+    public LocalUsersOperationsClient getLocalUsersOperations() {
+        return this.localUsersOperations;
+    }
+
     /** The EncryptionScopesClient object to access its operations. */
     private final EncryptionScopesClient encryptionScopes;
 
@@ -360,7 +373,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-04-01";
+        this.apiVersion = "2021-08-01";
         this.operations = new OperationsClientImpl(this);
         this.skus = new SkusClientImpl(this);
         this.storageAccounts = new StorageAccountsClientImpl(this);
@@ -371,6 +384,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.objectReplicationPoliciesOperations = new ObjectReplicationPoliciesOperationsClientImpl(this);
+        this.localUsersOperations = new LocalUsersOperationsClientImpl(this);
         this.encryptionScopes = new EncryptionScopesClientImpl(this);
         this.blobServices = new BlobServicesClientImpl(this);
         this.blobContainers = new BlobContainersClientImpl(this);

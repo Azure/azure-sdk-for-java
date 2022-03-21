@@ -21,6 +21,12 @@ public final class DirectLineChannelProperties {
     @JsonProperty(value = "sites")
     private List<DirectLineSite> sites;
 
+    /*
+     * Direct Line embed code of the resource
+     */
+    @JsonProperty(value = "DirectLineEmbedCode")
+    private String directLineEmbedCode;
+
     /**
      * Get the sites property: The list of Direct Line sites.
      *
@@ -38,6 +44,26 @@ public final class DirectLineChannelProperties {
      */
     public DirectLineChannelProperties withSites(List<DirectLineSite> sites) {
         this.sites = sites;
+        return this;
+    }
+
+    /**
+     * Get the directLineEmbedCode property: Direct Line embed code of the resource.
+     *
+     * @return the directLineEmbedCode value.
+     */
+    public String directLineEmbedCode() {
+        return this.directLineEmbedCode;
+    }
+
+    /**
+     * Set the directLineEmbedCode property: Direct Line embed code of the resource.
+     *
+     * @param directLineEmbedCode the directLineEmbedCode value to set.
+     * @return the DirectLineChannelProperties object itself.
+     */
+    public DirectLineChannelProperties withDirectLineEmbedCode(String directLineEmbedCode) {
+        this.directLineEmbedCode = directLineEmbedCode;
         return this;
     }
 

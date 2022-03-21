@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the parameters of a ScaleSet managed disk. */
 @Fluent
 public final class VirtualMachineScaleSetManagedDiskParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetManagedDiskParameters.class);
-
     /*
      * Specifies the storage account type for the managed disk. NOTE:
      * UltraSSD_LRS can only be used with data disks, it cannot be used with OS
@@ -28,6 +24,12 @@ public final class VirtualMachineScaleSetManagedDiskParameters {
      */
     @JsonProperty(value = "diskEncryptionSet")
     private DiskEncryptionSetParameters diskEncryptionSet;
+
+    /*
+     * Specifies the security profile for the managed disk.
+     */
+    @JsonProperty(value = "securityProfile")
+    private VMDiskSecurityProfile securityProfile;
 
     /**
      * Get the storageAccountType property: Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS
@@ -75,6 +77,26 @@ public final class VirtualMachineScaleSetManagedDiskParameters {
     }
 
     /**
+     * Get the securityProfile property: Specifies the security profile for the managed disk.
+     *
+     * @return the securityProfile value.
+     */
+    public VMDiskSecurityProfile securityProfile() {
+        return this.securityProfile;
+    }
+
+    /**
+     * Set the securityProfile property: Specifies the security profile for the managed disk.
+     *
+     * @param securityProfile the securityProfile value to set.
+     * @return the VirtualMachineScaleSetManagedDiskParameters object itself.
+     */
+    public VirtualMachineScaleSetManagedDiskParameters withSecurityProfile(VMDiskSecurityProfile securityProfile) {
+        this.securityProfile = securityProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -82,6 +104,9 @@ public final class VirtualMachineScaleSetManagedDiskParameters {
     public void validate() {
         if (diskEncryptionSet() != null) {
             diskEncryptionSet().validate();
+        }
+        if (securityProfile() != null) {
+            securityProfile().validate();
         }
     }
 }

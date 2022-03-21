@@ -444,8 +444,7 @@ public interface KubernetesClusterAgentPool
             UpdateStages.WithAutoScaling<ParentT>,
             UpdateStages.WithAgentPoolMode<ParentT>,
             UpdateStages.WithDiskType<ParentT>,
-            UpdateStages.WithTags<ParentT>
-    {
+            UpdateStages.WithTags<ParentT> {
     }
 
     /** Grouping of agent pool update stages. */

@@ -79,6 +79,10 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
                                                                            messageProcessor));
     }
 
+    public ServiceBusProcessorClient removeProcessor(String topic, String subscription) {
+        return this.topicProcessorMap.remove(Tuple.of(topic, subscription));
+    }
+
     @Override
     public ServiceBusSenderAsyncClient getOrCreateSender(String name) {
         return this.topicSenderMap.computeIfAbsent(name, this::createTopicSender);

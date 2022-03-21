@@ -78,4 +78,11 @@ public interface AzureDigitalTwinsManagementClient {
      * @return the PrivateEndpointConnectionsClient object.
      */
     PrivateEndpointConnectionsClient getPrivateEndpointConnections();
+
+    /**
+     * Gets the TimeSeriesDatabaseConnectionsClient object to access its operations.
+     *
+     * @return the TimeSeriesDatabaseConnectionsClient object.
+     */
+    TimeSeriesDatabaseConnectionsClient getTimeSeriesDatabaseConnections();
 }

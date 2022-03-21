@@ -128,7 +128,7 @@ public final class AttestationClientImpl {
      * @param instanceUrl The attestation instance base URI, for example https://mytenant.attest.azure.net.
      * @param apiVersion Api Version.
      */
-    AttestationClientImpl(String instanceUrl, String apiVersion) {
+    public AttestationClientImpl(String instanceUrl, String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
@@ -145,7 +145,7 @@ public final class AttestationClientImpl {
      * @param instanceUrl The attestation instance base URI, for example https://mytenant.attest.azure.net.
      * @param apiVersion Api Version.
      */
-    AttestationClientImpl(HttpPipeline httpPipeline, String instanceUrl, String apiVersion) {
+    public AttestationClientImpl(HttpPipeline httpPipeline, String instanceUrl, String apiVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), instanceUrl, apiVersion);
     }
 
@@ -157,7 +157,7 @@ public final class AttestationClientImpl {
      * @param instanceUrl The attestation instance base URI, for example https://mytenant.attest.azure.net.
      * @param apiVersion Api Version.
      */
-    AttestationClientImpl(
+    public AttestationClientImpl(
             HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String instanceUrl, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;

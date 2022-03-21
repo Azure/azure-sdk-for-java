@@ -21,7 +21,7 @@ public interface ManagedVirtualNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed Virtual Network resources.
+     * @return a list of managed Virtual Network resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ManagedVirtualNetworkResourceInner> listByFactory(String resourceGroupName, String factoryName);
@@ -35,7 +35,7 @@ public interface ManagedVirtualNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed Virtual Network resources.
+     * @return a list of managed Virtual Network resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ManagedVirtualNetworkResourceInner> listByFactory(
@@ -73,7 +73,7 @@ public interface ManagedVirtualNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed Virtual Network resource type.
+     * @return managed Virtual Network resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ManagedVirtualNetworkResourceInner> createOrUpdateWithResponse(
@@ -111,7 +111,7 @@ public interface ManagedVirtualNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed Virtual Network.
+     * @return a managed Virtual Network along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ManagedVirtualNetworkResourceInner> getWithResponse(

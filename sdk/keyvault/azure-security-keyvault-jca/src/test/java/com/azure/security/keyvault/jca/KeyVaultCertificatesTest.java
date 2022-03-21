@@ -55,7 +55,7 @@ public class KeyVaultCertificatesTest {
     public static void setEnvironmentProperty() {
         PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca();
         PropertyConvertorUtils.addKeyVaultJcaProvider();
-        certificateName = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
+        certificateName = PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CERTIFICATE_NAME");
     }
 
     @Test

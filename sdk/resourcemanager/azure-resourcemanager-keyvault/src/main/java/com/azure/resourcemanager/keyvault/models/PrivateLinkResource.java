@@ -5,74 +5,32 @@
 package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.keyvault.fluent.models.PrivateLinkResourceProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** A private link resource. */
-@JsonFlatten
 @Fluent
-public class PrivateLinkResource extends Resource {
+public final class PrivateLinkResource extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResource.class);
 
     /*
-     * Group identifier of private link resource.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.groupId", access = JsonProperty.Access.WRITE_ONLY)
-    private String groupId;
-
-    /*
-     * Required member names of private link resource.
-     */
-    @JsonProperty(value = "properties.requiredMembers", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> requiredMembers;
-
-    /*
-     * Required DNS zone names of the the private link resource.
-     */
-    @JsonProperty(value = "properties.requiredZoneNames")
-    private List<String> requiredZoneNames;
+    @JsonProperty(value = "properties")
+    private PrivateLinkResourceProperties innerProperties;
 
     /**
-     * Get the groupId property: Group identifier of private link resource.
+     * Get the innerProperties property: Resource properties.
      *
-     * @return the groupId value.
+     * @return the innerProperties value.
      */
-    public String groupId() {
-        return this.groupId;
-    }
-
-    /**
-     * Get the requiredMembers property: Required member names of private link resource.
-     *
-     * @return the requiredMembers value.
-     */
-    public List<String> requiredMembers() {
-        return this.requiredMembers;
-    }
-
-    /**
-     * Get the requiredZoneNames property: Required DNS zone names of the the private link resource.
-     *
-     * @return the requiredZoneNames value.
-     */
-    public List<String> requiredZoneNames() {
-        return this.requiredZoneNames;
-    }
-
-    /**
-     * Set the requiredZoneNames property: Required DNS zone names of the the private link resource.
-     *
-     * @param requiredZoneNames the requiredZoneNames value to set.
-     * @return the PrivateLinkResource object itself.
-     */
-    public PrivateLinkResource withRequiredZoneNames(List<String> requiredZoneNames) {
-        this.requiredZoneNames = requiredZoneNames;
-        return this;
+    private PrivateLinkResourceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -90,10 +48,54 @@ public class PrivateLinkResource extends Resource {
     }
 
     /**
+     * Get the groupId property: Group identifier of private link resource.
+     *
+     * @return the groupId value.
+     */
+    public String groupId() {
+        return this.innerProperties() == null ? null : this.innerProperties().groupId();
+    }
+
+    /**
+     * Get the requiredMembers property: Required member names of private link resource.
+     *
+     * @return the requiredMembers value.
+     */
+    public List<String> requiredMembers() {
+        return this.innerProperties() == null ? null : this.innerProperties().requiredMembers();
+    }
+
+    /**
+     * Get the requiredZoneNames property: Required DNS zone names of the the private link resource.
+     *
+     * @return the requiredZoneNames value.
+     */
+    public List<String> requiredZoneNames() {
+        return this.innerProperties() == null ? null : this.innerProperties().requiredZoneNames();
+    }
+
+    /**
+     * Set the requiredZoneNames property: Required DNS zone names of the the private link resource.
+     *
+     * @param requiredZoneNames the requiredZoneNames value to set.
+     * @return the PrivateLinkResource object itself.
+     */
+    public PrivateLinkResource withRequiredZoneNames(List<String> requiredZoneNames) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateLinkResourceProperties();
+        }
+        this.innerProperties().withRequiredZoneNames(requiredZoneNames);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

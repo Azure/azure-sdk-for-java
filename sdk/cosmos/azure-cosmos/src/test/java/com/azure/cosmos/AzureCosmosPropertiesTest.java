@@ -28,9 +28,9 @@ public class AzureCosmosPropertiesTest {
 
     @Test(groups = "unit")
     public void verifyProjectVersion() {
-        assertThat(HttpConstants.Versions.SDK_VERSION).isNotNull();
+        assertThat(HttpConstants.Versions.getSdkVersion()).isNotNull();
         String pomFileVersion = getVersionFromPomFile();
-        assertThat(HttpConstants.Versions.SDK_VERSION).isEqualTo(pomFileVersion);
+        assertThat(HttpConstants.Versions.getSdkVersion()).isEqualTo(pomFileVersion);
     }
 
     private String getVersionFromPomFile() {

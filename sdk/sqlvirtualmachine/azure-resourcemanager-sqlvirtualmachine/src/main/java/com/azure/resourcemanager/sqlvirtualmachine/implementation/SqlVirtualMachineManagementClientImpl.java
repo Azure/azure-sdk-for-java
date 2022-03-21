@@ -183,7 +183,7 @@ public final class SqlVirtualMachineManagementClientImpl implements SqlVirtualMa
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2017-03-01-preview";
+        this.apiVersion = "2021-11-01-preview";
         this.availabilityGroupListeners = new AvailabilityGroupListenersClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.sqlVirtualMachineGroups = new SqlVirtualMachineGroupsClientImpl(this);
@@ -272,7 +272,7 @@ public final class SqlVirtualMachineManagementClientImpl implements SqlVirtualMa
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
-                    } catch (IOException ioe) {
+                    } catch (IOException | RuntimeException ioe) {
                         logger.logThrowableAsWarning(ioe);
                     }
                 }
@@ -301,7 +301,7 @@ public final class SqlVirtualMachineManagementClientImpl implements SqlVirtualMa
             super(null);
             this.statusCode = statusCode;
             this.httpHeaders = httpHeaders;
-            this.responseBody = responseBody.getBytes(StandardCharsets.UTF_8);
+            this.responseBody = responseBody == null ? null : responseBody.getBytes(StandardCharsets.UTF_8);
         }
 
         public int getStatusCode() {

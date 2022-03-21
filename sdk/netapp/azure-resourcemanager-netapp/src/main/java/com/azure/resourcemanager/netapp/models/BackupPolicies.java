@@ -18,7 +18,7 @@ public interface BackupPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Backup Policies.
+     * @return list of Backup Policies as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BackupPolicy> list(String resourceGroupName, String accountName);
 
@@ -31,7 +31,7 @@ public interface BackupPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Backup Policies.
+     * @return list of Backup Policies as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BackupPolicy> list(String resourceGroupName, String accountName, Context context);
 
@@ -58,7 +58,7 @@ public interface BackupPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a particular backup Policy.
+     * @return a particular backup Policy along with {@link Response}.
      */
     Response<BackupPolicy> getWithResponse(
         String resourceGroupName, String accountName, String backupPolicyName, Context context);
@@ -95,7 +95,7 @@ public interface BackupPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a particular backup Policy.
+     * @return a particular backup Policy along with {@link Response}.
      */
     BackupPolicy getById(String id);
 
@@ -107,7 +107,7 @@ public interface BackupPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a particular backup Policy.
+     * @return a particular backup Policy along with {@link Response}.
      */
     Response<BackupPolicy> getByIdWithResponse(String id, Context context);
 

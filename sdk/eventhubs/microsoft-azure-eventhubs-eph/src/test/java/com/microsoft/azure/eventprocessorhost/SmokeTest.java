@@ -3,8 +3,8 @@
 
 package com.microsoft.azure.eventprocessorhost;
 
+import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ClientCredentialParameters;
-import com.microsoft.aad.msal4j.ClientSecret;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.azure.eventhubs.AzureActiveDirectoryTokenProvider;
@@ -31,9 +31,9 @@ public class SmokeTest extends TestBase {
 
         testFinish(settings, SmokeTest.ANY_NONZERO_COUNT);
     }
-    
+
     /**
-     * This JUnit test case is all commented out by default because it can only be run with special setup. 
+     * This JUnit test case is all commented out by default because it can only be run with special setup.
      * It extracts the namespace (endpoint) and event hub name from the connection string in the environment variable
      * which all test cases use, but it assumes that the namespace (or event hub) has been set up with special permissions.
      * Within the AAD directory indicated by "authority", there is a registered application with id "clientId" and a secret
@@ -53,22 +53,22 @@ public class SmokeTest extends TestBase {
 
         testFinish(settings, SmokeTest.ANY_NONZERO_COUNT);
     }
-    
+
     private class MsalAuthCallback implements AzureActiveDirectoryTokenProvider.AuthenticationCallback {
         private final String clientId = "replaceWithClientIdGuid";
         private final String clientSecret = "replaceWithClientSecret";
-        
+
         @Override
         public CompletableFuture<String> acquireToken(String audience, String authority, Object state) {
             try {
-                ConfidentialClientApplication app = ConfidentialClientApplication.builder(this.clientId, new ClientSecret(this.clientSecret))
+                ConfidentialClientApplication app = ConfidentialClientApplication.builder(this.clientId, ClientCredentialFactory.createFromSecret(this.clientSecret))
                         .authority(authority)
                         .build();
-                
+
                 ClientCredentialParameters parameters = ClientCredentialParameters.builder(Collections.singleton(audience + ".default")).build();
-    
+
                 IAuthenticationResult result = app.acquireToken(parameters).get();
-    
+
                 return CompletableFuture.completedFuture(result.accessToken());
             } catch (Exception e) {
                 throw new CompletionException(e);
@@ -145,7 +145,7 @@ public class SmokeTest extends TestBase {
     }
 
     private PerTestSettings receiveFromCheckpointIteration(int iteration, int expectedEvents, String containerName,
-                                                           PrefabEventProcessor.CheckpointChoices checkpointCallType) throws Exception {
+        PrefabEventProcessor.CheckpointChoices checkpointCallType) throws Exception {
         String distinguisher = "e";
         if (checkpointCallType == PrefabEventProcessor.CheckpointChoices.CKP_NOARGS) {
             distinguisher = "n";

@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Request body to build a new custom model. */
 @Fluent
@@ -23,10 +24,22 @@ public final class BuildDocumentModelRequest {
     private String description;
 
     /*
+     * Custom model build mode.
+     */
+    @JsonProperty(value = "buildMode", required = true)
+    private DocumentBuildMode buildMode;
+
+    /*
      * Azure Blob Storage location containing the training data.
      */
     @JsonProperty(value = "azureBlobSource")
     private AzureBlobContentSource azureBlobSource;
+
+    /*
+     * List of key-value tag attributes associated with the model.
+     */
+    @JsonProperty(value = "tags")
+    private Map<String, String> tags;
 
     /**
      * Get the modelId property: Unique model name.
@@ -69,6 +82,26 @@ public final class BuildDocumentModelRequest {
     }
 
     /**
+     * Get the buildMode property: Custom model build mode.
+     *
+     * @return the buildMode value.
+     */
+    public DocumentBuildMode getBuildMode() {
+        return this.buildMode;
+    }
+
+    /**
+     * Set the buildMode property: Custom model build mode.
+     *
+     * @param buildMode the buildMode value to set.
+     * @return the BuildDocumentModelRequest object itself.
+     */
+    public BuildDocumentModelRequest setBuildMode(DocumentBuildMode buildMode) {
+        this.buildMode = buildMode;
+        return this;
+    }
+
+    /**
      * Get the azureBlobSource property: Azure Blob Storage location containing the training data.
      *
      * @return the azureBlobSource value.
@@ -85,6 +118,26 @@ public final class BuildDocumentModelRequest {
      */
     public BuildDocumentModelRequest setAzureBlobSource(AzureBlobContentSource azureBlobSource) {
         this.azureBlobSource = azureBlobSource;
+        return this;
+    }
+
+    /**
+     * Get the tags property: List of key-value tag attributes associated with the model.
+     *
+     * @return the tags value.
+     */
+    public Map<String, String> getTags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: List of key-value tag attributes associated with the model.
+     *
+     * @param tags the tags value to set.
+     * @return the BuildDocumentModelRequest object itself.
+     */
+    public BuildDocumentModelRequest setTags(Map<String, String> tags) {
+        this.tags = tags;
         return this;
     }
 }

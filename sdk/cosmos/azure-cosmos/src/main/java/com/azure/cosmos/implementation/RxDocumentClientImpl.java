@@ -53,6 +53,7 @@ import com.azure.cosmos.implementation.spark.OperationListener;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
+import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
@@ -407,6 +408,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/332589
     }
 
+    private void updateGatewayProxy() {
+        ((RxGatewayStoreModel)this.gatewayProxy).setGatewayServiceConfigurationReader(this.gatewayConfigurationReader);
+        ((RxGatewayStoreModel)this.gatewayProxy).setCollectionCache(this.collectionCache);
+        ((RxGatewayStoreModel)this.gatewayProxy).setPartitionKeyRangeCache(this.partitionKeyRangeCache);
+        ((RxGatewayStoreModel)this.gatewayProxy).setUseMultipleWriteLocations(this.useMultipleWriteLocations);
+    }
+
     public void init(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot, Function<HttpClient, HttpClient> httpClientInterceptor) {
         try {
             // TODO: add support for openAsync
@@ -448,19 +456,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.partitionKeyRangeCache = new RxPartitionKeyRangeCache(RxDocumentClientImpl.this,
                 collectionCache);
 
-            if (this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY) {
-                this.storeModel = this.gatewayProxy;
-            } else {
-                this.initializeDirectConnectivity();
-            }
+            updateGatewayProxy();
             clientTelemetry = new ClientTelemetry(null, UUID.randomUUID().toString(),
                 ManagementFactory.getRuntimeMXBean().getName(), userAgentContainer.getUserAgent(),
                 connectionPolicy.getConnectionMode(), globalEndpointManager.getLatestDatabaseAccount().getId(),
                 null, null, this.reactorHttpClient, connectionPolicy.isClientTelemetryEnabled(), this, this.connectionPolicy.getPreferredRegions());
             clientTelemetry.init();
-            this.queryPlanCache = new ConcurrentHashMap<>();
+            if (this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY) {
+                this.storeModel = this.gatewayProxy;
+            } else {
+                this.initializeDirectConnectivity();
+            }
             this.retryPolicy.setRxCollectionCache(this.collectionCache);
-            ((RxGatewayStoreModel)this.gatewayProxy).setCollectionCache(this.collectionCache);
         } catch (Exception e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
@@ -495,7 +502,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.connectionPolicy,
             // this.maxConcurrentConnectionOpenRequests,
             this.userAgentContainer,
-            this.connectionSharingAcrossClientsEnabled
+            this.connectionSharingAcrossClientsEnabled,
+            this.clientTelemetry
         );
 
         this.createStoreModel(true);
@@ -565,7 +573,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.sessionContainer,
                 this.gatewayConfigurationReader,
                 this,
-                false
+                this.useMultipleWriteLocations
         );
 
         this.storeModel = new ServerStoreModel(storeClient);
@@ -779,7 +787,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         ResourceType resourceTypeEnum) {
 
         String resourceLink = parentResourceLinkToQueryLink(parentResourceLink, resourceTypeEnum);
-        UUID activityId = Utils.randomUUID();
+
+        UUID correlationActivityIdOfRequestOptions = ImplementationBridgeHelpers
+            .CosmosQueryRequestOptionsHelper
+            .getCosmosQueryRequestOptionsAccessor()
+            .getCorrelationActivityId(options);
+        UUID correlationActivityId = correlationActivityIdOfRequestOptions != null ?
+            correlationActivityIdOfRequestOptions : Utils.randomUUID();
+
         IDocumentQueryClient queryClient = documentQueryClientImpl(RxDocumentClientImpl.this,
             getOperationContextAndListenerTuple(options));
 
@@ -793,7 +808,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             ModelBridgeInternal.getPropertiesFromQueryRequestOptions(options));
 
         return ObservableHelper.fluxInlineIfPossibleAsObs(
-            () -> createQueryInternal(resourceLink, sqlQuery, options, klass, resourceTypeEnum, queryClient, activityId),
+            () -> createQueryInternal(
+                resourceLink, sqlQuery, options, klass, resourceTypeEnum, queryClient, correlationActivityId),
             invalidPartitionExceptionRetryPolicy);
     }
 
@@ -1615,7 +1631,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                             Map<String, Object> properties) {
 
         if (this.cosmosAuthorizationTokenResolver != null) {
-            return this.cosmosAuthorizationTokenResolver.getAuthorizationToken(requestVerb, resourceName, this.resolveCosmosResourceType(resourceType),
+            return this.cosmosAuthorizationTokenResolver.getAuthorizationToken(requestVerb.toUpperCase(), resourceName, this.resolveCosmosResourceType(resourceType).toString(),
                     properties != null ? Collections.unmodifiableMap(properties) : null);
         } else if (credential != null) {
             return this.authorizationTokenProvider.generateKeyAuthorizationSignature(requestVerb, resourceName,

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.3.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,36 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0 (2022-03-11)
+
+### Features Added
+- Added interfaces from `com.azure.core.client.traits` to `DigitalTwinsClientBuilder`.
+- Added `retryOptions` to `DigitalTwinsClientBuilder`.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency from `1.25.0` ro `1.26.0`
+- Upgraded `azure-core-http-netty` dependency from `1.11.7` to `1.11.8`.
+- Upgraded `azure-core-serializer-json-jackson` dependency from `1.2.13` to `1.2.14`.
+
+## 1.1.6 (2022-02-11)
+
+### Other Changes
+#### Dependency updates
+- Upgraded `azure-core` dependency from `1.24.1` to `1.25.0`.
+- Upgraded `azure-core-http-netty` dependency from `1.11.6` to `1.11.7`.
+- Upgraded `azure-core-serializer-json-jackson` dependency from `1.2.12` to `1.2.13`.
+
+## 1.1.5 (2022-01-13)
+
+### Other Changes
+#### Dependency updates
+- Upgraded `azure-core` dependency from `1.22.0` to `1.24.1`.
+- Upgraded `azure-core-http-netty` dependency from `1.11.2 to `1.11.6`.
+- Upgraded `azure-core-serializer-json-jackson` dependency from `1.2.7` to `1.2.12`.
+- Upgraded `jackson-annotations` dependency from `2.12.5` to `2.13.1`.
 
 ## 1.1.4 (2021-11-19)
 

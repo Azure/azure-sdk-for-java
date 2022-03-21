@@ -24,7 +24,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.CertificateRegistrationProvidersClient;
 import com.azure.resourcemanager.appservice.fluent.models.CsmOperationDescriptionInner;
 import com.azure.resourcemanager.appservice.models.CsmOperationCollection;
@@ -35,8 +34,6 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in CertificateRegistrationProvidersClient.
  */
 public final class CertificateRegistrationProvidersClientImpl implements CertificateRegistrationProvidersClient {
-    private final ClientLogger logger = new ClientLogger(CertificateRegistrationProvidersClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final CertificateRegistrationProvidersService service;
 
@@ -92,7 +89,8 @@ public final class CertificateRegistrationProvidersClientImpl implements Certifi
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Azure resource manager operation metadata.
+     * @return collection of Azure resource manager operation metadata along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CsmOperationDescriptionInner>> listOperationsSinglePageAsync() {
@@ -127,7 +125,8 @@ public final class CertificateRegistrationProvidersClientImpl implements Certifi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Azure resource manager operation metadata.
+     * @return collection of Azure resource manager operation metadata along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CsmOperationDescriptionInner>> listOperationsSinglePageAsync(Context context) {
@@ -158,7 +157,7 @@ public final class CertificateRegistrationProvidersClientImpl implements Certifi
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Azure resource manager operation metadata.
+     * @return collection of Azure resource manager operation metadata as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CsmOperationDescriptionInner> listOperationsAsync() {
@@ -174,7 +173,7 @@ public final class CertificateRegistrationProvidersClientImpl implements Certifi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Azure resource manager operation metadata.
+     * @return collection of Azure resource manager operation metadata as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CsmOperationDescriptionInner> listOperationsAsync(Context context) {
@@ -189,7 +188,7 @@ public final class CertificateRegistrationProvidersClientImpl implements Certifi
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Azure resource manager operation metadata.
+     * @return collection of Azure resource manager operation metadata as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CsmOperationDescriptionInner> listOperations() {
@@ -204,7 +203,7 @@ public final class CertificateRegistrationProvidersClientImpl implements Certifi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Azure resource manager operation metadata.
+     * @return collection of Azure resource manager operation metadata as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CsmOperationDescriptionInner> listOperations(Context context) {
@@ -218,7 +217,8 @@ public final class CertificateRegistrationProvidersClientImpl implements Certifi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Azure resource manager operation metadata.
+     * @return collection of Azure resource manager operation metadata along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CsmOperationDescriptionInner>> listOperationsNextSinglePageAsync(String nextLink) {
@@ -254,7 +254,8 @@ public final class CertificateRegistrationProvidersClientImpl implements Certifi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Azure resource manager operation metadata.
+     * @return collection of Azure resource manager operation metadata along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CsmOperationDescriptionInner>> listOperationsNextSinglePageAsync(

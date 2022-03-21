@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Column definition. */
 @Fluent
 public final class DataTableResponseColumn {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataTableResponseColumn.class);
-
     /*
      * Name of the column
      */

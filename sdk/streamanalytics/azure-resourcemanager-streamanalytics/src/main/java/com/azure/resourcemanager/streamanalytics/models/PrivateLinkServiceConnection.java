@@ -5,46 +5,31 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.streamanalytics.fluent.models.PrivateLinkServiceConnectionProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A grouping of information about the connection to the remote resource. */
-@JsonFlatten
 @Fluent
-public class PrivateLinkServiceConnection {
+public final class PrivateLinkServiceConnection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkServiceConnection.class);
 
     /*
-     * The resource id of the private link service. Required on PUT
-     * (CreateOrUpdate) requests.
+     * Bag of properties defining a privatelinkServiceConnection.
      */
-    @JsonProperty(value = "properties.privateLinkServiceId")
-    private String privateLinkServiceId;
+    @JsonProperty(value = "properties")
+    private PrivateLinkServiceConnectionProperties innerProperties;
 
-    /*
-     * The ID(s) of the group(s) obtained from the remote resource that this
-     * private endpoint should connect to. Required on PUT (CreateOrUpdate)
-     * requests.
+    /**
+     * Get the innerProperties property: Bag of properties defining a privatelinkServiceConnection.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.groupIds")
-    private List<String> groupIds;
-
-    /*
-     * A message passed to the owner of the remote resource with this
-     * connection request. Restricted to 140 chars.
-     */
-    @JsonProperty(value = "properties.requestMessage")
-    private String requestMessage;
-
-    /*
-     * A collection of read-only information about the state of the connection
-     * to the private remote resource.
-     */
-    @JsonProperty(value = "properties.privateLinkServiceConnectionState")
-    private PrivateLinkConnectionState privateLinkServiceConnectionState;
+    private PrivateLinkServiceConnectionProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the privateLinkServiceId property: The resource id of the private link service. Required on PUT
@@ -53,7 +38,7 @@ public class PrivateLinkServiceConnection {
      * @return the privateLinkServiceId value.
      */
     public String privateLinkServiceId() {
-        return this.privateLinkServiceId;
+        return this.innerProperties() == null ? null : this.innerProperties().privateLinkServiceId();
     }
 
     /**
@@ -64,7 +49,10 @@ public class PrivateLinkServiceConnection {
      * @return the PrivateLinkServiceConnection object itself.
      */
     public PrivateLinkServiceConnection withPrivateLinkServiceId(String privateLinkServiceId) {
-        this.privateLinkServiceId = privateLinkServiceId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateLinkServiceConnectionProperties();
+        }
+        this.innerProperties().withPrivateLinkServiceId(privateLinkServiceId);
         return this;
     }
 
@@ -75,7 +63,7 @@ public class PrivateLinkServiceConnection {
      * @return the groupIds value.
      */
     public List<String> groupIds() {
-        return this.groupIds;
+        return this.innerProperties() == null ? null : this.innerProperties().groupIds();
     }
 
     /**
@@ -86,7 +74,10 @@ public class PrivateLinkServiceConnection {
      * @return the PrivateLinkServiceConnection object itself.
      */
     public PrivateLinkServiceConnection withGroupIds(List<String> groupIds) {
-        this.groupIds = groupIds;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateLinkServiceConnectionProperties();
+        }
+        this.innerProperties().withGroupIds(groupIds);
         return this;
     }
 
@@ -97,19 +88,7 @@ public class PrivateLinkServiceConnection {
      * @return the requestMessage value.
      */
     public String requestMessage() {
-        return this.requestMessage;
-    }
-
-    /**
-     * Set the requestMessage property: A message passed to the owner of the remote resource with this connection
-     * request. Restricted to 140 chars.
-     *
-     * @param requestMessage the requestMessage value to set.
-     * @return the PrivateLinkServiceConnection object itself.
-     */
-    public PrivateLinkServiceConnection withRequestMessage(String requestMessage) {
-        this.requestMessage = requestMessage;
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().requestMessage();
     }
 
     /**
@@ -119,7 +98,7 @@ public class PrivateLinkServiceConnection {
      * @return the privateLinkServiceConnectionState value.
      */
     public PrivateLinkConnectionState privateLinkServiceConnectionState() {
-        return this.privateLinkServiceConnectionState;
+        return this.innerProperties() == null ? null : this.innerProperties().privateLinkServiceConnectionState();
     }
 
     /**
@@ -131,7 +110,10 @@ public class PrivateLinkServiceConnection {
      */
     public PrivateLinkServiceConnection withPrivateLinkServiceConnectionState(
         PrivateLinkConnectionState privateLinkServiceConnectionState) {
-        this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateLinkServiceConnectionProperties();
+        }
+        this.innerProperties().withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
         return this;
     }
 
@@ -141,8 +123,8 @@ public class PrivateLinkServiceConnection {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (privateLinkServiceConnectionState() != null) {
-            privateLinkServiceConnectionState().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -32,6 +32,24 @@ public final class AcsRecordingFileStatusUpdatedEventData {
     private Long recordingDurationMs;
 
     /*
+     * The recording content type- AudioVideo, or Audio
+     */
+    @JsonProperty(value = "recordingContentType")
+    private RecordingContentType recordingContentType;
+
+    /*
+     * The recording  channel type - Mixed, Unmixed
+     */
+    @JsonProperty(value = "recordingChannelType")
+    private RecordingChannelType recordingChannelType;
+
+    /*
+     * The recording format type - Mp4, Mp3, Wav
+     */
+    @JsonProperty(value = "recordingFormatType")
+    private RecordingFormatType recordingFormatType;
+
+    /*
      * The reason for ending recording session
      */
     @JsonProperty(value = "sessionEndReason")
@@ -102,6 +120,66 @@ public final class AcsRecordingFileStatusUpdatedEventData {
         } else {
             this.recordingDurationMs = null;
         }
+        return this;
+    }
+
+    /**
+     * Get the recordingContentType property: The recording content type- AudioVideo, or Audio.
+     *
+     * @return the recordingContentType value.
+     */
+    public RecordingContentType getRecordingContentType() {
+        return this.recordingContentType;
+    }
+
+    /**
+     * Set the recordingContentType property: The recording content type- AudioVideo, or Audio.
+     *
+     * @param recordingContentType the recordingContentType value to set.
+     * @return the AcsRecordingFileStatusUpdatedEventData object itself.
+     */
+    public AcsRecordingFileStatusUpdatedEventData setRecordingContentType(RecordingContentType recordingContentType) {
+        this.recordingContentType = recordingContentType;
+        return this;
+    }
+
+    /**
+     * Get the recordingChannelType property: The recording channel type - Mixed, Unmixed.
+     *
+     * @return the recordingChannelType value.
+     */
+    public RecordingChannelType getRecordingChannelType() {
+        return this.recordingChannelType;
+    }
+
+    /**
+     * Set the recordingChannelType property: The recording channel type - Mixed, Unmixed.
+     *
+     * @param recordingChannelType the recordingChannelType value to set.
+     * @return the AcsRecordingFileStatusUpdatedEventData object itself.
+     */
+    public AcsRecordingFileStatusUpdatedEventData setRecordingChannelType(RecordingChannelType recordingChannelType) {
+        this.recordingChannelType = recordingChannelType;
+        return this;
+    }
+
+    /**
+     * Get the recordingFormatType property: The recording format type - Mp4, Mp3, Wav.
+     *
+     * @return the recordingFormatType value.
+     */
+    public RecordingFormatType getRecordingFormatType() {
+        return this.recordingFormatType;
+    }
+
+    /**
+     * Set the recordingFormatType property: The recording format type - Mp4, Mp3, Wav.
+     *
+     * @param recordingFormatType the recordingFormatType value to set.
+     * @return the AcsRecordingFileStatusUpdatedEventData object itself.
+     */
+    public AcsRecordingFileStatusUpdatedEventData setRecordingFormatType(RecordingFormatType recordingFormatType) {
+        this.recordingFormatType = recordingFormatType;
         return this;
     }
 

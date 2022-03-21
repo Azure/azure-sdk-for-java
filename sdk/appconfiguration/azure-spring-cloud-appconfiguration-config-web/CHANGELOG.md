@@ -1,6 +1,6 @@
 # Release History
 
-## 2.3.0-beta.1 (Unreleased)
+## 2.5.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,17 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.4.0 (2022-03-01)
+This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.2.
+
+### Dependency Upgrades
+- Regular updates for Azure SDK dependency versions.
+- Upgrade external dependencies' version according to [spring-boot-dependencies:2.6.2](https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-dependencies/2.6.2/spring-boot-dependencies-2.6.2.pom).
+
+
+## 2.3.0 (2022-01-06)
+This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.1.
 
 ## 2.2.0 (2021-11-25)
 

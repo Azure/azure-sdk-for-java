@@ -21,6 +21,14 @@ public class EncryptionIdentity {
     @JsonProperty(value = "userAssignedIdentity")
     private String encryptionUserAssignedIdentity;
 
+    /*
+     * ClientId of the multi-tenant application to be used in conjunction with
+     * the user-assigned identity for cross-tenant customer-managed-keys
+     * server-side encryption on the storage account.
+     */
+    @JsonProperty(value = "federatedIdentityClientId")
+    private String encryptionFederatedIdentityClientId;
+
     /**
      * Get the encryptionUserAssignedIdentity property: Resource identifier of the UserAssigned identity to be
      * associated with server-side encryption on the storage account.
@@ -40,6 +48,30 @@ public class EncryptionIdentity {
      */
     public EncryptionIdentity withEncryptionUserAssignedIdentity(String encryptionUserAssignedIdentity) {
         this.encryptionUserAssignedIdentity = encryptionUserAssignedIdentity;
+        return this;
+    }
+
+    /**
+     * Get the encryptionFederatedIdentityClientId property: ClientId of the multi-tenant application to be used in
+     * conjunction with the user-assigned identity for cross-tenant customer-managed-keys server-side encryption on the
+     * storage account.
+     *
+     * @return the encryptionFederatedIdentityClientId value.
+     */
+    public String encryptionFederatedIdentityClientId() {
+        return this.encryptionFederatedIdentityClientId;
+    }
+
+    /**
+     * Set the encryptionFederatedIdentityClientId property: ClientId of the multi-tenant application to be used in
+     * conjunction with the user-assigned identity for cross-tenant customer-managed-keys server-side encryption on the
+     * storage account.
+     *
+     * @param encryptionFederatedIdentityClientId the encryptionFederatedIdentityClientId value to set.
+     * @return the EncryptionIdentity object itself.
+     */
+    public EncryptionIdentity withEncryptionFederatedIdentityClientId(String encryptionFederatedIdentityClientId) {
+        this.encryptionFederatedIdentityClientId = encryptionFederatedIdentityClientId;
         return this;
     }
 

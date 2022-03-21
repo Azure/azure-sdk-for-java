@@ -45,7 +45,7 @@ steps:
     inputs:
       scriptPath: 'eng/versioning/update_versions.py'
       arguments: '--update-type library --build-type client --sr'
-    condition: and(succeeded(), eq(variables['ShouldRunSourceTests'],'true'))
+    condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
   - template: generate-project-list.yml
     parameters:
@@ -54,7 +54,7 @@ steps:
       JobType: 'test'
       SDKType: ${{ parameters.SDKType }}
       ServiceDirectory: ${{ parameters.ServiceDirectory }}
- 
+
   - task: PythonScript@0
     displayName: 'Generate directories variable for sparse checkout'
     inputs:

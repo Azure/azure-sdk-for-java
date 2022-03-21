@@ -49,7 +49,7 @@ public final class AttestOpenEnclaveRequest {
      */
     public byte[] getReport() {
         if (this.report == null) {
-            return null;
+            return new byte[0];
         }
         return this.report.decodedBytes();
     }

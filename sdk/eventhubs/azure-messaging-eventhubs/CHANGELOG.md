@@ -1,14 +1,42 @@
 # Release History
 
-## 5.11.0-beta.1 (Unreleased)
+## 5.12.0-beta.1 (Unreleased)
 
 ### Features Added
+- Updated the receiver to retry to obtain a new connection if the RequestResponseChannel in the current connection is disposed.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
+- Removed the incorrect lock from `EventDataBatch.tryAdd()` implementation and documented that this API is not thread-safe. ([#25910](https://github.com/Azure/azure-sdk-for-java/issues/25910))
+- Fixed a bug where users get a NullPointerException when getting `LastEnqueuedEventProperties` for an empty window. ([#27121](https://github.com/Azure/azure-sdk-for-java/issues/27121))
+
 ### Other Changes
+
+## 5.11.0 (2022-02-11)
+
+### Bugs Fixed
+
+- Fixed a bug that when received message does not have trace context, span is not created. ([#25182](https://github.com/Azure/azure-sdk-for-java/issues/25182))
+
+### Other Changes
+
+- Updated load balancing strategy, ownership interval, and load balancing intervals. ([#25039](https://github.com/Azure/azure-sdk-for-java/issues/25039))
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.1` to `1.25.0`.
+- Upgraded `azure-core-amqp` from `2.3.7` to `2.4.0`.
+
+## 5.10.4 (2022-01-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.22.0` to `1.24.1`.
+- Upgraded `azure-core-amqp` from `2.3.3` to `2.3.7`.
 
 ## 5.10.3 (2021-11-16)
 

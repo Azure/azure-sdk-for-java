@@ -1,0 +1,77 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/mygroup/schemas/com.azure.data.schemaregistry.apacheavro.generatedtestsources.HandOfCards?api-version=2021-10",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.1.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2ca88d29-4a8a-4d5a-83d0-055c2fc2cd24",
+      "Content-Type" : "application/json; serialization=avro"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "Schema-Version" : "1",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "Schema-Name" : "com.azure.data.schemaregistry.apacheavro.generatedtestsources.HandOfCards",
+      "retry-after" : "0",
+      "Schema-Id-Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/$schemas/ced19a4e40d84fa0bf49193e09faf874?api-version=2021-10",
+      "StatusCode" : "204",
+      "Date" : "Wed, 05 Jan 2022 16:53:17 GMT",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "Schema-Id" : "ced19a4e40d84fa0bf49193e09faf874",
+      "Schema-Group-Name" : "mygroup",
+      "Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/mygroup/schemas/com.azure.data.schemaregistry.apacheavro.generatedtestsources.HandOfCards/versions/1?api-version=2021-10",
+      "Schema-Versions-Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/mygroup/schemas/com.azure.data.schemaregistry.apacheavro.generatedtestsources.HandOfCards/versions?api-version=2021-10"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/mygroup/schemas/com.azure.data.schemaregistry.apacheavro.generatedtestsources.HandOfCards:get-id?api-version=2021-10",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.1.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "661ae06c-4c55-4ac5-b1cb-71f4e6cd5b00",
+      "Content-Type" : "application/json; serialization=avro"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "Schema-Version" : "1",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "Schema-Name" : "com.azure.data.schemaregistry.apacheavro.generatedtestsources.HandOfCards",
+      "retry-after" : "0",
+      "Schema-Id-Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/$schemas/ced19a4e40d84fa0bf49193e09faf874?api-version=2021-10",
+      "StatusCode" : "204",
+      "Date" : "Wed, 05 Jan 2022 16:53:20 GMT",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "Schema-Id" : "ced19a4e40d84fa0bf49193e09faf874",
+      "Schema-Group-Name" : "mygroup",
+      "Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/mygroup/schemas/com.azure.data.schemaregistry.apacheavro.generatedtestsources.HandOfCards/versions/1?api-version=2021-10",
+      "Schema-Versions-Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/mygroup/schemas/com.azure.data.schemaregistry.apacheavro.generatedtestsources.HandOfCards/versions?api-version=2021-10"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/$schemas/ced19a4e40d84fa0bf49193e09faf874?api-version=2021-10",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.1.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9c8a9afd-dd48-4608-a99d-0be89b8d3f2c"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Schema-Version" : "1",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "Schema-Name" : "com.azure.data.schemaregistry.apacheavro.generatedtestsources.HandOfCards",
+      "retry-after" : "0",
+      "Schema-Id-Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/$schemas/ced19a4e40d84fa0bf49193e09faf874?api-version=2021-10",
+      "StatusCode" : "200",
+      "Date" : "Wed, 05 Jan 2022 16:53:21 GMT",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "Schema-Id" : "ced19a4e40d84fa0bf49193e09faf874",
+      "Schema-Group-Name" : "mygroup",
+      "Body" : "{\"type\":\"record\",\"name\":\"HandOfCards\",\"namespace\":\"com.azure.data.schemaregistry.apacheavro.generatedtestsources\",\"fields\":[{\"name\":\"cards\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"PlayingCard\",\"fields\":[{\"name\":\"isFaceCard\",\"type\":\"boolean\"},{\"name\":\"cardValue\",\"type\":\"int\"},{\"name\":\"playingCardSuit\",\"type\":{\"type\":\"enum\",\"name\":\"PlayingCardSuit\",\"symbols\":[\"SPADES\",\"HEARTS\",\"DIAMONDS\",\"CLUBS\"]}}]}}}]}",
+      "Content-Type" : "application/json;serialization=Avro",
+      "Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/mygroup/schemas/com.azure.data.schemaregistry.apacheavro.generatedtestsources.HandOfCards/versions/1?api-version=2021-10",
+      "Schema-Versions-Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/mygroup/schemas/com.azure.data.schemaregistry.apacheavro.generatedtestsources.HandOfCards/versions?api-version=2021-10"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

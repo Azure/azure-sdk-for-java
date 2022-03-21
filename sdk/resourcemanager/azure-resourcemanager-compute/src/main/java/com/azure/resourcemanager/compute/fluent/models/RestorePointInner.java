@@ -6,11 +6,10 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.ApiEntityReference;
 import com.azure.resourcemanager.compute.models.ConsistencyModeTypes;
+import com.azure.resourcemanager.compute.models.RestorePointInstanceView;
 import com.azure.resourcemanager.compute.models.RestorePointSourceMetadata;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -18,8 +17,6 @@ import java.util.List;
 /** Restore Point details. */
 @Fluent
 public final class RestorePointInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorePointInner.class);
-
     /*
      * The restore point properties.
      */
@@ -109,6 +106,40 @@ public final class RestorePointInner extends ProxyResource {
         }
         this.innerProperties().withTimeCreated(timeCreated);
         return this;
+    }
+
+    /**
+     * Get the sourceRestorePoint property: Resource Id of the source restore point from which a copy needs to be
+     * created.
+     *
+     * @return the sourceRestorePoint value.
+     */
+    public ApiEntityReference sourceRestorePoint() {
+        return this.innerProperties() == null ? null : this.innerProperties().sourceRestorePoint();
+    }
+
+    /**
+     * Set the sourceRestorePoint property: Resource Id of the source restore point from which a copy needs to be
+     * created.
+     *
+     * @param sourceRestorePoint the sourceRestorePoint value to set.
+     * @return the RestorePointInner object itself.
+     */
+    public RestorePointInner withSourceRestorePoint(ApiEntityReference sourceRestorePoint) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestorePointProperties();
+        }
+        this.innerProperties().withSourceRestorePoint(sourceRestorePoint);
+        return this;
+    }
+
+    /**
+     * Get the instanceView property: The restore point instance view.
+     *
+     * @return the instanceView value.
+     */
+    public RestorePointInstanceView instanceView() {
+        return this.innerProperties() == null ? null : this.innerProperties().instanceView();
     }
 
     /**

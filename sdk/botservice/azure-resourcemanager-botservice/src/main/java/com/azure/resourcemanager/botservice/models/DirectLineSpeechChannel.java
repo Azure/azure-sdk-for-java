@@ -44,6 +44,20 @@ public final class DirectLineSpeechChannel extends Channel {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public DirectLineSpeechChannel withEtag(String etag) {
+        super.withEtag(etag);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DirectLineSpeechChannel withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

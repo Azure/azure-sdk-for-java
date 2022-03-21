@@ -29,8 +29,8 @@ public final class GeoFilter {
     private GeoFilterActions action;
 
     /*
-     * Two letter country codes defining user country access in a geo filter,
-     * e.g. AU, MX, US.
+     * Two letter country or region codes defining user country or region
+     * access in a geo filter, e.g. AU, MX, US.
      */
     @JsonProperty(value = "countryCodes", required = true)
     private List<String> countryCodes;
@@ -78,8 +78,8 @@ public final class GeoFilter {
     }
 
     /**
-     * Get the countryCodes property: Two letter country codes defining user country access in a geo filter, e.g. AU,
-     * MX, US.
+     * Get the countryCodes property: Two letter country or region codes defining user country or region access in a geo
+     * filter, e.g. AU, MX, US.
      *
      * @return the countryCodes value.
      */
@@ -88,8 +88,8 @@ public final class GeoFilter {
     }
 
     /**
-     * Set the countryCodes property: Two letter country codes defining user country access in a geo filter, e.g. AU,
-     * MX, US.
+     * Set the countryCodes property: Two letter country or region codes defining user country or region access in a geo
+     * filter, e.g. AU, MX, US.
      *
      * @param countryCodes the countryCodes value to set.
      * @return the GeoFilter object itself.

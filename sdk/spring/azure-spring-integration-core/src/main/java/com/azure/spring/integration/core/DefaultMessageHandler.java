@@ -37,9 +37,9 @@ import java.util.concurrent.TimeoutException;
  * It delegates real operation to {@link SendOperation} which supports synchronous and asynchronous sending.
  *
  * @author Warren Zhu
- * @deprecated {@link CompletableFuture} API will be dropped in version 4.0.0, please migrate to reactor API in
+ * @deprecated {@link CompletableFuture} API will be dropped in version 4.x, please migrate to reactor API in
  * {@link com.azure.spring.integration.core.api.reactor.DefaultMessageHandler}. From version 4.0.0, the reactor API support
- * will be moved to com.azure.spring.messaging.core.DefaultMessageHandler.
+ * will be moved to com.azure.spring.integration.handler.DefaultMessageHandler.
  */
 @Deprecated
 public class DefaultMessageHandler extends AbstractMessageProducingHandler {

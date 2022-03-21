@@ -1,0 +1,18 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.adu.microsoft.com/deviceupdate/sdkinstance/management/deviceclasses?api-version=2021-06-01-preview",
+    "Headers" : { },
+    "Response" : {
+      "content-length" : "352",
+      "traceparent" : "00-e4a55370f06ced448701643065a124b4-1a98d4f4962d9a4e-00",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\r\n  \"value\": [\r\n    {\r\n      \"deviceClassId\": \"0919e3ae422a2bfa8c84ff905813e60351e456d1\",\r\n      \"compatProperties\": {\r\n        \"manufacturer\": \"fabrikam\",\r\n        \"model\": \"vacuum\"\r\n      },\r\n      \"bestCompatibleUpdateId\": {\r\n        \"provider\": \"fabrikam\",\r\n        \"name\": \"vacuum\",\r\n        \"version\": \"2021.1117.1036.48\"\r\n      }\r\n    }\r\n  ]\r\n}",
+      "Date" : "Mon, 29 Nov 2021 06:46:36 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

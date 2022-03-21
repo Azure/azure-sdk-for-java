@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Profile for gallery sharing to subscription or tenant. */
 @Fluent
 public final class SharingProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SharingProfile.class);
-
     /*
      * This property allows you to specify the permission of sharing gallery.
      * <br><br> Possible values are: <br><br> **Private** <br><br> **Groups**
@@ -27,6 +23,13 @@ public final class SharingProfile {
      */
     @JsonProperty(value = "groups", access = JsonProperty.Access.WRITE_ONLY)
     private List<SharingProfileGroup> groups;
+
+    /*
+     * Information of community gallery if current gallery is shared to
+     * community.
+     */
+    @JsonProperty(value = "communityGalleryInfo")
+    private Object communityGalleryInfo;
 
     /**
      * Get the permissions property: This property allows you to specify the permission of sharing gallery.
@@ -57,6 +60,28 @@ public final class SharingProfile {
      */
     public List<SharingProfileGroup> groups() {
         return this.groups;
+    }
+
+    /**
+     * Get the communityGalleryInfo property: Information of community gallery if current gallery is shared to
+     * community.
+     *
+     * @return the communityGalleryInfo value.
+     */
+    public Object communityGalleryInfo() {
+        return this.communityGalleryInfo;
+    }
+
+    /**
+     * Set the communityGalleryInfo property: Information of community gallery if current gallery is shared to
+     * community.
+     *
+     * @param communityGalleryInfo the communityGalleryInfo value to set.
+     * @return the SharingProfile object itself.
+     */
+    public SharingProfile withCommunityGalleryInfo(Object communityGalleryInfo) {
+        this.communityGalleryInfo = communityGalleryInfo;
+        return this;
     }
 
     /**

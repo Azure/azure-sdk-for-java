@@ -46,6 +46,8 @@ import static com.azure.core.util.FluxUtil.withContext;
  */
 @ServiceClient(builder = SearchIndexerClientBuilder.class, isAsync = true)
 public class SearchIndexerAsyncClient {
+    private static final ClientLogger LOGGER = new ClientLogger(SearchIndexerAsyncClient.class);
+
     /**
      * Search REST API Version
      */
@@ -55,11 +57,6 @@ public class SearchIndexerAsyncClient {
      * The endpoint for the Azure Cognitive Search service.
      */
     private final String endpoint;
-
-    /**
-     * The logger to be used
-     */
-    private final ClientLogger logger = new ClientLogger(SearchIndexerAsyncClient.class);
 
     /**
      * The underlying AutoRest client used to interact with the Search service
@@ -190,7 +187,7 @@ public class SearchIndexerAsyncClient {
     public Mono<Response<SearchIndexerDataSourceConnection>> createOrUpdateDataSourceConnectionWithResponse(
         CreateOrUpdateDataSourceConnectionOptions options) {
         if (options == null) {
-            return monoError(logger, new NullPointerException("'options' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
         }
 
         return withContext(context -> createOrUpdateDataSourceConnectionWithResponse(options.getDataSourceConnection(),
@@ -201,7 +198,7 @@ public class SearchIndexerAsyncClient {
         SearchIndexerDataSourceConnection dataSource, boolean onlyIfUnchanged, Boolean ignoreResetRequirements,
         Context context) {
         if (dataSource == null) {
-            return monoError(logger, new NullPointerException("'dataSource' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'dataSource' cannot be null."));
         }
         String ifMatch = onlyIfUnchanged ? dataSource.getETag() : null;
         if (dataSource.getConnectionString() == null) {
@@ -214,7 +211,7 @@ public class SearchIndexerAsyncClient {
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalDataSource);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -282,7 +279,7 @@ public class SearchIndexerAsyncClient {
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalDataSource);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -343,7 +340,7 @@ public class SearchIndexerAsyncClient {
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalDataSource);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -373,7 +370,7 @@ public class SearchIndexerAsyncClient {
                 withContext(context -> this.listDataSourceConnectionsWithResponse(null, context))
                     .map(MappingUtils::mappingPagingDataSource));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -382,7 +379,7 @@ public class SearchIndexerAsyncClient {
             return new PagedFlux<>(() -> this.listDataSourceConnectionsWithResponse(null, context)
                 .map(MappingUtils::mappingPagingDataSource));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -409,7 +406,7 @@ public class SearchIndexerAsyncClient {
                 withContext(context -> this.listDataSourceConnectionsWithResponse("name", context))
                     .map(MappingUtils::mappingPagingDataSourceNames));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -418,7 +415,7 @@ public class SearchIndexerAsyncClient {
             return new PagedFlux<>(() -> this.listDataSourceConnectionsWithResponse("name", context)
                 .map(MappingUtils::mappingPagingDataSourceNames));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -477,7 +474,7 @@ public class SearchIndexerAsyncClient {
     public Mono<Response<Void>> deleteDataSourceConnectionWithResponse(SearchIndexerDataSourceConnection dataSource,
         boolean onlyIfUnchanged) {
         if (dataSource == null) {
-            return monoError(logger, new NullPointerException("'dataSource' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'dataSource' cannot be null."));
         }
         String eTag = onlyIfUnchanged ? dataSource.getETag() : null;
         return withContext(context -> deleteDataSourceConnectionWithResponse(dataSource.getName(), eTag, context));
@@ -490,7 +487,7 @@ public class SearchIndexerAsyncClient {
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -553,7 +550,7 @@ public class SearchIndexerAsyncClient {
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSearchIndexer);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -654,7 +651,7 @@ public class SearchIndexerAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexer>> createOrUpdateIndexerWithResponse(CreateOrUpdateIndexerOptions options) {
         if (options == null) {
-            return monoError(logger, new NullPointerException("'options' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
         }
 
         return withContext(context -> createOrUpdateIndexerWithResponse(options.getIndexer(),
@@ -665,7 +662,7 @@ public class SearchIndexerAsyncClient {
     Mono<Response<SearchIndexer>> createOrUpdateIndexerWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged,
         Boolean disableCacheReprocessingChangeDetection, Boolean ignoreResetRequirements, Context context) {
         if (indexer == null) {
-            return monoError(logger, new NullPointerException("'indexer' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'indexer' cannot be null."));
         }
         String ifMatch = onlyIfUnchanged ? indexer.getETag() : null;
         try {
@@ -675,7 +672,7 @@ public class SearchIndexerAsyncClient {
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSearchIndexer);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -734,7 +731,7 @@ public class SearchIndexerAsyncClient {
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSearchIndexer);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -763,7 +760,7 @@ public class SearchIndexerAsyncClient {
                 withContext(context -> this.listIndexersWithResponse(null, context))
                     .map(MappingUtils::mappingPagingSearchIndexer));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -772,7 +769,7 @@ public class SearchIndexerAsyncClient {
             return new PagedFlux<>(() -> this.listIndexersWithResponse(null, context)
                 .map(MappingUtils::mappingPagingSearchIndexer));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -799,7 +796,7 @@ public class SearchIndexerAsyncClient {
                 withContext(context -> this.listIndexersWithResponse("name", context))
                     .map(MappingUtils::mappingPagingSearchIndexerNames));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -808,7 +805,7 @@ public class SearchIndexerAsyncClient {
             return new PagedFlux<>(() -> this.listIndexersWithResponse("name", context)
                 .map(MappingUtils::mappingPagingSearchIndexerNames));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -866,7 +863,7 @@ public class SearchIndexerAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteIndexerWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged) {
         if (indexer == null) {
-            return monoError(logger, new NullPointerException("'indexer' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'indexer' cannot be null."));
         }
         String eTag = onlyIfUnchanged ? indexer.getETag() : null;
         return withContext(context -> deleteIndexerWithResponse(indexer.getName(), eTag, context));
@@ -887,7 +884,7 @@ public class SearchIndexerAsyncClient {
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -943,7 +940,7 @@ public class SearchIndexerAsyncClient {
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -998,7 +995,7 @@ public class SearchIndexerAsyncClient {
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1055,7 +1052,7 @@ public class SearchIndexerAsyncClient {
                 .getStatusWithResponseAsync(indexerName, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1121,7 +1118,7 @@ public class SearchIndexerAsyncClient {
     public Mono<Response<Void>> resetDocumentsWithResponse(SearchIndexer indexer, Boolean overwrite,
         List<String> documentKeys, List<String> datasourceDocumentIds) {
         if (indexer == null) {
-            return monoError(logger, new NullPointerException("'indexer' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'indexer' cannot be null."));
         }
 
         return withContext(context -> resetDocumentsWithResponse(indexer.getName(), overwrite, documentKeys,
@@ -1138,7 +1135,7 @@ public class SearchIndexerAsyncClient {
             return restClient.getIndexers()
                 .resetDocsWithResponseAsync(indexerName, overwrite, documentKeysOrIds, null, context);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1228,14 +1225,14 @@ public class SearchIndexerAsyncClient {
 
     Mono<Response<SearchIndexerSkillset>> createSkillsetWithResponse(SearchIndexerSkillset skillset, Context context) {
         if (skillset == null) {
-            return monoError(logger, new NullPointerException("'skillset' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'skillset' cannot be null."));
         }
         try {
             return restClient.getSkillsets()
                 .createWithResponseAsync(skillset, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1293,7 +1290,7 @@ public class SearchIndexerAsyncClient {
                 .getWithResponseAsync(skillsetName, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1322,7 +1319,7 @@ public class SearchIndexerAsyncClient {
                 withContext(context -> listSkillsetsWithResponse(null, context))
                     .map(MappingUtils::mappingPagingSkillset));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -1331,7 +1328,7 @@ public class SearchIndexerAsyncClient {
             return new PagedFlux<>(() -> listSkillsetsWithResponse(null, context)
                 .map(MappingUtils::mappingPagingSkillset));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -1358,7 +1355,7 @@ public class SearchIndexerAsyncClient {
                 withContext(context -> listSkillsetsWithResponse("name", context))
                     .map(MappingUtils::mappingPagingSkillsetNames));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -1367,7 +1364,7 @@ public class SearchIndexerAsyncClient {
             return new PagedFlux<>(() -> listSkillsetsWithResponse("name", context)
                 .map(MappingUtils::mappingPagingSkillsetNames));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -1472,7 +1469,7 @@ public class SearchIndexerAsyncClient {
     public Mono<Response<SearchIndexerSkillset>> createOrUpdateSkillsetWithResponse(
         CreateOrUpdateSkillsetOptions options) {
         if (options == null) {
-            return monoError(logger, new NullPointerException("'options' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
         }
 
         return withContext(context -> createOrUpdateSkillsetWithResponse(options.getSkillset(),
@@ -1484,7 +1481,7 @@ public class SearchIndexerAsyncClient {
         boolean onlyIfUnchanged, Boolean disableCacheReprocessingChangeDetection, Boolean ignoreResetRequirements,
         Context context) {
         if (skillset == null) {
-            return monoError(logger, new NullPointerException("'skillset' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'skillset' cannot be null."));
         }
         String ifMatch = onlyIfUnchanged ? skillset.getETag() : null;
         try {
@@ -1493,7 +1490,7 @@ public class SearchIndexerAsyncClient {
                     disableCacheReprocessingChangeDetection, ignoreResetRequirements, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1545,7 +1542,7 @@ public class SearchIndexerAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSkillsetWithResponse(SearchIndexerSkillset skillset, boolean onlyIfUnchanged) {
         if (skillset == null) {
-            return monoError(logger, new NullPointerException("'skillset' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'skillset' cannot be null."));
         }
         String eTag = onlyIfUnchanged ? skillset.getETag() : null;
         return withContext(context -> deleteSkillsetWithResponse(skillset.getName(), eTag, context));
@@ -1558,7 +1555,7 @@ public class SearchIndexerAsyncClient {
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1604,7 +1601,7 @@ public class SearchIndexerAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resetSkillsWithResponse(SearchIndexerSkillset skillset, List<String> skillNames) {
         if (skillset == null) {
-            return monoError(logger, new NullPointerException("'skillset' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'skillset' cannot be null."));
         }
 
         return withContext(context -> resetSkillsWithResponse(skillset.getName(), skillNames, context));
@@ -1615,7 +1612,7 @@ public class SearchIndexerAsyncClient {
             return restClient.getSkillsets()
                 .resetSkillsWithResponseAsync(skillsetName, new SkillNames().setSkillNames(skillNames), null, context);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 }

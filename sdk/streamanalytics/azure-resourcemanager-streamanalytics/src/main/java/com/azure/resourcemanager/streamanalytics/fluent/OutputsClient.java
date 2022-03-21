@@ -213,7 +213,7 @@ public interface OutputsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the status of the test operation along with error information, if applicable.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ResourceTestStatusInner>, ResourceTestStatusInner> beginTest(
         String resourceGroupName, String jobName, String outputName, OutputInner output);
 
@@ -233,7 +233,7 @@ public interface OutputsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the status of the test operation along with error information, if applicable.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ResourceTestStatusInner>, ResourceTestStatusInner> beginTest(
         String resourceGroupName, String jobName, String outputName, OutputInner output, Context context);
 

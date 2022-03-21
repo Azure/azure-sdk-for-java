@@ -10,6 +10,7 @@ import com.azure.communication.identity.CommunicationIdentityClient;
 import com.azure.communication.networktraversal.models.CommunicationRelayConfiguration;
 import com.azure.communication.networktraversal.models.RouteType;
 import com.azure.communication.networktraversal.models.CommunicationIceServer;
+import com.azure.communication.networktraversal.models.GetRelayConfigurationOptions;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -41,9 +42,13 @@ public class CommunicationRelayTests extends CommunicationRelayClientTestBase {
             CommunicationRelayClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
             client = setupClient(builder, "createRelayClientUsingManagedIdentitySync");
 
+            GetRelayConfigurationOptions options = new GetRelayConfigurationOptions();
+            options.setCommunicationUserIdentifier(user);
+
             // Action & Assert
             assertNotNull(client);
-            CommunicationRelayConfiguration config = client.getRelayConfiguration(user);
+
+            CommunicationRelayConfiguration config = client.getRelayConfiguration(options);
             List<CommunicationIceServer> iceServers = config.getIceServers();
 
             assertNotNull(config);
@@ -96,9 +101,14 @@ public class CommunicationRelayTests extends CommunicationRelayClientTestBase {
             CommunicationRelayClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
             client = setupClient(builder, "createRelayClientUsingManagedIdentitySync");
 
+            GetRelayConfigurationOptions options = new GetRelayConfigurationOptions();
+            options.setCommunicationUserIdentifier(user);
+            options.setRouteType(RouteType.ANY);
+
             // Action & Assert
             assertNotNull(client);
-            CommunicationRelayConfiguration config = client.getRelayConfiguration(user, RouteType.ANY);
+
+            CommunicationRelayConfiguration config = client.getRelayConfiguration(options);
             List<CommunicationIceServer> iceServers = config.getIceServers();
 
             assertNotNull(config);
@@ -124,7 +134,11 @@ public class CommunicationRelayTests extends CommunicationRelayClientTestBase {
             CommunicationRelayClientBuilder builder = createClientBuilderUsingConnectionString(httpClient);
             client = setupClient(builder, "createIdentityClientUsingConnectionStringSync");
             assertNotNull(client);
-            CommunicationRelayConfiguration config = client.getRelayConfiguration(user);
+
+            GetRelayConfigurationOptions options = new GetRelayConfigurationOptions();
+            options.setCommunicationUserIdentifier(user);
+
+            CommunicationRelayConfiguration config = client.getRelayConfiguration(options);
 
             // Action & Assert
             List<CommunicationIceServer> iceServers = config.getIceServers();
@@ -176,10 +190,16 @@ public class CommunicationRelayTests extends CommunicationRelayClientTestBase {
             setupTest(httpClient);
             CommunicationRelayClientBuilder builder = createClientBuilderUsingConnectionString(httpClient);
             client = setupClient(builder, "createIdentityClientUsingConnectionStringSync");
-            assertNotNull(client);
-            CommunicationRelayConfiguration config = client.getRelayConfiguration(user, RouteType.NEAREST);
+
+            GetRelayConfigurationOptions options = new GetRelayConfigurationOptions();
+            options.setCommunicationUserIdentifier(user);
+            options.setRouteType(RouteType.NEAREST);
+
+            CommunicationRelayConfiguration config = client.getRelayConfiguration(options);
 
             // Action & Assert
+            assertNotNull(client);
+
             List<CommunicationIceServer> iceServers = config.getIceServers();
             assertNotNull(config);
             assertNotNull(config.getExpiresOn());
@@ -205,8 +225,12 @@ public class CommunicationRelayTests extends CommunicationRelayClientTestBase {
             client = setupClient(builder, "getRelayConfigWithResponse");
             Response<CommunicationRelayConfiguration> response;
 
+            GetRelayConfigurationOptions options = new GetRelayConfigurationOptions();
+            options.setCommunicationUserIdentifier(user);
+            options.setRouteType(RouteType.NEAREST);
+
             // Action & Assert
-            response = client.getRelayConfigurationWithResponse(user, RouteType.NEAREST, Context.NONE);
+            response = client.getRelayConfigurationWithResponse(options, Context.NONE);
             List<CommunicationIceServer> iceServers = response.getValue().getIceServers();
 
             assertNotNull(response.getValue());

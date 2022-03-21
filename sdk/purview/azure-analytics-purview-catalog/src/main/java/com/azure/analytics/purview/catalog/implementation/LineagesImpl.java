@@ -170,7 +170,8 @@ public final class LineagesImpl {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return lineage info of the entity specified by GUID.
+     * @return lineage info of the entity specified by GUID along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLineageGraphWithResponseAsync(String guid, RequestOptions requestOptions) {
@@ -284,7 +285,8 @@ public final class LineagesImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return lineage info of the entity specified by GUID.
+     * @return lineage info of the entity specified by GUID along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLineageGraphWithResponseAsync(
@@ -397,7 +399,7 @@ public final class LineagesImpl {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return lineage info of the entity specified by GUID.
+     * @return lineage info of the entity specified by GUID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getLineageGraphWithResponse(String guid, RequestOptions requestOptions) {
@@ -509,7 +511,7 @@ public final class LineagesImpl {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return atlasLineageInfo.
+     * @return atlasLineageInfo along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> nextPageLineageWithResponseAsync(String guid, RequestOptions requestOptions) {
@@ -629,7 +631,7 @@ public final class LineagesImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return atlasLineageInfo.
+     * @return atlasLineageInfo along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> nextPageLineageWithResponseAsync(
@@ -743,7 +745,7 @@ public final class LineagesImpl {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return atlasLineageInfo.
+     * @return atlasLineageInfo along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> nextPageLineageWithResponse(String guid, RequestOptions requestOptions) {

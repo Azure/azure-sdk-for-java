@@ -198,7 +198,6 @@ public final class PrivateEndpointsClientImpl implements PrivateEndpointsClient 
         } else {
             privateEndpoint.validate();
         }
-        final String apiVersion = "2020-03-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -210,7 +209,7 @@ public final class PrivateEndpointsClientImpl implements PrivateEndpointsClient 
                             resourceGroupName,
                             clusterName,
                             privateEndpointName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             ifMatch,
                             ifNoneMatch,
                             privateEndpoint,
@@ -275,7 +274,6 @@ public final class PrivateEndpointsClientImpl implements PrivateEndpointsClient 
         } else {
             privateEndpoint.validate();
         }
-        final String apiVersion = "2020-03-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -285,7 +283,7 @@ public final class PrivateEndpointsClientImpl implements PrivateEndpointsClient 
                 resourceGroupName,
                 clusterName,
                 privateEndpointName,
-                apiVersion,
+                this.client.getApiVersion(),
                 ifMatch,
                 ifNoneMatch,
                 privateEndpoint,
@@ -458,7 +456,6 @@ public final class PrivateEndpointsClientImpl implements PrivateEndpointsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter privateEndpointName is required and cannot be null."));
         }
-        final String apiVersion = "2020-03-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -470,7 +467,7 @@ public final class PrivateEndpointsClientImpl implements PrivateEndpointsClient 
                             resourceGroupName,
                             clusterName,
                             privateEndpointName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -514,7 +511,6 @@ public final class PrivateEndpointsClientImpl implements PrivateEndpointsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter privateEndpointName is required and cannot be null."));
         }
-        final String apiVersion = "2020-03-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -524,7 +520,7 @@ public final class PrivateEndpointsClientImpl implements PrivateEndpointsClient 
                 resourceGroupName,
                 clusterName,
                 privateEndpointName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -625,7 +621,6 @@ public final class PrivateEndpointsClientImpl implements PrivateEndpointsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter privateEndpointName is required and cannot be null."));
         }
-        final String apiVersion = "2020-03-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -637,7 +632,7 @@ public final class PrivateEndpointsClientImpl implements PrivateEndpointsClient 
                             resourceGroupName,
                             clusterName,
                             privateEndpointName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -681,7 +676,6 @@ public final class PrivateEndpointsClientImpl implements PrivateEndpointsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter privateEndpointName is required and cannot be null."));
         }
-        final String apiVersion = "2020-03-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -691,7 +685,7 @@ public final class PrivateEndpointsClientImpl implements PrivateEndpointsClient 
                 resourceGroupName,
                 clusterName,
                 privateEndpointName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -707,14 +701,15 @@ public final class PrivateEndpointsClientImpl implements PrivateEndpointsClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String clusterName, String privateEndpointName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, clusterName, privateEndpointName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -729,7 +724,7 @@ public final class PrivateEndpointsClientImpl implements PrivateEndpointsClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String clusterName, String privateEndpointName, Context context) {
         context = this.client.mergeContext(context);
@@ -751,7 +746,7 @@ public final class PrivateEndpointsClientImpl implements PrivateEndpointsClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String privateEndpointName) {
         return beginDeleteAsync(resourceGroupName, clusterName, privateEndpointName).getSyncPoller();
@@ -769,7 +764,7 @@ public final class PrivateEndpointsClientImpl implements PrivateEndpointsClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String privateEndpointName, Context context) {
         return beginDeleteAsync(resourceGroupName, clusterName, privateEndpointName, context).getSyncPoller();
@@ -876,7 +871,6 @@ public final class PrivateEndpointsClientImpl implements PrivateEndpointsClient 
         if (clusterName == null) {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
-        final String apiVersion = "2020-03-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -887,7 +881,7 @@ public final class PrivateEndpointsClientImpl implements PrivateEndpointsClient 
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             clusterName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .<PagedResponse<PrivateEndpointInner>>map(
@@ -935,7 +929,6 @@ public final class PrivateEndpointsClientImpl implements PrivateEndpointsClient 
         if (clusterName == null) {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
-        final String apiVersion = "2020-03-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -944,7 +937,7 @@ public final class PrivateEndpointsClientImpl implements PrivateEndpointsClient 
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 clusterName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context)
             .map(

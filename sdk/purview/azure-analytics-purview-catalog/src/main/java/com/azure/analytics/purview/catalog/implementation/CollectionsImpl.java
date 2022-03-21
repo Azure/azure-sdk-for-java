@@ -246,7 +246,7 @@ public final class CollectionsImpl {
      * @param entity Atlas entity with extended information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return entityMutationResponse.
+     * @return entityMutationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
@@ -429,7 +429,7 @@ public final class CollectionsImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return entityMutationResponse.
+     * @return entityMutationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
@@ -609,7 +609,7 @@ public final class CollectionsImpl {
      * @param entity Atlas entity with extended information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return entityMutationResponse.
+     * @return entityMutationResponse along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateWithResponse(
@@ -785,7 +785,7 @@ public final class CollectionsImpl {
      * @param entities Atlas entities with extended information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return entityMutationResponse.
+     * @return entityMutationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateBulkWithResponseAsync(
@@ -970,7 +970,7 @@ public final class CollectionsImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return entityMutationResponse.
+     * @return entityMutationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateBulkWithResponseAsync(
@@ -1152,7 +1152,7 @@ public final class CollectionsImpl {
      * @param entities Atlas entities with extended information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return entityMutationResponse.
+     * @return entityMutationResponse along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateBulkWithResponse(
@@ -1255,7 +1255,7 @@ public final class CollectionsImpl {
      * @param moveEntitiesRequest Entity guids to be moved to target collection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return entityMutationResponse.
+     * @return entityMutationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> moveEntitiesToCollectionWithResponseAsync(
@@ -1367,7 +1367,7 @@ public final class CollectionsImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return entityMutationResponse.
+     * @return entityMutationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> moveEntitiesToCollectionWithResponseAsync(
@@ -1476,7 +1476,7 @@ public final class CollectionsImpl {
      * @param moveEntitiesRequest Entity guids to be moved to target collection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return entityMutationResponse.
+     * @return entityMutationResponse along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> moveEntitiesToCollectionWithResponse(

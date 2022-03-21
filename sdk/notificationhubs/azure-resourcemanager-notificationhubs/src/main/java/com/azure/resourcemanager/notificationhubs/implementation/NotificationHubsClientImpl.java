@@ -37,7 +37,6 @@ import com.azure.resourcemanager.notificationhubs.fluent.models.DebugSendRespons
 import com.azure.resourcemanager.notificationhubs.fluent.models.NotificationHubResourceInner;
 import com.azure.resourcemanager.notificationhubs.fluent.models.PnsCredentialsResourceInner;
 import com.azure.resourcemanager.notificationhubs.fluent.models.ResourceListKeysInner;
-import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleListResultInner;
 import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleResourceInner;
 import com.azure.resourcemanager.notificationhubs.models.CheckAvailabilityParameters;
 import com.azure.resourcemanager.notificationhubs.models.NotificationHubCreateOrUpdateParameters;
@@ -45,6 +44,7 @@ import com.azure.resourcemanager.notificationhubs.models.NotificationHubListResu
 import com.azure.resourcemanager.notificationhubs.models.NotificationHubPatchParameters;
 import com.azure.resourcemanager.notificationhubs.models.PolicykeyResource;
 import com.azure.resourcemanager.notificationhubs.models.SharedAccessAuthorizationRuleCreateOrUpdateParameters;
+import com.azure.resourcemanager.notificationhubs.models.SharedAccessAuthorizationRuleListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in NotificationHubsClient. */
@@ -248,7 +248,7 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
                 + "/namespaces/{namespaceName}/notificationHubs/{notificationHubName}/AuthorizationRules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SharedAccessAuthorizationRuleListResultInner>> listAuthorizationRules(
+        Mono<Response<SharedAccessAuthorizationRuleListResult>> listAuthorizationRules(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("namespaceName") String namespaceName,
@@ -325,7 +325,7 @@ public final class NotificationHubsClientImpl implements NotificationHubsClient 
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SharedAccessAuthorizationRuleListResultInner>> listAuthorizationRulesNext(
+        Mono<Response<SharedAccessAuthorizationRuleListResult>> listAuthorizationRulesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,

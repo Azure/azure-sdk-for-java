@@ -134,7 +134,8 @@ import java.util.function.Supplier;
  */
 public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C, T>>
     extends ContinuablePagedFlux<C, T, P> {
-    private final ClientLogger logger = new ClientLogger(ContinuablePagedFluxCore.class);
+    // ContinuablePagedFluxCore is a commonly used class, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(ContinuablePagedFluxCore.class);
 
     final Supplier<PageRetriever<C, P>> pageRetrieverProvider;
     final Integer defaultPageSize;
@@ -176,7 +177,7 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
         this.pageRetrieverProvider = Objects.requireNonNull(pageRetrieverProvider,
             "'pageRetrieverProvider' function cannot be null.");
         if (pageSize != null && pageSize <= 0) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'pageSize' must be greater than 0 required but provided: " + pageSize));
         }
         this.defaultPageSize = pageSize;
@@ -255,7 +256,7 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
     private Flux<P> byPage(Supplier<PageRetriever<C, P>> provider, C continuationToken, Integer pageSize) {
         return Flux.defer(() -> {
             final PageRetriever<C, P> pageRetriever = provider.get();
-            final ContinuationState<C> state = new ContinuationState<>(continuationToken);
+            final ContinuationState<C> state = new ContinuationState<>(continuationToken, getContinuationPredicate());
             return retrievePages(state, pageRetriever, pageSize);
         });
     }
@@ -278,7 +279,7 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
          */
         return retrievePage(state, pageRetriever, pageSize)
             .expand(page -> {
-                state.setLastContinuationToken(page.getContinuationToken(), t -> !getContinuationPredicate().test(t));
+                state.setLastContinuationToken(page.getContinuationToken());
                 return Flux.defer(() -> retrievePage(state, pageRetriever, pageSize));
             }, 4);
     }

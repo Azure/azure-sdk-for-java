@@ -1,6 +1,6 @@
 # Release History
 
-## 2.12.0-beta.1 (Unreleased)
+## 2.15.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,28 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.14.0 (2022-03-01)
+This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.2.
+
+### Dependency Upgrades
+Regular updates for Azure SDK dependency versions.
+
+## 2.13.0 (2022-01-25)
+This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.2.
+
+### Dependency Upgrades
+- Upgrade to [spring-boot-dependencies:2.6.2](https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-dependencies/2.6.2/spring-boot-dependencies-2.6.2.pom).
+
+## 2.12.0 (2021-12-24)
+This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.1, and Spring Cloud 2020.0.0-2020.0.5, 2021.0.0.
+
+### Dependency Upgrades
+- Upgrade to [spring-boot-dependencies:2.6.1](https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-dependencies/2.6.1/spring-boot-dependencies-2.6.1.pom).
+- Upgrade to [spring-cloud-dependencies:2021.0.0](https://repo1.maven.org/maven2/org/springframework/cloud/spring-cloud-dependencies/2021.0.0/spring-cloud-dependencies-2021.0.0.pom).
+
+### Features Added
+- Open classes of `AzureListenerEndpointRegistry` and `AzureListenerEndpointRegistrar` as public to allow the listener containers created for `@AzureMessageListener` accessible [#26131](https://github.com/Azure/azure-sdk-for-java/pull/26131).
 
 ## 2.11.0 (2021-11-24)
 

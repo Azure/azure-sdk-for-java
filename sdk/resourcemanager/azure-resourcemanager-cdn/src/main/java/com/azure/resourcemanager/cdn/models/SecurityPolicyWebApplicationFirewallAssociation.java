@@ -20,7 +20,7 @@ public final class SecurityPolicyWebApplicationFirewallAssociation {
      * List of domains.
      */
     @JsonProperty(value = "domains")
-    private List<ResourceReference> domains;
+    private List<ActivatedResourceReference> domains;
 
     /*
      * List of paths
@@ -33,7 +33,7 @@ public final class SecurityPolicyWebApplicationFirewallAssociation {
      *
      * @return the domains value.
      */
-    public List<ResourceReference> domains() {
+    public List<ActivatedResourceReference> domains() {
         return this.domains;
     }
 
@@ -43,7 +43,7 @@ public final class SecurityPolicyWebApplicationFirewallAssociation {
      * @param domains the domains value to set.
      * @return the SecurityPolicyWebApplicationFirewallAssociation object itself.
      */
-    public SecurityPolicyWebApplicationFirewallAssociation withDomains(List<ResourceReference> domains) {
+    public SecurityPolicyWebApplicationFirewallAssociation withDomains(List<ActivatedResourceReference> domains) {
         this.domains = domains;
         return this;
     }

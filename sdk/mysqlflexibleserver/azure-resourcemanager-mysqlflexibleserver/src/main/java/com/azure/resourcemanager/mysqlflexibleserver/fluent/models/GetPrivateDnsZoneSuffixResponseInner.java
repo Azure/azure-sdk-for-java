@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mysqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The response of get private dns zone suffix. */
 @Fluent
 public final class GetPrivateDnsZoneSuffixResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GetPrivateDnsZoneSuffixResponseInner.class);
-
     /*
      * Represents the private DNS zone suffix.
      */

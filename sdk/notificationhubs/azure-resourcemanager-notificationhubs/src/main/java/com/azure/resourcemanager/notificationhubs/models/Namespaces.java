@@ -224,8 +224,7 @@ public interface Namespaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Primary and Secondary ConnectionStrings to the namespace.
      */
-    SharedAccessAuthorizationRuleListResult listKeys(
-        String resourceGroupName, String namespaceName, String authorizationRuleName);
+    ResourceListKeys listKeys(String resourceGroupName, String namespaceName, String authorizationRuleName);
 
     /**
      * Gets the Primary and Secondary ConnectionStrings to the namespace.
@@ -239,7 +238,7 @@ public interface Namespaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Primary and Secondary ConnectionStrings to the namespace.
      */
-    Response<SharedAccessAuthorizationRuleListResult> listKeysWithResponse(
+    Response<ResourceListKeys> listKeysWithResponse(
         String resourceGroupName, String namespaceName, String authorizationRuleName, Context context);
 
     /**

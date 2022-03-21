@@ -15,6 +15,8 @@ import com.azure.ai.anomalydetector.models.DetectionResult;
 import com.azure.ai.anomalydetector.models.EntireDetectResponse;
 import com.azure.ai.anomalydetector.models.ErrorResponseException;
 import com.azure.ai.anomalydetector.models.LastDetectResponse;
+import com.azure.ai.anomalydetector.models.LastDetectionRequest;
+import com.azure.ai.anomalydetector.models.LastDetectionResult;
 import com.azure.ai.anomalydetector.models.Model;
 import com.azure.ai.anomalydetector.models.ModelInfo;
 import com.azure.ai.anomalydetector.models.ModelSnapshot;
@@ -22,7 +24,6 @@ import com.azure.ai.anomalydetector.models.TrainMultivariateModelResponse;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -55,7 +56,7 @@ public final class AnomalyDetectorAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response of entire anomaly detection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<EntireDetectResponse>> detectEntireSeriesWithResponse(DetectRequest body) {
@@ -71,7 +72,7 @@ public final class AnomalyDetectorAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response of entire anomaly detection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EntireDetectResponse> detectEntireSeries(DetectRequest body) {
@@ -87,7 +88,7 @@ public final class AnomalyDetectorAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response of last anomaly detection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LastDetectResponse>> detectLastPointWithResponse(DetectRequest body) {
@@ -103,7 +104,7 @@ public final class AnomalyDetectorAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response of last anomaly detection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LastDetectResponse> detectLastPoint(DetectRequest body) {
@@ -118,7 +119,7 @@ public final class AnomalyDetectorAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response of change point detection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ChangePointDetectResponse>> detectChangePointWithResponse(ChangePointDetectRequest body) {
@@ -133,7 +134,7 @@ public final class AnomalyDetectorAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response of change point detection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ChangePointDetectResponse> detectChangePoint(ChangePointDetectRequest body) {
@@ -146,15 +147,15 @@ public final class AnomalyDetectorAsyncClient {
      * generate the model must be zipped into one single file. Each time-series will be in a single CSV file in which
      * the first column is timestamp and the second column is value.
      *
-     * @param modelRequest Training request.
+     * @param body Training request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TrainMultivariateModelResponse> trainMultivariateModelWithResponse(ModelInfo modelRequest) {
-        return this.serviceClient.trainMultivariateModelWithResponseAsync(modelRequest);
+    public Mono<TrainMultivariateModelResponse> trainMultivariateModelWithResponse(ModelInfo body) {
+        return this.serviceClient.trainMultivariateModelWithResponseAsync(body);
     }
 
     /**
@@ -163,15 +164,45 @@ public final class AnomalyDetectorAsyncClient {
      * generate the model must be zipped into one single file. Each time-series will be in a single CSV file in which
      * the first column is timestamp and the second column is value.
      *
-     * @param modelRequest Training request.
+     * @param body Training request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> trainMultivariateModel(ModelInfo modelRequest) {
-        return this.serviceClient.trainMultivariateModelAsync(modelRequest);
+    public Mono<Void> trainMultivariateModel(ModelInfo body) {
+        return this.serviceClient.trainMultivariateModelAsync(body);
+    }
+
+    /**
+     * List models of a subscription.
+     *
+     * @param skip $skip indicates how many models will be skipped.
+     * @param top $top indicates how many models will be fetched.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of listing models.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Mono<PagedResponse<ModelSnapshot>> listMultivariateModelSinglePage(Integer skip, Integer top) {
+        return this.serviceClient.listMultivariateModelSinglePageAsync(skip, top);
+    }
+
+    /**
+     * List models of a subscription.
+     *
+     * @param skip $skip indicates how many models will be skipped.
+     * @param top $top indicates how many models will be fetched.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of listing models.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ModelSnapshot> listMultivariateModel(Integer skip, Integer top) {
+        return this.serviceClient.listMultivariateModelAsync(skip, top);
     }
 
     /**
@@ -240,15 +271,15 @@ public final class AnomalyDetectorAsyncClient {
      * single file. Each time-series will be as follows: the first column is timestamp and the second column is value.
      *
      * @param modelId Model identifier.
-     * @param detectionRequest Detect anomaly request.
+     * @param body Detect anomaly request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DetectAnomalyResponse> detectAnomalyWithResponse(UUID modelId, DetectionRequest detectionRequest) {
-        return this.serviceClient.detectAnomalyWithResponseAsync(modelId, detectionRequest);
+    public Mono<DetectAnomalyResponse> detectAnomalyWithResponse(UUID modelId, DetectionRequest body) {
+        return this.serviceClient.detectAnomalyWithResponseAsync(modelId, body);
     }
 
     /**
@@ -259,15 +290,15 @@ public final class AnomalyDetectorAsyncClient {
      * single file. Each time-series will be as follows: the first column is timestamp and the second column is value.
      *
      * @param modelId Model identifier.
-     * @param detectionRequest Detect anomaly request.
+     * @param body Detect anomaly request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> detectAnomaly(UUID modelId, DetectionRequest detectionRequest) {
-        return this.serviceClient.detectAnomalyAsync(modelId, detectionRequest);
+    public Mono<Void> detectAnomaly(UUID modelId, DetectionRequest body) {
+        return this.serviceClient.detectAnomalyAsync(modelId, body);
     }
 
     /**
@@ -303,7 +334,7 @@ public final class AnomalyDetectorAsyncClient {
      *
      * @param modelId Model identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -317,7 +348,7 @@ public final class AnomalyDetectorAsyncClient {
      *
      * @param modelId Model identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -327,33 +358,33 @@ public final class AnomalyDetectorAsyncClient {
     }
 
     /**
-     * List models of a subscription.
+     * Synchronized API for anomaly detection.
      *
-     * @param skip $skip indicates how many models will be skipped.
-     * @param top $top indicates how many models will be fetched.
+     * @param modelId Model identifier.
+     * @param body Request for last detection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to the list models operation.
+     * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<PagedResponse<ModelSnapshot>> listMultivariateModelSinglePage(Integer skip, Integer top) {
-        return this.serviceClient.listMultivariateModelSinglePageAsync(skip, top);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<LastDetectionResult>> lastDetectAnomalyWithResponse(UUID modelId, LastDetectionRequest body) {
+        return this.serviceClient.lastDetectAnomalyWithResponseAsync(modelId, body);
     }
 
     /**
-     * List models of a subscription.
+     * Synchronized API for anomaly detection.
      *
-     * @param skip $skip indicates how many models will be skipped.
-     * @param top $top indicates how many models will be fetched.
+     * @param modelId Model identifier.
+     * @param body Request for last detection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to the list models operation.
+     * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ModelSnapshot> listMultivariateModel(Integer skip, Integer top) {
-        return this.serviceClient.listMultivariateModelAsync(skip, top);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<LastDetectionResult> lastDetectAnomaly(UUID modelId, LastDetectionRequest body) {
+        return this.serviceClient.lastDetectAnomalyAsync(modelId, body);
     }
 
     /**
@@ -363,7 +394,7 @@ public final class AnomalyDetectorAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to the list models operation.
+     * @return response of listing models.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Mono<PagedResponse<ModelSnapshot>> listMultivariateModelNextSinglePage(String nextLink) {

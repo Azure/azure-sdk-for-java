@@ -37,6 +37,12 @@ public final class AnomalyDetectorErrorCodes extends ExpandableStringEnum<Anomal
     /** Static value null for AnomalyDetectorErrorCodes. */
     public static final AnomalyDetectorErrorCodes REQUIRED_SERIES = fromString(null);
 
+    /** Static value null for AnomalyDetectorErrorCodes. */
+    public static final AnomalyDetectorErrorCodes INVALID_IMPUTE_MODE = fromString(null);
+
+    /** Static value null for AnomalyDetectorErrorCodes. */
+    public static final AnomalyDetectorErrorCodes INVALID_IMPUTE_FIXED_VALUE = fromString(null);
+
     /**
      * Creates or finds a AnomalyDetectorErrorCodes from its string representation.
      *

@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -71,7 +72,7 @@ public final class UserAssignedIdentitiesClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "ManagedServiceIdenti")
     private interface UserAssignedIdentitiesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ManagedIdentity/userAssignedIdentities")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -79,9 +80,10 @@ public final class UserAssignedIdentitiesClientImpl
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity"
                 + "/userAssignedIdentities")
@@ -92,9 +94,10 @@ public final class UserAssignedIdentitiesClientImpl
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity"
                 + "/userAssignedIdentities/{resourceName}")
@@ -107,9 +110,10 @@ public final class UserAssignedIdentitiesClientImpl
             @PathParam("resourceName") String resourceName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") IdentityInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity"
                 + "/userAssignedIdentities/{resourceName}")
@@ -122,9 +126,10 @@ public final class UserAssignedIdentitiesClientImpl
             @PathParam("resourceName") String resourceName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") IdentityUpdate parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity"
                 + "/userAssignedIdentities/{resourceName}")
@@ -136,9 +141,10 @@ public final class UserAssignedIdentitiesClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("resourceName") String resourceName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity"
                 + "/userAssignedIdentities/{resourceName}")
@@ -150,21 +156,28 @@ public final class UserAssignedIdentitiesClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("resourceName") String resourceName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<UserAssignedIdentitiesListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<UserAssignedIdentitiesListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -188,6 +201,7 @@ public final class UserAssignedIdentitiesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -196,6 +210,7 @@ public final class UserAssignedIdentitiesClientImpl
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
             .<PagedResponse<IdentityInner>>map(
                 res ->
@@ -206,7 +221,7 @@ public final class UserAssignedIdentitiesClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -232,9 +247,15 @@ public final class UserAssignedIdentitiesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), context)
+            .list(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                accept,
+                context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -327,6 +348,7 @@ public final class UserAssignedIdentitiesClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -336,6 +358,7 @@ public final class UserAssignedIdentitiesClientImpl
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             this.client.getApiVersion(),
+                            accept,
                             context))
             .<PagedResponse<IdentityInner>>map(
                 res ->
@@ -346,7 +369,7 @@ public final class UserAssignedIdentitiesClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -378,6 +401,7 @@ public final class UserAssignedIdentitiesClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
@@ -385,6 +409,7 @@ public final class UserAssignedIdentitiesClientImpl
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 this.client.getApiVersion(),
+                accept,
                 context)
             .map(
                 res ->
@@ -464,7 +489,7 @@ public final class UserAssignedIdentitiesClientImpl
      *
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
-     * @param parameters Describes an identity resource.
+     * @param parameters Parameters to create or update the identity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -497,6 +522,7 @@ public final class UserAssignedIdentitiesClientImpl
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -508,8 +534,9 @@ public final class UserAssignedIdentitiesClientImpl
                             resourceName,
                             this.client.getApiVersion(),
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -517,7 +544,7 @@ public final class UserAssignedIdentitiesClientImpl
      *
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
-     * @param parameters Describes an identity resource.
+     * @param parameters Parameters to create or update the identity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -551,6 +578,7 @@ public final class UserAssignedIdentitiesClientImpl
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -560,6 +588,7 @@ public final class UserAssignedIdentitiesClientImpl
                 resourceName,
                 this.client.getApiVersion(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -568,7 +597,7 @@ public final class UserAssignedIdentitiesClientImpl
      *
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
-     * @param parameters Describes an identity resource.
+     * @param parameters Parameters to create or update the identity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -593,7 +622,7 @@ public final class UserAssignedIdentitiesClientImpl
      *
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
-     * @param parameters Describes an identity resource.
+     * @param parameters Parameters to create or update the identity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -609,7 +638,7 @@ public final class UserAssignedIdentitiesClientImpl
      *
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
-     * @param parameters Describes an identity resource.
+     * @param parameters Parameters to create or update the identity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -627,7 +656,7 @@ public final class UserAssignedIdentitiesClientImpl
      *
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
-     * @param parameters Describes an identity resource.
+     * @param parameters Parameters to update the identity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -660,6 +689,7 @@ public final class UserAssignedIdentitiesClientImpl
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -671,8 +701,9 @@ public final class UserAssignedIdentitiesClientImpl
                             resourceName,
                             this.client.getApiVersion(),
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -680,7 +711,7 @@ public final class UserAssignedIdentitiesClientImpl
      *
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
-     * @param parameters Describes an identity resource.
+     * @param parameters Parameters to update the identity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -714,6 +745,7 @@ public final class UserAssignedIdentitiesClientImpl
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -723,6 +755,7 @@ public final class UserAssignedIdentitiesClientImpl
                 resourceName,
                 this.client.getApiVersion(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -731,7 +764,7 @@ public final class UserAssignedIdentitiesClientImpl
      *
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
-     * @param parameters Describes an identity resource.
+     * @param parameters Parameters to update the identity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -755,7 +788,7 @@ public final class UserAssignedIdentitiesClientImpl
      *
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
-     * @param parameters Describes an identity resource.
+     * @param parameters Parameters to update the identity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -771,7 +804,7 @@ public final class UserAssignedIdentitiesClientImpl
      *
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
-     * @param parameters Describes an identity resource.
+     * @param parameters Parameters to update the identity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -816,6 +849,7 @@ public final class UserAssignedIdentitiesClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -826,8 +860,9 @@ public final class UserAssignedIdentitiesClientImpl
                             resourceGroupName,
                             resourceName,
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -863,6 +898,7 @@ public final class UserAssignedIdentitiesClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
@@ -871,6 +907,7 @@ public final class UserAssignedIdentitiesClientImpl
                 resourceGroupName,
                 resourceName,
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -960,6 +997,7 @@ public final class UserAssignedIdentitiesClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -970,8 +1008,9 @@ public final class UserAssignedIdentitiesClientImpl
                             resourceGroupName,
                             resourceName,
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1007,6 +1046,7 @@ public final class UserAssignedIdentitiesClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -1015,6 +1055,7 @@ public final class UserAssignedIdentitiesClientImpl
                 resourceGroupName,
                 resourceName,
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -1077,8 +1118,16 @@ public final class UserAssignedIdentitiesClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listBySubscriptionNext(nextLink, context))
+            .withContext(
+                context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<IdentityInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1088,7 +1137,7 @@ public final class UserAssignedIdentitiesClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1106,9 +1155,16 @@ public final class UserAssignedIdentitiesClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listBySubscriptionNext(nextLink, context)
+            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1134,8 +1190,16 @@ public final class UserAssignedIdentitiesClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByResourceGroupNext(nextLink, context))
+            .withContext(
+                context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<IdentityInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1145,7 +1209,7 @@ public final class UserAssignedIdentitiesClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1164,9 +1228,16 @@ public final class UserAssignedIdentitiesClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroupNext(nextLink, context)
+            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

@@ -11,7 +11,7 @@ import java.time.OffsetDateTime;
 /** Samples for LogAnalytics ExportThrottledRequests. */
 public final class LogAnalyticsExportThrottledRequestsSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/LogAnalyticsThrottledRequests.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/LogAnalyticsThrottledRequests.json
      */
     /**
      * Sample code: Export logs which contain all throttled Api requests made to Compute Resource Provider within the

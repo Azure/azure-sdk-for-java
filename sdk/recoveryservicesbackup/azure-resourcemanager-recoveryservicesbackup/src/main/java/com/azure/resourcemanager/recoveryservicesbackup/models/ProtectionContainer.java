@@ -57,6 +57,12 @@ public class ProtectionContainer {
     @JsonProperty(value = "healthStatus")
     private String healthStatus;
 
+    /*
+     * Type of the protectable object associated with this container
+     */
+    @JsonProperty(value = "protectableObjectType")
+    private String protectableObjectType;
+
     /**
      * Get the friendlyName property: Friendly name of the container.
      *
@@ -134,6 +140,26 @@ public class ProtectionContainer {
      */
     public ProtectionContainer withHealthStatus(String healthStatus) {
         this.healthStatus = healthStatus;
+        return this;
+    }
+
+    /**
+     * Get the protectableObjectType property: Type of the protectable object associated with this container.
+     *
+     * @return the protectableObjectType value.
+     */
+    public String protectableObjectType() {
+        return this.protectableObjectType;
+    }
+
+    /**
+     * Set the protectableObjectType property: Type of the protectable object associated with this container.
+     *
+     * @param protectableObjectType the protectableObjectType value to set.
+     * @return the ProtectionContainer object itself.
+     */
+    public ProtectionContainer withProtectableObjectType(String protectableObjectType) {
+        this.protectableObjectType = protectableObjectType;
         return this;
     }
 

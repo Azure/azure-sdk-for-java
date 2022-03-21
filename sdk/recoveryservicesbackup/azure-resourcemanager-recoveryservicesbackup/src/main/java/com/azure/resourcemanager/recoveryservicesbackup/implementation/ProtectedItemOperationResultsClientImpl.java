@@ -91,7 +91,7 @@ public final class ProtectedItemOperationResultsClientImpl implements ProtectedI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup items.
+     * @return base class for backup items along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProtectedItemResourceInner>> getWithResponseAsync(
@@ -166,7 +166,7 @@ public final class ProtectedItemOperationResultsClientImpl implements ProtectedI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup items.
+     * @return base class for backup items along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProtectedItemResourceInner>> getWithResponseAsync(
@@ -238,7 +238,7 @@ public final class ProtectedItemOperationResultsClientImpl implements ProtectedI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup items.
+     * @return base class for backup items on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ProtectedItemResourceInner> getAsync(
@@ -299,7 +299,7 @@ public final class ProtectedItemOperationResultsClientImpl implements ProtectedI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup items.
+     * @return base class for backup items along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProtectedItemResourceInner> getWithResponse(

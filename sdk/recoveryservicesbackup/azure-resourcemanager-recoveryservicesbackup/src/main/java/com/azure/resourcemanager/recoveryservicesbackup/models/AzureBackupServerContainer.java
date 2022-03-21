@@ -102,6 +102,13 @@ public final class AzureBackupServerContainer extends DpmContainer {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureBackupServerContainer withProtectableObjectType(String protectableObjectType) {
+        super.withProtectableObjectType(protectableObjectType);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

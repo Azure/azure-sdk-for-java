@@ -1,16 +1,81 @@
 # Release History
 
-## 1.24.0-beta.1 (Unreleased)
+## 1.27.0-beta.1 (Unreleased)
 
 ### Features Added
-
-- Added `ClientLogger` APIs (`atError`, `atWarning`, `atInfo`, `atVerbose`) that allow adding key-value pairs to log entries and `ClientLogger` constructor overloads that take context to apply to every log entry written with this logger instance. Logger writes entries that have context as JSON similar to `{"az.sdk.message":"on delivery","connectionId":"foo"}`
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.26.0 (2022-03-04)
+
+### Features Added
+
+- Added `FluxUtil.writeToOutputStream` which provides an optimized way to write a stream of `Flux<ByteBuffer>` to an
+  `OutputStream` with minimal overhead. ([#26821](https://github.com/Azure/azure-sdk-for-java/pull/26821))
+
+### Bugs Fixed
+
+- Fixed `com.azure.core.implementation.ReflectionUtils.getLookupToUse` which fails with `java.lang.SecurityException` 
+  under `SecurityManager`. ([#27182](https://github.com/Azure/azure-sdk-for-java/pull/27182), thank you @reta!)
+- Fixed an issue where converting Azure `Context` to Reactor `Context` could result in an `IndexOutOfBoundsException`. ([#27197](https://github.com/Azure/azure-sdk-for-java/pull/27197))
+
+### Other Changes
+
+- Added `x-ms-request-id`, `MS-CV`, `WWW-Authenticate` as default logged headers and `api-version` as a default logged
+  query parameter. ([#26973](https://github.com/Azure/azure-sdk-for-java/pull/26973))
+- Updated how `Response` types are constructed in `RestProxy` to reduce the usage of reflection. ([#27207](https://github.com/Azure/azure-sdk-for-java/pull/27207))
+- Updated all `ClientLogger`s to be static constants instead of instance variables. ([#27339](https://github.com/Azure/azure-sdk-for-java/pull/27339))
+- Updated the usage of `AZURE_LOG_LEVEL` to be constant. ([#27193](https://github.com/Azure/azure-sdk-for-java/pull/27193))
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.4.13` to `3.4.14`.
+
+## 1.25.0 (2022-02-04)
+
+### Features Added
+
+- Added `AzureKeyCredentialTrait`, `AzureNamedKeyCredentialTrait`, `AzureSasCredentialTrait`, `ConfigurationTrait`,
+  `ConnectionStringTrait`, `EndpointTrait`, `HttpTrait`, and `TokenCredentialTrait` interfaces that represent common 
+  cross-cutting aspects of functionality offered by libraries in the Azure SDK for Java.
+- Added a static method `toRfc1123String` which converts an `OffsetDateTime` to an RFC1123 datetime string.
+
+## 1.24.1 (2022-01-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.4.12` to `3.4.13`.
+
+## 1.24.0 (2022-01-06)
+
+### Features Added
+
+- Added `ClientLogger` APIs (`atError`, `atWarning`, `atInfo`, `atVerbose`) that allow adding key-value pairs to log 
+  entries and `ClientLogger` constructor overloads that take context to apply to every log entry written with this logger 
+  instance. Logger writes entries that have context as JSON similar to `{"az.sdk.message":"on delivery","connectionId":"foo"}`
+
+### Bugs Fixed
+
+- Fixed a bug where the wrong full class name was being used in reflections. ([#25840](https://github.com/Azure/azure-sdk-for-java/pull/25840))
+- Fixed a bug where flattened deserialization wouldn't find the correct JSON node. ([#25164](https://github.com/Azure/azure-sdk-for-java/pull/25621))
+- Changed how non-proxy hosts was being handled as a regex. ([#25841](https://github.com/Azure/azure-sdk-for-java/pull/25841))
+- Fixed a bug where an errant log message would happen when using a newer version of Jackson. ([#26129](https://github.com/Azure/azure-sdk-for-java/pull/26129))
+- Fixed a bug where `PagedIterable` wouldn't terminate the same as `PagedFlux`. ([#26139](https://github.com/Azure/azure-sdk-for-java/pull/26139))
+- Fixed a bug where `MethodHandle.Lookup` retrieval didn't handle the unnamed module properly. ([#26268](https://github.com/Azure/azure-sdk-for-java/pull/26268))
+
+### Other Changes
+
+- Improved performance of logging.
+
+#### Dependency Updates
+
+- Upgraded Jackson from `2.13.0` to `2.13.1`.
 
 ## 1.23.1 (2021-12-07)
 

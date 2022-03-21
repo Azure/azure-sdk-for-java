@@ -15,6 +15,8 @@ import com.azure.ai.anomalydetector.models.DetectionResult;
 import com.azure.ai.anomalydetector.models.EntireDetectResponse;
 import com.azure.ai.anomalydetector.models.ErrorResponseException;
 import com.azure.ai.anomalydetector.models.LastDetectResponse;
+import com.azure.ai.anomalydetector.models.LastDetectionRequest;
+import com.azure.ai.anomalydetector.models.LastDetectionResult;
 import com.azure.ai.anomalydetector.models.Model;
 import com.azure.ai.anomalydetector.models.ModelInfo;
 import com.azure.ai.anomalydetector.models.ModelSnapshot;
@@ -22,7 +24,6 @@ import com.azure.ai.anomalydetector.models.TrainMultivariateModelResponse;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.StreamResponse;
@@ -53,7 +54,7 @@ public final class AnomalyDetectorClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response of entire anomaly detection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EntireDetectResponse detectEntireSeries(DetectRequest body) {
@@ -70,7 +71,7 @@ public final class AnomalyDetectorClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response of entire anomaly detection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EntireDetectResponse> detectEntireSeriesWithResponse(DetectRequest body, Context context) {
@@ -86,7 +87,7 @@ public final class AnomalyDetectorClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response of last anomaly detection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LastDetectResponse detectLastPoint(DetectRequest body) {
@@ -103,7 +104,7 @@ public final class AnomalyDetectorClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response of last anomaly detection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LastDetectResponse> detectLastPointWithResponse(DetectRequest body, Context context) {
@@ -118,7 +119,7 @@ public final class AnomalyDetectorClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response of change point detection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChangePointDetectResponse detectChangePoint(ChangePointDetectRequest body) {
@@ -134,7 +135,7 @@ public final class AnomalyDetectorClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response of change point detection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ChangePointDetectResponse> detectChangePointWithResponse(
@@ -148,14 +149,14 @@ public final class AnomalyDetectorClient {
      * generate the model must be zipped into one single file. Each time-series will be in a single CSV file in which
      * the first column is timestamp and the second column is value.
      *
-     * @param modelRequest Training request.
+     * @param body Training request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void trainMultivariateModel(ModelInfo modelRequest) {
-        this.serviceClient.trainMultivariateModel(modelRequest);
+    public void trainMultivariateModel(ModelInfo body) {
+        this.serviceClient.trainMultivariateModel(body);
     }
 
     /**
@@ -164,7 +165,7 @@ public final class AnomalyDetectorClient {
      * generate the model must be zipped into one single file. Each time-series will be in a single CSV file in which
      * the first column is timestamp and the second column is value.
      *
-     * @param modelRequest Training request.
+     * @param body Training request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -172,8 +173,39 @@ public final class AnomalyDetectorClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TrainMultivariateModelResponse trainMultivariateModelWithResponse(ModelInfo modelRequest, Context context) {
-        return this.serviceClient.trainMultivariateModelWithResponse(modelRequest, context);
+    public TrainMultivariateModelResponse trainMultivariateModelWithResponse(ModelInfo body, Context context) {
+        return this.serviceClient.trainMultivariateModelWithResponse(body, context);
+    }
+
+    /**
+     * List models of a subscription.
+     *
+     * @param skip $skip indicates how many models will be skipped.
+     * @param top $top indicates how many models will be fetched.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of listing models.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ModelSnapshot> listMultivariateModel(Integer skip, Integer top) {
+        return this.serviceClient.listMultivariateModel(skip, top);
+    }
+
+    /**
+     * List models of a subscription.
+     *
+     * @param skip $skip indicates how many models will be skipped.
+     * @param top $top indicates how many models will be fetched.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of listing models.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ModelSnapshot> listMultivariateModel(Integer skip, Integer top, Context context) {
+        return this.serviceClient.listMultivariateModel(skip, top, context);
     }
 
     /**
@@ -243,14 +275,14 @@ public final class AnomalyDetectorClient {
      * single file. Each time-series will be as follows: the first column is timestamp and the second column is value.
      *
      * @param modelId Model identifier.
-     * @param detectionRequest Detect anomaly request.
+     * @param body Detect anomaly request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void detectAnomaly(UUID modelId, DetectionRequest detectionRequest) {
-        this.serviceClient.detectAnomaly(modelId, detectionRequest);
+    public void detectAnomaly(UUID modelId, DetectionRequest body) {
+        this.serviceClient.detectAnomaly(modelId, body);
     }
 
     /**
@@ -261,7 +293,7 @@ public final class AnomalyDetectorClient {
      * single file. Each time-series will be as follows: the first column is timestamp and the second column is value.
      *
      * @param modelId Model identifier.
-     * @param detectionRequest Detect anomaly request.
+     * @param body Detect anomaly request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -269,9 +301,8 @@ public final class AnomalyDetectorClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DetectAnomalyResponse detectAnomalyWithResponse(
-            UUID modelId, DetectionRequest detectionRequest, Context context) {
-        return this.serviceClient.detectAnomalyWithResponse(modelId, detectionRequest, context);
+    public DetectAnomalyResponse detectAnomalyWithResponse(UUID modelId, DetectionRequest body, Context context) {
+        return this.serviceClient.detectAnomalyWithResponse(modelId, body, context);
     }
 
     /**
@@ -308,7 +339,7 @@ public final class AnomalyDetectorClient {
      *
      * @param modelId Model identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -323,7 +354,7 @@ public final class AnomalyDetectorClient {
      * @param modelId Model identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -333,33 +364,34 @@ public final class AnomalyDetectorClient {
     }
 
     /**
-     * List models of a subscription.
+     * Synchronized API for anomaly detection.
      *
-     * @param skip $skip indicates how many models will be skipped.
-     * @param top $top indicates how many models will be fetched.
+     * @param modelId Model identifier.
+     * @param body Request for last detection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to the list models operation.
+     * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ModelSnapshot> listMultivariateModel(Integer skip, Integer top) {
-        return this.serviceClient.listMultivariateModel(skip, top);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LastDetectionResult lastDetectAnomaly(UUID modelId, LastDetectionRequest body) {
+        return this.serviceClient.lastDetectAnomaly(modelId, body);
     }
 
     /**
-     * List models of a subscription.
+     * Synchronized API for anomaly detection.
      *
-     * @param skip $skip indicates how many models will be skipped.
-     * @param top $top indicates how many models will be fetched.
+     * @param modelId Model identifier.
+     * @param body Request for last detection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to the list models operation.
+     * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ModelSnapshot> listMultivariateModel(Integer skip, Integer top, Context context) {
-        return this.serviceClient.listMultivariateModel(skip, top, context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<LastDetectionResult> lastDetectAnomalyWithResponse(
+            UUID modelId, LastDetectionRequest body, Context context) {
+        return this.serviceClient.lastDetectAnomalyWithResponse(modelId, body, context);
     }
 }

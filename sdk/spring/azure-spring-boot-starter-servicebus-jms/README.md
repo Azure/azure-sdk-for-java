@@ -65,8 +65,7 @@ In this section, you create the necessary Java classes for sending messages to y
 
 Create a Java file named *User.java* in the package directory of your app. Define a generic user class that stores and retrieves user's name:
 
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/User.java#L11-L30 -->
-```java
+```java readme-sample-JmsUser
 import java.io.Serializable;
 
 public class User implements Serializable {
@@ -92,9 +91,8 @@ public class User implements Serializable {
 #### Create a new class for the message send controller
 
 1. Create a Java file named *SendController.java* in the package directory of your app. Add the following code to the new file:
-    
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/SendController.java#L11-L35 -->
-    ```java
+
+    ```java readme-sample-SendController
     import org.slf4j.Logger;
     import org.slf4j.LoggerFactory;
     import org.springframework.beans.factory.annotation.Autowired;
@@ -102,17 +100,17 @@ public class User implements Serializable {
     import org.springframework.web.bind.annotation.PostMapping;
     import org.springframework.web.bind.annotation.RequestParam;
     import org.springframework.web.bind.annotation.RestController;
-    
+
     @RestController
     public class SendController {
-    
+
         private static final String DESTINATION_NAME = "<DestinationName>";
-    
+
         private static final Logger LOGGER = LoggerFactory.getLogger(SendController.class);
-    
+
         @Autowired
         private JmsTemplate jmsTemplate;
-    
+
         @PostMapping("/messages")
         public String postMessage(@RequestParam String message) {
             LOGGER.info("Sending message");
@@ -130,21 +128,20 @@ public class User implements Serializable {
 - Receive messages from a Service Bus queue
 
     Create a Java file named *QueueReceiveController.java* in the package directory of your app. Add the following code to the new file:
-    
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/QueueReceiveController.java#L11-L27 -->
-    ```java
+
+    ```java readme-sample-QueueReceiveController
     import org.slf4j.Logger;
     import org.slf4j.LoggerFactory;
     import org.springframework.jms.annotation.JmsListener;
     import org.springframework.stereotype.Component;
-    
+
     @Component
     public class QueueReceiveController {
-    
+
         private static final String QUEUE_NAME = "<ServiceBusQueueName>";
-    
+
         private final Logger logger = LoggerFactory.getLogger(QueueReceiveController.class);
-    
+
         @JmsListener(destination = QUEUE_NAME, containerFactory = "jmsListenerContainerFactory")
         public void receiveMessage(User user) {
             logger.info("Received message: {}", user.getName());
@@ -158,23 +155,22 @@ public class User implements Serializable {
 - Receive messages from a Service Bus subscription
 
     Create a Java file named *TopicReceiveController.java* in the package directory of your app. Add the following code to the new file. Replace the `<ServiceBusTopicName>` placeholder with your own topic name configured in your Service Bus namespace. Replace the `<ServiceBusSubscriptionName>` placeholder with your own subscription name for your Service Bus topic.
-    
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/TopicReceiveController.java#L11-L30 -->
-    ```java
+
+    ```java readme-sample-TopicReceiveController
     import org.slf4j.Logger;
     import org.slf4j.LoggerFactory;
     import org.springframework.jms.annotation.JmsListener;
     import org.springframework.stereotype.Component;
-    
+
     @Component
     public class TopicReceiveController {
-    
+
         private static final String TOPIC_NAME = "<ServiceBusTopicName>";
-    
+
         private static final String SUBSCRIPTION_NAME = "<ServiceBusSubscriptionName>";
-    
+
         private final Logger logger = LoggerFactory.getLogger(TopicReceiveController.class);
-    
+
         @JmsListener(destination = TOPIC_NAME, containerFactory = "topicJmsListenerContainerFactory",
             subscription = SUBSCRIPTION_NAME)
         public void receiveMessage(User user) {
@@ -189,8 +185,20 @@ A customized `MessageConverter` bean can be used to convert between Java objects
 
 Below code snippet sets content-type of `BytesMessage` as `application/json`.
 
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/CustomizedMessageConverter.java#L25-L45 -->
-```java
+```java readme-sample-CustomMessageConverter
+import com.fasterxml.jackson.databind.ObjectWriter;
+import org.apache.qpid.jms.message.JmsBytesMessage;
+import org.apache.qpid.jms.provider.amqp.message.AmqpJmsMessageFacade;
+import org.apache.qpid.proton.amqp.Symbol;
+import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
+import org.springframework.jms.support.converter.MessageType;
+import org.springframework.stereotype.Component;
+
+import javax.jms.BytesMessage;
+import javax.jms.JMSException;
+import javax.jms.Session;
+import java.io.IOException;
+
 @Component
 public class CustomMessageConverter extends MappingJackson2MessageConverter {
 

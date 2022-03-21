@@ -114,7 +114,7 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schemas of a given SQL pool.
+     * @return schemas of a given SQL pool along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlPoolSchemaInner>> listSinglePageAsync(
@@ -180,7 +180,7 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schemas of a given SQL pool.
+     * @return schemas of a given SQL pool along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlPoolSchemaInner>> listSinglePageAsync(
@@ -339,7 +339,7 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Pool schema.
+     * @return sql Pool schema along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SqlPoolSchemaInner>> getWithResponseAsync(
@@ -399,7 +399,7 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Pool schema.
+     * @return sql Pool schema along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SqlPoolSchemaInner>> getWithResponseAsync(
@@ -455,7 +455,7 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Pool schema.
+     * @return sql Pool schema on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SqlPoolSchemaInner> getAsync(
@@ -500,7 +500,7 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Pool schema.
+     * @return sql Pool schema along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SqlPoolSchemaInner> getWithResponse(
@@ -515,7 +515,7 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Sql pool schemas.
+     * @return a list of Sql pool schemas along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlPoolSchemaInner>> listNextSinglePageAsync(String nextLink) {
@@ -551,7 +551,7 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Sql pool schemas.
+     * @return a list of Sql pool schemas along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlPoolSchemaInner>> listNextSinglePageAsync(String nextLink, Context context) {

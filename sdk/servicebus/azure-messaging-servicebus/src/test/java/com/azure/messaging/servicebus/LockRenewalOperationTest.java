@@ -129,7 +129,7 @@ class LockRenewalOperationTest {
         final Duration renewalPeriod = Duration.ofSeconds(3);
 
         // At most 4 times because we renew the lock before it expires (by some seconds).
-        final int atMost = 4;
+        final int atMost = 5;
         final OffsetDateTime lockedUntil = OffsetDateTime.now().plus(renewalPeriod);
         final Duration totalSleepPeriod = maxDuration.plusMillis(500);
 

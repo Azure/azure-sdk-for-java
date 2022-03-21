@@ -67,6 +67,12 @@ public final class AnalyzeResult {
     private List<DocumentStyle> styles;
 
     /*
+     * Detected languages.
+     */
+    @JsonProperty(value = "languages")
+    private List<DocumentLanguage> languages;
+
+    /*
      * Extracted documents.
      */
     @JsonProperty(value = "documents")
@@ -249,6 +255,26 @@ public final class AnalyzeResult {
      */
     public AnalyzeResult setStyles(List<DocumentStyle> styles) {
         this.styles = styles;
+        return this;
+    }
+
+    /**
+     * Get the languages property: Detected languages.
+     *
+     * @return the languages value.
+     */
+    public List<DocumentLanguage> getLanguages() {
+        return this.languages;
+    }
+
+    /**
+     * Set the languages property: Detected languages.
+     *
+     * @param languages the languages value to set.
+     * @return the AnalyzeResult object itself.
+     */
+    public AnalyzeResult setLanguages(List<DocumentLanguage> languages) {
+        this.languages = languages;
         return this;
     }
 

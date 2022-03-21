@@ -98,7 +98,8 @@ public final class BackupProtectionIntentsClientImpl implements BackupProtection
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectionIntent resources.
+     * @return list of ProtectionIntent resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProtectionIntentResourceInner>> listSinglePageAsync(
@@ -160,7 +161,8 @@ public final class BackupProtectionIntentsClientImpl implements BackupProtection
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectionIntent resources.
+     * @return list of ProtectionIntent resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProtectionIntentResourceInner>> listSinglePageAsync(
@@ -218,7 +220,7 @@ public final class BackupProtectionIntentsClientImpl implements BackupProtection
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectionIntent resources.
+     * @return list of ProtectionIntent resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProtectionIntentResourceInner> listAsync(
@@ -236,7 +238,7 @@ public final class BackupProtectionIntentsClientImpl implements BackupProtection
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectionIntent resources.
+     * @return list of ProtectionIntent resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProtectionIntentResourceInner> listAsync(String vaultName, String resourceGroupName) {
@@ -258,7 +260,7 @@ public final class BackupProtectionIntentsClientImpl implements BackupProtection
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectionIntent resources.
+     * @return list of ProtectionIntent resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProtectionIntentResourceInner> listAsync(
@@ -276,7 +278,7 @@ public final class BackupProtectionIntentsClientImpl implements BackupProtection
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectionIntent resources.
+     * @return list of ProtectionIntent resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProtectionIntentResourceInner> list(String vaultName, String resourceGroupName) {
@@ -296,7 +298,7 @@ public final class BackupProtectionIntentsClientImpl implements BackupProtection
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectionIntent resources.
+     * @return list of ProtectionIntent resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProtectionIntentResourceInner> list(
@@ -311,7 +313,8 @@ public final class BackupProtectionIntentsClientImpl implements BackupProtection
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectionIntent resources.
+     * @return list of ProtectionIntent resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProtectionIntentResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -347,7 +350,8 @@ public final class BackupProtectionIntentsClientImpl implements BackupProtection
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectionIntent resources.
+     * @return list of ProtectionIntent resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProtectionIntentResourceInner>> listNextSinglePageAsync(

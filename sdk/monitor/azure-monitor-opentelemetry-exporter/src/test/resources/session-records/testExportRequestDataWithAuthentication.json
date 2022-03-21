@@ -3,7 +3,6 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.in.applicationinsights.azure.com/v2.1/track",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-monitor-opentelemetry-exporter/1.0.0-beta.5 (11.0.8; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {

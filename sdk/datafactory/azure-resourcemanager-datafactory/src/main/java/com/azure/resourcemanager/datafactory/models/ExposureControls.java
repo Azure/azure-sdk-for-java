@@ -30,7 +30,7 @@ public interface ExposureControls {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return exposure control feature for specific location.
+     * @return exposure control feature for specific location along with {@link Response}.
      */
     Response<ExposureControlResponse> getFeatureValueWithResponse(
         String locationId, ExposureControlRequest exposureControlRequest, Context context);
@@ -59,7 +59,7 @@ public interface ExposureControls {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return exposure control feature for specific factory.
+     * @return exposure control feature for specific factory along with {@link Response}.
      */
     Response<ExposureControlResponse> getFeatureValueByFactoryWithResponse(
         String resourceGroupName, String factoryName, ExposureControlRequest exposureControlRequest, Context context);
@@ -88,7 +88,7 @@ public interface ExposureControls {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of exposure control features for specific factory.
+     * @return list of exposure control features for specific factory along with {@link Response}.
      */
     Response<ExposureControlBatchResponse> queryFeatureValuesByFactoryWithResponse(
         String resourceGroupName,

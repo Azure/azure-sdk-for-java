@@ -4,6 +4,9 @@
 package com.azure.mixedreality.authentication;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.http.policy.ExponentialBackoffOptions;
+import com.azure.core.http.policy.RetryOptions;
+import com.azure.core.http.policy.RetryPolicy;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -59,5 +62,16 @@ public class MixedRealityStsClientBuilderTests {
         NullPointerException exception = assertThrows(NullPointerException.class, () -> builder.buildClient());
 
         assertEquals("The 'credential' has not been set and is required.", exception.getMessage());
+    }
+
+    @Test
+    public void bothRetryOptionsAndRetryPolicySet() {
+        assertThrows(IllegalStateException.class, () -> new MixedRealityStsClientBuilder()
+            .accountDomain(this.accountDomain)
+            .accountId(this.accountId)
+            .credential(new AzureKeyCredential(accountKey))
+            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
+            .retryPolicy(new RetryPolicy())
+            .buildClient());
     }
 }

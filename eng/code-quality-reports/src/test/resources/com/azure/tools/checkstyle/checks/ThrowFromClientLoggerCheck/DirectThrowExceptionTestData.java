@@ -42,4 +42,21 @@ public class DirectThrowExceptionTestData {
     public void validLogThrowableAsWarning() {
         throw logger.logThrowableAsWarning(new RuntimeException("Error message."));
     }
+
+    public void validThrowExceptionWithBuilder() {
+        throw logger.atError().log(Exceptions.propagate(new IllegalStateException("Error Messages")));
+    }
+
+    public void validThrowExceptionWithBuilderAndContext() {
+        throw logger.atError().addKeyValuePair("foo", "bar").log(new RuntimeException("Error message."));
+    }
+
+    public void validThrowExceptionWithBuilderAndContextAdvanced() {
+        LoggingEventBuilder builder = logger.atError();
+        throw builder.addKeyValuePair("foo", "bar").log(new RuntimeException("Error message."));
+    }
+
+    public void invalidLoggingBuilderNoLogCall() {
+        throw logger.atError();
+    }
 }

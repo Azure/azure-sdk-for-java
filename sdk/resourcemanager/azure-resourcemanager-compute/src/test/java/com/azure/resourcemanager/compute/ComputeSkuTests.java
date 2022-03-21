@@ -5,6 +5,7 @@ package com.azure.resourcemanager.compute;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.compute.models.ComputeResourceType;
 import com.azure.resourcemanager.compute.models.ComputeSku;
 import com.azure.resourcemanager.test.utils.TestUtilities;
@@ -33,6 +34,7 @@ public class ComputeSkuTests extends ComputeManagementTest {
 //    }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void canListSkus() throws Exception {
         PagedIterable<ComputeSku> skus = this.computeManager.computeSkus().list();
 
@@ -107,6 +109,7 @@ public class ComputeSkuTests extends ComputeManagementTest {
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void canListSkusByResourceType() throws Exception {
         PagedIterable<ComputeSku> skus =
             this.computeManager.computeSkus().listByResourceType(ComputeResourceType.VIRTUALMACHINES);

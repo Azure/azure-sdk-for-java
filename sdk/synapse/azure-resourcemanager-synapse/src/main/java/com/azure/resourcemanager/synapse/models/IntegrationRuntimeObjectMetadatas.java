@@ -33,7 +33,7 @@ public interface IntegrationRuntimeObjectMetadatas {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object metadata from an integration runtime.
+     * @return object metadata from an integration runtime along with {@link Response}.
      */
     Response<SsisObjectMetadataListResponse> listWithResponse(
         String resourceGroupName,

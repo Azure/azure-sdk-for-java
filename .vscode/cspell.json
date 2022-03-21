@@ -35,7 +35,8 @@
     "*.x509",
     "*.certificate",
     "*.crt",
-    ".vscode/cspell.json"
+    ".vscode/cspell.json",
+    "eng/code-quality-reports/src/main/resources"
   ],
   "words": ["azsdk", "pwsh"],
   "overrides": [

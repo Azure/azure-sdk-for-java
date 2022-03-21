@@ -154,6 +154,12 @@ public final class WorkspaceProperties {
     @JsonProperty(value = "azureADOnlyAuthentication")
     private Boolean azureADOnlyAuthentication;
 
+    /*
+     * Is trustedServiceBypassEnabled for the workspace
+     */
+    @JsonProperty(value = "trustedServiceBypassEnabled")
+    private Boolean trustedServiceBypassEnabled;
+
     /**
      * Get the defaultDataLakeStorage property: Workspace default data lake storage account details.
      *
@@ -510,6 +516,26 @@ public final class WorkspaceProperties {
      */
     public WorkspaceProperties withAzureADOnlyAuthentication(Boolean azureADOnlyAuthentication) {
         this.azureADOnlyAuthentication = azureADOnlyAuthentication;
+        return this;
+    }
+
+    /**
+     * Get the trustedServiceBypassEnabled property: Is trustedServiceBypassEnabled for the workspace.
+     *
+     * @return the trustedServiceBypassEnabled value.
+     */
+    public Boolean trustedServiceBypassEnabled() {
+        return this.trustedServiceBypassEnabled;
+    }
+
+    /**
+     * Set the trustedServiceBypassEnabled property: Is trustedServiceBypassEnabled for the workspace.
+     *
+     * @param trustedServiceBypassEnabled the trustedServiceBypassEnabled value to set.
+     * @return the WorkspaceProperties object itself.
+     */
+    public WorkspaceProperties withTrustedServiceBypassEnabled(Boolean trustedServiceBypassEnabled) {
+        this.trustedServiceBypassEnabled = trustedServiceBypassEnabled;
         return this;
     }
 

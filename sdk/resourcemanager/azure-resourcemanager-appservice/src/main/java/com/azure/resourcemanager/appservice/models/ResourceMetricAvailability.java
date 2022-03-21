@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Metrics availability and retention. */
 @Immutable
 public final class ResourceMetricAvailability {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceMetricAvailability.class);
-
     /*
      * Time grain .
      */

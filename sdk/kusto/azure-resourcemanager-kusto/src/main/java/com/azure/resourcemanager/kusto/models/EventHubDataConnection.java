@@ -245,6 +245,40 @@ public final class EventHubDataConnection extends DataConnectionInner {
     }
 
     /**
+     * Get the managedIdentityObjectId property: The object ID of the managedIdentityResourceId.
+     *
+     * @return the managedIdentityObjectId value.
+     */
+    public String managedIdentityObjectId() {
+        return this.innerProperties() == null ? null : this.innerProperties().managedIdentityObjectId();
+    }
+
+    /**
+     * Get the databaseRouting property: Indication for database routing information from the data connection, by
+     * default only database routing information is allowed.
+     *
+     * @return the databaseRouting value.
+     */
+    public DatabaseRouting databaseRouting() {
+        return this.innerProperties() == null ? null : this.innerProperties().databaseRouting();
+    }
+
+    /**
+     * Set the databaseRouting property: Indication for database routing information from the data connection, by
+     * default only database routing information is allowed.
+     *
+     * @param databaseRouting the databaseRouting value to set.
+     * @return the EventHubDataConnection object itself.
+     */
+    public EventHubDataConnection withDatabaseRouting(DatabaseRouting databaseRouting) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventHubConnectionProperties();
+        }
+        this.innerProperties().withDatabaseRouting(databaseRouting);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

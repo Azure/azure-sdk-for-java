@@ -89,7 +89,7 @@ public class ServiceBusSharedKeyCredential implements TokenCredential {
     public ServiceBusSharedKeyCredential(String policyName, String sharedAccessKey, Duration tokenValidity) {
 
         Objects.requireNonNull(sharedAccessKey, "'sharedAccessKey' cannot be null.");
-        this.policyName = Objects.requireNonNull(policyName, "'sharedAccessKey' cannot be null.");
+        this.policyName = Objects.requireNonNull(policyName, "'policyName' cannot be null.");
         this.tokenValidity = Objects.requireNonNull(tokenValidity, "'tokenValidity' cannot be null.");
 
         if (policyName.isEmpty()) {

@@ -16,7 +16,7 @@ import java.util.Objects;
  * An {@code AzureFileStore} is a {@link FileStore} backed by an Azure Blob Storage container.
  */
 public final class AzureFileStore extends FileStore {
-    private final ClientLogger logger = new ClientLogger(AzureFileStore.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AzureFileStore.class);
 
     private static final String AZURE_FILE_STORE_TYPE = "AzureBlobContainer";
 
@@ -24,23 +24,26 @@ public final class AzureFileStore extends FileStore {
     private final BlobContainerClient containerClient;
 
 
-    AzureFileStore(AzureFileSystem parentFileSystem, String containerName) throws IOException {
+    AzureFileStore(AzureFileSystem parentFileSystem, String containerName, Boolean skipConnectionCheck)
+        throws IOException {
         // A FileStore should only ever be created by a FileSystem.
         if (Objects.isNull(parentFileSystem)) {
-            throw LoggingUtility.logError(logger, new IllegalStateException("AzureFileStore cannot be instantiated "
+            throw LoggingUtility.logError(LOGGER, new IllegalStateException("AzureFileStore cannot be instantiated "
                 + "without a parent FileSystem"));
         }
         this.parentFileSystem = parentFileSystem;
         this.containerClient = this.parentFileSystem.getBlobServiceClient().getBlobContainerClient(containerName);
 
-        try {
-            // This also serves as our connection check.
-            if (!this.containerClient.exists()) {
-                this.containerClient.create();
+        if (skipConnectionCheck == null || !skipConnectionCheck) {
+            try {
+                // This also serves as our connection check.
+                if (!this.containerClient.exists()) {
+                    this.containerClient.create();
+                }
+            } catch (Exception e) {
+                throw LoggingUtility.logError(LOGGER, new IOException("There was an error in establishing the existence of "
+                    + "container: " + containerName, e));
             }
-        } catch (Exception e) {
-            throw LoggingUtility.logError(logger, new IOException("There was an error in establishing the existence of "
-                + "container: " + containerName, e));
         }
     }
 
@@ -120,7 +123,7 @@ public final class AzureFileStore extends FileStore {
     }
 
     /**
-     * Tells whether or not this file store supports the file attributes identified by the given file attribute view.
+     * Tells whether this file store supports the file attributes identified by the given file attribute view.
      * <p>
      * All file stores in this file system support the following views:
      * <ul>
@@ -138,7 +141,7 @@ public final class AzureFileStore extends FileStore {
     }
 
     /**
-     * Tells whether or not this file store supports the file attributes identified by the given file attribute view.
+     * Tells whether this file store supports the file attributes identified by the given file attribute view.
      * <p>
      * All file stores in this file system support the following views:
      * <ul>
@@ -181,7 +184,7 @@ public final class AzureFileStore extends FileStore {
      */
     @Override
     public Object getAttribute(String s) throws IOException {
-        throw LoggingUtility.logError(logger, new UnsupportedOperationException("FileStoreAttributeViews aren't"
+        throw LoggingUtility.logError(LOGGER, new UnsupportedOperationException("FileStoreAttributeViews aren't"
             + " supported."));
     }
 

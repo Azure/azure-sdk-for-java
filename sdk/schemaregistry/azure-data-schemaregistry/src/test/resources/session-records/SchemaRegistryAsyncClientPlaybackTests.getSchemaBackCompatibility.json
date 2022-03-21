@@ -1,0 +1,29 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/$schemas/e5691f79e3964309ac712ec52abcccca?api-version=2021-10",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.0.0-beta.7 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f68333f6-8f87-4b80-9cda-ac2ec096fa25"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Schema-Version" : "1",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "Schema-Name" : "sch17568204e",
+      "retry-after" : "0",
+      "Schema-Id-Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/$schemas/e5691f79e3964309ac712ec52abcccca?api-version=2021-10",
+      "StatusCode" : "200",
+      "Date" : "Thu, 11 Nov 2021 02:50:18 GMT",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "Schema-Id" : "e5691f79e3964309ac712ec52abcccca",
+      "Schema-Group-Name" : "mygroup",
+      "Body" : "\"{\\\"type\\\" : \\\"record\\\",\\\"namespace\\\" : \\\"TestSchema\\\",\\\"name\\\" : \\\"Employee\\\",\\\"fields\\\" : [{ \\\"name\\\" : \\\"Name\\\" , \\\"type\\\" : \\\"string\\\" },{ \\\"name\\\" : \\\"Age\\\", \\\"type\\\" : \\\"int\\\" }]}\"",
+      "Content-Type" : "application/json;serialization=Avro",
+      "Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/mygroup/schemas/sch17568204e/versions/1?api-version=2021-10",
+      "Schema-Versions-Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/mygroup/schemas/sch17568204e/versions?api-version=2021-10"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "sch17568204e" ]
+}

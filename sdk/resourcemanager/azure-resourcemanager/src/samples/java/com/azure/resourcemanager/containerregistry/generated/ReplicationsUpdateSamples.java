@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for Replications Update. */
 public final class ReplicationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-12-01-preview/examples/ReplicationUpdate.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/ReplicationUpdate.json
      */
     /**
      * Sample code: ReplicationUpdate.

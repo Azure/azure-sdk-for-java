@@ -333,7 +333,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
             KeyPair rsaKey = assertDoesNotThrow(() -> createKeyPair("RSA"));
             X509Certificate cert = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate Secured 2", rsaKey));
             AttestationSigningKey signingKey = new AttestationSigningKey(cert, rsaKey.getPrivate())
-                .setAllowWeakKey(true);
+                .setWeakKeyAllowed(true);
 
 
             String policyToSet = "version=1.0; authorizationrules{=> permit();}; issuancerules{};";

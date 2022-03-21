@@ -3,7 +3,7 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.models.ArtifactManifestOrderBy;
+import com.azure.containers.containerregistry.models.ArtifactManifestOrder;
 import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.containers.containerregistry.models.ContainerRepositoryProperties;
 import com.azure.core.credential.TokenCredential;
@@ -114,7 +114,7 @@ public class ContainerRepositoryJavaDocSnippets {
     public void listManifestPropertiesWithOptionsNoContextCodeSnippet() {
         ContainerRepository client = getClient();
         // BEGIN: com.azure.containers.containerregistry.ContainerRepository.listManifestPropertiesWithOptionsNoContext
-        client.listManifestProperties(ArtifactManifestOrderBy.LAST_UPDATED_ON_DESCENDING).iterableByPage(10)
+        client.listManifestProperties(ArtifactManifestOrder.LAST_UPDATED_ON_DESCENDING).iterableByPage(10)
             .forEach(pagedResponse -> {
                 pagedResponse.getValue().stream().forEach(
                     ManifestProperties -> System.out.println(ManifestProperties.getDigest()));
@@ -125,7 +125,7 @@ public class ContainerRepositoryJavaDocSnippets {
     public void listManifestPropertiesWithOptionsCodeSnippet() {
         ContainerRepository client = getClient();
         // BEGIN: com.azure.containers.containerregistry.ContainerRepository.listManifestPropertiesWithOptions
-        client.listManifestProperties(ArtifactManifestOrderBy.LAST_UPDATED_ON_DESCENDING, Context.NONE).iterableByPage(10)
+        client.listManifestProperties(ArtifactManifestOrder.LAST_UPDATED_ON_DESCENDING, Context.NONE).iterableByPage(10)
             .forEach(pagedResponse -> {
                 pagedResponse.getValue().stream().forEach(
                     ManifestProperties -> System.out.println(ManifestProperties.getDigest()));

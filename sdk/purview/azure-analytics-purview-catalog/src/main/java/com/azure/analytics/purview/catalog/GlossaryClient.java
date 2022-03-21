@@ -16,6 +16,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the synchronous PurviewCatalogClient type. */
 @ServiceClient(builder = PurviewCatalogClientBuilder.class)
@@ -109,7 +110,7 @@ public final class GlossaryClient {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return all glossaries registered with Atlas.
+     * @return all glossaries registered with Atlas along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -242,7 +243,7 @@ public final class GlossaryClient {
      *     anchor attribute when creating the Term/Category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return atlasGlossary.
+     * @return atlasGlossary along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -386,7 +387,7 @@ public final class GlossaryClient {
      * @param glossaryCategory An array of glossary category definitions to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return an array of glossary category created successfully in bulk.
+     * @return an array of glossary category created successfully in bulk along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -528,7 +529,7 @@ public final class GlossaryClient {
      *     creating. Optionally, terms belonging to the category and the hierarchy can also be defined during creation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return atlasGlossaryCategory.
+     * @return atlasGlossaryCategory along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -606,7 +607,7 @@ public final class GlossaryClient {
      * @param categoryGuid The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return specific glossary category by its GUID.
+     * @return specific glossary category by its GUID along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -747,7 +748,7 @@ public final class GlossaryClient {
      * @param glossaryCategory The glossary category to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return atlasGlossaryCategory.
+     * @return atlasGlossaryCategory along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -762,7 +763,7 @@ public final class GlossaryClient {
      * @param categoryGuid The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -849,7 +850,7 @@ public final class GlossaryClient {
      *     partial update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return atlasGlossaryCategory.
+     * @return atlasGlossaryCategory along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -892,7 +893,7 @@ public final class GlossaryClient {
      * @param categoryGuid The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return all related categories (parent and children).
+     * @return all related categories (parent and children) along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -933,7 +934,7 @@ public final class GlossaryClient {
      * @param categoryGuid The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return all terms associated with the specific category.
+     * @return all terms associated with the specific category along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1258,7 +1259,7 @@ public final class GlossaryClient {
      *     Optionally it can be categorized as well.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return atlasGlossaryTerm.
+     * @return atlasGlossaryTerm along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1431,7 +1432,7 @@ public final class GlossaryClient {
      * @param termGuid The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return a specific glossary term by its GUID.
+     * @return a specific glossary term by its GUID along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1748,7 +1749,7 @@ public final class GlossaryClient {
      * @param glossaryTerm The glossary term to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return atlasGlossaryTerm.
+     * @return atlasGlossaryTerm along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1763,7 +1764,7 @@ public final class GlossaryClient {
      * @param termGuid The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1946,7 +1947,7 @@ public final class GlossaryClient {
      *     updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return atlasGlossaryTerm.
+     * @return atlasGlossaryTerm along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2275,7 +2276,7 @@ public final class GlossaryClient {
      * @param glossaryTerm An array of glossary term definitions to be created in bulk.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return if bulk glossary terms creation was successful.
+     * @return if bulk glossary terms creation was successful along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2326,7 +2327,7 @@ public final class GlossaryClient {
      * @param termGuid The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return all related objects assigned with the specified term.
+     * @return all related objects assigned with the specified term along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2368,7 +2369,7 @@ public final class GlossaryClient {
      * @param relatedObjectIds An array of related object IDs to which the term has to be associated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2410,7 +2411,7 @@ public final class GlossaryClient {
      * @param relatedObjectIds An array of related object IDs from which the term has to be dissociated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2453,7 +2454,7 @@ public final class GlossaryClient {
      * @param relatedObjectIds An array of related object IDs from which the term has to be dissociated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2499,7 +2500,7 @@ public final class GlossaryClient {
      * @param termGuid The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return all related terms for a specific term by its GUID.
+     * @return all related terms for a specific term by its GUID along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2572,7 +2573,7 @@ public final class GlossaryClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return a specific Glossary by its GUID.
+     * @return a specific Glossary by its GUID along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2705,7 +2706,7 @@ public final class GlossaryClient {
      * @param updatedGlossary The glossary definition to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return atlasGlossary.
+     * @return atlasGlossary along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2720,7 +2721,7 @@ public final class GlossaryClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2809,7 +2810,7 @@ public final class GlossaryClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the categories belonging to a specific glossary.
+     * @return the categories belonging to a specific glossary along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2847,7 +2848,7 @@ public final class GlossaryClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the category headers belonging to a specific glossary.
+     * @return the category headers belonging to a specific glossary along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3069,7 +3070,7 @@ public final class GlossaryClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return a specific glossary with detailed information.
+     * @return a specific glossary with detailed information along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3159,7 +3160,7 @@ public final class GlossaryClient {
      * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return atlasGlossary.
+     * @return atlasGlossary along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3338,7 +3339,7 @@ public final class GlossaryClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return terms belonging to a specific glossary.
+     * @return terms belonging to a specific glossary along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3379,7 +3380,7 @@ public final class GlossaryClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return term headers belonging to a specific glossary.
+     * @return term headers belonging to a specific glossary along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3437,7 +3438,7 @@ public final class GlossaryClient {
      * @param file The csv file to import glossary terms from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return status of import csv operation.
+     * @return status of import csv operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -3495,7 +3496,7 @@ public final class GlossaryClient {
      * @param file The csv file to import glossary terms from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return status of import csv operation.
+     * @return status of import csv operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -3537,7 +3538,7 @@ public final class GlossaryClient {
      * @param operationGuid The globally unique identifier for async operation/job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the status of import csv operation.
+     * @return the status of import csv operation along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3576,7 +3577,7 @@ public final class GlossaryClient {
      * @param termGuids An array of term guids.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3755,7 +3756,7 @@ public final class GlossaryClient {
      * @param glossaryName The name of the glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return terms by glossary name.
+     * @return terms by glossary name along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)

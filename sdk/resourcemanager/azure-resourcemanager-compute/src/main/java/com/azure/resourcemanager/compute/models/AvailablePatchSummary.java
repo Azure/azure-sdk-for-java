@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Describes the properties of an virtual machine instance view for available patch summary. */
 @Immutable
 public final class AvailablePatchSummary {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailablePatchSummary.class);
-
     /*
      * The overall success or failure status of the operation. It remains
      * "InProgress" until the operation completes. At that point it will become

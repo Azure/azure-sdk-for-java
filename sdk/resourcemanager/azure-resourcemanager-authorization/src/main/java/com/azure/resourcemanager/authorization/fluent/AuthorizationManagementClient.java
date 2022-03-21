@@ -59,13 +59,6 @@ public interface AuthorizationManagementClient {
     ProviderOperationsMetadatasClient getProviderOperationsMetadatas();
 
     /**
-     * Gets the RoleAssignmentsClient object to access its operations.
-     *
-     * @return the RoleAssignmentsClient object.
-     */
-    RoleAssignmentsClient getRoleAssignments();
-
-    /**
      * Gets the PermissionsClient object to access its operations.
      *
      * @return the PermissionsClient object.
@@ -78,4 +71,25 @@ public interface AuthorizationManagementClient {
      * @return the RoleDefinitionsClient object.
      */
     RoleDefinitionsClient getRoleDefinitions();
+
+    /**
+     * Gets the DenyAssignmentsClient object to access its operations.
+     *
+     * @return the DenyAssignmentsClient object.
+     */
+    DenyAssignmentsClient getDenyAssignments();
+
+    /**
+     * Gets the RoleAssignmentMetricsClient object to access its operations.
+     *
+     * @return the RoleAssignmentMetricsClient object.
+     */
+    RoleAssignmentMetricsClient getRoleAssignmentMetrics();
+
+    /**
+     * Gets the RoleAssignmentsClient object to access its operations.
+     *
+     * @return the RoleAssignmentsClient object.
+     */
+    RoleAssignmentsClient getRoleAssignments();
 }

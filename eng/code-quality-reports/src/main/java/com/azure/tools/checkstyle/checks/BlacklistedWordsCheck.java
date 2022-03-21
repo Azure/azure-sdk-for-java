@@ -25,7 +25,8 @@ import java.util.stream.Collectors;
  */
 public class BlacklistedWordsCheck extends AbstractCheck {
     private final Set<String> blacklistedWords = new HashSet<>();
-    private static final String ERROR_MESSAGE = "%s, All Public API Classes, Fields and Methods should follow "
+
+    static final String ERROR_MESSAGE = "%s, All Public API Classes, Fields and Methods should follow "
         + "Camelcase standards for the following words: %s.";
 
     /**

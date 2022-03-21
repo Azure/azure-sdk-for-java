@@ -66,6 +66,7 @@ public class SpyClientUnderTestFactory {
             super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential,
                 contentResponseOnWriteEnabled);
             init(null, null);
+            updateOrigRxGatewayStoreModel();
         }
 
         @Override
@@ -93,6 +94,13 @@ public class SpyClientUnderTestFactory {
             this.spyRxGatewayStoreModel = Mockito.spy(this.origRxGatewayStoreModel);
             this.initRequestCapture();
             return this.spyRxGatewayStoreModel;
+        }
+
+        private void updateOrigRxGatewayStoreModel() {
+            this.origRxGatewayStoreModel.setGatewayServiceConfigurationReader(this.spyRxGatewayStoreModel.getGatewayServiceConfigurationReader());
+            this.origRxGatewayStoreModel.setCollectionCache(this.spyRxGatewayStoreModel.getCollectionCache());
+            this.origRxGatewayStoreModel.setPartitionKeyRangeCache(this.spyRxGatewayStoreModel.getPartitionKeyRangeCache());
+            this.origRxGatewayStoreModel.setUseMultipleWriteLocations(this.spyRxGatewayStoreModel.isUseMultipleWriteLocations());
         }
 
         protected void initRequestCapture() {

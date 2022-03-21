@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Virtual application in an app. */
 @Fluent
 public final class VirtualApplication {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualApplication.class);
-
     /*
      * Virtual path.
      */

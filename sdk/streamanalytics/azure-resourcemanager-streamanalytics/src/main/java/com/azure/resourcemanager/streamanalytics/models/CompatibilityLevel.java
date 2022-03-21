@@ -13,6 +13,9 @@ public final class CompatibilityLevel extends ExpandableStringEnum<Compatibility
     /** Static value 1.0 for CompatibilityLevel. */
     public static final CompatibilityLevel ONE_ZERO = fromString("1.0");
 
+    /** Static value 1.2 for CompatibilityLevel. */
+    public static final CompatibilityLevel ONE_TWO = fromString("1.2");
+
     /**
      * Creates or finds a CompatibilityLevel from its string representation.
      *

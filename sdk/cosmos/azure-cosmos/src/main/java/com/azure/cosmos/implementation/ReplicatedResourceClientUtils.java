@@ -36,7 +36,8 @@ public class ReplicatedResourceClientUtils {
                 resourceType == ResourceType.PartitionKeyRange ||
                 resourceType == ResourceType.DocumentCollection ||
                 resourceType == ResourceType.Trigger ||
-                resourceType == ResourceType.UserDefinedFunction) {
+                resourceType == ResourceType.UserDefinedFunction ||
+                resourceType == ResourceType.ClientEncryptionKey) {
             return true;
         }
 
