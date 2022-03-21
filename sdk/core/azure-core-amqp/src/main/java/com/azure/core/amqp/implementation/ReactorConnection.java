@@ -411,7 +411,8 @@ public class ReactorConnection implements AmqpConnection {
                     .addKeyValue(LINK_NAME_KEY, linkName)
                     .log("Emitting new response channel.");
             })
-            .repeat();
+            .repeat()
+            .takeUntilOther(shutdownSignalSink.asMono());
 
         Map<String, Object> loggingContext = createContextWithConnectionId(connectionId);
         loggingContext.put(ENTITY_PATH_KEY, entityPath);
@@ -441,13 +442,6 @@ public class ReactorConnection implements AmqpConnection {
                 .log("Unable to emit shutdown signal.");
         }
 
-        final Mono<Void> cbsCloseOperation;
-        if (cbsChannelProcessor != null) {
-            cbsCloseOperation = cbsChannelProcessor.flatMap(channel -> channel.closeAsync());
-        } else {
-            cbsCloseOperation = Mono.empty();
-        }
-
         final Mono<Void> managementNodeCloseOperations = Mono.when(
             Flux.fromStream(managementNodes.values().stream()).flatMap(node -> node.closeAsync()));
 
@@ -474,10 +468,6 @@ public class ReactorConnection implements AmqpConnection {
         });
 
         return Mono.whenDelayError(
-            cbsCloseOperation.doFinally(signalType ->
-                logger.atVerbose()
-                    .addKeyValue(SIGNAL_TYPE_KEY, signalType)
-                    .log("Closed CBS node.")),
             managementNodeCloseOperations.doFinally(signalType ->
                 logger.atVerbose()
                     .log("Closed management nodes.")))
