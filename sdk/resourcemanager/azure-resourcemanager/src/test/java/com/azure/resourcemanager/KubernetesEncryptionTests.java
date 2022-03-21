@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager;
 
-import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.compute.fluent.models.DiskEncryptionSetInner;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSetType;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
@@ -17,7 +16,6 @@ import java.util.Locale;
 public class KubernetesEncryptionTests extends DiskEncryptionTestBase {
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
     public void canCreateClusterWithDiskEncryption() {
         final String clientId = this.clientIdFromFile();
 

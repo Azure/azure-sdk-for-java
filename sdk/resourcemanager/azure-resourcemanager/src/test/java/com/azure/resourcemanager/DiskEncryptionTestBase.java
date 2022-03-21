@@ -30,7 +30,6 @@ import com.azure.security.keyvault.keys.models.KeyType;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.UUID;
 
 public class DiskEncryptionTestBase extends ResourceManagerTestBase {
 
@@ -96,7 +95,8 @@ public class DiskEncryptionTestBase extends ResourceManagerTestBase {
             .create();
 
         // RBAC for this app
-        azureResourceManager.accessManagement().roleAssignments().define(UUID.randomUUID().toString())
+        String rbacName = generateRandomUuid();
+        azureResourceManager.accessManagement().roleAssignments().define(rbacName)
             .forServicePrincipal(clientId)
             .withBuiltInRole(BuiltInRole.KEY_VAULT_ADMINISTRATOR)
             .withResourceScope(vault)
@@ -125,7 +125,8 @@ public class DiskEncryptionTestBase extends ResourceManagerTestBase {
                     .withKeyUrl(vaultAndKey.key.id())));
 
         // RBAC for disk encryption set
-        azureResourceManager.accessManagement().roleAssignments().define(UUID.randomUUID().toString())
+        String rbacName = generateRandomUuid();
+        azureResourceManager.accessManagement().roleAssignments().define(rbacName)
             .forObjectId(diskEncryptionSet.identity().principalId())
             .withBuiltInRole(BuiltInRole.KEY_VAULT_CRYPTO_SERVICE_ENCRYPTION_USER)
             .withResourceScope(vaultAndKey.vault)
