@@ -86,8 +86,8 @@ class HttpPipelineAdapter implements IHttpClient {
     }
 
     private void logAccountIdentifiersIfConfigured(String body) {
-        if (identityClientOptions == null ||
-            !identityClientOptions.getIdentityLogOptionsImpl().isLoggingAccountIdentifiersAllowed()) {
+        if (identityClientOptions == null
+            || !identityClientOptions.getIdentityLogOptionsImpl().isLoggingAccountIdentifiersAllowed()) {
             return;
         }
         try {
