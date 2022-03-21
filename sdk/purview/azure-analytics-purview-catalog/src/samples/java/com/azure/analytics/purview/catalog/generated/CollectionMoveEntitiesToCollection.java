@@ -5,7 +5,7 @@
 package com.azure.analytics.purview.catalog.generated;
 
 import com.azure.analytics.purview.catalog.CollectionClient;
-import com.azure.analytics.purview.catalog.PurviewCatalogClientBuilder;
+import com.azure.analytics.purview.catalog.CollectionClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -13,17 +13,21 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class CollectionMoveEntitiesToCollection {
     public static void main(String[] args) {
-        CollectionClient client =
-                new PurviewCatalogClientBuilder()
+        // BEGIN:
+        // com.azure.analytics.purview.catalog.generated.collectionmoveentitiestocollection.collectionmoveentitiestocollection
+        CollectionClient collectionClient =
+                new CollectionClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
-                        .buildCollectionClient();
+                        .buildClient();
         BinaryData moveEntitiesRequest =
                 BinaryData.fromString(
                         "{\"entityGuids\":[\"321493e3-3fb7-4b3e-9df7-3b69154174c2\",\"b2f9c306-cf65-4bb0-878e-cfaafde156b1\"]}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                client.moveEntitiesToCollectionWithResponse(
+                collectionClient.moveEntitiesToCollectionWithResponse(
                         "ExampleNewCollection", moveEntitiesRequest, requestOptions);
+        // END:
+        // com.azure.analytics.purview.catalog.generated.collectionmoveentitiestocollection.collectionmoveentitiestocollection
     }
 }

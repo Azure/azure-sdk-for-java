@@ -3,6 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.TestConfigurations
+import com.azure.cosmos.spark.CosmosPatchOperationTypes.CosmosPatchOperationTypes
 import com.azure.cosmos.spark.ItemWriteStrategy.{ItemAppend, ItemDelete, ItemDeleteIfNotModified, ItemOverwrite, ItemWriteStrategy}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.scalatest.Succeeded
@@ -48,7 +49,7 @@ class SparkE2EWriteITest
         "spark.cosmos.serialization.inclusionMode" -> "NonDefault"
       )
 
-      val newSpark = getSpark()
+      val newSpark = getSpark
 
       // scalastyle:off underscore.import
       // scalastyle:off import.grouping
@@ -168,7 +169,7 @@ class SparkE2EWriteITest
         "spark.cosmos.write.bulk.enabled" -> bulkEnabled.toString
       )
 
-      val newSpark = getSpark()
+      val newSpark = getSpark
 
       // scalastyle:off underscore.import
       // scalastyle:off import.grouping
@@ -290,7 +291,7 @@ class SparkE2EWriteITest
         "spark.cosmos.container" -> cosmosContainerName
       )
 
-      val newSpark = getSpark()
+      val newSpark = getSpark
 
       // scalastyle:off underscore.import
       // scalastyle:off import.grouping
@@ -316,6 +317,72 @@ class SparkE2EWriteITest
             fail("expected success")
           }
       }
+    }
+  }
+
+  private case class PatchParameterTest(bulkEnabled: Boolean, defaultOptionType: CosmosPatchOperationTypes, patchColumnConfigString: String, patchConditionFilter: String)
+
+  private val patchParameterTest = Seq(
+    PatchParameterTest(bulkEnabled = true, CosmosPatchOperationTypes.Set, "[col(color).op(replace), col(spin).path(/spin).op(increment)]", "from c where exists(c.color)"),
+    PatchParameterTest(bulkEnabled = false, CosmosPatchOperationTypes.Set, "[col(color).op(replace), col(spin).path(/spin).op(increment)]", "from c where exists(c.color)"),
+  )
+
+  for (PatchParameterTest(bulkEnabled, patchDefaultOperationType, patchColumnConfigString, patchConditionFilter) <- patchParameterTest) {
+    it should s"support patch with bulkEnabled = ${bulkEnabled} defaultOperationType = ${patchDefaultOperationType} columnConfigString = ${patchColumnConfigString} patchConditionFilter = ${patchConditionFilter} " in {
+      val cosmosEndpoint = TestConfigurations.HOST
+      val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+      val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+        "spark.cosmos.accountKey" -> cosmosMasterKey,
+        "spark.cosmos.database" -> cosmosDatabase,
+        "spark.cosmos.container" -> cosmosContainer,
+        "spark.cosmos.serialization.inclusionMode" -> "NonDefault"
+      )
+
+      val cfgPatch = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+        "spark.cosmos.accountKey" -> cosmosMasterKey,
+        "spark.cosmos.database" -> cosmosDatabase,
+        "spark.cosmos.container" -> cosmosContainer,
+        "spark.cosmos.write.strategy" -> ItemWriteStrategy.ItemPatch.toString,
+        "spark.cosmos.write.bulk.enabled" -> bulkEnabled.toString,
+        "spark.cosmos.write.patch.defaultOperationType" -> patchDefaultOperationType.toString,
+        "spark.cosmos.write.patch.columnConfigs" -> patchColumnConfigString
+      )
+
+      val newSpark = getSpark
+
+      // scalastyle:off underscore.import
+      // scalastyle:off import.grouping
+      import spark.implicits._
+      val spark = newSpark
+      // scalastyle:on underscore.import
+      // scalastyle:on import.grouping
+
+      val df = Seq(
+        ("Quark", "Quark", "Red", 1.0 / 2, "")
+      ).toDF("particle name", "id", "color", "spin", "empty")
+
+      df.write.format("cosmos.oltp").mode("Append").options(cfg).save()
+
+      val patchDf = Seq(
+        ("Quark", "green", 0.03)
+      ).toDF("id", "color", "spin")
+
+      patchDf.write.format("cosmos.oltp").mode("Append").options(cfgPatch).save()
+
+      // verify data is written
+      // wait for a second to allow replication is completed.
+      Thread.sleep(1000)
+
+      // the item with the same id/pk will be persisted based on the upsert config
+      val quarks = queryItems("SELECT * FROM r where r.id = 'Quark'").toArray
+      quarks should have size 1
+
+      val quark = quarks(0)
+      quark.get("particle name").asText() shouldEqual "Quark"
+      quark.get("id").asText() shouldEqual "Quark"
+      quark.get("color").asText() shouldEqual "green"
+      quark.get("spin").asDouble() shouldEqual 0.53
     }
   }
   //scalastyle:on magic.number

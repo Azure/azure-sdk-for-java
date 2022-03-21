@@ -16,8 +16,9 @@ import java.util.function.Supplier;
  * @see ClientAssertionCredential
  */
 public class ClientAssertionCredentialBuilder extends AadCredentialBuilderBase<ClientAssertionCredentialBuilder> {
+    private static final ClientLogger LOGGER = new ClientLogger(ClientAssertionCredentialBuilder.class);
+
     private Supplier<String> clientAssertionSupplier;
-    private final ClientLogger logger = new ClientLogger(ClientAssertionCredentialBuilder.class);
 
     /**
      * Sets the supplier containing the logic to supply the client assertion when invoked.
@@ -68,7 +69,7 @@ public class ClientAssertionCredentialBuilder extends AadCredentialBuilderBase<C
                 put("clientId", clientId);
                 put("tenantId", tenantId);
                 put("clientAssertion", clientAssertionSupplier);
-            }});
+            }}, LOGGER);
 
         return new ClientAssertionCredential(clientId, tenantId, clientAssertionSupplier, identityClientOptions);
     }

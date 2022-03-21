@@ -172,6 +172,7 @@
                 <exclude>**/com/azure/cosmos/implementation/apachecommons/**/*</exclude>
                 <exclude>**/com/azure/cosmos/implementation/guava25/**/*</exclude>
                 <exclude>**/com/azure/cosmos/implementation/guava27/**/*</exclude>
+                <exclude>**/com/azure/cosmos/encryption/implementation/mdesrc/**/*</exclude>
               </excludes>
             </configuration>
           </plugin>
@@ -888,6 +889,7 @@
         <module>sdk/devspaces</module>
         <module>sdk/devtestlabs</module>
         <module>sdk/digitaltwins</module>
+        <module>sdk/dnsresolver</module>
         <module>sdk/edgeorder</module>
         <module>sdk/elastic</module>
         <module>sdk/eventgrid</module>
@@ -923,6 +925,7 @@
         <module>sdk/mediaservices</module>
         <module>sdk/metricsadvisor</module>
         <module>sdk/mixedreality</module>
+        <module>sdk/mobilenetwork</module>
         <module>sdk/modelsrepository</module>
         <module>sdk/monitor</module>
         <module>sdk/mysql</module>

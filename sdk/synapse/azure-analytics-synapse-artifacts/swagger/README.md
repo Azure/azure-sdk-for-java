@@ -20,7 +20,7 @@ autorest --java --use=C:/work/autorest.java
 
 ### Code generation settings
 ```yaml
-branch: 949388b9dfddc435859fda2850c5bb5019aa217b
+branch: f2fb403f64e0fcb1a799c60daf980f0cde495f8f
 repo: https://github.com/Azure/azure-rest-api-specs/blob/$(branch)
 ```
 
@@ -30,6 +30,7 @@ output-folder: ..\
 generate-client-as-impl: true
 generate-sync-async-clients: true
 namespace: com.azure.analytics.synapse.artifacts
+artifact-id: azure-analytics-synapse-artifacts
 generate-client-interfaces: false
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL

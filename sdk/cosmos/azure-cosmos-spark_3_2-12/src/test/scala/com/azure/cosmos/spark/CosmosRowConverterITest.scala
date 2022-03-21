@@ -29,7 +29,7 @@ class CosmosRowConverterITest
       "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
-    val spark = this.getSpark()
+    val spark = this.getSpark
 
     // scalastyle:off underscore.import
     // scalastyle:off import.grouping

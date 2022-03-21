@@ -140,7 +140,14 @@ public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueC
     @Override
     public boolean unsubscribe(String destination) {
         // TODO: unregister message handler but service bus sdk unsupported
-        return subscribedQueues.remove(destination);
+        if (this.subscribedQueues.remove(destination)) {
+            this.clientFactory
+                .removeProcessor(destination)
+                .close();
+            return true;
+        }
+        LOGGER.warn("The queue %s has not been subscribed.", destination);
+        return false;
     }
 
 }

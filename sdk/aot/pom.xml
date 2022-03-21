@@ -49,6 +49,8 @@
       <modules>
         <module>azure-aot-graalvm-support</module>
         <module>azure-aot-graalvm-support-netty</module>
+        <module>azure-aot-graalvm-samples</module>
+        <module>azure-aot-graalvm-perf</module>
       </modules>
     </profile>
   </profiles>

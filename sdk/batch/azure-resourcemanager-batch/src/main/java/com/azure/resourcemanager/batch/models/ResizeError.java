@@ -6,15 +6,12 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An error that occurred when resizing a pool. */
 @Fluent
 public final class ResizeError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResizeError.class);
-
     /*
      * An identifier for the error. Codes are invariant and are intended to be
      * consumed programmatically.
@@ -106,12 +103,12 @@ public final class ResizeError {
      */
     public void validate() {
         if (code() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property code in model ResizeError"));
         }
         if (message() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property message in model ResizeError"));
         }
@@ -119,4 +116,6 @@ public final class ResizeError {
             details().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ResizeError.class);
 }

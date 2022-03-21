@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.HostingEnvironmentDeploymentInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of available locations (regions or App Service Environments) for deployment of App Service resources. */
 @Fluent
 public final class DeploymentLocationsInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentLocationsInner.class);
-
     /*
      * Available regions.
      */

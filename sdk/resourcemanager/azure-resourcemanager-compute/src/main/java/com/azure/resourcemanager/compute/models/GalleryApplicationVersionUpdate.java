@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.GalleryApplicationVersionProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Specifies information about the gallery Application Version that you want to update. */
 @Fluent
 public final class GalleryApplicationVersionUpdate extends UpdateResourceDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryApplicationVersionUpdate.class);
-
     /*
      * Describes the properties of a gallery image version.
      */

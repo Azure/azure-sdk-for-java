@@ -3,10 +3,11 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosException
+import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.models.FeedResponse
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.util.{CosmosPagedFlux, CosmosPagedIterable}
-import com.fasterxml.jackson.databind.node.ObjectNode
+import reactor.core.scheduler.Schedulers
 
 import java.util.concurrent.atomic.{AtomicLong, AtomicReference}
 import scala.util.Random
@@ -31,11 +32,13 @@ import scala.collection.JavaConverters._
 // TODO @fabianm - we should still have a discussion whether it would be worth to allow tweaking
 //  the retry policy of the SDK. But having the Spark specific retries for now to get some experience
 //  can help making the right decisions if/how to expose this in the SDK
-private class TransientIOErrorsRetryingIterator
+private class TransientIOErrorsRetryingIterator[TSparkRow]
 (
-  cosmosPagedFluxFactory: String => CosmosPagedFlux[ObjectNode],
-  pageSize: Int
-) extends Iterator[ObjectNode] with BasicLoggingTrait {
+  val cosmosPagedFluxFactory: String => CosmosPagedFlux[TSparkRow],
+  val pageSize: Int,
+  val pagePrefetchBufferSize: Int,
+  val operationContextAndListener: Option[OperationContextAndListenerTuple]
+) extends BufferedIterator[TSparkRow] with BasicLoggingTrait with AutoCloseable {
 
   private[spark] var maxRetryIntervalInMs = CosmosConstants.maxRetryIntervalForTransientFailuresInMs
   private[spark] var maxRetryCount = CosmosConstants.maxRetryCountForTransientFailures
@@ -46,9 +49,9 @@ private class TransientIOErrorsRetryingIterator
   // scalastyle:on null
   private val retryCount = new AtomicLong(0)
 
-  private[spark] var currentFeedResponseIterator: Option[Iterator[FeedResponse[ObjectNode]]] = None
-  private[spark] var currentItemIterator: Option[Iterator[ObjectNode]] = None
-
+  private[spark] var currentFeedResponseIterator: Option[BufferedIterator[FeedResponse[TSparkRow]]] = None
+  private[spark] var currentItemIterator: Option[BufferedIterator[TSparkRow]] = None
+  private val lastPagedFlux = new AtomicReference[Option[CosmosPagedFlux[TSparkRow]]](None)
   override def hasNext: Boolean = {
     executeWithRetry("hasNextInternal", () => hasNextInternal)
   }
@@ -78,20 +81,34 @@ private class TransientIOErrorsRetryingIterator
       val feedResponseIterator = currentFeedResponseIterator match {
         case Some(existing) => existing
         case None =>
-          currentFeedResponseIterator = Some(new CosmosPagedIterable[ObjectNode](
-            cosmosPagedFluxFactory.apply(lastContinuationToken.get),
-            pageSize
-          )
+          val newPagedFlux = Some(cosmosPagedFluxFactory.apply(lastContinuationToken.get))
+          lastPagedFlux.getAndSet(newPagedFlux) match {
+            case Some(oldPagedFlux) => oldPagedFlux.cancelOn(Schedulers.boundedElastic())
+            case None =>
+          }
+          currentFeedResponseIterator = Some(
+            new CosmosPagedIterable[TSparkRow](
+              newPagedFlux.get,
+              pageSize,
+              pagePrefetchBufferSize
+            )
             .iterableByPage()
+            .iterator
             .asScala
-            .iterator)
+            .buffered
+          )
 
           currentFeedResponseIterator.get
       }
 
       if (feedResponseIterator.hasNext) {
         val feedResponse = feedResponseIterator.next()
-        val iteratorCandidate = feedResponse.getResults.iterator().asScala
+        if (operationContextAndListener.isDefined) {
+          operationContextAndListener.get.getOperationListener.feedResponseProcessedListener(
+            operationContextAndListener.get.getOperationContext,
+            feedResponse)
+        }
+        val iteratorCandidate = feedResponse.getResults.iterator().asScala.buffered
         lastContinuationToken.set(feedResponse.getContinuationToken)
 
         if (iteratorCandidate.hasNext) {
@@ -121,8 +138,12 @@ private class TransientIOErrorsRetryingIterator
     }
   }
 
-  override def next(): ObjectNode = {
+  override def next(): TSparkRow = {
     currentItemIterator.get.next()
+  }
+
+  override def head(): TSparkRow = {
+    currentItemIterator.get.head
   }
 
   private[spark] def executeWithRetry[T](methodName: String, func: () => T): T = {
@@ -166,5 +187,12 @@ private class TransientIOErrorsRetryingIterator
     }
 
     returnValue.get
+  }
+
+  override def close(): Unit = {
+    lastPagedFlux.getAndSet(None) match {
+      case Some(oldPagedFlux) => oldPagedFlux.cancelOn(Schedulers.boundedElastic())
+      case None =>
+    }
   }
 }

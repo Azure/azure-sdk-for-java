@@ -6,9 +6,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** Specifies information about the gallery Application Definition that you want to create or update. */
 @Fluent
 public final class GalleryApplicationInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryApplicationInner.class);
-
     /*
      * Describes the properties of a gallery Application Definition.
      */

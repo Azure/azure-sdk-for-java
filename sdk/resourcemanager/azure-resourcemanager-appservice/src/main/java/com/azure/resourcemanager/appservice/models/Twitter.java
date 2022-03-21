@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The configuration settings of the Twitter provider. */
 @Fluent
 public final class Twitter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Twitter.class);
-
     /*
      * <code>false</code> if the Twitter provider should not be enabled despite
      * the set registration; otherwise, <code>true</code>.

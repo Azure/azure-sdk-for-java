@@ -8,7 +8,6 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.MicrosoftDataEncryptionException;
-import com.azure.cosmos.encryption.keyprovider.AzureKeyVaultKeyWrapProvider;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.encryption.models.SqlQuerySpecWithEncryption;
@@ -29,6 +28,8 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.security.keyvault.keys.cryptography.KeyEncryptionKeyClientBuilder;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -57,7 +58,6 @@ public class Program {
     private static CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = null;
     private static CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase = null;
     private static CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer = null;
-    private static AzureKeyVaultKeyWrapProvider azureKeyVaultKeyWrapProvider = null;
 
     public static void main(String[] args) throws Exception {
         try {
@@ -93,9 +93,11 @@ public class Program {
         // This application must have keys/wrapKey and keys/unwrapKey permissions
         // on the keys that will be used for encryption.
         TokenCredential tokenCredentials = Program.getTokenCredential(configuration);
-        azureKeyVaultKeyWrapProvider = new AzureKeyVaultKeyWrapProvider(tokenCredentials);
+        KeyEncryptionKeyClientBuilder keyEncryptionKeyClientBuilder = new KeyEncryptionKeyClientBuilder();
+        keyEncryptionKeyClientBuilder.credential(tokenCredentials);
 
-        return CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(asyncClient, azureKeyVaultKeyWrapProvider);
+        return new CosmosEncryptionClientBuilder().cosmosAsyncClient(asyncClient).keyEncryptionKeyResolver(
+            keyEncryptionKeyClientBuilder).keyEncryptionKeyResolverName(CosmosEncryptionClientBuilder.KEY_RESOLVER_NAME_AZURE_KEY_VAULT).buildAsyncClient();
     }
 
     /**
@@ -127,7 +129,7 @@ public class Program {
             throw new IllegalArgumentException("Please specify a valid MasterKeyUrl in the appSettings.json");
         }
 
-        EncryptionKeyWrapMetadata metadata = new EncryptionKeyWrapMetadata(azureKeyVaultKeyWrapProvider.getProviderName(), dataEncryptionKeyId, masterKeyUrlFromConfig);
+        EncryptionKeyWrapMetadata metadata = new EncryptionKeyWrapMetadata(cosmosEncryptionAsyncClient.getKeyEncryptionKeyResolverName(), dataEncryptionKeyId, masterKeyUrlFromConfig, EncryptionAlgorithm.RSA_OAEP.toString());
 
         /// Generates an encryption key, wraps it using the key wrap metadata provided
         /// and saves the wrapped encryption key as an asynchronous operation in the Azure Cosmos service.

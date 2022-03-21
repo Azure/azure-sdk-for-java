@@ -55,6 +55,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
@@ -190,7 +191,7 @@ public class IdentityClientTests {
         Assert.assertEquals(accessToken, token.getToken());
         Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
     }
-    
+
 
     @Test
     public void testValidServiceFabricCodeFlow() throws Exception {
@@ -235,7 +236,7 @@ public class IdentityClientTests {
 
         // test
         IdentityClient client = new IdentityClientBuilder().build();
-        AccessToken token = client.authenticateToManagedIdentityEndpoint(endpoint, secret, request).block();
+        AccessToken token = client.authenticateToManagedIdentityEndpoint(endpoint, secret, null, null, request).block();
         Assert.assertEquals("token1", token.getToken());
         Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
     }
@@ -436,6 +437,7 @@ public class IdentityClientTests {
         when(builder.build()).thenReturn(application);
         when(builder.authority(any())).thenReturn(builder);
         when(builder.httpClient(any())).thenReturn(builder);
+        when(builder.validateAuthority(anyBoolean())).thenReturn(builder);
         whenNew(ConfidentialClientApplication.Builder.class).withAnyArguments().thenAnswer(invocation -> {
             String cid = (String) invocation.getArguments()[0];
             IClientSecret clientSecret = (IClientSecret) invocation.getArguments()[1];
@@ -465,6 +467,7 @@ public class IdentityClientTests {
         when(builder.build()).thenReturn(application);
         when(builder.authority(any())).thenReturn(builder);
         when(builder.httpClient(any())).thenReturn(builder);
+        when(builder.validateAuthority(anyBoolean())).thenReturn(builder);
         whenNew(ConfidentialClientApplication.Builder.class).withAnyArguments().thenAnswer(invocation -> {
             String cid = (String) invocation.getArguments()[0];
             IClientCredential keyCredential = (IClientCredential) invocation.getArguments()[1];
@@ -500,6 +503,7 @@ public class IdentityClientTests {
         when(builder.build()).thenReturn(application);
         when(builder.authority(any())).thenReturn(builder);
         when(builder.httpClient(any())).thenReturn(builder);
+        when(builder.validateAuthority(anyBoolean())).thenReturn(builder);
         whenNew(PublicClientApplication.Builder.class).withArguments(CLIENT_ID).thenReturn(builder);
     }
 
@@ -519,6 +523,7 @@ public class IdentityClientTests {
         when(builder.build()).thenReturn(application);
         when(builder.authority(any())).thenReturn(builder);
         when(builder.httpClient(any())).thenReturn(builder);
+        when(builder.validateAuthority(anyBoolean())).thenReturn(builder);
         whenNew(ConfidentialClientApplication.Builder.class).withAnyArguments().thenAnswer(invocation -> {
             String cid = (String) invocation.getArguments()[0];
             if (!CLIENT_ID.equals(cid)) {
@@ -600,6 +605,7 @@ public class IdentityClientTests {
         when(builder.build()).thenReturn(application);
         when(builder.authority(any())).thenReturn(builder);
         when(builder.httpClient(any())).thenReturn(builder);
+        when(builder.validateAuthority(anyBoolean())).thenReturn(builder);
         whenNew(PublicClientApplication.Builder.class).withArguments(CLIENT_ID).thenReturn(builder);
     }
 
@@ -630,6 +636,7 @@ public class IdentityClientTests {
         when(builder.build()).thenReturn(application);
         when(builder.authority(any())).thenReturn(builder);
         when(builder.httpClient(any())).thenReturn(builder);
+        when(builder.validateAuthority(anyBoolean())).thenReturn(builder);
         whenNew(PublicClientApplication.Builder.class).withArguments(CLIENT_ID).thenReturn(builder);
     }
 
@@ -648,6 +655,7 @@ public class IdentityClientTests {
         when(builder.build()).thenReturn(application);
         when(builder.authority(any())).thenReturn(builder);
         when(builder.httpClient(any())).thenReturn(builder);
+        when(builder.validateAuthority(anyBoolean())).thenReturn(builder);
         whenNew(PublicClientApplication.Builder.class).withArguments(CLIENT_ID).thenReturn(builder);
     }
 
@@ -666,6 +674,7 @@ public class IdentityClientTests {
         when(builder.build()).thenReturn(application);
         when(builder.authority(any())).thenReturn(builder);
         when(builder.httpClient(any())).thenReturn(builder);
+        when(builder.validateAuthority(anyBoolean())).thenReturn(builder);
         whenNew(PublicClientApplication.Builder.class).withArguments(CLIENT_ID).thenReturn(builder);
     }
 }

@@ -2,12 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.{ServiceUnavailableException, Strings, Utils}
+import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, ServiceUnavailableException, SparkRowItem, Strings, Utils}
 import com.azure.cosmos.models.{CosmosQueryRequestOptions, ModelBridgeInternal}
 import com.azure.cosmos.spark.TransientIOErrorsRetryingIteratorITest.maxRetryCountPerIOOperation
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.util.CosmosPagedIterable
 import com.fasterxml.jackson.databind.node.ObjectNode
+import reactor.util.concurrent.Queues
 
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
@@ -46,7 +47,22 @@ class TransientIOErrorsRetryingIteratorITest
       }
     }
 
+    val cosmosSerializationConfig = CosmosSerializationConfig(SerializationInclusionModes.Always)
+    val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
     val queryOptions = new CosmosQueryRequestOptions()
+    ImplementationBridgeHelpers
+      .CosmosQueryRequestOptionsHelper
+      .getCosmosQueryRequestOptionsAccessor
+      .setItemFactoryMethod(
+        queryOptions,
+        jsonNode => {
+          val row = cosmosRowConverter.fromObjectNodeToRow(
+            ItemsTable.defaultSchemaForInferenceDisabled,
+            jsonNode.asInstanceOf[ObjectNode],
+            SchemaConversionModes.Strict)
+
+          SparkRowItem(row)
+        })
     val retryingIterator = new TransientIOErrorsRetryingIterator(
       continuationToken => {
         if (!Strings.isNullOrWhiteSpace(continuationToken)) {
@@ -59,10 +75,11 @@ class TransientIOErrorsRetryingIteratorITest
           // scalastyle:on null
         }
         container
-          .queryItems("SELECT * FROM c", queryOptions, classOf[ObjectNode])
+          .queryItems("SELECT * FROM c", queryOptions, classOf[SparkRowItem])
           .handle(r => {
             val lastId = if (r.getResults.size() > 0) {
-              r.getResults.get(r.getResults.size() - 1).get("id").asText()
+              val row = r.getResults.get(r.getResults.size() - 1).row
+              row.get(row.fieldIndex("id")).asInstanceOf[String]
             } else {
               ""
             }
@@ -70,7 +87,9 @@ class TransientIOErrorsRetryingIteratorITest
             lastIdOfPage.set(lastId)
           })
       },
-      2
+      2,
+      Queues.XS_BUFFER_SIZE,
+      None
     )
     retryingIterator.maxRetryIntervalInMs = 5
     retryingIterator.maxRetryCount = maxRetryCountPerIOOperation
@@ -85,7 +104,8 @@ class TransientIOErrorsRetryingIteratorITest
         () => retryingIterator.hasNext))) {
 
       val node = retryingIterator.next()
-      val idRetrieved = node.get("id").asText()
+      val row = node.row
+      val idRetrieved = row.get(row.fieldIndex("id")).asInstanceOf[String]
       logInfo(s"Last ID retrieved: $idRetrieved")
       lastIdRetrieved.set(idRetrieved)
       recordCount.incrementAndGet()
@@ -117,7 +137,9 @@ class TransientIOErrorsRetryingIteratorITest
     val iterator = new CosmosPagedIterable[ObjectNode](
         container
           .queryItems("SELECT * FROM c", queryOptions, classOf[ObjectNode]),
-      2).iterator()
+      2,
+      1
+    ).iterator()
 
     while (iterator.hasNext) {
       iterator.next
@@ -148,7 +170,22 @@ class TransientIOErrorsRetryingIteratorITest
       }
     }
 
+    val cosmosSerializationConfig = CosmosSerializationConfig(SerializationInclusionModes.Always)
+    val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
     val queryOptions = new CosmosQueryRequestOptions()
+    ImplementationBridgeHelpers
+      .CosmosQueryRequestOptionsHelper
+      .getCosmosQueryRequestOptionsAccessor
+      .setItemFactoryMethod(
+        queryOptions,
+        jsonNode => {
+          val row = cosmosRowConverter.fromObjectNodeToRow(
+            ItemsTable.defaultSchemaForInferenceDisabled,
+            jsonNode.asInstanceOf[ObjectNode],
+            SchemaConversionModes.Strict)
+
+          SparkRowItem(row)
+        })
     val retryingIterator = new TransientIOErrorsRetryingIterator(
       continuationToken => {
         if (!Strings.isNullOrWhiteSpace(continuationToken)) {
@@ -161,16 +198,19 @@ class TransientIOErrorsRetryingIteratorITest
           // scalastyle:on null
         }
         container
-          .queryItems("SELECT * FROM c", queryOptions, classOf[ObjectNode])
+          .queryItems("SELECT * FROM c", queryOptions, classOf[SparkRowItem])
           .handle(r => {
             if (r.getResults.size() > 0) {
-              lastIdOfPage.set(r.getResults.get(r.getResults.size() - 1).get("id").asText())
+              val row = r.getResults.get(r.getResults.size() - 1).row
+              row.get(row.fieldIndex("id")).asInstanceOf[String]
             } else {
               lastIdOfPage.set("")
             }
           })
       },
-      2
+      2,
+      Queues.XS_BUFFER_SIZE,
+      None
     )
     retryingIterator.maxRetryIntervalInMs = 5
     retryingIterator.maxRetryCount = maxRetryCountPerIOOperation
@@ -185,7 +225,10 @@ class TransientIOErrorsRetryingIteratorITest
         () => retryingIterator.hasNext))) {
 
       val node = retryingIterator.next()
-      lastIdRetrieved.set(node.get("id").asText())
+      val row = node.row
+      val idRetrieved = row.get(row.fieldIndex("id")).asInstanceOf[String]
+      logInfo(s"Last ID retrieved: $idRetrieved")
+      lastIdRetrieved.set(idRetrieved)
       recordCount.incrementAndGet()
     }
     })

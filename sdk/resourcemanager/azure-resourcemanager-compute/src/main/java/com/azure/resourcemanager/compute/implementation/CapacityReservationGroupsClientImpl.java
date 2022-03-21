@@ -28,7 +28,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.CapacityReservationGroupsClient;
 import com.azure.resourcemanager.compute.fluent.models.CapacityReservationGroupInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
@@ -47,8 +46,6 @@ public final class CapacityReservationGroupsClientImpl
         InnerSupportsListing<CapacityReservationGroupInner>,
         InnerSupportsDelete<Void>,
         CapacityReservationGroupsClient {
-    private final ClientLogger logger = new ClientLogger(CapacityReservationGroupsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final CapacityReservationGroupsService service;
 

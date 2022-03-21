@@ -87,7 +87,7 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
  */
 @ServiceClient(builder = ShareClientBuilder.class, isAsync = true)
 public class ShareAsyncClient {
-    private final ClientLogger logger = new ClientLogger(ShareAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ShareAsyncClient.class);
 
     private final AzureFileStorageImpl azureFileStorageClient;
     private final String shareName;
@@ -232,9 +232,9 @@ public class ShareAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> existsWithResponse() {
         try {
-            return withContext(context -> existsWithResponse(context));
+            return withContext(this::existsWithResponse);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -277,11 +277,7 @@ public class ShareAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareInfo> create() {
-        try {
-            return createWithResponse(null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return createWithResponse(null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -325,12 +321,7 @@ public class ShareAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareInfo>> createWithResponse(Map<String, String> metadata, Integer quotaInGB) {
-        try {
-            return withContext(context -> createWithResponse(new ShareCreateOptions().setMetadata(metadata)
-                .setQuotaInGb(quotaInGB), context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return createWithResponse(new ShareCreateOptions().setMetadata(metadata).setQuotaInGb(quotaInGB));
     }
 
     /**
@@ -366,7 +357,7 @@ public class ShareAsyncClient {
         try {
             return withContext(context -> createWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -525,11 +516,7 @@ public class ShareAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareSnapshotInfo> createSnapshot() {
-        try {
-            return createSnapshotWithResponse(null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return createSnapshotWithResponse(null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -564,7 +551,7 @@ public class ShareAsyncClient {
         try {
             return withContext(context -> createSnapshotWithResponse(metadata, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -600,11 +587,7 @@ public class ShareAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> delete() {
-        try {
-            return deleteWithResponse().flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return deleteWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -633,11 +616,7 @@ public class ShareAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponse() {
-        try {
-            return deleteWithResponse(new ShareDeleteOptions());
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return deleteWithResponse(new ShareDeleteOptions());
     }
 
     /**
@@ -670,7 +649,7 @@ public class ShareAsyncClient {
         try {
             return withContext(context -> deleteWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -813,11 +792,7 @@ public class ShareAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareProperties> getProperties() {
-        try {
-            return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -847,11 +822,7 @@ public class ShareAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareProperties>> getPropertiesWithResponse() {
-        try {
-            return getPropertiesWithResponse(new ShareGetPropertiesOptions());
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getPropertiesWithResponse(new ShareGetPropertiesOptions());
     }
 
     /**
@@ -886,7 +857,7 @@ public class ShareAsyncClient {
         try {
             return withContext(context -> getPropertiesWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -927,11 +898,7 @@ public class ShareAsyncClient {
     @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareInfo> setQuota(int quotaInGB) {
-        try {
-            return setQuotaWithResponse(quotaInGB).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return setQuotaWithResponse(quotaInGB).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -962,11 +929,7 @@ public class ShareAsyncClient {
     @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareInfo>> setQuotaWithResponse(int quotaInGB) {
-        try {
-            return setPropertiesWithResponse(new ShareSetPropertiesOptions().setQuotaInGb(quotaInGB));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return setPropertiesWithResponse(new ShareSetPropertiesOptions().setQuotaInGb(quotaInGB));
     }
 
     /**
@@ -990,11 +953,7 @@ public class ShareAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareInfo> setProperties(ShareSetPropertiesOptions options) {
-        try {
-            return setPropertiesWithResponse(options).map(Response::getValue);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return setPropertiesWithResponse(options).map(Response::getValue);
     }
 
     /**
@@ -1024,7 +983,7 @@ public class ShareAsyncClient {
         try {
             return withContext(context -> setPropertiesWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1075,11 +1034,7 @@ public class ShareAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareInfo> setMetadata(Map<String, String> metadata) {
-        try {
-            return setMetadataWithResponse(metadata).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return setMetadataWithResponse(metadata).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1119,11 +1074,7 @@ public class ShareAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareInfo>> setMetadataWithResponse(Map<String, String> metadata) {
-        try {
-            return setMetadataWithResponse(new ShareSetMetadataOptions().setMetadata(metadata));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return setMetadataWithResponse(new ShareSetMetadataOptions().setMetadata(metadata));
     }
 
     /**
@@ -1157,7 +1108,7 @@ public class ShareAsyncClient {
         try {
             return withContext(context -> setMetadataWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1196,11 +1147,7 @@ public class ShareAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ShareSignedIdentifier> getAccessPolicy() {
-        try {
-            return getAccessPolicy(new ShareGetAccessPolicyOptions());
-        } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
-        }
+        return getAccessPolicy(new ShareGetAccessPolicyOptions());
     }
 
     /**
@@ -1246,7 +1193,7 @@ public class ShareAsyncClient {
 
             return new PagedFlux<>(() -> retriever.apply(null), retriever);
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -1279,11 +1226,7 @@ public class ShareAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareInfo> setAccessPolicy(List<ShareSignedIdentifier> permissions) {
-        try {
-            return setAccessPolicyWithResponse(permissions).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return setAccessPolicyWithResponse(permissions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1317,12 +1260,7 @@ public class ShareAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareInfo>> setAccessPolicyWithResponse(List<ShareSignedIdentifier> permissions) {
-        try {
-            return withContext(context -> setAccessPolicyWithResponse(new ShareSetAccessPolicyOptions()
-                .setPermissions(permissions), context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return setAccessPolicyWithResponse(new ShareSetAccessPolicyOptions().setPermissions(permissions));
     }
 
     /**
@@ -1361,7 +1299,7 @@ public class ShareAsyncClient {
         try {
             return withContext(context -> setAccessPolicyWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1417,11 +1355,7 @@ public class ShareAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareStatistics> getStatistics() {
-        try {
-            return getStatisticsWithResponse().flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getStatisticsWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1446,11 +1380,7 @@ public class ShareAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareStatistics>> getStatisticsWithResponse() {
-        try {
-            return getStatisticsWithResponse(new ShareGetStatisticsOptions());
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getStatisticsWithResponse(new ShareGetStatisticsOptions());
     }
 
     /**
@@ -1481,7 +1411,7 @@ public class ShareAsyncClient {
         try {
             return withContext(context -> getStatisticsWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1523,11 +1453,7 @@ public class ShareAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareDirectoryAsyncClient> createDirectory(String directoryName) {
-        try {
-            return createDirectoryWithResponse(directoryName, null, null, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return createDirectoryWithResponse(directoryName, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1568,7 +1494,7 @@ public class ShareAsyncClient {
             return withContext(context ->
                 createDirectoryWithResponse(directoryName, smbProperties, filePermission, metadata, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1696,11 +1622,7 @@ public class ShareAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareFileAsyncClient> createFile(String fileName, long maxSize) {
-        try {
-            return createFileWithResponse(fileName, maxSize, null, null, null, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return createFileWithResponse(fileName, maxSize, null, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1824,7 +1746,7 @@ public class ShareAsyncClient {
                 createFileWithResponse(fileName, maxSize, httpHeaders, smbProperties, filePermission, metadata,
                     requestConditions, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1864,11 +1786,7 @@ public class ShareAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteDirectory(String directoryName) {
-        try {
-            return deleteDirectoryWithResponse(directoryName).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return deleteDirectoryWithResponse(directoryName).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1901,7 +1819,7 @@ public class ShareAsyncClient {
         try {
             return withContext(context -> deleteDirectoryWithResponse(directoryName, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -2007,11 +1925,7 @@ public class ShareAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteFile(String fileName) {
-        try {
-            return deleteFileWithResponse(fileName).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return deleteFileWithResponse(fileName).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -2074,10 +1988,9 @@ public class ShareAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteFileWithResponse(String fileName, ShareRequestConditions requestConditions) {
         try {
-            return withContext(context -> deleteFileWithResponse(fileName, requestConditions,
-                context));
+            return withContext(context -> deleteFileWithResponse(fileName, requestConditions, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -2211,11 +2124,7 @@ public class ShareAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> createPermission(String filePermission) {
-        try {
-            return createPermissionWithResponse(filePermission).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return createPermissionWithResponse(filePermission).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -2239,7 +2148,7 @@ public class ShareAsyncClient {
         try {
             return withContext(context -> createPermissionWithResponse(filePermission, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -2269,11 +2178,7 @@ public class ShareAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> getPermission(String filePermissionKey) {
-        try {
-            return getPermissionWithResponse(filePermissionKey).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getPermissionWithResponse(filePermissionKey).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -2296,7 +2201,7 @@ public class ShareAsyncClient {
         try {
             return withContext(context -> getPermissionWithResponse(filePermissionKey, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 

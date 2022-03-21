@@ -5,7 +5,7 @@
 package com.azure.analytics.purview.catalog.generated;
 
 import com.azure.analytics.purview.catalog.CollectionClient;
-import com.azure.analytics.purview.catalog.PurviewCatalogClientBuilder;
+import com.azure.analytics.purview.catalog.CollectionClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -13,16 +13,19 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class CollectionCreateOrUpdateBulk {
     public static void main(String[] args) {
-        CollectionClient client =
-                new PurviewCatalogClientBuilder()
+        // BEGIN:
+        // com.azure.analytics.purview.catalog.generated.collectioncreateorupdatebulk.collectioncreateorupdatebulk
+        CollectionClient collectionClient =
+                new CollectionClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
-                        .buildCollectionClient();
+                        .buildClient();
         BinaryData entities =
                 BinaryData.fromString(
                         "{\"entities\":[{\"attributes\":{\"name\":\"exampleaccount\",\"description\":\"Example Description\",\"qualifiedName\":\"exampleaccount\"},\"typeName\":\"azure_storage_account\"},{\"attributes\":{\"name\":\"exampleaccount2\",\"qualifiedName\":\"exampleaccount2\"},\"typeName\":\"azure_storage_account\"}],\"referredEntities\":{}}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                client.createOrUpdateBulkWithResponse("ExampleCollection", entities, requestOptions);
+                collectionClient.createOrUpdateBulkWithResponse("ExampleCollection", entities, requestOptions);
+        // END: com.azure.analytics.purview.catalog.generated.collectioncreateorupdatebulk.collectioncreateorupdatebulk
     }
 }

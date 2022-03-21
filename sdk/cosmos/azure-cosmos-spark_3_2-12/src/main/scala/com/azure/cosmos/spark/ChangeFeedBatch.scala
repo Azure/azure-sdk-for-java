@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal}
-import com.azure.cosmos.spark.diagnostics.LoggerHelper
+import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, LoggerHelper}
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.connector.read.{Batch, InputPartition, PartitionReaderFactory}
@@ -23,7 +23,8 @@ private class ChangeFeedBatch
 
   @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
 
-  private val batchId = UUID.randomUUID().toString
+  private val correlationActivityId = UUID.randomUUID()
+  private val batchId = correlationActivityId.toString
   log.logTrace(s"Instantiated ${this.getClass.getSimpleName}")
   private val defaultParallelism = session.sparkContext.defaultParallelism
 
@@ -40,7 +41,7 @@ private class ChangeFeedBatch
       CosmosClientCache.apply(
         clientConfiguration,
         Some(cosmosClientStateHandle),
-        s"ChangeFeedBatch.planInputPartitions(batchId ${batchId})"
+        s"ChangeFeedBatch.planInputPartitions(batchId $batchId)"
       )).to(cacheItem => {
       val container = ThroughputControlHelper.getContainer(config, containerConfig, cacheItem.client)
 
@@ -79,6 +80,11 @@ private class ChangeFeedBatch
   }
 
   override def createReaderFactory(): PartitionReaderFactory = {
-    ChangeFeedScanPartitionReaderFactory(config, schema, cosmosClientStateHandle, diagnosticsConfig)
+    ChangeFeedScanPartitionReaderFactory(
+      config,
+      schema,
+      DiagnosticsContext(correlationActivityId, "Batch"),
+      cosmosClientStateHandle,
+      diagnosticsConfig)
   }
 }

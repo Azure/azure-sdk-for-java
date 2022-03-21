@@ -41,7 +41,7 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
 
     private DocumentModelAdministrationClient getDocumentModelAdministrationClient(HttpClient httpClient,
                                                                                    DocumentAnalysisServiceVersion serviceVersion) {
-        return getDocumentModelAdminClientBuilder(httpClient, serviceVersion, false).buildClient();
+        return getDocumentModelAdminClientBuilder(httpClient, serviceVersion, true).buildClient();
     }
 
     /**
@@ -239,7 +239,7 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
             CopyAuthorization target =
                 client.getCopyAuthorization(null);
             SyncPoller<DocumentOperationResult, DocumentModel>
-                copyPoller = client.beginCopyModel(actualModel.getModelId(), target)
+                copyPoller = client.beginCopyModelTo(actualModel.getModelId(), target)
                 .setPollInterval(durationTestMode);
             DocumentModel copiedModel = copyPoller.getFinalResult();
 

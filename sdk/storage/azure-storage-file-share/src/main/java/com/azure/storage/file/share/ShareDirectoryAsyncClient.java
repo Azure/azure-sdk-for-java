@@ -95,7 +95,7 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
  */
 @ServiceClient(builder = ShareFileClientBuilder.class, isAsync = true)
 public class ShareDirectoryAsyncClient {
-    private final ClientLogger logger = new ClientLogger(ShareDirectoryAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ShareDirectoryAsyncClient.class);
 
     private final AzureFileStorageImpl azureFileStorageClient;
     private final String shareName;
@@ -230,7 +230,7 @@ public class ShareDirectoryAsyncClient {
         try {
             return withContext(this::existsWithResponse);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -280,11 +280,7 @@ public class ShareDirectoryAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareDirectoryInfo> create() {
-        try {
-            return createWithResponse(null, null, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return createWithResponse(null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -323,7 +319,7 @@ public class ShareDirectoryAsyncClient {
         try {
             return withContext(context -> createWithResponse(smbProperties, filePermission, metadata, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -347,7 +343,7 @@ public class ShareDirectoryAsyncClient {
             .createWithResponseAsync(shareName, directoryPath, fileAttributes, fileCreationTime, fileLastWriteTime,
                 null, metadata, filePermission, filePermissionKey,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(this::createWithRestResponse);
+            .map(ShareDirectoryAsyncClient::createWithRestResponse);
     }
 
     /**
@@ -378,7 +374,7 @@ public class ShareDirectoryAsyncClient {
         try {
             return createIfNotExistsWithResponse(null, null, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -417,7 +413,7 @@ public class ShareDirectoryAsyncClient {
         try {
             return createIfNotExistsWithResponse(smbProperties, filePermission, metadata, null);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -454,11 +450,7 @@ public class ShareDirectoryAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> delete() {
-        try {
-            return deleteWithResponse().flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return deleteWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -488,7 +480,7 @@ public class ShareDirectoryAsyncClient {
         try {
             return withContext(this::deleteWithResponse);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -500,6 +492,7 @@ public class ShareDirectoryAsyncClient {
     }
 
     /**
+<<<<<<< HEAD
      * Deletes the directory in the file share if it exists.
      *
      * <p><strong>Code Samples</strong></p>
@@ -527,7 +520,7 @@ public class ShareDirectoryAsyncClient {
         try {
             return deleteIfExistsWithResponse().flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -558,7 +551,7 @@ public class ShareDirectoryAsyncClient {
         try {
             return withContext(this::deleteIfExistsWithResponse);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -570,6 +563,9 @@ public class ShareDirectoryAsyncClient {
 
     /**
      * Retrieves the properties of this directory. The properties includes directory metadata, last modified date, is
+=======
+     * Retrieves the properties of this directory. The properties include directory metadata, last modified date, is
+>>>>>>> upstream
      * server encrypted, and eTag.
      *
      * <p><strong>Code Samples</strong></p>
@@ -591,15 +587,11 @@ public class ShareDirectoryAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareDirectoryProperties> getProperties() {
-        try {
-            return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Retrieves the properties of this directory. The properties includes directory metadata, last modified date, is
+     * Retrieves the properties of this directory. The properties include directory metadata, last modified date, is
      * server encrypted, and eTag.
      *
      * <p><strong>Code Samples</strong></p>
@@ -624,7 +616,7 @@ public class ShareDirectoryAsyncClient {
         try {
             return withContext(this::getPropertiesWithResponse);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -633,7 +625,7 @@ public class ShareDirectoryAsyncClient {
         return azureFileStorageClient.getDirectories()
             .getPropertiesWithResponseAsync(shareName, directoryPath, snapshot, null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(this::getPropertiesResponse);
+            .map(ShareDirectoryAsyncClient::getPropertiesResponse);
     }
 
     /**
@@ -662,11 +654,7 @@ public class ShareDirectoryAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareDirectoryInfo> setProperties(FileSmbProperties smbProperties, String filePermission) {
-        try {
-            return setPropertiesWithResponse(smbProperties, filePermission).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return setPropertiesWithResponse(smbProperties, filePermission).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -699,7 +687,7 @@ public class ShareDirectoryAsyncClient {
         try {
             return withContext(context -> setPropertiesWithResponse(smbProperties, filePermission, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -724,7 +712,7 @@ public class ShareDirectoryAsyncClient {
             .setPropertiesWithResponseAsync(shareName, directoryPath, fileAttributes, fileCreationTime,
                 fileLastWriteTime, null, filePermission, filePermissionKey,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(this::setPropertiesResponse);
+            .map(ShareDirectoryAsyncClient::setPropertiesResponse);
     }
 
     /**
@@ -762,11 +750,7 @@ public class ShareDirectoryAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareDirectorySetMetadataInfo> setMetadata(Map<String, String> metadata) {
-        try {
-            return setMetadataWithResponse(metadata).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return setMetadataWithResponse(metadata).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -809,7 +793,7 @@ public class ShareDirectoryAsyncClient {
         try {
             return withContext(context -> setMetadataWithResponse(metadata, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -819,7 +803,7 @@ public class ShareDirectoryAsyncClient {
         return azureFileStorageClient.getDirectories()
             .setMetadataWithResponseAsync(shareName, directoryPath, null, metadata,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(this::setMetadataResponse);
+            .map(ShareDirectoryAsyncClient::setMetadataResponse);
     }
 
     /**
@@ -848,11 +832,7 @@ public class ShareDirectoryAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ShareFileItem> listFilesAndDirectories() {
-        try {
-            return listFilesAndDirectories(null, null);
-        } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
-        }
+        return listFilesAndDirectories(null, null);
     }
 
     /**
@@ -886,12 +866,8 @@ public class ShareDirectoryAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ShareFileItem> listFilesAndDirectories(String prefix, Integer maxResultsPerPage) {
-        try {
-            return listFilesAndDirectoriesWithOptionalTimeout(new ShareListFilesAndDirectoriesOptions()
-                .setPrefix(prefix).setMaxResultsPerPage(maxResultsPerPage), null, Context.NONE);
-        } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
-        }
+        return listFilesAndDirectories(new ShareListFilesAndDirectoriesOptions().setPrefix(prefix)
+            .setMaxResultsPerPage(maxResultsPerPage));
     }
 
     /**
@@ -925,7 +901,7 @@ public class ShareDirectoryAsyncClient {
         try {
             return listFilesAndDirectoriesWithOptionalTimeout(options, null, Context.NONE);
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -994,7 +970,7 @@ public class ShareDirectoryAsyncClient {
         try {
             return listHandlesWithOptionalTimeout(maxResultPerPage, recursive, null, Context.NONE);
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -1038,12 +1014,7 @@ public class ShareDirectoryAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CloseHandlesInfo> forceCloseHandle(String handleId) {
-        try {
-            return withContext(context -> forceCloseHandleWithResponse(handleId,
-                context)).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return forceCloseHandleWithResponse(handleId).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1074,7 +1045,7 @@ public class ShareDirectoryAsyncClient {
         try {
             return withContext(context -> forceCloseHandleWithResponse(handleId, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1116,7 +1087,7 @@ public class ShareDirectoryAsyncClient {
                     (accu, next) -> new CloseHandlesInfo(accu.getClosedHandles() + next.getClosedHandles(),
                         accu.getFailedHandles() + next.getFailedHandles())));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1140,7 +1111,7 @@ public class ShareDirectoryAsyncClient {
     /**
      * Moves the directory to another location within the share.
      * For more information see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/rename-directory">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/rename-directory">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -1157,17 +1128,13 @@ public class ShareDirectoryAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareDirectoryAsyncClient> rename(String destinationPath) {
-        try {
-            return renameWithResponse(new ShareFileRenameOptions(destinationPath)).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return renameWithResponse(new ShareFileRenameOptions(destinationPath)).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Moves the directory to another location within the share.
      * For more information see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/rename-directory">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/rename-directory">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -1200,10 +1167,9 @@ public class ShareDirectoryAsyncClient {
     public Mono<Response<ShareDirectoryAsyncClient>> renameWithResponse(ShareFileRenameOptions options) {
         try {
             return withContext(context -> renameWithResponse(options, context))
-                .map(response -> new SimpleResponse<>(response,
-                    new ShareDirectoryAsyncClient(response.getValue())));
+                .map(response -> new SimpleResponse<>(response, new ShareDirectoryAsyncClient(response.getValue())));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1235,7 +1201,7 @@ public class ShareDirectoryAsyncClient {
                 .setFileAttributes(fileAttributes)
                 .setFileCreationTime(fileCreationTime)
                 .setFileLastWriteTime(fileLastWriteTime)
-                .setIgnoreReadOnly(options.getIgnoreReadOnly());
+                .setIgnoreReadOnly(options.isIgnoreReadOnly());
         }
 
         ShareDirectoryAsyncClient destinationDirectoryClient =
@@ -1248,7 +1214,7 @@ public class ShareDirectoryAsyncClient {
 
         return destinationDirectoryClient.azureFileStorageClient.getDirectories().renameWithResponseAsync(
             destinationDirectoryClient.getShareName(), destinationDirectoryClient.getDirectoryPath(), renameSource,
-            null /* timeout */, options.getReplaceIfExists(), options.getIgnoreReadOnly(),
+            null /* timeout */, options.getReplaceIfExists(), options.isIgnoreReadOnly(),
             options.getFilePermission(), filePermissionKey, options.getMetadata(), sourceConditions,
             destinationConditions, smbInfo,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
@@ -1262,7 +1228,7 @@ public class ShareDirectoryAsyncClient {
      */
     ShareDirectoryAsyncClient getDirectoryAsyncClient(String destinationPath) {
         if (CoreUtils.isNullOrEmpty(destinationPath)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'destinationPath' can not be set to null"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'destinationPath' can not be set to null"));
         }
 
         return new ShareDirectoryAsyncClient(this.azureFileStorageClient, getShareName(), destinationPath, null,
@@ -1294,12 +1260,7 @@ public class ShareDirectoryAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareDirectoryAsyncClient> createSubdirectory(String subdirectoryName) {
-        try {
-            return createSubdirectoryWithResponse(subdirectoryName, null, null, null)
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return createSubdirectoryWithResponse(subdirectoryName, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1339,11 +1300,10 @@ public class ShareDirectoryAsyncClient {
     public Mono<Response<ShareDirectoryAsyncClient>> createSubdirectoryWithResponse(String subdirectoryName,
         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata) {
         try {
-            return withContext(
-                context -> createSubdirectoryWithResponse(subdirectoryName, smbProperties, filePermission,
-                    metadata, context));
+            return withContext(context ->
+                createSubdirectoryWithResponse(subdirectoryName, smbProperties, filePermission, metadata, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1381,7 +1341,7 @@ public class ShareDirectoryAsyncClient {
             return createSubdirectoryIfNotExistsWithResponse(subdirectoryName, null, null, null)
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1425,7 +1385,7 @@ public class ShareDirectoryAsyncClient {
                 context -> createSubdirectoryIfNotExistsWithResponse(subdirectoryName, smbProperties, filePermission,
                     metadata, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1465,11 +1425,7 @@ public class ShareDirectoryAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteSubdirectory(String subdirectoryName) {
-        try {
-            return deleteSubdirectoryWithResponse(subdirectoryName).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return deleteSubdirectoryWithResponse(subdirectoryName).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1501,10 +1457,9 @@ public class ShareDirectoryAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSubdirectoryWithResponse(String subdirectoryName) {
         try {
-            return withContext(context -> deleteSubdirectoryWithResponse(subdirectoryName,
-                context));
+            return withContext(context -> deleteSubdirectoryWithResponse(subdirectoryName, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1542,7 +1497,7 @@ public class ShareDirectoryAsyncClient {
         try {
             return deleteSubdirectoryIfExistsWithResponse(subdirectoryName).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1577,7 +1532,7 @@ public class ShareDirectoryAsyncClient {
             return withContext(context -> deleteSubdirectoryIfExistsWithResponse(subdirectoryName,
                 context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1614,12 +1569,7 @@ public class ShareDirectoryAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareFileAsyncClient> createFile(String fileName, long maxSize) {
-        try {
-            return createFileWithResponse(fileName, maxSize, null, null, null, null)
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return createFileWithResponse(fileName, maxSize, null, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1731,7 +1681,7 @@ public class ShareDirectoryAsyncClient {
                 createFileWithResponse(fileName, maxSize, httpHeaders, smbProperties, filePermission, metadata,
                     requestConditions, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1772,11 +1722,7 @@ public class ShareDirectoryAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteFile(String fileName) {
-        try {
-            return deleteFileWithResponse(fileName).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return deleteFileWithResponse(fileName).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1839,10 +1785,9 @@ public class ShareDirectoryAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteFileWithResponse(String fileName, ShareRequestConditions requestConditions) {
         try {
-            return withContext(context -> deleteFileWithResponse(fileName, requestConditions,
-                context));
+            return withContext(context -> deleteFileWithResponse(fileName, requestConditions, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1881,7 +1826,7 @@ public class ShareDirectoryAsyncClient {
         try {
             return deleteFileIfExistsWithResponse(fileName).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1914,7 +1859,7 @@ public class ShareDirectoryAsyncClient {
         try {
             return this.deleteFileIfExistsWithResponse(fileName, null);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
 
     }
@@ -1951,7 +1896,7 @@ public class ShareDirectoryAsyncClient {
             return withContext(context -> deleteFileIfExistsWithResponse(fileName, requestConditions,
                 context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -2103,7 +2048,7 @@ public class ShareDirectoryAsyncClient {
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
     }
 
-    private Response<ShareDirectoryInfo> createWithRestResponse(final DirectoriesCreateResponse response) {
+    private static Response<ShareDirectoryInfo> createWithRestResponse(final DirectoriesCreateResponse response) {
         String eTag = response.getDeserializedHeaders().getETag();
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
         FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
@@ -2111,7 +2056,7 @@ public class ShareDirectoryAsyncClient {
         return new SimpleResponse<>(response, shareDirectoryInfo);
     }
 
-    private Response<ShareDirectoryProperties> getPropertiesResponse(DirectoriesGetPropertiesResponse response) {
+    private static Response<ShareDirectoryProperties> getPropertiesResponse(DirectoriesGetPropertiesResponse response) {
         Map<String, String> metadata = response.getDeserializedHeaders().getXMsMeta();
         String eTag = response.getDeserializedHeaders().getETag();
         OffsetDateTime offsetDateTime = response.getDeserializedHeaders().getLastModified();
@@ -2122,7 +2067,7 @@ public class ShareDirectoryAsyncClient {
         return new SimpleResponse<>(response, shareDirectoryProperties);
     }
 
-    private Response<ShareDirectoryInfo> setPropertiesResponse(final DirectoriesSetPropertiesResponse response) {
+    private static Response<ShareDirectoryInfo> setPropertiesResponse(final DirectoriesSetPropertiesResponse response) {
         String eTag = response.getDeserializedHeaders().getETag();
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
         FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
@@ -2130,7 +2075,8 @@ public class ShareDirectoryAsyncClient {
         return new SimpleResponse<>(response, shareDirectoryInfo);
     }
 
-    private Response<ShareDirectorySetMetadataInfo> setMetadataResponse(final DirectoriesSetMetadataResponse response) {
+    private static Response<ShareDirectorySetMetadataInfo> setMetadataResponse(
+        final DirectoriesSetMetadataResponse response) {
         String eTag = response.getDeserializedHeaders().getETag();
         boolean isServerEncrypted = response.getDeserializedHeaders().isXMsRequestServerEncrypted();
         ShareDirectorySetMetadataInfo shareDirectorySetMetadataInfo = new ShareDirectorySetMetadataInfo(eTag,
@@ -2138,7 +2084,7 @@ public class ShareDirectoryAsyncClient {
         return new SimpleResponse<>(response, shareDirectorySetMetadataInfo);
     }
 
-    private List<ShareFileItem> convertResponseAndGetNumOfResults(
+    private static List<ShareFileItem> convertResponseAndGetNumOfResults(
         DirectoriesListFilesAndDirectoriesSegmentResponse response) {
         Set<ShareFileItem> shareFileItems = new TreeSet<>(Comparator.comparing(ShareFileItem::getName));
         if (response.getValue().getSegment() != null) {
@@ -2164,9 +2110,9 @@ public class ShareDirectoryAsyncClient {
      * @param filePermissionKey The file permission key.
      * @throws IllegalArgumentException for invalid file permission or file permission keys.
      */
-    private void validateFilePermissionAndKey(String filePermission, String  filePermissionKey) {
+    private static void validateFilePermissionAndKey(String filePermission, String filePermissionKey) {
         if (filePermission != null && filePermissionKey != null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 FileConstants.MessageConstants.FILE_PERMISSION_FILE_PERMISSION_KEY_INVALID));
         }
 

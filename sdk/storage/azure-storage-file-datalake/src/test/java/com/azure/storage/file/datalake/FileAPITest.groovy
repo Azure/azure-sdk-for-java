@@ -15,6 +15,10 @@ import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.ProgressReceiver
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.sas.AccountSasPermission
+import com.azure.storage.common.sas.AccountSasResourceType
+import com.azure.storage.common.sas.AccountSasService
+import com.azure.storage.common.sas.AccountSasSignatureValues
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy
@@ -45,6 +49,8 @@ import com.azure.storage.file.datalake.models.RolePermissions
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions
 import com.azure.storage.file.datalake.options.FileQueryOptions
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions
+import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues
+import com.azure.storage.file.datalake.sas.FileSystemSasPermission
 import reactor.core.Exceptions
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Hooks
@@ -2015,6 +2021,29 @@ class FileAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null
         null     | null       | null        | receivedEtag | null
         null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Rename sas token"() {
+        setup:
+        def permissions = new FileSystemSasPermission()
+            .setReadPermission(true)
+            .setMovePermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setAddPermission(true)
+            .setDeletePermission(true)
+        def expiryTime = namer.getUtcNow().plusDays(1)
+
+        def sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions)
+        def sas = fsc.generateSas(sasValues)
+        def client = getFileClient(sas, fsc.getFileSystemUrl(), fc.getFilePath())
+
+        when:
+        def destClient = client.rename(fsc.getFileSystemName(), generatePathName())
+
+        then:
+        notThrown(DataLakeStorageException)
+        destClient.getProperties()
     }
 
     def "Append data min"() {
