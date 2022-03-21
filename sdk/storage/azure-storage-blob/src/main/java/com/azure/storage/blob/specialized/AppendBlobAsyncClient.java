@@ -21,7 +21,15 @@ import com.azure.storage.blob.implementation.models.AppendBlobsAppendBlockFromUr
 import com.azure.storage.blob.implementation.models.AppendBlobsAppendBlockHeaders;
 import com.azure.storage.blob.implementation.models.AppendBlobsCreateHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
-import com.azure.storage.blob.models.*;
+import com.azure.storage.blob.models.AppendBlobItem;
+import com.azure.storage.blob.models.AppendBlobRequestConditions;
+import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobImmutabilityPolicy;
+import com.azure.storage.blob.models.BlobRange;
+import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
 import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;

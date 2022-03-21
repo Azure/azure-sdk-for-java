@@ -206,7 +206,6 @@ public final class BlobServiceClient {
         BlobContainerClient client = getBlobContainerClient(containerName);
         Response<Void> response = client.createIfNotExistsWithResponse(metadata, accessType, null, context);
         return response == null ? null : new SimpleResponse<>(response, client);
-        //return new SimpleResponse<>(client.createWithResponse(metadata, accessType, null, context), client);
     }
 
     /**
