@@ -16,13 +16,6 @@ This section includes changes in `spring-cloud-azure-starter-active-directory` m
 #### Dependency Updates
 - Remove the dependencies `org.springframework.boot:spring-boot-starter-webflux`, `com.fasterxml.jackson.core:jackson-databind`, `io.projectreactor.netty:reactor-netty`. [#27727](https://github.com/Azure/azure-sdk-for-java/pull/27727)
 
-### Spring Messaging Azure Storage Queue
-This section includes changes in `spring-messaging-azure-storage-queue` module.
-
-#### Dependency Updates
-- Remove the dependencies `com.fasterxml.jackson.core:jackson-databind`. [#27727](https://github.com/Azure/azure-sdk-for-java/pull/27727)
-
-
 ### Spring CLoud Azure Autoconfigure
 
 #### Breaking Changes
@@ -151,6 +144,10 @@ Please use message header of `com.azure.spring.messaging.AzureHeaders.PARTITION_
 - Support the message header of `ServiceBusMessageHeaders.SUBJECT` to specify the AMQP property of `subject` when sending messages [#27675](https://github.com/Azure/azure-sdk-for-java/pull/27675).
 
 ### Spring Messaging Azure Storage Queue
+This section includes changes in `spring-messaging-azure-storage-queue` module.
+
+#### Dependency Updates
+- Remove the dependencies `com.fasterxml.jackson.core:jackson-databind`. [#27727](https://github.com/Azure/azure-sdk-for-java/pull/27727)
 
 #### Breaking Changes
 - Remove parameter of `PartitionSupplier` from the sending API for a single message in `StorageQueueTemplate` [#27422](https://github.com/Azure/azure-sdk-for-java/issues/27422).
