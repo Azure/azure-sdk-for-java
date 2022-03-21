@@ -53,7 +53,7 @@ public final class CalculatedBackoffTime {
             }
 
             long defaultMinBackoff = TimeUnit.NANOSECONDS.convert(properties.getDefaultMinBackoff(), TimeUnit.SECONDS);
-            double maxRandomValue = Math.min(Math.pow(2, attempt - 1), Double.MAX_VALUE);
+            Integer maxRandomValue = Math.min((attempt - 1 << 2), Integer.MAX_VALUE);
 
             long maxBackoff = Math.min(
                 TimeUnit.NANOSECONDS.convert(interval.getSeconds(), TimeUnit.SECONDS),
