@@ -9,6 +9,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.perf.core.CorePerfStressOptions;
 import com.azure.core.perf.core.RestProxyTestBase;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.UrlBuilder;
 import reactor.core.publisher.Mono;
 
 import java.io.UncheckedIOException;
@@ -20,15 +21,22 @@ public class PipelineSendTest extends RestProxyTestBase<CorePerfStressOptions> {
 
     private final Supplier<BinaryData> binaryDataSupplier;
     private final URL targetURL;
+    private final String contentLengthHeaderValue;
 
     public PipelineSendTest(CorePerfStressOptions options) {
         super(options);
         binaryDataSupplier = createBinaryDataSupplier(options);
         try {
-            targetURL = new URL(new URL(endpoint), "BinaryData");
+            UrlBuilder urlBuilder = UrlBuilder.parse(endpoint);
+            String path = urlBuilder.getPath();
+            path = path == null ? "" : path;
+            targetURL = urlBuilder
+                .setPath(path + "/BinaryData")
+                .toUrl();
         } catch (MalformedURLException e) {
             throw new UncheckedIOException(e);
         }
+        contentLengthHeaderValue = Long.toString(options.getSize());
     }
 
     @Override
@@ -38,9 +46,17 @@ public class PipelineSendTest extends RestProxyTestBase<CorePerfStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Length", contentLengthHeaderValue);
         HttpRequest httpRequest = new HttpRequest(
-            HttpMethod.PUT, targetURL, new HttpHeaders(), binaryDataSupplier.get().toFluxByteBuffer());
+            HttpMethod.PUT, targetURL, headers, binaryDataSupplier.get().toFluxByteBuffer());
         return httpPipeline.send(httpRequest)
+            .map(httpResponse -> {
+                if (httpResponse.getStatusCode() / 100 != 2) {
+                    throw new IllegalStateException("Endpoint didn't return 2xx http status code.");
+                }
+                return httpResponse;
+            })
             .then();
     }
 }
