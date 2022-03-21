@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2;
+package com.azure.spring.cloud.autoconfigure.aad;
 
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
 import org.junit.jupiter.api.Disabled;
@@ -21,8 +21,8 @@ import java.util.Set;
 
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils.oauthClientRunner;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils.webApplicationContextRunner;
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AadClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID;
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AadClientRegistrationRepository.resourceServerCount;
+import static com.azure.spring.cloud.autoconfigure.aad.AadClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID;
+import static com.azure.spring.cloud.autoconfigure.aad.AadClientRegistrationRepository.resourceServerCount;
 import static com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType.AUTHORIZATION_CODE;
 import static com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType.AZURE_DELEGATED;
 import static org.assertj.core.api.Assertions.assertThat;

@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.autoconfigure.aad;
 
-import com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.AadJwtBearerTokenAuthenticationConverter;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadResourceServerProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

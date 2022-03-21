@@ -14,7 +14,7 @@ import org.springframework.util.MultiValueMap;
 import java.util.Optional;
 import java.util.Set;
 
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AadClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID;
+import static com.azure.spring.cloud.autoconfigure.aad.AadClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID;
 
 /**
  * Used to set "scope" parameter when use "auth-code" to get "access_token".

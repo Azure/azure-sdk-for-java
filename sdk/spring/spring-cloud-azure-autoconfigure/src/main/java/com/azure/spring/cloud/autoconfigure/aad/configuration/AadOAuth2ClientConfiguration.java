@@ -7,7 +7,7 @@ import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.Client
 import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.ResourceServerWithOBOCondition;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.WebApplicationAndResourceServerCondition;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.WebApplicationWithoutResourceServerCondition;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AadClientRegistrationRepository;
+import com.azure.spring.cloud.autoconfigure.aad.AadClientRegistrationRepository;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.JacksonHttpSessionOAuth2AuthorizedClientRepository;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.AadOboOAuth2AuthorizedClientProvider;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapp.AadAzureDelegatedOAuth2AuthorizedClientProvider;

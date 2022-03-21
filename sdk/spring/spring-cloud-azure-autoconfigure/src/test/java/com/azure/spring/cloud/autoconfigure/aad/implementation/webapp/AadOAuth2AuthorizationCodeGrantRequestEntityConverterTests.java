@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.aad.implementation.webapp;
 
 import com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AadClientRegistrationRepository;
+import com.azure.spring.cloud.autoconfigure.aad.AadClientRegistrationRepository;
 import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
@@ -21,7 +21,7 @@ import org.springframework.util.MultiValueMap;
 
 import java.util.Optional;
 
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AadClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID;
+import static com.azure.spring.cloud.autoconfigure.aad.AadClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
