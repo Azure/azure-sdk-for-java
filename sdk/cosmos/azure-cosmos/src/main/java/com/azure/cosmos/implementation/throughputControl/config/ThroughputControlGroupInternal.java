@@ -6,6 +6,8 @@ package com.azure.cosmos.implementation.throughputControl.config;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
+import java.util.Objects;
+
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -129,7 +131,7 @@ public abstract class ThroughputControlGroupInternal {
 
         ThroughputControlGroupInternal that = (ThroughputControlGroupInternal) other;
 
-        return this.id.equals(that.id)
+        return Objects.equals(this.id, that.id)
                 && this.isDefault == that.isDefault
                 && this.continueOnInitError == that.continueOnInitError
                 && this.targetThroughput == that.targetThroughput

@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.throughputControl.config.ThroughputContro
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
@@ -52,7 +53,7 @@ public class ContainerThroughputControlGroupProperties {
 
         // Only throw when two different groups are using the same id (databaseId + containerId + groupName)
         if (this.throughputControlGroupSet.stream()
-                .anyMatch(existingGroup -> existingGroup.getId().equals(group.getId()) && !existingGroup.equals(group))) {
+                .anyMatch(existingGroup -> Objects.equals(existingGroup.getId(), group.getId()) && !existingGroup.equals(group))) {
             throw new IllegalArgumentException("Throughput control group with id " + group.getId() + " already exists");
         }
 
