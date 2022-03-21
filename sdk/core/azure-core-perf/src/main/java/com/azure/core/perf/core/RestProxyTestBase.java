@@ -23,7 +23,10 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.perf.models.MockHttpResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.perf.test.core.PerfStressTest;
+import com.azure.perf.test.core.RepeatingInputStream;
+import com.azure.perf.test.core.TestDataCreationHelper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
@@ -32,10 +35,14 @@ import reactor.core.publisher.Mono;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.any;
@@ -45,6 +52,7 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
 
     protected final String endpoint;
     protected final MyRestProxyService service;
+    protected final HttpPipeline httpPipeline;
 
     private final WireMockServer wireMockServer;
 
@@ -62,12 +70,12 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
             endpoint = Objects.requireNonNull(options.getEndpoint(), "endpoint must not be null");
         }
         HttpClient httpClient = createHttpClient(options, mockResponseSupplier);
-        HttpPipeline pipeline = new HttpPipelineBuilder()
+        httpPipeline = new HttpPipelineBuilder()
             .policies(createPipelinePolicies(options))
             .httpClient(httpClient)
             .build();
 
-        service = RestProxy.create(MyRestProxyService.class, pipeline);
+        service = RestProxy.create(MyRestProxyService.class, httpPipeline);
     }
 
     @Override
@@ -149,6 +157,35 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
             return outputStream.toByteArray();
         } catch (IOException e) {
             throw new UncheckedIOException(e);
+        }
+    }
+
+    public static Supplier<BinaryData> createBinaryDataSupplier(CorePerfStressOptions options) {
+        switch (options.getBinaryDataSource()) {
+            case BYTES:
+                byte[] bytes = new byte[(int) options.getSize()];
+                new Random().nextBytes(bytes);
+                return  () -> BinaryData.fromBytes(bytes);
+            case FILE:
+                try {
+                    Path tempFile = Files.createTempFile("binarydataforperftest", null);
+                    tempFile.toFile().deleteOnExit();
+                    String tempFilePath = tempFile.toString();
+                    TestDataCreationHelper.writeToFile(tempFilePath, options.getSize(), 8192);
+                    return () -> BinaryData.fromFile(tempFile);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            case STREAM:
+                RepeatingInputStream inputStream =
+                    (RepeatingInputStream) TestDataCreationHelper.createRandomInputStream(options.getSize());
+                inputStream.mark(Long.MAX_VALUE);
+                return () -> {
+                    inputStream.reset();
+                    return BinaryData.fromStream(inputStream);
+                };
+            default:
+                throw new IllegalArgumentException("Unknown binary data source " + options.getBinaryDataSource());
         }
     }
 }
