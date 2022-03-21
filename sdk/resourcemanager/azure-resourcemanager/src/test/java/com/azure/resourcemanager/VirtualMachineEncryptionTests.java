@@ -21,21 +21,20 @@ import java.util.Locale;
 
 public class VirtualMachineEncryptionTests extends DiskEncryptionTestBase {
 
-    private final String vmName = "javavm";
-
     @Test
     @DoNotRecord(skipInPlayback = true) // requires generating a key
     public void canCreateVirtualMachineWithDiskEncryptionSet() {
-        String clientId = this.clientIdFromFile();
+        final String clientId = this.clientIdFromFile();
 
-        // create vault
-        VaultAndKey vaultAndKey = createVaultAndKey(clientId);
+        // create vault and key
+        final String vaultName = generateRandomResourceName("kv", 8);
+        VaultAndKey vaultAndKey = createVaultAndKey(vaultName, clientId);
 
         // create disk encryption set
-        DiskEncryptionSetInner diskEncryptionSet = createDiskEncryptionSet(
+        DiskEncryptionSetInner diskEncryptionSet = createDiskEncryptionSet("des1",
             DiskEncryptionSetType.ENCRYPTION_AT_REST_WITH_PLATFORM_AND_CUSTOMER_KEYS, vaultAndKey);
 
-        DiskEncryptionSetInner diskEncryptionSet2 = createDiskEncryptionSet(
+        DiskEncryptionSetInner diskEncryptionSet2 = createDiskEncryptionSet("des2",
             DiskEncryptionSetType.ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY, vaultAndKey);
 
         // create disk
@@ -49,6 +48,8 @@ public class VirtualMachineEncryptionTests extends DiskEncryptionTestBase {
 
         Assertions.assertEquals(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_AND_CUSTOMER_KEYS, disk1.encryption().type());
         Assertions.assertEquals(diskEncryptionSet.id().toLowerCase(Locale.ROOT), disk1.encryption().diskEncryptionSetId().toLowerCase(Locale.ROOT));
+
+        final String vmName = "javavm";
 
         // create virtual machine
         VirtualMachine vm = azureResourceManager.virtualMachines().define(vmName)

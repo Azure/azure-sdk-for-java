@@ -76,9 +76,9 @@ public class DiskEncryptionTestBase extends ResourceManagerTestBase {
         }
     }
 
-    protected static class VaultAndKey {
-        protected Vault vault;
-        protected Key key;
+    protected static final class VaultAndKey {
+        private final Vault vault;
+        private final Key key;
 
         private VaultAndKey(Vault vault, Key key) {
             this.vault = vault;
@@ -86,10 +86,9 @@ public class DiskEncryptionTestBase extends ResourceManagerTestBase {
         }
     }
 
-    protected VaultAndKey createVaultAndKey(String clientId) {
+    protected VaultAndKey createVaultAndKey(String name, String clientId) {
         // create vault
-        String vaultName = generateRandomResourceName("kv", 8);
-        Vault vault = azureResourceManager.vaults().define(vaultName)
+        Vault vault = azureResourceManager.vaults().define(name)
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .withRoleBasedAccessControl()
@@ -114,10 +113,10 @@ public class DiskEncryptionTestBase extends ResourceManagerTestBase {
         return new VaultAndKey(vault, key);
     }
 
-    protected DiskEncryptionSetInner createDiskEncryptionSet(DiskEncryptionSetType type, VaultAndKey vaultAndKey) {
+    protected DiskEncryptionSetInner createDiskEncryptionSet(String name, DiskEncryptionSetType type, VaultAndKey vaultAndKey) {
         // create disk encryption set
         DiskEncryptionSetInner diskEncryptionSet = azureResourceManager.disks().manager().serviceClient()
-            .getDiskEncryptionSets().createOrUpdate(rgName, "des1", new DiskEncryptionSetInner()
+            .getDiskEncryptionSets().createOrUpdate(rgName, name, new DiskEncryptionSetInner()
                 .withLocation(region.name())
                 .withEncryptionType(type)
                 .withIdentity(new EncryptionSetIdentity().withType(DiskEncryptionSetIdentityType.SYSTEM_ASSIGNED))
