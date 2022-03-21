@@ -492,7 +492,6 @@ public class ShareDirectoryAsyncClient {
     }
 
     /**
-<<<<<<< HEAD
      * Deletes the directory in the file share if it exists.
      *
      * <p><strong>Code Samples</strong></p>
@@ -562,10 +561,7 @@ public class ShareDirectoryAsyncClient {
     }
 
     /**
-     * Retrieves the properties of this directory. The properties includes directory metadata, last modified date, is
-=======
      * Retrieves the properties of this directory. The properties include directory metadata, last modified date, is
->>>>>>> upstream
      * server encrypted, and eTag.
      *
      * <p><strong>Code Samples</strong></p>

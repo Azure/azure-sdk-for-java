@@ -1007,7 +1007,6 @@ public class DataLakeFileSystemAsyncClient {
     }
 
     /**
-<<<<<<< HEAD
      * Deletes the specified file in the file system if it exists.
      * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
      * Docs</a>.
@@ -1063,9 +1062,12 @@ public class DataLakeFileSystemAsyncClient {
 
     /**
      * Creates a new directory within a file system. By default this method will not overwrite an existing directory.
+<<<<<<< HEAD
 =======
      * Creates a new directory within a file system. By default, this method will not overwrite an existing directory.
 >>>>>>> upstream
+=======
+>>>>>>> 06ba7577ce33011fdca248da4c15c0783e54d5b3
      * For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
