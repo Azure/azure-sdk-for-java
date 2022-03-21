@@ -36,8 +36,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import java.util.stream.Collectors;
-
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
 
 /**
@@ -110,8 +108,8 @@ public class EventHubsBinderConfiguration {
         binder.setBindingProperties(bindingProperties);
         binder.setNamespaceProperties(namespaceProperties.getIfAvailable());
         checkpointStores.ifAvailable(binder::setCheckpointStore);
-        binder.setProducerFactoryCustomizers(producerFactoryCustomizers.orderedStream().collect(Collectors.toList()));
-        binder.setProcessorFactoryCustomizers(processorFactoryCustomizers.orderedStream().collect(Collectors.toList()));
+        producerFactoryCustomizers.orderedStream().forEach(binder::addProducerFactoryCustomizer);
+        processorFactoryCustomizers.orderedStream().forEach(binder::addProcessorFactoryCustomizer);
         return binder;
     }
 

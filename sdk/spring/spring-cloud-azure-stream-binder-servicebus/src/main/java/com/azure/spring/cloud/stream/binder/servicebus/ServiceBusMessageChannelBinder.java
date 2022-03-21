@@ -85,8 +85,8 @@ public class ServiceBusMessageChannelBinder extends
     private final Map<String, ExtendedProducerProperties<ServiceBusProducerProperties>>
         extendedProducerPropertiesMap = new ConcurrentHashMap<>();
 
-    private List<ServiceBusProducerFactoryCustomizer> producerFactoryCustomizers = new ArrayList<>();
-    private List<ServiceBusProcessorFactoryCustomizer> processorFactoryCustomizers = new ArrayList<>();
+    private final List<ServiceBusProducerFactoryCustomizer> producerFactoryCustomizers = new ArrayList<>();
+    private final List<ServiceBusProcessorFactoryCustomizer> processorFactoryCustomizers = new ArrayList<>();
 
     /**
      * Construct a {@link ServiceBusMessageChannelBinder} with the specified headersToEmbed and {@link ServiceBusChannelProvisioner}.
@@ -348,21 +348,25 @@ public class ServiceBusMessageChannelBinder extends
     }
 
     /**
-     * Set the producer factory customizers.
+     * Add a producer factory customizer.
      *
-     * @param producerFactoryCustomizers The producer factory customizers.
+     * @param producerFactoryCustomizer The producer factory customizer to add.
      */
-    public void setProducerFactoryCustomizers(List<ServiceBusProducerFactoryCustomizer> producerFactoryCustomizers) {
-        this.producerFactoryCustomizers = producerFactoryCustomizers;
+    public void addProducerFactoryCustomizer(ServiceBusProducerFactoryCustomizer producerFactoryCustomizer) {
+        if (producerFactoryCustomizer != null) {
+            this.producerFactoryCustomizers.add(producerFactoryCustomizer);
+        }
     }
 
     /**
-     * Set the processor factory customizers.
+     * Add a processor factory customizer.
      *
-     * @param processorFactoryCustomizers The processor factory customizers.
+     * @param processorFactoryCustomizer The processor factory customizer to add.
      */
-    public void setProcessorFactoryCustomizers(List<ServiceBusProcessorFactoryCustomizer> processorFactoryCustomizers) {
-        this.processorFactoryCustomizers = processorFactoryCustomizers;
+    public void addProcessorFactoryCustomizer(ServiceBusProcessorFactoryCustomizer processorFactoryCustomizer) {
+        if (processorFactoryCustomizer != null) {
+            this.processorFactoryCustomizers.add(processorFactoryCustomizer);
+        }
     }
 
 }
