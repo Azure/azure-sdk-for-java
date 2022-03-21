@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.config.refresh;
+package com.azure.spring.cloud.config;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -20,7 +20,7 @@ public class CalculatedBackoffTimeTest {
      */
     @Test
     public void testCalculate() {
-        Instant testDate = CalculatedBackoffTime.calculateBefore("client", null, null, null);
+        Instant testDate = CalculatedBackoffTime.calculateBefore(Instant.now(), 1, null, null);
 
         assertNull(testDate);
 
@@ -32,7 +32,7 @@ public class CalculatedBackoffTimeTest {
         properties.setDefaultMaxBackoff(600);
         properties.setDefaultMinBackoff(30);
 
-        testDate = CalculatedBackoffTime.calculateBefore("client", Instant.now(), interval, properties);
+        testDate = CalculatedBackoffTime.calculateBefore(Instant.now(), 1, Duration.ofSeconds(1), properties);
 
         assertNotNull(testDate);
         Instant futureTime = Instant.now().plusSeconds(testTime);
@@ -44,21 +44,21 @@ public class CalculatedBackoffTimeTest {
 
         Instant tenSecondsFromNow = Instant.now().plusSeconds(testTime);
 
-        Instant calcuatedTime = CalculatedBackoffTime.calculateBefore("client", Instant.now().minusSeconds(1), interval,
+        Instant calcuatedTime = CalculatedBackoffTime.calculateBefore(Instant.now().minusSeconds(1), 1,
+            interval, properties);
+
+        assertTrue(tenSecondsFromNow.isBefore(calcuatedTime));
+
+        tenSecondsFromNow = Instant.now().plusSeconds(testTime);
+
+        calcuatedTime = CalculatedBackoffTime.calculateBefore(Instant.now().minusSeconds(1), 1, interval,
             properties);
 
         assertTrue(tenSecondsFromNow.isBefore(calcuatedTime));
 
         tenSecondsFromNow = Instant.now().plusSeconds(testTime);
 
-        calcuatedTime = CalculatedBackoffTime.calculateBefore("client", Instant.now().minusSeconds(1), interval,
-            properties);
-
-        assertTrue(tenSecondsFromNow.isBefore(calcuatedTime));
-
-        tenSecondsFromNow = Instant.now().plusSeconds(testTime);
-
-        calcuatedTime = CalculatedBackoffTime.calculateBefore("client", Instant.now().minusSeconds(1), interval,
+        calcuatedTime = CalculatedBackoffTime.calculateBefore(Instant.now().minusSeconds(1), 1, interval,
             properties);
 
         assertTrue(tenSecondsFromNow.isBefore(calcuatedTime));

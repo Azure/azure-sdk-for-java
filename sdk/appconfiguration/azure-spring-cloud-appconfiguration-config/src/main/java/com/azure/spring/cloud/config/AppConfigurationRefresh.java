@@ -64,7 +64,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
      * @param clientStore Clients stores used to connect to App Configuration.
      */
     public AppConfigurationRefresh(AppConfigurationProperties properties,
-            AppConfigurationProviderProperties appProperties, ClientStore clientStore) {
+        AppConfigurationProviderProperties appProperties, ClientStore clientStore) {
         this.appProperties = appProperties;
         this.configStores = properties.getStores();
         this.refreshInterval = properties.getRefreshInterval();
@@ -132,7 +132,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
             });
             try {
                 if (refreshInterval != null && StateHolder.getNextForcedRefresh() != null
-                        && Instant.now().isAfter(StateHolder.getNextForcedRefresh())) {
+                    && Instant.now().isAfter(StateHolder.getNextForcedRefresh())) {
                     this.eventDataInfo = "Minimum refresh period reached. Refreshing configurations.";
 
                     LOGGER.info(eventDataInfo);
@@ -173,10 +173,8 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
                     }
                 }
             } catch (Exception e) {
-                if (refreshInterval != null) {
-                    // The next refresh will happen sooner if refresh interval is expired.
-                    StateHolder.resetAll(refreshInterval, appProperties);
-                }
+                // The next refresh will happen sooner if refresh interval is expired.
+                StateHolder.resetAll(refreshInterval, appProperties);
                 throw e;
             } finally {
                 running.set(false);

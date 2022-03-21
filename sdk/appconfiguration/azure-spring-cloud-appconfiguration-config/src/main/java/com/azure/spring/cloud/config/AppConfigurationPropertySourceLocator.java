@@ -28,7 +28,6 @@ import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperti
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreSelects;
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreTrigger;
 import com.azure.spring.cloud.config.properties.ConfigStore;
-import com.azure.spring.cloud.config.refresh.CalculatedBackoffTime;
 import com.azure.spring.cloud.config.stores.ClientStore;
 
 /**
@@ -123,7 +122,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         startup.set(false);
 
         // Loading configurations worked. Setting attempts to zero.
-        CalculatedBackoffTime.resetAttempts();
+        StateHolder.clearAttempts();
         return composite;
     }
 

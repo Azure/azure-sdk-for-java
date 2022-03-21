@@ -10,22 +10,20 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.azure.spring.cloud.config.refresh.CalculatedBackoffTime;
-
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 
 final class StateHolder {
 
     private static final int MAX_JITTER = 15;
-    
-    private static final String CLIENT_ENDPOINT = "client";
 
     private static final String FEATURE_ENDPOINT = "_feature";
 
     private static final Map<String, State> STATE = new ConcurrentHashMap<>();
 
     private static final Map<String, Boolean> LOAD_STATE = new ConcurrentHashMap<>();
+
+    private static Integer clientRefreshAttempts = 1;
 
     private static Instant nextForcedRefresh;
 
@@ -136,13 +134,25 @@ final class StateHolder {
      * @param properties Provider properties for min and max backoff periods.
      */
     static void resetAll(Duration refreshInterval, AppConfigurationProviderProperties properties) {
-        nextForcedRefresh = CalculatedBackoffTime.calculateBefore(CLIENT_ENDPOINT, nextForcedRefresh, refreshInterval, properties);
+        if (refreshInterval != null) {
+            Instant newForcedRefresh = CalculatedBackoffTime.calculateBefore(nextForcedRefresh,
+                clientRefreshAttempts, refreshInterval, properties);
+
+            if (newForcedRefresh.compareTo(nextForcedRefresh) != 0) {
+                clientRefreshAttempts += 1;
+            }
+            nextForcedRefresh = newForcedRefresh;
+        }
+
         for (Entry<String, State> entry : STATE.entrySet()) {
-            Instant newRefresh = CalculatedBackoffTime.calculateBefore(entry.getKey(), entry.getValue().getNextRefreshCheck(),
-                refreshInterval, properties);
+            Instant newRefresh = CalculatedBackoffTime.calculateBefore(entry.getValue(), properties);
             State updatedState = new State(entry.getValue(), newRefresh, entry.getKey());
             STATE.put(entry.getKey(), updatedState);
         }
+    }
+
+    static void clearAttempts() {
+        clientRefreshAttempts = 1;
     }
 
 }
