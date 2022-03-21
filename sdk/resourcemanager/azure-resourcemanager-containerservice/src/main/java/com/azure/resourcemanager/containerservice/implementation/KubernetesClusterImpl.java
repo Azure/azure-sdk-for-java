@@ -263,6 +263,11 @@ public class KubernetesClusterImpl
     }
 
     @Override
+    public String diskEncryptionSetId() {
+        return innerModel().diskEncryptionSetId();
+    }
+
+    @Override
     public void start() {
         this.startAsync().block();
     }
@@ -543,6 +548,12 @@ public class KubernetesClusterImpl
     @Override
     public KubernetesCluster.DefinitionStages.WithCreate disableKubernetesRbac() {
         this.innerModel().withEnableRbac(false);
+        return this;
+    }
+
+    @Override
+    public KubernetesCluster.DefinitionStages.WithCreate withDiskEncryptionSet(String diskEncryptionSetId) {
+        this.innerModel().withDiskEncryptionSetId(diskEncryptionSetId);
         return this;
     }
 
