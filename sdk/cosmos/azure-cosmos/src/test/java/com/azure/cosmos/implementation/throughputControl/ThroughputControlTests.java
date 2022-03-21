@@ -85,8 +85,8 @@ public class ThroughputControlTests extends TestSuiteBase {
         // The create document in this test usually takes around 6.29RU, pick a RU here relatively close, so to test throttled scenario
         ThroughputControlGroupConfig groupConfig =
             new ThroughputControlGroupConfigBuilder()
-                .setGroupName("group-" + UUID.randomUUID())
-                .setTargetThroughput(6)
+                .groupName("group-" + UUID.randomUUID())
+                .targetThroughput(6)
                 .build();
         container.enableLocalThroughputControlGroup(groupConfig);
 
@@ -116,8 +116,8 @@ public class ThroughputControlTests extends TestSuiteBase {
         // The create document in this test usually takes around 6.29RU, pick a RU here relatively close, so to test throttled scenario
         ThroughputControlGroupConfig groupConfig =
             new ThroughputControlGroupConfigBuilder()
-                .setGroupName("group-" + UUID.randomUUID())
-                .setTargetThroughput(6)
+                .groupName("group-" + UUID.randomUUID())
+                .targetThroughput(6)
                 .build();
 
         GlobalThroughputControlConfig globalControlConfig = this.client.createGlobalThroughputControlConfigBuilder(this.database.getId(), controlContainerId)
@@ -161,8 +161,8 @@ public class ThroughputControlTests extends TestSuiteBase {
         // pick a RU super small here so we know it will throttle requests for several cycles/seconds
         ThroughputControlGroupConfig groupConfig =
             new ThroughputControlGroupConfigBuilder()
-                .setGroupName("group-" + UUID.randomUUID())
-                .setTargetThroughput(1)
+                .groupName("group-" + UUID.randomUUID())
+                .targetThroughput(1)
                 .build();
         container.enableLocalThroughputControlGroup(groupConfig);
         createdContainer.enableLocalThroughputControlGroup(groupConfig);
@@ -206,8 +206,8 @@ public class ThroughputControlTests extends TestSuiteBase {
         // The create document in this test usually takes around 6.29RU, pick a RU here relatively close, so to test throttled scenario
         ThroughputControlGroupConfig groupConfig =
             new ThroughputControlGroupConfigBuilder()
-                .setGroupName("group-" + UUID.randomUUID())
-                .setTargetThroughput(6)
+                .groupName("group-" + UUID.randomUUID())
+                .targetThroughput(6)
                 .build();
 
         container.enableLocalThroughputControlGroup(groupConfig);
@@ -253,9 +253,9 @@ public class ThroughputControlTests extends TestSuiteBase {
 
         ThroughputControlGroupConfig groupConfig =
                 new ThroughputControlGroupConfigBuilder()
-                        .setGroupName("group-" + UUID.randomUUID())
-                        .setTargetThroughput(6)
-                        .setContinueOnInitError(continueOnInitError)
+                        .groupName("group-" + UUID.randomUUID())
+                        .targetThroughput(6)
+                        .continueOnInitError(continueOnInitError)
                         .build();
 
         container.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig);
@@ -285,8 +285,8 @@ public class ThroughputControlTests extends TestSuiteBase {
             database.createContainerIfNotExists(controlContainerId, "/groupId").block();
             ThroughputControlGroupConfig groupConfig =
                     new ThroughputControlGroupConfigBuilder()
-                            .setGroupName("group-" + UUID.randomUUID())
-                            .setTargetThroughput(6)
+                            .groupName("group-" + UUID.randomUUID())
+                            .targetThroughput(6)
                             .build();
 
             int clientCount = 3;

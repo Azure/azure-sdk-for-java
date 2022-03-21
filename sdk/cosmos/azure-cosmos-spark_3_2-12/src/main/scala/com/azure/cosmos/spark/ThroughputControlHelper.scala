@@ -17,8 +17,8 @@ private object ThroughputControlHelper {
             val throughputControlConfig = cosmosThroughputControlConfig.get
 
             val groupConfigBuilder = new ThroughputControlGroupConfigBuilder()
-                .setGroupName(throughputControlConfig.groupName)
-                .setDefault(true)
+                .groupName(throughputControlConfig.groupName)
+                .isDefault(true)
 
             if (throughputControlConfig.targetThroughput.isDefined) {
                 groupConfigBuilder.setTargetThroughput(throughputControlConfig.targetThroughput.get)

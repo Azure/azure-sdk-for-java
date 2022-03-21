@@ -34,17 +34,17 @@ public class ThroughputControlGroupConfigConfigurationTests extends TestSuiteBas
     public void validateMultipleDefaultGroups() {
         ThroughputControlGroupConfig groupConfig =
             new ThroughputControlGroupConfigBuilder()
-                .setGroupName("group-1")
-                .setTargetThroughput(10)
-                .setDefault(true)
+                .groupName("group-1")
+                .targetThroughput(10)
+                .isDefault(true)
                 .build();
         container.enableLocalThroughputControlGroup(groupConfig);
 
         ThroughputControlGroupConfig groupConfig2 =
             new ThroughputControlGroupConfigBuilder()
-                .setGroupName("group-2")
-                .setTargetThroughputThreshold(1.0)
-                .setDefault(true)
+                .groupName("group-2")
+                .targetThroughputThreshold(1.0)
+                .isDefault(true)
                 .build();
         assertThatThrownBy(() -> container.enableLocalThroughputControlGroup(groupConfig2))
             .isInstanceOf(IllegalArgumentException.class)

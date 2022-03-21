@@ -148,14 +148,15 @@ public class ThroughputControlStore {
                 // while fall back to original request Mono for the second scenario.
                 return this.updateControllerAndRetry(collectionNameLink, request, originalRequestMono);
             })
-            .onErrorMap(Exceptions::unwrap)
             .onErrorResume(throwable -> {
-               if (throwable instanceof ThroughputControlInitializationException) {
-                      if (this.shouldContinueRequestOnInitError(request, collectionNameLink, throwable)) {
+
+                Exception unwrappedException = Utils.as(Exceptions.unwrap(throwable), Exception.class);
+                if (unwrappedException instanceof ThroughputControlInitializationException) {
+                      if (this.shouldContinueRequestOnInitError(request, collectionNameLink, unwrappedException)) {
                           return originalRequestMono;
                       }
 
-                      return Mono.error(throwable.getCause());
+                      return Mono.error(unwrappedException.getCause());
                }
 
                return Mono.error(throwable);
