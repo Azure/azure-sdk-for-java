@@ -38,6 +38,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -217,10 +218,13 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
             DocumentModel createdModel2 = syncPoller2.getFinalResult();
 
             final List<String> modelIdList = Arrays.asList(createdModel1.getModelId(), createdModel2.getModelId());
+            String composedModelId = "test-composed-model";
 
             DocumentModel composedModel = client.beginCreateComposedModel(modelIdList,
-                    new CreateComposedModelOptions().setDescription(TestUtils.EXPECTED_DESC).setTags(
-                        TestUtils.EXPECTED_MODEL_TAGS))
+                    new CreateComposedModelOptions()
+                        .setModelId(composedModelId)
+                        .setDescription(TestUtils.EXPECTED_DESC)
+                        .setTags(TestUtils.EXPECTED_MODEL_TAGS))
                 .setPollInterval(durationTestMode)
                 .getSyncPoller()
                 .getFinalResult();
@@ -228,6 +232,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
             validateDocumentModelData(composedModel);
             Assertions.assertEquals(TestUtils.EXPECTED_DESC, composedModel.getDescription());
             Assertions.assertEquals(TestUtils.EXPECTED_MODEL_TAGS, composedModel.getTags());
+            Assertions.assertEquals(composedModelId, composedModel.getModelId());
 
             client.deleteModel(createdModel1.getModelId()).block();
             client.deleteModel(createdModel2.getModelId()).block();
@@ -299,11 +304,13 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void beginBuildModelWithOptions(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
+        String modelId = "test-model";
 
         buildModelRunner((trainingFilesUrl) -> {
             SyncPoller<DocumentOperationResult, DocumentModel> syncPoller1 =
                 client.beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE,
                         new BuildModelOptions()
+                            .setModelId(modelId)
                             .setDescription(TestUtils.EXPECTED_DESC)
                             .setTags(TestUtils.EXPECTED_MODEL_TAGS))
                     .setPollInterval(durationTestMode)
@@ -314,6 +321,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
             validateDocumentModelData(createdModel);
             Assertions.assertEquals(TestUtils.EXPECTED_DESC, createdModel.getDescription());
             Assertions.assertEquals(TestUtils.EXPECTED_MODEL_TAGS, createdModel.getTags());
+            Assertions.assertEquals(modelId, createdModel.getModelId());
 
             client.deleteModel(createdModel.getModelId()).block();
         });
