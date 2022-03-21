@@ -6,12 +6,9 @@
 - Added ability to configure `IdentityLogOptions` on Credential Builders to make account Identifier logging configurable.
 - Added the option `disableAuthoriyValidaionSafetyCheck` on Credential Builders.
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
-
+#### Dependency Updates
+- Upgraded `azure-core` dependency to 1.26.0
 
 ## 1.4.6 (2022-03-08)
 
