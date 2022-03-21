@@ -27,16 +27,21 @@ function Get-java-DocsMsTocData($packageMetadata, $docRepoLocation) {
 
     $children = @()
     # Children here combine namespaces in both preview and GA.
-    if($package.VersionPreview) {
-        $children += Get-Toc-Children -package $package.Package -groupId $package.GroupId -version $package.VersionPreview `
+    if($packageMetadata.VersionPreview) {
+        $children += Get-Toc-Children -package $packageMetadata.Package -groupId $packageMetadata.GroupId -version $packageMetadata.VersionPreview `
             -docRepoLocation $docRepoLocation -folderName "preview"
     }
-    if($package.VersionGA) {
-        $children += Get-Toc-Children -package $package.Package -groupId $package.GroupId -version $package.VersionGA `
+    if($packageMetadata.VersionGA) {
+        $children += Get-Toc-Children -package $packageMetadata.Package -groupId $packageMetadata.GroupId -version $packageMetadata.VersionGA `
             -docRepoLocation $docRepoLocation -folderName "latest"
     }
     if (!$children) {
-        Write-Host "Did not find the package namespaces for $($packageMetadata.GroupId):$($packageMetadata.Package):$version"
+        if ($packageMetadata.VersionPreview) {
+            Write-Host "Did not find the package namespaces for $($packageMetadata.GroupId):$($packageMetadata.Package):$($packageMetadata.VersionPreview)"
+        }
+        if ($packageMetadata.VersionGA) {
+            Write-Host "Did not find the package namespaces for $($packageMetadata.GroupId):$($packageMetadata.Package):$($packageMetadata.VersionGA)"
+        }
     }
     $output = [PSCustomObject]@{
         PackageLevelReadmeHref = "~/docs-ref-services/{moniker}/$packageLevelReadmeName-readme.md"

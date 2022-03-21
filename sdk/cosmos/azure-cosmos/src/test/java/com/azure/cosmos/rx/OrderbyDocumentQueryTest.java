@@ -12,6 +12,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.Resource;
@@ -31,6 +32,7 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
@@ -185,6 +187,48 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                                                                                 .hasRequestChargeHeader().build())
                                                            .totalRequestChargeIsAtLeast(numberOfPartitions * minQueryRequestChargePerPartition)
                                                            .build();
+
+        validateQuerySuccess(queryObservable.byPage(pageSize), validator);
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "sortOrder")
+    public void queryOrderByWithValueAndCustomFactoryMethod(String sortOrder) throws Exception {
+        String query = String.format("SELECT value r.propInt FROM r where r.propInt != null ORDER BY r.propInt %s", sortOrder);
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        ImplementationBridgeHelpers
+            .CosmosQueryRequestOptionsHelper
+            .getCosmosQueryRequestOptionsAccessor()
+            // Custom Factory Method will always get the ObjectNode - so if VALUE function is used
+            // the value needs to be extracted manually. This is intentional right now
+            // to allow late-binding the decision whether we really want to surface JsonNode or ObjectNode to
+            // customers if we ever make the custom factory method public
+            // For now in Spark don't need to worry about extracting values - we would need a wrapper to
+            // allow inferring schema anyway.
+            .setItemFactoryMethod(options, (node) -> node.get("_value").intValue());
+
+        int pageSize = 3;
+        CosmosPagedFlux<Integer> queryObservable = createdCollection.queryItems(query, options,
+            Integer.class);
+        Comparator<Integer> validatorComparator = Comparator.nullsFirst(Comparator.<Integer>naturalOrder());
+
+        List<Integer> expectedValues =
+            sortDocumentsAndCollectValues("propInt",
+                d -> ModelBridgeInternal
+                    .getIntFromJsonSerializable(d, "propInt"),
+                validatorComparator);
+        if ("DESC".equals(sortOrder)) {
+            Collections.reverse(expectedValues);
+        }
+
+        int expectedPageSize = expectedNumberOfPages(expectedValues.size(), pageSize);
+
+        FeedResponseListValidator<Integer> validator = new FeedResponseListValidator.Builder<Integer>()
+            .containsExactlyValues(expectedValues)
+            .numberOfPages(expectedPageSize)
+            .allPagesSatisfy(new FeedResponseValidator.Builder<Integer>()
+                .hasRequestChargeHeader().build())
+            .totalRequestChargeIsAtLeast(numberOfPartitions * minQueryRequestChargePerPartition)
+            .build();
 
         validateQuerySuccess(queryObservable.byPage(pageSize), validator);
     }
@@ -658,6 +702,47 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
         updateCollectionIndex();
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void queryDocumentsValidateContentWithObjectNode() throws Exception {
+        // removes undefined
+        InternalObjectNode expectedDocument = createdDocuments
+            .stream()
+            .filter(d -> ModelBridgeInternal.getMapFromJsonSerializable(d).containsKey("propInt"))
+            .min(Comparator.comparing(o -> String.valueOf(o.get("propInt")))).get();
+
+        String query = String.format("SELECT * from root r where r.propInt = %d ORDER BY r.propInt ASC"
+            , ModelBridgeInternal.getIntFromJsonSerializable(expectedDocument,"propInt"));
+
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+
+        CosmosPagedFlux<ObjectNode> queryObservable = createdCollection.queryItems(query, options, ObjectNode.class);
+
+        List<String> expectedResourceIds = new ArrayList<>();
+        expectedResourceIds.add(expectedDocument.getResourceId());
+
+        Map<String, ResourceValidator<InternalObjectNode>> resourceIDToValidator = new HashMap<>();
+
+        resourceIDToValidator.put(expectedDocument.getResourceId(),
+            new ResourceValidator.Builder<InternalObjectNode>().areEqual(expectedDocument).build());
+
+        FeedResponseListValidator<InternalObjectNode> validator = new FeedResponseListValidator.Builder<InternalObjectNode>()
+            .numberOfPages(1)
+            .containsExactly(expectedResourceIds)
+            .validateAllResources(resourceIDToValidator)
+            .totalRequestChargeIsAtLeast(numberOfPartitions * minQueryRequestChargePerPartition)
+            .allPagesSatisfy(new FeedResponseValidator.Builder<InternalObjectNode>().hasRequestChargeHeader().build())
+            .hasValidQueryMetrics(true)
+            .build();
+
+        validateQuerySuccess(queryObservable.byPage().map(response ->  ImplementationBridgeHelpers
+            .FeedResponseHelper
+            .getFeedResponseAccessor()
+            .convertGenericType(
+                response,
+                objectNode -> new InternalObjectNode(objectNode)
+            )), validator);
     }
 
     private void updateCollectionIndex() {

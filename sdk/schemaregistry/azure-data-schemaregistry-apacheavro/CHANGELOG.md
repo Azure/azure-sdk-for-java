@@ -1,5 +1,17 @@
 # Release History
 
+## 1.0.0-beta.11 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+- Fixed a bug that caused deserialize operation to throw `SchemaParseException` when multiple messages with same schema 
+  were deserialized (https://github.com/Azure/azure-sdk-for-java/issues/27602).
+
+### Other Changes
+
 ## 1.0.0-beta.10 (2022-03-15)
 
 ### Breaking Changes
