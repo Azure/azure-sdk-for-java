@@ -61,8 +61,9 @@ import java.util.stream.Collectors;
  * Test base for resource manager SDK.
  */
 public abstract class ResourceManagerTestBase extends TestBase {
-    private static final String ZERO_SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
-    private static final String ZERO_TENANT = "00000000-0000-0000-0000-000000000000";
+    private static final String ZERO_UUID = "00000000-0000-0000-0000-000000000000";
+    private static final String ZERO_SUBSCRIPTION = ZERO_UUID;
+    private static final String ZERO_TENANT = ZERO_UUID;
     private static final String PLAYBACK_URI_BASE = "http://localhost:";
     private static final String AZURE_AUTH_LOCATION = "AZURE_AUTH_LOCATION";
     private static final String AZURE_TEST_LOG_LEVEL = "AZURE_TEST_LOG_LEVEL";
@@ -164,7 +165,8 @@ public abstract class ResourceManagerTestBase extends TestBase {
      * @return A client ID loaded from a file.
      */
     protected String clientIdFromFile() {
-        return testAuthFile.getClientId();
+        String clientId = testAuthFile == null ? null : testAuthFile.getClientId();
+        return testResourceNamer.recordValueFromConfig(clientId);
     }
 
     /**
