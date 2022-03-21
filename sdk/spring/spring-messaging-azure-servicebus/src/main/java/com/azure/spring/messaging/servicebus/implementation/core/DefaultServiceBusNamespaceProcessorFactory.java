@@ -6,9 +6,9 @@ package com.azure.spring.messaging.servicebus.implementation.core;
 import com.azure.core.credential.TokenCredential;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
-import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
+import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceBusProcessorClientBuilderFactory;
 import com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceBusSessionProcessorClientBuilderFactory;
 import com.azure.spring.cloud.service.listener.MessageListener;
@@ -199,7 +199,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
                 client = builder.buildProcessorClient();
             }
 
-            this.listeners.forEach(l -> l.processorAdded(k.getDestination(), k.getGroup(), client));
+            this.listeners.forEach(l -> l.processorAdded(buildProcessorName(k), client));
             return client;
         });
     }
@@ -228,7 +228,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
     private void close(Map<ConsumerIdentifier, ServiceBusProcessorClient> map, Consumer<ServiceBusProcessorClient> close) {
         map.forEach((t, p) -> {
             try {
-                listeners.forEach(l -> l.processorRemoved(t.getDestination(), t.getGroup(), p));
+                listeners.forEach(l -> l.processorRemoved(buildProcessorName(t), p));
                 close.accept(p);
             } catch (Exception ex) {
                 LOGGER.warn("Failed to clean service bus queue client factory", ex);
@@ -286,6 +286,11 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
                                  .stream()
                                  .filter(c -> c.getSessionCustomizer() != null)
                                  .forEach(customizer -> customizer.getSessionCustomizer().customize(builder));
+    }
+
+    private String buildProcessorName(ConsumerIdentifier k) {
+        String group = k.getGroup();
+        return k.getDestination() + "/" + (group == null ? "" : group);
     }
 
     public static class ServiceBusProcessClientBuilderCustomizer {

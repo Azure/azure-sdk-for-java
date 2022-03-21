@@ -50,6 +50,7 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.support.ErrorMessage;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -287,8 +288,11 @@ public class ServiceBusMessageChannelBinder extends
 
             processorFactoryCustomizers.forEach(customizer -> customizer.customize(this.processorFactory));
 
-            this.processorFactory.addListener((name, subscription, client) -> {
-                String instrumentationName = name + "/" + getGroup(subscription);
+            this.processorFactory.addListener((name, client) -> {
+                String subscriptionName = client.getSubscriptionName();
+                boolean isTopic = StringUtils.hasText(subscriptionName);
+                String entityName = isTopic ? client.getTopicName() : client.getQueueName();
+                String instrumentationName = entityName + "/" + getGroup(subscriptionName);
                 Instrumentation instrumentation = new ServiceBusProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(2));
                 instrumentation.setStatus(Instrumentation.Status.UP);
                 instrumentationManager.addHealthInstrumentation(instrumentation);

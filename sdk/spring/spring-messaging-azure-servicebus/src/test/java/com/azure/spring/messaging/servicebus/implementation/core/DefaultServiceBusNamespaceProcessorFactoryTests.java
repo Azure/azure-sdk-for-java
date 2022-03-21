@@ -34,8 +34,8 @@ public class DefaultServiceBusNamespaceProcessorFactoryTests {
         this.processorFactory = new DefaultServiceBusNamespaceProcessorFactory(namespaceProperties);
         queueProcessorAddedTimes = 0;
         topicProcessorAddedTimes = 0;
-        this.processorFactory.addListener((name, subscription, client) -> {
-            if (subscription == null) {
+        this.processorFactory.addListener((name, client) -> {
+            if (client.getSubscriptionName() == null) {
                 queueProcessorAddedTimes++;
             } else {
                 topicProcessorAddedTimes++;
