@@ -26,8 +26,8 @@ import com.azure.spring.messaging.servicebus.core.listener.ServiceBusMessageList
 import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.servicebus.core.properties.ProducerProperties;
 import com.azure.spring.messaging.servicebus.core.properties.ServiceBusContainerProperties;
-import com.azure.spring.messaging.servicebus.implementation.core.DefaultServiceBusNamespaceProcessorFactory;
-import com.azure.spring.messaging.servicebus.implementation.core.DefaultServiceBusNamespaceProducerFactory;
+import com.azure.spring.messaging.servicebus.core.DefaultServiceBusNamespaceProcessorFactory;
+import com.azure.spring.messaging.servicebus.core.DefaultServiceBusNamespaceProducerFactory;
 import com.azure.spring.messaging.servicebus.implementation.properties.merger.ProcessorPropertiesMerger;
 import com.azure.spring.messaging.servicebus.support.ServiceBusMessageHeaders;
 import com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter;

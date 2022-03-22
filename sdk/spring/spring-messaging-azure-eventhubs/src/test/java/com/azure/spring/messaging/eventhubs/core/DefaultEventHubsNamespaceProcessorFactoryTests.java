@@ -1,15 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.messaging.eventhubs.implementatin.core;
+package com.azure.spring.messaging.eventhubs.core;
 
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
 import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsRecordMessageListener;
-import com.azure.spring.messaging.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.messaging.eventhubs.core.properties.NamespaceProperties;
-import com.azure.spring.messaging.eventhubs.implementation.core.DefaultEventHubsNamespaceProcessorFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

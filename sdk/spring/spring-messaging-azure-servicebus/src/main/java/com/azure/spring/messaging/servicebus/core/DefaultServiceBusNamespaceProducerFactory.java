@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.messaging.servicebus.implementation.core;
+package com.azure.spring.messaging.servicebus.core;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
@@ -12,7 +12,6 @@ import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomize
 import com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceBusSenderClientBuilderFactory;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.messaging.PropertiesSupplier;
-import com.azure.spring.messaging.servicebus.core.ServiceBusProducerFactory;
 import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.servicebus.core.properties.ProducerProperties;
 import com.azure.spring.messaging.servicebus.implementation.properties.merger.SenderPropertiesParentMerger;

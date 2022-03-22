@@ -13,7 +13,7 @@ import com.azure.spring.integration.core.handler.DefaultMessageHandler;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusInboundChannelAdapter;
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.servicebus.core.ServiceBusTemplate;
-import com.azure.spring.messaging.servicebus.implementation.core.DefaultServiceBusNamespaceProducerFactory;
+import com.azure.spring.messaging.servicebus.core.DefaultServiceBusNamespaceProducerFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.messaging.eventhubs.implementation.core;
+package com.azure.spring.messaging.eventhubs.core;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.messaging.eventhubs.CheckpointStore;
@@ -17,7 +17,6 @@ import com.azure.spring.cloud.service.implementation.eventhubs.factory.EventProc
 import com.azure.spring.cloud.service.listener.MessageListener;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
-import com.azure.spring.messaging.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.messaging.eventhubs.core.properties.EventHubsContainerProperties;
 import com.azure.spring.messaging.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.eventhubs.core.properties.ProcessorProperties;

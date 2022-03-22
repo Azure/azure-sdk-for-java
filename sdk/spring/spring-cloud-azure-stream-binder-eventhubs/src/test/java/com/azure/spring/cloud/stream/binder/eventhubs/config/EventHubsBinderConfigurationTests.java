@@ -21,7 +21,7 @@ import com.azure.spring.messaging.eventhubs.core.checkpoint.CheckpointMode;
 import com.azure.spring.messaging.eventhubs.core.listener.EventHubsMessageListenerContainer;
 import com.azure.spring.messaging.eventhubs.core.properties.EventHubsContainerProperties;
 import com.azure.spring.messaging.eventhubs.core.properties.NamespaceProperties;
-import com.azure.spring.messaging.eventhubs.implementation.core.DefaultEventHubsNamespaceProcessorFactory;
+import com.azure.spring.messaging.eventhubs.core.DefaultEventHubsNamespaceProcessorFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigurations;

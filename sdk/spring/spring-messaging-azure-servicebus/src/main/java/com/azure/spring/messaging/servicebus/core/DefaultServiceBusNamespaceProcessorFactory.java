@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.messaging.servicebus.implementation.core;
+package com.azure.spring.messaging.servicebus.core;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
@@ -16,7 +16,6 @@ import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
-import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.messaging.servicebus.core.listener.ServiceBusMessageListenerContainer;
 import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.servicebus.core.properties.ProcessorProperties;
@@ -56,8 +55,8 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
     private final List<Listener> listeners = new ArrayList<>();
     private final NamespaceProperties namespaceProperties;
     private final PropertiesSupplier<ConsumerIdentifier, ProcessorProperties> propertiesSupplier;
-    private final List<ServiceBusProcessClientBuilderCustomizer> customizers = new ArrayList<>();
-    private final Map<ConsumerIdentifier, List<ServiceBusProcessClientBuilderCustomizer>> dedicatedCustomizers = new HashMap<>();
+    private final List<ServiceBusProcessorClientBuilderCustomizer> customizers = new ArrayList<>();
+    private final Map<ConsumerIdentifier, List<ServiceBusProcessorClientBuilderCustomizer>> dedicatedCustomizers = new HashMap<>();
     private AzureCredentialResolver<TokenCredential> tokenCredentialResolver = null;
     private TokenCredential defaultAzureCredential = null;
 
@@ -240,7 +239,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
      * Add a service client builder customizer to customize all the clients created from this factory.
      * @param customizer the provided customizer.
      */
-    public void addBuilderCustomizer(ServiceBusProcessClientBuilderCustomizer customizer) {
+    public void addBuilderCustomizer(ServiceBusProcessorClientBuilderCustomizer customizer) {
         if (customizer == null || !customizer.isAnyCustomizerSet()) {
             LOGGER.debug("The provided customizer is null, will ignore it.");
             return;
@@ -256,7 +255,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
      * @param subscription the subscription name of the topic, could be null if it is a queue.
      * @param customizer the provided customizer.
      */
-    public void addBuilderCustomizer(String entityName, String subscription, ServiceBusProcessClientBuilderCustomizer customizer) {
+    public void addBuilderCustomizer(String entityName, String subscription, ServiceBusProcessorClientBuilderCustomizer customizer) {
         if (customizer == null || !customizer.isAnyCustomizerSet()) {
             LOGGER.debug("The provided customizer is null, will ignore it.");
             return;
@@ -293,12 +292,22 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
         return k.getDestination() + "/" + (group == null ? "" : group);
     }
 
-    public static class ServiceBusProcessClientBuilderCustomizer {
+    /**
+     * Customizer of both the {@link ServiceBusClientBuilder.ServiceBusProcessorClientBuilder} and
+     * {@link ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder}.
+     */
+    public static class ServiceBusProcessorClientBuilderCustomizer {
 
         private final AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder> noneSessionCustomizer;
         private final AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder> sessionCustomizer;
 
-        public ServiceBusProcessClientBuilderCustomizer(
+        /**
+         * Construct a {@code ServiceBusProcessorClientBuilderCustomizer} with the provided customizers for non-session
+         * and session-enabled {@link ServiceBusProcessorClient}.
+         * @param noneSessionCustomizer the client builder customizer for non-session {@link ServiceBusProcessorClient}.
+         * @param sessionCustomizer the client builder customizer for session-enabled {@link ServiceBusProcessorClient}.
+         */
+        public ServiceBusProcessorClientBuilderCustomizer(
             AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder> noneSessionCustomizer,
             AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder> sessionCustomizer) {
             this.noneSessionCustomizer = noneSessionCustomizer;

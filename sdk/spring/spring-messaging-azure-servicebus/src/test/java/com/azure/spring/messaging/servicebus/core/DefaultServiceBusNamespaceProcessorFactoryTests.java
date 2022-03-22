@@ -1,12 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.messaging.servicebus.implementation.core;
+package com.azure.spring.messaging.servicebus.core;
 
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusRecordMessageListener;
-import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.servicebus.core.properties.ServiceBusContainerProperties;
 import org.junit.jupiter.api.BeforeEach;
@@ -95,7 +94,7 @@ public class DefaultServiceBusNamespaceProcessorFactoryTests {
         DefaultServiceBusNamespaceProcessorFactory factory = (DefaultServiceBusNamespaceProcessorFactory) this.processorFactory;
 
         factory.addBuilderCustomizer(
-            new DefaultServiceBusNamespaceProcessorFactory.ServiceBusProcessClientBuilderCustomizer(
+            new DefaultServiceBusNamespaceProcessorFactory.ServiceBusProcessorClientBuilderCustomizer(
                 builder -> noneSessionClientCalledTimes.getAndIncrement(),
                 builder -> sessionClientCalledTimes.getAndIncrement()
             ));
@@ -135,13 +134,13 @@ public class DefaultServiceBusNamespaceProcessorFactoryTests {
         DefaultServiceBusNamespaceProcessorFactory factory = (DefaultServiceBusNamespaceProcessorFactory) this.processorFactory;
 
         factory.addBuilderCustomizer("queue-1", null,
-            new DefaultServiceBusNamespaceProcessorFactory.ServiceBusProcessClientBuilderCustomizer(
+            new DefaultServiceBusNamespaceProcessorFactory.ServiceBusProcessorClientBuilderCustomizer(
                 builder -> noneSessionClientCalledTimes.getAndIncrement(),
                 builder -> sessionClientCalledTimes.getAndIncrement()
             ));
 
         factory.addBuilderCustomizer("queue-2", null,
-            new DefaultServiceBusNamespaceProcessorFactory.ServiceBusProcessClientBuilderCustomizer(
+            new DefaultServiceBusNamespaceProcessorFactory.ServiceBusProcessorClientBuilderCustomizer(
                 builder -> noneSessionClientCalledTimes.getAndIncrement(),
                 builder -> sessionClientCalledTimes.getAndIncrement()
             ));

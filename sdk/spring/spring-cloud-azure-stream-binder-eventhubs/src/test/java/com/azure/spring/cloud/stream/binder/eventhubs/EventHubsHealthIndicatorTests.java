@@ -14,7 +14,7 @@ import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAda
 import com.azure.spring.messaging.eventhubs.core.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.eventhubs.core.checkpoint.CheckpointMode;
 import com.azure.spring.messaging.eventhubs.core.EventHubsTemplate;
-import com.azure.spring.messaging.eventhubs.implementation.core.DefaultEventHubsNamespaceProducerFactory;
+import com.azure.spring.messaging.eventhubs.core.DefaultEventHubsNamespaceProducerFactory;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
