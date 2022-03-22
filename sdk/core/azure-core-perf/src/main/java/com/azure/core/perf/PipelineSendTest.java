@@ -55,6 +55,7 @@ public class PipelineSendTest extends RestProxyTestBase<CorePerfStressOptions> {
                 if (httpResponse.getStatusCode() / 100 != 2) {
                     throw new IllegalStateException("Endpoint didn't return 2xx http status code.");
                 }
+                httpResponse.close();
                 return httpResponse;
             })
             .then();
