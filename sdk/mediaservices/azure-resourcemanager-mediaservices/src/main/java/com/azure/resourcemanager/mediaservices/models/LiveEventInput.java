@@ -6,15 +6,12 @@ package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The live event input. */
 @Fluent
 public final class LiveEventInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LiveEventInput.class);
-
     /*
      * The input protocol for the live event. This is specified at creation
      * time and cannot be updated.
@@ -166,7 +163,7 @@ public final class LiveEventInput {
      */
     public void validate() {
         if (streamingProtocol() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property streamingProtocol in model LiveEventInput"));
@@ -178,4 +175,6 @@ public final class LiveEventInput {
             endpoints().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LiveEventInput.class);
 }

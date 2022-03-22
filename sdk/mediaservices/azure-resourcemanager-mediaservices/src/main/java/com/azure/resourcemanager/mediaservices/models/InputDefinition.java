@@ -5,9 +5,6 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -20,7 +17,7 @@ import java.util.List;
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
-    property = "@odata\\.type",
+    property = "@odata.type",
     defaultImpl = InputDefinition.class)
 @JsonTypeName("InputDefinition")
 @JsonSubTypes({
@@ -28,11 +25,8 @@ import java.util.List;
     @JsonSubTypes.Type(name = "#Microsoft.Media.FromEachInputFile", value = FromEachInputFile.class),
     @JsonSubTypes.Type(name = "#Microsoft.Media.InputFile", value = InputFile.class)
 })
-@JsonFlatten
 @Fluent
 public class InputDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InputDefinition.class);
-
     /*
      * The list of TrackDescriptors which define the metadata and selection of
      * tracks in the input.
