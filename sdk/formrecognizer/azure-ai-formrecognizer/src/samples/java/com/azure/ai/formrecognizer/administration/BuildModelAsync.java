@@ -45,7 +45,9 @@ public class BuildModelAsync {
         PollerFlux<DocumentOperationResult, DocumentModel> buildModelPoller =
             client.beginBuildModel(trainingFilesUrl,
                 DocumentBuildMode.TEMPLATE,
-                new BuildModelOptions().setDescription("my custom model desc"));
+                new BuildModelOptions()
+                    .setModelId("custom-model-id")
+                    .setDescription("my custom model desc"));
 
         Mono<DocumentModel> customFormModelResult = buildModelPoller
             .last()

@@ -202,12 +202,14 @@ public final class DocumentModelAdministrationAsyncClient {
      * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentBuildMode-BuildModelOptions -->
      * <pre>
      * String trainingFilesUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
+     * String modelId = &quot;model-id&quot;;
      * Map&lt;String, String&gt; attrs = new HashMap&lt;String, String&gt;&#40;&#41;;
      * attrs.put&#40;&quot;createdBy&quot;, &quot;sample&quot;&#41;;
      *
      * documentModelAdministrationAsyncClient.beginBuildModel&#40;trainingFilesUrl,
      *         DocumentBuildMode.TEMPLATE,
      *         new BuildModelOptions&#40;&#41;
+     *             .setModelId&#40;modelId&#41;
      *             .setDescription&#40;&quot;model desc&quot;&#41;
      *             .setPrefix&#40;&quot;Invoice&quot;&#41;
      *             .setTags&#40;attrs&#41;&#41;
@@ -390,29 +392,11 @@ public final class DocumentModelAdministrationAsyncClient {
      * the target parameter into {@link DocumentModelAdministrationAsyncClient#beginCopyModelTo(String, CopyAuthorization)}.
      * </p>
      *
-     * @param modelId A unique ID for your copied model. If not specified, a model ID will be created for you.
-     *
-     * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getCopyAuthorization#string -->
-     * <pre>
-     * String modelId = &quot;my-copied-model&quot;;
-     * documentModelAdministrationAsyncClient.getCopyAuthorization&#40;modelId&#41;
-     *     .subscribe&#40;copyAuthorization -&gt;
-     *         System.out.printf&#40;&quot;Copy Authorization for model id: %s, access token: %s, expiration time: %s, &quot;
-     *                 + &quot;target resource ID; %s, target resource region: %s%n&quot;,
-     *             copyAuthorization.getTargetModelId&#40;&#41;,
-     *             copyAuthorization.getAccessToken&#40;&#41;,
-     *             copyAuthorization.getExpiresOn&#40;&#41;,
-     *             copyAuthorization.getTargetResourceId&#40;&#41;,
-     *             copyAuthorization.getTargetResourceRegion&#40;&#41;
-     *         &#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getCopyAuthorization#string -->
      * @return The {@link CopyAuthorization} that could be used to authorize copying model between resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CopyAuthorization> getCopyAuthorization(String modelId) {
-        return getCopyAuthorizationWithResponse(modelId, null).flatMap(FluxUtil::toMono);
+    public Mono<CopyAuthorization> getCopyAuthorization() {
+        return getCopyAuthorizationWithResponse(null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -421,19 +405,19 @@ public final class DocumentModelAdministrationAsyncClient {
      * the target parameter into {@link DocumentModelAdministrationAsyncClient#beginCopyModelTo(String, CopyAuthorization)}.
      * </p>
      *
-     * @param modelId A unique ID for your copied model. If not specified, a model ID will be created for you.
      * @param copyAuthorizationOptions The configurable {@link CopyAuthorizationOptions options} to pass when
      * copying a model.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getCopyAuthorizationWithResponse#string-CopyAuthorizationOptions -->
+     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getCopyAuthorizationWithResponse#CopyAuthorizationOptions -->
      * <pre>
      * String modelId = &quot;my-copied-model&quot;;
      * Map&lt;String, String&gt; attrs = new HashMap&lt;String, String&gt;&#40;&#41;;
      * attrs.put&#40;&quot;createdBy&quot;, &quot;sample&quot;&#41;;
      *
-     * documentModelAdministrationAsyncClient.getCopyAuthorizationWithResponse&#40;modelId,
+     * documentModelAdministrationAsyncClient.getCopyAuthorizationWithResponse&#40;
      *         new CopyAuthorizationOptions&#40;&#41;
+     *             .setModelId&#40;modelId&#41;
      *             .setDescription&#40;&quot;model desc&quot;&#41;
      *             .setTags&#40;attrs&#41;&#41;
      *     .subscribe&#40;copyAuthorization -&gt;
@@ -447,24 +431,27 @@ public final class DocumentModelAdministrationAsyncClient {
      *             copyAuthorization.getValue&#40;&#41;.getTargetResourceRegion&#40;&#41;
      *         &#41;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getCopyAuthorizationWithResponse#string-CopyAuthorizationOptions -->
+     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getCopyAuthorizationWithResponse#CopyAuthorizationOptions -->
      * @return The {@link CopyAuthorization} that could be used to authorize copying model between resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CopyAuthorization>> getCopyAuthorizationWithResponse(String modelId,
+    public Mono<Response<CopyAuthorization>> getCopyAuthorizationWithResponse(
         CopyAuthorizationOptions copyAuthorizationOptions) {
         try {
-            return withContext(context -> getCopyAuthorizationWithResponse(modelId, copyAuthorizationOptions, context));
+            return withContext(context -> getCopyAuthorizationWithResponse(copyAuthorizationOptions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<CopyAuthorization>> getCopyAuthorizationWithResponse(String modelId,
-        CopyAuthorizationOptions copyAuthorizationOptions, Context context) {
+    Mono<Response<CopyAuthorization>> getCopyAuthorizationWithResponse(
+        CopyAuthorizationOptions copyAuthorizationOptions,
+        Context context) {
         copyAuthorizationOptions = copyAuthorizationOptions == null
             ? new CopyAuthorizationOptions() : copyAuthorizationOptions;
+        String modelId = copyAuthorizationOptions.getModelId();
         modelId = modelId == null ? Utility.generateRandomModelID() : modelId;
+
         AuthorizeCopyRequest authorizeCopyRequest
             = new AuthorizeCopyRequest()
             .setModelId(modelId)
@@ -535,11 +522,15 @@ public final class DocumentModelAdministrationAsyncClient {
      * <pre>
      * String modelId1 = &quot;&#123;model_Id_1&#125;&quot;;
      * String modelId2 = &quot;&#123;model_Id_2&#125;&quot;;
+     * String modelId = &quot;my-composed-model&quot;;
      * Map&lt;String, String&gt; attrs = new HashMap&lt;String, String&gt;&#40;&#41;;
      * attrs.put&#40;&quot;createdBy&quot;, &quot;sample&quot;&#41;;
      *
      * documentModelAdministrationAsyncClient.beginCreateComposedModel&#40;Arrays.asList&#40;modelId1, modelId2&#41;,
-     *         new CreateComposedModelOptions&#40;&#41;.setDescription&#40;&quot;model-desc&quot;&#41;.setTags&#40;attrs&#41;&#41;
+     *         new CreateComposedModelOptions&#40;&#41;
+     *             .setModelId&#40;modelId&#41;
+     *             .setDescription&#40;&quot;model-desc&quot;&#41;
+     *             .setTags&#40;attrs&#41;&#41;
      *     &#47;&#47; if polling operation completed, retrieve the final result.
      *     .flatMap&#40;AsyncPollResponse::getFinalResult&#41;
      *     .subscribe&#40;documentModel -&gt; &#123;
@@ -614,7 +605,7 @@ public final class DocumentModelAdministrationAsyncClient {
      *
      * <p>This should be called with the source Form Recognizer resource (with the model that is intended to be copied).
      * The target parameter should be supplied from the target resource's output from
-     * {@link DocumentModelAdministrationAsyncClient#getCopyAuthorization(String)} method.
+     * {@link DocumentModelAdministrationAsyncClient#getCopyAuthorization()} method.
      * </p>
      *
      * <p>The service does not support cancellation of the long running operation and returns with an
@@ -624,9 +615,8 @@ public final class DocumentModelAdministrationAsyncClient {
      * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginCopyModelTo#string-copyAuthorization -->
      * <pre>
      * String copyModelId = &quot;copy-model&quot;;
-     * String targetModelId = &quot;my-copied-model-id&quot;;
      * &#47;&#47; Get authorization to copy the model to target resource
-     * documentModelAdministrationAsyncClient.getCopyAuthorization&#40;targetModelId&#41;
+     * documentModelAdministrationAsyncClient.getCopyAuthorization&#40;&#41;
      *     &#47;&#47; Start copy operation from the source client
      *     &#47;&#47; The ID of the model that needs to be copied to the target resource
      *     .subscribe&#40;copyAuthorization -&gt; documentModelAdministrationAsyncClient.beginCopyModelTo&#40;copyModelId,
@@ -643,7 +633,7 @@ public final class DocumentModelAdministrationAsyncClient {
      *
      * @param modelId Model identifier of the model to copy to target resource.
      * @param target the copy authorization to the target Form Recognizer resource. The copy authorization can be
-     * generated from the target resource's call to {@link DocumentModelAdministrationAsyncClient#getCopyAuthorization(String)}
+     * generated from the target resource's call to {@link DocumentModelAdministrationAsyncClient#getCopyAuthorization()}
      * @return A {@link PollerFlux} that polls the copy model operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns the copied model {@link DocumentModel}.
      * @throws DocumentModelOperationException If copy operation fails and model with {@link OperationStatus#FAILED} is created.

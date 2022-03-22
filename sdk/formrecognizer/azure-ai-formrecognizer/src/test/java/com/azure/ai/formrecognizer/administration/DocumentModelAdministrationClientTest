@@ -236,7 +236,7 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
             DocumentModel actualModel = syncPoller.getFinalResult();
 
             CopyAuthorization target =
-                client.getCopyAuthorization(null);
+                client.getCopyAuthorization();
             SyncPoller<DocumentOperationResult, DocumentModel>
                 copyPoller = client.beginCopyModelTo(actualModel.getModelId(), target)
                 .setPollInterval(durationTestMode);
@@ -255,7 +255,7 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void copyAuthorization(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
-        validateCopyAuthorizationResult(client.getCopyAuthorization(null));
+        validateCopyAuthorizationResult(client.getCopyAuthorization());
     }
 
     /**

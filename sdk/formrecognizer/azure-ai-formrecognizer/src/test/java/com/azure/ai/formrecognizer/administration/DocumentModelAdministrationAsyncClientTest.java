@@ -38,7 +38,6 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -141,7 +140,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void copyAuthorization(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.getCopyAuthorization("java_copy_model_test"))
+        StepVerifier.create(client.getCopyAuthorization())
             .assertNext(DocumentModelAdministrationClientTestBase::validateCopyAuthorizationResult)
             .verifyComplete();
 
@@ -362,7 +361,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
             syncPoller1.waitForCompletion();
             DocumentModel actualModel = syncPoller1.getFinalResult();
 
-            Mono<CopyAuthorization> targetMono = client.getCopyAuthorization(null);
+            Mono<CopyAuthorization> targetMono = client.getCopyAuthorization();
             CopyAuthorization target = targetMono.block();
             if (actualModel == null) {
                 fail();
@@ -386,6 +385,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void beginCopyWithOptions(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
+        String modelId = "my-copied-model-id";
 
         buildModelRunner((trainingFilesUrl) -> {
             SyncPoller<DocumentOperationResult, DocumentModel> syncPoller1 =
@@ -394,8 +394,12 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
             syncPoller1.waitForCompletion();
             DocumentModel actualModel = syncPoller1.getFinalResult();
 
-            Mono<Response<CopyAuthorization>> targetMono = client.getCopyAuthorizationWithResponse(null,
-                new CopyAuthorizationOptions().setDescription(TestUtils.EXPECTED_DESC).setTags(TestUtils.EXPECTED_MODEL_TAGS));
+            Mono<Response<CopyAuthorization>> targetMono = client.getCopyAuthorizationWithResponse(
+                new CopyAuthorizationOptions()
+                    .setModelId(modelId)
+                    .setDescription(TestUtils.EXPECTED_DESC)
+                    .setTags(TestUtils.EXPECTED_MODEL_TAGS));
+
             CopyAuthorization target = targetMono.block().getValue();
             if (actualModel == null) {
                 fail();
@@ -411,6 +415,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
             validateDocumentModelData(copiedModel);
             Assertions.assertEquals(TestUtils.EXPECTED_DESC, copiedModel.getDescription());
             Assertions.assertEquals(TestUtils.EXPECTED_MODEL_TAGS, copiedModel.getTags());
+            Assertions.assertEquals(modelId, target.getTargetModelId());
 
             client.deleteModel(actualModel.getModelId()).block();
             client.deleteModel(copiedModel.getModelId()).block();

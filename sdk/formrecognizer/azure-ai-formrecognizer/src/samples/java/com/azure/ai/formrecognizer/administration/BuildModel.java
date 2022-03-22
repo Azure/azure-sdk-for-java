@@ -44,7 +44,10 @@ public class BuildModel {
         SyncPoller<DocumentOperationResult, DocumentModel> buildOperationPoller =
             client.beginBuildModel(trainingFilesUrl,
                 DocumentBuildMode.TEMPLATE,
-                new BuildModelOptions().setDescription("model desc"), Context.NONE);
+                new BuildModelOptions()
+                    .setModelId("custom-model-id")
+                    .setDescription("model desc"),
+                Context.NONE);
 
         DocumentModel documentModel = buildOperationPoller.getFinalResult();
 
