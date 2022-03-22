@@ -25,7 +25,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
 /**
- * {@link EnableAutoConfiguration Auto-configuration} for Azure App Configuration clients support.
+ * {@link EnableAutoConfiguration Auto-configuration} for Azure App Configuration support.
  *
  * @since 4.0.0
  */
