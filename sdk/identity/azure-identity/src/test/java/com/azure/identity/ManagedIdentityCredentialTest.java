@@ -54,7 +54,7 @@ public class ManagedIdentityCredentialTest {
 
             // mock
             IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-            when(identityClient.authenticateToManagedIdentityEndpoint(endpoint, secret, request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+            when(identityClient.authenticateToManagedIdentityEndpoint(endpoint, secret, endpoint, secret, request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
             PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
             // test

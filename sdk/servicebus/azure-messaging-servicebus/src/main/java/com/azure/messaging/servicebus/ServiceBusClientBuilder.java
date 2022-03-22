@@ -1191,6 +1191,8 @@ public final class ServiceBusClientBuilder implements
          */
         public ServiceBusProcessorClient buildProcessorClient() {
             return new ServiceBusProcessorClient(sessionReceiverClientBuilder,
+                sessionReceiverClientBuilder.queueName, sessionReceiverClientBuilder.topicName,
+                sessionReceiverClientBuilder.subscriptionName,
                 Objects.requireNonNull(processMessage, "'processMessage' cannot be null"),
                 Objects.requireNonNull(processError, "'processError' cannot be null"), processorClientOptions);
         }
@@ -1686,6 +1688,8 @@ public final class ServiceBusClientBuilder implements
          */
         public ServiceBusProcessorClient buildProcessorClient() {
             return new ServiceBusProcessorClient(serviceBusReceiverClientBuilder,
+                    serviceBusReceiverClientBuilder.queueName, serviceBusReceiverClientBuilder.topicName,
+                    serviceBusReceiverClientBuilder.subscriptionName,
                 Objects.requireNonNull(processMessage, "'processMessage' cannot be null"),
                 Objects.requireNonNull(processError, "'processError' cannot be null"), processorClientOptions);
         }

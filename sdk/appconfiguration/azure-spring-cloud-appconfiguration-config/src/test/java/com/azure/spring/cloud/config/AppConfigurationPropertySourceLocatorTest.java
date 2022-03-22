@@ -25,6 +25,7 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -210,6 +211,9 @@ public class AppConfigurationPropertySourceLocatorTest {
     public void cleanup() throws Exception {
         MockitoAnnotations.openMocks(this).close();
         Field field = AppConfigurationPropertySourceLocator.class.getDeclaredField("startup");
+        Field modifiersField = Field.class.getDeclaredField("modifiers");
+        modifiersField.setAccessible(true);
+        modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
         field.setAccessible(true);
         field.set(null, new AtomicBoolean(true));
         StateHolder.setLoadState(TEST_STORE_NAME, false);
@@ -355,6 +359,9 @@ public class AppConfigurationPropertySourceLocatorTest {
     public void refreshThrowException() throws IOException, NoSuchFieldException, SecurityException,
         IllegalArgumentException, IllegalAccessException {
         Field field = AppConfigurationPropertySourceLocator.class.getDeclaredField("startup");
+        Field modifiersField = Field.class.getDeclaredField("modifiers");
+        modifiersField.setAccessible(true);
+        modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
         field.setAccessible(true);
         field.set(null, new AtomicBoolean(false));
         StateHolder.setLoadState(TEST_STORE_NAME, true);

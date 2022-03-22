@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The status of the last successful slot swap operation. */
 @Immutable
 public final class SlotSwapStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SlotSwapStatus.class);
-
     /*
      * The time the last successful slot swap completed.
      */

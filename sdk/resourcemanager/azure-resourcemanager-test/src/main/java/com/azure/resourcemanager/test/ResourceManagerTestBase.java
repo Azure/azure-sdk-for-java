@@ -55,14 +55,16 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
  * Test base for resource manager SDK.
  */
 public abstract class ResourceManagerTestBase extends TestBase {
-    private static final String ZERO_SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
-    private static final String ZERO_TENANT = "00000000-0000-0000-0000-000000000000";
+    private static final String ZERO_UUID = "00000000-0000-0000-0000-000000000000";
+    private static final String ZERO_SUBSCRIPTION = ZERO_UUID;
+    private static final String ZERO_TENANT = ZERO_UUID;
     private static final String PLAYBACK_URI_BASE = "http://localhost:";
     private static final String AZURE_AUTH_LOCATION = "AZURE_AUTH_LOCATION";
     private static final String AZURE_TEST_LOG_LEVEL = "AZURE_TEST_LOG_LEVEL";
@@ -164,7 +166,8 @@ public abstract class ResourceManagerTestBase extends TestBase {
      * @return A client ID loaded from a file.
      */
     protected String clientIdFromFile() {
-        return testAuthFile.getClientId();
+        String clientId = testAuthFile == null ? null : testAuthFile.getClientId();
+        return testResourceNamer.recordValueFromConfig(clientId);
     }
 
     /**
@@ -286,8 +289,14 @@ public abstract class ResourceManagerTestBase extends TestBase {
 
             textReplacementRules.put(testProfile.getSubscriptionId(), ZERO_SUBSCRIPTION);
             textReplacementRules.put(testProfile.getTenantId(), ZERO_TENANT);
-            textReplacementRules.put(AzureEnvironment.AZURE.getResourceManagerEndpoint(), PLAYBACK_URI + "/");
-            textReplacementRules.put(AzureEnvironment.AZURE.getMicrosoftGraphEndpoint(), PLAYBACK_URI + "/");
+            // ARM endpoint
+            textReplacementRules.put(Pattern.quote(AzureEnvironment.AZURE.getResourceManagerEndpoint()), PLAYBACK_URI + "/");
+            // MSGraph endpoint
+            textReplacementRules.put(Pattern.quote(AzureEnvironment.AZURE.getMicrosoftGraphEndpoint()), PLAYBACK_URI + "/");
+            // vault endpoint
+            textReplacementRules.put("https://[a-zA-Z0-9]+?" + AzureEnvironment.AZURE.getKeyVaultDnsSuffix().replace(".", "\\.") + "/", PLAYBACK_URI + "/");
+            // storage account endpoint
+            textReplacementRules.put("https://[a-zA-Z0-9]+?" + AzureEnvironment.AZURE.getStorageEndpointSuffix().replace(".", "\\.") + "/", PLAYBACK_URI + "/");
             addTextReplacementRules(textReplacementRules);
         }
         initializeClients(httpPipeline, testProfile);

@@ -5,7 +5,7 @@
 package com.azure.analytics.purview.catalog.generated;
 
 import com.azure.analytics.purview.catalog.DiscoveryClient;
-import com.azure.analytics.purview.catalog.PurviewCatalogClientBuilder;
+import com.azure.analytics.purview.catalog.DiscoveryClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -13,15 +13,17 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class DiscoveryAutoComplete {
     public static void main(String[] args) {
-        DiscoveryClient client =
-                new PurviewCatalogClientBuilder()
+        // BEGIN: com.azure.analytics.purview.catalog.generated.discoveryautocomplete.discoveryautocomplete
+        DiscoveryClient discoveryClient =
+                new DiscoveryClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
-                        .buildDiscoveryClient();
+                        .buildClient();
         BinaryData autoCompleteRequest =
                 BinaryData.fromString(
                         "{\"filter\":{\"and\":[{\"entityType\":\"azure_blob_path\",\"includeSubTypes\":false}]},\"keywords\":\"exa\",\"limit\":10}");
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = client.autoCompleteWithResponse(autoCompleteRequest, requestOptions);
+        Response<BinaryData> response = discoveryClient.autoCompleteWithResponse(autoCompleteRequest, requestOptions);
+        // END: com.azure.analytics.purview.catalog.generated.discoveryautocomplete.discoveryautocomplete
     }
 }

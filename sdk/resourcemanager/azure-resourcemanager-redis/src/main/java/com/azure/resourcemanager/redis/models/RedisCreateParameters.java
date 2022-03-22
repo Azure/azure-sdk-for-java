@@ -218,7 +218,7 @@ public final class RedisCreateParameters {
      *
      * @return the redisConfiguration value.
      */
-    public RedisCommonPropertiesRedisConfiguration redisConfiguration() {
+    public RedisConfiguration redisConfiguration() {
         return this.innerProperties() == null ? null : this.innerProperties().redisConfiguration();
     }
 
@@ -230,7 +230,7 @@ public final class RedisCreateParameters {
      * @param redisConfiguration the redisConfiguration value to set.
      * @return the RedisCreateParameters object itself.
      */
-    public RedisCreateParameters withRedisConfiguration(RedisCommonPropertiesRedisConfiguration redisConfiguration) {
+    public RedisCreateParameters withRedisConfiguration(RedisConfiguration redisConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new RedisCreateProperties();
         }

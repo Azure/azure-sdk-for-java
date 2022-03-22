@@ -62,6 +62,7 @@ jobs:
           Paths:
             - package.json
             - metadata/
+            - docs-ref-mapping/reference-unified.yml
           Repositories:
             - Name: azure-sdk/$(DocRepoName)
               WorkingDirectory: $(DailyDocRepoLocation)
@@ -86,6 +87,14 @@ jobs:
           filePath: eng/common/scripts/Update-DocsMsPackages.ps1
           arguments: -DocRepoLocation $(DailyDocRepoLocation)
         displayName: Update Docs Onboarding for Daily branch
+      - task: Powershell@2
+        inputs:
+          pwsh: true
+          filePath: eng/common/scripts/Update-DocsMsToc.ps1
+          arguments: >-
+            -DocRepoLocation $(DailyDocRepoLocation)
+            -OutputLocation $(DailyDocRepoLocation)/docs-ref-mapping/reference-unified.yml
+        displayName: Generate ToC for Daily branch
       - template: /eng/common/pipelines/templates/steps/git-push-changes.yml
         parameters:
           BaseRepoBranch: $(DailyDocsBranchName)

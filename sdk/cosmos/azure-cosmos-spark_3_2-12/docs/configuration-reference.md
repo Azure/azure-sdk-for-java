@@ -21,12 +21,19 @@
 
 ### Write Config
 | Config Property Name      | Default | Description |
-| :---        |    :----   |         :--- | 
-| `spark.cosmos.write.strategy`      | `ItemOverwrite`    | Cosmos DB Item write Strategy: <br/> - `ItemOverwrite` (using upsert), <br/> - `ItemOverwriteIfNotModified` (if etag property of the row is empty/null it will just do an insert and ignore if the document already exists - same as `ItemAppend`, if an etag value exists it will attempt to replace the document with etag pre-condition. If the document changed - identified by precondition failure - the update is skipped and the document is not updated with the content of the data frame row), <br/> - `ItemAppend` (using create, ignore pre-existing items i.e., Conflicts), <br/> - `ItemDelete` (delete all documents), <br/> - `ItemDeleteIfNotModified` (delete all documents for which the etag hasn't changed)  |
+| :---        |    :----   |         :--- |
+| `spark.cosmos.write.strategy`      | `ItemOverwrite`    | Cosmos DB Item write Strategy: <br/> - `ItemOverwrite` (using upsert), <br/> - `ItemOverwriteIfNotModified` (if etag property of the row is empty/null it will just do an insert and ignore if the document already exists - same as `ItemAppend`, if an etag value exists it will attempt to replace the document with etag pre-condition. If the document changed - identified by precondition failure - the update is skipped and the document is not updated with the content of the data frame row), <br/> - `ItemAppend` (using create, ignore pre-existing items i.e., Conflicts), <br/> - `ItemDelete` (delete all documents), <br/> - `ItemDeleteIfNotModified` (delete all documents for which the etag hasn't changed), <br/> - `ItemPatch` (Partial update all documents based on the patch config) |
 | `spark.cosmos.write.maxRetryCount`      | `10`    | Cosmos DB Write Max Retry Attempts on retriable failures (e.g., connection error, moderakh add more details)   |
 | `spark.cosmos.write.point.maxConcurrency`   | None   | Cosmos DB Item Write Max concurrency. If not specified it will be determined based on the Spark executor VM Size |
 | `spark.cosmos.write.bulk.maxPendingOperations`   | None   | Cosmos DB Item Write bulk mode maximum pending operations. Defines a limit of bulk operations being processed concurrently. If not specified it will be determined based on the Spark executor VM Size. If the volume of data is large for the provisioned throughput on the destination container, this setting can be adjusted by following the estimation of `1000 x Cores` |
 | `spark.cosmos.write.bulk.enabled`      | `true`   | Cosmos DB Item Write bulk enabled |
+
+#### Patch Config
+| Config Property Name      | Default | Description |
+| :---        |    :----   |         :--- |
+| `spark.cosmos.write.patch.defaultOperationType`      | `Replace`   | Default Cosmos DB patch operation type. Supported ones include none, add, set, replace, remove, increment. Choose none for no-op, for others please reference [here](https://docs.microsoft.com/azure/cosmos-db/partial-document-update#supported-operations) for full context. |
+| `spark.cosmos.write.patch.columnConfigs`      | None        | Cosmos DB patch column configs. It can container multiple definitions matching the following patterns separated by comma. col(column).op(operationType) or col(column).path(patchInCosmosdb).op(operationType) - The difference of the second pattern is that it also allows you to define a different cosmosdb path. |
+| `spark.cosmos.write.patch.filter`      | None        | Used for [Conditional patch](https://docs.microsoft.com/azure/cosmos-db/partial-document-update-getting-started#java) |
 
 ### Query Config
 | Config Property Name      | Default | Description |
@@ -84,6 +91,3 @@ Used to influence the json serialization/deserialization behavior
 | `spark.cosmos.throughputControl.globalControl.container`      | None   | Container which will be used for throughput global control  |
 | `spark.cosmos.throughputControl.globalControl.renewIntervalInMS`      | `5s`    | How often the client is going to update the throughput usage of itself  |
 | `spark.cosmos.throughputControl.globalControl.expireIntervalInMS`      | `11s`   | How quickly an offline client will be detected |
-
-
-

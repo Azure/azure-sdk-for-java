@@ -31,12 +31,15 @@ import com.azure.resourcemanager.mediaservices.fluent.LiveEventsClient;
 import com.azure.resourcemanager.mediaservices.fluent.LiveOutputsClient;
 import com.azure.resourcemanager.mediaservices.fluent.LocationsClient;
 import com.azure.resourcemanager.mediaservices.fluent.MediaservicesClient;
+import com.azure.resourcemanager.mediaservices.fluent.OperationResultsClient;
+import com.azure.resourcemanager.mediaservices.fluent.OperationStatusesClient;
 import com.azure.resourcemanager.mediaservices.fluent.OperationsClient;
 import com.azure.resourcemanager.mediaservices.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.mediaservices.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.mediaservices.fluent.StreamingEndpointsClient;
 import com.azure.resourcemanager.mediaservices.fluent.StreamingLocatorsClient;
 import com.azure.resourcemanager.mediaservices.fluent.StreamingPoliciesClient;
+import com.azure.resourcemanager.mediaservices.fluent.TracksClient;
 import com.azure.resourcemanager.mediaservices.fluent.TransformsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -51,8 +54,6 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the AzureMediaServicesImpl type. */
 @ServiceClient(builder = AzureMediaServicesBuilder.class)
 public final class AzureMediaServicesImpl implements AzureMediaServices {
-    private final ClientLogger logger = new ClientLogger(AzureMediaServicesImpl.class);
-
     /** The unique identifier for a Microsoft Azure subscription. */
     private final String subscriptionId;
 
@@ -75,18 +76,6 @@ public final class AzureMediaServicesImpl implements AzureMediaServices {
      */
     public String getEndpoint() {
         return this.endpoint;
-    }
-
-    /** Api Version. */
-    private final String apiVersion;
-
-    /**
-     * Gets Api Version.
-     *
-     * @return the apiVersion value.
-     */
-    public String getApiVersion() {
-        return this.apiVersion;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -123,6 +112,18 @@ public final class AzureMediaServicesImpl implements AzureMediaServices {
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
+    }
+
+    /** The AccountFiltersClient object to access its operations. */
+    private final AccountFiltersClient accountFilters;
+
+    /**
+     * Gets the AccountFiltersClient object to access its operations.
+     *
+     * @return the AccountFiltersClient object.
+     */
+    public AccountFiltersClient getAccountFilters() {
+        return this.accountFilters;
     }
 
     /** The OperationsClient object to access its operations. */
@@ -185,18 +186,6 @@ public final class AzureMediaServicesImpl implements AzureMediaServices {
         return this.locations;
     }
 
-    /** The AccountFiltersClient object to access its operations. */
-    private final AccountFiltersClient accountFilters;
-
-    /**
-     * Gets the AccountFiltersClient object to access its operations.
-     *
-     * @return the AccountFiltersClient object.
-     */
-    public AccountFiltersClient getAccountFilters() {
-        return this.accountFilters;
-    }
-
     /** The AssetsClient object to access its operations. */
     private final AssetsClient assets;
 
@@ -219,6 +208,42 @@ public final class AzureMediaServicesImpl implements AzureMediaServices {
      */
     public AssetFiltersClient getAssetFilters() {
         return this.assetFilters;
+    }
+
+    /** The TracksClient object to access its operations. */
+    private final TracksClient tracks;
+
+    /**
+     * Gets the TracksClient object to access its operations.
+     *
+     * @return the TracksClient object.
+     */
+    public TracksClient getTracks() {
+        return this.tracks;
+    }
+
+    /** The OperationStatusesClient object to access its operations. */
+    private final OperationStatusesClient operationStatuses;
+
+    /**
+     * Gets the OperationStatusesClient object to access its operations.
+     *
+     * @return the OperationStatusesClient object.
+     */
+    public OperationStatusesClient getOperationStatuses() {
+        return this.operationStatuses;
+    }
+
+    /** The OperationResultsClient object to access its operations. */
+    private final OperationResultsClient operationResults;
+
+    /**
+     * Gets the OperationResultsClient object to access its operations.
+     *
+     * @return the OperationResultsClient object.
+     */
+    public OperationResultsClient getOperationResults() {
+        return this.operationResults;
     }
 
     /** The ContentKeyPoliciesClient object to access its operations. */
@@ -339,15 +364,17 @@ public final class AzureMediaServicesImpl implements AzureMediaServices {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-06-01";
+        this.accountFilters = new AccountFiltersClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.mediaservices = new MediaservicesClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.locations = new LocationsClientImpl(this);
-        this.accountFilters = new AccountFiltersClientImpl(this);
         this.assets = new AssetsClientImpl(this);
         this.assetFilters = new AssetFiltersClientImpl(this);
+        this.tracks = new TracksClientImpl(this);
+        this.operationStatuses = new OperationStatusesClientImpl(this);
+        this.operationResults = new OperationResultsClientImpl(this);
         this.contentKeyPolicies = new ContentKeyPoliciesClientImpl(this);
         this.transforms = new TransformsClientImpl(this);
         this.jobs = new JobsClientImpl(this);
@@ -441,7 +468,7 @@ public final class AzureMediaServicesImpl implements AzureMediaServices {
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -500,4 +527,6 @@ public final class AzureMediaServicesImpl implements AzureMediaServices {
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureMediaServicesImpl.class);
 }

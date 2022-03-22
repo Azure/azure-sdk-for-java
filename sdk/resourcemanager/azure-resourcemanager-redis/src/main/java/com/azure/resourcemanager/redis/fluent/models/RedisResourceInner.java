@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redis.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.redis.models.ProvisioningState;
 import com.azure.resourcemanager.redis.models.PublicNetworkAccess;
-import com.azure.resourcemanager.redis.models.RedisCommonPropertiesRedisConfiguration;
+import com.azure.resourcemanager.redis.models.RedisConfiguration;
 import com.azure.resourcemanager.redis.models.RedisInstanceDetails;
 import com.azure.resourcemanager.redis.models.RedisLinkedServer;
 import com.azure.resourcemanager.redis.models.Sku;
@@ -260,7 +260,7 @@ public final class RedisResourceInner extends Resource {
      *
      * @return the redisConfiguration value.
      */
-    public RedisCommonPropertiesRedisConfiguration redisConfiguration() {
+    public RedisConfiguration redisConfiguration() {
         return this.innerProperties() == null ? null : this.innerProperties().redisConfiguration();
     }
 
@@ -272,7 +272,7 @@ public final class RedisResourceInner extends Resource {
      * @param redisConfiguration the redisConfiguration value to set.
      * @return the RedisResourceInner object itself.
      */
-    public RedisResourceInner withRedisConfiguration(RedisCommonPropertiesRedisConfiguration redisConfiguration) {
+    public RedisResourceInner withRedisConfiguration(RedisConfiguration redisConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new RedisPropertiesInner();
         }
