@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.aad.implementation.webapp;
+package com.azure.spring.cloud.autoconfigure.aad;
 
 import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.Constants;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;

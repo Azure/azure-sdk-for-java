@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.autoconfigure.aad;
 
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapp.AadOAuth2AuthorizationCodeGrantRequestEntityConverter;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.webapp.AadOAuth2AuthorizationRequestResolver;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
