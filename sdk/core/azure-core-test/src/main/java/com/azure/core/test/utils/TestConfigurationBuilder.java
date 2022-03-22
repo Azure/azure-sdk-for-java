@@ -90,12 +90,13 @@ public class TestConfigurationBuilder {
         TestConfigurationSource(String... testData) {
             this.testData = new HashMap<>();
 
-            if (testData == null) {
-                return;
-            }
-
-            for (int i = 0; i < testData.length; i += 2) {
-                this.testData.put(testData[i], testData[i + 1]);
+            if (testData != null) {
+                if (testData.length % 2 != 0) {
+                    throw new IllegalArgumentException("Configuration 'testData' length is odd, expected to be even to represent names and values of properties");
+                }
+                for (int i = 0; i < testData.length; i += 2) {
+                    this.testData.put(testData[i], testData[i + 1]);
+                }
             }
         }
 

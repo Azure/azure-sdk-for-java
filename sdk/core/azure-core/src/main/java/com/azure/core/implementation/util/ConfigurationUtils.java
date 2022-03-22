@@ -68,7 +68,19 @@ public class ConfigurationUtils {
     }
 
     /**
-     * Attempts to convert the configuration value to {@code T}.
+     * Attempts to convert the configuration value to given primitive {@code T} using
+     * corresponding {@code parse} method on this type.
+     *
+     * <p><b>Following types are supported:</b></p>
+     * <ul>
+     * <li>{@link Byte}</li>
+     * <li>{@link Short}</li>
+     * <li>{@link Integer}</li>
+     * <li>{@link Long}</li>
+     * <li>{@link Float}</li>
+     * <li>{@link Double}</li>
+     * <li>{@link Boolean}</li>
+     * </ul>
      *
      * If the value is null or empty then the default value is returned.
      *
@@ -78,7 +90,7 @@ public class ConfigurationUtils {
      * @return The converted configuration, if null or empty the default value.
      */
     @SuppressWarnings("unchecked")
-    public static <T> T convertOrDefault(String value, T defaultValue) {
+    public static <T> T convertToPrimitiveOrDefault(String value, T defaultValue) {
         // Value is null or empty, return the default.
         if (CoreUtils.isNullOrEmpty(value)) {
             return defaultValue;
@@ -106,5 +118,4 @@ public class ConfigurationUtils {
 
         return (T) convertedValue;
     }
-
 }

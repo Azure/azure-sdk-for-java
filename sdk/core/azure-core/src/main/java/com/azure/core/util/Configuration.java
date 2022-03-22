@@ -6,9 +6,9 @@ package com.azure.core.util;
 import com.azure.core.implementation.util.ConfigurationUtils;
 import com.azure.core.implementation.util.EnvironmentConfiguration;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.Exceptions;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
@@ -185,12 +185,12 @@ public class Configuration implements Cloneable {
     @SuppressWarnings("StaticInitializerReferencesSubClass")
     public static final Configuration NONE = new NoopConfiguration();
     private static final String[] EMPTY_ARRAY = new String[0];
+    private static final ClientLogger LOGGER = new ClientLogger(Configuration.class);
 
     private final EnvironmentConfiguration environmentConfiguration;
     private final Map<String, String> configurations;
     private final String path;
     private final Configuration sharedConfiguration;
-    private final ClientLogger logger;
     private final boolean isEmpty;
 
     /**
@@ -207,22 +207,29 @@ public class Configuration implements Cloneable {
     /**
      * Constructs a configuration containing the known Azure properties constants. Use {@link ConfigurationBuilder} to create instance of {@link Configuration}.
      *
+     * @param configurationSource Configuration property source.
+     * @param environmentConfiguration instance of {@link EnvironmentConfiguration} to mock environment for testing.
+     * @param path Absolute path of current configuration section for logging and diagnostics purposes.
+     * @param sharedConfiguration Instance of shared {@link Configuration} section to retrieve shared properties.
+     */
+    Configuration(ConfigurationSource configurationSource, EnvironmentConfiguration environmentConfiguration, String path, Configuration sharedConfiguration) {
+        this(readConfigurations(configurationSource, path), environmentConfiguration, path, sharedConfiguration);
+    }
+
+    /**
+     * Constructs a configuration containing the known Azure properties constants. Use {@link ConfigurationBuilder} to create instance of {@link Configuration}.
+     *
      * @param configurations map of all properties.
      * @param environmentConfiguration instance of {@link EnvironmentConfiguration} to mock environment for testing.
      * @param path Absolute path of current configuration section for logging and diagnostics purposes.
      * @param sharedConfiguration Instance of shared {@link Configuration} section to retrieve shared properties.
      */
-    Configuration(Map<String, String> configurations, EnvironmentConfiguration environmentConfiguration, String path, Configuration sharedConfiguration) {
-        this.configurations = Collections.unmodifiableMap(Objects.requireNonNull(configurations, "'configurations' cannot be null"));
+    private Configuration(Map<String, String> configurations, EnvironmentConfiguration environmentConfiguration, String path, Configuration sharedConfiguration) {
+        this.configurations = configurations;
         this.isEmpty = configurations.isEmpty();
         this.environmentConfiguration = Objects.requireNonNull(environmentConfiguration, "'environmentConfiguration' cannot be null");
         this.path = path;
         this.sharedConfiguration = sharedConfiguration;
-        this.logger = new ClientLogger(Configuration.class);
-    }
-
-    private Configuration(Configuration original) {
-        this(original.configurations, original.environmentConfiguration.clone(), original.path, original.sharedConfiguration);
     }
 
     /**
@@ -253,12 +260,24 @@ public class Configuration implements Cloneable {
     }
 
     /**
-     * Gets the value of the configuration converted to {@code T}.
+     * Gets the value of the configuration converted to given primitive {@code T} using
+     * corresponding {@code parse} method on this type.
      * <p>
      * This method first checks the values previously loaded from the environment, if the configuration is found there
      * it will be returned. Otherwise, this will attempt to load the value from the environment.
      * <p>
      * If no configuration is found, the {@code defaultValue} is returned.
+     *
+     * <p><b>Following types are supported:</b></p>
+     * <ul>
+     * <li>{@link Byte}</li>
+     * <li>{@link Short}</li>
+     * <li>{@link Integer}</li>
+     * <li>{@link Long}</li>
+     * <li>{@link Float}</li>
+     * <li>{@link Double}</li>
+     * <li>{@link Boolean}</li>
+     * </ul>
      *
      * @param name Name of the configuration.
      * @param defaultValue Value to return if the configuration isn't found.
@@ -268,7 +287,7 @@ public class Configuration implements Cloneable {
     public <T> T get(String name, T defaultValue) {
         String value = getLocalProperty(name, EMPTY_ARRAY, false);
         if (value != null) {
-            return ConfigurationUtils.convertOrDefault(value, defaultValue);
+            return ConfigurationUtils.convertToPrimitiveOrDefault(value, defaultValue);
         }
 
         return environmentConfiguration.get(name, defaultValue);
@@ -353,7 +372,7 @@ public class Configuration implements Cloneable {
     @SuppressWarnings("CloneDoesntCallSuperClone")
     @Deprecated
     public Configuration clone() {
-        return new Configuration(this);
+        return new Configuration(configurations, environmentConfiguration.clone(), path, sharedConfiguration);
     }
 
     /**
@@ -375,8 +394,19 @@ public class Configuration implements Cloneable {
      * <p>
      * Property value is converted to specified type. If property value is missing and not required, default value is returned.
      *
-     * <!-- src_embed com.com.azure.core.util.Configuration#get(ConfigurationProperty) -->
-     * <!-- end com.azure.core.util.Configuration#get(ConfigurationProperty) -->
+     * <!-- src_embed com.azure.core.util.Configuration.get#ConfigurationProperty -->
+     * <pre>
+     * ConfigurationProperty&lt;String&gt; property = ConfigurationProperty.stringPropertyBuilder&#40;&quot;http.proxy.host&quot;&#41;
+     *     .shared&#40;true&#41;
+     *     .canLogValue&#40;true&#41;
+     *     .environmentAliases&#40;&quot;http.proxyHost&quot;&#41;
+     *     .build&#40;&#41;;
+     *
+     * &#47;&#47; attempts to get local `azure.sdk.&lt;client-name&gt;.http.proxy.host` property and falls back to
+     * &#47;&#47; shared azure.sdk.http.proxy.port
+     * System.out.println&#40;configuration.get&#40;property&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.Configuration.get#ConfigurationProperty -->
      *
      * @param property instance.
      * @param <T> Type that the configuration is converted to if found.
@@ -391,7 +421,7 @@ public class Configuration implements Cloneable {
 
         if (value == null) {
             if (property.isRequired()) {
-                throw logger.atError()
+                throw LOGGER.atError()
                     .addKeyValue("name", property.getName())
                     .addKeyValue("path", path)
                     .log(new IllegalArgumentException("Missing required property."));
@@ -401,11 +431,11 @@ public class Configuration implements Cloneable {
 
         try {
             return property.getConverter().apply(value);
-        } catch (Throwable t) {
-            throw logger.atError()
+        } catch (RuntimeException ex) {
+            throw LOGGER.atError()
                 .addKeyValue("name", property.getName())
                 .addKeyValue("value", property.canLogValue() ? value : "redacted")
-                .log(Exceptions.propagate(t));
+                .log(ex);
         }
     }
 
@@ -416,7 +446,7 @@ public class Configuration implements Cloneable {
 
         String value = configurations.get(name);
         if (value != null) {
-            logger.atVerbose()
+            LOGGER.atVerbose()
                 .addKeyValue("name", name)
                 .addKeyValue("path", path)
                 .addKeyValue("value", canLogValue ? value : "redacted")
@@ -427,7 +457,7 @@ public class Configuration implements Cloneable {
         for (String alias : aliases) {
             value = configurations.get(alias);
             if (value != null) {
-                logger.atVerbose()
+                LOGGER.atVerbose()
                     .addKeyValue("name", name)
                     .addKeyValue("path", path)
                     .addKeyValue("alias", alias)
@@ -456,7 +486,7 @@ public class Configuration implements Cloneable {
         for (String name : property.getEnvironmentVariables()) {
             value = environmentConfiguration.get(name);
             if (value != null) {
-                logger.atVerbose()
+                LOGGER.atVerbose()
                     .addKeyValue("name", property.getName())
                     .addKeyValue("envVar", name)
                     .addKeyValue("value", property.canLogValue() ? value : "redacted")
@@ -466,5 +496,36 @@ public class Configuration implements Cloneable {
         }
 
         return null;
+    }
+
+    private static Map<String, String> readConfigurations(ConfigurationSource source, String path) {
+        Objects.requireNonNull(source, "'source' cannot be null");
+        Map<String, String> configs = source.getProperties(path);
+
+        if (configs == null || configs.isEmpty()) {
+            return Collections.emptyMap();
+        }
+
+        Map<String, String> props = new HashMap<>();
+
+        for (Map.Entry<String, String> prop : configs.entrySet()) {
+            String key = CoreUtils.isNullOrEmpty(path) ? prop.getKey() : prop.getKey().substring(path.length() + 1);
+            String value = prop.getValue();
+
+            LOGGER.atVerbose()
+                .addKeyValue("name", prop.getKey())
+                .addKeyValue("value", value)
+                .log("Got property from configuration source.");
+
+            if (!CoreUtils.isNullOrEmpty(value)) {
+                props.put(key, value);
+            } else {
+                LOGGER.atWarning()
+                    .addKeyValue("name", prop.getKey())
+                    .log("Property value is null");
+            }
+        }
+
+        return props;
     }
 }

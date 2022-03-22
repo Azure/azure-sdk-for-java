@@ -77,11 +77,7 @@ public class ConfigurationJavaDocCodeSnippet {
             .root("azure.sdk")
             .buildSection("<client-name>");
 
-        // BEGIN: com.azure.core.util.Configuration#get(String)
-        System.out.println(configuration.get("http.proxy.port"));
-        // END: com.azure.core.util.Configuration#get(String)
-
-        // BEGIN: com.azure.core.util.Configuration#get(ConfigurationProperty)
+        // BEGIN: com.azure.core.util.Configuration.get#ConfigurationProperty
         ConfigurationProperty<String> property = ConfigurationProperty.stringPropertyBuilder("http.proxy.host")
             .shared(true)
             .canLogValue(true)
@@ -91,7 +87,7 @@ public class ConfigurationJavaDocCodeSnippet {
         // attempts to get local `azure.sdk.<client-name>.http.proxy.host` property and falls back to
         // shared azure.sdk.http.proxy.port
         System.out.println(configuration.get(property));
-        // END: com.azure.core.util.Configuration#get(ConfigurationProperty)
+        // END: com.azure.core.util.Configuration.get#ConfigurationProperty
     }
 
     /**
@@ -108,11 +104,11 @@ public class ConfigurationJavaDocCodeSnippet {
             .root("azure.sdk")
             .buildSection("sample");
 
-        // BEGIN: com.azure.core.util.ConfigurationProperty#durationPropertyBuilder(String)
+        // BEGIN: com.azure.core.util.ConfigurationProperty.durationPropertyBuilder
         ConfigurationProperty<Duration> timeoutProperty = ConfigurationProperty.durationPropertyBuilder("timeout")
             .build();
         System.out.println(configuration.get(timeoutProperty));
-        // END: com.azure.core.util.ConfigurationProperty#durationPropertyBuilder(String)
+        // END: com.azure.core.util.ConfigurationProperty.durationPropertyBuilder
 
         // BEGIN: com.azure.core.util.ConfigurationPropertyBuilder
         ConfigurationProperty<SampleEnumProperty> modeProperty =
@@ -123,17 +119,17 @@ public class ConfigurationJavaDocCodeSnippet {
         System.out.println(configuration.get(modeProperty));
         // END: com.azure.core.util.ConfigurationPropertyBuilder
 
-        // BEGIN: com.azure.core.util.ConfigurationProperty#booleanPropertyBuilder(String)
+        // BEGIN: com.azure.core.util.ConfigurationProperty.booleanPropertyBuilder
         ConfigurationProperty<Boolean> booleanProperty = ConfigurationProperty.booleanPropertyBuilder("is-enabled")
             .build();
         System.out.println(configuration.get(booleanProperty));
-        // END: com.azure.core.util.ConfigurationProperty#booleanPropertyBuilder(String)
+        // END: com.azure.core.util.ConfigurationProperty.booleanPropertyBuilder
 
-        // BEGIN: com.azure.core.util.ConfigurationProperty#integerPropertyBuilder(String)
+        // BEGIN: com.azure.core.util.ConfigurationProperty.integerPropertyBuilder
         ConfigurationProperty<Integer> integerProperty = ConfigurationProperty.integerPropertyBuilder("retry-count")
             .build();
         System.out.println(configuration.get(integerProperty));
-        // END: com.azure.core.util.ConfigurationProperty#integerPropertyBuilder(String)
+        // END: com.azure.core.util.ConfigurationProperty.integerPropertyBuilder
     }
 
     public static final class SampleEnumProperty extends ExpandableStringEnum<SampleEnumProperty> {

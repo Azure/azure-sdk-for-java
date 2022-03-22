@@ -112,7 +112,7 @@ public class EnvironmentConfiguration implements Cloneable {
      * @return The converted configuration if found, otherwise the default value is returned.
      */
     public <T> T get(String name, T defaultValue) {
-        return ConfigurationUtils.convertOrDefault(getOrLoad(name), defaultValue);
+        return ConfigurationUtils.convertToPrimitiveOrDefault(getOrLoad(name), defaultValue);
     }
 
     /**

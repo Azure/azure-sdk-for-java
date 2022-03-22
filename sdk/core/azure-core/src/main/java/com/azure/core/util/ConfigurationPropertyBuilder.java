@@ -11,13 +11,13 @@ import java.util.function.Function;
  * @param <T> The property value type.
  */
 public class ConfigurationPropertyBuilder<T> {
-    private static final String[] EMPTY_LIST = new String[0];
+    private static final String[] EMPTY_ARRAY = new String[0];
 
     private final String name;
     private final Function<String, T> converter;
 
-    private String[] aliases = EMPTY_LIST;
-    private String[] environmentAliases = EMPTY_LIST;
+    private String[] aliases = EMPTY_ARRAY;
+    private String[] environmentAliases = EMPTY_ARRAY;
     private T defaultValue;
     private boolean shared;
     private boolean canLogValue;
@@ -128,6 +128,6 @@ public class ConfigurationPropertyBuilder<T> {
      * @return {@link ConfigurationProperty} instance.
      */
     public ConfigurationProperty<T> build() {
-        return new ConfigurationProperty<T>(name, defaultValue, required, converter, shared, environmentAliases, aliases, canLogValue);
+        return new ConfigurationProperty<>(name, defaultValue, required, converter, shared, environmentAliases, aliases, canLogValue);
     }
 }

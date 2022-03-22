@@ -4,19 +4,12 @@
 package com.azure.core.util;
 
 import com.azure.core.implementation.util.EnvironmentConfiguration;
-import com.azure.core.util.logging.ClientLogger;
-
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 /**
  * Builds {@link Configuration} with external source.
  */
 public class ConfigurationBuilder {
-    private static final Map<String, String> EMPTY_MAP = new HashMap<>();
-    private static final ClientLogger LOGGER = new ClientLogger(ConfigurationBuilder.class);
-
     private final ConfigurationSource source;
     private final EnvironmentConfiguration environmentConfiguration;
     private String rootPath;
@@ -90,7 +83,7 @@ public class ConfigurationBuilder {
     public Configuration build() {
         if (sharedConfiguration == null) {
             // defaults can be reused to get different client sections.
-            sharedConfiguration = new Configuration(readConfigurations(this.source, rootPath), environmentConfiguration, rootPath, null);
+            sharedConfiguration = new Configuration(source, environmentConfiguration, rootPath, null);
         }
 
         return sharedConfiguration;
@@ -116,41 +109,11 @@ public class ConfigurationBuilder {
         Objects.requireNonNull(path, "'path' cannot be null");
         if (sharedConfiguration == null) {
             // sharedConfiguration can be reused to build different client sections.
-            sharedConfiguration = new Configuration(readConfigurations(this.source, rootPath), environmentConfiguration, rootPath, null);
+            sharedConfiguration = new Configuration(this.source, environmentConfiguration, rootPath, null);
         }
 
         String absolutePath = getAbsolutePath(rootPath, path);
-        return new Configuration(readConfigurations(this.source, absolutePath), environmentConfiguration, absolutePath, sharedConfiguration);
-    }
-
-    private Map<String, String> readConfigurations(ConfigurationSource source, String path) {
-        Map<String, String> configs = source.getProperties(path);
-
-        if (configs == null || configs.isEmpty()) {
-            return EMPTY_MAP;
-        }
-
-        Map<String, String> props = new HashMap<>();
-
-        for (Map.Entry<String, String> prop : configs.entrySet()) {
-            String key = CoreUtils.isNullOrEmpty(path) ? prop.getKey() : prop.getKey().substring(path.length() + 1);
-            String value = prop.getValue();
-
-            LOGGER.atVerbose()
-                .addKeyValue("name", prop.getKey())
-                .addKeyValue("value", value)
-                .log("Got property from configuration source.");
-
-            if (!CoreUtils.isNullOrEmpty(value)) {
-                props.put(key, value);
-            } else {
-                LOGGER.atWarning()
-                    .addKeyValue("name", prop.getKey())
-                    .log("Property value is null");
-            }
-        }
-
-        return props;
+        return new Configuration(this.source, environmentConfiguration, absolutePath, sharedConfiguration);
     }
 
     private static String getAbsolutePath(String root, String relative) {

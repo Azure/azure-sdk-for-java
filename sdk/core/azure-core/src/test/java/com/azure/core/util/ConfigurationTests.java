@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ConfigurationTests {
-
+    private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
     private static final Map<String, String> ENV_PROPS = new HashMap<String, String>() {{
             put("foo", "bar");
         }};
@@ -31,7 +31,7 @@ public class ConfigurationTests {
     @Test
     public void environmentConfigurationFallback() {
         EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(ENV_PROPS);
-        Configuration configuration = new Configuration(Collections.emptyMap(), envConfiguration, null, null);
+        Configuration configuration = new Configuration(EMPTY_SOURCE, envConfiguration, null, null);
         assertEquals("bar", configuration.get("foo"));
         assertTrue(configuration.contains("foo"));
     }
@@ -39,7 +39,7 @@ public class ConfigurationTests {
     @Test
     public void environmentConfigurationFallbackNotFound() {
         EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(Collections.emptyMap());
-        Configuration configuration = new Configuration(Collections.emptyMap(), envConfiguration, null, null);
+        Configuration configuration = new Configuration(EMPTY_SOURCE, envConfiguration, null, null);
         assertNull(configuration.get("foo"));
         assertFalse(configuration.contains("foo"));
     }
@@ -50,7 +50,7 @@ public class ConfigurationTests {
         props.put("foo", "42");
 
         EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(props);
-        Configuration configuration = new Configuration(Collections.emptyMap(), envConfiguration, null, null);
+        Configuration configuration = new Configuration(EMPTY_SOURCE, envConfiguration, null, null);
         assertEquals(42, configuration.get("foo", 0));
         assertEquals(0, configuration.get("foo-not-found", 0));
     }
@@ -62,7 +62,7 @@ public class ConfigurationTests {
         props.put("bar", "forty two");
 
         EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(props);
-        Configuration configuration = new Configuration(Collections.emptyMap(), envConfiguration, null, null);
+        Configuration configuration = new Configuration(EMPTY_SOURCE, envConfiguration, null, null);
         Function<String, Integer> converter = Integer::parseInt;
         assertEquals(42, configuration.get("foo", converter));
         assertThrows(NumberFormatException.class, () -> configuration.get("bar", Integer::parseInt));
@@ -72,7 +72,7 @@ public class ConfigurationTests {
     @SuppressWarnings("deprecation")
     public void environmentConfigurationFallbackRemove() {
         EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(ENV_PROPS);
-        Configuration configuration = new Configuration(Collections.emptyMap(), envConfiguration, null, null);
+        Configuration configuration = new Configuration(EMPTY_SOURCE, envConfiguration, null, null);
         assertEquals("bar", configuration.get("foo"));
 
         configuration.remove("foo");
@@ -133,9 +133,8 @@ public class ConfigurationTests {
 
         EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(props);
 
-        Map<String, String> configurations = new HashMap<>();
-        configurations.put("foo", "42");
-        Configuration configuration = new Configuration(configurations, envConfiguration, null, null);
+        ConfigurationSource testSource = new TestConfigurationSource("foo", "42");
+        Configuration configuration = new Configuration(testSource, envConfiguration, null, null);
 
         assertEquals("42", configuration.get("foo"));
         assertEquals(42, configuration.get("foo", 0));
@@ -151,9 +150,8 @@ public class ConfigurationTests {
         props.put("foo", "barEnv");
         EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(props);
 
-        Map<String, String> configurations = new HashMap<>();
-        configurations.put("foo", "bar");
-        Configuration configuration = new Configuration(configurations, envConfiguration, null, null);
+        ConfigurationSource testSource = new TestConfigurationSource("foo", "bar");
+        Configuration configuration = new Configuration(testSource, envConfiguration, null, null);
 
         configuration.remove("foo");
         assertFalse(envConfiguration.contains("foo"));
@@ -166,9 +164,8 @@ public class ConfigurationTests {
     public void putOnlyAffectsEnvironmentForBackwardCompatibility() {
         EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(Collections.emptyMap());
 
-        Map<String, String> configurations = new HashMap<>();
-        configurations.put("foo", "bar");
-        Configuration configuration = new Configuration(configurations, envConfiguration, null, null);
+        ConfigurationSource testSource = new TestConfigurationSource("foo", "bar");
+        Configuration configuration = new Configuration(testSource, envConfiguration, null, null);
 
         configuration
             .put("foo", "newBar")
@@ -255,7 +252,7 @@ public class ConfigurationTests {
             .build();
 
         EnvironmentConfiguration envConfig = new EnvironmentConfiguration(props);
-        Configuration config1 = new Configuration(Collections.emptyMap(), envConfig, null, null);
+        Configuration config1 = new Configuration(EMPTY_SOURCE, envConfig, null, null);
         assertTrue(config1.contains(prop));
         assertEquals("e1", config1.get(prop));
 
@@ -263,10 +260,9 @@ public class ConfigurationTests {
         assertTrue(config1.contains(prop));
         assertEquals("e2", config1.get(prop));
 
-        Map<String, String> configurations = new HashMap<>();
-        configurations.put("prop", "p");
+        ConfigurationSource testSource = new TestConfigurationSource("prop", "p");
 
-        Configuration config2 = new Configuration(configurations, envConfig, null, null);
+        Configuration config2 = new Configuration(testSource, envConfig, null, null);
         assertTrue(config2.contains(prop));
         assertEquals("p", config2.get(prop));
     }
@@ -348,11 +344,9 @@ public class ConfigurationTests {
         envConfigurations.put("envVar2", "envVar2");
 
         EnvironmentConfiguration envConfig = new EnvironmentConfiguration(envConfigurations);
-        Map<String, String> configurations = new HashMap<>();
-        configurations.put("prop1", "prop1");
-        configurations.put("prop2", "prop2");
+        ConfigurationSource testSource = new TestConfigurationSource("prop1", "prop1", "prop2", "prop2");
 
-        Configuration configuration = new Configuration(configurations, envConfig, null, null);
+        Configuration configuration = new Configuration(testSource, envConfig, null, null);
 
         Configuration configurationClone = configuration.clone();
 

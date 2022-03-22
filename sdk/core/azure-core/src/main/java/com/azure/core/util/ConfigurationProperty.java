@@ -120,8 +120,19 @@ public class ConfigurationProperty<T> {
     /**
      * Creates default {@link ConfigurationPropertyBuilder} configured to redact property value.
      *
-     * <!-- src_embed com.azure.core.util.Configuration#get(ConfigurationProperty) -->
-     * <!-- end com.azure.core.util.Configuration#get(ConfigurationProperty) -->
+     * <!-- src_embed com.azure.core.util.Configuration.get#ConfigurationProperty -->
+     * <pre>
+     * ConfigurationProperty&lt;String&gt; property = ConfigurationProperty.stringPropertyBuilder&#40;&quot;http.proxy.host&quot;&#41;
+     *     .shared&#40;true&#41;
+     *     .canLogValue&#40;true&#41;
+     *     .environmentAliases&#40;&quot;http.proxyHost&quot;&#41;
+     *     .build&#40;&#41;;
+     *
+     * &#47;&#47; attempts to get local `azure.sdk.&lt;client-name&gt;.http.proxy.host` property and falls back to
+     * &#47;&#47; shared azure.sdk.http.proxy.port
+     * System.out.println&#40;configuration.get&#40;property&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.Configuration.get#ConfigurationProperty -->
      *
      * @param name property name.
      * @return instance of {@link ConfigurationPropertyBuilder}.
@@ -134,8 +145,13 @@ public class ConfigurationProperty<T> {
      * Creates {@link ConfigurationPropertyBuilder} configured to log property value and
      * parse value using {@link Integer#valueOf(String)}, proxying {@link NumberFormatException} exception.
      *
-     * <!-- src_embed com.azure.core.util.ConfigurationProperty#integerPropertyBuilder(String) -->
-     * <!-- end com.azure.core.util.ConfigurationProperty#integerPropertyBuilder(String) -->
+     * <!-- src_embed com.azure.core.util.ConfigurationProperty.integerPropertyBuilder -->
+     * <pre>
+     * ConfigurationProperty&lt;Integer&gt; integerProperty = ConfigurationProperty.integerPropertyBuilder&#40;&quot;retry-count&quot;&#41;
+     *     .build&#40;&#41;;
+     * System.out.println&#40;configuration.get&#40;integerProperty&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.ConfigurationProperty.integerPropertyBuilder -->
      *
      * @param name property name.
      * @return instance of {@link ConfigurationPropertyBuilder}.
@@ -148,8 +164,13 @@ public class ConfigurationProperty<T> {
      * Creates {@link ConfigurationPropertyBuilder} configured to log property value and
      * parses value as long number of milliseconds, proxying  {@link NumberFormatException} exception.
      *
-     * <!-- src_embed com.azure.core.util.ConfigurationProperty#durationPropertyBuilder(String) -->
-     * <!-- end com.azure.core.util.ConfigurationProperty#durationPropertyBuilder(String) -->
+     * <!-- src_embed com.azure.core.util.ConfigurationProperty.durationPropertyBuilder -->
+     * <pre>
+     * ConfigurationProperty&lt;Duration&gt; timeoutProperty = ConfigurationProperty.durationPropertyBuilder&#40;&quot;timeout&quot;&#41;
+     *     .build&#40;&#41;;
+     * System.out.println&#40;configuration.get&#40;timeoutProperty&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.ConfigurationProperty.durationPropertyBuilder -->
      *
      * @param name property name.
      * @return instance of {@link ConfigurationPropertyBuilder}.
@@ -162,8 +183,13 @@ public class ConfigurationProperty<T> {
      * Creates {@link ConfigurationPropertyBuilder} configured to log property value and
      * parse value using {@link Boolean#parseBoolean(String)}.
      *
-     * <!-- src_embed com.azure.core.util.ConfigurationProperty#booleanPropertyBuilder(String) -->
-     * <!-- end com.azure.core.util.ConfigurationProperty#booleanPropertyBuilder(String) -->
+     * <!-- src_embed com.azure.core.util.ConfigurationProperty.booleanPropertyBuilder -->
+     * <pre>
+     * ConfigurationProperty&lt;Boolean&gt; booleanProperty = ConfigurationProperty.booleanPropertyBuilder&#40;&quot;is-enabled&quot;&#41;
+     *     .build&#40;&#41;;
+     * System.out.println&#40;configuration.get&#40;booleanProperty&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.ConfigurationProperty.booleanPropertyBuilder -->
      *
      * @param name property name.
      * @return instance of {@link ConfigurationPropertyBuilder}.
