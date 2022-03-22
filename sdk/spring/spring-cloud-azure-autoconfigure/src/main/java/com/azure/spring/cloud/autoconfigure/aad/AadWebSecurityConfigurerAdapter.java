@@ -33,10 +33,10 @@ import javax.servlet.Filter;
 public abstract class AadWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private ClientRegistrationRepository repo;
+    protected ClientRegistrationRepository repo;
 
     @Autowired
-    private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService;
+    protected OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService;
 
     /**
      * AAD authentication properties
