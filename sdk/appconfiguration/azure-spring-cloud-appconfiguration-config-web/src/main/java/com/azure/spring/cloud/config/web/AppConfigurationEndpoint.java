@@ -48,7 +48,7 @@ public class AppConfigurationEndpoint {
      * @param request Json body of the request
      * @param configStores List of all of the config stores that request could be for
      * @param allRequestParams paramaters to validate the request.
-     * @throws IOException
+     * @throws IOException Failed to read the Request body or parse it to json
      * @throws IllegalArgumentException Request missing valid topic field.
      */
     public AppConfigurationEndpoint(HttpServletRequest request, List<ConfigStore> configStores,
