@@ -59,7 +59,7 @@ public class MockEventProcessorTest extends EventPerfTest<MockEventProcessorTest
         @Parameter(names = { "-ea", "--errorAfter" }, description = "Error After duration in seconds.")
         private int errorAfterInSeconds = 0;
 
-        @Parameter(names = { "-pt", "--partitions" }, description = "Error After duration in seconds.")
+        @Parameter(names = { "-pt", "--partitions" }, description = "Number of Partitions.")
         private int partitions = 1;
 
 
