@@ -7,6 +7,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.perf.core.CorePerfStressOptions;
 import com.azure.core.perf.core.RestProxyTestBase;
+import com.azure.perf.test.core.TestDataCreationHelper;
 import reactor.core.publisher.Mono;
 
 import java.util.Random;
@@ -26,14 +27,9 @@ public class ByteBufferReceiveTest extends RestProxyTestBase<CorePerfStressOptio
     }
 
     @Override
-    public Mono<Void> globalSetupAsync() {
-        ByteBufferSendTest sendTest = new ByteBufferSendTest(options);
-        return super.globalSetupAsync()
-            .then(Mono.defer(sendTest::globalSetupAsync))
-            .then(Mono.defer(sendTest::setupAsync))
-            .then(Mono.defer(sendTest::runAsync))
-            .then(Mono.defer(sendTest::cleanupAsync))
-            .then(Mono.defer(sendTest::globalCleanupAsync));
+    public Mono<Void> setupAsync() {
+        return service.setRawData(
+            endpoint, id, TestDataCreationHelper.createRandomByteBufferFlux(options.getSize()), options.getSize());
     }
 
     @Override
@@ -43,7 +39,7 @@ public class ByteBufferReceiveTest extends RestProxyTestBase<CorePerfStressOptio
 
     @Override
     public Mono<Void> runAsync() {
-        return service.getRawDataAsync(endpoint)
+        return service.getRawDataAsync(endpoint, id)
            .flatMapMany(response -> response.getValue())
            .map(byteBuffer -> {
                for (int i = 0; i < byteBuffer.remaining(); i++) {

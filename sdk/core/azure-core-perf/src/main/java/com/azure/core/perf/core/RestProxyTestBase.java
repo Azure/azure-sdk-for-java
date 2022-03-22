@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -49,7 +50,10 @@ import static com.github.tomakehurst.wiremock.client.WireMock.any;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
 
 public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> extends PerfStressTest<TOptions> {
+    private static final AtomicInteger ID_SOURCE = new AtomicInteger();
 
+    // An integer is good enough for perf testing. Overwriting resources between runs is ok.
+    protected final String id = Integer.toString(ID_SOURCE.incrementAndGet());
     protected final String endpoint;
     protected final MyRestProxyService service;
     protected final HttpPipeline httpPipeline;
