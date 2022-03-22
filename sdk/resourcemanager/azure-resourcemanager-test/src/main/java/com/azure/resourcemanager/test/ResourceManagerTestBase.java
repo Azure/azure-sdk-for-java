@@ -55,6 +55,7 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -288,8 +289,14 @@ public abstract class ResourceManagerTestBase extends TestBase {
 
             textReplacementRules.put(testProfile.getSubscriptionId(), ZERO_SUBSCRIPTION);
             textReplacementRules.put(testProfile.getTenantId(), ZERO_TENANT);
-            textReplacementRules.put(AzureEnvironment.AZURE.getResourceManagerEndpoint(), PLAYBACK_URI + "/");
-            textReplacementRules.put(AzureEnvironment.AZURE.getMicrosoftGraphEndpoint(), PLAYBACK_URI + "/");
+            // ARM endpoint
+            textReplacementRules.put(Pattern.quote(AzureEnvironment.AZURE.getResourceManagerEndpoint()), PLAYBACK_URI + "/");
+            // MSGraph endpoint
+            textReplacementRules.put(Pattern.quote(AzureEnvironment.AZURE.getMicrosoftGraphEndpoint()), PLAYBACK_URI + "/");
+            // vault endpoint
+            textReplacementRules.put("https://[a-zA-Z0-9]+?" + AzureEnvironment.AZURE.getKeyVaultDnsSuffix().replace(".", "\\.") + "/", PLAYBACK_URI + "/");
+            // storage account endpoint
+            textReplacementRules.put("https://[a-zA-Z0-9]+?" + AzureEnvironment.AZURE.getStorageEndpointSuffix().replace(".", "\\.") + "/", PLAYBACK_URI + "/");
             addTextReplacementRules(textReplacementRules);
         }
         initializeClients(httpPipeline, testProfile);
