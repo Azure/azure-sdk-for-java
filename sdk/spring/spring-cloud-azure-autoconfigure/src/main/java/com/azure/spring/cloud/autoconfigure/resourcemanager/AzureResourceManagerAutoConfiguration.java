@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
 
 
 /**
- * {@link EnableAutoConfiguration Auto-configuration} for Azure ResourceManager support.
+ * {@link EnableAutoConfiguration Auto-configuration} for Azure Resource Manager support.
  *
  * @since 4.0.0
  */
