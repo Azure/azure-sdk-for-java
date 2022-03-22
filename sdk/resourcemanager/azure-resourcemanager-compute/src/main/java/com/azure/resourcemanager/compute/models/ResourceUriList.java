@@ -6,15 +6,12 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The List resources which are encrypted with the disk encryption set. */
 @Fluent
 public final class ResourceUriList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceUriList.class);
-
     /*
      * A list of IDs or Owner IDs of resources which are encrypted with the
      * disk encryption set.
@@ -78,9 +75,11 @@ public final class ResourceUriList {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model ResourceUriList"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceUriList.class);
 }

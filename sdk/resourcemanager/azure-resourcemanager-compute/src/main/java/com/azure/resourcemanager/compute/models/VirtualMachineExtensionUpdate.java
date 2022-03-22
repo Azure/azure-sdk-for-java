@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Describes a Virtual Machine Extension. */
 @Fluent
 public final class VirtualMachineExtensionUpdate extends UpdateResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineExtensionUpdate.class);
-
     /*
      * Describes the properties of a Virtual Machine Extension.
      */

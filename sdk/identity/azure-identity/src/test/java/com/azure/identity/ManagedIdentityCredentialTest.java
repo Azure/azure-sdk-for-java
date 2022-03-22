@@ -47,12 +47,14 @@ public class ManagedIdentityCredentialTest {
             String token1 = "token1";
             TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
             OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
-            configuration.put("MSI_ENDPOINT", endpoint);
+            configuration.put("MSI_ENDPOINT", endpoint); // This must stay to signal we are in an app service context
             configuration.put("MSI_SECRET", secret);
+            configuration.put("IDENTITY_ENDPOINT", endpoint);
+            configuration.put("IDENTITY_HEADER", secret);
 
             // mock
             IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-            when(identityClient.authenticateToManagedIdentityEndpoint(null, null, endpoint, secret, request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+            when(identityClient.authenticateToManagedIdentityEndpoint(endpoint, secret, endpoint, secret, request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
             PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
             // test
@@ -65,6 +67,8 @@ public class ManagedIdentityCredentialTest {
             // clean up
             configuration.remove("MSI_ENDPOINT");
             configuration.remove("MSI_SECRET");
+            configuration.remove("IDENTITY_ENDPOINT");
+            configuration.remove("IDENTITY_HEADER");
         }
     }
 
@@ -108,4 +112,14 @@ public class ManagedIdentityCredentialTest {
             .verify();
     }
 
+    @Test (expected = IllegalStateException.class)
+    public void testInvalidIdCombination()  {
+        // setup
+        String resourceId = "/subscriptions/" + UUID.randomUUID() + "/resourcegroups/aresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ident";
+
+        // test
+        new ManagedIdentityCredentialBuilder().clientId(CLIENT_ID).resourceId(resourceId).build();
+    }
+
 }
+

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -92,6 +93,20 @@ public class ContextTests {
     @MethodSource("getValuesSupplier")
     public void getValues(Context context, Map<Object, Object> expected) {
         assertEquals(expected, context.getValues());
+    }
+
+    @Test
+    public void getContextChain() {
+        Context context = Context.NONE.addData("key", "value");
+        Context[] chain = context.getContextChain();
+        assertEquals(1, chain.length);
+        assertEquals("value", chain[0].getValue());
+
+        context = FluxUtil.withContext(Mono::just).block();
+        context = context.addData("key1", "value1");
+        chain = context.getContextChain();
+        assertEquals(1, chain.length);
+        assertEquals("value1", chain[0].getValue());
     }
 
     private static Stream<Arguments> getValuesSupplier() {

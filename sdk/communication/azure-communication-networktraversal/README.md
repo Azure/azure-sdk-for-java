@@ -17,12 +17,45 @@ It will provide TURN credentials to a user.
 
 ### Include the package
 
+#### Include the BOM file
+
+Please include the azure-sdk-bom to your project to take dependency on the General Availability (GA) version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
+To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
+
+```xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-sdk-bom</artifactId>
+            <version>{bom_version_to_target}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
+and then include the direct dependency in the dependencies section without the version tag as shown below.
+
+```xml
+<dependencies>
+  <dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-security-attestation</artifactId>
+  </dependency>
+</dependencies>
+```
+
+#### Include direct dependency
+If you want to take dependency on a particular version of the library that is not present in the BOM,
+add the direct dependency to your project as follows.
+
 [//]: # ({x-version-update-start;com.azure:azure-communication-networktraversal;current})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-networktraversal</artifactId>
-  <version>1.0.0-beta.3</version>
+  <version>1.1.0-beta.1</version>
 </dependency>
 ```
 
@@ -59,6 +92,17 @@ CommunicationRelayClient communicationRelayClient = new CommunicationRelayClient
     .endpoint(endpoint)
     .credential(keyCredential)
     .buildClient();
+```
+
+```java readme-sample-createCommunicationNetworkTraversalAsyncClient
+// You can find your endpoint and access key from your resource in the Azure Portal
+String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
+AzureKeyCredential keyCredential = new AzureKeyCredential("<access-key>");
+
+CommunicationRelayAsyncClient communicationRelayClient = new CommunicationRelayClientBuilder()
+    .endpoint(endpoint)
+    .credential(keyCredential)
+    .buildAsyncClient();
 ```
 
 ### Connection String Authentication
@@ -107,8 +151,11 @@ CommunicationIdentityClient communicationIdentityClient = createCommunicationIde
 CommunicationUserIdentifier user = communicationIdentityClient.createUser();
 System.out.println("User id: " + user.getId());
 
+GetRelayConfigurationOptions options = new GetRelayConfigurationOptions();
+options.setCommunicationUserIdentifier(user);
+
 CommunicationRelayClient communicationRelayClient = createCommunicationNetworkTraversalClient();
-CommunicationRelayConfiguration config = communicationRelayClient.getRelayConfiguration(user);
+CommunicationRelayConfiguration config = communicationRelayClient.getRelayConfiguration(options);
 
 System.out.println("Expires on:" + config.getExpiresOn());
 List<CommunicationIceServer> iceServers = config.getIceServers();
@@ -124,8 +171,12 @@ for (CommunicationIceServer iceS : iceServers) {
 ### Getting a new Relay Configuration providing a Route Type
 
 ```java readme-sample-getRelayConfigurationWithRouteType
+
+GetRelayConfigurationOptions options = new GetRelayConfigurationOptions();
+options.setRouteType(RouteType.ANY);
+
 CommunicationRelayClient communicationRelayClient = createCommunicationNetworkTraversalClient();
-CommunicationRelayConfiguration config = communicationRelayClient.getRelayConfiguration(RouteType.ANY);
+CommunicationRelayConfiguration config = communicationRelayClient.getRelayConfiguration(options);
 
 System.out.println("Expires on:" + config.getExpiresOn());
 List<CommunicationIceServer> iceServers = config.getIceServers();
@@ -145,8 +196,11 @@ All user token service operations will throw an exception on failure.
 ```java readme-sample-createUserTroubleshooting
 try {
     CommunicationUserIdentifier user = communicationIdentityClient.createUser();
+    GetRelayConfigurationOptions options = new GetRelayConfigurationOptions();
+    options.setCommunicationUserIdentifier(user);
+
     CommunicationRelayClient communicationRelayClient = createCommunicationNetworkTraversalClient();
-    CommunicationRelayConfiguration config = communicationRelayClient.getRelayConfiguration(user);
+    CommunicationRelayConfiguration config = communicationRelayClient.getRelayConfiguration(options);
 } catch (RuntimeException ex) {
     System.out.println(ex.getMessage());
 }

@@ -28,7 +28,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.AvailabilitySetsClient;
 import com.azure.resourcemanager.compute.fluent.models.AvailabilitySetInner;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineSizeInner;
@@ -47,8 +46,6 @@ public final class AvailabilitySetsClientImpl
         InnerSupportsListing<AvailabilitySetInner>,
         InnerSupportsDelete<Void>,
         AvailabilitySetsClient {
-    private final ClientLogger logger = new ClientLogger(AvailabilitySetsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AvailabilitySetsService service;
 
@@ -946,7 +943,7 @@ public final class AvailabilitySetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Availability Set operation response.
+     * @return the List Availability Set operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AvailabilitySetInner> listAsync(String expand) {
@@ -959,7 +956,7 @@ public final class AvailabilitySetsClientImpl
      *
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Availability Set operation response.
+     * @return the List Availability Set operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AvailabilitySetInner> listAsync() {
@@ -976,7 +973,7 @@ public final class AvailabilitySetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Availability Set operation response.
+     * @return the List Availability Set operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AvailabilitySetInner> listAsync(String expand, Context context) {
@@ -990,7 +987,7 @@ public final class AvailabilitySetsClientImpl
      *
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Availability Set operation response.
+     * @return the List Availability Set operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailabilitySetInner> list() {
@@ -1006,7 +1003,7 @@ public final class AvailabilitySetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Availability Set operation response.
+     * @return the List Availability Set operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailabilitySetInner> list(String expand, Context context) {
@@ -1125,7 +1122,7 @@ public final class AvailabilitySetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Availability Set operation response.
+     * @return the List Availability Set operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AvailabilitySetInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1141,7 +1138,7 @@ public final class AvailabilitySetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Availability Set operation response.
+     * @return the List Availability Set operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AvailabilitySetInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1157,7 +1154,7 @@ public final class AvailabilitySetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Availability Set operation response.
+     * @return the List Availability Set operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailabilitySetInner> listByResourceGroup(String resourceGroupName) {
@@ -1172,7 +1169,7 @@ public final class AvailabilitySetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Availability Set operation response.
+     * @return the List Availability Set operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailabilitySetInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1298,7 +1295,7 @@ public final class AvailabilitySetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response.
+     * @return the List Virtual Machine operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualMachineSizeInner> listAvailableSizesAsync(
@@ -1316,7 +1313,7 @@ public final class AvailabilitySetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response.
+     * @return the List Virtual Machine operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VirtualMachineSizeInner> listAvailableSizesAsync(
@@ -1334,7 +1331,7 @@ public final class AvailabilitySetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response.
+     * @return the List Virtual Machine operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineSizeInner> listAvailableSizes(
@@ -1352,7 +1349,7 @@ public final class AvailabilitySetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response.
+     * @return the List Virtual Machine operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineSizeInner> listAvailableSizes(

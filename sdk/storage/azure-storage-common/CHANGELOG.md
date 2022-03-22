@@ -1,6 +1,6 @@
 # Release History
 
-## 12.15.0-beta.3 (Unreleased)
+## 12.16.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,25 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.15.0 (2022-03-09)
+
+### Other Changes
+- GA release for STG 79, 80, 81
+
+## 12.14.3 (2022-02-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.1` to version `1.25.0`.
+- Upgraded `azure-core-http-netty` from `1.11.6` to version `1.11.7`.
+
+## 12.15.0-beta.3 (2022-02-09)
+
+### Features Added
+- Added support for 2021-04-10 service version.
 
 ## 12.14.2 (2022-01-14)
 

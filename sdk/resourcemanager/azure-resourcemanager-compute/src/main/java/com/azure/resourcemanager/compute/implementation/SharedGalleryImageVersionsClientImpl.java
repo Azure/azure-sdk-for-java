@@ -24,7 +24,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.SharedGalleryImageVersionsClient;
 import com.azure.resourcemanager.compute.fluent.models.SharedGalleryImageVersionInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
@@ -34,8 +33,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SharedGalleryImageVersionsClient. */
 public final class SharedGalleryImageVersionsClientImpl implements SharedGalleryImageVersionsClient {
-    private final ClientLogger logger = new ClientLogger(SharedGalleryImageVersionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SharedGalleryImageVersionsService service;
 
@@ -252,7 +249,7 @@ public final class SharedGalleryImageVersionsClientImpl implements SharedGallery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Shared Gallery Image versions operation response.
+     * @return the List Shared Gallery Image versions operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SharedGalleryImageVersionInner> listAsync(
@@ -272,7 +269,7 @@ public final class SharedGalleryImageVersionsClientImpl implements SharedGallery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Shared Gallery Image versions operation response.
+     * @return the List Shared Gallery Image versions operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SharedGalleryImageVersionInner> listAsync(
@@ -295,7 +292,7 @@ public final class SharedGalleryImageVersionsClientImpl implements SharedGallery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Shared Gallery Image versions operation response.
+     * @return the List Shared Gallery Image versions operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SharedGalleryImageVersionInner> listAsync(
@@ -315,7 +312,8 @@ public final class SharedGalleryImageVersionsClientImpl implements SharedGallery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Shared Gallery Image versions operation response.
+     * @return the List Shared Gallery Image versions operation response as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SharedGalleryImageVersionInner> list(
@@ -336,7 +334,8 @@ public final class SharedGalleryImageVersionsClientImpl implements SharedGallery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Shared Gallery Image versions operation response.
+     * @return the List Shared Gallery Image versions operation response as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SharedGalleryImageVersionInner> list(

@@ -160,4 +160,25 @@ public interface Snapshot {
      * @return the refreshed resource.
      */
     Snapshot refresh(Context context);
+
+    /**
+     * Restore the specified files from the specified snapshot to the active filesystem.
+     *
+     * @param body Restore payload supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void restoreFiles(SnapshotRestoreFiles body);
+
+    /**
+     * Restore the specified files from the specified snapshot to the active filesystem.
+     *
+     * @param body Restore payload supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void restoreFiles(SnapshotRestoreFiles body, Context context);
 }

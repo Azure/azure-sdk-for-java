@@ -19,6 +19,7 @@ import org.apache.avro.specific.SpecificData;
 import org.apache.avro.specific.SpecificDatumReader;
 import org.apache.avro.specific.SpecificDatumWriter;
 import org.apache.avro.specific.SpecificRecord;
+import org.apache.avro.util.ByteBufferInputStream;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -33,6 +34,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroSerializerBuilder.MAX_CACHE_SIZE;
 
 /**
  * Class containing implementation of Apache Avro serializer
@@ -45,9 +49,9 @@ class AvroSerializer {
 
     private final ClientLogger logger = new ClientLogger(AvroSerializer.class);
     private final boolean avroSpecificReader;
-    private final Schema.Parser parser;
     private final EncoderFactory encoderFactory;
     private final DecoderFactory decoderFactory;
+    private final Map<String, Schema> parsedSchemas = new ConcurrentHashMap<>();
 
     static {
         final HashMap<Class<?>, Schema> schemas = new HashMap<>();
@@ -92,15 +96,13 @@ class AvroSerializer {
      *
      * @param avroSpecificReader flag indicating if decoder should decode records as {@link SpecificRecord
      *     SpecificRecords}.
-     * @param parser Schema parser to use.
      * @param encoderFactory Encoder factory
      * @param decoderFactory Decoder factory
      */
-    AvroSerializer(boolean avroSpecificReader, Schema.Parser parser, EncoderFactory encoderFactory,
+    AvroSerializer(boolean avroSpecificReader, EncoderFactory encoderFactory,
         DecoderFactory decoderFactory) {
 
         this.avroSpecificReader = avroSpecificReader;
-        this.parser = Objects.requireNonNull(parser, "'parser' cannot be null.");
         this.encoderFactory = Objects.requireNonNull(encoderFactory, "'encoderFactory' cannot be null.");
         this.decoderFactory = Objects.requireNonNull(decoderFactory, "'decoderFactory' cannot be null.");
     }
@@ -111,7 +113,21 @@ class AvroSerializer {
      * @return avro schema
      */
     Schema parseSchemaString(String schemaString) {
-        return this.parser.parse(schemaString);
+        // Schema.Parser "remembers" all the named schemas previously parsed and throws
+        // SchemaParseException if an attempt to parse the same schema is made.
+        // So, we create a new instance of Schema.Parser each time since this method can
+        // be called multiple times for the same schema and there's no reliable way to know from the schema string
+        // that the named schema has not already been parsed.
+
+        // We'll cache the entire schema string to minimize the need to parse the same string multiple times but we
+        // should switch to LRU cache as we don't want to store unlimited schemas and some schema strings can be very
+        // large and they should not be kept in memory if it's not actively used.
+
+        // TODO(srnagar): change to LRU cache after this PR is merged - https://github.com/Azure/azure-sdk-for-java/pull/27408
+        if (parsedSchemas.size() > MAX_CACHE_SIZE) {
+            parsedSchemas.clear();
+        }
+        return parsedSchemas.computeIfAbsent(schemaString, schema -> new Schema.Parser().parse(schema));
     }
 
     /**
@@ -151,23 +167,23 @@ class AvroSerializer {
     }
 
     /**
-     * @param bytes byte array containing encoded bytes
+     * @param contents byte array containing encoded bytes
      * @param schemaBytes schema content for Avro reader to read - fetched from Azure Schema Registry
      *
      * @return deserialized object
      */
-    <T> T decode(byte[] bytes, byte[] schemaBytes, TypeReference<T> typeReference) {
-        Objects.requireNonNull(bytes, "'bytes' must not be null.");
+    <T> T decode(ByteBuffer contents, byte[] schemaBytes, TypeReference<T> typeReference) {
+        Objects.requireNonNull(contents, "'bytes' must not be null.");
         Objects.requireNonNull(schemaBytes, "'schemaBytes' must not be null.");
 
         final String schemaString = new String(schemaBytes, StandardCharsets.UTF_8);
         final Schema schemaObject = parseSchemaString(schemaString);
 
-        if (isSingleObjectEncoded(bytes)) {
+        if (isSingleObjectEncoded(contents)) {
             final BinaryMessageDecoder<T> messageDecoder = new BinaryMessageDecoder<>(SpecificData.get(), schemaObject);
 
             try {
-                return messageDecoder.decode(bytes);
+                return messageDecoder.decode(contents);
             } catch (IOException e) {
                 throw logger.logExceptionAsError(new UncheckedIOException(
                     "Unable to deserialize Avro schema object using binary message decoder.", e));
@@ -176,7 +192,9 @@ class AvroSerializer {
             final DatumReader<T> reader = getDatumReader(schemaObject, typeReference);
 
             try {
-                return reader.read(null, decoderFactory.binaryDecoder(bytes, null));
+                try (ByteBufferInputStream input = new ByteBufferInputStream(Collections.singletonList(contents))) {
+                    return reader.read(null, decoderFactory.binaryDecoder(input, null));
+                }
             } catch (IOException | RuntimeException e) {
                 throw logger.logExceptionAsError(new IllegalStateException("Error deserializing raw Avro message.", e));
             }
@@ -219,18 +237,25 @@ class AvroSerializer {
      *     <li>8 byte little-endian CRC-64-AVRO fingerprint of the object's schema</li>
      * </ul>
      *
-     * @param schemaBytes Bytes to read from.
+     * @param byteBuffer Bytes to read from.
      *
      * @return true if the object has the single object payload header; false otherwise.
      *
      * @see <a href="https://avro.apache.org/docs/current/spec.html#single_object_encoding">Single Object Encoding</a>
      */
-    static boolean isSingleObjectEncoded(byte[] schemaBytes) {
-        if (schemaBytes.length < V1_HEADER_LENGTH) {
+    static boolean isSingleObjectEncoded(ByteBuffer byteBuffer) {
+        if (byteBuffer.remaining() < V1_HEADER_LENGTH) {
             return false;
         }
 
-        return V1_HEADER[0] == schemaBytes[0] && V1_HEADER[1] == schemaBytes[1];
+        // Before we started moving the position in the buffer.
+        byteBuffer.mark();
+
+        final byte[] contents = new byte[V1_HEADER_LENGTH];
+        byteBuffer.get(contents);
+        byteBuffer.reset();
+
+        return V1_HEADER[0] == contents[0] && V1_HEADER[1] == contents[1];
     }
 
     /**

@@ -286,6 +286,7 @@ public class EventProcessorClientTest {
         when(eventData3.getSequenceNumber()).thenReturn(3L);
         when(eventData3.getOffset()).thenReturn(150L);
         when(eventData3.getEnqueuedTime()).thenReturn(Instant.ofEpochSecond(1560639208));
+        final int numberOfEvents = 3;
 
         Map<String, Object> properties = new HashMap<>();
 
@@ -305,7 +306,7 @@ public class EventProcessorClientTest {
 
         final SampleCheckpointStore checkpointStore = new SampleCheckpointStore();
 
-        CountDownLatch countDownLatch = new CountDownLatch(3);
+        CountDownLatch countDownLatch = new CountDownLatch(numberOfEvents);
         TestPartitionProcessor testPartitionProcessor = new TestPartitionProcessor();
         testPartitionProcessor.countDownLatch = countDownLatch;
         //Act
@@ -319,9 +320,10 @@ public class EventProcessorClientTest {
 
         assertTrue(success);
 
-        //Assert
-        verify(tracer1, times(3)).start(eq("EventHubs.process"), any(), eq(ProcessKind.PROCESS));
-        verify(tracer1, times(3)).end(eq("success"), isNull(), any());
+        // This is one less because the processEvent is called before the end span call, so it is possible for
+        // to reach this line without calling it the 5th time yet. (Timing issue.)
+        verify(tracer1, times(numberOfEvents)).start(eq("EventHubs.process"), any(), eq(ProcessKind.PROCESS));
+        verify(tracer1, atLeast(numberOfEvents - 1)).end(eq("success"), isNull(), any());
     }
 
     /**

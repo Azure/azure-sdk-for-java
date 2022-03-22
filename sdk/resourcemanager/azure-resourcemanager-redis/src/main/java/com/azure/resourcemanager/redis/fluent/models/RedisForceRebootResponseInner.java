@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.redis.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Response to force reboot for Redis cache. */
 @Immutable
 public final class RedisForceRebootResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RedisForceRebootResponseInner.class);
-
     /*
      * Status message
      */

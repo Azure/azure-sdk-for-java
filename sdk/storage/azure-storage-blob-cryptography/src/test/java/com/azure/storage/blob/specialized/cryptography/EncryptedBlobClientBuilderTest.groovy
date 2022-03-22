@@ -10,7 +10,9 @@ import com.azure.core.http.HttpHeaders
 import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
+import com.azure.core.http.policy.FixedDelayOptions
 import com.azure.core.http.policy.HttpLogOptions
+import com.azure.core.http.policy.RetryOptions
 import com.azure.core.test.http.MockHttpResponse
 import com.azure.core.util.ClientOptions
 import com.azure.core.util.CoreUtils
@@ -28,6 +30,7 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 import java.security.SecureRandom
+import java.time.Duration
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -35,6 +38,7 @@ class EncryptedBlobClientBuilderTest extends Specification {
     static def credentials = new StorageSharedKeyCredential("accountName", "accountKey")
     static def endpoint = "https://account.blob.core.windows.net/"
     static def requestRetryOptions = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 2, 1000, 4000, null)
+    static def coreRetryOptions = new RetryOptions(new FixedDelayOptions(1, Duration.ofSeconds(2)))
     private static final Map<String, String> PROPERTIES =
         CoreUtils.getProperties("azure-storage-blob-cryptography.properties")
     private static final String SDK_NAME = "name"
@@ -209,6 +213,25 @@ class EncryptedBlobClientBuilderTest extends Specification {
             .containerName("container")
             .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
             .credential(new AzureSasCredential("foo"))
+            .buildEncryptedBlobClient()
+
+        then:
+        thrown(IllegalStateException.class)
+    }
+
+    def "Only one retryOptions can be applied"() {
+        setup:
+        def randomData = new byte[256]
+        new SecureRandom().nextBytes(randomData)
+
+        when:
+        new EncryptedBlobClientBuilder()
+            .endpoint(endpoint)
+            .blobName("foo")
+            .containerName("foo")
+            .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
+            .retryOptions(requestRetryOptions)
+            .retryOptions(coreRetryOptions)
             .buildEncryptedBlobClient()
 
         then:

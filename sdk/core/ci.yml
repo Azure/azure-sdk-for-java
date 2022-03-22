@@ -76,4 +76,4 @@ extends:
       - name: perf-test-core
         groupId: com.azure
     MatrixReplace:
-      - AdditionalTestGoals=.*/failsafe:integration-test failsafe:verify
+      - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify

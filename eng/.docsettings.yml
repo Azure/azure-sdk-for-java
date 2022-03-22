@@ -11,6 +11,7 @@ omitted_paths:
   - "*/resource-manager/*"
   - "sdk/*/mgmt-*/*"
   - "sdk/*/swagger/*"
+  - doc/*
   - eng/*
   - common/smoke-tests/*
   - samples/*
@@ -139,6 +140,10 @@ known_content_issues:
   - ['sdk/storage/azure-storage-internal-avro/README.md', '#3113']
   - ['sdk/storage/README.md', '#3113']
   - ['sdk/tools/azure-sdk-archetype/README.md', '#3113']
+  - ['sdk/tools/azure-sdk-build-tool/README.md', '#3113']
+  - ['sdk/appconfiguration/azure-spring-cloud-appconfiguration-config-web/README.md', '#3113']
+  - ['sdk/appconfiguration/azure-spring-cloud-appconfiguration-config/README.md', '#3113']
+  - ['sdk/appconfiguration/azure-spring-cloud-feature-management-web/README.md', '#3113']
 
 package_indexing_exclusion_list:
   - azure-loganalytics-sample

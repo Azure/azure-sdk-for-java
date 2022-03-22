@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Swift Virtual Network Contract. This is used to enable the new Swift way of doing virtual network integration. */
 @Fluent
 public final class SwiftVirtualNetworkInner extends ProxyOnlyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SwiftVirtualNetworkInner.class);
-
     /*
      * SwiftVirtualNetwork resource specific properties
      */

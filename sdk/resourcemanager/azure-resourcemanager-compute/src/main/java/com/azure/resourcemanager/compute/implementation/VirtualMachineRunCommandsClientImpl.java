@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineRunCommandsClient;
@@ -47,8 +46,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VirtualMachineRunCommandsClient. */
 public final class VirtualMachineRunCommandsClientImpl implements VirtualMachineRunCommandsClient {
-    private final ClientLogger logger = new ClientLogger(VirtualMachineRunCommandsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final VirtualMachineRunCommandsService service;
 
@@ -307,7 +304,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response.
+     * @return the List Virtual Machine operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RunCommandDocumentBaseInner> listAsync(String location) {
@@ -322,7 +319,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response.
+     * @return the List Virtual Machine operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RunCommandDocumentBaseInner> listAsync(String location, Context context) {
@@ -337,7 +334,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response.
+     * @return the List Virtual Machine operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RunCommandDocumentBaseInner> list(String location) {
@@ -352,7 +349,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response.
+     * @return the List Virtual Machine operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RunCommandDocumentBaseInner> list(String location, Context context) {
@@ -644,8 +641,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the {@link PollerFlux} for polling of describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner>
@@ -674,8 +670,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the {@link PollerFlux} for polling of describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner>
@@ -708,8 +703,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the {@link SyncPoller} for polling of describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginCreateOrUpdate(
@@ -728,8 +722,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the {@link SyncPoller} for polling of describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginCreateOrUpdate(
@@ -963,8 +956,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the {@link PollerFlux} for polling of describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginUpdateAsync(
@@ -992,8 +984,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the {@link PollerFlux} for polling of describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginUpdateAsync(
@@ -1025,8 +1016,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the {@link SyncPoller} for polling of describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginUpdate(
@@ -1045,8 +1035,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the {@link SyncPoller} for polling of describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginUpdate(
@@ -1259,7 +1248,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1281,7 +1270,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1303,7 +1292,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -1321,7 +1310,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -1727,7 +1716,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List run command operation response.
+     * @return the List run command operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualMachineRunCommandInner> listByVirtualMachineAsync(
@@ -1745,7 +1734,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List run command operation response.
+     * @return the List run command operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualMachineRunCommandInner> listByVirtualMachineAsync(String resourceGroupName, String vmName) {
@@ -1765,7 +1754,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List run command operation response.
+     * @return the List run command operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VirtualMachineRunCommandInner> listByVirtualMachineAsync(
@@ -1783,7 +1772,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List run command operation response.
+     * @return the List run command operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineRunCommandInner> listByVirtualMachine(String resourceGroupName, String vmName) {
@@ -1801,7 +1790,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List run command operation response.
+     * @return the List run command operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineRunCommandInner> listByVirtualMachine(

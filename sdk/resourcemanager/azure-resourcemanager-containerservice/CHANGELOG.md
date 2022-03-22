@@ -1,14 +1,70 @@
 # Release History
 
-## 2.12.0-beta.1 (Unreleased)
+## 2.14.0-beta.1 (Unreleased)
 
 ### Features Added
 
+- Supported disabling Kubernetes Role-Based Access Control for `KubernetesCluster` during create.
+- Supported enabling Azure AD integration for `KubernetesCluster`.
+- Supported disabling local accounts for `KubernetesCluster`.
+- Supported disk encryption set for `KubernetesCluster`.
+
+### Other Changes
+
+- Changed behavior that `KubernetesCluster` no longer retrieves admin and user KubeConfig during create, update, refresh.
+- Changed behavior that Linux profile is not required for `KubernetesCluster` during create.
+
+## 2.13.0 (2022-03-11)
+
+### Features Added
+
+- Supported `format` parameter in listing user kube configs in `KubernetesCluster` and `KubernetesClusters`.
+
 ### Breaking Changes
+
+- Renamed class `Ossku` to `OSSku`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-01-01`.
+
+## 2.13.0-beta.1 (2022-03-11)
+
+### Features Added
+
+- Supported `format` parameter in listing user kube configs in `KubernetesCluster` and `KubernetesClusters`.
+
+### Breaking Changes
+
+- Renamed class `Ossku` to `OSSku`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-01-01`.
+
+## 2.12.2 (2022-03-17)
+
+### Other Changes
+
+- Changed behavior that `KubernetesCluster` no longer retrieves admin and user KubeConfig during create, update, refresh.
+
+## 2.12.1 (2022-02-22)
 
 ### Bugs Fixed
 
+- Fixed a bug that osDiskType on new agent pool is not set during `KubernetesCluster` update.
+
+## 2.12.0 (2022-02-14)
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources
 
 ## 2.11.0 (2022-01-17)
 

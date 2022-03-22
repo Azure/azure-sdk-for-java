@@ -1,14 +1,41 @@
 # Release History
 
-## 12.8.0-beta.3 (Unreleased)
+## 12.9.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed a bug that would cause auth failures when trying to rename a path object while authenticating with a sas.
+
+- Fixed a bug where `uploadFromFile(String, boolean)` used a different size to determine whether file existence should
+  be checked before using chunked upload than the size used to triggered chunked upload.
 
 ### Other Changes
+
+## 12.8.0 (2022-03-09)
+
+### Other Changes
+- GA release for STG 79, 80, 81
+
+## 12.7.4 (2022-02-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.1` to version `1.25.0`.
+- Upgraded `azure-core-http-netty` from `1.11.6` to version `1.11.7`.
+- Upgraded `azure-storage-blob` from `12.14.3` to version `12.14.4`.
+
+## 12.8.0-beta.3 (2022-02-09)
+
+### Features Added
+- Added support for 2021-04-10 service version.
+
+### Bugs Fixed
+- Fixed a bug in builders that would cause fileSystem or path name to be erased if specified before the connection string.
 
 ## 12.7.3 (2022-01-14)
 

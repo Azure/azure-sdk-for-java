@@ -10,6 +10,24 @@
 
 ### Other Changes
 
+## 1.2.14 (2022-03-04)
+
+### Other Changes
+
+- Updated all `ClientLogger`s to be static constants instead of instance variables. ([#27339](https://github.com/Azure/azure-sdk-for-java/pull/27339))
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.25.0` to `1.26.0`.
+
+## 1.2.13 (2022-02-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.1` to `1.25.0`.
+
 ## 1.2.12 (2022-01-11)
 
 ### Other Changes

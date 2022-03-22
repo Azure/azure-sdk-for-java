@@ -15,6 +15,7 @@ import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConver
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.lang.Nullable;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 
@@ -32,17 +33,28 @@ public class DefaultServiceBusMessageProcessor
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultServiceBusMessageProcessor.class);
     private static final String MSG_FAIL_CHECKPOINT = "Failed to checkpoint %s";
     private static final String MSG_SUCCESS_CHECKPOINT = "Checkpointed %s in %s mode";
+    private static final String MSG_ERROR_INFORMATION = "Error in the operation %s from the entity path %s of service bus namespace %s.";
 
     private final CheckpointConfig checkpointConfig;
     private final Class<?> payloadType;
     private final Consumer<Message<?>> consumer;
+    private final Consumer<Throwable> errorHandler;
     private final ServiceBusMessageConverter messageConverter;
 
     public DefaultServiceBusMessageProcessor(CheckpointConfig checkpointConfig,
                                              Class<?> payloadType,
                                              Consumer<Message<?>> consumer,
                                              ServiceBusMessageConverter messageConverter) {
+        this(checkpointConfig, payloadType, consumer, null, messageConverter);
+    }
+
+    public DefaultServiceBusMessageProcessor(CheckpointConfig checkpointConfig,
+                                             Class<?> payloadType,
+                                             Consumer<Message<?>> consumer,
+                                             @Nullable Consumer<Throwable> errorHandler,
+                                             ServiceBusMessageConverter messageConverter) {
         this.consumer = consumer;
+        this.errorHandler = errorHandler;
         this.payloadType = payloadType;
         this.checkpointConfig = checkpointConfig;
         this.messageConverter = messageConverter;
@@ -50,7 +62,17 @@ public class DefaultServiceBusMessageProcessor
 
     public Consumer<ServiceBusErrorContext> processError() {
         return serviceBusErrorContext -> {
-            // TODO
+            String detailMessage = String.format(MSG_ERROR_INFORMATION,
+                serviceBusErrorContext.getErrorSource().toString(),
+                serviceBusErrorContext.getEntityPath(),
+                serviceBusErrorContext.getFullyQualifiedNamespace());
+            ServiceBusRuntimeException exception = new ServiceBusRuntimeException(detailMessage,
+                serviceBusErrorContext.getException());
+            if (errorHandler != null) {
+                errorHandler.accept(exception);
+            } else {
+                LOGGER.error(detailMessage, exception.getCause());
+            }
         };
     }
 

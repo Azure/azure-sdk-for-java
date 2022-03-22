@@ -24,6 +24,13 @@ public class SynapseNotebookActivity extends ExecutionActivity {
     private SynapseNotebookReference notebook;
 
     /*
+     * The name of the big data pool which will be used to execute the
+     * notebook.
+     */
+    @JsonProperty(value = "typeProperties.sparkPool")
+    private BigDataPoolParametrizationReference sparkPool;
+
+    /*
      * Notebook parameters.
      */
     @JsonProperty(value = "typeProperties.parameters")
@@ -46,6 +53,26 @@ public class SynapseNotebookActivity extends ExecutionActivity {
      */
     public SynapseNotebookActivity setNotebook(SynapseNotebookReference notebook) {
         this.notebook = notebook;
+        return this;
+    }
+
+    /**
+     * Get the sparkPool property: The name of the big data pool which will be used to execute the notebook.
+     *
+     * @return the sparkPool value.
+     */
+    public BigDataPoolParametrizationReference getSparkPool() {
+        return this.sparkPool;
+    }
+
+    /**
+     * Set the sparkPool property: The name of the big data pool which will be used to execute the notebook.
+     *
+     * @param sparkPool the sparkPool value to set.
+     * @return the SynapseNotebookActivity object itself.
+     */
+    public SynapseNotebookActivity setSparkPool(BigDataPoolParametrizationReference sparkPool) {
+        this.sparkPool = sparkPool;
         return this;
     }
 

@@ -1,5 +1,20 @@
 # Release History
 
+## 2.15.0-beta.1 (Unreleased)
+
+## 2.14.0 (2022-03-01)
+This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.2.
+
+### Dependency Upgrades
+- Upgrade azure-core to 1.25.0.
+- Upgrade azure-identity to 1.4.4.
+- Upgrade azure-messaging-eventhubs-checkpointstore-blob to 1.11.0.
+- Upgrade azure-messaging-eventhubs to 5.11.0.
+- Upgrade azure-messaging-servicebus to 7.6.0.
+- Upgrade azure-storage-queue to 12.11.4.
+- Upgrade azure-resourcemanager to 2.12.0.
+- Upgrade AzureSpringCloud artifacts to 2.14.0.
+
 ## 2.13.0 (2022-01-26)
 This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.2.
 

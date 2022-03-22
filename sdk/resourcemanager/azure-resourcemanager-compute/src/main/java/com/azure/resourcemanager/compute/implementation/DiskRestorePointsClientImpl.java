@@ -27,7 +27,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.fluent.DiskRestorePointsClient;
@@ -42,8 +41,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DiskRestorePointsClient. */
 public final class DiskRestorePointsClientImpl implements DiskRestorePointsClient {
-    private final ClientLogger logger = new ClientLogger(DiskRestorePointsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DiskRestorePointsService service;
 
@@ -199,7 +196,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter diskRestorePointName is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2021-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -268,7 +265,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter diskRestorePointName is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2021-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -402,7 +399,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter vmRestorePointName is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2021-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -471,7 +468,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter vmRestorePointName is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2021-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -504,7 +501,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Disk Restore Points operation response.
+     * @return the List Disk Restore Points operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DiskRestorePointInner> listByRestorePointAsync(
@@ -524,7 +521,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Disk Restore Points operation response.
+     * @return the List Disk Restore Points operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DiskRestorePointInner> listByRestorePointAsync(
@@ -545,7 +542,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Disk Restore Points operation response.
+     * @return the List Disk Restore Points operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiskRestorePointInner> listByRestorePoint(
@@ -564,7 +561,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Disk Restore Points operation response.
+     * @return the List Disk Restore Points operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiskRestorePointInner> listByRestorePoint(
@@ -629,7 +626,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
         } else {
             grantAccessData.validate();
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2021-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -707,7 +704,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
         } else {
             grantAccessData.validate();
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2021-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -735,7 +732,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a disk access SAS uri along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of a disk access SAS uri.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccessAsync(
@@ -773,7 +770,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a disk access SAS uri along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of a disk access SAS uri.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccessAsync(
@@ -809,7 +806,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a disk access SAS uri along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of a disk access SAS uri.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccess(
@@ -839,7 +836,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a disk access SAS uri along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of a disk access SAS uri.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccess(
@@ -1031,7 +1028,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter diskRestorePointName is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2021-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1100,7 +1097,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter diskRestorePointName is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2021-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1126,7 +1123,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginRevokeAccessAsync(
@@ -1154,7 +1151,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRevokeAccessAsync(
@@ -1182,7 +1179,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevokeAccess(
@@ -1206,7 +1203,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevokeAccess(

@@ -1,11 +1,35 @@
 # Release History
 
-## 2.12.0-beta.1 (Unreleased)
+## 2.14.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Supported `virtualMachineSizeType()` in `VirtualMachineSize` as a typed alias of `name`.
+- Supported ephemeral OS disk in `VirtualMachineScaleSet`.
+
+## 2.13.0 (2022-03-11)
+
+### Features Added
+
+- Supported disk encryption set in `Disk` and `VirtualMachine`.
+- Changed to use PATCH for `GalleryImage` update.
+- Supported ephemeral OS disk in `VirtualMachine`.
+- Supported creating `VirtualMachine` with existing `VirtualMachineScaleSet`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2021-12-01`.
+
+## 2.12.0 (2022-02-14)
 
 ### Features Added
 
 - Supported option of `filter` and `expand` for list instances of virtual machines by `VirtualMachineScaleSetVMs.list`.
 - Changed to include the instance view of the virtual machine, when getting the virtual machine by `VirtualMachineScaleSetVMs.getInstance`.
+- Supported batch deallocate, powerOff, start, restart, redeploy for `VirtualMachineScaleSetVMs`.
+- Supported deep deletion on virtual machine via `withPrimaryNetworkInterfaceDeleteOptions`, `withOSDiskDeleteOptions`, `withDataDiskDefaultDeleteOptions` in `VirtualMachine` during create.
 
 ### Other Changes
 

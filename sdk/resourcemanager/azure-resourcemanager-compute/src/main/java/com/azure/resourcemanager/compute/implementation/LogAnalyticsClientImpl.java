@@ -22,7 +22,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.fluent.LogAnalyticsClient;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LogAnalyticsClient. */
 public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
-    private final ClientLogger logger = new ClientLogger(LogAnalyticsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final LogAnalyticsService service;
 
@@ -204,8 +201,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logAnalytics operation status response along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the {@link PollerFlux} for polling of logAnalytics operation status response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
@@ -231,8 +227,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logAnalytics operation status response along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the {@link PollerFlux} for polling of logAnalytics operation status response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
@@ -259,8 +254,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logAnalytics operation status response along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the {@link SyncPoller} for polling of logAnalytics operation status response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
@@ -278,8 +272,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logAnalytics operation status response along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the {@link SyncPoller} for polling of logAnalytics operation status response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
@@ -469,8 +462,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logAnalytics operation status response along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the {@link PollerFlux} for polling of logAnalytics operation status response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
@@ -495,8 +487,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logAnalytics operation status response along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the {@link PollerFlux} for polling of logAnalytics operation status response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
@@ -521,8 +512,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logAnalytics operation status response along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the {@link SyncPoller} for polling of logAnalytics operation status response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
@@ -539,8 +529,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logAnalytics operation status response along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the {@link SyncPoller} for polling of logAnalytics operation status response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>

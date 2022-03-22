@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a VMSS VM Extension. */
 @Fluent
 public final class VirtualMachineScaleSetVMExtensionUpdate extends SubResourceReadOnly {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetVMExtensionUpdate.class);
-
     /*
      * The name of the extension.
      */

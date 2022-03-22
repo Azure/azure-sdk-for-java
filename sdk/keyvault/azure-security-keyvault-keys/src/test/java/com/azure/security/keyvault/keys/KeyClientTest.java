@@ -459,10 +459,9 @@ public class KeyClientTest extends KeyClientTestBase {
                 }
             }
 
-            sleepInRecordMode(300000);
+            sleepInRecordMode(90000);
 
             Iterable<DeletedKey> deletedKeys = client.listDeletedKeys();
-            assertTrue(deletedKeys.iterator().hasNext());
 
             for (DeletedKey deletedKey : deletedKeys) {
                 assertNotNull(deletedKey.getDeletedOn());
@@ -507,7 +506,7 @@ public class KeyClientTest extends KeyClientTestBase {
         releaseKeyRunner((keyToRelease, attestationUrl) -> {
             assertKeyEquals(keyToRelease,  client.createRsaKey(keyToRelease));
 
-            String target = "testAttestationToken";
+            String targetAttestationToken = "testAttestationToken";
 
             if (getTestMode() != TestMode.PLAYBACK) {
                 if (!attestationUrl.endsWith("/")) {
@@ -515,13 +514,13 @@ public class KeyClientTest extends KeyClientTestBase {
                 }
 
                 try {
-                    target = getAttestationToken(attestationUrl + "generate-test-token");
+                    targetAttestationToken = getAttestationToken(attestationUrl + "generate-test-token");
                 } catch (IOException e) {
                     fail("Found error when deserializing attestation token.", e);
                 }
             }
 
-            ReleaseKeyResult releaseKeyResult = client.releaseKey(keyToRelease.getName(), target);
+            ReleaseKeyResult releaseKeyResult = client.releaseKey(keyToRelease.getName(), targetAttestationToken);
 
             assertNotNull(releaseKeyResult.getValue());
         });
@@ -534,6 +533,9 @@ public class KeyClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     @DisabledIfSystemProperty(named = "IS_SKIP_ROTATION_POLICY_TEST", matches = "true")
     public void getKeyRotationPolicyOfNonExistentKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        // Key Rotation is not yet enabled in Managed HSM.
+        Assumptions.assumeTrue(!isHsmEnabled);
+
         createKeyClient(httpClient, serviceVersion);
 
         String keyName = testResourceNamer.randomName("nonExistentKey", 20);
@@ -563,9 +565,9 @@ public class KeyClientTest extends KeyClientTestBase {
         assertNull(keyRotationPolicy.getId());
         assertNull(keyRotationPolicy.getCreatedOn());
         assertNull(keyRotationPolicy.getUpdatedOn());
-        assertNull(keyRotationPolicy.getExpiryTime());
+        assertNull(keyRotationPolicy.getExpiresIn());
         assertEquals(1, keyRotationPolicy.getLifetimeActions().size());
-        assertEquals(KeyRotationPolicyAction.NOTIFY, keyRotationPolicy.getLifetimeActions().get(0).getType());
+        assertEquals(KeyRotationPolicyAction.NOTIFY, keyRotationPolicy.getLifetimeActions().get(0).getAction());
         assertEquals("P30D", keyRotationPolicy.getLifetimeActions().get(0).getTimeBeforeExpiry());
         assertNull(keyRotationPolicy.getLifetimeActions().get(0).getTimeAfterCreate());
     }
@@ -581,11 +583,11 @@ public class KeyClientTest extends KeyClientTestBase {
         Assumptions.assumeTrue(!isHsmEnabled);
 
         createKeyClient(httpClient, serviceVersion);
-        updateGetKeyRotationPolicyWithMinimumPropertiesRunner((keyName, keyRotationPolicyProperties) -> {
+        updateGetKeyRotationPolicyWithMinimumPropertiesRunner((keyName, keyRotationPolicy) -> {
             client.createRsaKey(new CreateRsaKeyOptions(keyName));
 
             KeyRotationPolicy updatedKeyRotationPolicy =
-                client.updateKeyRotationPolicy(keyName, keyRotationPolicyProperties);
+                client.updateKeyRotationPolicy(keyName, keyRotationPolicy);
             KeyRotationPolicy retrievedKeyRotationPolicy = client.getKeyRotationPolicy(keyName);
 
             assertKeyVaultRotationPolicyEquals(updatedKeyRotationPolicy, retrievedKeyRotationPolicy);
@@ -603,11 +605,11 @@ public class KeyClientTest extends KeyClientTestBase {
         Assumptions.assumeTrue(!isHsmEnabled);
 
         createKeyClient(httpClient, serviceVersion);
-        updateGetKeyRotationPolicyWithAllPropertiesRunner((keyName, keyRotationPolicyProperties) -> {
+        updateGetKeyRotationPolicyWithAllPropertiesRunner((keyName, keyRotationPolicy) -> {
             client.createRsaKey(new CreateRsaKeyOptions(keyName));
 
             KeyRotationPolicy updatedKeyRotationPolicy =
-                client.updateKeyRotationPolicy(keyName, keyRotationPolicyProperties);
+                client.updateKeyRotationPolicy(keyName, keyRotationPolicy);
             KeyRotationPolicy retrievedKeyRotationPolicy = client.getKeyRotationPolicy(keyName);
 
             assertKeyVaultRotationPolicyEquals(updatedKeyRotationPolicy, retrievedKeyRotationPolicy);

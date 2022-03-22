@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
+## 1.5.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,45 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.5.0-beta.2 (2022-03-21)
+
+### Features Added
+- Added ability to configure `IdentityLogOptions` on Credential Builders to make account Identifier logging configurable.
+- Added the option `disableAuthoriyValidaionSafetyCheck` on Credential Builders.
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` dependency to 1.26.0
+
+## 1.4.6 (2022-03-08)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` dependency to 1.26.0
+
+
+## 1.4.5 (2022-03-03)
+
+### Other Changes
+#### Behavioural Changes
+- Logging level of false positive `ERROR` logs is changed to `VERBOSE`/`DEBUG` under `DefaultAzureCredential`
+
+
+## 1.5.0-beta.1 (2022-02-17)
+
+### Features Added
+- Added `resourceId` to Managed Identity for Virtual Machines, App Service, and Service Bus.
+- Added `ClientAssertionCredential` for client assertion based authentication flows.
+
+### Other Changes
+- Upgraded App Service Managed Identity endpoint to `2019-08-01`.
+
+## 1.4.4 (2022-02-07)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` dependency to 1.25.0
 
 ## 1.4.3 (2022-01-11)
 

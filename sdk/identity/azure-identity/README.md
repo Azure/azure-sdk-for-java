@@ -47,7 +47,7 @@ Maven dependency for Azure Secret Client library. Add it to your project's pom f
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.4.3</version>
+    <version>1.4.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -88,7 +88,7 @@ The `DefaultAzureCredential` is appropriate for most scenarios where the applica
  - Environment - The `DefaultAzureCredential` will read account information specified via [environment variables](#environment-variables) and use it to authenticate.
  - Managed Identity - If the application is deployed to an Azure host with Managed Identity enabled, the `DefaultAzureCredential` will authenticate with that account.
  - IntelliJ - If the developer has authenticated via Azure Toolkit for IntelliJ, the `DefaultAzureCredential` will authenticate with that account.
- - Visual Studio Code - If the developer has authenticated via the Visual Studio Code Azure Account plugin, the `DefaultAzureCredential` will authenticate with that account.
+ - Visual Studio Code - If the developer has authenticated via the Visual Studio Code Azure Account extension (**version 0.9.11 or earlier**), the `DefaultAzureCredential` will authenticate with that account. To track progress toward supporting newer extension versions, see [this GitHub issue](https://github.com/Azure/azure-sdk-for-net/issues/27263).
  - Azure CLI - If the developer has authenticated an account via the Azure CLI `az login` command, the `DefaultAzureCredential` will authenticate with that account.
 
 ## Examples
@@ -365,21 +365,21 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
   <tbody>
     <tr>
       <td><code>AzureCliCredential</code></td>
-      <td>authenticate in a development environment with the enabled user or service principal in Azure CLI</td>
+      <td>Authenticate in a development environment with the enabled user or service principal in Azure CLI</td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#sign-in-azure-cli-for-azureclicredential">configuration</a></td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-azure-cli">example</a></td>
       <td><a href="https://docs.microsoft.com/cli/azure/authenticate-azure-cli">Azure CLI authentication</a></td>
     </tr>
     <tr>
       <td><code>IntelliJCredential</code></td>
-      <td>authenticate in a development environment with the account in Azure Toolkit for IntelliJ</td>
+      <td>Authenticate in a development environment with the account in Azure Toolkit for IntelliJ</td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#sign-in-azure-toolkit-for-intellij-for-intellijcredential">configuration</a></td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-intellij-idea">example</a></td>
       <td><a href="https://docs.microsoft.com/azure/developer/java/toolkit-for-intellij/sign-in-instructions">IntelliJ authentication</a></td>
     </tr>
     <tr>
       <td><code>VisualStudioCodeCredential</code></td>
-      <td>authenticate in a development environment with the account in Visual Studio Azure Account extension</td>
+      <td>Authenticate in a development environment with the account in Visual Studio Azure Account extension (**version 0.9.11 or earlier**). To track progress toward supporting newer extension versions, see [this GitHub issue](https://github.com/Azure/azure-sdk-for-net/issues/27263).</td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#sign-in-visual-studio-code-azure-account-extension-for-visualstudiocodecredential">configuration</a></td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-visual-studio-code">example</a></td>
       <td><a href="https://code.visualstudio.com/docs/azure/extensions">VS Code Azure extension</a></td>
@@ -479,7 +479,7 @@ describes why authentication failed. When this exception is raised by `ChainedTo
 When credentials cannot execute authentication due to one of the underlying resources required by the credential being unavailable on the machine, the`CredentialUnavailableException` is raised and it has a `message` attribute which
 describes why the credential is unavailable for authentication execution . When this exception is raised by `ChainedTokenCredential`, the message collects error messages from each credential in the chain.
 
-See the [troubleshooting guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/TROUBLESHOOT.md) for details on how to diagnose various failure scenarios.
+See the [troubleshooting guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/TROUBLESHOOTING.md) for details on how to diagnose various failure scenarios.
 ### Enable client logging
 
 Azure SDK for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite

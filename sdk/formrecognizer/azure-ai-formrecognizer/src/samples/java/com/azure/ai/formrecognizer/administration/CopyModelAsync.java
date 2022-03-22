@@ -39,7 +39,7 @@ public class CopyModelAsync {
         targetClient.getCopyAuthorization(copiedModelId)
             // Start copy operation from the source client
             // The ID of the model that needs to be copied to the target resource
-            .subscribe(copyAuthorization -> sourceClient.beginCopyModel(copyModelId, copyAuthorization)
+            .subscribe(copyAuthorization -> sourceClient.beginCopyModelTo(copyModelId, copyAuthorization)
                 .filter(pollResponse -> pollResponse.getStatus().isComplete())
                 .flatMap(AsyncPollResponse::getFinalResult)
                     .subscribe(documentModelInfo -> {

@@ -2,6 +2,10 @@
 
 ## 1.0.0-beta.2 (Unreleased)
 
+### New features
+
+- Added interfaces from `com.azure.core.client.traits` to `ModelsRepositoryClientBuilder`
+- Added `retryOptions` to `ModelsRepositoryClientBuilder`.
 
 ## 1.0.0-beta.1 (2021-03-30)
 

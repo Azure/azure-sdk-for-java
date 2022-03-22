@@ -12,8 +12,10 @@ import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputResponse;
+import com.azure.spring.data.cosmos.Constants;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.ReactiveIntegrationTestCollectionManager;
+import com.azure.spring.data.cosmos.common.PropertyLoader;
 import com.azure.spring.data.cosmos.common.ResponseDiagnosticsTestUtils;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
@@ -50,6 +52,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -568,6 +572,16 @@ public class ReactiveCosmosTemplateIT {
         final CosmosAsyncDatabase database = client.getDatabase(configuredThroughputDbName);
         final ThroughputResponse response = database.readThroughput().block();
         assertEquals(expectedRequestUnits, response.getProperties().getManualThroughput());
+    }
+
+    @Test
+    public void userAgentSpringDataCosmosSuffix() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        //  getUserAgentSuffix method from CosmosClientBuilder
+        Method getUserAgentSuffix = CosmosClientBuilder.class.getDeclaredMethod("getUserAgentSuffix");
+        getUserAgentSuffix.setAccessible(true);
+        String userAgentSuffix = (String) getUserAgentSuffix.invoke(cosmosClientBuilder);
+        assertThat(userAgentSuffix).contains(Constants.USER_AGENT_SUFFIX);
+        assertThat(userAgentSuffix).contains(PropertyLoader.getProjectVersion());
     }
 
     private void deleteDatabaseIfExists(String dbName) {

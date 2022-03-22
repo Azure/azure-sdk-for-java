@@ -1,6 +1,6 @@
 # Release History
 
-## 12.2.0-beta.1 (Unreleased)
+## 12.3.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,25 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.2.1 (2022-03-11)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.26.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.8`
+
+## 12.2.0 (2022-02-10)
+
+### Features added
+- Implemented new traits (micro-interfaces) in `TableClientBuiler` and `TableServiceClientBuilder`. This makes the experience of using client builders more consistent across libraries in the Azure SDK for Java. 
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.25.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.7`
 
 ## 12.1.5 (2022-01-11)
 

@@ -22,7 +22,8 @@ public interface ServiceTagsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of service tag information resources.
+     * @return a list of service tag information resources along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ServiceTagsListResultInner>> listWithResponseAsync(String location);
@@ -36,7 +37,7 @@ public interface ServiceTagsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of service tag information resources.
+     * @return a list of service tag information resources on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ServiceTagsListResultInner> listAsync(String location);
@@ -65,7 +66,7 @@ public interface ServiceTagsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of service tag information resources.
+     * @return a list of service tag information resources along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ServiceTagsListResultInner> listWithResponse(String location, Context context);

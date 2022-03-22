@@ -9,11 +9,13 @@ import org.apache.spark.sql.Row
 import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.catalyst.util.ArrayData
 import org.apache.spark.sql.catalyst.encoders.ExpressionEncoder
-import org.apache.spark.sql.catalyst.expressions.GenericRowWithSchema
+import org.apache.spark.sql.catalyst.expressions.{GenericRowWithSchema, Uuid}
 
 import java.sql.{Date, Timestamp}
 import java.time.format.DateTimeFormatter
 import java.time.{LocalDateTime, OffsetDateTime, ZoneOffset}
+import java.util.UUID
+import scala.util.Random
 
 // scalastyle:off underscore.import
 import org.apache.spark.sql.types._
@@ -669,6 +671,54 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     objectNode.get(colName2).asText shouldEqual colVal2
   }
 
+  "originRawJson in spark row" should "translate to ObjectNode" in {
+    val colName1 = "testCol1"
+    val colName2 = "testCol2"
+    val colVal1 = 8
+    val colVal2 = "strVal"
+    val ts = Random.nextInt(100000)
+    val etag = UUID.randomUUID().toString
+    val sourceObjectNode: ObjectNode = objectMapper.createObjectNode()
+    sourceObjectNode.put(colName1, colVal1)
+    sourceObjectNode.put(colName2, colVal2)
+    sourceObjectNode.put(CosmosTableSchemaInferrer.TimestampAttributeName, ts)
+    sourceObjectNode.put(CosmosTableSchemaInferrer.ETagAttributeName, etag)
+
+    val row = new GenericRowWithSchema(
+      Array(sourceObjectNode.toString),
+      StructType(Seq(StructField(CosmosTableSchemaInferrer.OriginRawJsonBodyAttributeName, StringType))))
+
+    val objectNode = defaultRowConverter.fromRowToObjectNode(row)
+    objectNode.get(colName1).asInt shouldEqual colVal1
+    objectNode.get(colName2).asText shouldEqual colVal2
+    objectNode.get(CosmosTableSchemaInferrer.OriginTimestampAttributeName).asInt shouldEqual ts
+    objectNode.get(CosmosTableSchemaInferrer.OriginETagAttributeName).asText shouldEqual etag
+  }
+
+  "originRawJson in spark InternalRow" should "translate to ObjectNode" in {
+    val colName1 = "testCol1"
+    val colName2 = "testCol2"
+    val colVal1 = 8
+    val colVal2 = "strVal"
+    val ts = Random.nextInt(100000)
+    val etag = UUID.randomUUID().toString
+    val sourceObjectNode: ObjectNode = objectMapper.createObjectNode()
+    sourceObjectNode.put(colName1, colVal1)
+    sourceObjectNode.put(colName2, colVal2)
+    sourceObjectNode.put(CosmosTableSchemaInferrer.TimestampAttributeName, ts)
+    sourceObjectNode.put(CosmosTableSchemaInferrer.ETagAttributeName, etag)
+
+    val row = InternalRow(sourceObjectNode.toString)
+
+    val objectNode = defaultRowConverter.fromInternalRowToObjectNode(
+      row,
+      StructType(Seq(StructField(CosmosTableSchemaInferrer.OriginRawJsonBodyAttributeName, StringType))))
+    objectNode.get(colName1).asInt shouldEqual colVal1
+    objectNode.get(colName2).asText shouldEqual colVal2
+    objectNode.get(CosmosTableSchemaInferrer.OriginTimestampAttributeName).asInt shouldEqual ts
+    objectNode.get(CosmosTableSchemaInferrer.OriginETagAttributeName).asText shouldEqual etag
+  }
+
   "basic ObjectNode" should "translate to Row" in {
     val colName1 = "testCol1"
     val colName2 = "testCol2"
@@ -884,8 +934,9 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
       StructField(colName1, DecimalType(precision = 2, scale = 2), nullable = true)))
     try {
       val rowSerializer: ExpressionEncoder.Serializer[Row] = RowSerializerPool.getOrCreateSerializer(schema)
-      val row = defaultRowConverter.fromObjectNodeToInternalRow(
-        schema, rowSerializer, objectNode, SchemaConversionModes.Relaxed)
+      val row = defaultRowConverter.fromRowToInternalRow(
+        defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed),
+        rowSerializer)
       row.isNullAt(0) shouldBe true
     }
     catch {
@@ -904,8 +955,9 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
       StructField(colName1, DecimalType(precision = 2, scale = 2), nullable = false)))
     try {
       val rowSerializer: ExpressionEncoder.Serializer[Row] = RowSerializerPool.getOrCreateSerializer(schema)
-      defaultRowConverter.fromObjectNodeToInternalRow(
-        schema, rowSerializer, objectNode, SchemaConversionModes.Relaxed)
+      defaultRowConverter.fromRowToInternalRow(
+        defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed),
+        rowSerializer)
       fail("Expected Exception not thrown")
     }
     catch {

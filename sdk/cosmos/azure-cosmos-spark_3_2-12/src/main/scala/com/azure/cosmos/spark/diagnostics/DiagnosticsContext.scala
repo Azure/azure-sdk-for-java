@@ -3,4 +3,6 @@
 
 package com.azure.cosmos.spark.diagnostics
 
-private[spark] case class DiagnosticsContext(correlationActivityId: String, details: String)
+import java.util.UUID
+
+private[spark] case class DiagnosticsContext(correlationActivityId: UUID, details: String)

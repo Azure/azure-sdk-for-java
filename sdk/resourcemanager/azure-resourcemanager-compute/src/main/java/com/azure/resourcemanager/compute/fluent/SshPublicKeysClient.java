@@ -29,7 +29,7 @@ public interface SshPublicKeysClient
      *
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list SSH public keys operation response.
+     * @return the list SSH public keys operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<SshPublicKeyResourceInner> listAsync();
@@ -40,7 +40,7 @@ public interface SshPublicKeysClient
      *
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list SSH public keys operation response.
+     * @return the list SSH public keys operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SshPublicKeyResourceInner> list();
@@ -53,7 +53,7 @@ public interface SshPublicKeysClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list SSH public keys operation response.
+     * @return the list SSH public keys operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SshPublicKeyResourceInner> list(Context context);
@@ -66,7 +66,7 @@ public interface SshPublicKeysClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list SSH public keys operation response.
+     * @return the list SSH public keys operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<SshPublicKeyResourceInner> listByResourceGroupAsync(String resourceGroupName);
@@ -79,7 +79,7 @@ public interface SshPublicKeysClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list SSH public keys operation response.
+     * @return the list SSH public keys operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SshPublicKeyResourceInner> listByResourceGroup(String resourceGroupName);
@@ -93,7 +93,7 @@ public interface SshPublicKeysClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list SSH public keys operation response.
+     * @return the list SSH public keys operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SshPublicKeyResourceInner> listByResourceGroup(String resourceGroupName, Context context);

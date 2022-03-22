@@ -93,15 +93,23 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
   }
 
   private[this] def getContinuationTokenLsnOfFirstItem(items: Iterable[ObjectNode]): Option[String] = {
+    getLsnOfFirstItem(items) match {
+      case Some(firstLsn) =>
+        Some(SparkBridgeImplementationInternal.toContinuationToken(firstLsn))
+      case None => None
+    }
+  }
+
+  private[spark] def getLsnOfFirstItem(items: Iterable[ObjectNode]): Option[Long] = {
     items
       .collectFirst({
         case item: ObjectNode if item != null =>
           val lsnNode = item.get(LsnAttributeName)
           if (lsnNode != null && lsnNode.isNumber) {
-            // when grabbing the LSN from the item we need to use the item's LSN -1
-            // to ensure we would retrieve this item again
             Some(
-              SparkBridgeImplementationInternal.toContinuationToken(lsnNode.asLong() - 1))
+              // when grabbing the LSN from the item we need to use the item's LSN -1
+              // to ensure we would retrieve this item again
+              lsnNode.asLong() - 1)
           } else {
             None
           }
@@ -432,7 +440,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
         val scaleFactor = if (storageSizeInMB == 0) {
           1
         } else {
-          progressWeightFactor * storageSizeInMB.toDouble
+          progressWeightFactor * storageSizeInMB
         }
 
         val planningInfo = PartitionPlanningInfo(
@@ -466,18 +474,35 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       .map(metadata => {
         val endLsn = readLimit match {
           case _: ReadAllAvailable => metadata.latestLsn
-          case _: ReadMaxRows =>
-            val gap = math.max(0, metadata.latestLsn - metadata.startLsn)
-            val weightFactor = metadata.getWeightedLsnGap.toDouble / totalWeightedLsnGap.get
-            val allowedRate = (weightFactor * gap).toLong.max(1)
-            if (isDebugLogEnabled) {
-              val calculateDebugLine = s"calculateEndLsn - gap $gap weightFactor $weightFactor " +
-                s"documentCount ${metadata.documentCount} latestLsn ${metadata.latestLsn} " +
-                s"startLsn ${metadata.startLsn} allowedRate $allowedRate weightedGap ${metadata.getWeightedLsnGap}"
-              logDebug(calculateDebugLine)
-            }
+          case maxRowsLimit: ReadMaxRows =>
+            if (totalWeightedLsnGap.get <= maxRowsLimit.maxRows) {
+              if (isDebugLogEnabled) {
+                val calculateDebugLine = s"calculateEndLsn (feedRange: ${metadata.feedRange}) - avg. Docs " +
+                  s"per LSN: ${metadata.getAvgItemsPerLsn} documentCount ${metadata.documentCount} firstLsn " +
+                  s"${metadata.firstLsn} latestLsn ${metadata.latestLsn} startLsn ${metadata.startLsn} weightedGap " +
+                  s"${metadata.getWeightedLsnGap} effectiveEndLsn ${metadata.latestLsn} maxRows ${maxRowsLimit.maxRows}"
+                logDebug(calculateDebugLine)
+              }
+              metadata.latestLsn
+            } else {
+              // the weight of this feedRange compared to other feedRanges
+              val feedRangeWeightFactor = metadata.getWeightedLsnGap.toDouble / totalWeightedLsnGap.get
 
-            math.min(metadata.latestLsn, metadata.startLsn + allowedRate)
+              val allowedRate = (feedRangeWeightFactor * maxRowsLimit.maxRows() / metadata.getAvgItemsPerLsn)
+                .toLong
+                .max(1)
+              val effectiveEndLsn = math.min(metadata.latestLsn, metadata.startLsn + allowedRate)
+              if (isDebugLogEnabled) {
+                val calculateDebugLine = s"calculateEndLsn (feedRange: ${metadata.feedRange}) - avg. Docs/LSN: " +
+                  s"${metadata.getAvgItemsPerLsn} feedRangeWeightFactor $feedRangeWeightFactor documentCount " +
+                  s"${metadata.documentCount} firstLsn ${metadata.firstLsn} latestLsn ${metadata.latestLsn} startLsn " +
+                  s"${metadata.startLsn} allowedRate  $allowedRate weightedGap ${metadata.getWeightedLsnGap} " +
+                  s"effectiveEndLsn $effectiveEndLsn maxRows $maxRowsLimit.maxRows"
+                logDebug(calculateDebugLine)
+              }
+
+              effectiveEndLsn
+            }
           case _: ReadMaxFiles => throw new IllegalStateException("ReadLimitMaxFiles not supported by this source.")
         }
 
@@ -496,7 +521,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     } else if (effectiveEndLsn <= metadata.startLsn) {
       // If progress has caught up with estimation already make sure we only use one Spark partition
       // for the physical partition in Cosmos
-      1 / storageSizeInMB.toDouble
+      1 / storageSizeInMB
     } else {
       // Use weight factor based on progress. This estimate assumes equal distribution of storage
       // size per LSN - which is a "good enough" simplification

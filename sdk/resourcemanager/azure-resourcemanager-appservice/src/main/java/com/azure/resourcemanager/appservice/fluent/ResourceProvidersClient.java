@@ -38,7 +38,8 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return user credentials used for publishing activity.
+     * @return user credentials used for publishing activity along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<UserInner>> getPublishingUserWithResponseAsync();
@@ -49,7 +50,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return user credentials used for publishing activity.
+     * @return user credentials used for publishing activity on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<UserInner> getPublishingUserAsync();
@@ -73,7 +74,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return user credentials used for publishing activity.
+     * @return user credentials used for publishing activity along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<UserInner> getPublishingUserWithResponse(Context context);
@@ -86,7 +87,8 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return user credentials used for publishing activity.
+     * @return user credentials used for publishing activity along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<UserInner>> updatePublishingUserWithResponseAsync(UserInner userDetails);
@@ -99,7 +101,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return user credentials used for publishing activity.
+     * @return user credentials used for publishing activity on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<UserInner> updatePublishingUserAsync(UserInner userDetails);
@@ -126,7 +128,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return user credentials used for publishing activity.
+     * @return user credentials used for publishing activity along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<UserInner> updatePublishingUserWithResponse(UserInner userDetails, Context context);
@@ -137,7 +139,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of source controls.
+     * @return collection of source controls as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<SourceControlInner> listSourceControlsAsync();
@@ -148,7 +150,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of source controls.
+     * @return collection of source controls as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SourceControlInner> listSourceControls();
@@ -161,7 +163,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of source controls.
+     * @return collection of source controls as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SourceControlInner> listSourceControls(Context context);
@@ -174,7 +176,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the source control OAuth token.
+     * @return the source control OAuth token along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SourceControlInner>> getSourceControlWithResponseAsync(String sourceControlType);
@@ -187,7 +189,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the source control OAuth token.
+     * @return the source control OAuth token on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<SourceControlInner> getSourceControlAsync(String sourceControlType);
@@ -214,7 +216,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the source control OAuth token.
+     * @return the source control OAuth token along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SourceControlInner> getSourceControlWithResponse(String sourceControlType, Context context);
@@ -228,7 +230,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the source control OAuth token.
+     * @return the source control OAuth token along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SourceControlInner>> updateSourceControlWithResponseAsync(
@@ -243,7 +245,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the source control OAuth token.
+     * @return the source control OAuth token on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<SourceControlInner> updateSourceControlAsync(String sourceControlType, SourceControlInner requestMessage);
@@ -272,7 +274,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the source control OAuth token.
+     * @return the source control OAuth token along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SourceControlInner> updateSourceControlWithResponse(
@@ -287,7 +289,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Billing Meters.
+     * @return collection of Billing Meters as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<BillingMeterInner> listAsync(String billingLocation, String osType);
@@ -298,7 +300,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Billing Meters.
+     * @return collection of Billing Meters as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<BillingMeterInner> listAsync();
@@ -309,7 +311,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Billing Meters.
+     * @return collection of Billing Meters as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BillingMeterInner> list();
@@ -324,7 +326,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Billing Meters.
+     * @return collection of Billing Meters as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BillingMeterInner> list(String billingLocation, String osType, Context context);
@@ -337,7 +339,8 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information regarding availability of a resource name.
+     * @return information regarding availability of a resource name along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ResourceNameAvailabilityInner>> checkNameAvailabilityWithResponseAsync(
@@ -351,7 +354,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information regarding availability of a resource name.
+     * @return information regarding availability of a resource name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ResourceNameAvailabilityInner> checkNameAvailabilityAsync(ResourceNameAvailabilityRequest request);
@@ -378,7 +381,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information regarding availability of a resource name.
+     * @return information regarding availability of a resource name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ResourceNameAvailabilityInner> checkNameAvailabilityWithResponse(
@@ -390,7 +393,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom hostnames under this subscription.
+     * @return custom hostnames under this subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<CustomHostnameSitesInner> listCustomHostnameSitesAsync();
@@ -401,7 +404,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom hostnames under this subscription.
+     * @return custom hostnames under this subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CustomHostnameSitesInner> listCustomHostnameSites();
@@ -414,7 +417,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom hostnames under this subscription.
+     * @return custom hostnames under this subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CustomHostnameSitesInner> listCustomHostnameSites(Context context);
@@ -425,8 +428,8 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available locations (regions or App Service Environments) for deployment of App Service
-     *     resources.
+     * @return list of available locations (regions or App Service Environments) for deployment of App Service resources
+     *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DeploymentLocationsInner>> getSubscriptionDeploymentLocationsWithResponseAsync();
@@ -437,8 +440,8 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available locations (regions or App Service Environments) for deployment of App Service
-     *     resources.
+     * @return list of available locations (regions or App Service Environments) for deployment of App Service resources
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DeploymentLocationsInner> getSubscriptionDeploymentLocationsAsync();
@@ -463,8 +466,8 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available locations (regions or App Service Environments) for deployment of App Service
-     *     resources.
+     * @return list of available locations (regions or App Service Environments) for deployment of App Service resources
+     *     along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DeploymentLocationsInner> getSubscriptionDeploymentLocationsWithResponse(Context context);
@@ -483,7 +486,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of geographical regions.
+     * @return collection of geographical regions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<GeoRegionInner> listGeoRegionsAsync(
@@ -495,7 +498,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of geographical regions.
+     * @return collection of geographical regions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<GeoRegionInner> listGeoRegionsAsync();
@@ -506,7 +509,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of geographical regions.
+     * @return collection of geographical regions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<GeoRegionInner> listGeoRegions();
@@ -526,7 +529,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of geographical regions.
+     * @return collection of geographical regions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<GeoRegionInner> listGeoRegions(
@@ -544,7 +547,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of identifiers.
+     * @return collection of identifiers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<IdentifierInner> listSiteIdentifiersAssignedToHostnameAsync(NameIdentifierInner nameIdentifier);
@@ -557,7 +560,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of identifiers.
+     * @return collection of identifiers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<IdentifierInner> listSiteIdentifiersAssignedToHostname(NameIdentifierInner nameIdentifier);
@@ -571,7 +574,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of identifiers.
+     * @return collection of identifiers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<IdentifierInner> listSiteIdentifiersAssignedToHostname(
@@ -583,7 +586,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of premier add-on offers.
+     * @return collection of premier add-on offers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<PremierAddOnOfferInner> listPremierAddOnOffersAsync();
@@ -594,7 +597,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of premier add-on offers.
+     * @return collection of premier add-on offers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PremierAddOnOfferInner> listPremierAddOnOffers();
@@ -607,7 +610,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of premier add-on offers.
+     * @return collection of premier add-on offers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PremierAddOnOfferInner> listPremierAddOnOffers(Context context);
@@ -618,7 +621,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of SKU information.
+     * @return collection of SKU information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SkuInfosInner>> listSkusWithResponseAsync();
@@ -629,7 +632,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of SKU information.
+     * @return collection of SKU information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<SkuInfosInner> listSkusAsync();
@@ -653,7 +656,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of SKU information.
+     * @return collection of SKU information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SkuInfosInner> listSkusWithResponse(Context context);
@@ -667,7 +670,8 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class that describes the reason for a validation failure.
+     * @return a class that describes the reason for a validation failure along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<VnetValidationFailureDetailsInner>> verifyHostingEnvironmentVnetWithResponseAsync(
@@ -682,7 +686,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class that describes the reason for a validation failure.
+     * @return a class that describes the reason for a validation failure on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<VnetValidationFailureDetailsInner> verifyHostingEnvironmentVnetAsync(VnetParameters parameters);
@@ -711,7 +715,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class that describes the reason for a validation failure.
+     * @return a class that describes the reason for a validation failure along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VnetValidationFailureDetailsInner> verifyHostingEnvironmentVnetWithResponse(
@@ -726,7 +730,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> moveWithResponseAsync(String resourceGroupName, CsmMoveResourceEnvelope moveResourceEnvelope);
@@ -740,7 +744,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> moveAsync(String resourceGroupName, CsmMoveResourceEnvelope moveResourceEnvelope);
@@ -768,7 +772,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> moveWithResponse(
@@ -783,7 +787,8 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the result of resource validation.
+     * @return describes the result of resource validation along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ValidateResponseInner>> validateWithResponseAsync(
@@ -798,7 +803,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the result of resource validation.
+     * @return describes the result of resource validation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ValidateResponseInner> validateAsync(String resourceGroupName, ValidateRequest validateRequest);
@@ -827,7 +832,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the result of resource validation.
+     * @return describes the result of resource validation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ValidateResponseInner> validateWithResponse(
@@ -842,7 +847,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> validateMoveWithResponseAsync(
@@ -857,7 +862,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> validateMoveAsync(String resourceGroupName, CsmMoveResourceEnvelope moveResourceEnvelope);
@@ -885,7 +890,7 @@ public interface ResourceProvidersClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> validateMoveWithResponse(

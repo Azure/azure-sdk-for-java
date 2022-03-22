@@ -19,6 +19,9 @@ public final class MetricsResponseSeriesItemUnit extends ExpandableStringEnum<Me
     /** Static value bitsPerSecond for MetricsResponseSeriesItemUnit. */
     public static final MetricsResponseSeriesItemUnit BITS_PER_SECOND = fromString("bitsPerSecond");
 
+    /** Static value milliSeconds for MetricsResponseSeriesItemUnit. */
+    public static final MetricsResponseSeriesItemUnit MILLI_SECONDS = fromString("milliSeconds");
+
     /**
      * Creates or finds a MetricsResponseSeriesItemUnit from its string representation.
      *

@@ -18,7 +18,8 @@
                 "12NewPA$$w0rd!",
                 "Samp1eP@ssw0rd",
                 "facebookapplicationsecret",
-                "updatedfacebooksecret"
+                "updatedfacebooksecret",
+                "serverappsecret"
             ],
             "_justification": "Secret used by test code, it is fake."
         },
@@ -33,6 +34,10 @@
         {
             "placeholder": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
             "_justification": "SHA-256 encrypted random data generated at test time."
+        },
+        {
+            "placeholder": "JdppJP5eH1w/CQ0cx4RGYWoC7NmQ0nmDbYR2PYWSDTXojV9bI1ck0Eh0sUIg8xj4KYj7tv+ZPLICu3BgLt6mMz==",
+            "_justification": "Mocked key used in performance testing."
         },
         {
             "file":[

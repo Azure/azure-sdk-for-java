@@ -11,7 +11,8 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetInner;
-import com.azure.resourcemanager.compute.implementation.VirtualMachineScaleSetImpl;
+import com.azure.resourcemanager.compute.models.DeleteOptions;
+import com.azure.resourcemanager.compute.models.DiffDiskPlacement;
 import com.azure.resourcemanager.compute.models.ImageReference;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
@@ -23,6 +24,7 @@ import com.azure.resourcemanager.compute.models.Sku;
 import com.azure.resourcemanager.compute.models.UpgradeMode;
 import com.azure.resourcemanager.compute.models.VaultCertificate;
 import com.azure.resourcemanager.compute.models.VaultSecretGroup;
+import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineEvictionPolicyTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachinePriorityTypes;
@@ -33,6 +35,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetSkuTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVM;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMExpandType;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMs;
+import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.keyvault.models.Secret;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
@@ -60,13 +63,17 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest {
@@ -530,6 +537,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         }
     }
 
+    @Test
     public void canCreateVirtualMachineScaleSet() throws Exception {
         final String vmssName = generateRandomResourceName("vmss", 10);
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
@@ -744,9 +752,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
      * but this was too long for some OSes and would cause git checkout to fail.
      */
     @Test
-    public void
-        canCreateTwoRegionalVMScaleSetsWithDifferentPoolOfZoneResilientLoadBalancer()
-            throws Exception {
+    public void canCreateTwoRegionalVMScaleSetsWithDifferentPoolOfZoneResilientLoadBalancer() throws Exception {
         // Zone resilient resource -> resources deployed in all zones by the service and it will be served by all AZs
         // all the time.
         // ZoneResilientLoadBalancer -> STANDARD LB -> [Since service deploy them to all zones, user don't have to set
@@ -998,8 +1004,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         for (RoleAssignment roleAssignment : rgRoleAssignments) {
             if (roleAssignment.principalId() != null
                 && roleAssignment
-                    .principalId()
-                    .equalsIgnoreCase(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId())) {
+                .principalId()
+                .equalsIgnoreCase(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId())) {
                 found = true;
                 break;
             }
@@ -1086,8 +1092,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         for (RoleAssignment roleAssignment : rgRoleAssignments) {
             if (roleAssignment.principalId() != null
                 && roleAssignment
-                    .principalId()
-                    .equalsIgnoreCase(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId())) {
+                .principalId()
+                .equalsIgnoreCase(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId())) {
                 found = true;
                 break;
             }
@@ -1105,8 +1111,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         for (RoleAssignment roleAssignment : stgRoleAssignments) {
             if (roleAssignment.principalId() != null
                 && roleAssignment
-                    .principalId()
-                    .equalsIgnoreCase(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId())) {
+                .principalId()
+                .equalsIgnoreCase(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId())) {
                 found = true;
                 break;
             }
@@ -1311,7 +1317,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .create();
 
         PagedIterable<VirtualMachineScaleSetVM> vmInstances = vmss.virtualMachines().list();
-        for (VirtualMachineScaleSetVM instance: vmInstances) {
+        for (VirtualMachineScaleSetVM instance : vmInstances) {
             Assertions.assertTrue(instance.osDiskSizeInGB() > 0);
             // call simulate eviction
             vmss.virtualMachines().simulateEviction(instance.instanceId());
@@ -1323,7 +1329,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             ResourceManagerUtils.sleep(Duration.ofMinutes(pollIntervalInMinutes));
 
             deallocated = true;
-            for (VirtualMachineScaleSetVM instance: vmInstances) {
+            for (VirtualMachineScaleSetVM instance : vmInstances) {
                 instance.refresh();
 
                 if (instance.powerState() != PowerState.DEALLOCATED) {
@@ -1337,7 +1343,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         }
         Assertions.assertTrue(deallocated);
 
-        for (VirtualMachineScaleSetVM instance: vmInstances) {
+        for (VirtualMachineScaleSetVM instance : vmInstances) {
             instance.refresh();
             Assertions.assertEquals(0, instance.osDiskSizeInGB());
         }
@@ -1734,7 +1740,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withRegion(euapRegion)
             .create();
 
-        VirtualMachineScaleSetImpl vmss = (VirtualMachineScaleSetImpl) this.computeManager
+        VirtualMachineScaleSet vmss = this.computeManager
             .virtualMachineScaleSets()
             .define(vmssName)
             .withRegion(euapRegion)
@@ -1742,53 +1748,171 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withFlexibleOrchestrationMode()
             .create();
 
-        vmss.orchestrationMode();
-        vmss.computerNamePrefix();
-        vmss.osType();
-        vmss.osDiskCachingType();
-        vmss.osDiskName();
-        vmss.upgradeModel();
-        vmss.overProvisionEnabled();
-        vmss.sku();
-        vmss.capacity();
-        vmss.getPrimaryNetwork();
-        vmss.getPrimaryInternetFacingLoadBalancer();
-        vmss.listPrimaryInternetFacingLoadBalancerBackends();
-        vmss.listPrimaryInternetFacingLoadBalancerInboundNatPools();
-        vmss.getPrimaryInternalLoadBalancer();
-        vmss.listPrimaryInternalLoadBalancerBackends();
-        vmss.listPrimaryInternalLoadBalancerInboundNatPools();
-        vmss.primaryPublicIpAddressIds();
-        vmss.vhdContainers();
-        vmss.storageProfile();
-        vmss.networkProfile();
-        vmss.extensions();
-        vmss.virtualMachinePriority();
-        vmss.billingProfile();
-        vmss.plan();
-        vmss.virtualMachineEvictionPolicy();
-        vmss.listNetworkInterfaces();
-        vmss.isManagedDiskEnabled();
-        vmss.isManagedServiceIdentityEnabled();
-        vmss.systemAssignedManagedServiceIdentityTenantId();
-        vmss.systemAssignedManagedServiceIdentityPrincipalId();
-        vmss.managedServiceIdentityType();
-        vmss.userAssignedManagedServiceIdentityIds();
-        vmss.availabilityZones();
-        vmss.isBootDiagnosticsEnabled();
-        vmss.bootDiagnosticsStorageUri();
-        vmss.managedOSDiskStorageAccountType();
-        vmss.virtualMachinePublicIpConfig();
-        vmss.isIpForwardingEnabled();
-        vmss.isAcceleratedNetworkingEnabled();
-        vmss.networkSecurityGroupId();
-        vmss.isSinglePlacementGroupEnabled();
-        vmss.applicationGatewayBackendAddressPoolsIds();
-        vmss.applicationSecurityGroupIds();
-        vmss.doNotRunExtensionsOnOverprovisionedVMs();
-        vmss.proximityPlacementGroup();
-        vmss.additionalCapabilities();
-        vmss.orchestrationMode();
+        String excludeMethodsString = "start,startAsync,reimage,reimageAsync,deallocate,deallocateAsync,powerOff,powerOffAsync,restart,restartAsync";
+        Set<String> excludeMethods = new HashSet<>(Arrays.asList(excludeMethodsString.split(",")));
+        Set<String> invoked = new HashSet<>();
+        // invoke all the methods with 0 parameters except those from the exclusion set
+        for (Method method : VirtualMachineScaleSet.class.getDeclaredMethods()) {
+            if (!excludeMethods.contains(method.getName()) && method.getParameterCount() == 0) {
+                method.invoke(vmss);
+                invoked.add(method.getName());
+            }
+        }
+        Assertions.assertTrue(invoked.contains("isEphemeralOSDisk"));
+        Assertions.assertFalse(invoked.contains("start"));
     }
 
+    @Test
+    public void canBatchOperateVMSSInstance() {
+        final String vmssName = generateRandomResourceName("vmss", 10);
+
+        Network network = this.networkManager
+            .networks()
+            .define("vmssvnet")
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet("subnet1", "10.0.0.0/28")
+            .create();
+
+        VirtualMachineScaleSet vmss = this.computeManager
+            .virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withoutPrimaryInternetFacingLoadBalancer()
+            .withoutPrimaryInternalLoadBalancer()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .withUpgradeMode(UpgradeMode.AUTOMATIC)
+            .withCapacity(3)
+            .create();
+
+        // batch operation on instance 0 and 2
+        // leave instance 0 untouched
+        Collection<String> instanceIds = Arrays.asList("0", "2");
+
+        VirtualMachineScaleSetVMs vmInstances = vmss.virtualMachines();
+        VirtualMachineScaleSetVM vmInstance2 = vmss.virtualMachines().getInstance("2");
+
+//        vmInstances.reimageInstances(instanceIds);
+
+        vmInstances.redeployInstances(instanceIds);
+
+        vmInstances.powerOffInstances(instanceIds, true);
+        vmInstance2.refreshInstanceView();
+        Assertions.assertEquals(PowerState.STOPPED, vmInstance2.powerState());
+
+        vmInstances.startInstances(instanceIds);
+        vmInstance2.refreshInstanceView();
+        Assertions.assertEquals(PowerState.RUNNING, vmInstance2.powerState());
+
+        vmInstances.restartInstances(instanceIds);
+        vmInstance2.refreshInstanceView();
+        Assertions.assertEquals(PowerState.RUNNING, vmInstance2.powerState());
+
+        vmInstances.deallocateInstances(instanceIds);
+        vmInstance2.refreshInstanceView();
+        Assertions.assertEquals(PowerState.DEALLOCATED, vmInstance2.powerState());
+
+        // instance 1 is not affected
+        VirtualMachineScaleSetVM vmInstance1 = vmss.virtualMachines().getInstance("1");
+        Assertions.assertEquals(PowerState.RUNNING, vmInstance1.powerState());
+    }
+
+    @Test
+    public void canCreateVMSSWithEphemeralOSDisk() throws Exception {
+        // uniform vmss with ephemeral os disk
+        final String vmssName = generateRandomResourceName("vmss", 10);
+
+        Network network = this.networkManager
+            .networks()
+            .define("vmssvnet")
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet("subnet1", "10.0.0.0/28")
+            .create();
+
+        VirtualMachineScaleSet uniformVMSS = this.computeManager
+            .virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_DS1_V2)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withoutPrimaryInternetFacingLoadBalancer()
+            .withoutPrimaryInternalLoadBalancer()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .withUpgradeMode(UpgradeMode.AUTOMATIC)
+            .withEphemeralOSDisk()
+            .withPlacement(DiffDiskPlacement.CACHE_DISK)
+            .withCapacity(2)
+            .create();
+        Assertions.assertTrue(uniformVMSS.isEphemeralOSDisk());
+
+        // flex vmss with ephemeral os disk
+        Network network2 =
+            this
+                .networkManager
+                .networks()
+                .define("vmssvnet2")
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withAddressSpace("10.1.0.0/16")
+                .withSubnet("subnet1", "10.1.0.0/16")
+                .create();
+        LoadBalancer publicLoadBalancer = createHttpLoadBalancers(region, this.resourceManager.resourceGroups().getByName(rgName), "1", LoadBalancerSkuType.STANDARD, PublicIPSkuType.STANDARD, true);
+
+        final String vmssName1 = generateRandomResourceName("vmss", 10);
+        VirtualMachineScaleSet flexVMSS = this.computeManager
+            .virtualMachineScaleSets()
+            .define(vmssName1)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withFlexibleOrchestrationMode()
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_DS1_V2)
+            .withExistingPrimaryNetworkSubnet(network2, "subnet1")
+            .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
+            .withoutPrimaryInternalLoadBalancer()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .withEphemeralOSDisk()
+            .withPlacement(DiffDiskPlacement.CACHE_DISK)
+            .create();
+        Assertions.assertTrue(flexVMSS.isEphemeralOSDisk());
+        VirtualMachine instance1 = this.computeManager
+            .virtualMachines()
+            .getById(flexVMSS.virtualMachines().list().stream().iterator().next().id());
+        Assertions.assertTrue(instance1.isOSDiskEphemeral());
+
+        // can add vm with non-ephemeral os disk to flex vmss with ephemeral os disk vm profile
+        final String vmName = generateRandomResourceName("vm", 10);
+        VirtualMachine vm = this.computeManager
+            .virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withExistingPrimaryNetwork(network2)
+            .withSubnet("subnet1")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+            .withRootUsername("Foo12")
+            .withSsh(sshPublicKey())
+            .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
+            .withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions.DELETE)
+            .withExistingVirtualMachineScaleSet(flexVMSS)
+            .create();
+        Assertions.assertEquals(vm.virtualMachineScaleSetId(), flexVMSS.id());
+        // flex vmss can have a mixed set of VMs with ephemeral and non-ephemeral os disk
+        // which contradicts the FAQ: https://docs.microsoft.com/en-us/azure/virtual-machines/ephemeral-os-disks#frequently-asked-questions
+        Assertions.assertFalse(vm.isOSDiskEphemeral());
+    }
 }

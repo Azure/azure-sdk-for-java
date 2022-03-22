@@ -34,7 +34,9 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
     // Guidance: The grace period should be large enough to accommodate the round trip time of the slowest server
     // request. Assuming 1s of network RTT, a 2 MB request, a 2 MB response, a connection that can sustain 1 MB/s
     // both ways, and a 5-second deadline at the server, 10 seconds should be enough.
-    private static final long readHangGracePeriodInNanos = 10L * 1_000_000_000L;
+    // Adding an additional 45 seconds grace period because of relatively high number of
+    // false negatives here under high CPU load (in Spark for example)
+    private static final long readHangGracePeriodInNanos = (45L + 10L) * 1_000_000_000L;
 
     // A channel will not be declared unhealthy if a write was attempted recently. As such gaps between
     // Timestamps.lastChannelWriteAttempt and Timestamps.lastChannelWrite lower than this value are ignored.

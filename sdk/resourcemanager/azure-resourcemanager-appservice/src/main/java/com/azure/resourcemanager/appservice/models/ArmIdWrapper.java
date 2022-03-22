@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A wrapper for an ARM resource id. */
 @Immutable
 public final class ArmIdWrapper {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ArmIdWrapper.class);
-
     /*
      * The id property.
      */

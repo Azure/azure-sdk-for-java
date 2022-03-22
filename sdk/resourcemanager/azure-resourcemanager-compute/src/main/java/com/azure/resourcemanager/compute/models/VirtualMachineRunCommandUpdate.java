@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineRunCommandProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** Describes a Virtual Machine run command. */
 @Fluent
 public final class VirtualMachineRunCommandUpdate extends UpdateResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineRunCommandUpdate.class);
-
     /*
      * Describes the properties of a Virtual Machine run command.
      */

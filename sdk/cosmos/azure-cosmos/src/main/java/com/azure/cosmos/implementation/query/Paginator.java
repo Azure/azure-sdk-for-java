@@ -7,7 +7,6 @@ import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,46 +27,46 @@ public class Paginator {
 
     private final static Logger logger = LoggerFactory.getLogger(Paginator.class);
 
-    public static <T extends Resource> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
+    public static <T> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
         CosmosQueryRequestOptions cosmosQueryRequestOptions,
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
         Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
-        Class<T> resourceType,
         int maxPageSize) {
 
+        int top = -1;
         return getPaginatedQueryResultAsObservable(
             ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(cosmosQueryRequestOptions),
             createRequestFunc,
             executeFunc,
-            resourceType,
-            -1, maxPageSize);
+            top,
+            maxPageSize,
+            getPreFetchCount(cosmosQueryRequestOptions, top, maxPageSize));
     }
 
-    public static <T extends Resource> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
+    public static <T> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
             String continuationToken,
             BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
-            Class<T> resourceType,
             int top,
-            int maxPageSize) {
+            int maxPageSize,
+            int maxPreFetchCount) {
 
         return getPaginatedQueryResultAsObservable(
             continuationToken,
             createRequestFunc,
             executeFunc,
-            resourceType,
             top,
             maxPageSize,
+            maxPreFetchCount,
             false);
     }
 
-    public static <T extends Resource> Flux<FeedResponse<T>> getChangeFeedQueryResultAsObservable(
+    public static <T> Flux<FeedResponse<T>> getChangeFeedQueryResultAsObservable(
         RxDocumentClientImpl client,
         ChangeFeedState changeFeedState,
         Map<String, Object> requestOptionProperties,
         Supplier<RxDocumentServiceRequest> createRequestFunc,
         Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
-        Class<T> resourceType,
         int top,
         int maxPageSize,
         int preFetchCount,
@@ -86,7 +85,7 @@ public class Paginator {
             preFetchCount);
     }
 
-    private static <T extends Resource> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
+    private static <T> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
         Supplier<Fetcher<T>> fetcherFactory,
         int preFetchCount) {
 
@@ -111,13 +110,13 @@ public class Paginator {
         });
     }
 
-    private static <T extends Resource> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
+    private static <T> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
             String continuationToken,
             BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
-            Class<T> resourceType,
             int top,
             int maxPageSize,
+            int preFetchCount,
             boolean isChangeFeed) {
 
         return getPaginatedQueryResultAsObservable(
@@ -128,6 +127,18 @@ public class Paginator {
                 isChangeFeed,
                 top,
                 maxPageSize),
-                Queues.XS_BUFFER_SIZE);
+                preFetchCount);
+    }
+
+    public static int getPreFetchCount(CosmosQueryRequestOptions queryOptions, int top, int maxPageSize) {
+        int maxBufferedItemCount = queryOptions != null ? queryOptions.getMaxBufferedItemCount() : 0;
+        if (maxBufferedItemCount <= 0) {
+            return Queues.XS_BUFFER_SIZE;
+        }
+        int effectivePageSize = top > 0 ?
+            Math.min(top, maxPageSize) :
+            Math.max(1, maxPageSize);
+        int prefetch = Math.max(1, maxBufferedItemCount / effectivePageSize);
+        return Math.min(prefetch, Queues.XS_BUFFER_SIZE);
     }
 }

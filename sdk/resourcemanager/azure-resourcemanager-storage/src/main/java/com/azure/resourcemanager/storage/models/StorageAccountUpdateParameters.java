@@ -182,7 +182,8 @@ public final class StorageAccountUpdateParameters {
     }
 
     /**
-     * Get the encryption property: Provides the encryption settings on the account. The default setting is unencrypted.
+     * Get the encryption property: Not applicable. Azure Storage encryption at rest is enabled by default for all
+     * storage accounts and cannot be disabled.
      *
      * @return the encryption value.
      */
@@ -191,7 +192,8 @@ public final class StorageAccountUpdateParameters {
     }
 
     /**
-     * Set the encryption property: Provides the encryption settings on the account. The default setting is unencrypted.
+     * Set the encryption property: Not applicable. Azure Storage encryption at rest is enabled by default for all
+     * storage accounts and cannot be disabled.
      *
      * @param encryption the encryption value to set.
      * @return the StorageAccountUpdateParameters object itself.
@@ -321,6 +323,52 @@ public final class StorageAccountUpdateParameters {
             this.innerProperties = new StorageAccountPropertiesUpdateParameters();
         }
         this.innerProperties().withEnableHttpsTrafficOnly(enableHttpsTrafficOnly);
+        return this;
+    }
+
+    /**
+     * Get the isSftpEnabled property: Enables Secure File Transfer Protocol, if set to true.
+     *
+     * @return the isSftpEnabled value.
+     */
+    public Boolean isSftpEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().isSftpEnabled();
+    }
+
+    /**
+     * Set the isSftpEnabled property: Enables Secure File Transfer Protocol, if set to true.
+     *
+     * @param isSftpEnabled the isSftpEnabled value to set.
+     * @return the StorageAccountUpdateParameters object itself.
+     */
+    public StorageAccountUpdateParameters withIsSftpEnabled(Boolean isSftpEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesUpdateParameters();
+        }
+        this.innerProperties().withIsSftpEnabled(isSftpEnabled);
+        return this;
+    }
+
+    /**
+     * Get the isLocalUserEnabled property: Enables local users feature, if set to true.
+     *
+     * @return the isLocalUserEnabled value.
+     */
+    public Boolean isLocalUserEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().isLocalUserEnabled();
+    }
+
+    /**
+     * Set the isLocalUserEnabled property: Enables local users feature, if set to true.
+     *
+     * @param isLocalUserEnabled the isLocalUserEnabled value to set.
+     * @return the StorageAccountUpdateParameters object itself.
+     */
+    public StorageAccountUpdateParameters withIsLocalUserEnabled(Boolean isLocalUserEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesUpdateParameters();
+        }
+        this.innerProperties().withIsLocalUserEnabled(isLocalUserEnabled);
         return this;
     }
 
@@ -496,6 +544,109 @@ public final class StorageAccountUpdateParameters {
             this.innerProperties = new StorageAccountPropertiesUpdateParameters();
         }
         this.innerProperties().withAllowCrossTenantReplication(allowCrossTenantReplication);
+        return this;
+    }
+
+    /**
+     * Get the defaultToOAuthAuthentication property: A boolean flag which indicates whether the default authentication
+     * is OAuth or not. The default interpretation is false for this property.
+     *
+     * @return the defaultToOAuthAuthentication value.
+     */
+    public Boolean defaultToOAuthAuthentication() {
+        return this.innerProperties() == null ? null : this.innerProperties().defaultToOAuthAuthentication();
+    }
+
+    /**
+     * Set the defaultToOAuthAuthentication property: A boolean flag which indicates whether the default authentication
+     * is OAuth or not. The default interpretation is false for this property.
+     *
+     * @param defaultToOAuthAuthentication the defaultToOAuthAuthentication value to set.
+     * @return the StorageAccountUpdateParameters object itself.
+     */
+    public StorageAccountUpdateParameters withDefaultToOAuthAuthentication(Boolean defaultToOAuthAuthentication) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesUpdateParameters();
+        }
+        this.innerProperties().withDefaultToOAuthAuthentication(defaultToOAuthAuthentication);
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Allow or disallow public network access to Storage Account. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Allow or disallow public network access to Storage Account. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the StorageAccountUpdateParameters object itself.
+     */
+    public StorageAccountUpdateParameters withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesUpdateParameters();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the immutableStorageWithVersioning property: The property is immutable and can only be set to true at the
+     * account creation time. When set to true, it enables object level immutability for all the containers in the
+     * account by default.
+     *
+     * @return the immutableStorageWithVersioning value.
+     */
+    public ImmutableStorageAccount immutableStorageWithVersioning() {
+        return this.innerProperties() == null ? null : this.innerProperties().immutableStorageWithVersioning();
+    }
+
+    /**
+     * Set the immutableStorageWithVersioning property: The property is immutable and can only be set to true at the
+     * account creation time. When set to true, it enables object level immutability for all the containers in the
+     * account by default.
+     *
+     * @param immutableStorageWithVersioning the immutableStorageWithVersioning value to set.
+     * @return the StorageAccountUpdateParameters object itself.
+     */
+    public StorageAccountUpdateParameters withImmutableStorageWithVersioning(
+        ImmutableStorageAccount immutableStorageWithVersioning) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesUpdateParameters();
+        }
+        this.innerProperties().withImmutableStorageWithVersioning(immutableStorageWithVersioning);
+        return this;
+    }
+
+    /**
+     * Get the allowedCopyScope property: Restrict copy to and from Storage Accounts within an AAD tenant or with
+     * Private Links to the same VNet.
+     *
+     * @return the allowedCopyScope value.
+     */
+    public AllowedCopyScope allowedCopyScope() {
+        return this.innerProperties() == null ? null : this.innerProperties().allowedCopyScope();
+    }
+
+    /**
+     * Set the allowedCopyScope property: Restrict copy to and from Storage Accounts within an AAD tenant or with
+     * Private Links to the same VNet.
+     *
+     * @param allowedCopyScope the allowedCopyScope value to set.
+     * @return the StorageAccountUpdateParameters object itself.
+     */
+    public StorageAccountUpdateParameters withAllowedCopyScope(AllowedCopyScope allowedCopyScope) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesUpdateParameters();
+        }
+        this.innerProperties().withAllowedCopyScope(allowedCopyScope);
         return this;
     }
 

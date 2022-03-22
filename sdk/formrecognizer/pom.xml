@@ -22,7 +22,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-ai-formrecognizer</artifactId>
-          <version>4.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;current} -->
+          <version>4.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;current} -->
         </dependency>
       </dependencies>
 
@@ -32,18 +32,9 @@
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
             <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>report-aggregate</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>report-aggregate</goal>
-                </goals>
-                <configuration>
-                  <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
-                </configuration>
-              </execution>
-            </executions>
+            <configuration>
+              <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
+            </configuration>
           </plugin>
         </plugins>
       </build>

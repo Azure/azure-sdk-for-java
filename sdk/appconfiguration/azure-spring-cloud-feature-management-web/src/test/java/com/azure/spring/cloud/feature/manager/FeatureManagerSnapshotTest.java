@@ -8,18 +8,18 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.concurrent.ExecutionException;
+
 import javax.servlet.http.HttpServletRequest;
-import org.junit.Before;
+
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInfo;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import com.azure.spring.cloud.feature.manager.FeatureManager;
-import com.azure.spring.cloud.feature.manager.FeatureManagerSnapshot;
 
 import reactor.core.publisher.Mono;
 
@@ -35,9 +35,9 @@ public class FeatureManagerSnapshotTest {
     @InjectMocks
     FeatureManagerSnapshot featureManagerSnapshot;
 
-    @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
+    @BeforeEach
+    public void setup(TestInfo testInfo) {
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test

@@ -93,7 +93,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nVA Inbound Security Rule resource.
+     * @return nVA Inbound Security Rule resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -163,7 +163,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nVA Inbound Security Rule resource.
+     * @return nVA Inbound Security Rule resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -230,7 +230,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nVA Inbound Security Rule resource.
+     * @return the {@link PollerFlux} for polling of nVA Inbound Security Rule resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<InboundSecurityRuleInner>, InboundSecurityRuleInner> beginCreateOrUpdateAsync(
@@ -263,7 +263,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nVA Inbound Security Rule resource.
+     * @return the {@link PollerFlux} for polling of nVA Inbound Security Rule resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<InboundSecurityRuleInner>, InboundSecurityRuleInner> beginCreateOrUpdateAsync(
@@ -297,7 +297,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nVA Inbound Security Rule resource.
+     * @return the {@link SyncPoller} for polling of nVA Inbound Security Rule resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InboundSecurityRuleInner>, InboundSecurityRuleInner> beginCreateOrUpdate(
@@ -321,7 +321,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nVA Inbound Security Rule resource.
+     * @return the {@link SyncPoller} for polling of nVA Inbound Security Rule resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InboundSecurityRuleInner>, InboundSecurityRuleInner> beginCreateOrUpdate(
@@ -346,7 +346,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nVA Inbound Security Rule resource.
+     * @return nVA Inbound Security Rule resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<InboundSecurityRuleInner> createOrUpdateAsync(
@@ -371,7 +371,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nVA Inbound Security Rule resource.
+     * @return nVA Inbound Security Rule resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<InboundSecurityRuleInner> createOrUpdateAsync(

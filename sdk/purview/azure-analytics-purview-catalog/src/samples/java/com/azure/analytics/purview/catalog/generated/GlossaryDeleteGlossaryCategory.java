@@ -5,20 +5,25 @@
 package com.azure.analytics.purview.catalog.generated;
 
 import com.azure.analytics.purview.catalog.GlossaryClient;
-import com.azure.analytics.purview.catalog.PurviewCatalogClientBuilder;
+import com.azure.analytics.purview.catalog.GlossaryClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class GlossaryDeleteGlossaryCategory {
     public static void main(String[] args) {
-        GlossaryClient client =
-                new PurviewCatalogClientBuilder()
+        // BEGIN:
+        // com.azure.analytics.purview.catalog.generated.glossarydeleteglossarycategory.glossarydeleteglossarycategory
+        GlossaryClient glossaryClient =
+                new GlossaryClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
-                        .buildGlossaryClient();
+                        .buildClient();
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response =
-                client.deleteGlossaryCategoryWithResponse("0e391355-252a-e5f3-ac18-5a3602df7616", requestOptions);
+                glossaryClient.deleteGlossaryCategoryWithResponse(
+                        "0e391355-252a-e5f3-ac18-5a3602df7616", requestOptions);
+        // END:
+        // com.azure.analytics.purview.catalog.generated.glossarydeleteglossarycategory.glossarydeleteglossarycategory
     }
 }

@@ -214,6 +214,20 @@ public final class AzureVmWorkloadSqlDatabaseProtectedItem extends AzureVmWorklo
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureVmWorkloadSqlDatabaseProtectedItem withIsArchiveEnabled(Boolean isArchiveEnabled) {
+        super.withIsArchiveEnabled(isArchiveEnabled);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureVmWorkloadSqlDatabaseProtectedItem withPolicyName(String policyName) {
+        super.withPolicyName(policyName);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

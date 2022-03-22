@@ -25,4 +25,13 @@ trait AsyncItemWriter {
    * Should not throw any exceptions
    */
   def abort()
+
+  private[spark] def getETag(objectNode: ObjectNode) = {
+    val eTagField = objectNode.get(CosmosConstants.Properties.ETag)
+    if (eTagField != null && eTagField.isTextual) {
+      Some(eTagField.textValue())
+    } else {
+      None
+    }
+  }
 }

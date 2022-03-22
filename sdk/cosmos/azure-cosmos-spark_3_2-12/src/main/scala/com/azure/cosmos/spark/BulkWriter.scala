@@ -3,6 +3,8 @@
 package com.azure.cosmos.spark
 
 // scalastyle:off underscore.import
+import com.azure.cosmos.implementation.HttpConstants
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
 import com.azure.cosmos.{models, _}
 import com.azure.cosmos.models._
 import com.azure.cosmos.spark.BulkWriter.{BulkOperationFailedException, bulkWriterBoundedElastic, getThreadInfo}
@@ -39,6 +41,7 @@ import scala.collection.JavaConverters._
 //scalastyle:off multiple.string.literals
 //scalastyle:off file.size.limit
 class BulkWriter(container: CosmosAsyncContainer,
+                 partitionKeyDefinition: PartitionKeyDefinition,
                  writeConfig: CosmosWriteConfig,
                  diagnosticsConfig: DiagnosticsConfig)
   extends AsyncItemWriter {
@@ -91,11 +94,15 @@ class BulkWriter(container: CosmosAsyncContainer,
     )
 
   private val operationContext = initializeOperationContext()
+  private val cosmosPatchHelperOpt = writeConfig.itemWriteStrategy match {
+    case ItemWriteStrategy.ItemPatch => Some(new CosmosPatchHelper(diagnosticsConfig, writeConfig.patchConfigs.get))
+    case _ => None
+  }
 
   private def initializeOperationContext(): SparkTaskContext = {
     val taskContext = TaskContext.get
 
-    val diagnosticsContext: DiagnosticsContext = DiagnosticsContext(UUID.randomUUID().toString, "BulkWriter")
+    val diagnosticsContext: DiagnosticsContext = DiagnosticsContext(UUID.randomUUID(), "BulkWriter")
 
     if (taskContext != null) {
       val taskDiagnosticsContext = SparkTaskContext(diagnosticsContext.correlationActivityId,
@@ -228,7 +235,9 @@ class BulkWriter(container: CosmosAsyncContainer,
     scheduleWriteInternal(partitionKeyValue, objectNode, operationContext)
   }
 
-  private def scheduleWriteInternal(partitionKeyValue: PartitionKey, objectNode: ObjectNode, operationContext: OperationContext): Unit = {
+  private def scheduleWriteInternal(partitionKeyValue: PartitionKey,
+                                    objectNode: ObjectNode,
+                                    operationContext: OperationContext): Unit = {
     activeTasks.incrementAndGet()
     if (operationContext.attemptNumber > 1) {
       log.logInfo(s"bulk scheduleWrite attemptCnt: ${operationContext.attemptNumber}, " +
@@ -238,6 +247,17 @@ class BulkWriter(container: CosmosAsyncContainer,
     val bulkItemOperation = writeConfig.itemWriteStrategy match {
       case ItemWriteStrategy.ItemOverwrite =>
         CosmosBulkOperations.getUpsertItemOperation(objectNode, partitionKeyValue, operationContext)
+      case ItemWriteStrategy.ItemOverwriteIfNotModified =>
+        operationContext.eTag match {
+          case Some(eTag) =>
+            CosmosBulkOperations.getReplaceItemOperation(
+              operationContext.itemId,
+              objectNode,
+              partitionKeyValue,
+              new CosmosBulkItemRequestOptions().setIfMatchETag(eTag),
+              operationContext)
+          case _ =>  CosmosBulkOperations.getCreateItemOperation(objectNode, partitionKeyValue, operationContext)
+        }
       case ItemWriteStrategy.ItemAppend =>
         CosmosBulkOperations.getCreateItemOperation(objectNode, partitionKeyValue, operationContext)
       case ItemWriteStrategy.ItemDelete =>
@@ -251,6 +271,7 @@ class BulkWriter(container: CosmosAsyncContainer,
             case _ =>  new CosmosBulkItemRequestOptions()
           },
           operationContext)
+      case ItemWriteStrategy.ItemPatch => getPatchItemOperation(operationContext.itemId, partitionKeyValue, partitionKeyDefinition, objectNode, operationContext)
       case _ =>
         throw new RuntimeException(s"${writeConfig.itemWriteStrategy} not supported")
     }
@@ -259,6 +280,27 @@ class BulkWriter(container: CosmosAsyncContainer,
 
     // For FAIL_NON_SERIALIZED, will keep retry, while for other errors, use the default behavior
     bulkInputEmitter.emitNext(bulkItemOperation, emitFailureHandler)
+  }
+
+  private[this] def getPatchItemOperation(itemId: String,
+                                          partitionKey: PartitionKey,
+                                          partitionKeyDefinition: PartitionKeyDefinition,
+                                          objectNode: ObjectNode,
+                                          context: OperationContext): CosmosItemOperation = {
+
+    assert(writeConfig.patchConfigs.isDefined)
+    assert(cosmosPatchHelperOpt.isDefined)
+    val patchConfigs = writeConfig.patchConfigs.get
+    val cosmosPatchHelper = cosmosPatchHelperOpt.get
+
+    val cosmosPatchOperations = cosmosPatchHelper.createCosmosPatchOperations(itemId, partitionKeyDefinition, objectNode)
+
+    val requestOptions = new CosmosBulkPatchItemRequestOptions();
+    if (patchConfigs.filter.isDefined && !StringUtils.isEmpty(patchConfigs.filter.get)) {
+      requestOptions.setFilterPredicate(patchConfigs.filter.get)
+    }
+
+    CosmosBulkOperations.getPatchItemOperation(itemId, partitionKey, cosmosPatchOperations, requestOptions, context)
   }
 
   //scalastyle:off method.length
@@ -443,7 +485,7 @@ class BulkWriter(container: CosmosAsyncContainer,
           // once we do error handling we should think how to cover the scenario.
           lock.lock()
           try {
-            var numberOfIntervalsWithIdenticalActiveOperationSnapshots = new AtomicLong(0)
+            val numberOfIntervalsWithIdenticalActiveOperationSnapshots = new AtomicLong(0)
             var activeTasksSnapshot = activeTasks.get()
             while (activeTasksSnapshot > 0 && errorCaptureFirstException.get == null) {
               log.logInfo(
@@ -538,6 +580,10 @@ class BulkWriter(container: CosmosAsyncContainer,
       case ItemWriteStrategy.ItemDelete => Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode)
       case ItemWriteStrategy.ItemDeleteIfNotModified => Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode) ||
         Exceptions.isPreconditionFailedException(statusCode)
+      case ItemWriteStrategy.ItemOverwriteIfNotModified =>
+        Exceptions.isResourceExistsException(statusCode) ||
+        Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode) ||
+        Exceptions.isPreconditionFailedException(statusCode)
       case _ => false
     }
 
@@ -565,15 +611,6 @@ class BulkWriter(container: CosmosAsyncContainer,
     val idField = objectNode.get(CosmosConstants.Properties.Id)
     assume(idField != null && idField.isTextual)
     idField.textValue()
-  }
-
-  private def getETag(objectNode: ObjectNode) = {
-    val eTagField = objectNode.get(CosmosConstants.Properties.ETag)
-    if (eTagField != null && eTagField.isTextual) {
-      Some(eTagField.textValue())
-    } else {
-      None
-    }
   }
 
   /**

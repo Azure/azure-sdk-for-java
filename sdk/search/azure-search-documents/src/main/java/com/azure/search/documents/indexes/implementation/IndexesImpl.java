@@ -157,7 +157,8 @@ public final class IndexesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a search index definition, which describes the fields and search behavior of an index.
+     * @return represents a search index definition, which describes the fields and search behavior of an index along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndex>> createWithResponseAsync(
@@ -182,7 +183,8 @@ public final class IndexesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Indexes request.
+     * @return response from a List Indexes request along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SearchIndex>> listSinglePageAsync(
@@ -229,7 +231,8 @@ public final class IndexesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a search index definition, which describes the fields and search behavior of an index.
+     * @return represents a search index definition, which describes the fields and search behavior of an index along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndex>> createOrUpdateWithResponseAsync(
@@ -276,7 +279,7 @@ public final class IndexesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
@@ -307,7 +310,8 @@ public final class IndexesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a search index definition, which describes the fields and search behavior of an index.
+     * @return represents a search index definition, which describes the fields and search behavior of an index along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndex>> getWithResponseAsync(
@@ -331,7 +335,7 @@ public final class IndexesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return statistics for a given index.
+     * @return statistics for a given index along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexStatistics>> getStatisticsWithResponseAsync(
@@ -356,7 +360,8 @@ public final class IndexesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of testing an analyzer on text.
+     * @return the result of testing an analyzer on text along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeResult>> analyzeWithResponseAsync(

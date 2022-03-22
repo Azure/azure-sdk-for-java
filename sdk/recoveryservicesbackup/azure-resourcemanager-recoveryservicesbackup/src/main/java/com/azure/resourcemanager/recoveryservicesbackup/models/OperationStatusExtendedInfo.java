@@ -23,7 +23,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "OperationStatusJobsExtendedInfo", value = OperationStatusJobsExtendedInfo.class),
     @JsonSubTypes.Type(
         name = "OperationStatusProvisionILRExtendedInfo",
-        value = OperationStatusProvisionIlrExtendedInfo.class)
+        value = OperationStatusProvisionIlrExtendedInfo.class),
+    @JsonSubTypes.Type(
+        name = "OperationStatusValidateOperationExtendedInfo",
+        value = OperationStatusValidateOperationExtendedInfo.class)
 })
 @Immutable
 public class OperationStatusExtendedInfo {

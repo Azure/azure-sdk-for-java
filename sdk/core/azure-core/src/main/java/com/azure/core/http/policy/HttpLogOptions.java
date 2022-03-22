@@ -8,6 +8,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -26,16 +27,20 @@ public class HttpLogOptions {
     private HttpRequestLogger requestLogger;
     private HttpResponseLogger responseLogger;
 
-    private final ClientLogger logger = new ClientLogger(HttpLogOptions.class);
+    // HttpLogOptions is a commonly used model, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(HttpLogOptions.class);
 
     private static final int MAX_APPLICATION_ID_LENGTH = 24;
     private static final String INVALID_APPLICATION_ID_LENGTH = "'applicationId' length cannot be greater than "
         + MAX_APPLICATION_ID_LENGTH;
     private static final String INVALID_APPLICATION_ID_SPACE = "'applicationId' cannot contain spaces.";
-    private static final List<String> DEFAULT_HEADERS_WHITELIST = Arrays.asList(
+    private static final List<String> DEFAULT_HEADERS_ALLOWLIST = Arrays.asList(
+        "x-ms-request-id",
         "x-ms-client-request-id",
         "x-ms-return-client-request-id",
         "traceparent",
+        "MS-CV",
+
         "Accept",
         "Cache-Control",
         "Connection",
@@ -54,7 +59,12 @@ public class HttpLogOptions {
         "Retry-After",
         "Server",
         "Transfer-Encoding",
-        "User-Agent"
+        "User-Agent",
+        "WWW-Authenticate"
+    );
+
+    private static final List<String> DEFAULT_QUERY_PARAMS_ALLOWLIST = Collections.singletonList(
+        "api-version"
     );
 
     /**
@@ -62,8 +72,8 @@ public class HttpLogOptions {
      */
     public HttpLogOptions() {
         logLevel = HttpLogDetailLevel.ENVIRONMENT_HTTP_LOG_DETAIL_LEVEL;
-        allowedHeaderNames = new HashSet<>(DEFAULT_HEADERS_WHITELIST);
-        allowedQueryParamNames = new HashSet<>();
+        allowedHeaderNames = new HashSet<>(DEFAULT_HEADERS_ALLOWLIST);
+        allowedQueryParamNames = new HashSet<>(DEFAULT_QUERY_PARAMS_ALLOWLIST);
         applicationId = null;
     }
 
@@ -188,9 +198,9 @@ public class HttpLogOptions {
     public HttpLogOptions setApplicationId(final String applicationId) {
         if (!CoreUtils.isNullOrEmpty(applicationId)) {
             if (applicationId.length() > MAX_APPLICATION_ID_LENGTH) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_LENGTH));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_LENGTH));
             } else if (applicationId.contains(" ")) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_SPACE));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_SPACE));
             }
         }
 
