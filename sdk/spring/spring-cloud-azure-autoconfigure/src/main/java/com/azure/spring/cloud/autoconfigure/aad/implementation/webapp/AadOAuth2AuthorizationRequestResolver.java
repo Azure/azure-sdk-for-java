@@ -34,10 +34,25 @@ public class AadOAuth2AuthorizationRequestResolver implements OAuth2Authorizatio
      */
     public AadOAuth2AuthorizationRequestResolver(ClientRegistrationRepository clientRegistrationRepository,
                                                  AadAuthenticationProperties properties) {
-        this.defaultResolver = new DefaultOAuth2AuthorizationRequestResolver(
+        this(
+            OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI,
             clientRegistrationRepository,
-            OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI
-        );
+            properties);
+    }
+
+    /**
+     * Creates a new instance of {@link AadOAuth2AuthorizationRequestResolver}.
+     *
+     * @param authorizationRequestBaseUri the client registration repository
+     * @param clientRegistrationRepository the client registration repository
+     * @param properties the AAD authentication properties
+     */
+    public AadOAuth2AuthorizationRequestResolver(
+            final String authorizationRequestBaseUri,
+            ClientRegistrationRepository clientRegistrationRepository,
+            AadAuthenticationProperties properties) {
+        this.defaultResolver = new DefaultOAuth2AuthorizationRequestResolver(
+                clientRegistrationRepository, authorizationRequestBaseUri);
         this.properties = properties;
     }
 
