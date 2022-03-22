@@ -28,6 +28,12 @@ public final class PageList {
     @JsonProperty("ClearRange")
     private List<ClearRange> clearRange = new ArrayList<>();
 
+    /*
+     * The NextMarker property.
+     */
+    @JsonProperty(value = "NextMarker")
+    private String nextMarker;
+
     /**
      * Get the pageRange property: The PageRange property.
      *
@@ -65,6 +71,26 @@ public final class PageList {
      */
     public PageList setClearRange(List<ClearRange> clearRange) {
         this.clearRange = clearRange;
+        return this;
+    }
+
+    /**
+     * Get the nextMarker property: The NextMarker property.
+     *
+     * @return the nextMarker value.
+     */
+    public String getNextMarker() {
+        return this.nextMarker;
+    }
+
+    /**
+     * Set the nextMarker property: The NextMarker property.
+     *
+     * @param nextMarker the nextMarker value to set.
+     * @return the PageList object itself.
+     */
+    public PageList setNextMarker(String nextMarker) {
+        this.nextMarker = nextMarker;
         return this;
     }
 }

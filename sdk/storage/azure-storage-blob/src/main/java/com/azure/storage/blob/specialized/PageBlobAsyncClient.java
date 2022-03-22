@@ -792,13 +792,14 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.getPageBlobs().getPageRangesWithResponseAsync(containerName, blobName,
+        return this.azureBlobStorage.getPageBlobs().getPageRangesSinglePageAsync(containerName, blobName,
                 getSnapshotId(), null, blobRange.toHeaderValue(), requestConditions.getLeaseId(),
                 requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
                 requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
-                requestConditions.getTagsConditions(), null,
+                requestConditions.getTagsConditions(), null, null, null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(response -> new SimpleResponse<>(response, response.getValue()));
+            .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), response.getValue().get(0)));
     }
 
     /**
@@ -974,13 +975,14 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         }
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.getPageBlobs().getPageRangesDiffWithResponseAsync(containerName, blobName,
+        return this.azureBlobStorage.getPageBlobs().getPageRangesDiffSinglePageAsync(containerName, blobName,
                 getSnapshotId(), null, prevSnapshot, prevSnapshotUrl, blobRange.toHeaderValue(),
                 requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
                 requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-                requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
+                requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, null, null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(response -> new SimpleResponse<>(response, response.getValue()));
+            .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), response.getValue().get(0)));
     }
 
     /**

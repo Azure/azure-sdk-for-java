@@ -573,4 +573,50 @@ directive:
     $["x-ms-enum"].modelAsString = true;
 ```
 
+### Define PageListCollection
+```yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+      $.PageListCollection = {
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/PageList"
+                }
+              },
+              "nextLink": {
+                "x-ms-client-name": "NextMarker"
+                "type": "string"
+              }
+            }
+          }
+    
+```
+### PageList schema update
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=pagelist"]
+  transform: >
+    delete $.get.responses["200"].schema;
+    $.get.responses["200"].schema = {
+      "$ref": "#/definitions/PageListCollection"
+    };
+```
+### PageList diff schema update
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=pagelist&diff"]
+  transform: >
+    delete $.get.responses["200"].schema;
+    $.get.responses["200"].schema = {
+      "$ref": "#/definitions/PageListCollection"
+    };
+```
+
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob%2Fswagger%2FREADME.png)
