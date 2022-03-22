@@ -21,7 +21,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
 
 /**
- * {@link EnableAutoConfiguration Auto-configuration} for Service Bus resource manager.
+ * {@link EnableAutoConfiguration Auto-configuration} for Service Bus resource manager support.
+ *
+ * @since 4.0.0
  */
 @ConditionalOnProperty(prefix = AzureServiceBusProperties.PREFIX, value = "enabled", havingValue = "true", matchIfMissing = true)
 @ConditionalOnBean(AzureResourceManager.class)

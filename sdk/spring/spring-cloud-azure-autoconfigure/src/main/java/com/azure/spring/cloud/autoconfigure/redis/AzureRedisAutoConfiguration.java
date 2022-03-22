@@ -8,6 +8,7 @@ import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.spring.cloud.autoconfigure.implementation.redis.AzureRedisProperties;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
@@ -22,8 +23,9 @@ import org.springframework.data.redis.core.RedisOperations;
 import java.util.Arrays;
 
 /**
- * An autoconfiguration for Spring cache using Azure redis cache
+ * {@link EnableAutoConfiguration Auto-configuration} for Spring Cache using Azure Redis Cache support.
  *
+ * @since 4.0.0
  */
 @Configuration(proxyBeanMethods = false)
 @AutoConfigureAfter(AzureResourceManagerAutoConfiguration.class)

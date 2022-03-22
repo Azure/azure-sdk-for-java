@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.context;
 
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Import;
@@ -15,8 +16,9 @@ import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.AZU
 import static org.springframework.beans.factory.support.BeanDefinitionBuilder.genericBeanDefinition;
 
 /**
- * Automatic configuration class of {@link AzureGlobalProperties} for global configuration of Azure Spring
- * libraries.
+ * {@link EnableAutoConfiguration Auto-configuration} for {@link AzureGlobalProperties}.
+ *
+ * @since 4.0.0
  */
 @Import(AzureGlobalPropertiesAutoConfiguration.Registrar.class)
 public class AzureGlobalPropertiesAutoConfiguration {

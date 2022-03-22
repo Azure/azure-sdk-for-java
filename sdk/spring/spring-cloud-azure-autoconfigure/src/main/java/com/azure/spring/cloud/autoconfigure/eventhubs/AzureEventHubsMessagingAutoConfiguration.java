@@ -10,20 +10,21 @@ import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionSt
 import com.azure.spring.cloud.core.service.AzureServiceType;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
+import com.azure.spring.messaging.eventhubs.core.DefaultEventHubsNamespaceProcessorFactory;
+import com.azure.spring.messaging.eventhubs.core.DefaultEventHubsNamespaceProducerFactory;
 import com.azure.spring.messaging.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.messaging.eventhubs.core.EventHubsProducerFactory;
 import com.azure.spring.messaging.eventhubs.core.EventHubsTemplate;
 import com.azure.spring.messaging.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.eventhubs.core.properties.ProcessorProperties;
 import com.azure.spring.messaging.eventhubs.core.properties.ProducerProperties;
-import com.azure.spring.messaging.eventhubs.core.DefaultEventHubsNamespaceProcessorFactory;
-import com.azure.spring.messaging.eventhubs.core.DefaultEventHubsNamespaceProducerFactory;
 import com.azure.spring.messaging.eventhubs.support.converter.EventHubsMessageConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -35,7 +36,9 @@ import org.springframework.context.annotation.Import;
 import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils.copyAzureCommonProperties;
 
 /**
- * An auto-configuration for Event Hub, which provides {@link EventHubsTemplate} and {@link EventHubsProcessorFactory}.
+ * {@link EnableAutoConfiguration Auto-configuration} for Spring Messaging Azure Event Hubs support.
+ *
+ * @since 4.0.0
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(EventHubsTemplate.class)

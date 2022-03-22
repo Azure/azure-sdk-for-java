@@ -7,6 +7,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.spring.cloud.core.implementation.trace.AzureHttpClientBuilderFactoryBeanPostProcessor;
 import com.azure.spring.cloud.trace.sleuth.SleuthHttpPolicy;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -16,7 +17,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Role;
 
 /**
- * Auto-configuration for an Azure SDK Sleuth {@link Tracer}.
+ * {@link EnableAutoConfiguration Auto-configuration} for Spring Cloud Azure Sleuth support.
+ *
+ * @since 4.0.0
  */
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @Configuration(proxyBeanMethods = false)

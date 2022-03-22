@@ -12,6 +12,7 @@ import com.azure.spring.messaging.storage.queue.implementation.factory.DefaultSt
 import com.azure.spring.messaging.storage.queue.support.converter.StorageQueueMessageConverter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -22,7 +23,9 @@ import org.springframework.context.annotation.Configuration;
 import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils.copyAzureCommonProperties;
 
 /**
- * Auto-configuration class for Azure Storage Queue.
+ * {@link EnableAutoConfiguration Auto-configuration} for Spring Messaging Azure Storage Queue support.
+ *
+ * @since 4.0.0
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(StorageQueueClientFactory.class)

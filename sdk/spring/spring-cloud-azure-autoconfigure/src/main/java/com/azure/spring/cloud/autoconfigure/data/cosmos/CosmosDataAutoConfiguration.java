@@ -9,13 +9,16 @@ import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Auto Configure Cosmos properties and connection policy.
+ *  {@link EnableAutoConfiguration Auto-configuration} for Spring Data Cosmos support.
+ *
+ *  @since 4.0.0
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass({ CosmosTemplate.class })
