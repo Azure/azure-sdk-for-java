@@ -5,13 +5,14 @@ package com.azure.spring.cloud.autoconfigure.eventhubs.kafka;
 
 import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureEventHubsResourceManagerAutoConfiguration;
+import com.azure.spring.cloud.core.implementation.connectionstring.EventHubsConnectionString;
 import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
 import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
-import com.azure.spring.cloud.core.implementation.connectionstring.EventHubsConnectionString;
 import com.azure.spring.cloud.core.service.AzureServiceType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -28,8 +29,9 @@ import java.util.Collections;
 
 
 /**
- * An auto-configuration for Azure Event Hubs Kafka, which provides {@link KafkaProperties}
+ * {@link EnableAutoConfiguration Auto-configuration} for Azure Event Hubs Kafka support.
  *
+ * @since 4.0.0
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(KafkaTemplate.class)

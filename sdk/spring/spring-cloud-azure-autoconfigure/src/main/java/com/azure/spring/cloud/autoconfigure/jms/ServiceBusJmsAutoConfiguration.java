@@ -13,6 +13,7 @@ import org.apache.qpid.jms.JmsConnectionFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -32,7 +33,9 @@ import java.util.Map;
 import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS;
 
 /**
- * An auto-configuration for Service Bus JMS.
+ * {@link EnableAutoConfiguration Auto-configuration} for Azure Service Bus JMS support.
+ *
+ * @since 4.0.0
  */
 @Configuration(proxyBeanMethods = false)
 @AutoConfigureBefore(JmsAutoConfiguration.class)

@@ -7,10 +7,10 @@ import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.queue.properties.AzureStorageQueueProperties;
+import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
 import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
-import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.core.service.AzureServiceType;
 import com.azure.spring.cloud.service.implementation.storage.queue.QueueServiceClientBuilderFactory;
 import com.azure.storage.queue.QueueAsyncClient;
@@ -19,6 +19,7 @@ import com.azure.storage.queue.QueueServiceAsyncClient;
 import com.azure.storage.queue.QueueServiceClient;
 import com.azure.storage.queue.QueueServiceClientBuilder;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -26,7 +27,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
 /**
- * Auto-configuration for a {@link QueueServiceClientBuilder} and queue service clients.
+ * {@link EnableAutoConfiguration Auto-configuration} for Azure Storage Queue support.
+ *
+ * @since 4.0.0
  */
 @ConditionalOnClass(QueueServiceClientBuilder.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.storage.queue.enabled", havingValue = "true", matchIfMissing = true)

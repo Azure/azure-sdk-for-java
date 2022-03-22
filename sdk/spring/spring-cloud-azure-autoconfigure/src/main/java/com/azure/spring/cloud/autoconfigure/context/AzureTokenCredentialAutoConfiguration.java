@@ -26,6 +26,7 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,7 +37,9 @@ import org.springframework.util.StringUtils;
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
 
 /**
- * Auto-configuration for Azure Spring default token credential.
+ * {@link EnableAutoConfiguration Auto-configuration} for Spring Cloud Azure default {@link TokenCredential}.
+ *
+ * @since 4.0.0
  */
 @Configuration(proxyBeanMethods = false)
 public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigurationBase {

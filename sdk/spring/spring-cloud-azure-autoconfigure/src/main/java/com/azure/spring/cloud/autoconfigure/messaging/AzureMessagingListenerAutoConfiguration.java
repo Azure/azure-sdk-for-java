@@ -6,14 +6,14 @@ package com.azure.spring.cloud.autoconfigure.messaging;
 import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsMessagingAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusMessagingAutoConfiguration;
 import com.azure.spring.messaging.eventhubs.core.EventHubsProcessorFactory;
-import com.azure.spring.messaging.eventhubs.implementation.core.config.EventHubsMessageListenerContainerFactory;
 import com.azure.spring.messaging.eventhubs.core.listener.EventHubsMessageListenerContainer;
+import com.azure.spring.messaging.eventhubs.implementation.core.config.EventHubsMessageListenerContainerFactory;
 import com.azure.spring.messaging.implementation.annotation.EnableAzureMessaging;
-import com.azure.spring.messaging.listener.MessageListenerContainer;
 import com.azure.spring.messaging.implementation.listener.MessageListenerContainerFactory;
+import com.azure.spring.messaging.listener.MessageListenerContainer;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
-import com.azure.spring.messaging.servicebus.implementation.core.config.ServiceBusMessageListenerContainerFactory;
 import com.azure.spring.messaging.servicebus.core.listener.ServiceBusMessageListenerContainer;
+import com.azure.spring.messaging.servicebus.implementation.core.config.ServiceBusMessageListenerContainerFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
@@ -25,9 +25,9 @@ import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * {@link EnableAutoConfiguration Auto-configuration} for AzureMessagingListener.
+ * {@link EnableAutoConfiguration Auto-configuration} for annotation-driven messaging.
  *
- * @since 4.0
+ * @since 4.0.0
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(EnableAzureMessaging.class)

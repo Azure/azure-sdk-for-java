@@ -18,8 +18,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
 
 /**
- * {@link EnableAutoConfiguration Auto-configuration} for Storage Queue resource manager.
+ * {@link EnableAutoConfiguration Auto-configuration} for Storage Queue resource manager support.
  *
+ * @since 4.0.0
  */
 @ConditionalOnProperty(prefix = AzureStorageQueueProperties.PREFIX, value = "enabled", matchIfMissing = true)
 @ConditionalOnBean(AzureResourceManager.class)
