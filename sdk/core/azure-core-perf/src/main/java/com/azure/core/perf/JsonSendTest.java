@@ -19,7 +19,7 @@ public class JsonSendTest extends RestProxyTestBase<CorePerfStressOptions> {
 
     @Override
     public void run() {
-        throw new UnsupportedOperationException();
+        runAsync().block();
     }
 
     @Override
