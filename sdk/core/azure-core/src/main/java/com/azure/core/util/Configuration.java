@@ -186,6 +186,7 @@ public class Configuration implements Cloneable {
     public static final Configuration NONE = new NoopConfiguration();
     private static final String[] EMPTY_ARRAY = new String[0];
     private static final ClientLogger LOGGER = new ClientLogger(Configuration.class);
+    private static final Function<String, String> REDACT_VALUE_SANITIZER = (value) -> "redacted";
 
     private final EnvironmentConfiguration environmentConfiguration;
     private final Map<String, String> configurations;
@@ -251,7 +252,7 @@ public class Configuration implements Cloneable {
      * @return Value of the configuration if found, otherwise null.
      */
     public String get(String name) {
-        String value = getLocalProperty(name, EMPTY_ARRAY, false);
+        String value = getLocalProperty(name, EMPTY_ARRAY, REDACT_VALUE_SANITIZER);
         if (value != null) {
             return value;
         }
@@ -285,7 +286,7 @@ public class Configuration implements Cloneable {
      * @return The converted configuration if found, otherwise the default value is returned.
      */
     public <T> T get(String name, T defaultValue) {
-        String value = getLocalProperty(name, EMPTY_ARRAY, false);
+        String value = getLocalProperty(name, EMPTY_ARRAY, REDACT_VALUE_SANITIZER);
         if (value != null) {
             return ConfigurationUtils.convertToPrimitiveOrDefault(value, defaultValue);
         }
@@ -307,7 +308,7 @@ public class Configuration implements Cloneable {
      * @return The converted configuration if found, otherwise null.
      */
     public <T> T get(String name, Function<String, T> converter) {
-        String value = getLocalProperty(name, EMPTY_ARRAY, false);
+        String value = getLocalProperty(name, EMPTY_ARRAY, REDACT_VALUE_SANITIZER);
         if (value != null) {
             return converter.apply(value);
         }
@@ -359,7 +360,7 @@ public class Configuration implements Cloneable {
      * @return True if the configuration exists, otherwise false.
      */
     public boolean contains(String name) {
-        String value = getLocalProperty(name, EMPTY_ARRAY, false);
+        String value = getLocalProperty(name, EMPTY_ARRAY, REDACT_VALUE_SANITIZER);
         return value != null ? true : environmentConfiguration.contains(name);
     }
 
@@ -434,12 +435,12 @@ public class Configuration implements Cloneable {
         } catch (RuntimeException ex) {
             throw LOGGER.atError()
                 .addKeyValue("name", property.getName())
-                .addKeyValue("value", property.canLogValue() ? value : "redacted")
+                .addKeyValue("value", property.getValueSanitizer().apply(value))
                 .log(ex);
         }
     }
 
-    private String getLocalProperty(String name, String[] aliases, boolean canLogValue) {
+    private String getLocalProperty(String name, String[] aliases, Function<String, String> valueSanitizer) {
         if (this.isEmpty) {
             return null;
         }
@@ -449,7 +450,7 @@ public class Configuration implements Cloneable {
             LOGGER.atVerbose()
                 .addKeyValue("name", name)
                 .addKeyValue("path", path)
-                .addKeyValue("value", canLogValue ? value : "redacted")
+                .addKeyValue("value", valueSanitizer.apply(value))
                 .log("Got property value by name.");
             return value;
         }
@@ -461,7 +462,7 @@ public class Configuration implements Cloneable {
                     .addKeyValue("name", name)
                     .addKeyValue("path", path)
                     .addKeyValue("alias", alias)
-                    .addKeyValue("value", canLogValue ? value : "redacted")
+                    .addKeyValue("value", valueSanitizer.apply(value))
                     .log("Got property value by alias.");
                 return value;
             }
@@ -471,13 +472,13 @@ public class Configuration implements Cloneable {
     }
 
     private <T> String getWithFallback(ConfigurationProperty<T> property) {
-        String value = getLocalProperty(property.getName(), property.getAliases(), property.canLogValue());
+        String value = getLocalProperty(property.getName(), property.getAliases(), property.getValueSanitizer());
         if (value != null) {
             return value;
         }
 
         if (property.isShared() && sharedConfiguration != null) {
-            value = sharedConfiguration.getLocalProperty(property.getName(), property.getAliases(), property.canLogValue());
+            value = sharedConfiguration.getLocalProperty(property.getName(), property.getAliases(), property.getValueSanitizer());
             if (value != null) {
                 return value;
             }
@@ -489,7 +490,7 @@ public class Configuration implements Cloneable {
                 LOGGER.atVerbose()
                     .addKeyValue("name", property.getName())
                     .addKeyValue("envVar", name)
-                    .addKeyValue("value", property.canLogValue() ? value : "redacted")
+                    .addKeyValue("value", property.getValueSanitizer().apply(value))
                     .log("Got property from environment.");
                 return value;
             }

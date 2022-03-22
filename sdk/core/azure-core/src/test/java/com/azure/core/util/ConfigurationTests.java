@@ -369,7 +369,7 @@ public class ConfigurationTests {
             Arguments.of(ConfigurationProperty.integerPropertyBuilder("foo").defaultValue(37).build(), "42", 42, 37),
             Arguments.of(ConfigurationProperty.durationPropertyBuilder("foo").defaultValue(Duration.ofMillis(1)).build(), "2", Duration.ofMillis(2), Duration.ofMillis(1)),
             Arguments.of(ConfigurationProperty.booleanPropertyBuilder("foo").defaultValue(false).build(), "true", true, false),
-            Arguments.of(new ConfigurationProperty<Double>("foo", 0.1, false, v -> Double.parseDouble(v), false, null, null, false), "0.2", 0.2, 0.1)
+            Arguments.of(new ConfigurationProperty<Double>("foo", 0.1, false, v -> Double.parseDouble(v), false, null, null, null), "0.2", 0.2, 0.1)
         );
     }
 
