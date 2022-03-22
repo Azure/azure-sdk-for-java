@@ -35,7 +35,8 @@ import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUti
 
 
 /**
- * An auto-configuration for Service Bus Queue.
+ * An auto-configuration for Service Bus, which provides {@link ServiceBusTemplate} and
+ * {@link ServiceBusProcessorFactory}.
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(ServiceBusTemplate.class)

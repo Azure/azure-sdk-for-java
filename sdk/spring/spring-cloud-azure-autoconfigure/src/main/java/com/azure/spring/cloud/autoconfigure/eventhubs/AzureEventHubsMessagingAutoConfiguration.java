@@ -13,7 +13,6 @@ import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.messaging.eventhubs.core.EventHubsProducerFactory;
 import com.azure.spring.messaging.eventhubs.core.EventHubsTemplate;
-import com.azure.spring.messaging.eventhubs.core.listener.EventHubsMessageListenerContainer;
 import com.azure.spring.messaging.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.eventhubs.core.properties.ProcessorProperties;
 import com.azure.spring.messaging.eventhubs.core.properties.ProducerProperties;
@@ -36,8 +35,7 @@ import org.springframework.context.annotation.Import;
 import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils.copyAzureCommonProperties;
 
 /**
- * An auto-configuration for Event Hub, which provides {@link EventHubsTemplate} and {@link
- * EventHubsMessageListenerContainer}.
+ * An auto-configuration for Event Hub, which provides {@link EventHubsTemplate} and {@link EventHubsProcessorFactory}.
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(EventHubsTemplate.class)
