@@ -17,8 +17,8 @@ import com.azure.spring.messaging.eventhubs.core.listener.EventHubsMessageListen
 import com.azure.spring.messaging.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.eventhubs.core.properties.ProcessorProperties;
 import com.azure.spring.messaging.eventhubs.core.properties.ProducerProperties;
-import com.azure.spring.messaging.eventhubs.implementation.core.DefaultEventHubsNamespaceProcessorFactory;
-import com.azure.spring.messaging.eventhubs.implementation.core.DefaultEventHubsNamespaceProducerFactory;
+import com.azure.spring.messaging.eventhubs.core.DefaultEventHubsNamespaceProcessorFactory;
+import com.azure.spring.messaging.eventhubs.core.DefaultEventHubsNamespaceProducerFactory;
 import com.azure.spring.messaging.eventhubs.support.converter.EventHubsMessageConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

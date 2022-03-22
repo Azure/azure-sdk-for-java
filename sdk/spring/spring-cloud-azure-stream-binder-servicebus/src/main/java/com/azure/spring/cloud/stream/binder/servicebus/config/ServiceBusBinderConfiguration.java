@@ -22,8 +22,8 @@ import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusCh
 import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProducerFactory;
 import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
-import com.azure.spring.messaging.servicebus.implementation.core.DefaultServiceBusNamespaceProcessorFactory;
-import com.azure.spring.messaging.servicebus.implementation.core.DefaultServiceBusNamespaceProducerFactory;
+import com.azure.spring.messaging.servicebus.core.DefaultServiceBusNamespaceProcessorFactory;
+import com.azure.spring.messaging.servicebus.core.DefaultServiceBusNamespaceProducerFactory;
 import com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -205,11 +205,11 @@ public class ServiceBusBinderConfiguration {
                 defaultFactory.setTokenCredentialResolver(tokenCredentialResolver);
                 processorClientBuilderCustomizers
                     .orderedStream()
-                    .map(c -> new DefaultServiceBusNamespaceProcessorFactory.ServiceBusProcessClientBuilderCustomizer(c, null))
+                    .map(c -> new DefaultServiceBusNamespaceProcessorFactory.ServiceBusProcessorClientBuilderCustomizer(c, null))
                     .forEach(defaultFactory::addBuilderCustomizer);
                 sessionProcessorClientBuilderCustomizers
                     .orderedStream()
-                    .map(c -> new DefaultServiceBusNamespaceProcessorFactory.ServiceBusProcessClientBuilderCustomizer(null, c))
+                    .map(c -> new DefaultServiceBusNamespaceProcessorFactory.ServiceBusProcessorClientBuilderCustomizer(null, c))
                     .forEach(defaultFactory::addBuilderCustomizer);
             }
 
