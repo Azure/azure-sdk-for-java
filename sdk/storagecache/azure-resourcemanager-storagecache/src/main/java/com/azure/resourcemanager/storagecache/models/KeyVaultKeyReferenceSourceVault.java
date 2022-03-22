@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a resource Id to source Key Vault. */
 @Fluent
 public final class KeyVaultKeyReferenceSourceVault {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultKeyReferenceSourceVault.class);
-
     /*
      * Resource Id.
      */
