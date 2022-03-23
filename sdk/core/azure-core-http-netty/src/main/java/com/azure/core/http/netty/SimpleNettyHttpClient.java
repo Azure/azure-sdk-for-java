@@ -102,6 +102,11 @@ public class SimpleNettyHttpClient implements HttpClient {
             nettyRequest.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.CLOSE);
             //nettyRequest.headers().set(HttpHeaders.Names.ACCEPT_ENCODING, HttpHeaders.Values.GZIP);
 
+            if (requestBuffer.readableBytes() > 0) {
+                // TODO (kasobol-msft) what about chunked?
+                nettyRequest.headers().set(HttpHeaderNames.CONTENT_LENGTH, requestBuffer.readableBytes());
+            }
+
             // Send the HTTP request.
             ch.attr(REQUEST_CONTEXT_KEY).set(
                 new SimpleRequestContext(request, responseFuture, new InMemoryBodyCollector()));
