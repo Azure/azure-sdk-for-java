@@ -150,7 +150,6 @@ function Fetch-Namespaces-From-Javadoc ($jarFilePath, $destination) {
 function Parse-Overview-Frame ($filePath, $destination) {
     $htmlBody = Get-Content $filePath
     $packages = [RegEx]::Matches($htmlBody, "<li><a.*?>(?<package>.*?)<\/a><\/li>")
-    
     $namespaces = $packages | ForEach-Object { $_.Groups["package"].Value }    
     Add-Content -Path $destination -Value $namespaces
     Get-Content $destination
