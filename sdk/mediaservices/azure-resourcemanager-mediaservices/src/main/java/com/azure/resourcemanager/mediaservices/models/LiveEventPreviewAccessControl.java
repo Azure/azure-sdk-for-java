@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The IP access control for the live event preview endpoint. */
 @Fluent
 public final class LiveEventPreviewAccessControl {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LiveEventPreviewAccessControl.class);
-
     /*
      * The IP access control properties.
      */

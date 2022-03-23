@@ -8,10 +8,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagecache.fluent.StorageTargetOperationsClient;
 import com.azure.resourcemanager.storagecache.models.StorageTargetOperations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class StorageTargetOperationsImpl implements StorageTargetOperations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageTargetOperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(StorageTargetOperationsImpl.class);
 
     private final StorageTargetOperationsClient innerClient;
 
@@ -46,6 +45,14 @@ public final class StorageTargetOperationsImpl implements StorageTargetOperation
 
     public void resume(String resourceGroupName, String cacheName, String storageTargetName, Context context) {
         this.serviceClient().resume(resourceGroupName, cacheName, storageTargetName, context);
+    }
+
+    public void invalidate(String resourceGroupName, String cacheName, String storageTargetName) {
+        this.serviceClient().invalidate(resourceGroupName, cacheName, storageTargetName);
+    }
+
+    public void invalidate(String resourceGroupName, String cacheName, String storageTargetName, Context context) {
+        this.serviceClient().invalidate(resourceGroupName, cacheName, storageTargetName, context);
     }
 
     private StorageTargetOperationsClient serviceClient() {
