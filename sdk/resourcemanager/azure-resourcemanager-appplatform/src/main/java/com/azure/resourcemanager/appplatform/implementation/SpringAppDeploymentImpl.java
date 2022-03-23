@@ -23,7 +23,6 @@ import com.azure.resourcemanager.appplatform.models.UploadedUserSourceInfo;
 import com.azure.resourcemanager.appplatform.models.UserSourceInfo;
 import com.azure.resourcemanager.appplatform.models.UserSourceType;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.storage.file.share.ShareFileAsyncClient;
 import com.azure.storage.file.share.ShareFileClientBuilder;
 import reactor.core.publisher.Mono;
@@ -32,6 +31,7 @@ import java.io.File;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Function;
 
 public class SpringAppDeploymentImpl
     extends ExternalChildResourceImpl<SpringAppDeployment, DeploymentResourceInner, SpringAppImpl, SpringApp>
@@ -376,7 +376,7 @@ public class SpringAppDeploymentImpl
     public SpringAppDeploymentImpl withActivation() {
         this.addPostRunDependent(
             context -> parent().update().withActiveDeployment(name()).applyAsync()
-                .map(app -> (Indexable) app)
+                .map(Function.identity())
         );
         return this;
     }

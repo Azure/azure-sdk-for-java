@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.appplatform.implementation;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.models.AppResourceInner;
 import com.azure.resourcemanager.appplatform.models.ActiveDeploymentCollection;
@@ -26,7 +27,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Optional;
 
 public class SpringAppImpl
@@ -219,9 +220,12 @@ public class SpringAppImpl
 
     @Override
     public SpringAppImpl withActiveDeployment(String name) {
+        if (CoreUtils.isNullOrEmpty(name)) {
+            return this;
+        }
         this.setActiveDeploymentTask =
             context -> manager().serviceClient().getApps()
-                .setActiveDeploymentsAsync(parent().resourceGroupName(), parent().name(), name(), new ActiveDeploymentCollection().withActiveDeploymentNames(List.of(name)))
+                .setActiveDeploymentsAsync(parent().resourceGroupName(), parent().name(), name(), new ActiveDeploymentCollection().withActiveDeploymentNames(Arrays.asList(name)))
                 .then(context.voidMono());
         return this;
     }
