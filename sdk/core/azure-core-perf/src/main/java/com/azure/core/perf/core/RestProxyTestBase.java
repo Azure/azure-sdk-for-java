@@ -10,6 +10,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.http.netty.SimpleNettyHttpClient;
 import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
@@ -120,6 +121,8 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
                     return new NettyAsyncHttpClientBuilder().build();
                 case OKHTTP:
                     return new OkHttpAsyncHttpClientBuilder().build();
+                case SIMPLE_NETTY:
+                    return new SimpleNettyHttpClient();
                 default:
                     throw new IllegalArgumentException("Unsupported http client " + options.getHttpClient());
             }

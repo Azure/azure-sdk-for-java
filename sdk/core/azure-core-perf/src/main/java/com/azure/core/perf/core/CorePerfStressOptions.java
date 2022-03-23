@@ -74,7 +74,7 @@ public class CorePerfStressOptions extends PerfStressOptions {
     }
 
     public enum HttpClientType {
-        NETTY, OKHTTP
+        NETTY, OKHTTP, SIMPLE_NETTY
     }
 
     public enum BackendType {
