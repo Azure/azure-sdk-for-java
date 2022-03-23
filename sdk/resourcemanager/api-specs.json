@@ -251,7 +251,7 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-locks-2020-05"
+    "args": "--tag=package-locks-2017-04"
   },
   "locks-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-resources",

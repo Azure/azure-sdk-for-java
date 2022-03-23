@@ -6,7 +6,7 @@
 
 #### Dependency Updates
 
-- Updated `api-version` of locks to `2020-05-01`.
+- Updated `api-version` of locks to `2017-04-01`.
 
 ## 2.13.0 (2022-03-11)
 

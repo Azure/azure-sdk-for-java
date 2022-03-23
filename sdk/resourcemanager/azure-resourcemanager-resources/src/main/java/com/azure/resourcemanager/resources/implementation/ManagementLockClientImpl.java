@@ -136,7 +136,7 @@ public final class ManagementLockClientImpl extends AzureServiceClient implement
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-05-01";
+        this.apiVersion = "2017-04-01";
         this.authorizationOperations = new AuthorizationOperationsClientImpl(this);
         this.managementLocks = new ManagementLocksClientImpl(this);
     }
