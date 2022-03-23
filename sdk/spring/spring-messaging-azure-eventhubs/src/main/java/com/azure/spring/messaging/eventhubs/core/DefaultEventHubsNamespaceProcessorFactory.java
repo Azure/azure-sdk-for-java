@@ -221,18 +221,18 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
 
     /**
      * Add a service client builder customizer to customize the clients created from this factory with event hub name of
-     * value {@code eventHubName} and consumer group of value {@code consumerGroup}.
-     * @param eventHubName the event hub name of the client.
+     * value {@code eventHub} and consumer group of value {@code consumerGroup}.
+     * @param eventHub the event hub name of the client.
      * @param consumerGroup the consumer group of the client.
      * @param customizer the provided customizer.
      */
-    public void addBuilderCustomizer(String eventHubName, String consumerGroup, AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder> customizer) {
+    public void addBuilderCustomizer(String eventHub, String consumerGroup, AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder> customizer) {
         if (customizer == null) {
             LOGGER.debug("The provided customizer is null, will ignore it.");
             return;
         }
         this.dedicatedCustomizers
-            .computeIfAbsent(getCustomizerKey(eventHubName, consumerGroup), key -> new ArrayList<>())
+            .computeIfAbsent(getCustomizerKey(eventHub, consumerGroup), key -> new ArrayList<>())
             .add(customizer);
     }
 
@@ -242,8 +242,8 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
                                  .forEach(customizer -> customizer.customize(builder));
     }
 
-    private String getCustomizerKey(String eventHubName, String consumerGroup) {
-        return eventHubName + "_" + consumerGroup;
+    private String getCustomizerKey(String eventHub, String consumerGroup) {
+        return eventHub + "_" + consumerGroup;
     }
 
 }

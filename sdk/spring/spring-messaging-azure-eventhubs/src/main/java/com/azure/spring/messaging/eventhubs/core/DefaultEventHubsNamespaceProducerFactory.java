@@ -143,17 +143,17 @@ public final class DefaultEventHubsNamespaceProducerFactory implements EventHubs
 
     /**
      * Add a service client builder customizer to customize the clients created from this factory with event hub name of
-     * value {@code eventHubName}.
-     * @param eventHubName the event hub name of the client.
+     * value {@code eventHub}.
+     * @param eventHub the event hub name of the client.
      * @param customizer the provided customizer.
      */
-    public void addBuilderCustomizer(String eventHubName, AzureServiceClientBuilderCustomizer<EventHubClientBuilder> customizer) {
+    public void addBuilderCustomizer(String eventHub, AzureServiceClientBuilderCustomizer<EventHubClientBuilder> customizer) {
         if (customizer == null) {
             LOGGER.debug("The provided customizer is null, will ignore it.");
             return;
         }
         this.dedicatedCustomizers
-            .computeIfAbsent(eventHubName, key -> new ArrayList<>())
+            .computeIfAbsent(eventHub, key -> new ArrayList<>())
             .add(customizer);
     }
 
