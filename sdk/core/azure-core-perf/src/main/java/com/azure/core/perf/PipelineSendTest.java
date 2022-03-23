@@ -17,12 +17,10 @@ import reactor.core.publisher.Mono;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
 public class PipelineSendTest extends RestProxyTestBase<CorePerfStressOptions> {
 
-    private static final AtomicInteger counter = new AtomicInteger();
     private final Supplier<BinaryData> binaryDataSupplier;
     private final URL targetURL;
     private final String contentLengthHeaderValue;
