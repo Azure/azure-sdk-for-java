@@ -8,6 +8,7 @@ import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.http.rest.Response;
@@ -21,33 +22,41 @@ import java.nio.ByteBuffer;
 @Host("{$host}")
 @ServiceInterface(name = "MyMockService")
 public interface MyRestProxyService {
-    @Get("RawData")
-    Mono<Response<Flux<ByteBuffer>>> getRawDataAsync(@HostParam("$host") String endpoint);
+    @Get("RawData/{id}")
+    Mono<Response<Flux<ByteBuffer>>> getRawDataAsync(@HostParam("$host") String endpoint,
+                                                     @PathParam("id") String id);
 
-    @Put("RawData")
+    @Put("RawData/{id}")
     Mono<Void> setRawData(@HostParam("$host") String endpoint,
+                          @PathParam("id") String id,
                           @BodyParam("application/octet-stream") Flux<ByteBuffer> body,
                           @HeaderParam("Content-Length") long length);
 
-    @Get("BinaryData")
-    Mono<Response<BinaryData>> getBinaryDataAsync(@HostParam("$host") String endpoint);
+    @Get("BinaryData/{id}")
+    Mono<Response<BinaryData>> getBinaryDataAsync(@HostParam("$host") String endpoint,
+                                                  @PathParam("id") String id);
 
-    @Put("BinaryData")
+    @Put("BinaryData/{id}")
     Mono<Void> setBinaryData(@HostParam("$host") String endpoint,
-                          @BodyParam("application/octet-stream") BinaryData body,
-                          @HeaderParam("Content-Length") long length);
+                             @PathParam("id") String id,
+                             @BodyParam("application/octet-stream") BinaryData body,
+                             @HeaderParam("Content-Length") long length);
 
-    @Get("UserDatabaseXml")
-    Mono<Response<UserDatabase>> getUserDatabaseXmlAsync(@HostParam("$host") String endpoint);
+    @Get("UserDatabaseXml/{id}")
+    Mono<Response<UserDatabase>> getUserDatabaseXmlAsync(@HostParam("$host") String endpoint,
+                                                         @PathParam("id") String id);
 
-    @Put("UserDatabaseXml")
+    @Put("UserDatabaseXml/{id}")
     Mono<Void> setUserDatabaseXml(@HostParam("$host") String endpoint,
+                                  @PathParam("id") String id,
                                   @BodyParam("application/xml") UserDatabase userDatabase);
 
-    @Get("UserDatabaseJson")
-    Mono<Response<UserDatabase>> getUserDatabaseJsonAsync(@HostParam("$host") String endpoint);
+    @Get("UserDatabaseJson/{id}")
+    Mono<Response<UserDatabase>> getUserDatabaseJsonAsync(@HostParam("$host") String endpoint,
+                                                          @PathParam("id") String id);
 
-    @Put("UserDatabaseJson")
+    @Put("UserDatabaseJson/{id}")
     Mono<Void> setUserDatabaseJson(@HostParam("$host") String endpoint,
+                                   @PathParam("id") String id,
                                    @BodyParam("application/json") UserDatabase userDatabase);
 }

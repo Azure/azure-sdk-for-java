@@ -30,7 +30,7 @@ public class ByteBufferSendTest extends RestProxyTestBase<CorePerfStressOptions>
 
     @Override
     public Mono<Void> runAsync() {
-        return service.setRawData(endpoint, dataToSend, length)
+        return service.setRawData(endpoint, id, dataToSend, length)
             .then();
     }
 }

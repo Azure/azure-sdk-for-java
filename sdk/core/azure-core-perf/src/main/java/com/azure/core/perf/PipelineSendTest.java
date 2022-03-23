@@ -36,7 +36,7 @@ public class PipelineSendTest extends RestProxyTestBase<CorePerfStressOptions> {
             String path = urlBuilder.getPath();
             path = path == null ? "" : path;
             targetURL = urlBuilder
-                .setPath(path + "/BinaryData/" + counter.incrementAndGet())
+                .setPath(path + "/BinaryData/" + id)
                 .toUrl();
         } catch (MalformedURLException e) {
             throw new UncheckedIOException(e);
