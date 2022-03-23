@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** When present, these are the credentials for the secure LDAP connection. */
 @Fluent
 public final class CacheUsernameDownloadSettingsCredentials {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CacheUsernameDownloadSettingsCredentials.class);
-
     /*
      * The Bind Distinguished Name identity to be used in the secure LDAP
      * connection. This value is stored encrypted and not returned on response.

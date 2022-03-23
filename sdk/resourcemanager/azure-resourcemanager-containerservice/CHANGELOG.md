@@ -7,6 +7,7 @@
 - Supported disabling Kubernetes Role-Based Access Control for `KubernetesCluster` during create.
 - Supported enabling Azure AD integration for `KubernetesCluster`.
 - Supported disabling local accounts for `KubernetesCluster`.
+- Supported disk encryption set for `KubernetesCluster`.
 
 ### Other Changes
 

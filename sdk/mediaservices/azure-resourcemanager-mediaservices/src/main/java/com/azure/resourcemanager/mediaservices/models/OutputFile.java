@@ -6,15 +6,12 @@ package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Represents an output file produced. */
 @Fluent
 public final class OutputFile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OutputFile.class);
-
     /*
      * The list of labels that describe how the encoder should multiplex video
      * and audio into an output file. For example, if the encoder is producing
@@ -59,9 +56,11 @@ public final class OutputFile {
      */
     public void validate() {
         if (labels() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property labels in model OutputFile"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OutputFile.class);
 }

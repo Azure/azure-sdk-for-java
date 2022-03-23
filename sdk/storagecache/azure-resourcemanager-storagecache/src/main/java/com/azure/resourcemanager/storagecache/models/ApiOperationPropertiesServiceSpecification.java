@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Specification of the all the metrics provided for a resource type. */
 @Fluent
 public final class ApiOperationPropertiesServiceSpecification {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiOperationPropertiesServiceSpecification.class);
-
     /*
      * Details about operations related to metrics.
      */

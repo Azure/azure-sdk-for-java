@@ -24,6 +24,6 @@ public class XmlSendTest extends RestProxyTestBase<CorePerfStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        return service.setUserDatabaseXml(endpoint, userDatabase).then();
+        return service.setUserDatabaseXml(endpoint, id, userDatabase).then();
     }
 }
