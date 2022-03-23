@@ -109,9 +109,9 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
 
         SpringAppDeployment deployment = app.getActiveDeployment();
 
-        Assertions.assertEquals(2, deployment.settings().cpu());
-        Assertions.assertEquals(4, deployment.settings().memoryInGB());
-        Assertions.assertEquals(RuntimeVersion.JAVA_11, deployment.settings().runtimeVersion());
+        Assertions.assertEquals("2", deployment.settings().resourceRequests().cpu());
+        Assertions.assertEquals("4Gi", deployment.settings().resourceRequests().memory());
+//        Assertions.assertEquals(RuntimeVersion.JAVA_11, deployment.settings().runtimeVersion());
         Assertions.assertEquals(2, deployment.instances().size());
 
         File gzFile = new File("piggymetrics.tar.gz");
@@ -133,7 +133,7 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
         app.refresh();
 
         Assertions.assertEquals(deploymentName1, app.activeDeploymentName());
-        Assertions.assertEquals(1, deployment.settings().cpu());
+        Assertions.assertEquals("1", deployment.settings().resourceRequests().cpu());
         Assertions.assertNotNull(deployment.getLogFileUrl());
 
         Assertions.assertTrue(requestSuccess(app.url()));
