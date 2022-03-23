@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.UUID;
 
-/** The configuration of the run playbook automation rule action. */
+/** The PlaybookActionProperties model. */
 @Fluent
-public final class AutomationRuleRunPlaybookActionConfiguration {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(AutomationRuleRunPlaybookActionConfiguration.class);
-
+public final class PlaybookActionProperties {
     /*
      * The resource id of the playbook resource
      */
@@ -25,7 +21,7 @@ public final class AutomationRuleRunPlaybookActionConfiguration {
      * The tenant id of the playbook resource
      */
     @JsonProperty(value = "tenantId")
-    private String tenantId;
+    private UUID tenantId;
 
     /**
      * Get the logicAppResourceId property: The resource id of the playbook resource.
@@ -40,9 +36,9 @@ public final class AutomationRuleRunPlaybookActionConfiguration {
      * Set the logicAppResourceId property: The resource id of the playbook resource.
      *
      * @param logicAppResourceId the logicAppResourceId value to set.
-     * @return the AutomationRuleRunPlaybookActionConfiguration object itself.
+     * @return the PlaybookActionProperties object itself.
      */
-    public AutomationRuleRunPlaybookActionConfiguration withLogicAppResourceId(String logicAppResourceId) {
+    public PlaybookActionProperties withLogicAppResourceId(String logicAppResourceId) {
         this.logicAppResourceId = logicAppResourceId;
         return this;
     }
@@ -52,7 +48,7 @@ public final class AutomationRuleRunPlaybookActionConfiguration {
      *
      * @return the tenantId value.
      */
-    public String tenantId() {
+    public UUID tenantId() {
         return this.tenantId;
     }
 
@@ -60,9 +56,9 @@ public final class AutomationRuleRunPlaybookActionConfiguration {
      * Set the tenantId property: The tenant id of the playbook resource.
      *
      * @param tenantId the tenantId value to set.
-     * @return the AutomationRuleRunPlaybookActionConfiguration object itself.
+     * @return the PlaybookActionProperties object itself.
      */
-    public AutomationRuleRunPlaybookActionConfiguration withTenantId(String tenantId) {
+    public PlaybookActionProperties withTenantId(UUID tenantId) {
         this.tenantId = tenantId;
         return this;
     }
