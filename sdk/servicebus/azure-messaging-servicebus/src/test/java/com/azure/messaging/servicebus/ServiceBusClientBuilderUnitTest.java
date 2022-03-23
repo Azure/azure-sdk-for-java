@@ -3,9 +3,6 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.amqp.AmqpTransportType;
-import com.azure.core.amqp.ProxyAuthenticationType;
-import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.credential.BasicAuthenticationCredential;
 import com.azure.core.credential.TokenCredential;
 import org.junit.jupiter.api.Test;
