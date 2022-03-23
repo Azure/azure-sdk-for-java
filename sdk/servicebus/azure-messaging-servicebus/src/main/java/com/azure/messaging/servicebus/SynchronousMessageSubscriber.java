@@ -136,7 +136,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
             .addKeyValue("numberOfEvents", work.getNumberOfEvents())
             .addKeyValue("timeout", work.getTimeout());
 
-        // If previous work items were completed, the message queue is empty, and currentWork is null or terminated,
+        // If previous work items were completed, the message queue is empty, and currentWork is null or terminal,
         // Update the current work and request items upstream if we need to.
         if (workQueue.peek() == work && (currentWork == null || currentWork.isTerminal())) {
             logBuilder.log("First work in queue. Requesting upstream if needed.");
@@ -277,8 +277,13 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
             }
 
             currentWork = workQueue.poll();
-            //The work in queue will not be terminated, here is double check
+            //The work in queue will not be terminal, here is double check
             while (currentWork != null && currentWork.isTerminal()) {
+                logger.atVerbose()
+                    .addKeyValue(WORK_ID_KEY, currentWork.getId())
+                    .addKeyValue("numberOfEvents", currentWork.getNumberOfEvents())
+                    .log("This work from queue is terminal. Skip it.");
+
                 currentWork = workQueue.poll();
             }
 
