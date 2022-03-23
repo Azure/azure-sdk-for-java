@@ -6,16 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of RouteTables to advertise the routes to. */
 @Fluent
 public final class PropagatedRouteTable {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PropagatedRouteTable.class);
-
     /*
      * The list of labels.
      */
