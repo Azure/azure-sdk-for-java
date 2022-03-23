@@ -6,6 +6,7 @@ package com.azure.core.perf;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.perf.core.CorePerfStressOptions;
 import com.azure.core.perf.core.RestProxyTestBase;
 import com.azure.core.util.BinaryData;
@@ -43,7 +44,17 @@ public class PipelineSendTest extends RestProxyTestBase<CorePerfStressOptions> {
 
     @Override
     public void run() {
-        runAsync().block();
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Length", contentLengthHeaderValue);
+        HttpRequest httpRequest = new HttpRequest(
+            HttpMethod.PUT, targetURL, headers, binaryDataSupplier.get());
+        // Context with azure-eagerly-read-response=true makes sure
+        // that response is disposed to prevent connection leak.
+        // There's no response body in this scenario anyway.
+        HttpResponse httpResponse = httpPipeline.sendSynchronously(httpRequest, context);
+        if (httpResponse.getStatusCode() / 100 != 2) {
+            throw new IllegalStateException("Endpoint didn't return 2xx http status code.");
+        }
     }
 
     @Override
@@ -51,7 +62,7 @@ public class PipelineSendTest extends RestProxyTestBase<CorePerfStressOptions> {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Length", contentLengthHeaderValue);
         HttpRequest httpRequest = new HttpRequest(
-            HttpMethod.PUT, targetURL, headers, binaryDataSupplier.get().toFluxByteBuffer());
+            HttpMethod.PUT, targetURL, headers, binaryDataSupplier.get());
         // Context with azure-eagerly-read-response=true makes sure
         // that response is disposed to prevent connection leak.
         // There's no response body in this scenario anyway.
