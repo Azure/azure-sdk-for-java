@@ -581,11 +581,20 @@ directive:
   transform: >
       $.PageListCollection = {
             "type": "object",
+            "xml": {
+              "name": "PageList"
+            },
             "properties": {
-              "value": {
+              "PageRanges": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/definitions/PageList"
+                  "$ref": "#/definitions/PageRange"
+                }
+              },
+              "ClearRanges": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/ClearRange"
                 }
               },
               "nextLink": {

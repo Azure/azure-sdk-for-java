@@ -982,7 +982,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                 requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, null, null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), response.getValue().get(0)));
+                response.getHeaders(), response.getValue()));
     }
 
     /**

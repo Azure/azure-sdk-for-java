@@ -5,21 +5,21 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.storage.blob.models.PageList;
+import com.azure.storage.blob.models.PageRange;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
 /** The PageListCollection model. */
-@JacksonXmlRootElement(localName = "PageList")
+@JacksonXmlRootElement(localName = "PageListCollection")
 @Fluent
 public final class PageListCollection {
     /*
      * The value property.
      */
-    @JsonProperty("PageList")
-    private List<PageList> value = new ArrayList<>();
+    @JsonProperty("PageRange")
+    private List<PageRange> value = new ArrayList<>();
 
     /*
      * The nextLink property.
@@ -32,7 +32,7 @@ public final class PageListCollection {
      *
      * @return the value value.
      */
-    public List<PageList> getValue() {
+    public List<PageRange> getValue() {
         return this.value;
     }
 
@@ -42,7 +42,7 @@ public final class PageListCollection {
      * @param value the value value to set.
      * @return the PageListCollection object itself.
      */
-    public PageListCollection setValue(List<PageList> value) {
+    public PageListCollection setValue(List<PageRange> value) {
         this.value = value;
         return this;
     }

@@ -41,7 +41,7 @@ import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
-import com.azure.storage.blob.models.PageList;
+import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
@@ -953,7 +953,7 @@ public final class PageBlobsImpl {
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PageList>> getPageRangesSinglePageAsync(
+    public Mono<PagedResponse<PageRange>> getPageRangesSinglePageAsync(
             String containerName,
             String blob,
             String snapshot,
@@ -1055,7 +1055,7 @@ public final class PageBlobsImpl {
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PageList>> getPageRangesDiffSinglePageAsync(
+    public Mono<PagedResponse<PageRange>> getPageRangesDiffSinglePageAsync(
             String containerName,
             String blob,
             String snapshot,
@@ -1363,7 +1363,7 @@ public final class PageBlobsImpl {
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PageList>> getPageRangesNextSinglePageAsync(
+    public Mono<PagedResponse<PageRange>> getPageRangesNextSinglePageAsync(
             String nextLink,
             String range,
             String leaseId,
@@ -1429,7 +1429,7 @@ public final class PageBlobsImpl {
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PageList>> getPageRangesDiffNextSinglePageAsync(
+    public Mono<PagedResponse<PageRange>> getPageRangesDiffNextSinglePageAsync(
             String nextLink,
             String prevSnapshotUrl,
             String range,
