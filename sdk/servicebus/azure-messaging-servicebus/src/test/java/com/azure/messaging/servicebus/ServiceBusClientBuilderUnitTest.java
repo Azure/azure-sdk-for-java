@@ -94,8 +94,8 @@ public class ServiceBusClientBuilderUnitTest {
     @Test
     public void testEntityNameInConnectionString() {
         // Arrange
-        final String connectionString = "Endpoint=sb://test.servicebus.windows.net/;" +
-            "SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=sharedKey;EntityPath=testQueue";
+        final String connectionString = "Endpoint=sb://test.servicebus.windows.net/;"
+            + "SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=sharedKey;EntityPath=testQueue";
 
         // Act
         final ServiceBusClientBuilder.ServiceBusSenderClientBuilder builder = new ServiceBusClientBuilder()
