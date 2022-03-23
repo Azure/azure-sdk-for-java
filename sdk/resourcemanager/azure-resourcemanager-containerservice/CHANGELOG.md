@@ -4,11 +4,14 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Supported disabling Kubernetes Role-Based Access Control for `KubernetesCluster` during create.
+- Supported enabling Azure AD integration for `KubernetesCluster`.
+- Supported disabling local accounts for `KubernetesCluster`.
 
 ### Other Changes
+
+- Changed behavior that `KubernetesCluster` no longer retrieves admin and user KubeConfig during create, update, refresh.
+- Changed behavior that Linux profile is not required for `KubernetesCluster` during create.
 
 ## 2.13.0 (2022-03-11)
 
@@ -41,6 +44,12 @@
 #### Dependency Updates
 
 - Updated `api-version` to `2022-01-01`.
+
+## 2.12.2 (2022-03-17)
+
+### Other Changes
+
+- Changed behavior that `KubernetesCluster` no longer retrieves admin and user KubeConfig during create, update, refresh.
 
 ## 2.12.1 (2022-02-22)
 

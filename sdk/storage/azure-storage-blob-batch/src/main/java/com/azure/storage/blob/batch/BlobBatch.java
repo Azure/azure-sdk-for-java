@@ -423,7 +423,7 @@ public final class BlobBatch {
      * This performs changing the request URL to the value passed through the pipeline context. This policy is used in
      * place of constructing a new client for each batch request that is being sent.
      */
-    private class SetRequestUrlPolicy extends HttpPipelineSynchronousPolicy {
+    private static class SetRequestUrlPolicy extends HttpPipelineSynchronousPolicy {
         @Override
         protected void beforeSendingRequest(HttpPipelineCallContext context) {
             // Set the request URL to the correct endpoint.

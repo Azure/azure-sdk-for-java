@@ -572,7 +572,11 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     @DisabledIfSystemProperty(named = "IS_SKIP_ROTATION_POLICY_TEST", matches = "true")
     public void getKeyRotationPolicyOfNonExistentKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        // Key Rotation is not yet enabled in Managed HSM.
+        Assumptions.assumeTrue(!isHsmEnabled);
+
         createKeyAsyncClient(httpClient, serviceVersion);
+
         StepVerifier.create(client.getKeyRotationPolicy(testResourceNamer.randomName("nonExistentKey", 20)))
             .verifyErrorSatisfies(ex ->
                 assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
@@ -622,6 +626,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
         Assumptions.assumeTrue(!isHsmEnabled);
 
         createKeyAsyncClient(httpClient, serviceVersion);
+
         updateGetKeyRotationPolicyWithMinimumPropertiesRunner((keyName, keyRotationPolicy) -> {
             StepVerifier.create(client.createRsaKey(new CreateRsaKeyOptions(keyName)))
                 .assertNext(Assertions::assertNotNull)
@@ -646,6 +651,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
         Assumptions.assumeTrue(!isHsmEnabled);
 
         createKeyAsyncClient(httpClient, serviceVersion);
+
         updateGetKeyRotationPolicyWithAllPropertiesRunner((keyName, keyRotationPolicy) -> {
             StepVerifier.create(client.createRsaKey(new CreateRsaKeyOptions(keyName)))
                 .assertNext(Assertions::assertNotNull)

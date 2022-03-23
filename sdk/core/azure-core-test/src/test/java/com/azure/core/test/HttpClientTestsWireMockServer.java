@@ -6,11 +6,13 @@ package com.azure.core.test;
 import com.azure.core.test.http.HttpClientTests;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
+import com.github.tomakehurst.wiremock.extension.responsetemplating.ResponseTemplateTransformer;
 
 import java.nio.charset.StandardCharsets;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.put;
 
 /**
  * WireMock server used when running {@link HttpClientTests}.
@@ -26,6 +28,7 @@ public class HttpClientTestsWireMockServer {
     private static final String UTF_32LE_BOM_RESPONSE = "/utf32LeBomBytes";
     private static final String BOM_WITH_SAME_HEADER = "/bomBytesWithSameHeader";
     private static final String BOM_WITH_DIFFERENT_HEADER = "/bomBytesWithDifferentHeader";
+    private static final String ECHO_REQUEST = "/echoRequest";
 
     private static final byte[] UTF_8_BOM = {(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
     private static final byte[] UTF_16BE_BOM = {(byte) 0xFE, (byte) 0xFF};
@@ -37,6 +40,7 @@ public class HttpClientTestsWireMockServer {
 
     public static WireMockServer getHttpClientTestsServer() {
         WireMockServer server = new WireMockServer(WireMockConfiguration.options()
+            .extensions(new ResponseTemplateTransformer(false))
             .dynamicPort()
             .disableRequestJournal()
             .gzipDisabled(true));
@@ -74,6 +78,11 @@ public class HttpClientTestsWireMockServer {
         // Bytes with leading UTF-8 BOM and differing 'Content-Encoding' header.
         server.stubFor(get(BOM_WITH_DIFFERENT_HEADER).willReturn(aResponse()
             .withBody(addBom(UTF_8_BOM)).withHeader("Content-Type", "charset=UTF-16")));
+
+        // Echoes request body
+        server.stubFor(put(ECHO_REQUEST).willReturn(aResponse()
+            .withBody("{{{request.body}}}")
+            .withTransformers("response-template")));
 
         return server;
     }

@@ -3,12 +3,14 @@
 ### 4.8.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added an API to determine installed version of the Cosmos Spark connector (`CosmosItemsDataSource.version`/`CosmosChangeFeedDataSource.version`).See [PR 27709](https://github.com/Azure/azure-sdk-for-java/pull/27709)
 
 #### Breaking Changes
 
 #### Bugs Fixed
 
 #### Other Changes
+* Reduced GC (Garbage Collection) pressure when executing queries returning many documents by pushing down type conversion. - See [PR 27440](https://github.com/Azure/azure-sdk-for-java/pull/27440)
 
 ### 4.7.0 (2022-03-11)
 

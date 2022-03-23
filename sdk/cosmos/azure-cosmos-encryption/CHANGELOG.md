@@ -1,6 +1,6 @@
 ## Release History
 
-### 1.0.0-beta.11 (Unreleased)
+### 1.1.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,10 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 1.0.0 (2022-03-18)
+#### Features Added
+* Released GA version 1.0.0 of `azure-cosmos-encryption`.
 
 ### 1.0.0-beta.10 (2022-03-10)
 #### New Features
