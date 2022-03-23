@@ -6,12 +6,12 @@ package com.azure.spring.cloud.core.implementation.factory;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolvers;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.core.implementation.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
+import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.core.provider.ClientOptionsProvider;
 import com.azure.spring.cloud.core.provider.connectionstring.ConnectionStringProvider;
@@ -253,7 +253,8 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
      */
     protected void configureDefaultCredential(T builder) {
         if (!credentialConfigured) {
-            LOGGER.info("Will configure the default credential for {}.", builder.getClass());
+            LOGGER.info("Will configure the default credential of type {} for {}.",
+                this.defaultTokenCredential.getClass().getSimpleName(), builder.getClass());
             consumeDefaultTokenCredential().accept(builder, this.defaultTokenCredential);
         }
     }
