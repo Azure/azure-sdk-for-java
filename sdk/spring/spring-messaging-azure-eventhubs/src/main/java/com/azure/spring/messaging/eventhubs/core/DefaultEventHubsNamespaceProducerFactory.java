@@ -6,9 +6,9 @@ package com.azure.spring.messaging.eventhubs.core;
 import com.azure.core.credential.TokenCredential;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
-import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
+import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.implementation.eventhubs.factory.EventHubClientBuilderFactory;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.eventhubs.core.properties.NamespaceProperties;
@@ -48,7 +48,7 @@ public final class DefaultEventHubsNamespaceProducerFactory implements EventHubs
     private final List<AzureServiceClientBuilderCustomizer<EventHubClientBuilder>> customizers = new ArrayList<>();
     private final Map<String, List<AzureServiceClientBuilderCustomizer<EventHubClientBuilder>>> dedicatedCustomizers = new HashMap<>();
     private AzureCredentialResolver<TokenCredential> tokenCredentialResolver = null;
-    private TokenCredential defaultAzureCredential = null;
+    private TokenCredential defaultCredential = null;
 
     /**
      * Construct a factory with the provided namespace level configuration.
@@ -81,7 +81,7 @@ public final class DefaultEventHubsNamespaceProducerFactory implements EventHubs
             EventHubClientBuilderFactory factory = new EventHubClientBuilderFactory(producerProperties);
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_EVENT_HUBS);
             factory.setTokenCredentialResolver(this.tokenCredentialResolver);
-            factory.setDefaultTokenCredential(this.defaultAzureCredential);
+            factory.setDefaultTokenCredential(this.defaultCredential);
             EventHubClientBuilder builder = factory.build();
             customizeBuilder(eventHub, builder);
             EventHubProducerAsyncClient producerClient = builder.buildAsyncProducerClient();
@@ -113,6 +113,7 @@ public final class DefaultEventHubsNamespaceProducerFactory implements EventHubs
 
     /**
      * Set the token credential resolver.
+     *
      * @param tokenCredentialResolver The token credential resolver.
      */
     public void setTokenCredentialResolver(AzureCredentialResolver<TokenCredential> tokenCredentialResolver) {
@@ -120,11 +121,12 @@ public final class DefaultEventHubsNamespaceProducerFactory implements EventHubs
     }
 
     /**
-     * Set the default Azure credential.
-     * @param defaultAzureCredential The default Azure Credential.
+     * Set the default credential for all clients generated from this factory.
+     *
+     * @param defaultCredential The default credential.
      */
-    public void setDefaultAzureCredential(TokenCredential defaultAzureCredential) {
-        this.defaultAzureCredential = defaultAzureCredential;
+    public void setDefaultCredential(TokenCredential defaultCredential) {
+        this.defaultCredential = defaultCredential;
     }
 
     /**

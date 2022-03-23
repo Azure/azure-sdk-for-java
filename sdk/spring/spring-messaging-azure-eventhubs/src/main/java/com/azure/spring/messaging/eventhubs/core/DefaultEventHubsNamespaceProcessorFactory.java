@@ -9,9 +9,9 @@ import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.InitializationContext;
-import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
+import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
 import com.azure.spring.cloud.service.implementation.eventhubs.factory.EventProcessorClientBuilderFactory;
 import com.azure.spring.cloud.service.listener.MessageListener;
@@ -62,7 +62,7 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
     private final List<AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder>> customizers = new ArrayList<>();
     private final Map<String, List<AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder>>> dedicatedCustomizers = new HashMap<>();
     private AzureCredentialResolver<TokenCredential> tokenCredentialResolver = null;
-    private TokenCredential defaultAzureCredential = null;
+    private TokenCredential defaultCredential = null;
 
     /**
      * Construct a factory with the provided {@link CheckpointStore}.
@@ -165,7 +165,7 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
             factory.setCloseContextConsumer(closeContextConsumer);
             factory.setInitializationContextConsumer(initializationContextConsumer);
 
-            factory.setDefaultTokenCredential(this.defaultAzureCredential);
+            factory.setDefaultTokenCredential(this.defaultCredential);
             factory.setTokenCredentialResolver(this.tokenCredentialResolver);
 
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_EVENT_HUBS);
@@ -199,11 +199,12 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
     }
 
     /**
-     * Set the default Azure credential.
-     * @param defaultAzureCredential The default Azure Credential.
+     * Set the default credential for all clients generated from this factory.
+     *
+     * @param defaultCredential The default credential.
      */
-    public void setDefaultAzureCredential(TokenCredential defaultAzureCredential) {
-        this.defaultAzureCredential = defaultAzureCredential;
+    public void setDefaultCredential(TokenCredential defaultCredential) {
+        this.defaultCredential = defaultCredential;
     }
 
     /**

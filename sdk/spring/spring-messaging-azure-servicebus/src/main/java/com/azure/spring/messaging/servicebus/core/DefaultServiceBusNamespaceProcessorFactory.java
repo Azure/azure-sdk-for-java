@@ -55,10 +55,12 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
     private final List<Listener> listeners = new ArrayList<>();
     private final NamespaceProperties namespaceProperties;
     private final PropertiesSupplier<ConsumerIdentifier, ProcessorProperties> propertiesSupplier;
-    private final List<ServiceBusProcessorClientBuilderCustomizer> customizers = new ArrayList<>();
-    private final Map<ConsumerIdentifier, List<ServiceBusProcessorClientBuilderCustomizer>> dedicatedCustomizers = new HashMap<>();
+    private final List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> customizers = new ArrayList<>();
+    private final List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder>> sessionCustomizers = new ArrayList<>();
+    private final Map<ConsumerIdentifier, List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>>> dedicatedCustomizers = new HashMap<>();
+    private final Map<ConsumerIdentifier, List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder>>> dedicatedSessionCustomizers = new HashMap<>();
     private AzureCredentialResolver<TokenCredential> tokenCredentialResolver = null;
-    private TokenCredential defaultAzureCredential = null;
+    private TokenCredential defaultCredential = null;
 
     /**
      * Construct a factory with the provided namespace level properties.
@@ -176,7 +178,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
                 ServiceBusSessionProcessorClientBuilderFactory factory =
                     new ServiceBusSessionProcessorClientBuilderFactory(processorProperties, messageListener, errorHandler);
 
-                factory.setDefaultTokenCredential(this.defaultAzureCredential);
+                factory.setDefaultTokenCredential(this.defaultCredential);
                 factory.setTokenCredentialResolver(this.tokenCredentialResolver);
                 factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_SERVICE_BUS);
 
@@ -188,7 +190,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
                 ServiceBusProcessorClientBuilderFactory factory =
                     new ServiceBusProcessorClientBuilderFactory(processorProperties, messageListener, errorHandler);
 
-                factory.setDefaultTokenCredential(this.defaultAzureCredential);
+                factory.setDefaultTokenCredential(this.defaultCredential);
                 factory.setTokenCredentialResolver(this.tokenCredentialResolver);
                 factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_SERVICE_BUS);
 
@@ -217,11 +219,12 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
     }
 
     /**
-     * Set the default Azure credential.
-     * @param defaultAzureCredential The default Azure Credential.
+     * Set the default credential for all clients generated from this factory.
+     *
+     * @param defaultCredential The default credential.
      */
-    public void setDefaultAzureCredential(TokenCredential defaultAzureCredential) {
-        this.defaultAzureCredential = defaultAzureCredential;
+    public void setDefaultCredential(TokenCredential defaultCredential) {
+        this.defaultCredential = defaultCredential;
     }
 
     private void close(Map<ConsumerIdentifier, ServiceBusProcessorClient> map, Consumer<ServiceBusProcessorClient> close) {
@@ -236,15 +239,31 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
     }
 
     /**
-     * Add a service client builder customizer to customize all the clients created from this factory.
-     * @param customizer the provided customizer.
+     * Add a {@link com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusProcessorClientBuilder}
+     * customizer to customize all the non-session clients created from this factory.
+     *
+     * @param customizer the provided builder customizer.
      */
-    public void addBuilderCustomizer(ServiceBusProcessorClientBuilderCustomizer customizer) {
-        if (customizer == null || !customizer.isAnyCustomizerSet()) {
+    public void addBuilderCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder> customizer) {
+        if (customizer == null) {
             LOGGER.debug("The provided customizer is null, will ignore it.");
-            return;
+        } else {
+            this.customizers.add(customizer);
         }
-        this.customizers.add(customizer);
+    }
+
+    /**
+     * Add a {@link com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder}
+     * customizer to customize all the session clients created from this factory.
+     *
+     * @param customizer the provided builder customizer.
+     */
+    public void addSessionBuilderCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder> customizer) {
+        if (customizer == null) {
+            LOGGER.debug("The provided customizer is null, will ignore it.");
+        } else {
+            this.sessionCustomizers.add(customizer);
+        }
     }
 
     /**
@@ -255,36 +274,50 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
      * @param subscription the subscription name of the topic, could be null if it is a queue.
      * @param customizer the provided customizer.
      */
-    public void addBuilderCustomizer(String entityName, String subscription, ServiceBusProcessorClientBuilderCustomizer customizer) {
-        if (customizer == null || !customizer.isAnyCustomizerSet()) {
+    public void addBuilderCustomizer(String entityName,
+                                     String subscription,
+                                     AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder> customizer) {
+        if (customizer == null) {
             LOGGER.debug("The provided customizer is null, will ignore it.");
-            return;
+        } else {
+            this.dedicatedCustomizers
+                .computeIfAbsent(new ConsumerIdentifier(entityName, subscription), key -> new ArrayList<>())
+                .add(customizer);
         }
-        this.dedicatedCustomizers
-            .computeIfAbsent(new ConsumerIdentifier(entityName, subscription), key -> new ArrayList<>())
-            .add(customizer);
+    }
+
+    /**
+     * Add a service client builder customizer to customize the clients created from this factory with entity name of
+     * value {@code entityName} and subscription of value {@code subscription}.
+     *
+     * @param entityName the entity name, could either be the queue name or topic name.
+     * @param subscription the subscription name of the topic, could be null if it is a queue.
+     * @param customizer the provided customizer.
+     */
+    public void addSessionBuilderCustomizer(String entityName,
+                                            String subscription,
+                                            AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder> customizer) {
+        if (customizer == null) {
+            LOGGER.debug("The provided customizer is null, will ignore it.");
+        } else {
+            this.dedicatedSessionCustomizers
+                .computeIfAbsent(new ConsumerIdentifier(entityName, subscription), key -> new ArrayList<>())
+                .add(customizer);
+        }
     }
 
     private void customizeBuilder(String entityName, String subscription,
                                   ServiceBusClientBuilder.ServiceBusProcessorClientBuilder builder) {
-        this.customizers.stream()
-                        .filter(c -> c.getNoneSessionCustomizer() != null)
-                        .forEach(customizer -> customizer.getNoneSessionCustomizer().customize(builder));
+        this.customizers.forEach(customizer -> customizer.customize(builder));
         this.dedicatedCustomizers.getOrDefault(new ConsumerIdentifier(entityName, subscription), new ArrayList<>())
-                                 .stream()
-                                 .filter(c -> c.getNoneSessionCustomizer() != null)
-                                 .forEach(customizer -> customizer.getNoneSessionCustomizer().customize(builder));
+                                 .forEach(customizer -> customizer.customize(builder));
     }
 
     private void customizeBuilder(String entityName, String subscription,
                                   ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder builder) {
-        this.customizers.stream()
-                        .filter(c -> c.getSessionCustomizer() != null)
-                        .forEach(customizer -> customizer.getSessionCustomizer().customize(builder));
-        this.dedicatedCustomizers.getOrDefault(new ConsumerIdentifier(entityName, subscription), new ArrayList<>())
-                                 .stream()
-                                 .filter(c -> c.getSessionCustomizer() != null)
-                                 .forEach(customizer -> customizer.getSessionCustomizer().customize(builder));
+        this.sessionCustomizers.forEach(customizer -> customizer.customize(builder));
+        this.dedicatedSessionCustomizers.getOrDefault(new ConsumerIdentifier(entityName, subscription), new ArrayList<>())
+                                        .forEach(customizer -> customizer.customize(builder));
     }
 
     private String buildProcessorName(ConsumerIdentifier k) {
@@ -292,38 +325,4 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
         return k.getDestination() + "/" + (group == null ? "" : group);
     }
 
-    /**
-     * Customizer of both the {@link ServiceBusClientBuilder.ServiceBusProcessorClientBuilder} and
-     * {@link ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder}.
-     */
-    public static class ServiceBusProcessorClientBuilderCustomizer {
-
-        private final AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder> noneSessionCustomizer;
-        private final AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder> sessionCustomizer;
-
-        /**
-         * Construct a {@code ServiceBusProcessorClientBuilderCustomizer} with the provided customizers for non-session
-         * and session-enabled {@link ServiceBusProcessorClient}.
-         * @param noneSessionCustomizer the client builder customizer for non-session {@link ServiceBusProcessorClient}.
-         * @param sessionCustomizer the client builder customizer for session-enabled {@link ServiceBusProcessorClient}.
-         */
-        public ServiceBusProcessorClientBuilderCustomizer(
-            AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder> noneSessionCustomizer,
-            AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder> sessionCustomizer) {
-            this.noneSessionCustomizer = noneSessionCustomizer;
-            this.sessionCustomizer = sessionCustomizer;
-        }
-
-        AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder> getNoneSessionCustomizer() {
-            return noneSessionCustomizer;
-        }
-
-        AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder> getSessionCustomizer() {
-            return sessionCustomizer;
-        }
-
-        boolean isAnyCustomizerSet() {
-            return this.noneSessionCustomizer != null || this.sessionCustomizer != null;
-        }
-    }
 }
