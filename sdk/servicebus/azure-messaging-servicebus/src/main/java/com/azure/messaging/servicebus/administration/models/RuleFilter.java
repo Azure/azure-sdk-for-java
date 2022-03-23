@@ -27,4 +27,11 @@ public abstract class RuleFilter {
         // This is intentionally left blank. This constructor exists
         // only to prevent external assemblies inheriting from it.
     }
+/*
+    @Override
+    public abstract boolean equals(Object obj);
+
+    @Override
+    public abstract int hashCode();
+*/
 }
