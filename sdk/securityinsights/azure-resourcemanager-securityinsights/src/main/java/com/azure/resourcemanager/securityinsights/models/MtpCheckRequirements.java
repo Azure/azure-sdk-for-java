@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.models.MtpCheckRequirementsProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("MicrosoftThreatProtection")
 @Fluent
 public final class MtpCheckRequirements extends DataConnectorsCheckRequirements {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MtpCheckRequirements.class);
-
     /*
      * MTP (Microsoft Threat Protection) requirements check properties.
      */
