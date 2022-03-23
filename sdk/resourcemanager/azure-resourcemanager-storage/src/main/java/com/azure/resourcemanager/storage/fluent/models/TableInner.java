@@ -6,15 +6,11 @@ package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the table, including Id, resource name, resource type. */
 @Fluent
 public final class TableInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TableInner.class);
-
     /*
      * Table resource properties.
      */
