@@ -6,14 +6,11 @@ package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Deployment What-if operation parameters. */
 @Fluent
 public final class ScopedDeploymentWhatIf {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScopedDeploymentWhatIf.class);
-
     /*
      * The location to store the deployment data.
      */
@@ -73,12 +70,12 @@ public final class ScopedDeploymentWhatIf {
      */
     public void validate() {
         if (location() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property location in model ScopedDeploymentWhatIf"));
         }
         if (properties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property properties in model ScopedDeploymentWhatIf"));
@@ -86,4 +83,6 @@ public final class ScopedDeploymentWhatIf {
             properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ScopedDeploymentWhatIf.class);
 }
