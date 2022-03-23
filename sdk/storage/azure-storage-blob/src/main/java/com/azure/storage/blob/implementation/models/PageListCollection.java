@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** The PageListCollection model. */
-@JacksonXmlRootElement(localName = "PageListCollection")
+@JacksonXmlRootElement(localName = "PageList")
 @Fluent
 public final class PageListCollection {
     /*
@@ -22,9 +22,9 @@ public final class PageListCollection {
     private List<PageRange> value = new ArrayList<>();
 
     /*
-     * The nextLink property.
+     * The nextMarker property.
      */
-    @JsonProperty(value = "nextLink")
+    @JsonProperty(value = "nextMarker")
     private String nextMarker;
 
     /**
@@ -48,7 +48,7 @@ public final class PageListCollection {
     }
 
     /**
-     * Get the nextMarker property: The nextLink property.
+     * Get the nextMarker property: The nextMarker property.
      *
      * @return the nextMarker value.
      */
@@ -57,7 +57,7 @@ public final class PageListCollection {
     }
 
     /**
-     * Set the nextMarker property: The nextLink property.
+     * Set the nextMarker property: The nextMarker property.
      *
      * @param nextMarker the nextMarker value to set.
      * @return the PageListCollection object itself.
