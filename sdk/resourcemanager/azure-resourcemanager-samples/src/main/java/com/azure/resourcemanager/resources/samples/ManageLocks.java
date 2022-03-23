@@ -94,7 +94,7 @@ public final class ManageLocks {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("tester")
-                .withRootPassword(password)
+                .withSsh(Utils.sshPublicKey())
                 .withNewDataDisk(diskDefinition, 1, CachingTypes.NONE)
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"));
 
