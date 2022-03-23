@@ -4,11 +4,11 @@ function Get-java-OnboardedDocsMsPackages($DocRepoLocation) {
     $onboardingSpec = ConvertFrom-Json (Get-Content $packageOnboardingFiles -Raw)
     $allPackages = @{}
     foreach ($spec in $onboardingSpec) {
-      $spec.packages | ForEach-Object {$allPackages[$_.packageArtifactId] = $null}
+      $spec.packages | ForEach-Object {$allPackages["$($_.packageGroupId):$($_.packageArtifactId)"] = $null}
     }
     return $allPackages
-  }
-  
+}
+
 function Get-java-DocsMsTocData($packageMetadata, $docRepoLocation) {
     # Fallback to get package-level readme name if metadata file info does not exist
     $packageLevelReadmeName = $packageMetadata.Package.Replace('azure-', '');
