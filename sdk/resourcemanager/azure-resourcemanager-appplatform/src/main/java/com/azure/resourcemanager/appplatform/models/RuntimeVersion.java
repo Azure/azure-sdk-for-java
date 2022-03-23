@@ -19,7 +19,7 @@ public final class RuntimeVersion extends ExpandableStringEnum<RuntimeVersion> {
 
     @JsonCreator
     public static RuntimeVersion fromString(String name) {
-        return (RuntimeVersion)fromString(name, RuntimeVersion.class);
+        return fromString(name, RuntimeVersion.class);
     }
 
     public static Collection<RuntimeVersion> values() {

@@ -19,7 +19,7 @@ public final class UserSourceType extends ExpandableStringEnum<UserSourceType> {
 
     @JsonCreator
     public static UserSourceType fromString(String name) {
-        return (UserSourceType)fromString(name, UserSourceType.class);
+        return fromString(name, UserSourceType.class);
     }
 
     public static Collection<UserSourceType> values() {
