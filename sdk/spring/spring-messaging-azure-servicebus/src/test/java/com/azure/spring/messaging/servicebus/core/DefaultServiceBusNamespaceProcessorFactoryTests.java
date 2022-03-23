@@ -93,11 +93,8 @@ public class DefaultServiceBusNamespaceProcessorFactoryTests {
         AtomicInteger sessionClientCalledTimes = new AtomicInteger();
         DefaultServiceBusNamespaceProcessorFactory factory = (DefaultServiceBusNamespaceProcessorFactory) this.processorFactory;
 
-        factory.addBuilderCustomizer(
-            new DefaultServiceBusNamespaceProcessorFactory.ServiceBusProcessorClientBuilderCustomizer(
-                builder -> noneSessionClientCalledTimes.getAndIncrement(),
-                builder -> sessionClientCalledTimes.getAndIncrement()
-            ));
+        factory.addBuilderCustomizer(builder -> noneSessionClientCalledTimes.getAndIncrement());
+        factory.addSessionBuilderCustomizer(builder -> sessionClientCalledTimes.getAndIncrement());
 
         ServiceBusContainerProperties queue1ContainerProperties = new ServiceBusContainerProperties();
         queue1ContainerProperties.setMessageListener(this.listener);
@@ -133,17 +130,11 @@ public class DefaultServiceBusNamespaceProcessorFactoryTests {
         AtomicInteger sessionClientCalledTimes = new AtomicInteger();
         DefaultServiceBusNamespaceProcessorFactory factory = (DefaultServiceBusNamespaceProcessorFactory) this.processorFactory;
 
-        factory.addBuilderCustomizer("queue-1", null,
-            new DefaultServiceBusNamespaceProcessorFactory.ServiceBusProcessorClientBuilderCustomizer(
-                builder -> noneSessionClientCalledTimes.getAndIncrement(),
-                builder -> sessionClientCalledTimes.getAndIncrement()
-            ));
+        factory.addBuilderCustomizer("queue-1", null, builder -> noneSessionClientCalledTimes.getAndIncrement());
+        factory.addSessionBuilderCustomizer("queue-1", null, builder -> sessionClientCalledTimes.getAndIncrement());
 
-        factory.addBuilderCustomizer("queue-2", null,
-            new DefaultServiceBusNamespaceProcessorFactory.ServiceBusProcessorClientBuilderCustomizer(
-                builder -> noneSessionClientCalledTimes.getAndIncrement(),
-                builder -> sessionClientCalledTimes.getAndIncrement()
-            ));
+        factory.addBuilderCustomizer("queue-2", null, builder -> noneSessionClientCalledTimes.getAndIncrement());
+        factory.addSessionBuilderCustomizer("queue-2", null, builder -> sessionClientCalledTimes.getAndIncrement());
 
         ServiceBusContainerProperties queue1ContainerProperties = new ServiceBusContainerProperties();
         queue1ContainerProperties.setMessageListener(this.listener);

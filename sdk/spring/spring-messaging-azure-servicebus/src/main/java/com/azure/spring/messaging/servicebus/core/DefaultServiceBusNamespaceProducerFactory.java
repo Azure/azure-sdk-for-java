@@ -6,9 +6,9 @@ package com.azure.spring.messaging.servicebus.core;
 import com.azure.core.credential.TokenCredential;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
-import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
+import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceBusSenderClientBuilderFactory;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.messaging.PropertiesSupplier;
@@ -46,7 +46,7 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
     private final List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> customizers = new ArrayList<>();
     private final Map<String, List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>>> dedicatedCustomizers = new HashMap<>();
     private AzureCredentialResolver<TokenCredential> tokenCredentialResolver = null;
-    private TokenCredential defaultAzureCredential = null;
+    private TokenCredential defaultCredential = null;
 
     /**
      * Construct a factory with the provided namespace level configuration.
@@ -110,7 +110,7 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
             //TODO(yiliu6): whether to make the producer client share the same service bus client builder
             ServiceBusSenderClientBuilderFactory factory = new ServiceBusSenderClientBuilderFactory(producerProperties);
 
-            factory.setDefaultTokenCredential(this.defaultAzureCredential);
+            factory.setDefaultTokenCredential(this.defaultCredential);
             factory.setTokenCredentialResolver(this.tokenCredentialResolver);
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_SERVICE_BUS);
 
@@ -125,6 +125,7 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
 
     /**
      * Set the token credential resolver.
+     *
      * @param tokenCredentialResolver The token credential resolver.
      */
     public void setTokenCredentialResolver(AzureCredentialResolver<TokenCredential> tokenCredentialResolver) {
@@ -132,15 +133,17 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
     }
 
     /**
-     * Set the default Azure credential.
-     * @param defaultAzureCredential The default Azure Credential.
+     * Set the default credential for all clients generated from this factory.
+     *
+     * @param defaultCredential The default credential.
      */
-    public void setDefaultAzureCredential(TokenCredential defaultAzureCredential) {
-        this.defaultAzureCredential = defaultAzureCredential;
+    public void setDefaultCredential(TokenCredential defaultCredential) {
+        this.defaultCredential = defaultCredential;
     }
 
     /**
      * Add a service client builder customizer to customize all the clients created from this factory.
+     *
      * @param customizer the provided customizer.
      */
     public void addBuilderCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder> customizer) {
@@ -154,6 +157,7 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
     /**
      * Add a service client builder customizer to customize the clients created from this factory with service bus
      * entity name of value {@code entityName}.
+     *
      * @param entityName the entity name of the client.
      * @param customizer the provided customizer.
      */

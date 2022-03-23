@@ -12,7 +12,7 @@ public abstract class AzureContextUtils {
 
     }
 
-    public static final String DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME = "springDefaultAzureCredential";
+    public static final String DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME = "spring_cloud_azure_default_credential";
 
     public static final String EVENT_HUB_CLIENT_BUILDER_FACTORY_BEAN_NAME =
         "EVENT_HUB_CLIENT_BUILDER_FACTORY_BEAN_NAME";

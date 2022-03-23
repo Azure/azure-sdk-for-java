@@ -21,11 +21,11 @@ import com.azure.spring.cloud.stream.binder.eventhubs.EventHubsMessageChannelBin
 import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.core.provisioning.EventHubsChannelProvisioner;
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelResourceManagerProvisioner;
+import com.azure.spring.messaging.eventhubs.core.DefaultEventHubsNamespaceProcessorFactory;
+import com.azure.spring.messaging.eventhubs.core.DefaultEventHubsNamespaceProducerFactory;
 import com.azure.spring.messaging.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.messaging.eventhubs.core.EventHubsProducerFactory;
 import com.azure.spring.messaging.eventhubs.core.properties.NamespaceProperties;
-import com.azure.spring.messaging.eventhubs.core.DefaultEventHubsNamespaceProcessorFactory;
-import com.azure.spring.messaging.eventhubs.core.DefaultEventHubsNamespaceProducerFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -127,10 +127,10 @@ public class EventHubsBinderConfiguration {
     @ConditionalOnMissingBean
     EventHubsProcessorFactoryCustomizer defaultEventHubsProcessorFactoryCustomizer(
         AzureTokenCredentialResolver azureTokenCredentialResolver,
-        @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultAzureCredential,
+        @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultCredential,
         ObjectProvider<AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder>> processorClientBuilderCustomizers) {
 
-        return new DefaultProcessorFactoryCustomizer(defaultAzureCredential, azureTokenCredentialResolver, processorClientBuilderCustomizers);
+        return new DefaultProcessorFactoryCustomizer(defaultCredential, azureTokenCredentialResolver, processorClientBuilderCustomizers);
     }
 
     /**
@@ -138,14 +138,14 @@ public class EventHubsBinderConfiguration {
      */
     static class DefaultProducerFactoryCustomizer implements EventHubsProducerFactoryCustomizer {
 
-        private final TokenCredential defaultAzureCredential;
+        private final TokenCredential defaultCredential;
         private final AzureTokenCredentialResolver tokenCredentialResolver;
         private final ObjectProvider<AzureServiceClientBuilderCustomizer<EventHubClientBuilder>> clientBuilderCustomizers;
 
-        DefaultProducerFactoryCustomizer(TokenCredential defaultAzureCredential,
+        DefaultProducerFactoryCustomizer(TokenCredential defaultCredential,
                                          AzureTokenCredentialResolver azureTokenCredentialResolver,
                                          ObjectProvider<AzureServiceClientBuilderCustomizer<EventHubClientBuilder>> clientBuilderCustomizers) {
-            this.defaultAzureCredential = defaultAzureCredential;
+            this.defaultCredential = defaultCredential;
             this.tokenCredentialResolver = azureTokenCredentialResolver;
             this.clientBuilderCustomizers = clientBuilderCustomizers;
         }
@@ -156,7 +156,7 @@ public class EventHubsBinderConfiguration {
                 DefaultEventHubsNamespaceProducerFactory defaultFactory =
                     (DefaultEventHubsNamespaceProducerFactory) factory;
 
-                defaultFactory.setDefaultAzureCredential(defaultAzureCredential);
+                defaultFactory.setDefaultCredential(defaultCredential);
                 defaultFactory.setTokenCredentialResolver(tokenCredentialResolver);
                 clientBuilderCustomizers.orderedStream().forEach(defaultFactory::addBuilderCustomizer);
             }
@@ -172,14 +172,14 @@ public class EventHubsBinderConfiguration {
      */
     static class DefaultProcessorFactoryCustomizer implements EventHubsProcessorFactoryCustomizer {
 
-        private final TokenCredential defaultAzureCredential;
+        private final TokenCredential defaultCredential;
         private final AzureTokenCredentialResolver tokenCredentialResolver;
         private final ObjectProvider<AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder>> processorClientBuilderCustomizers;
 
-        DefaultProcessorFactoryCustomizer(TokenCredential defaultAzureCredential,
+        DefaultProcessorFactoryCustomizer(TokenCredential defaultCredential,
                                           AzureTokenCredentialResolver azureTokenCredentialResolver,
                                           ObjectProvider<AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder>> processorClientBuilderCustomizers) {
-            this.defaultAzureCredential = defaultAzureCredential;
+            this.defaultCredential = defaultCredential;
             this.tokenCredentialResolver = azureTokenCredentialResolver;
             this.processorClientBuilderCustomizers = processorClientBuilderCustomizers;
         }
@@ -190,7 +190,7 @@ public class EventHubsBinderConfiguration {
                 DefaultEventHubsNamespaceProcessorFactory defaultFactory =
                     (DefaultEventHubsNamespaceProcessorFactory) factory;
 
-                defaultFactory.setDefaultAzureCredential(defaultAzureCredential);
+                defaultFactory.setDefaultCredential(defaultCredential);
                 defaultFactory.setTokenCredentialResolver(tokenCredentialResolver);
                 processorClientBuilderCustomizers.orderedStream().forEach(defaultFactory::addBuilderCustomizer);
             }

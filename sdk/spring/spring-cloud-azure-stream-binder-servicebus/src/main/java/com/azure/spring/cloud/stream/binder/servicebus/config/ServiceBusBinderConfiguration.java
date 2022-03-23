@@ -19,11 +19,11 @@ import com.azure.spring.cloud.stream.binder.servicebus.ServiceBusMessageChannelB
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.core.provisioning.ServiceBusChannelProvisioner;
 import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusChannelResourceManagerProvisioner;
+import com.azure.spring.messaging.servicebus.core.DefaultServiceBusNamespaceProcessorFactory;
+import com.azure.spring.messaging.servicebus.core.DefaultServiceBusNamespaceProducerFactory;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProducerFactory;
 import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
-import com.azure.spring.messaging.servicebus.core.DefaultServiceBusNamespaceProcessorFactory;
-import com.azure.spring.messaging.servicebus.core.DefaultServiceBusNamespaceProducerFactory;
 import com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -143,14 +143,14 @@ public class ServiceBusBinderConfiguration {
      */
     static class DefaultProducerFactoryCustomizer implements ServiceBusProducerFactoryCustomizer {
 
-        private final TokenCredential defaultAzureCredential;
+        private final TokenCredential defaultCredential;
         private final AzureTokenCredentialResolver tokenCredentialResolver;
         private final ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> senderClientBuilderCustomizers;
 
-        DefaultProducerFactoryCustomizer(TokenCredential defaultAzureCredential,
+        DefaultProducerFactoryCustomizer(TokenCredential defaultCredential,
                                          AzureTokenCredentialResolver azureTokenCredentialResolver,
                                          ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> senderClientBuilderCustomizers) {
-            this.defaultAzureCredential = defaultAzureCredential;
+            this.defaultCredential = defaultCredential;
             this.tokenCredentialResolver = azureTokenCredentialResolver;
             this.senderClientBuilderCustomizers = senderClientBuilderCustomizers;
         }
@@ -161,7 +161,7 @@ public class ServiceBusBinderConfiguration {
                 DefaultServiceBusNamespaceProducerFactory defaultFactory =
                     (DefaultServiceBusNamespaceProducerFactory) factory;
 
-                defaultFactory.setDefaultAzureCredential(defaultAzureCredential);
+                defaultFactory.setDefaultCredential(defaultCredential);
                 defaultFactory.setTokenCredentialResolver(tokenCredentialResolver);
                 senderClientBuilderCustomizers.orderedStream().forEach(defaultFactory::addBuilderCustomizer);
             }
@@ -178,16 +178,16 @@ public class ServiceBusBinderConfiguration {
      */
     static class DefaultProcessorFactoryCustomizer implements ServiceBusProcessorFactoryCustomizer {
 
-        private final TokenCredential defaultAzureCredential;
+        private final TokenCredential defaultCredential;
         private final AzureTokenCredentialResolver tokenCredentialResolver;
         private final ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> processorClientBuilderCustomizers;
         private final ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder>> sessionProcessorClientBuilderCustomizers;
 
-        DefaultProcessorFactoryCustomizer(TokenCredential defaultAzureCredential,
+        DefaultProcessorFactoryCustomizer(TokenCredential defaultCredential,
                                           AzureTokenCredentialResolver azureTokenCredentialResolver,
                                           ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> processorClientBuilderCustomizers,
                                           ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder>> sessionProcessorClientBuilderCustomizers) {
-            this.defaultAzureCredential = defaultAzureCredential;
+            this.defaultCredential = defaultCredential;
             this.tokenCredentialResolver = azureTokenCredentialResolver;
             this.processorClientBuilderCustomizers = processorClientBuilderCustomizers;
             this.sessionProcessorClientBuilderCustomizers = sessionProcessorClientBuilderCustomizers;
@@ -199,16 +199,11 @@ public class ServiceBusBinderConfiguration {
                 DefaultServiceBusNamespaceProcessorFactory defaultFactory =
                     (DefaultServiceBusNamespaceProcessorFactory) factory;
 
-                defaultFactory.setDefaultAzureCredential(defaultAzureCredential);
+                defaultFactory.setDefaultCredential(defaultCredential);
                 defaultFactory.setTokenCredentialResolver(tokenCredentialResolver);
-                processorClientBuilderCustomizers
-                    .orderedStream()
-                    .map(c -> new DefaultServiceBusNamespaceProcessorFactory.ServiceBusProcessorClientBuilderCustomizer(c, null))
-                    .forEach(defaultFactory::addBuilderCustomizer);
-                sessionProcessorClientBuilderCustomizers
-                    .orderedStream()
-                    .map(c -> new DefaultServiceBusNamespaceProcessorFactory.ServiceBusProcessorClientBuilderCustomizer(null, c))
-                    .forEach(defaultFactory::addBuilderCustomizer);
+                processorClientBuilderCustomizers.orderedStream().forEach(defaultFactory::addBuilderCustomizer);
+                sessionProcessorClientBuilderCustomizers.orderedStream()
+                                                        .forEach(defaultFactory::addSessionBuilderCustomizer);
             }
 
         }
