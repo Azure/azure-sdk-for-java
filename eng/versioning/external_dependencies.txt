@@ -7,15 +7,15 @@
 
 # Format;
 # groupId:artifactId;dependency-version
-com.fasterxml.jackson.core:jackson-annotations;2.13.1
-com.fasterxml.jackson.core:jackson-core;2.13.1
-com.fasterxml.jackson.core:jackson-databind;2.13.1
-com.fasterxml.jackson.dataformat:jackson-dataformat-avro;2.13.1
-com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.13.1
-com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.13.1
-com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.13.1
-com.fasterxml.jackson.module:jackson-module-parameter-names;2.13.1
-com.fasterxml.jackson.module:jackson-module-scala_2.12;2.13.1
+com.fasterxml.jackson.core:jackson-annotations;2.13.2
+com.fasterxml.jackson.core:jackson-core;2.13.2
+com.fasterxml.jackson.core:jackson-databind;2.13.2
+com.fasterxml.jackson.dataformat:jackson-dataformat-avro;2.13.2
+com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.13.2
+com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.13.2
+com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.13.2
+com.fasterxml.jackson.module:jackson-module-parameter-names;2.13.2
+com.fasterxml.jackson.module:jackson-module-scala_2.12;2.13.2
 com.github.spotbugs:spotbugs;4.2.2
 com.github.spotbugs:spotbugs-annotations;4.2.2
 com.github.spotbugs:spotbugs-maven-plugin;4.2.2
