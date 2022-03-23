@@ -5,13 +5,11 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.EntityCommonProperties;
 import com.azure.resourcemanager.securityinsights.models.ThreatIntelligenceExternalReference;
 import com.azure.resourcemanager.securityinsights.models.ThreatIntelligenceGranularMarkingModel;
 import com.azure.resourcemanager.securityinsights.models.ThreatIntelligenceKillChainPhase;
 import com.azure.resourcemanager.securityinsights.models.ThreatIntelligenceParsedPattern;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -20,8 +18,6 @@ import java.util.Map;
 /** Describes threat intelligence entity properties. */
 @Fluent
 public final class ThreatIntelligenceIndicatorProperties extends EntityCommonProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ThreatIntelligenceIndicatorProperties.class);
-
     /*
      * List of tags
      */

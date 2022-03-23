@@ -6,14 +6,11 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Action property bag base. */
 @Fluent
 public class ActionPropertiesBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ActionPropertiesBase.class);
-
     /*
      * Logic App Resource Id,
      * /subscriptions/{my-subscription}/resourceGroups/{my-resource-group}/providers/Microsoft.Logic/workflows/{my-workflow-id}.
@@ -50,10 +47,12 @@ public class ActionPropertiesBase {
      */
     public void validate() {
         if (logicAppResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property logicAppResourceId in model ActionPropertiesBase"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ActionPropertiesBase.class);
 }

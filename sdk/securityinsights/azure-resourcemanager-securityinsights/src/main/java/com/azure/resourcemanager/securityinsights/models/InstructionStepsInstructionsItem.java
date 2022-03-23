@@ -5,14 +5,10 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** The InstructionStepsInstructionsItem model. */
 @Fluent
 public final class InstructionStepsInstructionsItem extends ConnectorInstructionModelBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InstructionStepsInstructionsItem.class);
-
     /** {@inheritDoc} */
     @Override
     public InstructionStepsInstructionsItem withParameters(Object parameters) {
