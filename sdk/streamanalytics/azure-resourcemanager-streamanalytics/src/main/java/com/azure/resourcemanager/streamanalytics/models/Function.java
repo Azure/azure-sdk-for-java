@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.streamanalytics.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.streamanalytics.fluent.models.FunctionInner;
 
@@ -141,7 +142,7 @@ public interface Function {
     Function.Update update();
 
     /** The template for Function update. */
-    interface Update extends UpdateStages.WithProperties, UpdateStages.WithName, UpdateStages.WithifMatch {
+    interface Update extends UpdateStages.WithProperties, UpdateStages.WithName, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *
@@ -180,7 +181,7 @@ public interface Function {
             Update withName(String name);
         }
         /** The stage of the Function update allowing to specify ifMatch. */
-        interface WithifMatch {
+        interface WithIfMatch {
             /**
              * Specifies the ifMatch property: The ETag of the function. Omit this value to always overwrite the current
              * function. Specify the last-seen ETag value to prevent accidentally overwriting concurrent changes..
@@ -189,7 +190,7 @@ public interface Function {
              *     Specify the last-seen ETag value to prevent accidentally overwriting concurrent changes.
              * @return the next definition stage.
              */
-            Update ifMatch(String ifMatch);
+            Update withIfMatch(String ifMatch);
         }
     }
     /**
@@ -206,4 +207,70 @@ public interface Function {
      * @return the refreshed resource.
      */
     Function refresh(Context context);
+
+    /**
+     * Tests if the information provided for a function is valid. This can range from testing the connection to the
+     * underlying web service behind the function or making sure the function code provided is syntactically correct.
+     *
+     * @param function If the function specified does not already exist, this parameter must contain the full function
+     *     definition intended to be tested. If the function specified already exists, this parameter can be left null
+     *     to test the existing function as is or if specified, the properties specified will overwrite the
+     *     corresponding properties in the existing function (exactly like a PATCH operation) and the resulting function
+     *     will be tested.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes the status of the test operation along with error information, if applicable.
+     */
+    ResourceTestStatus test(FunctionInner function);
+
+    /**
+     * Tests if the information provided for a function is valid. This can range from testing the connection to the
+     * underlying web service behind the function or making sure the function code provided is syntactically correct.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes the status of the test operation along with error information, if applicable.
+     */
+    ResourceTestStatus test();
+
+    /**
+     * Tests if the information provided for a function is valid. This can range from testing the connection to the
+     * underlying web service behind the function or making sure the function code provided is syntactically correct.
+     *
+     * @param function If the function specified does not already exist, this parameter must contain the full function
+     *     definition intended to be tested. If the function specified already exists, this parameter can be left null
+     *     to test the existing function as is or if specified, the properties specified will overwrite the
+     *     corresponding properties in the existing function (exactly like a PATCH operation) and the resulting function
+     *     will be tested.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes the status of the test operation along with error information, if applicable.
+     */
+    ResourceTestStatus test(FunctionInner function, Context context);
+
+    /**
+     * Retrieves the default definition of a function based on the parameters specified.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a function object, containing all information associated with the named function.
+     */
+    Function retrieveDefaultDefinition();
+
+    /**
+     * Retrieves the default definition of a function based on the parameters specified.
+     *
+     * @param functionRetrieveDefaultDefinitionParameters Parameters used to specify the type of function to retrieve
+     *     the default definition for.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a function object, containing all information associated with the named function.
+     */
+    Response<Function> retrieveDefaultDefinitionWithResponse(
+        FunctionRetrieveDefaultDefinitionParameters functionRetrieveDefaultDefinitionParameters, Context context);
 }

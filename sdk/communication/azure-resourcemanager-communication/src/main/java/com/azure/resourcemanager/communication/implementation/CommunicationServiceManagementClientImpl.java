@@ -23,7 +23,6 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.communication.fluent.CommunicationServiceManagementClient;
 import com.azure.resourcemanager.communication.fluent.CommunicationServicesClient;
-import com.azure.resourcemanager.communication.fluent.OperationStatusesClient;
 import com.azure.resourcemanager.communication.fluent.OperationsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -136,18 +135,6 @@ public final class CommunicationServiceManagementClientImpl implements Communica
         return this.communicationServices;
     }
 
-    /** The OperationStatusesClient object to access its operations. */
-    private final OperationStatusesClient operationStatuses;
-
-    /**
-     * Gets the OperationStatusesClient object to access its operations.
-     *
-     * @return the OperationStatusesClient object.
-     */
-    public OperationStatusesClient getOperationStatuses() {
-        return this.operationStatuses;
-    }
-
     /**
      * Initializes an instance of CommunicationServiceManagementClient client.
      *
@@ -173,7 +160,6 @@ public final class CommunicationServiceManagementClientImpl implements Communica
         this.apiVersion = "2020-08-20";
         this.operations = new OperationsClientImpl(this);
         this.communicationServices = new CommunicationServicesClientImpl(this);
-        this.operationStatuses = new OperationStatusesClientImpl(this);
     }
 
     /**

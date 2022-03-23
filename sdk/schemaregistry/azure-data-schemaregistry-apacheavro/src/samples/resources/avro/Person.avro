@@ -1,0 +1,10 @@
+{
+    "namespace": "com.azure.data.schemaregistry.apacheavro.generatedtestsources",
+    "type": "record",
+    "name": "Person",
+    "fields": [
+        {"name":"name", "type": "string"},
+        {"name":"favourite_number", "type": ["int", "null"]},
+        {"name":"favourite_colour", "type": ["string", "null"]}
+  ]
+}

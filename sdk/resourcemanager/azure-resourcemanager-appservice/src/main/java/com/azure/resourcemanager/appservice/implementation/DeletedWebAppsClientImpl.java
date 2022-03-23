@@ -24,7 +24,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.DeletedWebAppsClient;
 import com.azure.resourcemanager.appservice.fluent.models.DeletedSiteInner;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DeletedWebAppsClient. */
 public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
-    private final ClientLogger logger = new ClientLogger(DeletedWebAppsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DeletedWebAppsService service;
 
@@ -122,7 +119,7 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of deleted apps.
+     * @return collection of deleted apps along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeletedSiteInner>> listSinglePageAsync() {
@@ -168,7 +165,7 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of deleted apps.
+     * @return collection of deleted apps along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeletedSiteInner>> listSinglePageAsync(Context context) {
@@ -209,7 +206,7 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of deleted apps.
+     * @return collection of deleted apps as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedSiteInner> listAsync() {
@@ -223,7 +220,7 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of deleted apps.
+     * @return collection of deleted apps as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DeletedSiteInner> listAsync(Context context) {
@@ -236,7 +233,7 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of deleted apps.
+     * @return collection of deleted apps as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedSiteInner> list() {
@@ -250,7 +247,7 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of deleted apps.
+     * @return collection of deleted apps as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedSiteInner> list(Context context) {
@@ -264,7 +261,7 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of deleted apps.
+     * @return collection of deleted apps along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeletedSiteInner>> listByLocationSinglePageAsync(String location) {
@@ -315,7 +312,7 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of deleted apps.
+     * @return collection of deleted apps along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeletedSiteInner>> listByLocationSinglePageAsync(String location, Context context) {
@@ -362,7 +359,7 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of deleted apps.
+     * @return collection of deleted apps as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedSiteInner> listByLocationAsync(String location) {
@@ -378,7 +375,7 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of deleted apps.
+     * @return collection of deleted apps as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DeletedSiteInner> listByLocationAsync(String location, Context context) {
@@ -394,7 +391,7 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of deleted apps.
+     * @return collection of deleted apps as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedSiteInner> listByLocation(String location) {
@@ -409,7 +406,7 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of deleted apps.
+     * @return collection of deleted apps as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedSiteInner> listByLocation(String location, Context context) {
@@ -424,7 +421,7 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted app.
+     * @return a deleted app along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedSiteInner>> getDeletedWebAppByLocationWithResponseAsync(
@@ -472,7 +469,7 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted app.
+     * @return a deleted app along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DeletedSiteInner>> getDeletedWebAppByLocationWithResponseAsync(
@@ -516,7 +513,7 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted app.
+     * @return a deleted app on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedSiteInner> getDeletedWebAppByLocationAsync(String location, String deletedSiteId) {
@@ -555,7 +552,7 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted app.
+     * @return a deleted app along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedSiteInner> getDeletedWebAppByLocationWithResponse(
@@ -570,7 +567,7 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of deleted apps.
+     * @return collection of deleted apps along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeletedSiteInner>> listNextSinglePageAsync(String nextLink) {
@@ -606,7 +603,7 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of deleted apps.
+     * @return collection of deleted apps along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeletedSiteInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -641,7 +638,7 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of deleted apps.
+     * @return collection of deleted apps along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeletedSiteInner>> listByLocationNextSinglePageAsync(String nextLink) {
@@ -677,7 +674,7 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of deleted apps.
+     * @return collection of deleted apps along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeletedSiteInner>> listByLocationNextSinglePageAsync(String nextLink, Context context) {

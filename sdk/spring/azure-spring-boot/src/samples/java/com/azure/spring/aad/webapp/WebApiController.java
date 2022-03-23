@@ -31,11 +31,13 @@ public class WebApiController {
      * @param client authorized client for webapiA
      * @return Response webapiA data.
      */
+    // BEGIN: readme-sample-webapiA
     @GetMapping("/webapp/webapiA/webapiB")
     @ResponseBody
     public String webapiA(@RegisteredOAuth2AuthorizedClient("webapiA") OAuth2AuthorizedClient client) {
         return canVisitUri(client, WEB_API_A_URI);
     }
+    // END: readme-sample-webapiA
 
     /**
      * Check whether webapiB/clientCredential is accessible.

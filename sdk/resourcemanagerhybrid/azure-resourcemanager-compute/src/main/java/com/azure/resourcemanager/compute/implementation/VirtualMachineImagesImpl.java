@@ -31,7 +31,7 @@ public class VirtualMachineImagesImpl implements VirtualMachineImages {
     @Override
     public VirtualMachineImage getImage(
         Region region, String publisherName, String offerName, String skuName, String version) {
-        if (version.equalsIgnoreCase("latest")) {
+        if ("latest".equalsIgnoreCase(version)) {
             List<VirtualMachineImageResourceInner> innerImages =
                 this.client.listWithResponse(region.name(), publisherName, offerName, skuName,
                     null, 1, "name desc", Context.NONE).getValue();
@@ -50,7 +50,7 @@ public class VirtualMachineImagesImpl implements VirtualMachineImages {
     @Override
     public VirtualMachineImage getImage(
         String region, String publisherName, String offerName, String skuName, String version) {
-        if (version.equalsIgnoreCase("latest")) {
+        if ("latest".equalsIgnoreCase(version)) {
             List<VirtualMachineImageResourceInner> innerImages =
                 this.client.listWithResponse(region, publisherName, offerName, skuName,
                     null, 1, "name desc", Context.NONE).getValue();

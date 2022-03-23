@@ -109,7 +109,7 @@ public final class AdvisorsClientImpl implements AdvisorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recommendation action advisor.
+     * @return a recommendation action advisor along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AdvisorInner>> getWithResponseAsync(
@@ -164,7 +164,7 @@ public final class AdvisorsClientImpl implements AdvisorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recommendation action advisor.
+     * @return a recommendation action advisor along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AdvisorInner>> getWithResponseAsync(
@@ -215,7 +215,7 @@ public final class AdvisorsClientImpl implements AdvisorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recommendation action advisor.
+     * @return a recommendation action advisor on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AdvisorInner> getAsync(String resourceGroupName, String serverName, String advisorName) {
@@ -256,7 +256,7 @@ public final class AdvisorsClientImpl implements AdvisorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recommendation action advisor.
+     * @return a recommendation action advisor along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AdvisorInner> getWithResponse(
@@ -272,7 +272,7 @@ public final class AdvisorsClientImpl implements AdvisorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of query statistics.
+     * @return a list of query statistics along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AdvisorInner>> listByServerSinglePageAsync(String resourceGroupName, String serverName) {
@@ -330,7 +330,7 @@ public final class AdvisorsClientImpl implements AdvisorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of query statistics.
+     * @return a list of query statistics along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AdvisorInner>> listByServerSinglePageAsync(
@@ -450,7 +450,7 @@ public final class AdvisorsClientImpl implements AdvisorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of query statistics.
+     * @return a list of query statistics along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AdvisorInner>> listByServerNextSinglePageAsync(String nextLink) {
@@ -486,7 +486,7 @@ public final class AdvisorsClientImpl implements AdvisorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of query statistics.
+     * @return a list of query statistics along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AdvisorInner>> listByServerNextSinglePageAsync(String nextLink, Context context) {

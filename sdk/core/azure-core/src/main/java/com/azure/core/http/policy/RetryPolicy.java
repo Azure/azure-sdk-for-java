@@ -26,7 +26,8 @@ import static com.azure.core.util.CoreUtils.isNullOrEmpty;
  * A pipeline policy that retries when a recoverable HTTP error or exception occurs.
  */
 public class RetryPolicy implements HttpPipelinePolicy {
-    private final ClientLogger logger = new ClientLogger(RetryPolicy.class);
+    // RetryPolicy is a commonly used policy, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(RetryPolicy.class);
 
     private final RetryStrategy retryStrategy;
     private final String retryAfterHeader;
@@ -88,6 +89,30 @@ public class RetryPolicy implements HttpPipelinePolicy {
         this(retryStrategy, null, null);
     }
 
+    /**
+     * Creates a {@link RetryPolicy} with the provided {@link RetryOptions}.
+     *
+     * @param retryOptions The {@link RetryOptions} used to configure this {@link RetryPolicy}.
+     * @throws NullPointerException If {@code retryOptions} is null.
+     */
+    public RetryPolicy(RetryOptions retryOptions) {
+        this(
+            getRetryStrategyFromOptions(
+                Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.")),
+            null, null);
+    }
+
+    private static RetryStrategy getRetryStrategyFromOptions(RetryOptions retryOptions) {
+        if (retryOptions.getExponentialBackoffOptions() != null) {
+            return new ExponentialBackoff(retryOptions.getExponentialBackoffOptions());
+        } else if (retryOptions.getFixedDelayOptions() != null) {
+            return new FixedDelay(retryOptions.getFixedDelayOptions());
+        } else {
+            // This should never happen.
+            throw new IllegalArgumentException("'retryOptions' didn't define any retry strategy options");
+        }
+    }
+
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return attemptAsync(context, next, context.getHttpRequest(), 0);
@@ -102,7 +127,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
                 if (shouldRetry(httpResponse, tryCount)) {
                     final Duration delayDuration = determineDelayDuration(httpResponse, tryCount, retryStrategy,
                         retryAfterHeader, retryAfterTimeUnit);
-                    logger.verbose("[Retrying] Try count: {}, Delay duration in seconds: {}", tryCount,
+                    LOGGER.verbose("[Retrying] Try count: {}, Delay duration in seconds: {}", tryCount,
                         delayDuration.getSeconds());
 
                     Flux<ByteBuffer> responseBody = httpResponse.getBody();
@@ -117,18 +142,18 @@ public class RetryPolicy implements HttpPipelinePolicy {
                     }
                 } else {
                     if (tryCount >= retryStrategy.getMaxRetries()) {
-                        logger.info("Retry attempts have been exhausted after {} attempts.", tryCount);
+                        LOGGER.info("Retry attempts have been exhausted after {} attempts.", tryCount);
                     }
                     return Mono.just(httpResponse);
                 }
             })
             .onErrorResume(err -> {
                 if (shouldRetryException(err, tryCount)) {
-                    logger.verbose("[Error Resume] Try count: {}, Error: {}", tryCount, err);
+                    LOGGER.verbose("[Error Resume] Try count: {}, Error: {}", tryCount, err);
                     return attemptAsync(context, next, originalHttpRequest, tryCount + 1)
                         .delaySubscription(retryStrategy.calculateRetryDelay(tryCount));
                 } else {
-                    logger.info("Retry attempts have been exhausted after {} attempts.", tryCount, err);
+                    LOGGER.info("Retry attempts have been exhausted after {} attempts.", tryCount, err);
                     return Mono.error(err);
                 }
             });

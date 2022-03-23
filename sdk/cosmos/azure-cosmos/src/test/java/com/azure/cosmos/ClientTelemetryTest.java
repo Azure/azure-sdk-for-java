@@ -126,12 +126,20 @@ public class ClientTelemetryTest extends TestSuiteBase {
         cosmosContainer.deleteItem(internalObjectNode.getId(), new PartitionKey(internalObjectNode.getId()),
             new CosmosItemRequestOptions()); // delete operation
 
+        readClientTelemetry(clientTelemetry);
         //Verifying above 5 operation, we should have 10 operation (5 latency, 5 request charge)
         String json = Utils.getSimpleObjectMapper().writeValueAsString(clientTelemetry);
         if(cosmosClient.asyncClient().getConnectionPolicy().getConnectionMode().equals(ConnectionMode.GATEWAY)) {
            validateCTJsonFields(json, true, true);
         } else {
             validateCTJsonFields(json, false, false);
+            assertThat(clientTelemetry.getClientTelemetryInfo().getSystemInfoMap().size()).isEqualTo(3);
+            for(ReportPayload reportPayload : clientTelemetry.getClientTelemetryInfo().getSystemInfoMap().keySet()) {
+                if(reportPayload.getMetricInfo().getMetricsName().equals(ClientTelemetry.TCP_NEW_CHANNEL_LATENCY_NAME)) {
+                    //Validate that we have open at least 1 channel
+                    assertThat(reportPayload.getMetricInfo().getCount()).isGreaterThanOrEqualTo(1);
+                }
+            }
         }
 
         assertThat(clientTelemetry.getClientTelemetryInfo().getOperationInfoMap().size()).isEqualTo(10);
@@ -236,6 +244,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
         String databaseId = UUID.randomUUID().toString();
         try {
             String whiteListedAccountForTelemetry = System.getProperty("COSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT");
+            assertThat(whiteListedAccountForTelemetry).isNotNull();
             String[] credentialList = whiteListedAccountForTelemetry.split(";");
             String host = credentialList[0].substring("AccountEndpoint=".length());
             String key = credentialList[1].substring("AccountKey=".length());
@@ -287,7 +296,9 @@ public class ClientTelemetryTest extends TestSuiteBase {
                 return httpResponse.statusCode() == HttpConstants.StatusCodes.OK;
             }).verifyComplete();
         } finally {
-            cosmosClient.getDatabase(databaseId).delete();
+            if (cosmosClient != null) {
+                cosmosClient.getDatabase(databaseId).delete();
+            }
             safeCloseSyncClient(cosmosClient);
         }
     }

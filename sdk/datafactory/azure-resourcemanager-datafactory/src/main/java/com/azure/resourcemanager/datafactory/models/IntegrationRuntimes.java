@@ -18,7 +18,7 @@ public interface IntegrationRuntimes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration runtime resources.
+     * @return a list of integration runtime resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IntegrationRuntimeResource> listByFactory(String resourceGroupName, String factoryName);
 
@@ -31,7 +31,7 @@ public interface IntegrationRuntimes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration runtime resources.
+     * @return a list of integration runtime resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IntegrationRuntimeResource> listByFactory(
         String resourceGroupName, String factoryName, Context context);
@@ -61,7 +61,7 @@ public interface IntegrationRuntimes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration runtime.
+     * @return an integration runtime along with {@link Response}.
      */
     Response<IntegrationRuntimeResource> getWithResponse(
         String resourceGroupName,
@@ -92,7 +92,7 @@ public interface IntegrationRuntimes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String factoryName, String integrationRuntimeName, Context context);
@@ -121,7 +121,7 @@ public interface IntegrationRuntimes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed status information for an integration runtime.
+     * @return detailed status information for an integration runtime along with {@link Response}.
      */
     Response<IntegrationRuntimeStatusResponse> getStatusWithResponse(
         String resourceGroupName, String factoryName, String integrationRuntimeName, Context context);
@@ -150,7 +150,8 @@ public interface IntegrationRuntimes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     * @return the list of outbound network dependencies for a given Azure-SSIS integration runtime along with {@link
+     *     Response}.
      */
     Response<IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse>
         listOutboundNetworkDependenciesEndpointsWithResponse(
@@ -184,7 +185,7 @@ public interface IntegrationRuntimes {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the on-premises integration runtime connection information for encrypting the on-premises data source
-     *     credentials.
+     *     credentials along with {@link Response}.
      */
     Response<IntegrationRuntimeConnectionInfo> getConnectionInfoWithResponse(
         String resourceGroupName, String factoryName, String integrationRuntimeName, Context context);
@@ -218,7 +219,7 @@ public interface IntegrationRuntimes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration runtime authentication keys.
+     * @return the integration runtime authentication keys along with {@link Response}.
      */
     Response<IntegrationRuntimeAuthKeys> regenerateAuthKeyWithResponse(
         String resourceGroupName,
@@ -251,7 +252,7 @@ public interface IntegrationRuntimes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration runtime authentication keys.
+     * @return the integration runtime authentication keys along with {@link Response}.
      */
     Response<IntegrationRuntimeAuthKeys> listAuthKeysWithResponse(
         String resourceGroupName, String factoryName, String integrationRuntimeName, Context context);
@@ -337,7 +338,7 @@ public interface IntegrationRuntimes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> syncCredentialsWithResponse(
         String resourceGroupName, String factoryName, String integrationRuntimeName, Context context);
@@ -370,7 +371,7 @@ public interface IntegrationRuntimes {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the integration runtime monitoring data, which includes the monitor data for all the nodes under this
-     *     integration runtime.
+     *     integration runtime along with {@link Response}.
      */
     Response<IntegrationRuntimeMonitoringData> getMonitoringDataWithResponse(
         String resourceGroupName, String factoryName, String integrationRuntimeName, Context context);
@@ -397,7 +398,7 @@ public interface IntegrationRuntimes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> upgradeWithResponse(
         String resourceGroupName, String factoryName, String integrationRuntimeName, Context context);
@@ -430,7 +431,7 @@ public interface IntegrationRuntimes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> removeLinksWithResponse(
         String resourceGroupName,
@@ -468,7 +469,7 @@ public interface IntegrationRuntimes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime status response.
+     * @return integration runtime status response along with {@link Response}.
      */
     Response<IntegrationRuntimeStatusResponse> createLinkedIntegrationRuntimeWithResponse(
         String resourceGroupName,
@@ -484,7 +485,7 @@ public interface IntegrationRuntimes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration runtime.
+     * @return an integration runtime along with {@link Response}.
      */
     IntegrationRuntimeResource getById(String id);
 
@@ -498,7 +499,7 @@ public interface IntegrationRuntimes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration runtime.
+     * @return an integration runtime along with {@link Response}.
      */
     Response<IntegrationRuntimeResource> getByIdWithResponse(String id, String ifNoneMatch, Context context);
 
@@ -520,7 +521,7 @@ public interface IntegrationRuntimes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

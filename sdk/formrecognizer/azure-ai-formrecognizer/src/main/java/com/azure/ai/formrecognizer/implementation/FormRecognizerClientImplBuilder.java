@@ -192,7 +192,7 @@ public final class FormRecognizerClientImplBuilder {
      */
     public FormRecognizerClientImpl buildClient() {
         if (apiVersion == null) {
-            this.apiVersion = "2021-09-30-preview";
+            this.apiVersion = "2022-01-30-preview";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();

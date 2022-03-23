@@ -63,18 +63,34 @@ public abstract class AbstractAzureListenerEndpoint implements AzureListenerEndp
         return getEndpointDescription().toString();
     }
 
+    /**
+     * Get the destination.
+     * @return the destination.
+     */
     public String getDestination() {
         return destination;
     }
 
+    /**
+     * Set the destination.
+     * @param destination the destination.
+     */
     public void setDestination(String destination) {
         this.destination = destination;
     }
 
+    /**
+     * Get the group for the corresponding listener container.
+     * @return the group for the corresponding listener container.
+     */
     public String getGroup() {
         return group;
     }
 
+    /**
+     * Set the group for the corresponding listener container.
+     * @param group the group for the corresponding listener container.
+     */
     public void setGroup(String group) {
         this.group = group;
     }
@@ -84,14 +100,26 @@ public abstract class AbstractAzureListenerEndpoint implements AzureListenerEndp
         return id;
     }
 
+    /**
+     * Set the id of this endpoint.
+     * @param id the id of this endpoint.
+     */
     public void setId(String id) {
         this.id = id;
     }
 
+    /**
+     * Set the concurrency expression.
+     * @param concurrency the concurrency expression.
+     */
     public void setConcurrency(String concurrency) {
         this.concurrency = concurrency;
     }
 
+    /**
+     * Get the concurrency expression.
+     * @return the concurrency expression.
+     */
     public String getConcurrency() {
         return concurrency;
     }

@@ -18,6 +18,7 @@ import reactor.core.publisher.Mono;
 import javax.annotation.PostConstruct;
 import java.util.Optional;
 
+// BEGIN: readme-sample-CosmosSampleApplication
 @SpringBootApplication
 public class CosmosSampleApplication implements CommandLineRunner {
 
@@ -114,3 +115,4 @@ public class CosmosSampleApplication implements CommandLineRunner {
         this.repository.deleteAll().block();
     }
 }
+// END: readme-sample-CosmosSampleApplication

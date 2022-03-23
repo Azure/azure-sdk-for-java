@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Webhooks ListEvents. */
 public final class WebhooksListEventsSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-12-01-preview/examples/WebhookListEvents.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/WebhookListEvents.json
      */
     /**
      * Sample code: WebhookListEvents.

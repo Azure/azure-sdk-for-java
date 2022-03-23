@@ -21,6 +21,9 @@ import com.azure.resourcemanager.compute.models.BillingProfile;
 import com.azure.resourcemanager.compute.models.BootDiagnostics;
 import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.DiagnosticsProfile;
+import com.azure.resourcemanager.compute.models.DiffDiskOptions;
+import com.azure.resourcemanager.compute.models.DiffDiskPlacement;
+import com.azure.resourcemanager.compute.models.DiffDiskSettings;
 import com.azure.resourcemanager.compute.models.DiskCreateOptionTypes;
 import com.azure.resourcemanager.compute.models.ImageReference;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
@@ -380,14 +383,24 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
+    public boolean isEphemeralOSDisk() {
+        return this.innerModel() != null
+            && this.innerModel().virtualMachineProfile() != null
+            && this.innerModel().virtualMachineProfile().storageProfile() != null
+            && this.innerModel().virtualMachineProfile().storageProfile().osDisk() != null
+            && this.innerModel().virtualMachineProfile().storageProfile().osDisk().diffDiskSettings() != null
+            && this.innerModel().virtualMachineProfile().storageProfile().osDisk().diffDiskSettings().placement() != null;
+    }
+
+    @Override
     public UpgradeMode upgradeModel() {
-        // upgradePolicy is a required property so no null check
-        return this.innerModel().upgradePolicy().mode();
+        // flexible vmss won't have an upgrade mode
+        return this.innerModel().upgradePolicy() == null ? null : this.innerModel().upgradePolicy().mode();
     }
 
     @Override
     public boolean overProvisionEnabled() {
-        return this.innerModel().overprovision();
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().overprovision());
     }
 
     @Override
@@ -397,6 +410,9 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public int capacity() {
+        if (isVMProfileNotSet()) {
+            return 0;
+        }
         return ResourceManagerUtils.toPrimitiveInt(this.innerModel().sku().capacity());
     }
 
@@ -1151,6 +1167,19 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
+    public VirtualMachineScaleSetImpl withEphemeralOSDisk() {
+        if (isVMProfileNotSet()) {
+            return this;
+        }
+        initVMProfileIfNecessary();
+        VirtualMachineScaleSetOSDisk disk = this.innerModel().virtualMachineProfile().storageProfile().osDisk();
+        disk.withCaching(CachingTypes.READ_ONLY);
+        disk.withDiffDiskSettings(new DiffDiskSettings());
+        disk.diffDiskSettings().withOption(DiffDiskOptions.LOCAL);
+        return this;
+    }
+
+    @Override
     public VirtualMachineScaleSetImpl withComputerNamePrefix(String namePrefix) {
         initVMProfileIfNecessary();
         this.innerModel().virtualMachineProfile().osProfile().withComputerNamePrefix(namePrefix);
@@ -1607,7 +1636,7 @@ public class VirtualMachineScaleSetImpl
         // support flexible vmss with no profile
         if (this.orchestrationMode() == OrchestrationMode.FLEXIBLE
             // presence of sku indicates that the vm profile is not null, otherwise, vm profile is null.
-            && this.innerModel().sku() == null) {
+            && isVMProfileNotSet()) {
             return createInnerNoProfile();
         }
         if (this.shouldSetProfileDefaults()) {
@@ -1722,8 +1751,13 @@ public class VirtualMachineScaleSetImpl
     }
 
 
+
     // Helpers
     //
+
+    private boolean isVMProfileNotSet() {
+        return this.innerModel().sku() == null;
+    }
 
     private void adjustProfileForFlexibleMode() {
         if (this.orchestrationMode() == OrchestrationMode.FLEXIBLE) {
@@ -1745,6 +1779,7 @@ public class VirtualMachineScaleSetImpl
                 .withNetworkApiVersion(NetworkApiVersion.TWO_ZERO_TWO_ZERO_ONE_ONE_ZERO_ONE);
         }
     }
+
     private Mono<VirtualMachineScaleSetInner> createInnerNoProfile() {
         this.innerModel().withVirtualMachineProfile(null);
         return manager()
@@ -2283,7 +2318,11 @@ public class VirtualMachineScaleSetImpl
 
     private static void associateBackEndsToIpConfiguration(
         String loadBalancerId, VirtualMachineScaleSetIpConfiguration ipConfig, String... backendNames) {
+        if (ipConfig == null || ipConfig.loadBalancerBackendAddressPools() == null) {
+            return;
+        }
         List<SubResource> backendSubResourcesToAssociate = new ArrayList<>();
+
         for (String backendName : backendNames) {
             String backendPoolId = mergePath(loadBalancerId, "backendAddressPools", backendName);
             boolean found = false;
@@ -2327,6 +2366,9 @@ public class VirtualMachineScaleSetImpl
 
     private static Map<String, LoadBalancerBackend> getBackendsAssociatedWithIpConfiguration(
         LoadBalancer loadBalancer, VirtualMachineScaleSetIpConfiguration ipConfig) {
+        if (ipConfig == null || ipConfig.loadBalancerBackendAddressPools() == null) {
+            return Collections.emptyMap();
+        }
         String loadBalancerId = loadBalancer.id();
         Map<String, LoadBalancerBackend> attachedBackends = new HashMap<>();
         Map<String, LoadBalancerBackend> lbBackends = loadBalancer.backends();
@@ -2343,6 +2385,9 @@ public class VirtualMachineScaleSetImpl
 
     private static Map<String, LoadBalancerInboundNatPool> getInboundNatPoolsAssociatedWithIpConfiguration(
         LoadBalancer loadBalancer, VirtualMachineScaleSetIpConfiguration ipConfig) {
+        if (ipConfig == null || ipConfig.loadBalancerInboundNatPools() == null) {
+            return Collections.emptyMap();
+        }
         String loadBalancerId = loadBalancer.id();
         Map<String, LoadBalancerInboundNatPool> attachedInboundNatPools = new HashMap<>();
         Map<String, LoadBalancerInboundNatPool> lbInboundNatPools = loadBalancer.inboundNatPools();
@@ -2388,6 +2433,9 @@ public class VirtualMachineScaleSetImpl
 
     private static void removeAllBackendAssociationFromIpConfiguration(
         LoadBalancer loadBalancer, VirtualMachineScaleSetIpConfiguration ipConfig) {
+        if (ipConfig == null || ipConfig.loadBalancerBackendAddressPools() == null) {
+            return;
+        }
         List<SubResource> toRemove = new ArrayList<>();
         for (SubResource subResource : ipConfig.loadBalancerBackendAddressPools()) {
             if (subResource
@@ -2405,6 +2453,9 @@ public class VirtualMachineScaleSetImpl
 
     private static void removeAllInboundNatPoolAssociationFromIpConfiguration(
         LoadBalancer loadBalancer, VirtualMachineScaleSetIpConfiguration ipConfig) {
+        if (ipConfig == null || ipConfig.loadBalancerInboundNatPools() == null) {
+            return;
+        }
         List<SubResource> toRemove = new ArrayList<>();
         for (SubResource subResource : ipConfig.loadBalancerInboundNatPools()) {
             if (subResource
@@ -2422,6 +2473,9 @@ public class VirtualMachineScaleSetImpl
 
     private static void removeBackendsFromIpConfiguration(
         String loadBalancerId, VirtualMachineScaleSetIpConfiguration ipConfig, String... backendNames) {
+        if (ipConfig == null || ipConfig.loadBalancerBackendAddressPools() == null) {
+            return;
+        }
         List<SubResource> toRemove = new ArrayList<>();
         for (String backendName : backendNames) {
             String backendPoolId = mergePath(loadBalancerId, "backendAddressPools", backendName);
@@ -2440,6 +2494,9 @@ public class VirtualMachineScaleSetImpl
 
     private static void removeInboundNatPoolsFromIpConfiguration(
         String loadBalancerId, VirtualMachineScaleSetIpConfiguration ipConfig, String... inboundNatPoolNames) {
+        if (ipConfig == null || ipConfig.loadBalancerInboundNatPools() == null) {
+            return;
+        }
         List<SubResource> toRemove = new ArrayList<>();
         for (String natPoolName : inboundNatPoolNames) {
             String inboundNatPoolId = mergePath(loadBalancerId, "inboundNatPools", natPoolName);
@@ -2927,6 +2984,12 @@ public class VirtualMachineScaleSetImpl
     public VirtualMachineScaleSetImpl withPlan(PurchasePlan plan) {
         this.innerModel().withPlan(new Plan());
         this.innerModel().plan().withPublisher(plan.publisher()).withProduct(plan.product()).withName(plan.name());
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withPlacement(DiffDiskPlacement placement) {
+        this.innerModel().virtualMachineProfile().storageProfile().osDisk().diffDiskSettings().withPlacement(placement);
         return this;
     }
 

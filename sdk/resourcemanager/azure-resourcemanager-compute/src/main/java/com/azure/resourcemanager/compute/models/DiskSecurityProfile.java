@@ -5,20 +5,23 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Contains the security related information for the resource. */
 @Fluent
 public final class DiskSecurityProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskSecurityProfile.class);
-
     /*
      * Specifies the SecurityType of the VM. Applicable for OS disks only.
      */
     @JsonProperty(value = "securityType")
     private DiskSecurityTypes securityType;
+
+    /*
+     * ResourceId of the disk encryption set associated to Confidential VM
+     * supported disk encrypted with customer managed key
+     */
+    @JsonProperty(value = "secureVMDiskEncryptionSetId")
+    private String secureVMDiskEncryptionSetId;
 
     /**
      * Get the securityType property: Specifies the SecurityType of the VM. Applicable for OS disks only.
@@ -37,6 +40,28 @@ public final class DiskSecurityProfile {
      */
     public DiskSecurityProfile withSecurityType(DiskSecurityTypes securityType) {
         this.securityType = securityType;
+        return this;
+    }
+
+    /**
+     * Get the secureVMDiskEncryptionSetId property: ResourceId of the disk encryption set associated to Confidential VM
+     * supported disk encrypted with customer managed key.
+     *
+     * @return the secureVMDiskEncryptionSetId value.
+     */
+    public String secureVMDiskEncryptionSetId() {
+        return this.secureVMDiskEncryptionSetId;
+    }
+
+    /**
+     * Set the secureVMDiskEncryptionSetId property: ResourceId of the disk encryption set associated to Confidential VM
+     * supported disk encrypted with customer managed key.
+     *
+     * @param secureVMDiskEncryptionSetId the secureVMDiskEncryptionSetId value to set.
+     * @return the DiskSecurityProfile object itself.
+     */
+    public DiskSecurityProfile withSecureVMDiskEncryptionSetId(String secureVMDiskEncryptionSetId) {
+        this.secureVMDiskEncryptionSetId = secureVMDiskEncryptionSetId;
         return this;
     }
 

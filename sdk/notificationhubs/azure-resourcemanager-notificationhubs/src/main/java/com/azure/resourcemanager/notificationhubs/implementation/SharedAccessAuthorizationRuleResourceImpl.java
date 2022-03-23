@@ -13,7 +13,6 @@ import com.azure.resourcemanager.notificationhubs.models.AccessRights;
 import com.azure.resourcemanager.notificationhubs.models.PolicykeyResource;
 import com.azure.resourcemanager.notificationhubs.models.ResourceListKeys;
 import com.azure.resourcemanager.notificationhubs.models.SharedAccessAuthorizationRuleCreateOrUpdateParameters;
-import com.azure.resourcemanager.notificationhubs.models.SharedAccessAuthorizationRuleListResult;
 import com.azure.resourcemanager.notificationhubs.models.SharedAccessAuthorizationRuleResource;
 import com.azure.resourcemanager.notificationhubs.models.Sku;
 import java.util.Collections;
@@ -218,11 +217,11 @@ public final class SharedAccessAuthorizationRuleResourceImpl
         return this;
     }
 
-    public SharedAccessAuthorizationRuleListResult listKeys() {
+    public ResourceListKeys listKeys() {
         return serviceManager.namespaces().listKeys(resourceGroupName, namespaceName, authorizationRuleName);
     }
 
-    public Response<SharedAccessAuthorizationRuleListResult> listKeysWithResponse(Context context) {
+    public Response<ResourceListKeys> listKeysWithResponse(Context context) {
         return serviceManager
             .namespaces()
             .listKeysWithResponse(resourceGroupName, namespaceName, authorizationRuleName, context);

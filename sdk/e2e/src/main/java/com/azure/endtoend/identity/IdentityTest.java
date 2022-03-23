@@ -22,7 +22,7 @@ public class IdentityTest {
      */
     public static void main(String[] args) throws IllegalStateException {
         if (CoreUtils.isNullOrEmpty(CONFIGURATION.get(AZURE_IDENTITY_TEST_PLATFORM))) {
-            throw new IllegalStateException("Identity Test platform is not set. Set environemnt "
+            throw new IllegalStateException("Identity Test platform is not set. Set environment "
                                                                + "variable AZURE_IDENTITY_TEST_PLATFORM to webjobs");
         }
 

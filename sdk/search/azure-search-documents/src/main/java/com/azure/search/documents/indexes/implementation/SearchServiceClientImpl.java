@@ -146,6 +146,18 @@ public final class SearchServiceClientImpl {
         return this.indexes;
     }
 
+    /** The AliasesImpl object to access its operations. */
+    private final AliasesImpl aliases;
+
+    /**
+     * Gets the AliasesImpl object to access its operations.
+     *
+     * @return the AliasesImpl object.
+     */
+    public AliasesImpl getAliases() {
+        return this.aliases;
+    }
+
     /**
      * Initializes an instance of SearchServiceClient client.
      *
@@ -192,6 +204,7 @@ public final class SearchServiceClientImpl {
         this.skillsets = new SkillsetsImpl(this);
         this.synonymMaps = new SynonymMapsImpl(this);
         this.indexes = new IndexesImpl(this);
+        this.aliases = new AliasesImpl(this);
         this.service =
                 RestProxy.create(SearchServiceClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
@@ -222,7 +235,8 @@ public final class SearchServiceClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service level statistics for a search service.
+     * @return service level statistics for a search service along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchServiceStatistics>> getServiceStatisticsWithResponseAsync(

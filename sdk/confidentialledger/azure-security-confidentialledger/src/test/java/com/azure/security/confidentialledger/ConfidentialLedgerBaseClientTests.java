@@ -36,8 +36,7 @@ public class ConfidentialLedgerBaseClientTests extends ConfidentialLedgerClientT
     }
 
     @Test
-    public void getLedgerEntries()
-    {
+    public void getLedgerEntries() {
         DynamicResponse response = client.getLedgerEntries().send();
 
         assertEquals(200, response.getStatusCode());

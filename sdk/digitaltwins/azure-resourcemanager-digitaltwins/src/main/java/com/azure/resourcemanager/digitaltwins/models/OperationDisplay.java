@@ -15,25 +15,25 @@ public final class OperationDisplay {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplay.class);
 
     /*
-     * Service provider: Microsoft DigitalTwins
+     * Service provider: Microsoft DigitalTwins.
      */
     @JsonProperty(value = "provider", access = JsonProperty.Access.WRITE_ONLY)
     private String provider;
 
     /*
-     * Resource Type: DigitalTwinsInstances
+     * Resource Type: DigitalTwinsInstances.
      */
     @JsonProperty(value = "resource", access = JsonProperty.Access.WRITE_ONLY)
     private String resource;
 
     /*
-     * Name of the operation
+     * Name of the operation.
      */
     @JsonProperty(value = "operation", access = JsonProperty.Access.WRITE_ONLY)
     private String operation;
 
     /*
-     * Friendly description for the operation,
+     * Friendly description for the operation.
      */
     @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
@@ -66,7 +66,7 @@ public final class OperationDisplay {
     }
 
     /**
-     * Get the description property: Friendly description for the operation,.
+     * Get the description property: Friendly description for the operation.
      *
      * @return the description value.
      */

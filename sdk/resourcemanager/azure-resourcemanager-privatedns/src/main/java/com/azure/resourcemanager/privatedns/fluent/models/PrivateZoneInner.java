@@ -5,17 +5,16 @@
 package com.azure.resourcemanager.privatedns.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.privatedns.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Describes a Private DNS zone. */
-@JsonFlatten
 @Fluent
-public class PrivateZoneInner extends Resource {
+public final class PrivateZoneInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateZoneInner.class);
 
     /*
@@ -25,62 +24,10 @@ public class PrivateZoneInner extends Resource {
     private String etag;
 
     /*
-     * The maximum number of record sets that can be created in this Private
-     * DNS zone. This is a read-only property and any attempt to set this value
-     * will be ignored.
+     * Properties of the Private DNS zone.
      */
-    @JsonProperty(value = "properties.maxNumberOfRecordSets", access = JsonProperty.Access.WRITE_ONLY)
-    private Long maxNumberOfRecordSets;
-
-    /*
-     * The current number of record sets in this Private DNS zone. This is a
-     * read-only property and any attempt to set this value will be ignored.
-     */
-    @JsonProperty(value = "properties.numberOfRecordSets", access = JsonProperty.Access.WRITE_ONLY)
-    private Long numberOfRecordSets;
-
-    /*
-     * The maximum number of virtual networks that can be linked to this
-     * Private DNS zone. This is a read-only property and any attempt to set
-     * this value will be ignored.
-     */
-    @JsonProperty(value = "properties.maxNumberOfVirtualNetworkLinks", access = JsonProperty.Access.WRITE_ONLY)
-    private Long maxNumberOfVirtualNetworkLinks;
-
-    /*
-     * The current number of virtual networks that are linked to this Private
-     * DNS zone. This is a read-only property and any attempt to set this value
-     * will be ignored.
-     */
-    @JsonProperty(value = "properties.numberOfVirtualNetworkLinks", access = JsonProperty.Access.WRITE_ONLY)
-    private Long numberOfVirtualNetworkLinks;
-
-    /*
-     * The maximum number of virtual networks that can be linked to this
-     * Private DNS zone with registration enabled. This is a read-only property
-     * and any attempt to set this value will be ignored.
-     */
-    @JsonProperty(
-        value = "properties.maxNumberOfVirtualNetworkLinksWithRegistration",
-        access = JsonProperty.Access.WRITE_ONLY)
-    private Long maxNumberOfVirtualNetworkLinksWithRegistration;
-
-    /*
-     * The current number of virtual networks that are linked to this Private
-     * DNS zone with registration enabled. This is a read-only property and any
-     * attempt to set this value will be ignored.
-     */
-    @JsonProperty(
-        value = "properties.numberOfVirtualNetworkLinksWithRegistration",
-        access = JsonProperty.Access.WRITE_ONLY)
-    private Long numberOfVirtualNetworkLinksWithRegistration;
-
-    /*
-     * The provisioning state of the resource. This is a read-only property and
-     * any attempt to set this value will be ignored.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "properties")
+    private PrivateZoneProperties innerProperties;
 
     /**
      * Get the etag property: The ETag of the zone.
@@ -103,13 +50,36 @@ public class PrivateZoneInner extends Resource {
     }
 
     /**
+     * Get the innerProperties property: Properties of the Private DNS zone.
+     *
+     * @return the innerProperties value.
+     */
+    private PrivateZoneProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PrivateZoneInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PrivateZoneInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
      * Get the maxNumberOfRecordSets property: The maximum number of record sets that can be created in this Private DNS
      * zone. This is a read-only property and any attempt to set this value will be ignored.
      *
      * @return the maxNumberOfRecordSets value.
      */
     public Long maxNumberOfRecordSets() {
-        return this.maxNumberOfRecordSets;
+        return this.innerProperties() == null ? null : this.innerProperties().maxNumberOfRecordSets();
     }
 
     /**
@@ -119,7 +89,7 @@ public class PrivateZoneInner extends Resource {
      * @return the numberOfRecordSets value.
      */
     public Long numberOfRecordSets() {
-        return this.numberOfRecordSets;
+        return this.innerProperties() == null ? null : this.innerProperties().numberOfRecordSets();
     }
 
     /**
@@ -129,7 +99,7 @@ public class PrivateZoneInner extends Resource {
      * @return the maxNumberOfVirtualNetworkLinks value.
      */
     public Long maxNumberOfVirtualNetworkLinks() {
-        return this.maxNumberOfVirtualNetworkLinks;
+        return this.innerProperties() == null ? null : this.innerProperties().maxNumberOfVirtualNetworkLinks();
     }
 
     /**
@@ -139,7 +109,7 @@ public class PrivateZoneInner extends Resource {
      * @return the numberOfVirtualNetworkLinks value.
      */
     public Long numberOfVirtualNetworkLinks() {
-        return this.numberOfVirtualNetworkLinks;
+        return this.innerProperties() == null ? null : this.innerProperties().numberOfVirtualNetworkLinks();
     }
 
     /**
@@ -150,7 +120,9 @@ public class PrivateZoneInner extends Resource {
      * @return the maxNumberOfVirtualNetworkLinksWithRegistration value.
      */
     public Long maxNumberOfVirtualNetworkLinksWithRegistration() {
-        return this.maxNumberOfVirtualNetworkLinksWithRegistration;
+        return this.innerProperties() == null
+            ? null
+            : this.innerProperties().maxNumberOfVirtualNetworkLinksWithRegistration();
     }
 
     /**
@@ -161,7 +133,9 @@ public class PrivateZoneInner extends Resource {
      * @return the numberOfVirtualNetworkLinksWithRegistration value.
      */
     public Long numberOfVirtualNetworkLinksWithRegistration() {
-        return this.numberOfVirtualNetworkLinksWithRegistration;
+        return this.innerProperties() == null
+            ? null
+            : this.innerProperties().numberOfVirtualNetworkLinksWithRegistration();
     }
 
     /**
@@ -171,7 +145,7 @@ public class PrivateZoneInner extends Resource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -180,5 +154,8 @@ public class PrivateZoneInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

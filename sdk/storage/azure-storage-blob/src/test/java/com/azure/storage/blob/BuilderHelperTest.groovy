@@ -6,7 +6,9 @@ package com.azure.storage.blob
 import com.azure.core.credential.AzureSasCredential
 import com.azure.core.credential.TokenCredential
 import com.azure.core.http.*
+import com.azure.core.http.policy.FixedDelayOptions
 import com.azure.core.http.policy.HttpLogOptions
+import com.azure.core.http.policy.RetryOptions
 import com.azure.core.test.http.MockHttpResponse
 import com.azure.core.util.ClientOptions
 import com.azure.core.util.CoreUtils
@@ -24,10 +26,13 @@ import reactor.test.StepVerifier
 import spock.lang.Specification
 import spock.lang.Unroll
 
+import java.time.Duration
+
 class BuilderHelperTest extends Specification {
     static def credentials = new StorageSharedKeyCredential("accountName", "accountKey")
     static def endpoint = "https://account.blob.core.windows.net/"
     static def requestRetryOptions = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 2, 1000, 4000, null)
+    static def coreRetryOptions = new RetryOptions(new FixedDelayOptions(1, Duration.ofSeconds(2)))
 
     static HttpRequest request(String url) {
         return new HttpRequest(HttpMethod.HEAD, new URL(url), new HttpHeaders().put("Content-Length", "0"),
@@ -40,7 +45,7 @@ class BuilderHelperTest extends Specification {
     def "Fresh date applied on retry"() {
         when:
         def pipeline = BuilderHelper.buildPipeline(credentials, null, null, null,
-            endpoint, requestRetryOptions, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
+            endpoint, requestRetryOptions, null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
             new FreshDateTestClient(), new ArrayList<>(), new ArrayList<>(), null, new ClientLogger(BuilderHelperTest.class))
 
         then:
@@ -155,7 +160,7 @@ class BuilderHelperTest extends Specification {
     def "Custom application id in UA string"() {
         when:
         def pipeline = BuilderHelper.buildPipeline(credentials, null, null, null,
-            endpoint, new RequestRetryOptions(), new HttpLogOptions().setApplicationId(logOptionsUA), new ClientOptions().setApplicationId(clientOptionsUA),
+            endpoint, new RequestRetryOptions(), null, new HttpLogOptions().setApplicationId(logOptionsUA), new ClientOptions().setApplicationId(clientOptionsUA),
             new ApplicationIdUAStringTestClient(expectedUA), new ArrayList<>(), new ArrayList<>(), null, new ClientLogger(BuilderHelperTest.class))
 
         then:
@@ -313,7 +318,7 @@ class BuilderHelperTest extends Specification {
 
         when:
         def pipeline = BuilderHelper.buildPipeline(credentials, null, null, null,
-            endpoint, new RequestRetryOptions(), BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions().setHeaders(headers),
+            endpoint, new RequestRetryOptions(), null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions().setHeaders(headers),
             new ClientOptionsHeadersTestClient(headers), new ArrayList<>(), new ArrayList<>(), null, new ClientLogger(BuilderHelperTest.class))
 
         then:
@@ -653,6 +658,57 @@ class BuilderHelperTest extends Specification {
             .endpoint(endpoint + "?sig=foo")
             .credential(new AzureSasCredential("foo"))
             .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+    }
+
+    def "Only one retryOptions can be applied"() {
+        when:
+        new BlobServiceClientBuilder()
+            .endpoint(endpoint)
+            .credential(credentials)
+            .retryOptions(requestRetryOptions)
+            .retryOptions(coreRetryOptions)
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new BlobContainerClientBuilder()
+            .endpoint(endpoint)
+            .credential(credentials)
+            .containerName("foo")
+            .retryOptions(requestRetryOptions)
+            .retryOptions(coreRetryOptions)
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new BlobClientBuilder()
+            .endpoint(endpoint)
+            .credential(credentials)
+            .containerName("foo")
+            .blobName("foo")
+            .retryOptions(requestRetryOptions)
+            .retryOptions(coreRetryOptions)
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new SpecializedBlobClientBuilder()
+            .endpoint(endpoint)
+            .credential(credentials)
+            .containerName("foo")
+            .blobName("foo")
+            .retryOptions(requestRetryOptions)
+            .retryOptions(coreRetryOptions)
+            .buildBlockBlobClient()
 
         then:
         thrown(IllegalStateException.class)

@@ -12,7 +12,7 @@ import java.util.Arrays;
 /** Samples for Components Purge. */
 public final class ComponentsPurgeSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2018-05-01-preview/examples/ComponentsPurge.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-02-02/examples/ComponentsPurge.json
      */
     /**
      * Sample code: ComponentPurge.

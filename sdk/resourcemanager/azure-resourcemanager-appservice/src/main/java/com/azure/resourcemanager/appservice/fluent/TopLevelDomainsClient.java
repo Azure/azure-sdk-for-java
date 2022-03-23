@@ -23,7 +23,7 @@ public interface TopLevelDomainsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Top-level domains.
+     * @return collection of Top-level domains as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<TopLevelDomainInner> listAsync();
@@ -34,7 +34,7 @@ public interface TopLevelDomainsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Top-level domains.
+     * @return collection of Top-level domains as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<TopLevelDomainInner> list();
@@ -47,7 +47,7 @@ public interface TopLevelDomainsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Top-level domains.
+     * @return collection of Top-level domains as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<TopLevelDomainInner> list(Context context);
@@ -60,7 +60,7 @@ public interface TopLevelDomainsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a top level domain object.
+     * @return a top level domain object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<TopLevelDomainInner>> getWithResponseAsync(String name);
@@ -73,7 +73,7 @@ public interface TopLevelDomainsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a top level domain object.
+     * @return a top level domain object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<TopLevelDomainInner> getAsync(String name);
@@ -100,7 +100,7 @@ public interface TopLevelDomainsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a top level domain object.
+     * @return a top level domain object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<TopLevelDomainInner> getWithResponse(String name, Context context);
@@ -114,7 +114,7 @@ public interface TopLevelDomainsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of top-level domain legal agreements.
+     * @return collection of top-level domain legal agreements as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<TldLegalAgreementInner> listAgreementsAsync(String name, TopLevelDomainAgreementOption agreementOption);
@@ -128,7 +128,7 @@ public interface TopLevelDomainsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of top-level domain legal agreements.
+     * @return collection of top-level domain legal agreements as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<TldLegalAgreementInner> listAgreements(String name, TopLevelDomainAgreementOption agreementOption);
@@ -143,7 +143,7 @@ public interface TopLevelDomainsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of top-level domain legal agreements.
+     * @return collection of top-level domain legal agreements as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<TldLegalAgreementInner> listAgreements(

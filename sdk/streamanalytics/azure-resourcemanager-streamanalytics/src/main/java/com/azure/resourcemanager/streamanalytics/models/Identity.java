@@ -15,25 +15,25 @@ public class Identity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Identity.class);
 
     /*
-     * The tenantId property.
+     * The identity tenantId
      */
     @JsonProperty(value = "tenantId")
     private String tenantId;
 
     /*
-     * The principalId property.
+     * The identity principal ID
      */
     @JsonProperty(value = "principalId")
     private String principalId;
 
     /*
-     * The type property.
+     * The identity type
      */
     @JsonProperty(value = "type")
     private String type;
 
     /**
-     * Get the tenantId property: The tenantId property.
+     * Get the tenantId property: The identity tenantId.
      *
      * @return the tenantId value.
      */
@@ -42,7 +42,7 @@ public class Identity {
     }
 
     /**
-     * Set the tenantId property: The tenantId property.
+     * Set the tenantId property: The identity tenantId.
      *
      * @param tenantId the tenantId value to set.
      * @return the Identity object itself.
@@ -53,7 +53,7 @@ public class Identity {
     }
 
     /**
-     * Get the principalId property: The principalId property.
+     * Get the principalId property: The identity principal ID.
      *
      * @return the principalId value.
      */
@@ -62,7 +62,7 @@ public class Identity {
     }
 
     /**
-     * Set the principalId property: The principalId property.
+     * Set the principalId property: The identity principal ID.
      *
      * @param principalId the principalId value to set.
      * @return the Identity object itself.
@@ -73,7 +73,7 @@ public class Identity {
     }
 
     /**
-     * Get the type property: The type property.
+     * Get the type property: The identity type.
      *
      * @return the type value.
      */
@@ -82,7 +82,7 @@ public class Identity {
     }
 
     /**
-     * Set the type property: The type property.
+     * Set the type property: The identity type.
      *
      * @param type the type value to set.
      * @return the Identity object itself.

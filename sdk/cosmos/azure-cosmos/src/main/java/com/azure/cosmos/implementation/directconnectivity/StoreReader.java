@@ -717,6 +717,13 @@ public class StoreReader {
                 activityId = headerValue;
             }
 
+            String correlatedActivityId = "";
+            if ((headerValue =
+                storeResponse.getHeaderValue(HttpConstants.HttpHeaders.CORRELATED_ACTIVITY_ID)) != null) {
+
+                correlatedActivityId = headerValue;
+            }
+
             if ((headerValue = storeResponse.getHeaderValue(WFConstants.BackendHeaders.NUMBER_OF_READ_REGIONS)) != null) {
                 numberOfReadRegions = Integer.parseInt(headerValue);
             }
@@ -759,6 +766,7 @@ public class StoreReader {
                     /* quorumAckedLsn: */ quorumAckedLSN,
                     /* getRequestCharge: */ requestCharge,
                                             activityId,
+                                            correlatedActivityId,
                     /* currentReplicaSetSize: */ currentReplicaSetSize,
                     /* currentWriteQuorum: */ currentWriteQuorum,
                     /* isValid: */true,
@@ -772,6 +780,7 @@ public class StoreReader {
             Throwable unwrappedResponseExceptions = Exceptions.unwrap(responseException);
             CosmosException cosmosException = Utils.as(unwrappedResponseExceptions, CosmosException.class);
             String activityId = "";
+            String correlatedActivityId = "";
             if (cosmosException != null) {
                 long quorumAckedLSN = -1;
                 int currentReplicaSetSize = -1;
@@ -804,6 +813,13 @@ public class StoreReader {
                 headerValue = cosmosException.getResponseHeaders().get(HttpConstants.HttpHeaders.ACTIVITY_ID);
                 if (!Strings.isNullOrEmpty(headerValue)) {
                     activityId = headerValue;
+                }
+
+                headerValue = cosmosException
+                    .getResponseHeaders()
+                    .get(HttpConstants.HttpHeaders.CORRELATED_ACTIVITY_ID);
+                if (!Strings.isNullOrEmpty(headerValue)) {
+                    correlatedActivityId = headerValue;
                 }
 
                 headerValue = cosmosException.getResponseHeaders().get(WFConstants.BackendHeaders.NUMBER_OF_READ_REGIONS);
@@ -848,6 +864,7 @@ public class StoreReader {
                         /* quorumAckedLsn: */ quorumAckedLSN,
                         /* getRequestCharge: */ requestCharge,
                                                 activityId,
+                                                correlatedActivityId,
                         /* currentReplicaSetSize: */ currentReplicaSetSize,
                         /* currentWriteQuorum: */ currentWriteQuorum,
                         /* isValid: */!requiresValidLsn
@@ -864,12 +881,13 @@ public class StoreReader {
                 logger.error("Unexpected exception {} received while reading from store.", responseException.getMessage(), responseException);
                 return new StoreResult(
                         /* storeResponse: */ null,
-                        /* exception: */ new InternalServerErrorException(RMResources.InternalServerError),
+                        /* exception: */ new InternalServerErrorException(RMResources.InternalServerError, responseException),
                         /* partitionKeyRangeId: */ (String) null,
                         /* lsn: */ -1,
                         /* quorumAckedLsn: */ -1,
                         /* getRequestCharge: */ 0,
                          activityId,
+                         correlatedActivityId,
                         /* currentReplicaSetSize: */ 0,
                         /* currentWriteQuorum: */ 0,
                         /* isValid: */ false,

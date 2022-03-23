@@ -2,9 +2,11 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.config;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.microsoft.azure.spring.cloud.config.resource.AppConfigManagedIdentityProperties;
+import com.microsoft.azure.spring.cloud.config.resource.Connection;
+import com.microsoft.azure.spring.cloud.config.resource.ConnectionPool;
+import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
+import com.microsoft.azure.spring.cloud.config.stores.ConfigStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
@@ -18,11 +20,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-import com.microsoft.azure.spring.cloud.config.resource.AppConfigManagedIdentityProperties;
-import com.microsoft.azure.spring.cloud.config.resource.Connection;
-import com.microsoft.azure.spring.cloud.config.resource.ConnectionPool;
-import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
-import com.microsoft.azure.spring.cloud.config.stores.ConfigStore;
+import java.util.List;
+import java.util.Optional;
 
 @Configuration
 @EnableConfigurationProperties({ AppConfigurationProperties.class, AppConfigurationProviderProperties.class })

@@ -1,14 +1,28 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0-beta.3 (2022-03-15)
 
 ### Features Added
+- Added interfaces from `com.azure.core.client.traits` to `PhoneNumbersClientBuilder`
+- Added `retryOptions` to `PhoneNumbersClientBuilder`
+- Added environment variable `AZURE_USERAGENT_OVERRIDE`, that overrides the HTTP header `x-ms-useragent` on the tests
+- Upgraded `azure-communication-common` to 1.1.1
+- Upgraded `azure-identity` to 1.4.6
 
-### Breaking Changes
-
-### Bugs Fixed
+## 1.1.0-beta.2 (2022-02-17)
 
 ### Other Changes
+
+#### Dependency updates
+- Upgraded `azure-communication-common` to 1.0.8
+- Upgraded `azure-core` to 1.25.0
+- Upgraded `azure-identity` to 1.4.4
+
+## 1.1.0-beta.1 (2022-01-24)
+
+### Features Added
+- Users can now purchase United Kingdom (GB) toll free and geographic phone numbers for PSTN Calling
+- Users can now purchase Denmark (DK) toll free and geographic phone numbers for PSTN Calling
 
 ## 1.0.6 (2021-11-18)
 

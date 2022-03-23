@@ -10,9 +10,8 @@ import rx.Observable;
  * Operations for subscribing to a destination with a consumer group in a reactive way.
  *
  * @author Warren Zhu
- * @deprecated {@link rx} API will be dropped in version 4.0.0, please migrate to reactor API in
- * {@link SubscribeByGroupOperation}. From version 4.0.0, the reactor API support will be moved to
- * com.azure.spring.messaging.core.SubscribeByGroupOperation.
+ * @deprecated {@link SubscribeByGroupOperation} will be dropped in version 4.x and use
+ * com.azure.spring.eventhubs.core.EventHubsProcessorContainer and com.azure.spring.servicebus.core.ServiceBusProcessorContainer instead.
  */
 @Deprecated
 public interface RxSubscribeByGroupOperation extends Checkpointable {

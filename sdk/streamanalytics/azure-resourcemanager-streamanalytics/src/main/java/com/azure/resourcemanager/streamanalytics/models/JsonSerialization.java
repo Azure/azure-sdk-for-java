@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.streamanalytics.fluent.models.JsonSerializationProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,30 +17,26 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Json")
-@JsonFlatten
 @Fluent
-public class JsonSerialization extends Serialization {
+public final class JsonSerialization extends Serialization {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(JsonSerialization.class);
 
     /*
-     * Specifies the encoding of the incoming data in the case of input and the
-     * encoding of outgoing data in the case of output. Required on PUT
-     * (CreateOrReplace) requests.
+     * The properties that are associated with the JSON serialization type.
+     * Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "properties.encoding")
-    private Encoding encoding;
+    @JsonProperty(value = "properties")
+    private JsonSerializationProperties innerProperties;
 
-    /*
-     * This property only applies to JSON serialization of outputs only. It is
-     * not applicable to inputs. This property specifies the format of the JSON
-     * the output will be written in. The currently supported values are
-     * 'lineSeparated' indicating the output will be formatted by having each
-     * JSON object separated by a new line and 'array' indicating the output
-     * will be formatted as an array of JSON objects. Default value is
-     * 'lineSeparated' if left null.
+    /**
+     * Get the innerProperties property: The properties that are associated with the JSON serialization type. Required
+     * on PUT (CreateOrReplace) requests.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.format")
-    private JsonOutputSerializationFormat format;
+    private JsonSerializationProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the encoding property: Specifies the encoding of the incoming data in the case of input and the encoding of
@@ -49,7 +45,7 @@ public class JsonSerialization extends Serialization {
      * @return the encoding value.
      */
     public Encoding encoding() {
-        return this.encoding;
+        return this.innerProperties() == null ? null : this.innerProperties().encoding();
     }
 
     /**
@@ -60,7 +56,10 @@ public class JsonSerialization extends Serialization {
      * @return the JsonSerialization object itself.
      */
     public JsonSerialization withEncoding(Encoding encoding) {
-        this.encoding = encoding;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JsonSerializationProperties();
+        }
+        this.innerProperties().withEncoding(encoding);
         return this;
     }
 
@@ -74,7 +73,7 @@ public class JsonSerialization extends Serialization {
      * @return the format value.
      */
     public JsonOutputSerializationFormat format() {
-        return this.format;
+        return this.innerProperties() == null ? null : this.innerProperties().format();
     }
 
     /**
@@ -88,7 +87,10 @@ public class JsonSerialization extends Serialization {
      * @return the JsonSerialization object itself.
      */
     public JsonSerialization withFormat(JsonOutputSerializationFormat format) {
-        this.format = format;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JsonSerializationProperties();
+        }
+        this.innerProperties().withFormat(format);
         return this;
     }
 
@@ -100,5 +102,8 @@ public class JsonSerialization extends Serialization {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

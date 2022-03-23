@@ -35,3 +35,6 @@ extends:
       - name: azure-sdk-parent
         groupId: com.azure
         safeName: azuresdkparent
+      - name: azure-perf-test-parent
+        groupId: com.azure
+        safeName: azureperftestparent

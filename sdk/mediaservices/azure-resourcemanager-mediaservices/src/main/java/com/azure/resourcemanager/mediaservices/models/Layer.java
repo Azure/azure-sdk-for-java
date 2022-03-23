@@ -5,35 +5,14 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The encoder can be configured to produce video and/or images (thumbnails) at different resolutions, by specifying a
  * layer for each desired resolution. A layer represents the properties for the video or image at a resolution.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "@odata\\.type",
-    defaultImpl = Layer.class)
-@JsonTypeName("Layer")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "#Microsoft.Media.H265VideoLayer", value = H265VideoLayer.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Media.VideoLayer", value = VideoLayer.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Media.JpgLayer", value = JpgLayer.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Media.PngLayer", value = PngLayer.class)
-})
-@JsonFlatten
 @Fluent
 public class Layer {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Layer.class);
-
     /*
      * The width of the output video for this layer. The value can be absolute
      * (in pixels) or relative (in percentage). For example 50% means the

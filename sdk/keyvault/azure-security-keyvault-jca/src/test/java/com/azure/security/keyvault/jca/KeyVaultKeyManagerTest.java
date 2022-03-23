@@ -28,7 +28,7 @@ public class KeyVaultKeyManagerTest {
         PropertyConvertorUtils.addKeyVaultJcaProvider();
         KeyStore keyStore = PropertyConvertorUtils.getKeyVaultKeyStore();
         manager = new KeyVaultKeyManager(keyStore, null);
-        certificateName = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
+        certificateName = PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CERTIFICATE_NAME");
     }
 
     @Test

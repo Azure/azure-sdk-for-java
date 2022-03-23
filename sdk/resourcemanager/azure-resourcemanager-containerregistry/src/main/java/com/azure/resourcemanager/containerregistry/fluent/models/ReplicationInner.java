@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import com.azure.resourcemanager.containerregistry.models.Status;
+import com.azure.resourcemanager.containerregistry.models.ZoneRedundancy;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -106,6 +107,31 @@ public final class ReplicationInner extends Resource {
             this.innerProperties = new ReplicationProperties();
         }
         this.innerProperties().withRegionEndpointEnabled(regionEndpointEnabled);
+        return this;
+    }
+
+    /**
+     * Get the zoneRedundancy property: Whether or not zone redundancy is enabled for this container registry
+     * replication.
+     *
+     * @return the zoneRedundancy value.
+     */
+    public ZoneRedundancy zoneRedundancy() {
+        return this.innerProperties() == null ? null : this.innerProperties().zoneRedundancy();
+    }
+
+    /**
+     * Set the zoneRedundancy property: Whether or not zone redundancy is enabled for this container registry
+     * replication.
+     *
+     * @param zoneRedundancy the zoneRedundancy value to set.
+     * @return the ReplicationInner object itself.
+     */
+    public ReplicationInner withZoneRedundancy(ZoneRedundancy zoneRedundancy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ReplicationProperties();
+        }
+        this.innerProperties().withZoneRedundancy(zoneRedundancy);
         return this;
     }
 

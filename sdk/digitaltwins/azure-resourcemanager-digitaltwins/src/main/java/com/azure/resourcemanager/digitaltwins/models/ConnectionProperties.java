@@ -12,7 +12,7 @@ import java.util.List;
 
 /** The properties of a private endpoint connection. */
 @Fluent
-public class ConnectionProperties {
+public final class ConnectionProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionProperties.class);
 
     /*
@@ -22,7 +22,7 @@ public class ConnectionProperties {
     private ConnectionPropertiesProvisioningState provisioningState;
 
     /*
-     * The private endpoint property of a private endpoint connection.
+     * The private endpoint.
      */
     @JsonProperty(value = "privateEndpoint")
     private PrivateEndpoint privateEndpoint;
@@ -34,10 +34,10 @@ public class ConnectionProperties {
     private List<String> groupIds;
 
     /*
-     * The current state of a private endpoint connection.
+     * The connection state.
      */
     @JsonProperty(value = "privateLinkServiceConnectionState")
-    private ConnectionState privateLinkServiceConnectionState;
+    private ConnectionPropertiesPrivateLinkServiceConnectionState privateLinkServiceConnectionState;
 
     /**
      * Get the provisioningState property: The provisioning state.
@@ -49,7 +49,7 @@ public class ConnectionProperties {
     }
 
     /**
-     * Get the privateEndpoint property: The private endpoint property of a private endpoint connection.
+     * Get the privateEndpoint property: The private endpoint.
      *
      * @return the privateEndpoint value.
      */
@@ -58,7 +58,7 @@ public class ConnectionProperties {
     }
 
     /**
-     * Set the privateEndpoint property: The private endpoint property of a private endpoint connection.
+     * Set the privateEndpoint property: The private endpoint.
      *
      * @param privateEndpoint the privateEndpoint value to set.
      * @return the ConnectionProperties object itself.
@@ -89,22 +89,22 @@ public class ConnectionProperties {
     }
 
     /**
-     * Get the privateLinkServiceConnectionState property: The current state of a private endpoint connection.
+     * Get the privateLinkServiceConnectionState property: The connection state.
      *
      * @return the privateLinkServiceConnectionState value.
      */
-    public ConnectionState privateLinkServiceConnectionState() {
+    public ConnectionPropertiesPrivateLinkServiceConnectionState privateLinkServiceConnectionState() {
         return this.privateLinkServiceConnectionState;
     }
 
     /**
-     * Set the privateLinkServiceConnectionState property: The current state of a private endpoint connection.
+     * Set the privateLinkServiceConnectionState property: The connection state.
      *
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the ConnectionProperties object itself.
      */
     public ConnectionProperties withPrivateLinkServiceConnectionState(
-        ConnectionState privateLinkServiceConnectionState) {
+        ConnectionPropertiesPrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
         return this;
     }

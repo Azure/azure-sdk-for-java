@@ -51,6 +51,7 @@ import static org.mockito.Mockito.when;
 class ServiceBusReactorReceiverTest {
     private static final String ENTITY_PATH = "queue-name";
     private static final String LINK_NAME = "a-link-name";
+    private static final String CONNECTION_ID = "a-connection-id";
 
     private final ClientLogger logger = new ClientLogger(ServiceBusReactorReceiver.class);
     private final EmitterProcessor<EndpointState> endpointStates = EmitterProcessor.create();
@@ -110,6 +111,7 @@ class ServiceBusReactorReceiverTest {
         when(receiveLinkHandler.getEndpointStates()).thenReturn(endpointStates);
 
         when(tokenManager.getAuthorizationResults()).thenReturn(Flux.create(sink -> sink.next(AmqpResponseCode.OK)));
+        when(receiveLinkHandler.getConnectionId()).thenReturn(CONNECTION_ID);
 
         when(connection.getShutdownSignals()).thenReturn(Flux.never());
 

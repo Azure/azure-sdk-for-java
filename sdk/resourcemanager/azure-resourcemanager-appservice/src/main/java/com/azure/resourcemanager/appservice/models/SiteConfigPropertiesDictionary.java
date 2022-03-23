@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Site config properties dictionary. */
 @Immutable
 public final class SiteConfigPropertiesDictionary {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SiteConfigPropertiesDictionary.class);
-
     /*
      * <code>true</code> if use32BitWorkerProcess should be set to true for the
      * stack; otherwise, <code>false</code>.

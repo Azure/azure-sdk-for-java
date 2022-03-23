@@ -6,14 +6,11 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Data used when creating a disk. */
 @Fluent
 public final class CreationData {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CreationData.class);
-
     /*
      * This enumerates the possible sources of a disk's creation.
      */
@@ -78,6 +75,13 @@ public final class CreationData {
      */
     @JsonProperty(value = "logicalSectorSize")
     private Integer logicalSectorSize;
+
+    /*
+     * If createOption is ImportSecure, this is the URI of a blob to be
+     * imported into VM guest state.
+     */
+    @JsonProperty(value = "securityDataUri")
+    private String securityDataUri;
 
     /**
      * Get the createOption property: This enumerates the possible sources of a disk's creation.
@@ -262,13 +266,35 @@ public final class CreationData {
     }
 
     /**
+     * Get the securityDataUri property: If createOption is ImportSecure, this is the URI of a blob to be imported into
+     * VM guest state.
+     *
+     * @return the securityDataUri value.
+     */
+    public String securityDataUri() {
+        return this.securityDataUri;
+    }
+
+    /**
+     * Set the securityDataUri property: If createOption is ImportSecure, this is the URI of a blob to be imported into
+     * VM guest state.
+     *
+     * @param securityDataUri the securityDataUri value to set.
+     * @return the CreationData object itself.
+     */
+    public CreationData withSecurityDataUri(String securityDataUri) {
+        this.securityDataUri = securityDataUri;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (createOption() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property createOption in model CreationData"));
         }
@@ -279,4 +305,6 @@ public final class CreationData {
             galleryImageReference().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CreationData.class);
 }

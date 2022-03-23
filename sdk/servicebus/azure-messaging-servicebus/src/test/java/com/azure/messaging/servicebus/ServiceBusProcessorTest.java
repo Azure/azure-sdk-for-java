@@ -71,7 +71,8 @@ public class ServiceBusProcessorTest {
 
         AtomicInteger messageId = new AtomicInteger();
         CountDownLatch countDownLatch = new CountDownLatch(5);
-        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder,
+        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, "queue",
+                null, null,
             messageContext -> {
                 assertEquals(String.valueOf(messageId.getAndIncrement()), messageContext.getMessage().getMessageId());
                 countDownLatch.countDown();
@@ -110,7 +111,8 @@ public class ServiceBusProcessorTest {
 
         AtomicInteger messageId = new AtomicInteger();
         CountDownLatch countDownLatch = new CountDownLatch(numberOfMessages);
-        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder,
+        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, "queue",
+                null, null,
             messageContext -> {
                 int expectedMessageId = messageId.getAndIncrement();
                 assertEquals(String.valueOf(expectedMessageId), messageContext.getMessage().getMessageId());
@@ -143,7 +145,8 @@ public class ServiceBusProcessorTest {
         countDownLatch.set(new CountDownLatch(2));
 
         AtomicBoolean assertionFailed = new AtomicBoolean();
-        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder,
+        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, "queue",
+                null, null,
             messageContext -> {
                 try {
                     assertEquals(String.valueOf(messageId.getAndIncrement()),
@@ -225,7 +228,8 @@ public class ServiceBusProcessorTest {
         countDownLatch.set(new CountDownLatch(4));
         AtomicBoolean assertionFailed = new AtomicBoolean();
         StringBuffer messageIdNotMatched = new StringBuffer();
-        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder,
+        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, "queue",
+                null, null,
             messageContext -> {
                 try {
                     assertEquals(String.valueOf(messageId.getAndIncrement() % 2),
@@ -280,7 +284,8 @@ public class ServiceBusProcessorTest {
 
         final AtomicInteger messageId = new AtomicInteger();
         final CountDownLatch countDownLatch = new CountDownLatch(numberOfEvents);
-        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder,
+        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, "queue",
+                null, null,
             messageContext -> {
                 assertEquals(String.valueOf(messageId.getAndIncrement()), messageContext.getMessage().getMessageId());
                 throw new IllegalStateException(); // throw error from user handler
@@ -331,7 +336,8 @@ public class ServiceBusProcessorTest {
 
         AtomicInteger messageId = new AtomicInteger();
         CountDownLatch countDownLatch = new CountDownLatch(5);
-        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder,
+        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, "queue",
+                null, null,
             messageContext -> {
                 assertEquals(String.valueOf(messageId.getAndIncrement()), messageContext.getMessage().getMessageId());
                 throw new IllegalStateException(); // throw error from user handler
@@ -393,7 +399,8 @@ public class ServiceBusProcessorTest {
 
         AtomicInteger messageId = new AtomicInteger();
         CountDownLatch countDownLatch = new CountDownLatch(numberOfTimes);
-        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder,
+        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, "queue",
+                null, null,
             messageContext -> {
                 assertEquals(String.valueOf(messageId.getAndIncrement()), messageContext.getMessage().getMessageId());
                 countDownLatch.countDown();
@@ -407,6 +414,61 @@ public class ServiceBusProcessorTest {
 
         assertTrue(success, "Failed to receive all expected messages");
         verify(tracer, times(numberOfTimes)).extractContext(eq(diagnosticId), any());
+        verify(tracer, times(numberOfTimes)).start(eq("ServiceBus.process"), any(), eq(ProcessKind.PROCESS));
+
+        // This is one less because the processEvent is called before the end span call, so it is possible for
+        // to reach this line without calling it the 5th time yet. (Timing issue.)
+        verify(tracer, atLeast(numberOfTimes - 1)).end(eq("success"), isNull(), any());
+
+    }
+
+    @Test
+    public void testProcessorWithTracingEnabledWithoutDiagnosticId() throws InterruptedException {
+        final Tracer tracer = mock(Tracer.class);
+        final List<Tracer> tracers = Collections.singletonList(tracer);
+        final int numberOfTimes = 5;
+        final TracerProvider tracerProvider = new TracerProvider(tracers);
+
+        when(tracer.start(eq("ServiceBus.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                assertTrue(passed.getData(MESSAGE_ENQUEUED_TIME).isPresent());
+                return passed.addData(SPAN_CONTEXT_KEY, "value1").addData("scope", (AutoCloseable) () -> {
+                    return;
+                }).addData(PARENT_SPAN_KEY, "value2");
+            }
+        );
+        Flux<ServiceBusMessageContext> messageFlux =
+            Flux.create(emitter -> {
+                for (int i = 0; i < numberOfTimes; i++) {
+                    ServiceBusReceivedMessage serviceBusReceivedMessage =
+                        new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
+                    serviceBusReceivedMessage.setMessageId(String.valueOf(i));
+                    serviceBusReceivedMessage.setEnqueuedTime(OffsetDateTime.now());
+                    ServiceBusMessageContext serviceBusMessageContext =
+                        new ServiceBusMessageContext(serviceBusReceivedMessage);
+                    emitter.next(serviceBusMessageContext);
+                }
+            });
+
+        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux);
+
+        AtomicInteger messageId = new AtomicInteger();
+        CountDownLatch countDownLatch = new CountDownLatch(numberOfTimes);
+        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, "queue",
+                null, null,
+            messageContext -> {
+                assertEquals(String.valueOf(messageId.getAndIncrement()), messageContext.getMessage().getMessageId());
+                countDownLatch.countDown();
+            },
+            error -> Assertions.fail("Error occurred when receiving messages from the processor"),
+            new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1).setTracerProvider(tracerProvider));
+
+        serviceBusProcessorClient.start();
+        boolean success = countDownLatch.await(numberOfTimes, TimeUnit.SECONDS);
+        serviceBusProcessorClient.close();
+
+        assertTrue(success, "Failed to receive all expected messages");
         verify(tracer, times(numberOfTimes)).start(eq("ServiceBus.process"), any(), eq(ProcessKind.PROCESS));
 
         // This is one less because the processEvent is called before the end span call, so it is possible for

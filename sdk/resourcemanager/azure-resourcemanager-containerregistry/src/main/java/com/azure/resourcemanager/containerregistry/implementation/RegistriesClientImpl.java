@@ -35,7 +35,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.containerregistry.fluent.RegistriesClient;
-import com.azure.resourcemanager.containerregistry.fluent.models.GenerateCredentialsResultInner;
 import com.azure.resourcemanager.containerregistry.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.containerregistry.fluent.models.RegistryInner;
 import com.azure.resourcemanager.containerregistry.fluent.models.RegistryListCredentialsResultInner;
@@ -43,7 +42,6 @@ import com.azure.resourcemanager.containerregistry.fluent.models.RegistryNameSta
 import com.azure.resourcemanager.containerregistry.fluent.models.RegistryUsageListResultInner;
 import com.azure.resourcemanager.containerregistry.fluent.models.RunInner;
 import com.azure.resourcemanager.containerregistry.fluent.models.SourceUploadDefinitionInner;
-import com.azure.resourcemanager.containerregistry.models.GenerateCredentialsParameters;
 import com.azure.resourcemanager.containerregistry.models.ImportImageParameters;
 import com.azure.resourcemanager.containerregistry.models.PrivateLinkResourceListResult;
 import com.azure.resourcemanager.containerregistry.models.RegenerateCredentialParameters;
@@ -118,6 +116,31 @@ public final class RegistriesClientImpl
             Context context);
 
         @Headers({"Content-Type: application/json"})
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerRegistry/registries")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<RegistryListResult>> list(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
+                + "/registries")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<RegistryListResult>> listByResourceGroup(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
                 + "/registries/{registryName}")
@@ -181,25 +204,46 @@ public final class RegistriesClientImpl
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
-                + "/registries")
+                + "/registries/{registryName}/listUsages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RegistryListResult>> listByResourceGroup(
+        Mono<Response<RegistryUsageListResultInner>> listUsages(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("registryName") String registryName,
             @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerRegistry/registries")
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
+                + "/registries/{registryName}/privateLinkResources")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RegistryListResult>> list(
+        Mono<Response<PrivateLinkResourceListResult>> listPrivateLinkResources(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("registryName") String registryName,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
+                + "/registries/{registryName}/privateLinkResources/{groupName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<PrivateLinkResourceInner>> getPrivateLinkResource(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("registryName") String registryName,
+            @PathParam("groupName") String groupName,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -235,36 +279,6 @@ public final class RegistriesClientImpl
             Context context);
 
         @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
-                + "/registries/{registryName}/listUsages")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RegistryUsageListResultInner>> listUsages(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("registryName") String registryName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
-                + "/registries/{registryName}/privateLinkResources")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateLinkResourceListResult>> listPrivateLinkResources(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("registryName") String registryName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
                 + "/registries/{registryName}/scheduleRun")
@@ -296,26 +310,10 @@ public final class RegistriesClientImpl
             Context context);
 
         @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
-                + "/registries/{registryName}/generateCredentials")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> generateCredentials(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("registryName") String registryName,
-            @BodyParam("application/json") GenerateCredentialsParameters generateCredentialsParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RegistryListResult>> listByResourceGroupNext(
+        Mono<Response<RegistryListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
@@ -325,7 +323,7 @@ public final class RegistriesClientImpl
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RegistryListResult>> listNext(
+        Mono<Response<RegistryListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
@@ -380,7 +378,7 @@ public final class RegistriesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-12-01-preview";
+        final String apiVersion = "2021-09-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -435,7 +433,7 @@ public final class RegistriesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-12-01-preview";
+        final String apiVersion = "2021-09-01";
         context = this.client.mergeContext(context);
         return service
             .importImage(
@@ -631,7 +629,7 @@ public final class RegistriesClientImpl
         } else {
             registryNameCheckRequest.validate();
         }
-        final String apiVersion = "2019-12-01-preview";
+        final String apiVersion = "2021-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -680,7 +678,7 @@ public final class RegistriesClientImpl
         } else {
             registryNameCheckRequest.validate();
         }
-        final String apiVersion = "2019-12-01-preview";
+        final String apiVersion = "2021-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -749,6 +747,303 @@ public final class RegistriesClientImpl
     }
 
     /**
+     * Lists all the container registries under the specified subscription.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list container registries.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<RegistryInner>> listSinglePageAsync() {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2021-09-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<RegistryInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Lists all the container registries under the specified subscription.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list container registries.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<RegistryInner>> listSinglePageAsync(Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2021-09-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Lists all the container registries under the specified subscription.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list container registries.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<RegistryInner> listAsync() {
+        return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists all the container registries under the specified subscription.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list container registries.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<RegistryInner> listAsync(Context context) {
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Lists all the container registries under the specified subscription.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list container registries.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<RegistryInner> list() {
+        return new PagedIterable<>(listAsync());
+    }
+
+    /**
+     * Lists all the container registries under the specified subscription.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list container registries.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<RegistryInner> list(Context context) {
+        return new PagedIterable<>(listAsync(context));
+    }
+
+    /**
+     * Lists all the container registries under the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list container registries.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<RegistryInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        final String apiVersion = "2021-09-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByResourceGroup(
+                            this.client.getEndpoint(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accept,
+                            context))
+            .<PagedResponse<RegistryInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Lists all the container registries under the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list container registries.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<RegistryInner>> listByResourceGroupSinglePageAsync(
+        String resourceGroupName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        final String apiVersion = "2021-09-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listByResourceGroup(
+                this.client.getEndpoint(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Lists all the container registries under the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list container registries.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<RegistryInner> listByResourceGroupAsync(String resourceGroupName) {
+        return new PagedFlux<>(
+            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists all the container registries under the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list container registries.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<RegistryInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
+        return new PagedFlux<>(
+            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Lists all the container registries under the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list container registries.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<RegistryInner> listByResourceGroup(String resourceGroupName) {
+        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
+    }
+
+    /**
+     * Lists all the container registries under the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list container registries.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<RegistryInner> listByResourceGroup(String resourceGroupName, Context context) {
+        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
+    }
+
+    /**
      * Gets the properties of the specified container registry.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
@@ -780,7 +1075,7 @@ public final class RegistriesClientImpl
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01-preview";
+        final String apiVersion = "2021-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -830,7 +1125,7 @@ public final class RegistriesClientImpl
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01-preview";
+        final String apiVersion = "2021-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -937,7 +1232,7 @@ public final class RegistriesClientImpl
         } else {
             registry.validate();
         }
-        final String apiVersion = "2019-12-01-preview";
+        final String apiVersion = "2021-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -994,7 +1289,7 @@ public final class RegistriesClientImpl
         } else {
             registry.validate();
         }
-        final String apiVersion = "2019-12-01-preview";
+        final String apiVersion = "2021-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1196,7 +1491,7 @@ public final class RegistriesClientImpl
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01-preview";
+        final String apiVersion = "2021-09-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1244,7 +1539,7 @@ public final class RegistriesClientImpl
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01-preview";
+        final String apiVersion = "2021-09-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -1430,7 +1725,7 @@ public final class RegistriesClientImpl
         } else {
             registryUpdateParameters.validate();
         }
-        final String apiVersion = "2019-12-01-preview";
+        final String apiVersion = "2021-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1492,7 +1787,7 @@ public final class RegistriesClientImpl
         } else {
             registryUpdateParameters.validate();
         }
-        final String apiVersion = "2019-12-01-preview";
+        final String apiVersion = "2021-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1679,16 +1974,18 @@ public final class RegistriesClientImpl
     }
 
     /**
-     * Lists all the container registries under the specified resource group.
+     * Gets the quota usages for the specified container registry.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list container registries.
+     * @return the quota usages for the specified container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RegistryInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
+    public Mono<Response<RegistryUsageListResultInner>> listUsagesWithResponseAsync(
+        String resourceGroupName, String registryName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1705,20 +2002,175 @@ public final class RegistriesClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01-preview";
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        final String apiVersion = "2021-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
-                        .listByResourceGroup(
+                        .listUsages(
                             this.client.getEndpoint(),
                             apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
+                            registryName,
                             accept,
                             context))
-            .<PagedResponse<RegistryInner>>map(
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets the quota usages for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the quota usages for the specified container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<RegistryUsageListResultInner>> listUsagesWithResponseAsync(
+        String resourceGroupName, String registryName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        final String apiVersion = "2021-09-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listUsages(
+                this.client.getEndpoint(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                registryName,
+                accept,
+                context);
+    }
+
+    /**
+     * Gets the quota usages for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the quota usages for the specified container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RegistryUsageListResultInner> listUsagesAsync(String resourceGroupName, String registryName) {
+        return listUsagesWithResponseAsync(resourceGroupName, registryName)
+            .flatMap(
+                (Response<RegistryUsageListResultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Gets the quota usages for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the quota usages for the specified container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RegistryUsageListResultInner listUsages(String resourceGroupName, String registryName) {
+        return listUsagesAsync(resourceGroupName, registryName).block();
+    }
+
+    /**
+     * Gets the quota usages for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the quota usages for the specified container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RegistryUsageListResultInner> listUsagesWithResponse(
+        String resourceGroupName, String registryName, Context context) {
+        return listUsagesWithResponseAsync(resourceGroupName, registryName, context).block();
+    }
+
+    /**
+     * Lists the private link resources for a container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list private link resources for a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<PrivateLinkResourceInner>> listPrivateLinkResourcesSinglePageAsync(
+        String resourceGroupName, String registryName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        final String apiVersion = "2021-09-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listPrivateLinkResources(
+                            this.client.getEndpoint(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            registryName,
+                            accept,
+                            context))
+            .<PagedResponse<PrivateLinkResourceInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -1731,18 +2183,19 @@ public final class RegistriesClientImpl
     }
 
     /**
-     * Lists all the container registries under the specified resource group.
+     * Lists the private link resources for a container registry.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list container registries.
+     * @return the result of a request to list private link resources for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RegistryInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<PrivateLinkResourceInner>> listPrivateLinkResourcesSinglePageAsync(
+        String resourceGroupName, String registryName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1759,15 +2212,19 @@ public final class RegistriesClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01-preview";
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        final String apiVersion = "2021-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
+            .listPrivateLinkResources(
                 this.client.getEndpoint(),
                 apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
+                registryName,
                 accept,
                 context)
             .map(
@@ -1782,76 +2239,89 @@ public final class RegistriesClientImpl
     }
 
     /**
-     * Lists all the container registries under the specified resource group.
+     * Lists the private link resources for a container registry.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list container registries.
+     * @return the result of a request to list private link resources for a container registry.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RegistryInner> listByResourceGroupAsync(String resourceGroupName) {
+    public PagedFlux<PrivateLinkResourceInner> listPrivateLinkResourcesAsync(
+        String resourceGroupName, String registryName) {
         return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            () -> listPrivateLinkResourcesSinglePageAsync(resourceGroupName, registryName),
+            nextLink -> listPrivateLinkResourcesNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Lists all the container registries under the specified resource group.
+     * Lists the private link resources for a container registry.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list container registries.
+     * @return the result of a request to list private link resources for a container registry.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RegistryInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
+    private PagedFlux<PrivateLinkResourceInner> listPrivateLinkResourcesAsync(
+        String resourceGroupName, String registryName, Context context) {
         return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
+            () -> listPrivateLinkResourcesSinglePageAsync(resourceGroupName, registryName, context),
+            nextLink -> listPrivateLinkResourcesNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * Lists all the container registries under the specified resource group.
+     * Lists the private link resources for a container registry.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list container registries.
+     * @return the result of a request to list private link resources for a container registry.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RegistryInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
+    public PagedIterable<PrivateLinkResourceInner> listPrivateLinkResources(
+        String resourceGroupName, String registryName) {
+        return new PagedIterable<>(listPrivateLinkResourcesAsync(resourceGroupName, registryName));
     }
 
     /**
-     * Lists all the container registries under the specified resource group.
+     * Lists the private link resources for a container registry.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list container registries.
+     * @return the result of a request to list private link resources for a container registry.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RegistryInner> listByResourceGroup(String resourceGroupName, Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
+    public PagedIterable<PrivateLinkResourceInner> listPrivateLinkResources(
+        String resourceGroupName, String registryName, Context context) {
+        return new PagedIterable<>(listPrivateLinkResourcesAsync(resourceGroupName, registryName, context));
     }
 
     /**
-     * Lists all the container registries under the specified subscription.
+     * Gets a private link resource by a specified group name for a container registry.
      *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param groupName The name of the private link resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list container registries.
+     * @return a private link resource by a specified group name for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RegistryInner>> listSinglePageAsync() {
+    public Mono<Response<PrivateLinkResourceInner>> getPrivateLinkResourceWithResponseAsync(
+        String resourceGroupName, String registryName, String groupName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1864,36 +2334,49 @@ public final class RegistriesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01-preview";
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        if (groupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
+        }
+        final String apiVersion = "2021-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
-                        .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context))
-            .<PagedResponse<RegistryInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                        .getPrivateLinkResource(
+                            this.client.getEndpoint(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            registryName,
+                            groupName,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Lists all the container registries under the specified subscription.
+     * Gets a private link resource by a specified group name for a container registry.
      *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param groupName The name of the private link resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list container registries.
+     * @return a private link resource by a specified group name for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RegistryInner>> listSinglePageAsync(Context context) {
+    private Mono<Response<PrivateLinkResourceInner>> getPrivateLinkResourceWithResponseAsync(
+        String resourceGroupName, String registryName, String groupName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1906,73 +2389,89 @@ public final class RegistriesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01-preview";
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        if (groupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
+        }
+        final String apiVersion = "2021-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .getPrivateLinkResource(
+                this.client.getEndpoint(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                registryName,
+                groupName,
+                accept,
+                context);
     }
 
     /**
-     * Lists all the container registries under the specified subscription.
+     * Gets a private link resource by a specified group name for a container registry.
      *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param groupName The name of the private link resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list container registries.
+     * @return a private link resource by a specified group name for a container registry.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RegistryInner> listAsync() {
-        return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PrivateLinkResourceInner> getPrivateLinkResourceAsync(
+        String resourceGroupName, String registryName, String groupName) {
+        return getPrivateLinkResourceWithResponseAsync(resourceGroupName, registryName, groupName)
+            .flatMap(
+                (Response<PrivateLinkResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
-     * Lists all the container registries under the specified subscription.
+     * Gets a private link resource by a specified group name for a container registry.
      *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param groupName The name of the private link resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private link resource by a specified group name for a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateLinkResourceInner getPrivateLinkResource(
+        String resourceGroupName, String registryName, String groupName) {
+        return getPrivateLinkResourceAsync(resourceGroupName, registryName, groupName).block();
+    }
+
+    /**
+     * Gets a private link resource by a specified group name for a container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param groupName The name of the private link resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list container registries.
+     * @return a private link resource by a specified group name for a container registry.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RegistryInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Lists all the container registries under the specified subscription.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list container registries.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RegistryInner> list() {
-        return new PagedIterable<>(listAsync());
-    }
-
-    /**
-     * Lists all the container registries under the specified subscription.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list container registries.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RegistryInner> list(Context context) {
-        return new PagedIterable<>(listAsync(context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PrivateLinkResourceInner> getPrivateLinkResourceWithResponse(
+        String resourceGroupName, String registryName, String groupName, Context context) {
+        return getPrivateLinkResourceWithResponseAsync(resourceGroupName, registryName, groupName, context).block();
     }
 
     /**
@@ -2007,7 +2506,7 @@ public final class RegistriesClientImpl
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01-preview";
+        final String apiVersion = "2021-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2057,7 +2556,7 @@ public final class RegistriesClientImpl
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01-preview";
+        final String apiVersion = "2021-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2169,7 +2668,7 @@ public final class RegistriesClientImpl
         } else {
             regenerateCredentialParameters.validate();
         }
-        final String apiVersion = "2019-12-01-preview";
+        final String apiVersion = "2021-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2233,7 +2732,7 @@ public final class RegistriesClientImpl
         } else {
             regenerateCredentialParameters.validate();
         }
-        final String apiVersion = "2019-12-01-preview";
+        final String apiVersion = "2021-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2314,341 +2813,6 @@ public final class RegistriesClientImpl
         return regenerateCredentialWithResponseAsync(
                 resourceGroupName, registryName, regenerateCredentialParameters, context)
             .block();
-    }
-
-    /**
-     * Gets the quota usages for the specified container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the quota usages for the specified container registry.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RegistryUsageListResultInner>> listUsagesWithResponseAsync(
-        String resourceGroupName, String registryName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (registryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-12-01-preview";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listUsages(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            registryName,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets the quota usages for the specified container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the quota usages for the specified container registry.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RegistryUsageListResultInner>> listUsagesWithResponseAsync(
-        String resourceGroupName, String registryName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (registryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-12-01-preview";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listUsages(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                registryName,
-                accept,
-                context);
-    }
-
-    /**
-     * Gets the quota usages for the specified container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the quota usages for the specified container registry.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RegistryUsageListResultInner> listUsagesAsync(String resourceGroupName, String registryName) {
-        return listUsagesWithResponseAsync(resourceGroupName, registryName)
-            .flatMap(
-                (Response<RegistryUsageListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the quota usages for the specified container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the quota usages for the specified container registry.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RegistryUsageListResultInner listUsages(String resourceGroupName, String registryName) {
-        return listUsagesAsync(resourceGroupName, registryName).block();
-    }
-
-    /**
-     * Gets the quota usages for the specified container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the quota usages for the specified container registry.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RegistryUsageListResultInner> listUsagesWithResponse(
-        String resourceGroupName, String registryName, Context context) {
-        return listUsagesWithResponseAsync(resourceGroupName, registryName, context).block();
-    }
-
-    /**
-     * Lists the private link resources for a container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list private link resources for a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateLinkResourceInner>> listPrivateLinkResourcesSinglePageAsync(
-        String resourceGroupName, String registryName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (registryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-12-01-preview";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listPrivateLinkResources(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            registryName,
-                            accept,
-                            context))
-            .<PagedResponse<PrivateLinkResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Lists the private link resources for a container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list private link resources for a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateLinkResourceInner>> listPrivateLinkResourcesSinglePageAsync(
-        String resourceGroupName, String registryName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (registryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-12-01-preview";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listPrivateLinkResources(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                registryName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Lists the private link resources for a container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list private link resources for a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PrivateLinkResourceInner> listPrivateLinkResourcesAsync(
-        String resourceGroupName, String registryName) {
-        return new PagedFlux<>(
-            () -> listPrivateLinkResourcesSinglePageAsync(resourceGroupName, registryName),
-            nextLink -> listPrivateLinkResourcesNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Lists the private link resources for a container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list private link resources for a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PrivateLinkResourceInner> listPrivateLinkResourcesAsync(
-        String resourceGroupName, String registryName, Context context) {
-        return new PagedFlux<>(
-            () -> listPrivateLinkResourcesSinglePageAsync(resourceGroupName, registryName, context),
-            nextLink -> listPrivateLinkResourcesNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Lists the private link resources for a container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list private link resources for a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PrivateLinkResourceInner> listPrivateLinkResources(
-        String resourceGroupName, String registryName) {
-        return new PagedIterable<>(listPrivateLinkResourcesAsync(resourceGroupName, registryName));
-    }
-
-    /**
-     * Lists the private link resources for a container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list private link resources for a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PrivateLinkResourceInner> listPrivateLinkResources(
-        String resourceGroupName, String registryName, Context context) {
-        return new PagedIterable<>(listPrivateLinkResourcesAsync(resourceGroupName, registryName, context));
     }
 
     /**
@@ -3066,309 +3230,74 @@ public final class RegistriesClientImpl
     }
 
     /**
-     * Generate keys for a token of a specified container registry.
+     * Get the next page of items.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param generateCredentialsParameters The parameters for generating credentials.
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the GenerateCredentials operation.
+     * @return the result of a request to list container registries.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> generateCredentialsWithResponseAsync(
-        String resourceGroupName, String registryName, GenerateCredentialsParameters generateCredentialsParameters) {
+    private Mono<PagedResponse<RegistryInner>> listNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (registryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
-        }
-        if (generateCredentialsParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter generateCredentialsParameters is required and cannot be null."));
-        } else {
-            generateCredentialsParameters.validate();
-        }
-        final String apiVersion = "2019-05-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .generateCredentials(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            registryName,
-                            generateCredentialsParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<RegistryInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Generate keys for a token of a specified container registry.
+     * Get the next page of items.
      *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param generateCredentialsParameters The parameters for generating credentials.
+     * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the GenerateCredentials operation.
+     * @return the result of a request to list container registries.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> generateCredentialsWithResponseAsync(
-        String resourceGroupName,
-        String registryName,
-        GenerateCredentialsParameters generateCredentialsParameters,
-        Context context) {
+    private Mono<PagedResponse<RegistryInner>> listNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (registryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
-        }
-        if (generateCredentialsParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter generateCredentialsParameters is required and cannot be null."));
-        } else {
-            generateCredentialsParameters.validate();
-        }
-        final String apiVersion = "2019-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .generateCredentials(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                registryName,
-                generateCredentialsParameters,
-                accept,
-                context);
-    }
-
-    /**
-     * Generate keys for a token of a specified container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param generateCredentialsParameters The parameters for generating credentials.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the GenerateCredentials operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<GenerateCredentialsResultInner>, GenerateCredentialsResultInner>
-        beginGenerateCredentialsAsync(
-            String resourceGroupName,
-            String registryName,
-            GenerateCredentialsParameters generateCredentialsParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            generateCredentialsWithResponseAsync(resourceGroupName, registryName, generateCredentialsParameters);
-        return this
-            .client
-            .<GenerateCredentialsResultInner, GenerateCredentialsResultInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                GenerateCredentialsResultInner.class,
-                GenerateCredentialsResultInner.class,
-                this.client.getContext());
-    }
-
-    /**
-     * Generate keys for a token of a specified container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param generateCredentialsParameters The parameters for generating credentials.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the GenerateCredentials operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<GenerateCredentialsResultInner>, GenerateCredentialsResultInner>
-        beginGenerateCredentialsAsync(
-            String resourceGroupName,
-            String registryName,
-            GenerateCredentialsParameters generateCredentialsParameters,
-            Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            generateCredentialsWithResponseAsync(
-                resourceGroupName, registryName, generateCredentialsParameters, context);
-        return this
-            .client
-            .<GenerateCredentialsResultInner, GenerateCredentialsResultInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                GenerateCredentialsResultInner.class,
-                GenerateCredentialsResultInner.class,
-                context);
-    }
-
-    /**
-     * Generate keys for a token of a specified container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param generateCredentialsParameters The parameters for generating credentials.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the GenerateCredentials operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<GenerateCredentialsResultInner>, GenerateCredentialsResultInner>
-        beginGenerateCredentials(
-            String resourceGroupName,
-            String registryName,
-            GenerateCredentialsParameters generateCredentialsParameters) {
-        return beginGenerateCredentialsAsync(resourceGroupName, registryName, generateCredentialsParameters)
-            .getSyncPoller();
-    }
-
-    /**
-     * Generate keys for a token of a specified container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param generateCredentialsParameters The parameters for generating credentials.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the GenerateCredentials operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<GenerateCredentialsResultInner>, GenerateCredentialsResultInner>
-        beginGenerateCredentials(
-            String resourceGroupName,
-            String registryName,
-            GenerateCredentialsParameters generateCredentialsParameters,
-            Context context) {
-        return beginGenerateCredentialsAsync(resourceGroupName, registryName, generateCredentialsParameters, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Generate keys for a token of a specified container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param generateCredentialsParameters The parameters for generating credentials.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the GenerateCredentials operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GenerateCredentialsResultInner> generateCredentialsAsync(
-        String resourceGroupName, String registryName, GenerateCredentialsParameters generateCredentialsParameters) {
-        return beginGenerateCredentialsAsync(resourceGroupName, registryName, generateCredentialsParameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Generate keys for a token of a specified container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param generateCredentialsParameters The parameters for generating credentials.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the GenerateCredentials operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GenerateCredentialsResultInner> generateCredentialsAsync(
-        String resourceGroupName,
-        String registryName,
-        GenerateCredentialsParameters generateCredentialsParameters,
-        Context context) {
-        return beginGenerateCredentialsAsync(resourceGroupName, registryName, generateCredentialsParameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Generate keys for a token of a specified container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param generateCredentialsParameters The parameters for generating credentials.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the GenerateCredentials operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GenerateCredentialsResultInner generateCredentials(
-        String resourceGroupName, String registryName, GenerateCredentialsParameters generateCredentialsParameters) {
-        return generateCredentialsAsync(resourceGroupName, registryName, generateCredentialsParameters).block();
-    }
-
-    /**
-     * Generate keys for a token of a specified container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param generateCredentialsParameters The parameters for generating credentials.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the GenerateCredentials operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GenerateCredentialsResultInner generateCredentials(
-        String resourceGroupName,
-        String registryName,
-        GenerateCredentialsParameters generateCredentialsParameters,
-        Context context) {
-        return generateCredentialsAsync(resourceGroupName, registryName, generateCredentialsParameters, context)
-            .block();
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
@@ -3433,77 +3362,6 @@ public final class RegistriesClientImpl
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list container registries.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RegistryInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<RegistryInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list container registries.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RegistryInner>> listNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

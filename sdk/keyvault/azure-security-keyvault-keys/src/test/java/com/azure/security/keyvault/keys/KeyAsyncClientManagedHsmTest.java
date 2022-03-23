@@ -122,7 +122,7 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
         createKeyAsyncClient(httpClient, serviceVersion);
         getRandomBytesRunner((count) ->
             StepVerifier.create(client.getRandomBytes(count))
-                .assertNext(randomBytes -> assertEquals(count, randomBytes.getBytes().length))
+                .assertNext(randomBytes -> assertEquals(count, randomBytes.length))
                 .verifyComplete());
     }
 

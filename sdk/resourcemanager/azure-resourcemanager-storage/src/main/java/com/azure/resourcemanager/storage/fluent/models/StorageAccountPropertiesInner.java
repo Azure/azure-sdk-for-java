@@ -8,17 +8,20 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.AccessTier;
 import com.azure.resourcemanager.storage.models.AccountStatus;
+import com.azure.resourcemanager.storage.models.AllowedCopyScope;
 import com.azure.resourcemanager.storage.models.AzureFilesIdentityBasedAuthentication;
 import com.azure.resourcemanager.storage.models.CustomDomain;
 import com.azure.resourcemanager.storage.models.Encryption;
 import com.azure.resourcemanager.storage.models.Endpoints;
 import com.azure.resourcemanager.storage.models.GeoReplicationStats;
+import com.azure.resourcemanager.storage.models.ImmutableStorageAccount;
 import com.azure.resourcemanager.storage.models.KeyCreationTime;
 import com.azure.resourcemanager.storage.models.KeyPolicy;
 import com.azure.resourcemanager.storage.models.LargeFileSharesState;
 import com.azure.resourcemanager.storage.models.MinimumTlsVersion;
 import com.azure.resourcemanager.storage.models.NetworkRuleSet;
 import com.azure.resourcemanager.storage.models.ProvisioningState;
+import com.azure.resourcemanager.storage.models.PublicNetworkAccess;
 import com.azure.resourcemanager.storage.models.RoutingPreference;
 import com.azure.resourcemanager.storage.models.SasPolicy;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -123,8 +126,8 @@ public final class StorageAccountPropertiesInner {
     private Endpoints secondaryEndpoints;
 
     /*
-     * Gets the encryption settings on the account. If unspecified, the account
-     * is unencrypted.
+     * Encryption settings to be used for server-side encryption for the
+     * storage account.
      */
     @JsonProperty(value = "encryption", access = JsonProperty.Access.WRITE_ONLY)
     private Encryption encryption;
@@ -153,6 +156,18 @@ public final class StorageAccountPropertiesInner {
      */
     @JsonProperty(value = "networkAcls", access = JsonProperty.Access.WRITE_ONLY)
     private NetworkRuleSet networkRuleSet;
+
+    /*
+     * Enables Secure File Transfer Protocol, if set to true
+     */
+    @JsonProperty(value = "isSftpEnabled")
+    private Boolean isSftpEnabled;
+
+    /*
+     * Enables local users feature, if set to true
+     */
+    @JsonProperty(value = "isLocalUserEnabled")
+    private Boolean isLocalUserEnabled;
 
     /*
      * Account HierarchicalNamespace enabled if sets to true.
@@ -236,6 +251,35 @@ public final class StorageAccountPropertiesInner {
      */
     @JsonProperty(value = "allowCrossTenantReplication")
     private Boolean allowCrossTenantReplication;
+
+    /*
+     * A boolean flag which indicates whether the default authentication is
+     * OAuth or not. The default interpretation is false for this property.
+     */
+    @JsonProperty(value = "defaultToOAuthAuthentication")
+    private Boolean defaultToOAuthAuthentication;
+
+    /*
+     * Allow or disallow public network access to Storage Account. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     */
+    @JsonProperty(value = "publicNetworkAccess")
+    private PublicNetworkAccess publicNetworkAccess;
+
+    /*
+     * The property is immutable and can only be set to true at the account
+     * creation time. When set to true, it enables object level immutability
+     * for all the containers in the account by default.
+     */
+    @JsonProperty(value = "immutableStorageWithVersioning")
+    private ImmutableStorageAccount immutableStorageWithVersioning;
+
+    /*
+     * Restrict copy to and from Storage Accounts within an AAD tenant or with
+     * Private Links to the same VNet.
+     */
+    @JsonProperty(value = "allowedCopyScope")
+    private AllowedCopyScope allowedCopyScope;
 
     /**
      * Get the provisioningState property: Gets the status of the storage account at the time the operation was called.
@@ -363,8 +407,7 @@ public final class StorageAccountPropertiesInner {
     }
 
     /**
-     * Get the encryption property: Gets the encryption settings on the account. If unspecified, the account is
-     * unencrypted.
+     * Get the encryption property: Encryption settings to be used for server-side encryption for the storage account.
      *
      * @return the encryption value.
      */
@@ -432,6 +475,46 @@ public final class StorageAccountPropertiesInner {
      */
     public NetworkRuleSet networkRuleSet() {
         return this.networkRuleSet;
+    }
+
+    /**
+     * Get the isSftpEnabled property: Enables Secure File Transfer Protocol, if set to true.
+     *
+     * @return the isSftpEnabled value.
+     */
+    public Boolean isSftpEnabled() {
+        return this.isSftpEnabled;
+    }
+
+    /**
+     * Set the isSftpEnabled property: Enables Secure File Transfer Protocol, if set to true.
+     *
+     * @param isSftpEnabled the isSftpEnabled value to set.
+     * @return the StorageAccountPropertiesInner object itself.
+     */
+    public StorageAccountPropertiesInner withIsSftpEnabled(Boolean isSftpEnabled) {
+        this.isSftpEnabled = isSftpEnabled;
+        return this;
+    }
+
+    /**
+     * Get the isLocalUserEnabled property: Enables local users feature, if set to true.
+     *
+     * @return the isLocalUserEnabled value.
+     */
+    public Boolean isLocalUserEnabled() {
+        return this.isLocalUserEnabled;
+    }
+
+    /**
+     * Set the isLocalUserEnabled property: Enables local users feature, if set to true.
+     *
+     * @param isLocalUserEnabled the isLocalUserEnabled value to set.
+     * @return the StorageAccountPropertiesInner object itself.
+     */
+    public StorageAccountPropertiesInner withIsLocalUserEnabled(Boolean isLocalUserEnabled) {
+        this.isLocalUserEnabled = isLocalUserEnabled;
+        return this;
     }
 
     /**
@@ -647,6 +730,97 @@ public final class StorageAccountPropertiesInner {
     }
 
     /**
+     * Get the defaultToOAuthAuthentication property: A boolean flag which indicates whether the default authentication
+     * is OAuth or not. The default interpretation is false for this property.
+     *
+     * @return the defaultToOAuthAuthentication value.
+     */
+    public Boolean defaultToOAuthAuthentication() {
+        return this.defaultToOAuthAuthentication;
+    }
+
+    /**
+     * Set the defaultToOAuthAuthentication property: A boolean flag which indicates whether the default authentication
+     * is OAuth or not. The default interpretation is false for this property.
+     *
+     * @param defaultToOAuthAuthentication the defaultToOAuthAuthentication value to set.
+     * @return the StorageAccountPropertiesInner object itself.
+     */
+    public StorageAccountPropertiesInner withDefaultToOAuthAuthentication(Boolean defaultToOAuthAuthentication) {
+        this.defaultToOAuthAuthentication = defaultToOAuthAuthentication;
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Allow or disallow public network access to Storage Account. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Allow or disallow public network access to Storage Account. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the StorageAccountPropertiesInner object itself.
+     */
+    public StorageAccountPropertiesInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get the immutableStorageWithVersioning property: The property is immutable and can only be set to true at the
+     * account creation time. When set to true, it enables object level immutability for all the containers in the
+     * account by default.
+     *
+     * @return the immutableStorageWithVersioning value.
+     */
+    public ImmutableStorageAccount immutableStorageWithVersioning() {
+        return this.immutableStorageWithVersioning;
+    }
+
+    /**
+     * Set the immutableStorageWithVersioning property: The property is immutable and can only be set to true at the
+     * account creation time. When set to true, it enables object level immutability for all the containers in the
+     * account by default.
+     *
+     * @param immutableStorageWithVersioning the immutableStorageWithVersioning value to set.
+     * @return the StorageAccountPropertiesInner object itself.
+     */
+    public StorageAccountPropertiesInner withImmutableStorageWithVersioning(
+        ImmutableStorageAccount immutableStorageWithVersioning) {
+        this.immutableStorageWithVersioning = immutableStorageWithVersioning;
+        return this;
+    }
+
+    /**
+     * Get the allowedCopyScope property: Restrict copy to and from Storage Accounts within an AAD tenant or with
+     * Private Links to the same VNet.
+     *
+     * @return the allowedCopyScope value.
+     */
+    public AllowedCopyScope allowedCopyScope() {
+        return this.allowedCopyScope;
+    }
+
+    /**
+     * Set the allowedCopyScope property: Restrict copy to and from Storage Accounts within an AAD tenant or with
+     * Private Links to the same VNet.
+     *
+     * @param allowedCopyScope the allowedCopyScope value to set.
+     * @return the StorageAccountPropertiesInner object itself.
+     */
+    public StorageAccountPropertiesInner withAllowedCopyScope(AllowedCopyScope allowedCopyScope) {
+        this.allowedCopyScope = allowedCopyScope;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -690,6 +864,9 @@ public final class StorageAccountPropertiesInner {
         }
         if (blobRestoreStatus() != null) {
             blobRestoreStatus().validate();
+        }
+        if (immutableStorageWithVersioning() != null) {
+            immutableStorageWithVersioning().validate();
         }
     }
 }

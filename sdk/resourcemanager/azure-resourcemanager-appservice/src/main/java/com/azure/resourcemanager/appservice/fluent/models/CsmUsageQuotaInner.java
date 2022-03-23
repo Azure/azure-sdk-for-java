@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.LocalizableString;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Usage of the quota resource. */
 @Fluent
 public final class CsmUsageQuotaInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CsmUsageQuotaInner.class);
-
     /*
      * Units of measurement for the quota resource.
      */

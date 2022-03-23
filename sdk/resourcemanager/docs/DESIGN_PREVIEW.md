@@ -17,8 +17,7 @@ Azure Management Libraries supports fine control over the polling for certain im
 
 Here is sample code for Deployment.
 
-<!-- embedme ../azure-resourcemanager/src/samples/java/com/azure/resourcemanager/DesignPreviewSamples.java#L62-L89 -->
-```java
+```java readme-sample-pollLongRunningOperation
 Duration defaultDelay = Duration.ofSeconds(10);
 // begin provision
 Accepted<Deployment> acceptedDeployment = azure.deployments()

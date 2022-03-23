@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSite;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** ARM resource for a static site when patching. */
 @Fluent
 public final class StaticSitePatchResource extends ProxyOnlyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StaticSitePatchResource.class);
-
     /*
      * Core resource properties
      */
@@ -267,6 +263,46 @@ public final class StaticSitePatchResource extends ProxyOnlyResource {
      */
     public String provider() {
         return this.innerProperties() == null ? null : this.innerProperties().provider();
+    }
+
+    /**
+     * Set the provider property: The provider that submitted the last deployment to the primary environment of the
+     * static site.
+     *
+     * @param provider the provider value to set.
+     * @return the StaticSitePatchResource object itself.
+     */
+    public StaticSitePatchResource withProvider(String provider) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StaticSite();
+        }
+        this.innerProperties().withProvider(provider);
+        return this;
+    }
+
+    /**
+     * Get the enterpriseGradeCdnStatus property: State indicating the status of the enterprise grade CDN serving
+     * traffic to the static web app.
+     *
+     * @return the enterpriseGradeCdnStatus value.
+     */
+    public EnterpriseGradeCdnStatus enterpriseGradeCdnStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().enterpriseGradeCdnStatus();
+    }
+
+    /**
+     * Set the enterpriseGradeCdnStatus property: State indicating the status of the enterprise grade CDN serving
+     * traffic to the static web app.
+     *
+     * @param enterpriseGradeCdnStatus the enterpriseGradeCdnStatus value to set.
+     * @return the StaticSitePatchResource object itself.
+     */
+    public StaticSitePatchResource withEnterpriseGradeCdnStatus(EnterpriseGradeCdnStatus enterpriseGradeCdnStatus) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StaticSite();
+        }
+        this.innerProperties().withEnterpriseGradeCdnStatus(enterpriseGradeCdnStatus);
+        return this;
     }
 
     /**

@@ -103,7 +103,7 @@ public final class PhoneNumberAdminClientImpl {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-03-07";
+        this.apiVersion = "2022-01-11-preview2";
         this.phoneNumbers = new PhoneNumbersImpl(this);
     }
 }

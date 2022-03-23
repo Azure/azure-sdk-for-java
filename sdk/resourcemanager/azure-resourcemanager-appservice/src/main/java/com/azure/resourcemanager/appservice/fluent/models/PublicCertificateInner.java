@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.PublicCertificateLocation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Public certificate object. */
 @Fluent
 public final class PublicCertificateInner extends ProxyOnlyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PublicCertificateInner.class);
-
     /*
      * PublicCertificate resource specific properties
      */
@@ -44,7 +40,7 @@ public final class PublicCertificateInner extends ProxyOnlyResource {
      * @return the blob value.
      */
     public byte[] blob() {
-        return this.innerProperties() == null ? null : this.innerProperties().blob();
+        return this.innerProperties() == null ? new byte[0] : this.innerProperties().blob();
     }
 
     /**

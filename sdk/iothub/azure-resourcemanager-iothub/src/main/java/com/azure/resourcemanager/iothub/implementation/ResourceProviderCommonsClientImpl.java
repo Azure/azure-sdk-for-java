@@ -72,7 +72,8 @@ public final class ResourceProviderCommonsClientImpl implements ResourceProvider
      *
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the number of free and paid iot hubs in the subscription.
+     * @return the number of free and paid iot hubs in the subscription along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<UserSubscriptionQuotaListResultInner>> getSubscriptionQuotaWithResponseAsync() {
@@ -109,7 +110,8 @@ public final class ResourceProviderCommonsClientImpl implements ResourceProvider
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the number of free and paid iot hubs in the subscription.
+     * @return the number of free and paid iot hubs in the subscription along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<UserSubscriptionQuotaListResultInner>> getSubscriptionQuotaWithResponseAsync(
@@ -142,7 +144,7 @@ public final class ResourceProviderCommonsClientImpl implements ResourceProvider
      *
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the number of free and paid iot hubs in the subscription.
+     * @return the number of free and paid iot hubs in the subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<UserSubscriptionQuotaListResultInner> getSubscriptionQuotaAsync() {
@@ -176,7 +178,7 @@ public final class ResourceProviderCommonsClientImpl implements ResourceProvider
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the number of free and paid iot hubs in the subscription.
+     * @return the number of free and paid iot hubs in the subscription along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UserSubscriptionQuotaListResultInner> getSubscriptionQuotaWithResponse(Context context) {

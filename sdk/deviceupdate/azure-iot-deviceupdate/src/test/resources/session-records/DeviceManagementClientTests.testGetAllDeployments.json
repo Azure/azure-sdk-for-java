@@ -1,0 +1,18 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.adu.microsoft.com/deviceupdate/sdkinstance/management/groups/Uncategorized/deployments?api-version=2021-06-01-preview",
+    "Headers" : { },
+    "Response" : {
+      "content-length" : "19",
+      "traceparent" : "00-e979bd02a215ba4ab0453691a03f60a1-23256069312ccb42-00",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\r\n  \"value\": []\r\n}",
+      "Date" : "Mon, 29 Nov 2021 06:46:35 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -4,29 +4,31 @@
 
 package com.azure.analytics.purview.catalog;
 
-import com.azure.analytics.purview.catalog.implementation.TypesImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 
 /** Initializes a new instance of the synchronous PurviewCatalogClient type. */
-@ServiceClient(builder = PurviewCatalogClientBuilder.class)
+@ServiceClient(builder = TypesClientBuilder.class)
 public final class TypesClient {
-    @Generated private final TypesImpl serviceClient;
+    @Generated private final TypesAsyncClient asyncClient;
 
     /**
-     * Initializes an instance of Types client.
+     * Initializes an instance of TypesClient class.
      *
-     * @param serviceClient the service client implementation.
+     * @param asyncClient the async client.
      */
     @Generated
-    TypesClient(TypesImpl serviceClient) {
-        this.serviceClient = serviceClient;
+    TypesClient(TypesAsyncClient asyncClient) {
+        this.asyncClient = asyncClient;
     }
 
     /**
@@ -131,12 +133,15 @@ public final class TypesClient {
      * @param guid The globally unique identifier of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the classification definition for the given GUID.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the classification definition for the given GUID along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getClassificationDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.serviceClient.getClassificationDefByGuidWithResponse(guid, requestOptions);
+        return this.asyncClient.getClassificationDefByGuidWithResponse(guid, requestOptions).block();
     }
 
     /**
@@ -241,12 +246,15 @@ public final class TypesClient {
      * @param name The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the classification definition by its name (unique).
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the classification definition by its name (unique) along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getClassificationDefByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getClassificationDefByNameWithResponse(name, requestOptions);
+        return this.asyncClient.getClassificationDefByNameWithResponse(name, requestOptions).block();
     }
 
     /**
@@ -371,12 +379,15 @@ public final class TypesClient {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the Entity definition for the given GUID.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the Entity definition for the given GUID along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEntityDefinitionByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.serviceClient.getEntityDefinitionByGuidWithResponse(guid, requestOptions);
+        return this.asyncClient.getEntityDefinitionByGuidWithResponse(guid, requestOptions).block();
     }
 
     /**
@@ -501,12 +512,15 @@ public final class TypesClient {
      * @param name The name of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the entity definition by its name (unique).
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the entity definition by its name (unique) along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEntityDefinitionByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getEntityDefinitionByNameWithResponse(name, requestOptions);
+        return this.asyncClient.getEntityDefinitionByNameWithResponse(name, requestOptions).block();
     }
 
     /**
@@ -584,12 +598,15 @@ public final class TypesClient {
      * @param guid The globally unique identifier of the enum.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the enum definition for the given GUID.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the enum definition for the given GUID along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEnumDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.serviceClient.getEnumDefByGuidWithResponse(guid, requestOptions);
+        return this.asyncClient.getEnumDefByGuidWithResponse(guid, requestOptions).block();
     }
 
     /**
@@ -667,12 +684,15 @@ public final class TypesClient {
      * @param name The name of the enum.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the enum definition by its name (unique).
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the enum definition by its name (unique) along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEnumDefByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getEnumDefByNameWithResponse(name, requestOptions);
+        return this.asyncClient.getEnumDefByNameWithResponse(name, requestOptions).block();
     }
 
     /**
@@ -779,12 +799,15 @@ public final class TypesClient {
      * @param guid The globally unique identifier of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the relationship definition for the given GUID.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the relationship definition for the given GUID along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getRelationshipDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.serviceClient.getRelationshipDefByGuidWithResponse(guid, requestOptions);
+        return this.asyncClient.getRelationshipDefByGuidWithResponse(guid, requestOptions).block();
     }
 
     /**
@@ -891,12 +914,15 @@ public final class TypesClient {
      * @param name The name of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the relationship definition by its name (unique).
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the relationship definition by its name (unique) along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getRelationshipDefByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getRelationshipDefByNameWithResponse(name, requestOptions);
+        return this.asyncClient.getRelationshipDefByNameWithResponse(name, requestOptions).block();
     }
 
     /**
@@ -992,12 +1018,15 @@ public final class TypesClient {
      * @param guid The globally unique identifier of the struct.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the struct definition for the given GUID.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the struct definition for the given GUID along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getStructDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.serviceClient.getStructDefByGuidWithResponse(guid, requestOptions);
+        return this.asyncClient.getStructDefByGuidWithResponse(guid, requestOptions).block();
     }
 
     /**
@@ -1093,12 +1122,15 @@ public final class TypesClient {
      * @param name The name of the struct.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the struct definition by its name (unique).
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the struct definition by its name (unique) along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getStructDefByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getStructDefByNameWithResponse(name, requestOptions);
+        return this.asyncClient.getStructDefByNameWithResponse(name, requestOptions).block();
     }
 
     /**
@@ -1245,12 +1277,15 @@ public final class TypesClient {
      * @param guid The globally unique identifier of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the type definition for the given GUID.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the type definition for the given GUID along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTypeDefinitionByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.serviceClient.getTypeDefinitionByGuidWithResponse(guid, requestOptions);
+        return this.asyncClient.getTypeDefinitionByGuidWithResponse(guid, requestOptions).block();
     }
 
     /**
@@ -1397,12 +1432,15 @@ public final class TypesClient {
      * @param name The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the type definition by its name (unique).
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the type definition by its name (unique) along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTypeDefinitionByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getTypeDefinitionByNameWithResponse(name, requestOptions);
+        return this.asyncClient.getTypeDefinitionByNameWithResponse(name, requestOptions).block();
     }
 
     /**
@@ -1411,12 +1449,15 @@ public final class TypesClient {
      * @param name The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTypeByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.deleteTypeByNameWithResponse(name, requestOptions);
+        return this.asyncClient.deleteTypeByNameWithResponse(name, requestOptions).block();
     }
 
     /**
@@ -1694,12 +1735,15 @@ public final class TypesClient {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return all type definitions in Atlas in bulk.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return all type definitions in Atlas in bulk along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAllTypeDefinitionsWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.getAllTypeDefinitionsWithResponse(requestOptions);
+        return this.asyncClient.getAllTypeDefinitionsWithResponse(requestOptions).block();
     }
 
     /**
@@ -2229,12 +2273,15 @@ public final class TypesClient {
      * @param typesDef A composite wrapper object with corresponding lists of the type definition.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return atlasTypesDef.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return atlasTypesDef along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createTypeDefinitionsWithResponse(BinaryData typesDef, RequestOptions requestOptions) {
-        return this.serviceClient.createTypeDefinitionsWithResponse(typesDef, requestOptions);
+        return this.asyncClient.createTypeDefinitionsWithResponse(typesDef, requestOptions).block();
     }
 
     /**
@@ -2763,13 +2810,16 @@ public final class TypesClient {
      * @param typesDef A composite object that captures all type definition changes.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return atlasTypesDef.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return atlasTypesDef along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateAtlasTypeDefinitionsWithResponse(
             BinaryData typesDef, RequestOptions requestOptions) {
-        return this.serviceClient.updateAtlasTypeDefinitionsWithResponse(typesDef, requestOptions);
+        return this.asyncClient.updateAtlasTypeDefinitionsWithResponse(typesDef, requestOptions).block();
     }
 
     /**
@@ -3038,12 +3088,15 @@ public final class TypesClient {
      * @param typesDef A composite object that captures all types to be deleted.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTypeDefinitionsWithResponse(BinaryData typesDef, RequestOptions requestOptions) {
-        return this.serviceClient.deleteTypeDefinitionsWithResponse(typesDef, requestOptions);
+        return this.asyncClient.deleteTypeDefinitionsWithResponse(typesDef, requestOptions).block();
     }
 
     /**
@@ -3073,12 +3126,16 @@ public final class TypesClient {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return an array of AtlasTypeDefHeader matching the search criteria or an empty list if no match.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return an array of AtlasTypeDefHeader matching the search criteria or an empty list if no match along with
+     *     {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listTypeDefinitionHeadersWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.listTypeDefinitionHeadersWithResponse(requestOptions);
+        return this.asyncClient.listTypeDefinitionHeadersWithResponse(requestOptions).block();
     }
 
     /**
@@ -3089,7 +3146,7 @@ public final class TypesClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -3182,12 +3239,15 @@ public final class TypesClient {
      * @param guid The globally unique identifier of the term template.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the term template definition for the given GUID.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the term template definition for the given GUID along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTermTemplateDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.serviceClient.getTermTemplateDefByGuidWithResponse(guid, requestOptions);
+        return this.asyncClient.getTermTemplateDefByGuidWithResponse(guid, requestOptions).block();
     }
 
     /**
@@ -3198,7 +3258,7 @@ public final class TypesClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -3291,11 +3351,14 @@ public final class TypesClient {
      * @param name The name of the term template.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the term template definition by its name (unique).
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the term template definition by its name (unique) along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTermTemplateDefByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getTermTemplateDefByNameWithResponse(name, requestOptions);
+        return this.asyncClient.getTermTemplateDefByNameWithResponse(name, requestOptions).block();
     }
 }

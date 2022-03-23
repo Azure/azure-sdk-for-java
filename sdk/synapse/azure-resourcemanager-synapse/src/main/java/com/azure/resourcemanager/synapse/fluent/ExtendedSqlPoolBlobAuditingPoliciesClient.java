@@ -39,7 +39,7 @@ public interface ExtendedSqlPoolBlobAuditingPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended Sql pool's blob auditing policy.
+     * @return an extended Sql pool's blob auditing policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ExtendedSqlPoolBlobAuditingPolicyInner> getWithResponse(
@@ -75,7 +75,7 @@ public interface ExtendedSqlPoolBlobAuditingPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended Sql pool blob auditing policy.
+     * @return an extended Sql pool blob auditing policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ExtendedSqlPoolBlobAuditingPolicyInner> createOrUpdateWithResponse(

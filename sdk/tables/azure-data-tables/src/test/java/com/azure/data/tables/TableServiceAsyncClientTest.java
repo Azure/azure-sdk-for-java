@@ -9,7 +9,6 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.test.TestBase;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableServiceCorsRule;
@@ -49,7 +48,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tests methods for {@link TableServiceAsyncClient}.
  */
-public class TableServiceAsyncClientTest extends TestBase {
+public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
     private static final Duration TIMEOUT = Duration.ofSeconds(100);
     private static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
     private static final boolean IS_COSMOS_TEST = TestUtils.isCosmosTest();
@@ -93,7 +92,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceCreateTableAsync() {
+    public void serviceCreateTable() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
 
@@ -105,7 +104,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceCreateTableWithResponseAsync() {
+    public void serviceCreateTableWithResponse() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         int expectedStatusCode = 204;
@@ -121,7 +120,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceCreateTableFailsIfExistsAsync() {
+    public void serviceCreateTableFailsIfExists() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         serviceClient.createTable(tableName).block(TIMEOUT);
@@ -134,7 +133,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceCreateTableIfNotExistsAsync() {
+    public void serviceCreateTableIfNotExists() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
 
@@ -146,7 +145,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceCreateTableIfNotExistsSucceedsIfExistsAsync() {
+    public void serviceCreateTableIfNotExistsSucceedsIfExists() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         serviceClient.createTable(tableName).block(TIMEOUT);
@@ -158,7 +157,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceCreateTableIfNotExistsWithResponseAsync() {
+    public void serviceCreateTableIfNotExistsWithResponse() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         int expectedStatusCode = 204;
@@ -174,7 +173,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceCreateTableIfNotExistsWithResponseSucceedsIfExistsAsync() {
+    public void serviceCreateTableIfNotExistsWithResponseSucceedsIfExists() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         int expectedStatusCode = 409;
@@ -191,7 +190,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceDeleteTableAsync() {
+    public void serviceDeleteTable() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
         serviceClient.createTable(tableName).block(TIMEOUT);
@@ -203,7 +202,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceDeleteNonExistingTableAsync() {
+    public void serviceDeleteNonExistingTable() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
 
@@ -214,7 +213,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceDeleteTableWithResponseAsync() {
+    public void serviceDeleteTableWithResponse() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         int expectedStatusCode = 204;
@@ -228,7 +227,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceDeleteNonExistingTableWithResponseAsync() {
+    public void serviceDeleteNonExistingTableWithResponse() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         int expectedStatusCode = 404;
@@ -241,7 +240,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceListTablesAsync() {
+    public void serviceListTables() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
         final String tableName2 = testResourceNamer.randomName("test", 20);
@@ -257,7 +256,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceListTablesWithFilterAsync() {
+    public void serviceListTablesWithFilter() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
         final String tableName2 = testResourceNamer.randomName("test", 20);
@@ -275,7 +274,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceListTablesWithTopAsync() {
+    public void serviceListTablesWithTop() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
         final String tableName2 = testResourceNamer.randomName("test", 20);
@@ -294,7 +293,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceGetTableClientAsync() {
+    public void serviceGetTableClient() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
         serviceClient.createTable(tableName).block(TIMEOUT);
@@ -302,7 +301,7 @@ public class TableServiceAsyncClientTest extends TestBase {
         TableAsyncClient tableClient = serviceClient.getTableClient(tableName);
 
         // Act & Assert
-        TableAsyncClientTest.getEntityWithResponseAsyncImpl(tableClient, this.testResourceNamer);
+        TableAsyncClientTest.getEntityWithResponseAsyncImpl(tableClient, testResourceNamer, "partitionKey", "rowKey");
     }
 
     @Test

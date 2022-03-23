@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Custom action to be executed when an auto heal rule is triggered. */
 @Fluent
 public final class AutoHealCustomAction {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoHealCustomAction.class);
-
     /*
      * Executable to be run.
      */

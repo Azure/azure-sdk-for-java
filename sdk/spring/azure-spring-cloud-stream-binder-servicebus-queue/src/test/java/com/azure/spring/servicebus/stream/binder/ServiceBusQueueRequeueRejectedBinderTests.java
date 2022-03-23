@@ -4,17 +4,12 @@
 package com.azure.spring.servicebus.stream.binder;
 
 import com.azure.spring.servicebus.stream.binder.properties.ServiceBusConsumerProperties;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
 import org.springframework.cloud.stream.binder.HeaderMode;
 
 /**
- * Test cases are defined in super class
- *
- * @author Eduardo Sciullo
+ * Azure ServiceBus Queue Binder Tests, test request reject.
  */
-@RunWith(MockitoJUnitRunner.class)
 public class ServiceBusQueueRequeueRejectedBinderTests extends
     ServiceBusQueuePartitionBinderTests {
 

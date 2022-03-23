@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details of JobOutput errors. */
 @Immutable
 public final class JobErrorDetail {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobErrorDetail.class);
-
     /*
      * Code describing the error detail.
      */

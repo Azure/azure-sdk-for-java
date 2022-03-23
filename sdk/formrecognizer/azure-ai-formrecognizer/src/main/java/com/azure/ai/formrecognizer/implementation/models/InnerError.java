@@ -41,7 +41,7 @@ public final class InnerError {
      * Set the code property: Error code.
      *
      * @param code the code value to set.
-     * @return the DocumentModelOperationInnerError object itself.
+     * @return the InnerError object itself.
      */
     public InnerError setCode(String code) {
         this.code = code;
@@ -61,7 +61,7 @@ public final class InnerError {
      * Set the message property: Error message.
      *
      * @param message the message value to set.
-     * @return the DocumentModelOperationInnerError object itself.
+     * @return the InnerError object itself.
      */
     public InnerError setMessage(String message) {
         this.message = message;
@@ -81,7 +81,7 @@ public final class InnerError {
      * Set the innererror property: Detailed error.
      *
      * @param innererror the innererror value to set.
-     * @return the DocumentModelOperationInnerError object itself.
+     * @return the InnerError object itself.
      */
     public InnerError setInnererror(InnerError innererror) {
         this.innererror = innererror;

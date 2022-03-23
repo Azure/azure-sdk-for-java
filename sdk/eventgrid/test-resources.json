@@ -10,6 +10,7 @@
     "apiVersion": "2020-06-01",
     "eventGridTopicName": "[concat(parameters('baseName'), 'topic')]",
     "cloudeventTopicName": "[concat(parameters('baseName'), 'cloudevent-topic')]",
+    "cloudeventDomainName": "[concat(parameters('baseName'), 'cloudevent-domain')]",
     "customeventTopicName": "[concat(parameters('baseName'), 'customevent-topic')]"
   },
   "resources": [
@@ -23,6 +24,15 @@
       "type": "Microsoft.EventGrid/topics",
       "apiVersion": "[variables('apiVersion')]",
       "name": "[variables('cloudeventTopicName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "inputSchema": "CloudEventSchemaV1_0"
+      }
+    },
+    {
+      "type": "Microsoft.EventGrid/domains",
+      "apiVersion": "[variables('apiVersion')]",
+      "name": "[variables('cloudeventDomainName')]",
       "location": "[resourceGroup().location]",
       "properties": {
         "inputSchema": "CloudEventSchemaV1_0"
@@ -80,6 +90,14 @@
     "AZURE_EVENTGRID_CLOUDEVENT_KEY": {
       "type": "string",
       "value": "[listKeys(resourceId('Microsoft.EventGrid/topics', variables('cloudeventTopicName')), variables('apiVersion')).key1]"
+    },
+    "AZURE_EVENTGRID_CLOUDEVENT_DOMAIN_ENDPOINT": {
+      "type": "string",
+      "value": "[reference(variables('cloudeventDomainName')).endpoint]"
+    },
+    "AZURE_EVENTGRID_CLOUDEVENT_DOMAIN_KEY": {
+      "type": "string",
+      "value": "[listKeys(resourceId('Microsoft.EventGrid/domains', variables('cloudeventDomainName')), variables('apiVersion')).key1]"
     },
     "AZURE_EVENTGRID_CUSTOM_ENDPOINT": {
       "type": "string",

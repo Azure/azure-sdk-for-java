@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.deviceprovisioningservices.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.CertificateResponseInner;
 
@@ -45,6 +46,13 @@ public interface CertificateResponse {
     String etag();
 
     /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the inner com.azure.resourcemanager.deviceprovisioningservices.fluent.models.CertificateResponseInner
      * object.
      *
@@ -76,7 +84,8 @@ public interface CertificateResponse {
          * The stage of the CertificateResponse definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithCertificate, DefinitionStages.WithIfMatch {
+        interface WithCreate
+            extends DefinitionStages.WithCertificate, DefinitionStages.WithIsVerified, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *
@@ -104,6 +113,18 @@ public interface CertificateResponse {
              */
             WithCreate withCertificate(String certificate);
         }
+        /** The stage of the CertificateResponse definition allowing to specify isVerified. */
+        interface WithIsVerified {
+            /**
+             * Specifies the isVerified property: True indicates that the certificate will be created in verified state
+             * and proof of possession will not be required..
+             *
+             * @param isVerified True indicates that the certificate will be created in verified state and proof of
+             *     possession will not be required.
+             * @return the next definition stage.
+             */
+            WithCreate withIsVerified(Boolean isVerified);
+        }
         /** The stage of the CertificateResponse definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -125,7 +146,7 @@ public interface CertificateResponse {
     CertificateResponse.Update update();
 
     /** The template for CertificateResponse update. */
-    interface Update extends UpdateStages.WithCertificate, UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithCertificate, UpdateStages.WithIsVerified, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *
@@ -154,6 +175,18 @@ public interface CertificateResponse {
              * @return the next definition stage.
              */
             Update withCertificate(String certificate);
+        }
+        /** The stage of the CertificateResponse update allowing to specify isVerified. */
+        interface WithIsVerified {
+            /**
+             * Specifies the isVerified property: True indicates that the certificate will be created in verified state
+             * and proof of possession will not be required..
+             *
+             * @param isVerified True indicates that the certificate will be created in verified state and proof of
+             *     possession will not be required.
+             * @return the next definition stage.
+             */
+            Update withIsVerified(Boolean isVerified);
         }
         /** The stage of the CertificateResponse update allowing to specify ifMatch. */
         interface WithIfMatch {

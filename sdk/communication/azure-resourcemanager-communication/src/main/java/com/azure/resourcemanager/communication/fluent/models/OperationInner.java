@@ -12,7 +12,7 @@ import com.azure.resourcemanager.communication.models.Origin;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Details of a REST API operation, returned from the Resource Provider Operations API. */
+/** REST API Operation Details of a REST API operation, returned from the Resource Provider Operations API. */
 @Fluent
 public final class OperationInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInner.class);

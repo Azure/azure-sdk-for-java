@@ -58,7 +58,7 @@ public interface ServerKeys {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a MySQL Server key.
+     * @return a MySQL Server key along with {@link Response}.
      */
     Response<ServerKey> getWithResponse(String resourceGroupName, String serverName, String keyName, Context context);
 
@@ -94,7 +94,7 @@ public interface ServerKeys {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a MySQL Server key.
+     * @return a MySQL Server key along with {@link Response}.
      */
     ServerKey getById(String id);
 
@@ -106,7 +106,7 @@ public interface ServerKeys {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a MySQL Server key.
+     * @return a MySQL Server key along with {@link Response}.
      */
     Response<ServerKey> getByIdWithResponse(String id, Context context);
 

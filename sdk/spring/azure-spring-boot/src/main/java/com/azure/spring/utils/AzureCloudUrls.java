@@ -14,7 +14,7 @@ public class AzureCloudUrls {
      * @return the base URL
      */
     public static String getBaseUrl(String cloudType) {
-        return cloudType.equals("Global") ? "https://login.microsoftonline.com/"
+        return "Global".equals(cloudType) ? "https://login.microsoftonline.com/"
             : "https://login.partner.microsoftonline.cn/";
     }
 
@@ -25,7 +25,7 @@ public class AzureCloudUrls {
      * @return the graph base URL
      */
     public static String getGraphBaseUrl(String cloudType) {
-        return cloudType.equals("Global") ? "https://graph.microsoft.com/"
+        return "Global".equals(cloudType) ? "https://graph.microsoft.com/"
             : "https://microsoftgraph.chinacloudapi.cn/";
     }
 
@@ -36,7 +36,7 @@ public class AzureCloudUrls {
      * @return the service management base URL
      */
     public static String getServiceManagementBaseUrl(String cloudType) {
-        return cloudType.equals("Global") ? "https://management.azure.com/"
+        return "Global".equals(cloudType) ? "https://management.azure.com/"
             : "https://management.chinacloudapi.cn/";
     }
 }

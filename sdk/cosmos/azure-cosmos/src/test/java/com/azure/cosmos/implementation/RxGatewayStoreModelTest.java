@@ -126,6 +126,9 @@ public class RxGatewayStoreModelTest {
         Mockito.doReturn(Mono.error(new SocketException("Dummy SocketException")))
                .when(httpClient).send(any(HttpRequest.class), any(Duration.class));
 
+        GatewayServiceConfigurationReader gatewayServiceConfigurationReader = Mockito.mock(GatewayServiceConfigurationReader.class);
+        Mockito.doReturn(ConsistencyLevel.SESSION)
+               .when(gatewayServiceConfigurationReader).getDefaultConsistencyLevel();
         RxGatewayStoreModel storeModel = new RxGatewayStoreModel(clientContext,
             sessionContainer,
             ConsistencyLevel.SESSION,
@@ -134,6 +137,7 @@ public class RxGatewayStoreModelTest {
             globalEndpointManager,
             httpClient,
             null);
+        storeModel.setGatewayServiceConfigurationReader(gatewayServiceConfigurationReader);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(clientContext,
             OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);

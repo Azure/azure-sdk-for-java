@@ -7,6 +7,7 @@ import com.azure.resourcemanager.appservice.models.DeployOptions;
 import com.azure.resourcemanager.appservice.models.DeployType;
 import com.azure.resourcemanager.appservice.models.DeploymentSlot;
 import com.azure.resourcemanager.appservice.models.DeploymentSlotBase;
+import com.azure.resourcemanager.appservice.models.KuduDeploymentResult;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.fluent.models.SiteConfigResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
@@ -171,5 +172,26 @@ class DeploymentSlotImpl
         }
         return kuduClient.deployAsync(type, file, length,
             deployOptions.path(), deployOptions.restartSite(), deployOptions.cleanDeployment());
+    }
+
+    @Override
+    public KuduDeploymentResult pushDeploy(DeployType type, File file, DeployOptions deployOptions) {
+        return pushDeployAsync(type, file, deployOptions).block();
+    }
+
+    @Override
+    public Mono<KuduDeploymentResult> pushDeployAsync(DeployType type, File file, DeployOptions deployOptions) {
+        Objects.requireNonNull(type);
+        Objects.requireNonNull(file);
+        if (deployOptions == null) {
+            deployOptions = new DeployOptions();
+        }
+        try {
+            return kuduClient.pushDeployAsync(type, file,
+                deployOptions.path(), deployOptions.restartSite(), deployOptions.cleanDeployment(),
+                deployOptions.trackDeployment());
+        } catch (IOException e) {
+            return Mono.error(e);
+        }
     }
 }

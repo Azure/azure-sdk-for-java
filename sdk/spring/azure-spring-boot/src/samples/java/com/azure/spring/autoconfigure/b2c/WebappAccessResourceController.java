@@ -22,6 +22,7 @@ public class WebappAccessResourceController {
     @Autowired
     private WebClient webClient;
 
+    // BEGIN: readme-sample-callWebApiA
     /**
      * Access to protected data from Webapp to WebApiA through client credential flow. The access token is obtained by webclient, or
      * <p>@RegisteredOAuth2AuthorizedClient("webApiA")</p>. In the end, these two approaches will be executed to
@@ -41,6 +42,7 @@ public class WebappAccessResourceController {
         LOGGER.info("Call callWebApiA(), request '/webApiA/sample' returned: {}", body);
         return "Request '/webApiA/sample'(WebApi A) returned a " + (body != null ? "success." : "failure.");
     }
+    // END: readme-sample-callWebApiA
 
     /**
      * Access to protected data from Webapp to WebApiA through client credential flow. The access token is obtained by webclient, or

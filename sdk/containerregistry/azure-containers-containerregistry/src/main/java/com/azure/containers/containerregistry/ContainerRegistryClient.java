@@ -183,12 +183,12 @@ public final class ContainerRegistryClient {
      *
      *
      * @param repositoryName Name of the repository to reference.
-     * @param digest Either a tag or digest that uniquely identifies the artifact.
+     * @param tagOrDigest Either a tag or digest that uniquely identifies the artifact.
      * @return A new {@link RegistryArtifact} object for the desired repository.
-     * @throws NullPointerException if {@code repositoryName} or {@code digest} is null.
-     * @throws IllegalArgumentException if {@code repositoryName} or {@code digest} is empty.
+     * @throws NullPointerException if {@code repositoryName} or {@code tagOrDigest} is null.
+     * @throws IllegalArgumentException if {@code repositoryName} or {@code tagOrDigest} is empty.
      */
-    public RegistryArtifact getArtifact(String repositoryName, String digest) {
-        return new RegistryArtifact(this.asyncClient.getArtifact(repositoryName, digest));
+    public RegistryArtifact getArtifact(String repositoryName, String tagOrDigest) {
+        return new RegistryArtifact(this.asyncClient.getArtifact(repositoryName, tagOrDigest));
     }
 }

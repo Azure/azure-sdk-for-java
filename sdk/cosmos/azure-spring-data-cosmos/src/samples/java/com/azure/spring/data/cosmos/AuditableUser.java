@@ -10,6 +10,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.OffsetDateTime;
 
+// BEGIN: readme-sample-AuditableUser
 @Container(containerName = "myContainer")
 public class AuditableUser {
     private String id;
@@ -23,3 +24,4 @@ public class AuditableUser {
     @LastModifiedDate
     private OffsetDateTime lastModifiedByDate;
 }
+// END: readme-sample-AuditableUser

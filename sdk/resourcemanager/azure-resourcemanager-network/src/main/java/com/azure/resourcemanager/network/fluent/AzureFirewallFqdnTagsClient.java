@@ -18,7 +18,7 @@ public interface AzureFirewallFqdnTagsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Azure Firewall FQDN Tags in a subscription.
+     * @return all the Azure Firewall FQDN Tags in a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<AzureFirewallFqdnTagInner> listAsync();
@@ -28,7 +28,7 @@ public interface AzureFirewallFqdnTagsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Azure Firewall FQDN Tags in a subscription.
+     * @return all the Azure Firewall FQDN Tags in a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AzureFirewallFqdnTagInner> list();
@@ -40,7 +40,7 @@ public interface AzureFirewallFqdnTagsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Azure Firewall FQDN Tags in a subscription.
+     * @return all the Azure Firewall FQDN Tags in a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AzureFirewallFqdnTagInner> list(Context context);

@@ -15,40 +15,12 @@ import com.azure.identity.EnvironmentCredential;
 import com.azure.identity.EnvironmentCredentialBuilder;
 
 /**
- * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO AUTH.md FILE. LINE NUMBERS
- * ARE USED TO EXTRACT APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING
- * LINE NUMBERS OF EXISTING CODE SAMPLES.
- *
  * Code samples for the AUTH.md
  */
 public class AuthSamples {
-    // RESERVE SPACE FOR MORE IMPORT LINES
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // START FROM LINE#50
     public void buildClientSecretCredential() {
+        // BEGIN: readme-sample-buildClientSecretCredential
         ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
             .clientId("<YOUR_CLIENT_ID>")
             .clientSecret("<YOUR_CLIENT_SECRET>")
@@ -56,28 +28,37 @@ public class AuthSamples {
             // authority host is optional
             .authorityHost("<AZURE_AUTHORITY_HOST>")
             .build();
+        // END: readme-sample-buildClientSecretCredential
     }
 
     public void buildAzureProfile() {
+        // BEGIN: readme-sample-buildAzureProfile
         // AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
         AzureProfile profile = new AzureProfile("<YOUR_TENANT_ID>", "<YOUR_SUBSCRIPTION_ID>", AzureEnvironment.AZURE);
+        // END: readme-sample-buildAzureProfile
     }
 
     public void init() {
+        // BEGIN: readme-sample-init
         AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE_GERMANY);
         EnvironmentCredential credential = new EnvironmentCredentialBuilder()
             .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
             .build();
+        // END: readme-sample-init
     }
 
     public void authenticate(TokenCredential credential, AzureProfile profile) {
+        // BEGIN: readme-sample-authenticateAuth
         AzureResourceManager azure = AzureResourceManager.authenticate(credential, profile).withDefaultSubscription();
+        // END: readme-sample-authenticateAuth
     }
 
     public void authenticateAndListSubs(TokenCredential credential, AzureProfile profile) {
+        // BEGIN: readme-sample-authenticateAndListSubs
         AzureResourceManager.Authenticated authenticated = AzureResourceManager.authenticate(credential, profile);
         String subscriptionId = authenticated.subscriptions().list().iterator().next().subscriptionId();
         AzureResourceManager azure = authenticated.withSubscription(subscriptionId);
+        // END: readme-sample-authenticateAndListSubs
     }
 
     public void configure(HttpPipelinePolicy customPolicy,
@@ -85,11 +66,13 @@ public class AuthSamples {
                           HttpClient httpClient,
                           TokenCredential credential,
                           AzureProfile profile) {
+        // BEGIN: readme-sample-customPipeline
         AzureResourceManager azure = AzureResourceManager.configure()
             .withPolicy(customPolicy)
             .withRetryPolicy(customRetryPolicy)
             .withHttpClient(httpClient)
             .authenticate(credential, profile)
             .withDefaultSubscription();
+        // END: readme-sample-customPipeline
     }
 }

@@ -180,7 +180,7 @@ public final class OutputsImpl implements Outputs {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'outputs'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, jobName, outputName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, jobName, outputName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {

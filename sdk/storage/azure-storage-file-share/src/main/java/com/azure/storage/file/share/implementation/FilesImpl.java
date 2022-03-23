@@ -24,6 +24,7 @@ import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.Base64Util;
 import com.azure.core.util.Context;
 import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
+import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
 import com.azure.storage.file.share.implementation.models.FilesAbortCopyResponse;
 import com.azure.storage.file.share.implementation.models.FilesAcquireLeaseResponse;
 import com.azure.storage.file.share.implementation.models.FilesBreakLeaseResponse;
@@ -35,12 +36,14 @@ import com.azure.storage.file.share.implementation.models.FilesGetPropertiesResp
 import com.azure.storage.file.share.implementation.models.FilesGetRangeListResponse;
 import com.azure.storage.file.share.implementation.models.FilesListHandlesResponse;
 import com.azure.storage.file.share.implementation.models.FilesReleaseLeaseResponse;
+import com.azure.storage.file.share.implementation.models.FilesRenameResponse;
 import com.azure.storage.file.share.implementation.models.FilesSetHttpHeadersResponse;
 import com.azure.storage.file.share.implementation.models.FilesSetMetadataResponse;
 import com.azure.storage.file.share.implementation.models.FilesStartCopyResponse;
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeFromURLResponse;
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeResponse;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteType;
+import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareStorageException;
@@ -378,6 +381,30 @@ public final class FilesImpl {
                 @QueryParam("sharesnapshot") String sharesnapshot,
                 @HeaderParam("x-ms-handle-id") String handleId,
                 @HeaderParam("x-ms-version") String version,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/{shareName}/{fileName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        Mono<FilesRenameResponse> rename(
+                @HostParam("url") String url,
+                @PathParam("shareName") String shareName,
+                @PathParam("fileName") String fileName,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-file-rename-source") String renameSource,
+                @HeaderParam("x-ms-file-rename-replace-if-exists") Boolean replaceIfExists,
+                @HeaderParam("x-ms-file-rename-ignore-readonly") Boolean ignoreReadOnly,
+                @HeaderParam("x-ms-source-lease-id") String sourceLeaseId,
+                @HeaderParam("x-ms-destination-lease-id") String destinationLeaseId,
+                @HeaderParam("x-ms-file-attributes") String fileAttributes,
+                @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
+                @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
+                @HeaderParam("x-ms-file-permission") String filePermission,
+                @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
+                @HeaderParam("x-ms-meta-") Map<String, String> metadata,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -1299,6 +1326,103 @@ public final class FilesImpl {
                 sharesnapshot,
                 handleId,
                 this.client.getVersion(),
+                accept,
+                context);
+    }
+
+    /**
+     * Renames a file.
+     *
+     * @param shareName The name of the target share.
+     * @param fileName The path of the target file.
+     * @param renameSource Required. Specifies the URI-style path of the source file, up to 2 KB in length.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param replaceIfExists Optional. A boolean value for if the destination file already exists, whether this request
+     *     will overwrite the file or not. If true, the rename will succeed and will overwrite the destination file. If
+     *     not provided or if false and the destination file does exist, the request will not overwrite the destination
+     *     file. If provided and the destination file doesn’t exist, the rename will succeed. Note: This value does not
+     *     override the x-ms-file-copy-ignore-read-only header value.
+     * @param ignoreReadOnly Optional. A boolean value that specifies whether the ReadOnly attribute on a preexisting
+     *     destination file should be respected. If true, the rename will succeed, otherwise, a previous file at the
+     *     destination with the ReadOnly attribute set will cause the rename to fail.
+     * @param filePermission If specified the permission (security descriptor) shall be set for the directory/file. This
+     *     header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used.
+     *     Default value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of
+     *     the x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
+     *     x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param metadata A name-value pair to associate with a file storage object.
+     * @param sourceLeaseAccessConditions Parameter group.
+     * @param destinationLeaseAccessConditions Parameter group.
+     * @param copyFileSmbInfo Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<FilesRenameResponse> renameWithResponseAsync(
+            String shareName,
+            String fileName,
+            String renameSource,
+            Integer timeout,
+            Boolean replaceIfExists,
+            Boolean ignoreReadOnly,
+            String filePermission,
+            String filePermissionKey,
+            Map<String, String> metadata,
+            SourceLeaseAccessConditions sourceLeaseAccessConditions,
+            DestinationLeaseAccessConditions destinationLeaseAccessConditions,
+            CopyFileSmbInfo copyFileSmbInfo,
+            Context context) {
+        final String comp = "rename";
+        final String accept = "application/xml";
+        String sourceLeaseIdInternal = null;
+        if (sourceLeaseAccessConditions != null) {
+            sourceLeaseIdInternal = sourceLeaseAccessConditions.getSourceLeaseId();
+        }
+        String sourceLeaseId = sourceLeaseIdInternal;
+        String destinationLeaseIdInternal = null;
+        if (destinationLeaseAccessConditions != null) {
+            destinationLeaseIdInternal = destinationLeaseAccessConditions.getDestinationLeaseId();
+        }
+        String destinationLeaseId = destinationLeaseIdInternal;
+        String fileAttributesInternal = null;
+        if (copyFileSmbInfo != null) {
+            fileAttributesInternal = copyFileSmbInfo.getFileAttributes();
+        }
+        String fileAttributes = fileAttributesInternal;
+        String fileCreationTimeInternal = null;
+        if (copyFileSmbInfo != null) {
+            fileCreationTimeInternal = copyFileSmbInfo.getFileCreationTime();
+        }
+        String fileCreationTime = fileCreationTimeInternal;
+        String fileLastWriteTimeInternal = null;
+        if (copyFileSmbInfo != null) {
+            fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
+        }
+        String fileLastWriteTime = fileLastWriteTimeInternal;
+        return service.rename(
+                this.client.getUrl(),
+                shareName,
+                fileName,
+                comp,
+                timeout,
+                this.client.getVersion(),
+                renameSource,
+                replaceIfExists,
+                ignoreReadOnly,
+                sourceLeaseId,
+                destinationLeaseId,
+                fileAttributes,
+                fileCreationTime,
+                fileLastWriteTime,
+                filePermission,
+                filePermissionKey,
+                metadata,
                 accept,
                 context);
     }

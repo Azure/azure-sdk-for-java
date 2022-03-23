@@ -21,6 +21,46 @@ import reactor.core.publisher.Mono;
 /** An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient. */
 public interface PrivateEndpointConnectionsClient {
     /**
+     * List all private endpoint connections in a container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list private endpoint connections for a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<PrivateEndpointConnectionInner> listAsync(String resourceGroupName, String registryName);
+
+    /**
+     * List all private endpoint connections in a container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list private endpoint connections for a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<PrivateEndpointConnectionInner> list(String resourceGroupName, String registryName);
+
+    /**
+     * List all private endpoint connections in a container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list private endpoint connections for a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<PrivateEndpointConnectionInner> list(String resourceGroupName, String registryName, Context context);
+
+    /**
      * Get the specified private endpoint connection associated with the container registry.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
@@ -319,44 +359,4 @@ public interface PrivateEndpointConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String registryName, String privateEndpointConnectionName, Context context);
-
-    /**
-     * List all private endpoint connections in a container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list private endpoint connections for a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<PrivateEndpointConnectionInner> listAsync(String resourceGroupName, String registryName);
-
-    /**
-     * List all private endpoint connections in a container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list private endpoint connections for a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PrivateEndpointConnectionInner> list(String resourceGroupName, String registryName);
-
-    /**
-     * List all private endpoint connections in a container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list private endpoint connections for a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PrivateEndpointConnectionInner> list(String resourceGroupName, String registryName, Context context);
 }

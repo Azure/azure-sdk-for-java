@@ -8,7 +8,6 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
-import com.azure.security.keyvault.keys.models.RandomBytes;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -116,9 +115,9 @@ public class KeyClientManagedHsmTest extends KeyClientTest implements KeyClientM
     public void getRandomBytes(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyClient(httpClient, serviceVersion);
         getRandomBytesRunner((count) -> {
-            RandomBytes randomBytes = client.getRandomBytes(count);
+            byte[] randomBytes = client.getRandomBytes(count);
 
-            assertEquals(count, randomBytes.getBytes().length);
+            assertEquals(count, randomBytes.length);
         });
     }
 

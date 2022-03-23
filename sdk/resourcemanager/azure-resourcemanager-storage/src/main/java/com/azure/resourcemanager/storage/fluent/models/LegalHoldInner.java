@@ -32,6 +32,14 @@ public final class LegalHoldInner {
     @JsonProperty(value = "tags", required = true)
     private List<String> tags;
 
+    /*
+     * When enabled, new blocks can be written to both 'Append and Bock Blobs'
+     * while maintaining legal hold protection and compliance. Only new blocks
+     * can be added and any existing blocks cannot be modified or deleted.
+     */
+    @JsonProperty(value = "allowProtectedAppendWritesAll")
+    private Boolean allowProtectedAppendWritesAll;
+
     /**
      * Get the hasLegalHold property: The hasLegalHold public property is set to true by SRP if there are at least one
      * existing tag. The hasLegalHold public property is set to false by SRP if all existing legal hold tags are cleared
@@ -60,6 +68,30 @@ public final class LegalHoldInner {
      */
     public LegalHoldInner withTags(List<String> tags) {
         this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the allowProtectedAppendWritesAll property: When enabled, new blocks can be written to both 'Append and Bock
+     * Blobs' while maintaining legal hold protection and compliance. Only new blocks can be added and any existing
+     * blocks cannot be modified or deleted.
+     *
+     * @return the allowProtectedAppendWritesAll value.
+     */
+    public Boolean allowProtectedAppendWritesAll() {
+        return this.allowProtectedAppendWritesAll;
+    }
+
+    /**
+     * Set the allowProtectedAppendWritesAll property: When enabled, new blocks can be written to both 'Append and Bock
+     * Blobs' while maintaining legal hold protection and compliance. Only new blocks can be added and any existing
+     * blocks cannot be modified or deleted.
+     *
+     * @param allowProtectedAppendWritesAll the allowProtectedAppendWritesAll value to set.
+     * @return the LegalHoldInner object itself.
+     */
+    public LegalHoldInner withAllowProtectedAppendWritesAll(Boolean allowProtectedAppendWritesAll) {
+        this.allowProtectedAppendWritesAll = allowProtectedAppendWritesAll;
         return this;
     }
 

@@ -39,6 +39,12 @@ public final class SimpleSchedulePolicy extends SchedulePolicy {
     private List<OffsetDateTime> scheduleRunTimes;
 
     /*
+     * Hourly Schedule of this Policy
+     */
+    @JsonProperty(value = "hourlySchedule")
+    private HourlySchedule hourlySchedule;
+
+    /*
      * At every number weeks this schedule has to be run.
      */
     @JsonProperty(value = "scheduleWeeklyFrequency")
@@ -105,6 +111,26 @@ public final class SimpleSchedulePolicy extends SchedulePolicy {
     }
 
     /**
+     * Get the hourlySchedule property: Hourly Schedule of this Policy.
+     *
+     * @return the hourlySchedule value.
+     */
+    public HourlySchedule hourlySchedule() {
+        return this.hourlySchedule;
+    }
+
+    /**
+     * Set the hourlySchedule property: Hourly Schedule of this Policy.
+     *
+     * @param hourlySchedule the hourlySchedule value to set.
+     * @return the SimpleSchedulePolicy object itself.
+     */
+    public SimpleSchedulePolicy withHourlySchedule(HourlySchedule hourlySchedule) {
+        this.hourlySchedule = hourlySchedule;
+        return this;
+    }
+
+    /**
      * Get the scheduleWeeklyFrequency property: At every number weeks this schedule has to be run.
      *
      * @return the scheduleWeeklyFrequency value.
@@ -132,5 +158,8 @@ public final class SimpleSchedulePolicy extends SchedulePolicy {
     @Override
     public void validate() {
         super.validate();
+        if (hourlySchedule() != null) {
+            hourlySchedule().validate();
+        }
     }
 }

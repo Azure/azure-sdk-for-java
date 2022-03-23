@@ -11,7 +11,7 @@ import java.util.Arrays;
 /** Samples for AttachedDatabaseConfigurations CreateOrUpdate. */
 public final class AttachedDatabaseConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoAttachedDatabaseConfigurationsCreateOrUpdate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoAttachedDatabaseConfigurationsCreateOrUpdate.json
      */
     /**
      * Sample code: AttachedDatabaseConfigurationsCreateOrUpdate.
@@ -22,12 +22,12 @@ public final class AttachedDatabaseConfigurationsCreateOrUpdateSamples {
         com.azure.resourcemanager.kusto.KustoManager manager) {
         manager
             .attachedDatabaseConfigurations()
-            .define("attachedDatabaseConfigurations1")
-            .withExistingCluster("kustorptest", "kustoclusterrptest4")
+            .define("attachedDatabaseConfigurationsTest")
+            .withExistingCluster("kustorptest", "kustoCluster2")
             .withRegion("westus")
             .withDatabaseName("kustodatabase")
             .withClusterResourceId(
-                "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/KustoClusterLeader")
+                "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster2")
             .withDefaultPrincipalsModificationKind(DefaultPrincipalsModificationKind.UNION)
             .withTableLevelSharingProperties(
                 new TableLevelSharingProperties()

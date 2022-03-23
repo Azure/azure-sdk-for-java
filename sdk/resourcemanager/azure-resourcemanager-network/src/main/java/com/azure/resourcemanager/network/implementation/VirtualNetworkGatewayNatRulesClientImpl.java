@@ -155,7 +155,8 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualNetworkGatewayNatRule Resource.
+     * @return virtualNetworkGatewayNatRule Resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VirtualNetworkGatewayNatRuleInner>> getWithResponseAsync(
@@ -213,7 +214,8 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualNetworkGatewayNatRule Resource.
+     * @return virtualNetworkGatewayNatRule Resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VirtualNetworkGatewayNatRuleInner>> getWithResponseAsync(
@@ -267,7 +269,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualNetworkGatewayNatRule Resource.
+     * @return virtualNetworkGatewayNatRule Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualNetworkGatewayNatRuleInner> getAsync(
@@ -310,7 +312,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualNetworkGatewayNatRule Resource.
+     * @return virtualNetworkGatewayNatRule Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualNetworkGatewayNatRuleInner> getWithResponse(
@@ -328,7 +330,8 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualNetworkGatewayNatRule Resource.
+     * @return virtualNetworkGatewayNatRule Resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -397,7 +400,8 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualNetworkGatewayNatRule Resource.
+     * @return virtualNetworkGatewayNatRule Resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -463,7 +467,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualNetworkGatewayNatRule Resource.
+     * @return the {@link PollerFlux} for polling of virtualNetworkGatewayNatRule Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualNetworkGatewayNatRuleInner>, VirtualNetworkGatewayNatRuleInner>
@@ -496,7 +500,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualNetworkGatewayNatRule Resource.
+     * @return the {@link PollerFlux} for polling of virtualNetworkGatewayNatRule Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualNetworkGatewayNatRuleInner>, VirtualNetworkGatewayNatRuleInner>
@@ -530,7 +534,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualNetworkGatewayNatRule Resource.
+     * @return the {@link SyncPoller} for polling of virtualNetworkGatewayNatRule Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkGatewayNatRuleInner>, VirtualNetworkGatewayNatRuleInner>
@@ -554,7 +558,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualNetworkGatewayNatRule Resource.
+     * @return the {@link SyncPoller} for polling of virtualNetworkGatewayNatRule Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkGatewayNatRuleInner>, VirtualNetworkGatewayNatRuleInner>
@@ -579,7 +583,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualNetworkGatewayNatRule Resource.
+     * @return virtualNetworkGatewayNatRule Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualNetworkGatewayNatRuleInner> createOrUpdateAsync(
@@ -603,7 +607,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualNetworkGatewayNatRule Resource.
+     * @return virtualNetworkGatewayNatRule Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VirtualNetworkGatewayNatRuleInner> createOrUpdateAsync(
@@ -674,7 +678,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -732,7 +736,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -786,7 +790,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -809,7 +813,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -831,7 +835,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -849,7 +853,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -866,7 +870,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String virtualNetworkGatewayName, String natRuleName) {
@@ -885,7 +889,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -935,7 +939,8 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all nat rules to a virtual network gateway.
+     * @return result of the request to list all nat rules to a virtual network gateway along with {@link PagedResponse}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkGatewayNatRuleInner>> listByVirtualNetworkGatewaySinglePageAsync(
@@ -997,7 +1002,8 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all nat rules to a virtual network gateway.
+     * @return result of the request to list all nat rules to a virtual network gateway along with {@link PagedResponse}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkGatewayNatRuleInner>> listByVirtualNetworkGatewaySinglePageAsync(
@@ -1055,7 +1061,8 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all nat rules to a virtual network gateway.
+     * @return result of the request to list all nat rules to a virtual network gateway as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualNetworkGatewayNatRuleInner> listByVirtualNetworkGatewayAsync(
@@ -1074,7 +1081,8 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all nat rules to a virtual network gateway.
+     * @return result of the request to list all nat rules to a virtual network gateway as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VirtualNetworkGatewayNatRuleInner> listByVirtualNetworkGatewayAsync(
@@ -1092,7 +1100,8 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all nat rules to a virtual network gateway.
+     * @return result of the request to list all nat rules to a virtual network gateway as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkGatewayNatRuleInner> listByVirtualNetworkGateway(
@@ -1109,7 +1118,8 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all nat rules to a virtual network gateway.
+     * @return result of the request to list all nat rules to a virtual network gateway as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkGatewayNatRuleInner> listByVirtualNetworkGateway(
@@ -1125,7 +1135,8 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all nat rules to a virtual network gateway.
+     * @return result of the request to list all nat rules to a virtual network gateway along with {@link PagedResponse}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkGatewayNatRuleInner>> listByVirtualNetworkGatewayNextSinglePageAsync(
@@ -1164,7 +1175,8 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all nat rules to a virtual network gateway.
+     * @return result of the request to list all nat rules to a virtual network gateway along with {@link PagedResponse}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkGatewayNatRuleInner>> listByVirtualNetworkGatewayNextSinglePageAsync(

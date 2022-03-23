@@ -254,7 +254,7 @@ public interface SharedAccessAuthorizationRuleResource {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Primary and Secondary ConnectionStrings to the namespace.
      */
-    SharedAccessAuthorizationRuleListResult listKeys();
+    ResourceListKeys listKeys();
 
     /**
      * Gets the Primary and Secondary ConnectionStrings to the namespace.
@@ -265,7 +265,7 @@ public interface SharedAccessAuthorizationRuleResource {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Primary and Secondary ConnectionStrings to the namespace.
      */
-    Response<SharedAccessAuthorizationRuleListResult> listKeysWithResponse(Context context);
+    Response<ResourceListKeys> listKeysWithResponse(Context context);
 
     /**
      * Regenerates the Primary/Secondary Keys to the Namespace Authorization Rule.

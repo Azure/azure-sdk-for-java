@@ -2,12 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.spring.jms;
 /**
- * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
- * ARE USED TO EXTRACT APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING
- * LINE NUMBERS OF EXISTING CODE SAMPLES.
- * <p>
  * Code samples for the Key Vault in README.md
  */
+
+// BEGIN: readme-sample-SendController
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,3 +31,4 @@ public class SendController {
         return message;
     }
 }
+// END: readme-sample-SendController

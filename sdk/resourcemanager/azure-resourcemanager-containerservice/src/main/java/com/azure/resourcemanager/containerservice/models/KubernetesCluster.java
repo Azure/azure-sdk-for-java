@@ -47,11 +47,23 @@ public interface KubernetesCluster
     /** @return the Kubernetes configuration file content with user-level privileges to the cluster */
     byte[] userKubeConfigContent();
 
+    /**
+     * @param format Only apply to AAD clusters, specifies the format of returned kubeconfig. Format 'azure' will return azure auth-provider kubeconfig; format 'exec' will return exec format kubeconfig, which requires kubelogin binary in the path.
+     * @return the Kubernetes configuration file content with user-level privileges to the cluster
+     */
+    byte[] userKubeConfigContent(Format format);
+
     /** @return the Kubernetes credentials with administrative privileges to the cluster */
     List<CredentialResult> adminKubeConfigs();
 
     /** @return the Kubernetes credentials with user-level privileges to the cluster */
     List<CredentialResult> userKubeConfigs();
+
+    /**
+     * @param format Only apply to AAD clusters, specifies the format of returned kubeconfig. Format 'azure' will return azure auth-provider kubeconfig; format 'exec' will return exec format kubeconfig, which requires kubelogin binary in the path.
+     * @return the Kubernetes credentials with user-level privileges to the cluster
+     */
+    List<CredentialResult> userKubeConfigs(Format format);
 
     /** @return the service principal client ID */
     String servicePrincipalClientId();
@@ -88,6 +100,18 @@ public interface KubernetesCluster
      *     assigned to the Kubernetes cluster.
      */
     String systemAssignedManagedServiceIdentityPrincipalId();
+
+    /** @return the IDs (object IDs) of the Azure AD groups as the admin group of the cluster. */
+    List<String> azureActiveDirectoryGroupIds();
+
+    /** @return whether local accounts is enabled. */
+    boolean isLocalAccountsEnabled();
+
+    /** @return whether Azure Role-Based Access Control for Kubernetes authorization is enabled. */
+    boolean isAzureRbacEnabled();
+
+    /** @return resource ID of the disk encryption set. */
+    String diskEncryptionSetId();
 
     // Actions
 
@@ -171,7 +195,7 @@ public interface KubernetesCluster
         /**
          * The stage of the Kubernetes cluster definition allowing to specific the Linux root username.
          */
-        interface WithLinuxRootUsername {
+        interface WithLinuxRootUsername extends WithServicePrincipalClientId {
             /**
              * Begins the definition to specify Linux root username.
              *
@@ -446,20 +470,66 @@ public interface KubernetesCluster
             /**
              * Specifies that System Assigned Managed Service Identity needs to be enabled in the cluster.
              *
-             * @return the next stage of the web app definition
+             * @return the next stage
              */
             WithCreate withSystemAssignedManagedServiceIdentity();
         }
 
-//        /** The stage of the Kubernetes cluster definition allowing to specify Kubernetes Role-Based Access Control. */
-//        interface WithRoleBasedAccessControl {
-//            /**
-//             * Enables Kubernetes Role-Based Access Control.
-//             *
-//             * @return the next stage
-//             */
-//            WithCreate enableRoleBasedAccessControl();
-//        }
+        /** The stage of the Kubernetes cluster definition allowing to specify Kubernetes Role-Based Access Control. */
+        interface WithRBAC {
+            /**
+             * Disables Kubernetes Role-Based Access Control.
+             *
+             * @return the next stage
+             */
+            WithCreate disableKubernetesRbac();
+        }
+
+        /** The stage of the Kubernetes cluster definition allowing to specify Azure AD integration. */
+        interface WithAAD {
+            /**
+             * Specified Azure AD group as the admin group of the cluster.
+             * <p>
+             * Azure AD integration cannot be disabled. It will enable Kubernetes Role-Based Access Control.
+             *
+             * @param activeDirectoryGroupObjectId the object ID of the Azure AD group.
+             * <p>
+             * See {@code com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup} in
+             * azure-resourcemanager-authorization package.
+             * @return the next stage
+             */
+            WithCreate withAzureActiveDirectoryGroup(String activeDirectoryGroupObjectId);
+
+            /**
+             * Enables Azure Role-Based Access Control for Kubernetes authorization.
+             * <p>
+             * Azure AD integration cannot be disabled. It will enable Kubernetes Role-Based Access Control.
+             *
+             * @return the next stage
+             */
+            WithCreate enableAzureRbac();
+        }
+
+        /** The stage of the Kubernetes cluster definition allowing to specify local accounts. */
+        interface WithLocalAccounts {
+            /**
+             * Disables authentication from local accounts.
+             *
+             * @return the next stage
+             */
+            WithCreate disableLocalAccounts();
+        }
+
+        /** The stage of the Kubernetes cluster definition allowing to specify disk encryption. */
+        interface WithDiskEncryption {
+            /**
+             * Specifies the disk encryption set for the disk in cluster.
+             *
+             * @param diskEncryptionSetId the ID of disk encryption set.
+             * @return the next stage of the definition
+             */
+            WithCreate withDiskEncryptionSet(String diskEncryptionSetId);;
+        }
 
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
@@ -474,7 +544,10 @@ public interface KubernetesCluster
                 WithAccessProfiles,
                 WithAutoScalerProfile,
                 WithManagedServiceIdentity,
-//                WithRoleBasedAccessControl,
+                WithRBAC,
+                WithAAD,
+                WithLocalAccounts,
+                WithDiskEncryption,
                 Resource.DefinitionWithTags<WithCreate> {
         }
     }
@@ -486,6 +559,8 @@ public interface KubernetesCluster
             UpdateStages.WithNetworkProfile,
             UpdateStages.WithRBAC,
             UpdateStages.WithAutoScalerProfile,
+            UpdateStages.WithAAD,
+            UpdateStages.WithLocalAccounts,
             Resource.UpdateWithTags<KubernetesCluster.Update>,
             Appliable<KubernetesCluster> {
     }
@@ -531,7 +606,7 @@ public interface KubernetesCluster
              * @param addOnProfileMap the cluster's add-on's profiles
              * @return the next stage of the update
              */
-            KubernetesCluster.Update withAddOnProfiles(Map<String, ManagedClusterAddonProfile> addOnProfileMap);
+            Update withAddOnProfiles(Map<String, ManagedClusterAddonProfile> addOnProfileMap);
         }
 
         /** The stage of the Kubernetes cluster update definition allowing to specify the cluster's network profile. */
@@ -542,7 +617,7 @@ public interface KubernetesCluster
              * @param networkProfile the cluster's networkProfile
              * @return the next stage of the update
              */
-            KubernetesCluster.Update withNetworkProfile(ContainerServiceNetworkProfile networkProfile);
+            Update withNetworkProfile(ContainerServiceNetworkProfile networkProfile);
         }
 
         /**
@@ -554,15 +629,19 @@ public interface KubernetesCluster
              * Updates the cluster to specify the Kubernetes Role-Based Access Control is enabled.
              *
              * @return the next stage of the update
+             * @deprecated Change Kubernetes RBAC is not allowed.
              */
-            KubernetesCluster.Update withRBACEnabled();
+            @Deprecated
+            Update withRBACEnabled();
 
             /**
              * Updates the cluster to specify the Kubernetes Role-Based Access Control is disabled.
              *
              * @return the next stage of the update
+             * @deprecated Change Kubernetes RBAC is not allowed.
              */
-            KubernetesCluster.Update withRBACDisabled();
+            @Deprecated
+            Update withRBACDisabled();
         }
 
         /** The stage of the Kubernetes cluster update allowing to specify the auto-scale profile. */
@@ -574,6 +653,46 @@ public interface KubernetesCluster
              * @return the next stage
              */
             Update withAutoScalerProfile(ManagedClusterPropertiesAutoScalerProfile autoScalerProfile);
+        }
+
+        /** The stage of the Kubernetes cluster update allowing to specify Azure AD integration. */
+        interface WithAAD {
+            /**
+             * Specified Azure AD group as the admin group of the cluster.
+             *
+             * Azure AD integration cannot be disabled. It will enable Kubernetes Role-Based Access Control.
+             *
+             * @param activeDirectoryGroupObjectId the object ID of the Azure AD group.
+             * <p>
+             * See {@code com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup} in
+             * azure-resourcemanager-authorization package.
+             * @return the next stage
+             */
+            Update withAzureActiveDirectoryGroup(String activeDirectoryGroupObjectId);
+
+            /**
+             * Enables Azure Role-Based Access Control for Kubernetes authorization.
+             *
+             * @return the next stage
+             */
+            Update enableAzureRbac();
+        }
+
+        /** The stage of the Kubernetes cluster update allowing to specify local accounts. */
+        interface WithLocalAccounts {
+            /**
+             * Enables authentication from local accounts.
+             *
+             * @return the next stage
+             */
+            Update enableLocalAccounts();
+
+            /**
+             * Disables authentication from local accounts.
+             *
+             * @return the next stage
+             */
+            Update disableLocalAccounts();
         }
     }
 }

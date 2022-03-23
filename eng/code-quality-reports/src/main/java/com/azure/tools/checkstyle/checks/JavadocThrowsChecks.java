@@ -18,9 +18,10 @@ import java.util.HashSet;
 import java.util.Map;
 
 public class JavadocThrowsChecks extends AbstractCheck {
-    private static final String MISSING_DESCRIPTION_MESSAGE =
+    static final String MISSING_DESCRIPTION_MESSAGE =
         "@throws tag requires a description explaining when the error is thrown.";
-    private static final String MISSING_THROWS_TAG_MESSAGE = "Javadoc @throws tag required for unchecked throw.";
+    static final String MISSING_THROWS_TAG_MESSAGE = "Javadoc @throws tag required for unchecked throw.";
+
     private static final int[] TOKENS = new int[] {
         TokenTypes.CTOR_DEF,
         TokenTypes.METHOD_DEF,

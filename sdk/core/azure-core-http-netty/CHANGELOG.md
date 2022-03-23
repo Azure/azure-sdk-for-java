@@ -10,6 +10,52 @@
 
 ### Other Changes
 
+## 1.11.8 (2022-03-04)
+
+### Other Changes
+
+- Updated all `ClientLogger`s to be static constants instead of instance variables. ([#27339](https://github.com/Azure/azure-sdk-for-java/pull/27339))
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.25.0` to `1.26.0`.
+- Upgraded Netty from `4.1.72.Final` to `4.1.73.Final`.
+- Upgraded Reactor Netty from `1.0.14` to `1.0.15`.
+
+## 1.11.7 (2022-02-04)
+
+### Bugs Fixed
+
+- Fixed a bug where proxying clients wouldn't use the no-op resolver. ([#26611](https://github.com/Azure/azure-sdk-for-java/pull/26611))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.1` to `1.25.0`.
+
+## 1.11.6 (2022-01-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.0` to `1.24.1`.
+- Upgraded Netty from `4.1.70.Final` to `4.1.72.Final`.
+- Upgraded Reactor Netty from `1.0.13` to `1.0.14`.
+
+## 1.11.5 (2022-01-06)
+
+### Bugs Fixed
+- Set default `maxConnections` value to match the default used in `reactor-netty` when `HttpClientOptions` is set but 
+  `maximumConnectionPoolSize` is not specified. ([#26083](https://github.com/Azure/azure-sdk-for-java/pull/26083))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.23.1` to `1.24.0`.
+
 ## 1.11.4 (2021-12-07)
 
 ### Other Changes

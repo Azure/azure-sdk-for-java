@@ -27,12 +27,20 @@ import org.springframework.context.annotation.Role;
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 public class AzureBootstrapConfiguration {
 
+    /**
+     * Bean for the {@link AzureListenerAnnotationBeanPostProcessor}.
+     * @return the bean post processor bean.
+     */
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     @Bean
     public AzureListenerAnnotationBeanPostProcessor azureListenerAnnotationProcessor() {
         return new AzureListenerAnnotationBeanPostProcessor();
     }
 
+    /**
+     * Bean for the {@link AzureListenerEndpointRegistry}.
+     * @return the listener endpoint registry bean.
+     */
     @Bean(name = AzureListenerAnnotationBeanPostProcessor.DEFAULT_AZURE_LISTENER_ENDPOINT_REGISTRY_BEAN_NAME)
     public AzureListenerEndpointRegistry azureListenerEndpointRegistry() {
         return new AzureListenerEndpointRegistry();

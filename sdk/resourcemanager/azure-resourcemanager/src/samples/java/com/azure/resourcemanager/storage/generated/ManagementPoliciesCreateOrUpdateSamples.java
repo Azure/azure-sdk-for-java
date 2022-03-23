@@ -24,7 +24,7 @@ import java.util.Arrays;
 /** Samples for ManagementPolicies CreateOrUpdate. */
 public final class ManagementPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-04-01/examples/StorageAccountSetManagementPolicyWithSnapshotAndVersion.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/StorageAccountSetManagementPolicyWithSnapshotAndVersion.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicyWithSnapshotAndVersion.
@@ -100,7 +100,7 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-04-01/examples/StorageAccountSetManagementPolicyForBlockAndAppendBlobs.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/StorageAccountSetManagementPolicyForBlockAndAppendBlobs.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicyForBlockAndAppendBlobs.
@@ -157,7 +157,7 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-04-01/examples/StorageAccountSetManagementPolicy_LastAccessTimeBasedBlobActions.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/StorageAccountSetManagementPolicy_LastAccessTimeBasedBlobActions.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicy_LastAccessTimeBasedBlobActions.
@@ -217,7 +217,7 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-04-01/examples/StorageAccountSetManagementPolicy.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/StorageAccountSetManagementPolicy.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicies.

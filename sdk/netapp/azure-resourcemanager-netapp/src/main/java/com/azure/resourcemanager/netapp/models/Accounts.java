@@ -15,7 +15,7 @@ public interface Accounts {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetApp account resources.
+     * @return list of NetApp account resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<NetAppAccount> list();
 
@@ -26,7 +26,7 @@ public interface Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetApp account resources.
+     * @return list of NetApp account resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<NetAppAccount> list(Context context);
 
@@ -37,7 +37,7 @@ public interface Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetApp account resources.
+     * @return list of NetApp account resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<NetAppAccount> listByResourceGroup(String resourceGroupName);
 
@@ -49,7 +49,7 @@ public interface Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetApp account resources.
+     * @return list of NetApp account resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<NetAppAccount> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -74,7 +74,7 @@ public interface Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetApp account.
+     * @return the NetApp account along with {@link Response}.
      */
     Response<NetAppAccount> getByResourceGroupWithResponse(
         String resourceGroupName, String accountName, Context context);
@@ -109,7 +109,7 @@ public interface Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetApp account.
+     * @return the NetApp account along with {@link Response}.
      */
     NetAppAccount getById(String id);
 
@@ -121,7 +121,7 @@ public interface Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetApp account.
+     * @return the NetApp account along with {@link Response}.
      */
     Response<NetAppAccount> getByIdWithResponse(String id, Context context);
 

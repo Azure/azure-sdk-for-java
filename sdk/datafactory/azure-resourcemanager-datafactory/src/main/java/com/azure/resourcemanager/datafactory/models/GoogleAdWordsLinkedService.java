@@ -66,6 +66,31 @@ public final class GoogleAdWordsLinkedService extends LinkedService {
     }
 
     /**
+     * Get the connectionProperties property: Properties used to connect to GoogleAds. It is mutually exclusive with any
+     * other properties in the linked service. Type: object.
+     *
+     * @return the connectionProperties value.
+     */
+    public Object connectionProperties() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().connectionProperties();
+    }
+
+    /**
+     * Set the connectionProperties property: Properties used to connect to GoogleAds. It is mutually exclusive with any
+     * other properties in the linked service. Type: object.
+     *
+     * @param connectionProperties the connectionProperties value to set.
+     * @return the GoogleAdWordsLinkedService object itself.
+     */
+    public GoogleAdWordsLinkedService withConnectionProperties(Object connectionProperties) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new GoogleAdWordsLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withConnectionProperties(connectionProperties);
+        return this;
+    }
+
+    /**
      * Get the clientCustomerId property: The Client customer ID of the AdWords account that you want to fetch report
      * data for.
      *

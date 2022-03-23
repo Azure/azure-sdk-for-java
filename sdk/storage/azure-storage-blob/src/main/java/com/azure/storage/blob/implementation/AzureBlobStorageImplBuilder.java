@@ -214,7 +214,7 @@ public final class AzureBlobStorageImplBuilder {
      */
     public AzureBlobStorageImpl buildClient() {
         if (version == null) {
-            this.version = "2021-02-12";
+            this.version = "2021-04-10";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();

@@ -5,81 +5,39 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.cdn.fluent.models.AfdOriginUpdatePropertiesParameters;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** AFDOrigin properties needed for origin update. */
-@JsonFlatten
 @Fluent
-public class AfdOriginUpdateParameters {
+public final class AfdOriginUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AfdOriginUpdateParameters.class);
 
     /*
-     * Resource reference to the Azure origin resource.
+     * The JSON object that contains the properties of the origin.
      */
-    @JsonProperty(value = "properties.azureOrigin")
-    private ResourceReference azureOrigin;
+    @JsonProperty(value = "properties")
+    private AfdOriginUpdatePropertiesParameters innerProperties;
 
-    /*
-     * The address of the origin. Domain names, IPv4 addresses, and IPv6
-     * addresses are supported.This should be unique across all origins in an
-     * endpoint.
+    /**
+     * Get the innerProperties property: The JSON object that contains the properties of the origin.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.hostName")
-    private String hostname;
+    private AfdOriginUpdatePropertiesParameters innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * The value of the HTTP port. Must be between 1 and 65535.
+    /**
+     * Get the originGroupName property: The name of the origin group which contains this origin.
+     *
+     * @return the originGroupName value.
      */
-    @JsonProperty(value = "properties.httpPort")
-    private Integer httpPort;
-
-    /*
-     * The value of the HTTPS port. Must be between 1 and 65535.
-     */
-    @JsonProperty(value = "properties.httpsPort")
-    private Integer httpsPort;
-
-    /*
-     * The host header value sent to the origin with each request. If you leave
-     * this blank, the request hostname determines this value. Azure CDN
-     * origins, such as Web Apps, Blob Storage, and Cloud Services require this
-     * host header value to match the origin hostname by default. This
-     * overrides the host header defined at Endpoint
-     */
-    @JsonProperty(value = "properties.originHostHeader")
-    private String originHostHeader;
-
-    /*
-     * Priority of origin in given origin group for load balancing. Higher
-     * priorities will not be used for load balancing if any lower priority
-     * origin is healthy.Must be between 1 and 5
-     */
-    @JsonProperty(value = "properties.priority")
-    private Integer priority;
-
-    /*
-     * Weight of the origin in given origin group for load balancing. Must be
-     * between 1 and 1000
-     */
-    @JsonProperty(value = "properties.weight")
-    private Integer weight;
-
-    /*
-     * The properties of the private link resource for private origin.
-     */
-    @JsonProperty(value = "properties.sharedPrivateLinkResource")
-    private Object sharedPrivateLinkResource;
-
-    /*
-     * Whether to enable health probes to be made against backends defined
-     * under backendPools. Health probes can only be disabled if there is a
-     * single enabled backend in single enabled backend pool.
-     */
-    @JsonProperty(value = "properties.enabledState")
-    private EnabledState enabledState;
+    public String originGroupName() {
+        return this.innerProperties() == null ? null : this.innerProperties().originGroupName();
+    }
 
     /**
      * Get the azureOrigin property: Resource reference to the Azure origin resource.
@@ -87,7 +45,7 @@ public class AfdOriginUpdateParameters {
      * @return the azureOrigin value.
      */
     public ResourceReference azureOrigin() {
-        return this.azureOrigin;
+        return this.innerProperties() == null ? null : this.innerProperties().azureOrigin();
     }
 
     /**
@@ -97,7 +55,10 @@ public class AfdOriginUpdateParameters {
      * @return the AfdOriginUpdateParameters object itself.
      */
     public AfdOriginUpdateParameters withAzureOrigin(ResourceReference azureOrigin) {
-        this.azureOrigin = azureOrigin;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AfdOriginUpdatePropertiesParameters();
+        }
+        this.innerProperties().withAzureOrigin(azureOrigin);
         return this;
     }
 
@@ -108,7 +69,7 @@ public class AfdOriginUpdateParameters {
      * @return the hostname value.
      */
     public String hostname() {
-        return this.hostname;
+        return this.innerProperties() == null ? null : this.innerProperties().hostname();
     }
 
     /**
@@ -119,7 +80,10 @@ public class AfdOriginUpdateParameters {
      * @return the AfdOriginUpdateParameters object itself.
      */
     public AfdOriginUpdateParameters withHostname(String hostname) {
-        this.hostname = hostname;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AfdOriginUpdatePropertiesParameters();
+        }
+        this.innerProperties().withHostname(hostname);
         return this;
     }
 
@@ -129,7 +93,7 @@ public class AfdOriginUpdateParameters {
      * @return the httpPort value.
      */
     public Integer httpPort() {
-        return this.httpPort;
+        return this.innerProperties() == null ? null : this.innerProperties().httpPort();
     }
 
     /**
@@ -139,7 +103,10 @@ public class AfdOriginUpdateParameters {
      * @return the AfdOriginUpdateParameters object itself.
      */
     public AfdOriginUpdateParameters withHttpPort(Integer httpPort) {
-        this.httpPort = httpPort;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AfdOriginUpdatePropertiesParameters();
+        }
+        this.innerProperties().withHttpPort(httpPort);
         return this;
     }
 
@@ -149,7 +116,7 @@ public class AfdOriginUpdateParameters {
      * @return the httpsPort value.
      */
     public Integer httpsPort() {
-        return this.httpsPort;
+        return this.innerProperties() == null ? null : this.innerProperties().httpsPort();
     }
 
     /**
@@ -159,7 +126,10 @@ public class AfdOriginUpdateParameters {
      * @return the AfdOriginUpdateParameters object itself.
      */
     public AfdOriginUpdateParameters withHttpsPort(Integer httpsPort) {
-        this.httpsPort = httpsPort;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AfdOriginUpdatePropertiesParameters();
+        }
+        this.innerProperties().withHttpsPort(httpsPort);
         return this;
     }
 
@@ -172,7 +142,7 @@ public class AfdOriginUpdateParameters {
      * @return the originHostHeader value.
      */
     public String originHostHeader() {
-        return this.originHostHeader;
+        return this.innerProperties() == null ? null : this.innerProperties().originHostHeader();
     }
 
     /**
@@ -185,7 +155,10 @@ public class AfdOriginUpdateParameters {
      * @return the AfdOriginUpdateParameters object itself.
      */
     public AfdOriginUpdateParameters withOriginHostHeader(String originHostHeader) {
-        this.originHostHeader = originHostHeader;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AfdOriginUpdatePropertiesParameters();
+        }
+        this.innerProperties().withOriginHostHeader(originHostHeader);
         return this;
     }
 
@@ -196,7 +169,7 @@ public class AfdOriginUpdateParameters {
      * @return the priority value.
      */
     public Integer priority() {
-        return this.priority;
+        return this.innerProperties() == null ? null : this.innerProperties().priority();
     }
 
     /**
@@ -207,7 +180,10 @@ public class AfdOriginUpdateParameters {
      * @return the AfdOriginUpdateParameters object itself.
      */
     public AfdOriginUpdateParameters withPriority(Integer priority) {
-        this.priority = priority;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AfdOriginUpdatePropertiesParameters();
+        }
+        this.innerProperties().withPriority(priority);
         return this;
     }
 
@@ -218,7 +194,7 @@ public class AfdOriginUpdateParameters {
      * @return the weight value.
      */
     public Integer weight() {
-        return this.weight;
+        return this.innerProperties() == null ? null : this.innerProperties().weight();
     }
 
     /**
@@ -229,7 +205,10 @@ public class AfdOriginUpdateParameters {
      * @return the AfdOriginUpdateParameters object itself.
      */
     public AfdOriginUpdateParameters withWeight(Integer weight) {
-        this.weight = weight;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AfdOriginUpdatePropertiesParameters();
+        }
+        this.innerProperties().withWeight(weight);
         return this;
     }
 
@@ -239,7 +218,7 @@ public class AfdOriginUpdateParameters {
      * @return the sharedPrivateLinkResource value.
      */
     public Object sharedPrivateLinkResource() {
-        return this.sharedPrivateLinkResource;
+        return this.innerProperties() == null ? null : this.innerProperties().sharedPrivateLinkResource();
     }
 
     /**
@@ -249,7 +228,10 @@ public class AfdOriginUpdateParameters {
      * @return the AfdOriginUpdateParameters object itself.
      */
     public AfdOriginUpdateParameters withSharedPrivateLinkResource(Object sharedPrivateLinkResource) {
-        this.sharedPrivateLinkResource = sharedPrivateLinkResource;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AfdOriginUpdatePropertiesParameters();
+        }
+        this.innerProperties().withSharedPrivateLinkResource(sharedPrivateLinkResource);
         return this;
     }
 
@@ -261,7 +243,7 @@ public class AfdOriginUpdateParameters {
      * @return the enabledState value.
      */
     public EnabledState enabledState() {
-        return this.enabledState;
+        return this.innerProperties() == null ? null : this.innerProperties().enabledState();
     }
 
     /**
@@ -273,7 +255,33 @@ public class AfdOriginUpdateParameters {
      * @return the AfdOriginUpdateParameters object itself.
      */
     public AfdOriginUpdateParameters withEnabledState(EnabledState enabledState) {
-        this.enabledState = enabledState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AfdOriginUpdatePropertiesParameters();
+        }
+        this.innerProperties().withEnabledState(enabledState);
+        return this;
+    }
+
+    /**
+     * Get the enforceCertificateNameCheck property: Whether to enable certificate name check at origin level.
+     *
+     * @return the enforceCertificateNameCheck value.
+     */
+    public Boolean enforceCertificateNameCheck() {
+        return this.innerProperties() == null ? null : this.innerProperties().enforceCertificateNameCheck();
+    }
+
+    /**
+     * Set the enforceCertificateNameCheck property: Whether to enable certificate name check at origin level.
+     *
+     * @param enforceCertificateNameCheck the enforceCertificateNameCheck value to set.
+     * @return the AfdOriginUpdateParameters object itself.
+     */
+    public AfdOriginUpdateParameters withEnforceCertificateNameCheck(Boolean enforceCertificateNameCheck) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AfdOriginUpdatePropertiesParameters();
+        }
+        this.innerProperties().withEnforceCertificateNameCheck(enforceCertificateNameCheck);
         return this;
     }
 
@@ -283,8 +291,8 @@ public class AfdOriginUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (azureOrigin() != null) {
-            azureOrigin().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

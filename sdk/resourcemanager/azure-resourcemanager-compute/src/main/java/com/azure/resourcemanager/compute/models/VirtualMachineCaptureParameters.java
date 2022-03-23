@@ -6,14 +6,11 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Capture Virtual Machine parameters. */
 @Fluent
 public final class VirtualMachineCaptureParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineCaptureParameters.class);
-
     /*
      * The captured virtual hard disk's name prefix.
      */
@@ -102,16 +99,18 @@ public final class VirtualMachineCaptureParameters {
      */
     public void validate() {
         if (vhdPrefix() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property vhdPrefix in model VirtualMachineCaptureParameters"));
         }
         if (destinationContainerName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property destinationContainerName in model VirtualMachineCaptureParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineCaptureParameters.class);
 }

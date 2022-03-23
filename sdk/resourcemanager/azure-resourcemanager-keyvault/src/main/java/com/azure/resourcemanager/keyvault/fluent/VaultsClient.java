@@ -19,7 +19,7 @@ import com.azure.resourcemanager.keyvault.fluent.models.DeletedVaultInner;
 import com.azure.resourcemanager.keyvault.fluent.models.VaultAccessPolicyParametersInner;
 import com.azure.resourcemanager.keyvault.fluent.models.VaultInner;
 import com.azure.resourcemanager.keyvault.models.AccessPolicyUpdateKind;
-import com.azure.resourcemanager.keyvault.models.VaultAccessPolicyProperties;
+import com.azure.resourcemanager.keyvault.models.VaultCheckNameAvailabilityParameters;
 import com.azure.resourcemanager.keyvault.models.VaultCreateOrUpdateParameters;
 import com.azure.resourcemanager.keyvault.models.VaultPatchParameters;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -56,7 +56,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information with extended details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VaultInner>, VaultInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters);
 
@@ -71,7 +71,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information with extended details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VaultInner>, VaultInner> beginCreateOrUpdate(
         String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters);
 
@@ -87,7 +87,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information with extended details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VaultInner>, VaultInner> beginCreateOrUpdate(
         String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters, Context context);
 
@@ -306,7 +306,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName Name of the vault.
      * @param operationKind Name of the operation.
-     * @param properties Properties of the access policy.
+     * @param parameters Access policy to merge into the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -317,7 +317,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
         String resourceGroupName,
         String vaultName,
         AccessPolicyUpdateKind operationKind,
-        VaultAccessPolicyProperties properties);
+        VaultAccessPolicyParametersInner parameters);
 
     /**
      * Update access policies in a key vault in the specified subscription.
@@ -325,7 +325,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName Name of the vault.
      * @param operationKind Name of the operation.
-     * @param properties Properties of the access policy.
+     * @param parameters Access policy to merge into the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -336,7 +336,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
         String resourceGroupName,
         String vaultName,
         AccessPolicyUpdateKind operationKind,
-        VaultAccessPolicyProperties properties);
+        VaultAccessPolicyParametersInner parameters);
 
     /**
      * Update access policies in a key vault in the specified subscription.
@@ -344,7 +344,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName Name of the vault.
      * @param operationKind Name of the operation.
-     * @param properties Properties of the access policy.
+     * @param parameters Access policy to merge into the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -355,7 +355,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
         String resourceGroupName,
         String vaultName,
         AccessPolicyUpdateKind operationKind,
-        VaultAccessPolicyProperties properties);
+        VaultAccessPolicyParametersInner parameters);
 
     /**
      * Update access policies in a key vault in the specified subscription.
@@ -363,7 +363,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName Name of the vault.
      * @param operationKind Name of the operation.
-     * @param properties Properties of the access policy.
+     * @param parameters Access policy to merge into the vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -375,7 +375,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
         String resourceGroupName,
         String vaultName,
         AccessPolicyUpdateKind operationKind,
-        VaultAccessPolicyProperties properties,
+        VaultAccessPolicyParametersInner parameters,
         Context context);
 
     /**
@@ -586,7 +586,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginPurgeDeletedAsync(String vaultName, String location);
 
     /**
@@ -599,7 +599,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginPurgeDeleted(String vaultName, String location);
 
     /**
@@ -613,7 +613,7 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginPurgeDeleted(String vaultName, String location, Context context);
 
     /**
@@ -702,43 +702,44 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
     /**
      * Checks that the vault name is valid and is not already in use.
      *
-     * @param name The vault name.
+     * @param vaultName The name of the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the CheckNameAvailability operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(String name);
+    Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
+        VaultCheckNameAvailabilityParameters vaultName);
 
     /**
      * Checks that the vault name is valid and is not already in use.
      *
-     * @param name The vault name.
+     * @param vaultName The name of the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the CheckNameAvailability operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CheckNameAvailabilityResultInner> checkNameAvailabilityAsync(String name);
+    Mono<CheckNameAvailabilityResultInner> checkNameAvailabilityAsync(VaultCheckNameAvailabilityParameters vaultName);
 
     /**
      * Checks that the vault name is valid and is not already in use.
      *
-     * @param name The vault name.
+     * @param vaultName The name of the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the CheckNameAvailability operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameAvailabilityResultInner checkNameAvailability(String name);
+    CheckNameAvailabilityResultInner checkNameAvailability(VaultCheckNameAvailabilityParameters vaultName);
 
     /**
      * Checks that the vault name is valid and is not already in use.
      *
-     * @param name The vault name.
+     * @param vaultName The name of the vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -746,5 +747,6 @@ public interface VaultsClient extends InnerSupportsGet<VaultInner>, InnerSupport
      * @return the CheckNameAvailability operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(String name, Context context);
+    Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(
+        VaultCheckNameAvailabilityParameters vaultName, Context context);
 }

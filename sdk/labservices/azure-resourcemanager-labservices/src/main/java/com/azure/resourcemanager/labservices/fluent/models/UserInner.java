@@ -5,174 +5,152 @@
 package com.azure.resourcemanager.labservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.management.Resource;
+import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.labservices.models.LatestOperationResult;
+import com.azure.resourcemanager.labservices.models.InvitationState;
+import com.azure.resourcemanager.labservices.models.ProvisioningState;
+import com.azure.resourcemanager.labservices.models.RegistrationState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
-import java.util.Map;
+import java.time.OffsetDateTime;
 
-/** The User registered to a lab. */
-@JsonFlatten
+/** User of a lab that can register for and use virtual machines within the lab. */
 @Fluent
-public class UserInner extends Resource {
+public final class UserInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(UserInner.class);
 
     /*
-     * The user email address, as it was specified during registration.
+     * Metadata pertaining to creation and last modification of the user
+     * resource.
      */
-    @JsonProperty(value = "properties.email", access = JsonProperty.Access.WRITE_ONLY)
-    private String email;
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /*
-     * The user family name, as it was specified during registration.
+     * User resource properties
      */
-    @JsonProperty(value = "properties.familyName", access = JsonProperty.Access.WRITE_ONLY)
-    private String familyName;
-
-    /*
-     * The user given name, as it was specified during registration.
-     */
-    @JsonProperty(value = "properties.givenName", access = JsonProperty.Access.WRITE_ONLY)
-    private String givenName;
-
-    /*
-     * The user tenant ID, as it was specified during registration.
-     */
-    @JsonProperty(value = "properties.tenantId", access = JsonProperty.Access.WRITE_ONLY)
-    private String tenantId;
-
-    /*
-     * How long the user has used his VMs in this lab
-     */
-    @JsonProperty(value = "properties.totalUsage", access = JsonProperty.Access.WRITE_ONLY)
-    private Duration totalUsage;
-
-    /*
-     * The provisioning status of the resource.
-     */
-    @JsonProperty(value = "properties.provisioningState")
-    private String provisioningState;
-
-    /*
-     * The unique immutable identifier of a resource (Guid).
-     */
-    @JsonProperty(value = "properties.uniqueIdentifier")
-    private String uniqueIdentifier;
-
-    /*
-     * The details of the latest operation. ex: status, error
-     */
-    @JsonProperty(value = "properties.latestOperationResult", access = JsonProperty.Access.WRITE_ONLY)
-    private LatestOperationResult latestOperationResult;
+    @JsonProperty(value = "properties", required = true)
+    private UserProperties innerProperties = new UserProperties();
 
     /**
-     * Get the email property: The user email address, as it was specified during registration.
+     * Get the systemData property: Metadata pertaining to creation and last modification of the user resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the innerProperties property: User resource properties.
+     *
+     * @return the innerProperties value.
+     */
+    private UserProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the provisioningState property: Current provisioning state of the user resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the displayName property: Display name of the user, for example user's full name.
+     *
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
+    }
+
+    /**
+     * Get the email property: Email address of the user.
      *
      * @return the email value.
      */
     public String email() {
-        return this.email;
+        return this.innerProperties() == null ? null : this.innerProperties().email();
     }
 
     /**
-     * Get the familyName property: The user family name, as it was specified during registration.
+     * Set the email property: Email address of the user.
      *
-     * @return the familyName value.
+     * @param email the email value to set.
+     * @return the UserInner object itself.
      */
-    public String familyName() {
-        return this.familyName;
+    public UserInner withEmail(String email) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UserProperties();
+        }
+        this.innerProperties().withEmail(email);
+        return this;
     }
 
     /**
-     * Get the givenName property: The user given name, as it was specified during registration.
+     * Get the registrationState property: State of the user's registration within the lab.
      *
-     * @return the givenName value.
+     * @return the registrationState value.
      */
-    public String givenName() {
-        return this.givenName;
+    public RegistrationState registrationState() {
+        return this.innerProperties() == null ? null : this.innerProperties().registrationState();
     }
 
     /**
-     * Get the tenantId property: The user tenant ID, as it was specified during registration.
+     * Get the invitationState property: State of the invitation message for the user.
      *
-     * @return the tenantId value.
+     * @return the invitationState value.
      */
-    public String tenantId() {
-        return this.tenantId;
+    public InvitationState invitationState() {
+        return this.innerProperties() == null ? null : this.innerProperties().invitationState();
     }
 
     /**
-     * Get the totalUsage property: How long the user has used his VMs in this lab.
+     * Get the invitationSent property: Date and time when the invitation message was sent to the user.
+     *
+     * @return the invitationSent value.
+     */
+    public OffsetDateTime invitationSent() {
+        return this.innerProperties() == null ? null : this.innerProperties().invitationSent();
+    }
+
+    /**
+     * Get the totalUsage property: How long the user has used their virtual machines in this lab.
      *
      * @return the totalUsage value.
      */
     public Duration totalUsage() {
-        return this.totalUsage;
+        return this.innerProperties() == null ? null : this.innerProperties().totalUsage();
     }
 
     /**
-     * Get the provisioningState property: The provisioning status of the resource.
+     * Get the additionalUsageQuota property: The amount of usage quota time the user gets in addition to the lab usage
+     * quota.
      *
-     * @return the provisioningState value.
+     * @return the additionalUsageQuota value.
      */
-    public String provisioningState() {
-        return this.provisioningState;
+    public Duration additionalUsageQuota() {
+        return this.innerProperties() == null ? null : this.innerProperties().additionalUsageQuota();
     }
 
     /**
-     * Set the provisioningState property: The provisioning status of the resource.
+     * Set the additionalUsageQuota property: The amount of usage quota time the user gets in addition to the lab usage
+     * quota.
      *
-     * @param provisioningState the provisioningState value to set.
+     * @param additionalUsageQuota the additionalUsageQuota value to set.
      * @return the UserInner object itself.
      */
-    public UserInner withProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
-    }
-
-    /**
-     * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
-     * @return the uniqueIdentifier value.
-     */
-    public String uniqueIdentifier() {
-        return this.uniqueIdentifier;
-    }
-
-    /**
-     * Set the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
-     * @param uniqueIdentifier the uniqueIdentifier value to set.
-     * @return the UserInner object itself.
-     */
-    public UserInner withUniqueIdentifier(String uniqueIdentifier) {
-        this.uniqueIdentifier = uniqueIdentifier;
-        return this;
-    }
-
-    /**
-     * Get the latestOperationResult property: The details of the latest operation. ex: status, error.
-     *
-     * @return the latestOperationResult value.
-     */
-    public LatestOperationResult latestOperationResult() {
-        return this.latestOperationResult;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public UserInner withLocation(String location) {
-        super.withLocation(location);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public UserInner withTags(Map<String, String> tags) {
-        super.withTags(tags);
+    public UserInner withAdditionalUsageQuota(Duration additionalUsageQuota) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UserProperties();
+        }
+        this.innerProperties().withAdditionalUsageQuota(additionalUsageQuota);
         return this;
     }
 
@@ -182,8 +160,12 @@ public class UserInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (latestOperationResult() != null) {
-            latestOperationResult().validate();
+        if (innerProperties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property innerProperties in model UserInner"));
+        } else {
+            innerProperties().validate();
         }
     }
 }

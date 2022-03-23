@@ -144,7 +144,7 @@ public final class ResourceSetRulesClient {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return a resource set config service model.
+     * @return a resource set config service model along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -368,7 +368,7 @@ public final class ResourceSetRulesClient {
      * @param resourceSetRuleConfig ResourceSetRuleConfig implementation class.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return resourceSetRuleConfig implementation class.
+     * @return resourceSetRuleConfig implementation class along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -390,7 +390,7 @@ public final class ResourceSetRulesClient {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)

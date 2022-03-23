@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.digitaltwins.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.digitaltwins.fluent.models.DigitalTwinsDescriptionInner;
 import com.azure.resourcemanager.digitaltwins.fluent.models.PrivateEndpointConnectionInner;
@@ -57,6 +58,13 @@ public interface DigitalTwinsDescription {
     DigitalTwinsIdentity identity();
 
     /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the DigitalTwinsInstance.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the createdTime property: Time when DigitalTwinsInstance was created.
      *
      * @return the createdTime value.
@@ -85,7 +93,7 @@ public interface DigitalTwinsDescription {
     String hostname();
 
     /**
-     * Gets the privateEndpointConnections property: The privateEndpointConnections property.
+     * Gets the privateEndpointConnections property: The private endpoint connections.
      *
      * @return the privateEndpointConnections value.
      */
@@ -206,9 +214,9 @@ public interface DigitalTwinsDescription {
         /** The stage of the DigitalTwinsDescription definition allowing to specify privateEndpointConnections. */
         interface WithPrivateEndpointConnections {
             /**
-             * Specifies the privateEndpointConnections property: The privateEndpointConnections property..
+             * Specifies the privateEndpointConnections property: The private endpoint connections..
              *
-             * @param privateEndpointConnections The privateEndpointConnections property.
+             * @param privateEndpointConnections The private endpoint connections.
              * @return the next definition stage.
              */
             WithCreate withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections);

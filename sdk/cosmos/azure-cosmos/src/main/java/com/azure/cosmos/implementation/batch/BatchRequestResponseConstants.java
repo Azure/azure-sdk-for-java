@@ -45,4 +45,7 @@ public final class BatchRequestResponseConstants {
     public static final String OPERATION_UPSERT = "Upsert";
     public static final String OPERATION_DELETE = "Delete";
     public static final String OPERATION_REPLACE = "Replace";
+
+    public static final int MAX_COLLECTION_RECREATION_RETRY_COUNT = 10;
+    public static final int MAX_COLLECTION_RECREATION_REFRESH_INTERVAL_IN_SECONDS = 1;
 }
