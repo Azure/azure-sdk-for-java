@@ -436,8 +436,8 @@ public final class BlobContainerAsyncClient {
      *
      * <!-- src_embed com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExists -->
      * <pre>
-     * client.createIfNotExists&#40;&#41;.subscribe&#40;
-     *     response -&gt; System.out.printf&#40;&quot;Create completed%n&quot;&#41;,
+     * client.createIfNotExists&#40;&#41;.switchIfEmpty&#40;Mono.&lt;Void&gt;empty&#40;&#41;.doOnTerminate&#40;&#40;&#41; -> System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
+     *      .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Create completed%n&quot;&#41;,
      *     error -&gt; System.out.printf&#40;&quot;Error while creating container %s%n&quot;, error&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExists -->
@@ -458,8 +458,8 @@ public final class BlobContainerAsyncClient {
      * <!-- src_embed com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExistsWithResponse#Map-PublicAccessType -->
      * <pre>
      * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
-     * client.createIfNotExistsWithResponse&#40;metadata, PublicAccessType.CONTAINER&#41;.subscribe&#40;response -&gt;
-     *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * client.createIfNotExistsWithResponse&#40;metadata, PublicAccessType.CONTAINER&#41;.switchIfEmpty&#40;Mono.&lt;Void&gt;empty&#40;&#41;.doOnTerminate&#40;&#40;&#41; -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
+     *      .subscribe&#40;response -&gt;System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExistsWithResponse#Map-PublicAccessType -->
      *
@@ -474,14 +474,18 @@ public final class BlobContainerAsyncClient {
         try {
             return createIfNotExistsWithResponse(metadata, accessType, null);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
     Mono<Response<Void>> createIfNotExistsWithResponse(Map<String, String> metadata, PublicAccessType accessType, Context context) {
-        return createWithResponse(metadata, accessType, context)
-            .onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 409,
-            t -> Mono.empty());
+        try {
+            return createWithResponse(metadata, accessType, context)
+                .onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 409,
+                    t -> Mono.empty());
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -565,8 +569,8 @@ public final class BlobContainerAsyncClient {
      *
      * <!-- src_embed com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExists -->
      * <pre>
-     * client.deleteIfExists&#40;&#41;.subscribe&#40;
-     *     response -&gt; System.out.printf&#40;&quot;Delete completed%n&quot;&#41;,
+     * client.deleteIfExists&#40;&#41;.switchIfEmpty&#40;Mono.&lt;Void&gt;empty&#40;&#41;.doOnTerminate&#40;&#40;&#41; -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;
+     *      .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Delete completed%n&quot;&#41;,
      *     error -&gt; System.out.printf&#40;&quot;Delete failed: %s%n&quot;, error&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExists -->
@@ -578,9 +582,8 @@ public final class BlobContainerAsyncClient {
         try {
             return deleteIfExistsWithResponse(null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
-
     }
 
     /**
@@ -596,8 +599,9 @@ public final class BlobContainerAsyncClient {
      *     .setLeaseId&#40;leaseId&#41;
      *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
      *
-     * client.deleteIfExistsWithResponse&#40;requestConditions&#41;.subscribe&#40;response -&gt;
-     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * client.deleteIfExistsWithResponse&#40;requestConditions&#41;.switchIfEmpty&#40;Mono.&lt;Response&gt;Void&gt;&gt;empty&#40;&#41;
+     *      .doOnTerminate&#40;&#41; -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;
+     *      .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExistsWithResponse#BlobRequestConditions -->
      *
@@ -608,7 +612,7 @@ public final class BlobContainerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteIfExistsWithResponse(BlobRequestConditions requestConditions) {
-        return deleteIfExistsWithResponse(requestConditions);
+        return deleteIfExistsWithResponse(requestConditions, null);
     }
 
     Mono<Response<Void>> deleteIfExistsWithResponse(BlobRequestConditions requestConditions, Context context) {

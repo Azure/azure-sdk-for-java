@@ -17,6 +17,7 @@ import com.azure.storage.file.share.models.ShareSnapshotInfo;
 import com.azure.storage.file.share.models.ShareStatistics;
 import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.options.ShareDeleteOptions;
+import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
 import com.azure.storage.file.share.options.ShareGetAccessPolicyOptions;
 import com.azure.storage.file.share.options.ShareGetPropertiesOptions;
 import com.azure.storage.file.share.options.ShareGetStatisticsOptions;
@@ -752,8 +753,7 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareClient#createIfNotExists()},
-     * {@link ShareClient#createIfNotExistsWithResponse(Map, Integer, Duration, Context)} and
+     * Generates a code sample for using {@link ShareClient#createIfNotExists()} and
      * {@link ShareClient#createIfNotExistsWithResponse(ShareCreateOptions, Duration, Context)}
      */
     public void createIfNotExistsCodeSnippets() {
@@ -762,18 +762,6 @@ public class ShareJavaDocCodeSamples {
         ShareInfo response = shareClient.createIfNotExists();
         System.out.println("Complete creating the shares with status code: " + response);
         // END: com.azure.storage.file.share.ShareClient.createIfNotExists
-
-        // BEGIN: ShareClient.createIfNotExistsWithResponse#map-integer-duration-context.metadata
-        Response<ShareInfo> metaResponse = shareClient.createIfNotExistsWithResponse(Collections.singletonMap("share", "metadata"),
-            null, Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.println("Complete creating the shares with status code: " + metaResponse.getStatusCode());
-        // END: ShareClient.createIfNotExistsWithResponse#map-integer-duration-context.metadata
-
-        // BEGIN: ShareClient.createIfNotExistsWithResponse#map-integer-duration-context.quota
-        Response<ShareInfo> shareResponse = shareClient.createIfNotExistsWithResponse(null, 10,
-            Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.println("Complete creating the shares with status code: " + shareResponse.getStatusCode());
-        // END: ShareClient.createIfNotExistsWithResponse#map-integer-duration-context.quota
 
         // BEGIN: ShareClient.createIfNotExistsWithResponse#ShareCreateOptions-Duration-Context
         Response<ShareInfo> res = shareClient.createIfNotExistsWithResponse(new ShareCreateOptions()
@@ -810,7 +798,7 @@ public class ShareJavaDocCodeSamples {
 
     /**
      * Generates a code sample for using {@link ShareClient#createDirectoryIfNotExists(String)} and
-     * {@link ShareClient#createDirectoryIfNotExistsWithResponse(String, FileSmbProperties, String, Map, Duration, Context)}
+     * {@link ShareClient#createDirectoryIfNotExistsWithResponse(String, ShareDirectoryCreateOptions, Duration, Context)}
      */
     public void createDirectoryIfNotExistsCodeSnippets() {
         ShareClient shareClient = createClientWithSASToken();
@@ -819,14 +807,16 @@ public class ShareJavaDocCodeSamples {
         System.out.println("Complete creating the directory.");
         // END: com.azure.storage.file.share.ShareClient.createDirectoryIfNotExists#string
 
-        // BEGIN: com.azure.storage.file.share.ShareClient.createDirectoryIfNotExistsWithResponse#String-FileSmbProperties-String-Map-Duration-Context
+        // BEGIN: com.azure.storage.file.share.ShareClient.createDirectoryIfNotExistsWithResponse#String-ShareDirectoryCreateOptions-Duration-Context
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
+        Map<String, String> metadata = Collections.singletonMap("directory", "metadata");
+        ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions().setSmbProperties(smbProperties).
+            setFilePermission(filePermission).setMetadata(metadata);
         Response<ShareDirectoryClient> response = shareClient.createDirectoryIfNotExistsWithResponse("documents",
-            smbProperties, filePermission, Collections.singletonMap("directory", "metadata"),
-            Duration.ofSeconds(1), new Context(key1, value1));
+            options, Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Creating the directory completed with status code %d", response.getStatusCode());
-        // END: com.azure.storage.file.share.ShareClient.createDirectoryIfNotExistsWithResponse#String-FileSmbProperties-String-Map-Duration-Context
+        // END: com.azure.storage.file.share.ShareClient.createDirectoryIfNotExistsWithResponse#String-ShareDirectoryCreateOptions-Duration-Context
     }
 
     /**

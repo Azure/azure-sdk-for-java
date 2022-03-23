@@ -33,6 +33,7 @@ import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.options.ShareFileCreateOptions;
 import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
@@ -336,29 +337,6 @@ public class ShareFileClient {
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ShareFileInfo createIfNotExists(long maxSize) {
-        Response<ShareFileInfo> response = createIfNotExistsWithResponse(maxSize, null, null, null, null, null, Context.NONE);
-        return response == null ? null : response.getValue();
-    }
-
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ShareFileInfo> createIfNotExistsWithResponse(long maxSize, ShareFileHttpHeaders httpHeaders,
-                                                      FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout,
-                                                      Context context) {
-        return this.createIfNotExistsWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, null, timeout,
-            context);
-    }
-
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ShareFileInfo> createIfNotExistsWithResponse(long maxSize, ShareFileHttpHeaders httpHeaders,
-                                                      FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata,
-                                                      ShareRequestConditions requestConditions, Duration timeout, Context context) {
-        Mono<Response<ShareFileInfo>> response = shareFileAsyncClient
-            .createIfNotExistsWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, requestConditions,
-                context);
-        return response == null ? null : StorageImplUtils.blockWithOptionalTimeout(response, timeout);
-    }
     /**
      * Copies a blob or file to a destination file within the storage account.
      *
@@ -906,19 +884,84 @@ public class ShareFileClient {
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
+    /**
+     * Deletes the file associate with the client if it exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the file</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareFileClient.deleteIfExists -->
+     * <pre>
+     * fileClient.deleteIfExists&#40;&#41;;
+     * System.out.println&#40;&quot;Complete deleting the file.&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareFileClient.deleteIfExists -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
+     *
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteIfExists() {
         deleteIfExistsWithResponse(null, Context.NONE);
     }
 
+    /**
+     * Deletes the file associate with the client if it exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the file</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareFileClient.deleteIfExistsWithResponse#duration-context -->
+     * <pre>
+     * Response&lt;Void&gt; response = fileClient.deleteIfExistsWithResponse&#40;Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
+     * System.out.println&#40;&quot;Complete deleting the file with status code: &quot; + response.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareFileClient.deleteIfExistsWithResponse#duration-context -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
+     *
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response that only contains headers and response status code, or null if it does not exist.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteIfExistsWithResponse(Duration timeout, Context context) {
         return this.deleteIfExistsWithResponse(null, timeout, context);
     }
 
+    /**
+     * Deletes the file associate with the client if it exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the file</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareFileClient.deleteIfExistsWithResponse#ShareRequestConditions-duration-context -->
+     * <pre>
+     * ShareRequestConditions requestConditions = new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     * Response&lt;Void&gt; res = fileClient.deleteWithResponse&#40;requestConditions, Duration.ofSeconds&#40;1&#41;,
+     *     new Context&#40;key1, value1&#41;&#41;;
+     * System.out.println&#40;&quot;Complete deleting the file with status code: &quot; + res.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareFileClient.deleteIfExistsWithResponse#ShareRequestConditions-duration-context -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
+     *
+     * @param requestConditions {@link ShareRequestConditions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response that only contains headers and response status code, or null if it does not exist.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteIfExistsWithResponse(ShareRequestConditions requestConditions, Duration timeout,
-                                             Context context) {
+        Context context) {
         Mono<Response<Void>> response = shareFileAsyncClient.deleteIfExistsWithResponse(requestConditions, context);
         return response == null ? null : StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }

@@ -228,11 +228,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteIfExists() {
-        try {
-            return deleteIfExistsWithResponse(null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return deleteIfExistsWithResponse(null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -260,8 +256,13 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteIfExistsWithResponse(DataLakeRequestConditions requestConditions) {
-        return deleteWithResponse(requestConditions).onErrorResume(t -> t instanceof DataLakeStorageException
-            && ((DataLakeStorageException)t).getStatusCode() == 404, t -> Mono.empty());
+        try {
+            return deleteWithResponse(requestConditions).onErrorResume(t -> t instanceof DataLakeStorageException
+                && ((DataLakeStorageException)t).getStatusCode() == 404, t -> Mono.empty());
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+
     }
 
     /**

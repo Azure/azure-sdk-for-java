@@ -13,6 +13,7 @@ import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.RolePermissions;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions;
@@ -456,9 +457,8 @@ public class PathAsyncClientJavaDocCodeSamples {
     }
 
     /**
-     * Code snippets for {@link DataLakePathAsyncClient#createIfNotExists()},
-     * {@link DataLakePathAsyncClient#createIfNotExistsWithResponse(String, String, PathHttpHeaders, Map)} and
-     * {@link DataLakePathAsyncClient#createIfNotExistsWithResponse(String, String, PathHttpHeaders, Map, Context)}
+     * Code snippets for {@link DataLakePathAsyncClient#createIfNotExists()} and
+     * {@link DataLakePathAsyncClient#createIfNotExistsWithResponse(DataLakePathCreateOptions)}
      */
     public void createIfNotExistsCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExists
@@ -466,22 +466,19 @@ public class PathAsyncClientJavaDocCodeSamples {
             System.out.printf("Last Modified Time:%s", response.getLastModified()));
         // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExists
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExistsWithResponse#String-String-PathHttpHeaders-Map
-        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExistsWithResponse#DataLakePathCreateOptions
+        PathHttpHeaders headers = new PathHttpHeaders()
             .setContentLanguage("en-US")
             .setContentType("binary");
         String permissions = "permissions";
         String umask = "umask";
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(headers)
+            .setPermissions(permissions).setUmask(umask).setMetadata(metadata);
 
-        client.createIfNotExistsWithResponse(permissions, umask, httpHeaders, Collections.singletonMap("metadata", "value"))
+        client.createIfNotExistsWithResponse(options)
             .subscribe(response -> System.out.printf("Last Modified Time:%s", response.getValue().getLastModified()));
-        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExistsWithResponse#String-String-PathHttpHeaders-Map
-
-        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExistsWithResponse#String-String-PathHttpHeaders-Map-Context
-        client.createIfNotExistsWithResponse(permissions, umask, httpHeaders, Collections.singletonMap("metadata", "value"),
-                new Context("key1", "value1")).subscribe(response ->
-            System.out.printf("Last Modified Time:%s", response.getValue().getLastModified()));
-        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExistsWithResponse#String-String-PathHttpHeaders-Map-Context
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExistsWithResponse#DataLakePathCreateOptions
     }
 
     /**

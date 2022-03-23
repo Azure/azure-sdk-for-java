@@ -344,11 +344,7 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createIfNotExists() {
-        try {
-            return createIfNotExistsWithResponse(null, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
+        return createIfNotExistsWithResponse(null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -451,11 +447,7 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteIfExists() {
-        try {
-            return deleteIfExistsWithResponse(null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
+        return deleteIfExistsWithResponse(null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -903,12 +895,8 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataLakeFileAsyncClient> createFileIfNotExists(String fileName) {
-        try {
-            return createFileIfNotExistsWithResponse(fileName, null, null, null, null)
+        return createFileIfNotExistsWithResponse(fileName, null, null, null, null)
                 .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
     }
 
     /**
@@ -944,9 +932,13 @@ public class DataLakeFileSystemAsyncClient {
         String permissions, String umask, PathHttpHeaders headers, Map<String, String> metadata) {
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
             .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
-        return createFileWithResponse(fileName, permissions, umask, headers, metadata, requestConditions)
-            .onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException)t)
-                .getStatusCode() == 409, t -> Mono.empty());
+        try {
+            return createFileWithResponse(fileName, permissions, umask, headers, metadata, requestConditions)
+                .onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException)t)
+                    .getStatusCode() == 409, t -> Mono.empty());
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -1026,11 +1018,7 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteFileIfExists(String fileName) {
-        try {
-            return deleteFileIfExistsWithResponse(fileName, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
+        return deleteFileIfExistsWithResponse(fileName, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1057,17 +1045,16 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName, DataLakeRequestConditions requestConditions) {
-        return getFileAsyncClient(fileName).deleteIfExistsWithResponse(requestConditions);
+        try {
+            return getFileAsyncClient(fileName).deleteIfExistsWithResponse(requestConditions);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+
     }
 
     /**
-     * Creates a new directory within a file system. By default this method will not overwrite an existing directory.
-<<<<<<< HEAD
-=======
      * Creates a new directory within a file system. By default, this method will not overwrite an existing directory.
->>>>>>> upstream
-=======
->>>>>>> 06ba7577ce33011fdca248da4c15c0783e54d5b3
      * For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -1185,12 +1172,7 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataLakeDirectoryAsyncClient> createDirectoryIfNotExists(String directoryName) {
-        try {
             return createDirectoryIfNotExistsWithResponse(directoryName, null, null, null, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
-
     }
 
     /**
@@ -1224,11 +1206,14 @@ public class DataLakeFileSystemAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataLakeDirectoryAsyncClient>> createDirectoryIfNotExistsWithResponse(String directoryName,
         String permissions, String umask, PathHttpHeaders headers, Map<String, String> metadata) {
-
-        return createDirectoryWithResponse(directoryName, permissions, umask, headers, metadata,
-            new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD))
-            .onErrorResume(t -> t instanceof DataLakeStorageException
-            && ((DataLakeStorageException)t).getStatusCode() == 409, t -> Mono.empty());
+        try {
+            return createDirectoryWithResponse(directoryName, permissions, umask, headers, metadata,
+                new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD))
+                .onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException)t)
+                    .getStatusCode() == 409, t -> Mono.empty());
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -1311,12 +1296,7 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteDirectoryIfExists(String directoryName) {
-        try {
-            return deleteDirectoryIfExistsWithResponse(directoryName, false, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
-
+        return deleteDirectoryIfExistsWithResponse(directoryName, false, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1346,7 +1326,11 @@ public class DataLakeFileSystemAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDirectoryIfExistsWithResponse(String directoryName, boolean recursive,
         DataLakeRequestConditions requestConditions) {
-        return getDirectoryAsyncClient(directoryName).deleteIfExistsWithResponse(recursive, requestConditions);
+        try {
+            return getDirectoryAsyncClient(directoryName).deleteIfExistsWithResponse(recursive, requestConditions);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**

@@ -75,6 +75,7 @@ import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.options.ShareFileCreateOptions;
 import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
@@ -114,6 +115,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -444,46 +446,6 @@ public class ShareFileAsyncClient {
                 fileLastWriteTime, null, metadata, filePermission, filePermissionKey, requestConditions.getLeaseId(),
                 httpHeaders, context)
             .map(ShareFileAsyncClient::createFileInfoResponse);
-    }
-
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ShareFileInfo> createIfNotExists(long maxSize) {
-        try {
-            return createIfNotExistsWithResponse(maxSize, null, null, null, null)
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ShareFileInfo>> createIfNotExistsWithResponse(long maxSize, ShareFileHttpHeaders httpHeaders,
-                                                            FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata) {
-        try {
-            return createIfNotExistsWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, null);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ShareFileInfo>> createIfNotExistsWithResponse(long maxSize, ShareFileHttpHeaders httpHeaders,
-                                                            FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata,
-                                                            ShareRequestConditions requestConditions) {
-        try {
-            return withContext(context ->
-                createIfNotExistsWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata,
-                    requestConditions, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    Mono<Response<ShareFileInfo>> createIfNotExistsWithResponse(long maxSize, ShareFileHttpHeaders httpHeaders,
-                                                     FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata,
-                                                     ShareRequestConditions requestConditions, Context context) {
-        return createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, requestConditions, context)
-            .onErrorResume(t -> t instanceof ShareStorageException && ((ShareStorageException)t).getStatusCode() == 409, t -> Mono.empty());
     }
 
     /**
@@ -1264,32 +1226,102 @@ public class ShareFileAsyncClient {
             requestConditions.getLeaseId(), context).map(response -> new SimpleResponse<>(response, null));
     }
 
+    /**
+     * Deletes the file associate with the client if it exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the file</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExists -->
+     * <pre>
+     * shareFileAsyncClient.deleteIfExists&#40;&#41;.subscribe&#40;
+     *     response -&gt; &#123; &#125;,
+     *     error -&gt; System.err.print&#40;error.toString&#40;&#41;&#41;,
+     *     &#40;&#41; -&gt; System.out.println&#40;&quot;Complete deleting the file!&quot;&#41;
+     * &#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExists -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
+     *
+     * @return An empty response, or null if it does not exist.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteIfExists() {
+        return deleteIfExistsWithResponse().flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deletes the file associate with the client if it exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the file</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse -->
+     * <pre>
+     * shareFileAsyncClient.deleteIfExistsWithResponse&#40;&#41;.subscribe&#40;
+     *     response -&gt; System.out.println&#40;&quot;Complete deleting the file with status code:&quot; + response.getStatusCode&#40;&#41;&#41;,
+     *     error -&gt; System.err.print&#40;error.toString&#40;&#41;&#41;
+     * &#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
+     *
+     * @return A response that only contains headers and response status code, or null if it does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteIfExistsWithResponse() {
         try {
-            return deleteIfExistsWithResponse().flatMap(FluxUtil::toMono);
+            return deleteIfExistsWithResponse(null);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteIfExistsWithResponse() {
-        return deleteIfExistsWithResponse(null);
-    }
-
+    /**
+     * Deletes the file associate with the client if it does not exist.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the file</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse#ShareRequestConditions -->
+     * <pre>
+     * ShareRequestConditions requestConditions = new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     * shareFileAsyncClient.deleteIfExistsWithResponse&#40;requestConditions&#41;.subscribe&#40;
+     *     response -&gt; System.out.println&#40;&quot;Complete deleting the file with status code:&quot; + response.getStatusCode&#40;&#41;&#41;,
+     *     error -&gt; System.err.print&#40;error.toString&#40;&#41;&#41;
+     * &#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse#ShareRequestConditions -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
+     *
+     * @param requestConditions {@link ShareRequestConditions}
+     * @return A response that only contains headers and response status code, or null if it does not exist.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteIfExistsWithResponse(ShareRequestConditions requestConditions) {
         try {
             return withContext(context -> this.deleteIfExistsWithResponse(requestConditions, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
     Mono<Response<Void>> deleteIfExistsWithResponse(ShareRequestConditions requestConditions, Context context) {
-        return deleteWithResponse(requestConditions, context).onErrorResume(t -> t instanceof ShareStorageException
-            && ((ShareStorageException)t).getStatusCode() == 404, t -> Mono.empty());
+        try {
+            return deleteWithResponse(requestConditions, context).onErrorResume(t -> t instanceof ShareStorageException
+                && ((ShareStorageException)t).getStatusCode() == 404, t -> Mono.empty());
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**

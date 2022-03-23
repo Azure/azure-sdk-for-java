@@ -6,6 +6,7 @@ package com.azure.storage.file.datalake;
 import com.azure.core.util.Context;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
+import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 
 import java.util.Collections;
 import java.util.Map;
@@ -218,22 +219,23 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
 
     /**
      * Code snippets for {@link DataLakeDirectoryAsyncClient#createFileIfNotExists(String)} and
-     * {@link DataLakeDirectoryAsyncClient#createFileIfNotExistsWithResponse(String, String, String, PathHttpHeaders, Map)}
+     * {@link DataLakeDirectoryAsyncClient#createIfNotExistsWithResponse(DataLakePathCreateOptions)}
      */
     public void createFileIfNotExistsCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileIfNotExists#String
         DataLakeFileAsyncClient fileClient = client.createFileIfNotExists(fileName).block();
         // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileIfNotExists#String
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileIfNotExistsWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions
-        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileIfNotExistsWithResponse#String-DataLakePathCreateOptions
+        PathHttpHeaders headers = new PathHttpHeaders()
             .setContentLanguage("en-US")
             .setContentType("binary");
         String permissions = "permissions";
         String umask = "umask";
-        DataLakeFileAsyncClient newFileClient = client.createFileIfNotExistsWithResponse(fileName, permissions, umask,
-            httpHeaders, Collections.singletonMap("metadata", "value")).block().getValue();
-        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileIfNotExistsWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(headers)
+            .setPermissions(permissions).setUmask(umask).setMetadata(Collections.singletonMap("metadata", "value"));
+        DataLakeFileAsyncClient newFileClient = client.createFileIfNotExistsWithResponse(fileName, options).block().getValue();
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileIfNotExistsWithResponse#String-DataLakePathCreateOptions
     }
 
     /**
@@ -266,24 +268,25 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
 
     /**
      * Code snippets for {@link DataLakeDirectoryAsyncClient#createSubdirectoryIfNotExists(String)} and
-     * {@link DataLakeDirectoryAsyncClient#createSubdirectoryIfNotExistsWithResponse(String, String, String, PathHttpHeaders, Map)}
+     * {@link DataLakeDirectoryAsyncClient#createSubdirectoryIfNotExistsWithResponse(String, DataLakePathCreateOptions)}
      */
     public void createSubdirectoryIfNotExistsCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectory#String
         DataLakeDirectoryAsyncClient directoryClient = client.createSubdirectoryIfNotExists(directoryName).block();
         // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectory#String
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectoryWithResponse#String-String-String-PathHttpHeaders-Map
-        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectoryWithResponse#String-DataLakePathCreateOptions
+        PathHttpHeaders headers = new PathHttpHeaders()
             .setContentLanguage("en-US")
             .setContentType("binary");
-        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
-            .setLeaseId(leaseId);
         String permissions = "permissions";
         String umask = "umask";
-        DataLakeDirectoryAsyncClient newDirectoryClient = client.createSubdirectoryIfNotExistsWithResponse(
-            directoryName, permissions, umask, httpHeaders, Collections.singletonMap("metadata", "value")).block().getValue();
-        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectoryWithResponse#String-String-String-PathHttpHeaders-Map
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(headers)
+            .setPermissions(permissions).setUmask(umask).setMetadata(Collections.singletonMap("metadata", "value"));
+
+        DataLakeDirectoryAsyncClient newDirectoryClient = client.createSubdirectoryIfNotExistsWithResponse(directoryName,
+            options).block().getValue();
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectoryWithResponse#String-DataLakePathCreateOptions
     }
 
     /**

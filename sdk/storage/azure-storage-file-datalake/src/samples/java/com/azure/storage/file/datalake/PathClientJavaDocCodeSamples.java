@@ -17,6 +17,7 @@ import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.RolePermissions;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions;
@@ -484,7 +485,7 @@ public class PathClientJavaDocCodeSamples {
 
     /**
      * Code snippets for {@link DataLakePathClient#createIfNotExists()} and
-     * {@link DataLakePathClient#createIfNotExistsWithResponse(String, String, PathHttpHeaders, Map, Duration, Context)}
+     * {@link DataLakePathClient#createIfNotExistsWithResponse(DataLakePathCreateOptions, Duration, Context)}
      */
     public void createIfNotExistsCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.createIfNotExists
@@ -496,23 +497,19 @@ public class PathClientJavaDocCodeSamples {
         }
         // END: com.azure.storage.file.datalake.DataLakePathClient.createIfNotExists
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.createIfNotExistsWithResponse#String-String-PathHttpHeaders-Map-Duration-Context
-        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.createIfNotExistsWithResponse#DataLakePathCreateOptions-Duration-Context
+        PathHttpHeaders headers = new PathHttpHeaders()
             .setContentLanguage("en-US")
             .setContentType("binary");
         String permissions = "permissions";
         String umask = "umask";
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(headers)
+            .setPermissions(permissions).setUmask(umask).setMetadata(metadata);
 
-        Response<PathInfo> response = client.createIfNotExistsWithResponse(permissions, umask, httpHeaders,
-            Collections.singletonMap("metadata", "value"), timeout,
-            new Context(key1, value1));
-
-        if (response != null) {
-            System.out.printf("Last Modified Time:%s", response.getValue().getLastModified());
-        } else {
-            System.out.println("already exists.");
-        }
-        // END: com.azure.storage.file.datalake.DataLakePathClient.createIfNotExistsWithResponse#String-String-PathHttpHeaders-Map-Duration-Context
+        Response<PathInfo> response = client.createIfNotExistsWithResponse(options, timeout, new Context(key1, value1));
+        System.out.printf("Last Modified Time:%s", response.getValue().getLastModified());
+        // END: com.azure.storage.file.datalake.DataLakePathClient.createIfNotExistsWithResponse#DataLakePathCreateOptions-Duration-Context
     }
 
     /**

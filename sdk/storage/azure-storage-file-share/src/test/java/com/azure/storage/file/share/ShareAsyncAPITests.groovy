@@ -16,6 +16,7 @@ import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.models.ShareRootSquash
 import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.options.ShareCreateOptions
+import com.azure.storage.file.share.options.ShareDirectoryCreateOptions
 import com.azure.storage.file.share.options.ShareSetPropertiesOptions
 import reactor.test.StepVerifier
 import spock.lang.Unroll
@@ -198,7 +199,7 @@ class ShareAsyncAPITests extends APISpec {
     @Unroll
     def "Create if not exists share with invalid args"() {
         when:
-        def createShareVerifier = StepVerifier.create(primaryShareAsyncClient.createWithResponse(metadata, quota))
+        def createShareVerifier = StepVerifier.create(primaryShareAsyncClient.createIfNotExistsWithResponse(new ShareCreateOptions().setMetadata(metadata).setQuotaInGb(quota)))
         then:
         createShareVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, statusCode, errMessage)
@@ -486,7 +487,7 @@ class ShareAsyncAPITests extends APISpec {
         given:
         primaryShareAsyncClient.create().block()
         expect:
-        StepVerifier.create(primaryShareAsyncClient.createDirectoryIfNotExistsWithResponse("testCreateDirectory", null, null, null))
+        StepVerifier.create(primaryShareAsyncClient.createDirectoryIfNotExistsWithResponse("testCreateDirectory", new ShareDirectoryCreateOptions()))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()
@@ -496,10 +497,10 @@ class ShareAsyncAPITests extends APISpec {
         setup:
         def client = premiumFileServiceAsyncClient.getShareAsyncClient(generateShareName())
         client.create().block()
-        def initialResponse = client.createDirectoryIfNotExistsWithResponse("testCreateDirectory", null, null, null).block()
+        def initialResponse = client.createDirectoryIfNotExistsWithResponse("testCreateDirectory", new ShareDirectoryCreateOptions()).block()
 
         when:
-        def secondResponse = client.createDirectoryIfNotExistsWithResponse("testCreateDirectory", null, null, null).block()
+        def secondResponse = client.createDirectoryIfNotExistsWithResponse("testCreateDirectory", new ShareDirectoryCreateOptions()).block()
 
         then:
         initialResponse != null
@@ -524,7 +525,7 @@ class ShareAsyncAPITests extends APISpec {
         given:
         primaryShareAsyncClient.create().block()
         expect:
-        StepVerifier.create(primaryShareAsyncClient.createDirectoryIfNotExistsWithResponse("testCreateDirectory", null, null, testMetadata))
+        StepVerifier.create(primaryShareAsyncClient.createDirectoryIfNotExistsWithResponse("testCreateDirectory", new ShareDirectoryCreateOptions().setMetadata(testMetadata)))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()
@@ -534,7 +535,7 @@ class ShareAsyncAPITests extends APISpec {
         given:
         primaryShareAsyncClient.create().block()
         expect:
-        StepVerifier.create(primaryShareAsyncClient.createDirectoryIfNotExistsWithResponse("testCreateDirectory", null, filePermission, null))
+        StepVerifier.create(primaryShareAsyncClient.createDirectoryIfNotExistsWithResponse("testCreateDirectory", new ShareDirectoryCreateOptions().setFilePermission(filePermission)))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()
@@ -548,7 +549,7 @@ class ShareAsyncAPITests extends APISpec {
             .setFileLastWriteTime(namer.getUtcNow())
             .setFilePermissionKey(permissionKey)
         expect:
-        StepVerifier.create(primaryShareAsyncClient.createDirectoryIfNotExistsWithResponse("testCreateDirectory", smbProperties, null, null))
+        StepVerifier.create(primaryShareAsyncClient.createDirectoryIfNotExistsWithResponse("testCreateDirectory", new ShareDirectoryCreateOptions().setSmbProperties(smbProperties)))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()
@@ -558,7 +559,7 @@ class ShareAsyncAPITests extends APISpec {
         given:
         primaryShareAsyncClient.create().block()
         when:
-        def createDirErrorVerifier = StepVerifier.create(primaryShareAsyncClient.createDirectoryIfNotExistsWithResponse("testdirectory", null, null, Collections.singletonMap("", "value")))
+        def createDirErrorVerifier = StepVerifier.create(primaryShareAsyncClient.createDirectoryIfNotExistsWithResponse("testdirectory", new ShareDirectoryCreateOptions().setMetadata(Collections.singletonMap("", "value"))))
         then:
         createDirErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, ShareErrorCode.EMPTY_METADATA_KEY)
@@ -888,84 +889,4 @@ class ShareAsyncAPITests extends APISpec {
         shareName == primaryShareAsyncClient.getShareName()
     }
 
-    def "Create share if not exists"() {
-        setup:
-        def client = premiumFileServiceAsyncClient.getShareAsyncClient(generateShareName())
-        when:
-        def result = client.createIfNotExists().block()
-
-        then:
-        result != null
-        client.exists().block() == true
-    }
-
-    def "Create share if not exists with response"() {
-        setup:
-        def client = premiumFileServiceAsyncClient.getShareAsyncClient(generateShareName())
-
-        when:
-        def result = client.createIfNotExistsWithResponse(new ShareCreateOptions()).block()
-
-        then:
-        result != null
-        result.getValue() != null
-        result.getStatusCode() == 201
-        client.exists().block() == true
-    }
-
-    def "Create share that already exists"() {
-        setup:
-        def client = premiumFileServiceAsyncClient.getShareAsyncClient(generateShareName())
-        def initialResponse = client.createIfNotExistsWithResponse(new ShareCreateOptions()).block()
-
-        when:
-        def secondResponse = client.createIfNotExistsWithResponse(new ShareCreateOptions()).block()
-
-        then:
-        initialResponse != null
-        initialResponse.getValue() != null
-        initialResponse.getStatusCode() == 201
-        secondResponse == null
-        client.exists().block() == true
-    }
-
-    def "Delete a share that exists"() {
-        setup:
-        def client = premiumFileServiceAsyncClient.getShareAsyncClient(generateShareName())
-        client.create().block()
-
-        when:
-        client.deleteIfExists().block()
-        client.getProperties().block()
-
-        then:
-        thrown(ShareStorageException)
-        client.exists().block() == false
-    }
-
-    def "Delete a share that exists with response"() {
-        setup:
-        def client = premiumFileServiceAsyncClient.getShareAsyncClient(generateShareName())
-        client.create().block()
-
-        when:
-        def response = client.deleteIfExistsWithResponse(null, null).block()
-
-        then:
-        response != null
-        FileTestHelper.assertResponseStatusCode(response, 202)
-        client.exists().block() == false
-    }
-
-    def "Delete a share that does not exists"() {
-        setup:
-        def client = premiumFileServiceAsyncClient.getShareAsyncClient(generateShareName())
-
-        when:
-        def response = client.deleteIfExistsWithResponse(null, null).block()
-
-        then:
-        response == null
-        client.exists().block() == false
-    }
 }

@@ -12,6 +12,7 @@ import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.options.ShareDeleteOptions;
+import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
 import com.azure.storage.file.share.options.ShareGetAccessPolicyOptions;
 import com.azure.storage.file.share.options.ShareGetPropertiesOptions;
 import com.azure.storage.file.share.options.ShareGetStatisticsOptions;
@@ -775,8 +776,7 @@ public class ShareAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareAsyncClient#createIfNotExists()},
-     * {@link ShareAsyncClient#createIfNotExistsWithResponse(Map, Integer)} and
+     * Generates a code sample for using {@link ShareAsyncClient#createIfNotExists()} and
      * {@link ShareAsyncClient#createIfNotExistsWithResponse(ShareCreateOptions)}
      */
     public void createIfNotExistsCodeSnippets() {
@@ -789,22 +789,6 @@ public class ShareAsyncJavaDocCodeSamples {
             () -> System.out.println("Complete creating the share!")
         );
         // END: com.azure.storage.file.share.ShareAsyncClient.createIfNotExists
-
-        // BEGIN: com.azure.storage.file.share.ShareAsyncClient.createIfNotExistsWithResponse#map-integer.metadata
-        shareAsyncClient.createIfNotExistsWithResponse(Collections.singletonMap("share", "metadata"), null).subscribe(
-            response -> System.out.printf("Creating the share completed with status code %d", response.getStatusCode()),
-            error -> System.err.print(error.toString()),
-            () -> System.out.println("Complete creating the share!")
-        );
-        // END: com.azure.storage.file.share.ShareAsyncClient.createIfNotExistsWithResponse#map-integer.metadata
-
-        // BEGIN: com.azure.storage.file.share.ShareAsyncClient.createIfNotExistsWithResponse#map-integer.quota
-        shareAsyncClient.createIfNotExistsWithResponse(null, 10).subscribe(
-            response -> System.out.printf("Creating the share completed with status code %d", response.getStatusCode()),
-            error -> System.err.print(error.toString()),
-            () -> System.out.println("Complete creating the share!")
-        );
-        // END: com.azure.storage.file.share.ShareAsyncClient.createIfNotExistsWithResponse#map-integer.quota
 
         // BEGIN: com.azure.storage.file.share.ShareAsyncClient.createIfNotExistsWithResponse#ShareCreateOptions
         shareAsyncClient.createIfNotExistsWithResponse(new ShareCreateOptions()
@@ -854,7 +838,7 @@ public class ShareAsyncJavaDocCodeSamples {
 
     /**
      * Generates a code sample for using {@link ShareAsyncClient#createDirectoryIfNotExists(String)} and
-     * {@link ShareAsyncClient#createDirectoryIfNotExistsWithResponse(String, FileSmbProperties, String, Map)}
+     * {@link ShareAsyncClient#createDirectoryIfNotExistsWithResponse(String, ShareDirectoryCreateOptions)}
      */
     public void createDirectoryIfNotExistsCodeSnippets() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
@@ -867,14 +851,16 @@ public class ShareAsyncJavaDocCodeSamples {
         );
         // END: com.azure.storage.file.share.ShareAsyncClient.createDirectoryIfNotExists#string
 
-        // BEGIN: com.azure.storage.file.share.ShareAsyncClient.createDirectoryIfNotExistsWithResponse#String-FileSmbProperties-String-Map
+        // BEGIN: com.azure.storage.file.share.ShareAsyncClient.createDirectoryIfNotExistsWithResponse#String-ShareDirectoryCreateOptions
         FileSmbProperties smbProperties = new FileSmbProperties();
         String filePermission = "filePermission";
-        shareAsyncClient.createDirectoryIfNotExistsWithResponse("documents", smbProperties, filePermission,
-                Collections.singletonMap("directory", "metadata"))
+        Map<String, String> metadata = Collections.singletonMap("directory", "metadata");
+        ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions().setSmbProperties(smbProperties)
+            .setFilePermission(filePermission).setMetadata(metadata);
+        shareAsyncClient.createDirectoryIfNotExistsWithResponse("documents", options)
             .subscribe(response -> System.out.printf("Creating the directory completed with status code %d",
                 response.getStatusCode()));
-        // END: com.azure.storage.file.share.ShareAsyncClient.createDirectoryIfNotExistsWithResponse#String-FileSmbProperties-String-Map
+        // END: com.azure.storage.file.share.ShareAsyncClient.createDirectoryIfNotExistsWithResponse#String-ShareDirectoryCreateOptions
     }
 
     /**

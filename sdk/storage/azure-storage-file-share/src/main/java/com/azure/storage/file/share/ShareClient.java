@@ -16,6 +16,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.models.*;
 import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.options.ShareDeleteOptions;
+import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
 import com.azure.storage.file.share.options.ShareGetAccessPolicyOptions;
 import com.azure.storage.file.share.options.ShareGetPropertiesOptions;
 import com.azure.storage.file.share.options.ShareGetStatisticsOptions;
@@ -306,49 +307,6 @@ public class ShareClient {
     public ShareInfo createIfNotExists() {
         Response<ShareInfo> response = createIfNotExistsWithResponse(null, null, null);
         return response == null ? null : response.getValue();
-    }
-
-    /**
-     * Creates the share in the storage account with the specified metadata and quota if it does not exist.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Create the share with metadata "share:metadata"</p>
-     *
-     * <!-- src_embed ShareClient.createIfNotExistsWithResponse#map-integer-duration-context.metadata -->
-     * <pre>
-     * Response&lt;ShareInfo&gt; metaResponse = shareClient.createIfNotExistsWithResponse&#40;Collections.singletonMap&#40;&quot;share&quot;, &quot;metadata&quot;&#41;,
-     *     null, Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.println&#40;&quot;Complete creating the shares with status code: &quot; + metaResponse.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end ShareClient.createIfNotExistsWithResponse#map-integer-duration-context.metadata -->
-     *
-     * <p>Create the share with a quota of 10 GB</p>
-     *
-     * <!-- src_embed ShareClient.createIfNotExistsWithResponse#map-integer-duration-context.quota -->
-     * <pre>
-     * Response&lt;ShareInfo&gt; response = shareClient.createWithResponse&#40;null, 10,
-     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.println&#40;&quot;Complete creating the shares with status code: &quot; + response.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end ShareClient.createIfNotExistsWithResponse#map-integer-duration-context.quota -->
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-share">Azure Docs</a>.</p>
-     *
-     * @param metadata Optional metadata to associate with the share
-     * @param quotaInGB Optional maximum size the share is allowed to grow to in GB. This must be greater than 0 and
-     * less than or equal to 5120. The default value is 5120.
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
-     * concludes a {@link RuntimeException} will be thrown.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing the {@link ShareInfo information about the share} and the status its creation,
-     * or null if the share already exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ShareInfo> createIfNotExistsWithResponse(Map<String, String> metadata, Integer quotaInGB, Duration timeout,
-        Context context) {
-        return createIfNotExistsWithResponse(new ShareCreateOptions().setQuotaInGb(quotaInGB).setMetadata(metadata), timeout, context);
     }
 
     /**
@@ -1280,7 +1238,7 @@ public class ShareClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareDirectoryClient createDirectoryIfNotExists(String directoryName) {
         Response<ShareDirectoryClient> response = createDirectoryIfNotExistsWithResponse(directoryName,
-            null, null, null, null, Context.NONE);
+            new ShareDirectoryCreateOptions(), null, Context.NONE);
         return response == null ? null : response.getValue();
     }
 
@@ -1294,11 +1252,11 @@ public class ShareClient {
      *
      * <!-- src_embed com.azure.storage.file.share.ShareClient.createDirectoryIfNotExistsWithResponse#String-FileSmbProperties-String-Map-Duration-Context -->
      * <pre>
-     * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;;
-     * String filePermission = &quot;filePermission&quot;;
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;;
+     * ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions&#40;&#41;.setSmbProperties&#40;smbProperties&#41;.
+     *      setFilePermission&#40;filePermission&#41;.setMetadata&#40;metadata&#41;;
      * Response&lt;ShareDirectoryClient&gt; response = shareClient.createDirectoryIfNotExistsWithResponse&#40;&quot;documents&quot;,
-     *     smbProperties, filePermission, Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;,
-     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
+     *      options, Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
      * System.out.printf&#40;&quot;Creating the directory completed with status code %d&quot;, response.getStatusCode&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareClient.createDirectoryIfNotExistsWithResponse#String-FileSmbProperties-String-Map-Duration-Context -->
@@ -1307,9 +1265,6 @@ public class ShareClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @param directoryName Name of the directory
-     * @param smbProperties The SMB properties of the directory.
-     * @param filePermission The file permission of the directory.
-     * @param metadata Optional metadata to associate with the directory
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
@@ -1318,11 +1273,9 @@ public class ShareClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareDirectoryClient> createDirectoryIfNotExistsWithResponse(String directoryName,
-        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout,
-        Context context) {
+        ShareDirectoryCreateOptions options, Duration timeout, Context context) {
         ShareDirectoryClient shareDirectoryClient = getDirectoryClient(directoryName);
-        Response<ShareDirectoryInfo> response = shareDirectoryClient.createIfNotExistsWithResponse(smbProperties,
-            filePermission, metadata, timeout, context);
+        Response<ShareDirectoryInfo> response = shareDirectoryClient.createIfNotExistsWithResponse(options, timeout, context);
         return response == null ? null : new SimpleResponse<>(response, shareDirectoryClient);
     }
 

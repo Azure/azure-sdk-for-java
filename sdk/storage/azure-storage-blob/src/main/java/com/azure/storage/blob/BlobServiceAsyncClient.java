@@ -264,11 +264,7 @@ public final class BlobServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobContainerAsyncClient> createBlobContainerIfNotExists(String containerName) {
-        try {
-            return createBlobContainerIfNotExistsWithResponse(containerName, null, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return createBlobContainerIfNotExistsWithResponse(containerName, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -301,7 +297,7 @@ public final class BlobServiceAsyncClient {
             return withContext(context -> createBlobContainerIfNotExistsWithResponse(containerName, metadata, accessType,
                 context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -385,16 +381,12 @@ public final class BlobServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteBlobContainerIfExists(String containerName) {
-        try {
-            return deleteBlobContainerIfExistsWithResponse(containerName).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return deleteBlobContainerIfExistsWithResponse(containerName).flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Deletes the specified container in the storage account if it exists. If the container doesn't exist the
-     * operation fails. For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure
+     * Deletes the specified container in the storage account if it exists.
+     * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -415,7 +407,7 @@ public final class BlobServiceAsyncClient {
         try {
             return withContext(context -> deleteBlobContainerIfExistsWithResponse(containerName, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 

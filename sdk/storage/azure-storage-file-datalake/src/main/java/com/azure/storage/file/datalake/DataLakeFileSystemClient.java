@@ -31,6 +31,7 @@ import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
@@ -327,7 +328,7 @@ public class DataLakeFileSystemClient {
         Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() ->
             blobContainerClient.createIfNotExistsWithResponse(metadata, Transforms.toBlobPublicAccessType(accessType), timeout,
-                context), logger);
+                context), LOGGER);
     }
 
     /**
@@ -435,10 +436,10 @@ public class DataLakeFileSystemClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteIfExistsWithResponse(DataLakeRequestConditions requestConditions, Duration timeout,
-                                             Context context) {
+        Context context) {
         return DataLakeImplUtils.returnOrConvertException(() ->
             blobContainerClient.deleteIfExistsWithResponse(Transforms.toBlobRequestConditions(requestConditions), timeout,
-                context), logger);
+                context), LOGGER);
     }
 
     /**
@@ -770,8 +771,7 @@ public class DataLakeFileSystemClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataLakeFileClient createFileIfNotExists(String fileName) {
-        Response<DataLakeFileClient> response = createFileIfNotExistsWithResponse(fileName, null, null, null,
-            null,null, null);
+        Response<DataLakeFileClient> response = createFileIfNotExistsWithResponse(fileName, new DataLakePathCreateOptions(), null, null);
         return response == null ? null : response.getValue();
     }
 
@@ -796,10 +796,7 @@ public class DataLakeFileSystemClient {
      *
      * @param fileName Name of the file to create. If the path name contains special characters, pass in the url encoded
      * version of the path name.
-     * @param permissions POSIX access permissions for the file owner, the file owning group, and others.
-     * @param umask Restricts permissions of the file to be created.
-     * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the file. If there is leading or trailing whitespace in any
+     * @param options {@link DataLakePathCreateOptions}
      * metadata key or value, it must be removed or encoded.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -808,11 +805,10 @@ public class DataLakeFileSystemClient {
      * to interact with the file created. Response will be null if a file already exists with the specified name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataLakeFileClient> createFileIfNotExistsWithResponse(String fileName, String permissions, String umask,
-                                                               PathHttpHeaders headers, Map<String, String> metadata,
-                                                               Duration timeout, Context context) {
+    public Response<DataLakeFileClient> createFileIfNotExistsWithResponse(String fileName, DataLakePathCreateOptions options,
+        Duration timeout, Context context) {
         DataLakeFileClient dataLakeFileClient = getFileClient(fileName);
-        Response<PathInfo> response = dataLakeFileClient.createIfNotExistsWithResponse(permissions, umask, headers, metadata, timeout, context);
+        Response<PathInfo> response = dataLakeFileClient.createIfNotExistsWithResponse(options, timeout, context);
         return response == null ? null : new SimpleResponse<>(response, dataLakeFileClient);
     }
 
@@ -1036,7 +1032,7 @@ public class DataLakeFileSystemClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataLakeDirectoryClient createDirectoryIfNotExists(String directoryName) {
         Response<DataLakeDirectoryClient> response = createDirectoryIfNotExistsWithResponse(directoryName,
-            null, null, null, null, null, null);
+            new DataLakePathCreateOptions(), null, null);
         return response == null ? null : response.getValue();
     }
 
@@ -1061,11 +1057,7 @@ public class DataLakeFileSystemClient {
      *
      * @param directoryName Name of the directory to create.  If the path name contains special characters, pass in the
      * url encoded version of the path name.
-     * @param permissions POSIX access permissions for the directory owner, the directory owning group, and others.
-     * @param umask Restricts permissions of the directory to be created.
-     * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the resource. If there is leading or trailing whitespace in any
-     * metadata key or value, it must be removed or encoded.
+     * @param options {@link DataLakePathCreateOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
@@ -1073,11 +1065,11 @@ public class DataLakeFileSystemClient {
      * used to interact with the directory created, or null if the directory with the specified name already exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataLakeDirectoryClient> createDirectoryIfNotExistsWithResponse(String directoryName, String permissions,
-        String umask, PathHttpHeaders headers, Map<String, String> metadata, Duration timeout, Context context) {
+    public Response<DataLakeDirectoryClient> createDirectoryIfNotExistsWithResponse(String directoryName,
+        DataLakePathCreateOptions options, Duration timeout, Context context) {
         DataLakeDirectoryClient dataLakeDirectoryClient = getDirectoryClient(directoryName);
         Response<PathInfo> response = dataLakeDirectoryClient
-            .createIfNotExistsWithResponse(permissions, umask, headers, metadata, timeout, context);
+            .createIfNotExistsWithResponse(options, timeout, context);
         return response == null ? null : new SimpleResponse<>(response, dataLakeDirectoryClient);
     }
 

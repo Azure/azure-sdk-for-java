@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobAccessPolicy;
 import com.azure.storage.blob.models.BlobListDetails;
@@ -14,6 +15,7 @@ import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -446,15 +448,16 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
      */
     public void createIfNotExistsCodeSnippets() {
         // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExists
-        client.createIfNotExists().subscribe(
-            response -> System.out.printf("Create completed%n"),
+        client.createIfNotExists().switchIfEmpty(Mono.<Void>empty().doOnTerminate(() -> System.out.println("Already exists.")))
+            .subscribe(response -> System.out.printf("Create completed%n"),
             error -> System.out.printf("Error while creating container %s%n", error));
         // END: com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExists
 
         // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExistsWithResponse#Map-PublicAccessType
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        client.createIfNotExistsWithResponse(metadata, PublicAccessType.CONTAINER).subscribe(response ->
-            System.out.printf("Create completed with status %d%n", response.getStatusCode()));
+        client.createIfNotExistsWithResponse(metadata, PublicAccessType.CONTAINER)
+            .switchIfEmpty(Mono.<Response<Void>>empty().doOnTerminate(() -> System.out.println("Already exists.")))
+            .subscribe(response -> System.out.printf("Create completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExistsWithResponse#Map-PublicAccessType
     }
 
@@ -464,8 +467,8 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
      */
     public void deleteIfExistsCodeSnippets() {
         // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExists
-        client.deleteIfExists().subscribe(
-            response -> System.out.printf("Delete completed%n"),
+        client.deleteIfExists().switchIfEmpty(Mono.<Void>empty().doOnTerminate(() -> System.out.println("Does not exist.")))
+            .subscribe(response -> System.out.printf("Delete completed%n"),
             error -> System.out.printf("Delete failed: %s%n", error));
         // END: com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExists
 
@@ -474,7 +477,8 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
-        client.deleteIfExistsWithResponse(requestConditions).subscribe(response ->
+        client.deleteIfExistsWithResponse(requestConditions).switchIfEmpty(Mono.<Response<Void>>empty()
+            .doOnTerminate(() -> System.out.println("Does not exist."))).subscribe(response ->
             System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExistsWithResponse#BlobRequestConditions
     }

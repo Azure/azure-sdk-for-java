@@ -622,7 +622,6 @@ public class ShareDirectoryJavaDocCodeSamples {
 
     /**
      * Generates a code sample for using {@link ShareDirectoryClient#createIfNotExists()} and
-     * {@link ShareDirectoryClient#createIfNotExistsWithResponse(FileSmbProperties, String, Map, Duration, Context)}
      */
     public void createDirectoryIfNotExistsCodeSnippets() {
 
@@ -633,12 +632,12 @@ public class ShareDirectoryJavaDocCodeSamples {
         // END: com.azure.storage.file.share.ShareDirectoryClient.createIfNotExists
 
         // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.createIfNotExistsWithResponse#FileSmbProperties-String-Map-Duration-Context
-        ShareDirectoryClient directoryClient = createClientWithSASToken();
-        FileSmbProperties smbProperties = new FileSmbProperties();
-        String filePermission = "filePermission";
-        Response<ShareDirectoryInfo> response = directoryClient.createIfNotExistsWithResponse(smbProperties, filePermission,
-            Collections.singletonMap("directory", "metadata"), Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.println("Completed creating the directory with status code: " + response.getStatusCode());
+//        ShareDirectoryClient directoryClient = createClientWithSASToken();
+//        FileSmbProperties smbProperties = new FileSmbProperties();
+//        String filePermission = "filePermission";
+//        Response<ShareDirectoryInfo> response = directoryClient.createIfNotExistsWithResponse(smbProperties, filePermission,
+//            Collections.singletonMap("directory", "metadata"), Duration.ofSeconds(1), new Context(key1, value1));
+//        System.out.println("Completed creating the directory with status code: " + response.getStatusCode());
         // END: com.azure.storage.file.share.ShareDirectoryClient.createIfNotExistsWithResponse#FileSmbProperties-String-Map-Duration-Context
     }
 
@@ -661,7 +660,6 @@ public class ShareDirectoryJavaDocCodeSamples {
 
     /**
      * Generates a code sample for using {@link ShareDirectoryClient#createSubdirectoryIfNotExists(String)} and
-     * {@link ShareDirectoryClient#createSubdirectoryIfNotExistsWithResponse(String, FileSmbProperties, String, Map, Duration, Context)}
      */
     public void createIfNotExistsSubdirectoryCodeSnippets() {
         ShareDirectoryClient shareDirectoryClient = createClientWithSASToken();
@@ -671,12 +669,12 @@ public class ShareDirectoryJavaDocCodeSamples {
         // END: com.azure.storage.file.share.ShareDirectoryClient.createSubdirectoryIfNotExists#string
 
         // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.createSubdirectoryIfNotExistsWithResponse#String-FileSmbProperties-String-Map-Duration-Context
-        FileSmbProperties smbProperties = new FileSmbProperties();
-        String filePermission = "filePermission";
-        Response<ShareDirectoryClient> response = shareDirectoryClient.createSubdirectoryIfNotExistsWithResponse("subdir",
-            smbProperties, filePermission, Collections.singletonMap("directory", "metadata"),
-            Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.printf("Creating the sub directory completed with status code %d", response.getStatusCode());
+//        FileSmbProperties smbProperties = new FileSmbProperties();
+//        String filePermission = "filePermission";
+//        Response<ShareDirectoryClient> response = shareDirectoryClient.createSubdirectoryIfNotExistsWithResponse("subdir",
+//            smbProperties, filePermission, Collections.singletonMap("directory", "metadata"),
+//            Duration.ofSeconds(1), new Context(key1, value1));
+//        System.out.printf("Creating the sub directory completed with status code %d", response.getStatusCode());
         // END: com.azure.storage.file.share.ShareDirectoryClient.createSubdirectoryIfNotExistsWithResponse#String-FileSmbProperties-String-Map-Duration-Context
     }
 

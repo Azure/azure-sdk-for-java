@@ -7,6 +7,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
+import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -221,23 +222,22 @@ public class DataLakeDirectoryClientJavaDocSamples {
 
     /**
      * Code snippets for {@link DataLakeDirectoryClient#createFileIfNotExists(String)} and
-     * {@link DataLakeDirectoryClient#createFileIfNotExistsWithResponse(String, String, String, PathHttpHeaders, Map, Duration, Context)}
+     * {@link DataLakeDirectoryClient#createFileIfNotExistsWithResponse(String, DataLakePathCreateOptions, Duration, Context)}
      */
     public void createFileIfNotExistsCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.createFileIfNotExists#String
         DataLakeFileClient fileClient = client.createFileIfNotExists(fileName);
         // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.createFileIfNotExists#String
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.createFileIfNotExistsWithResponse#String-String-String-PathHttpHeaders-Map-Duration-Context
-        PathHttpHeaders httpHeaders = new PathHttpHeaders()
-            .setContentLanguage("en-US")
-            .setContentType("binary");
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.createFileIfNotExistsWithResponse#String-DataLakePathCreateOptions-Duration-Context
+        PathHttpHeaders headers = new PathHttpHeaders().setContentLanguage("en-US").setContentType("binary");
         String permissions = "permissions";
         String umask = "umask";
-        Response<DataLakeFileClient> newFileClient = client.createFileIfNotExistsWithResponse(fileName, permissions,
-            umask, httpHeaders, Collections.singletonMap("metadata", "value"),
-            timeout, new Context(key1, value1));
-        // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.createFileIfNotExistsWithResponse#String-String-String-PathHttpHeaders-Map-Duration-Context
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(headers)
+            .setPermissions(permissions).setUmask(umask).setMetadata(Collections.singletonMap("metadata", "value"));
+
+        Response<DataLakeFileClient> newFileClient = client.createFileIfNotExistsWithResponse(fileName, options, timeout, new Context(key1, value1));
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.createFileIfNotExistsWithResponse#String-DataLakePathCreateOptions-Duration-Context
     }
 
     /**
@@ -261,23 +261,25 @@ public class DataLakeDirectoryClientJavaDocSamples {
 
     /**
      * Code snippets for {@link DataLakeDirectoryClient#createSubdirectoryIfNotExists(String)} and
-     * {@link DataLakeDirectoryClient#createSubdirectoryIfNotExistsWithResponse(String, String, String, PathHttpHeaders, Map, Duration, Context)}
+     * {@link DataLakeDirectoryClient#createSubdirectoryIfNotExistsWithResponse(String, DataLakePathCreateOptions, Duration, Context)}
      */
     public void createSubdirectoryIfNotExistsCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubdirectoryIfNotExists#String
         DataLakeDirectoryClient directoryClient = client.createSubdirectoryIfNotExists(directoryName);
         // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubdirectoryIfNotExists#String
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubdirectoryIfNotExistsWithResponse#String-String-String-PathHttpHeaders-Map-Duration-Context
-        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubdirectoryIfNotExistsWithResponse#String-DataLakePathCreateOptions-Duration-Context
+        PathHttpHeaders headers = new PathHttpHeaders()
             .setContentLanguage("en-US")
             .setContentType("binary");
         String permissions = "permissions";
         String umask = "umask";
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(headers)
+            .setPermissions(permissions).setUmask(umask).setMetadata(Collections.singletonMap("metadata", "value"));
+
         Response<DataLakeDirectoryClient> newDirectoryClient = client.createSubdirectoryIfNotExistsWithResponse(directoryName,
-            permissions, umask, httpHeaders, Collections.singletonMap("metadata", "value"), timeout,
-            new Context(key1, value1));
-        // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubdirectoryIfNotExistsWithResponse#String-String-String-PathHttpHeaders-Map-Duration-Context
+            options, timeout, new Context(key1, value1));
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubdirectoryIfNotExistsWithResponse#String-DataLakePathCreateOptions-Duration-Context
     }
 
     /**

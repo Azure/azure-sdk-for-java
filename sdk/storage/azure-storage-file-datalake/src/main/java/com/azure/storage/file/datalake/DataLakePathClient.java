@@ -30,6 +30,7 @@ import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions;
@@ -250,7 +251,7 @@ public class DataLakePathClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PathInfo createIfNotExists() {
-        Response<PathInfo> response = createIfNotExistsWithResponse(null, null, null, null, null, null);
+        Response<PathInfo> response = createIfNotExistsWithResponse(new DataLakePathCreateOptions(), null, null);
         return response == null ? null : response.getValue();
     }
 
@@ -259,7 +260,7 @@ public class DataLakePathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClient.createIfNotExistsWithResponse#String-String-PathHttpHeaders-Map-Duration-Context -->
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClient.createIfNotExistsWithResponse#DataLakePathCreateOptions-Duration-Context -->
      * <pre>
      * PathHttpHeaders httpHeaders = new PathHttpHeaders&#40;&#41;
      *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
@@ -276,26 +277,21 @@ public class DataLakePathClient {
      *             System.out.println&#40;&quot;already exists.&quot;&#41;;
      *         &#125;
      * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakePathClient.createIfNotExistsWithResponse#String-String-PathHttpHeaders-Map-Duration-Context -->
+     * <!-- end com.azure.storage.file.datalake.DataLakePathClient.createIfNotExistsWithResponse#DataLakePathCreateOptions-Duration-Context -->
      *
      * <p>For more information see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
      * Docs</a></p>
      *
-     * @param permissions POSIX access permissions for the resource owner, the resource owning group, and others.
-     * @param umask Restricts permissions of the resource to be created.
-     * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the resource. If there is leading or trailing whitespace in any
+     * @param options {@link DataLakePathCreateOptions}
      * metadata key or value, it must be removed or encoded.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing information about the created resource, or null if the resource exists on the specified path.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PathInfo> createIfNotExistsWithResponse(String permissions, String umask, PathHttpHeaders headers,
-                                                 Map<String, String> metadata, Duration timeout, Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(dataLakePathAsyncClient.createIfNotExistsWithResponse(
-            permissions, umask, headers, metadata, context), timeout);
+    public Response<PathInfo> createIfNotExistsWithResponse(DataLakePathCreateOptions options, Duration timeout, Context context) {
+        return StorageImplUtils.blockWithOptionalTimeout(dataLakePathAsyncClient.createIfNotExistsWithResponse(options, context), timeout);
     }
 
     /**

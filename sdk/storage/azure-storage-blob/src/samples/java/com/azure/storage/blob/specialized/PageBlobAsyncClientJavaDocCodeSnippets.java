@@ -4,11 +4,15 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.RequestConditions;
+import com.azure.core.http.rest.Page;
+import com.azure.core.http.rest.Response;
+import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.CopyStatusType;
+import com.azure.storage.blob.models.PageBlobItem;
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
@@ -16,6 +20,7 @@ import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -479,33 +484,24 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link PageBlobAsyncClient#createIfNotExists(long)},
-     * {@link PageBlobAsyncClient#createIfNotExistsWithResponse(long, Long, BlobHttpHeaders, Map)} and
+     * Code snippets for {@link PageBlobAsyncClient#createIfNotExists(long)} and
      * {@link PageBlobAsyncClient#createIfNotExistsWithResponse(PageBlobCreateOptions)}
      */
     public void createIfNotExistsCodeSnippet() {
         // BEGIN: com.azure.storage.blob.PageBlobAsyncClient.createIfNotExists#long
-        client.createIfNotExists(size).subscribe(response -> System.out.printf(
+        client.createIfNotExists(size).switchIfEmpty(Mono.<PageBlobItem>empty().doOnTerminate(() -> System.out.println("Already exists.")))
+            .subscribe(response -> System.out.printf(
             "Created page blob with sequence number %s%n", response.getBlobSequenceNumber()));
         // END: com.azure.storage.blob.PageBlobAsyncClient.createIfNotExists#long
 
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.createIfNotExistsWithResponse#long-Long-BlobHttpHeaders-Map
-        BlobHttpHeaders headers = new BlobHttpHeaders()
-            .setContentLanguage("en-US")
-            .setContentType("binary");
-
-        client.createIfNotExistsWithResponse(size, sequenceNumber, headers, metadata)
-            .subscribe(response -> System.out.printf(
-                "Created page blob with sequence number %s%n", response.getValue().getBlobSequenceNumber()));
-        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.createIfNotExistsWithResponse#long-Long-BlobHttpHeaders-Map
-
         // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.createIfNotExistsWithResponse#PageBlobCreateOptions
-        BlobHttpHeaders httpHeaders = new BlobHttpHeaders()
+        BlobHttpHeaders headers = new BlobHttpHeaders()
             .setContentLanguage("en-US")
             .setContentType("binary");
 
         client.createIfNotExistsWithResponse(new PageBlobCreateOptions(size).setSequenceNumber(sequenceNumber)
                 .setHeaders(headers).setMetadata(metadata).setTags(tags))
+            .switchIfEmpty(Mono.<Response<PageBlobItem>>empty().doOnTerminate(() -> System.out.println("Already exists.")))
             .subscribe(response -> System.out.printf(
                 "Created page blob with sequence number %s%n", response.getValue().getBlobSequenceNumber()));
         // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.createIfNotExistsWithResponse#PageBlobCreateOptions

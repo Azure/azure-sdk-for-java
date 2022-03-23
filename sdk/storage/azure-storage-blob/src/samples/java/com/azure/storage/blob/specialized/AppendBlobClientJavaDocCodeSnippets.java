@@ -210,8 +210,7 @@ public class AppendBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link AppendBlobClient#createIfNotExists()},
-     * {@link AppendBlobClient#createIfNotExistsWithResponse(BlobHttpHeaders, Map, Duration, Context)} and
+     * Code snippet for {@link AppendBlobClient#createIfNotExists()} and
      * {@link AppendBlobClient#createIfNotExistsWithResponse(AppendBlobCreateOptions, Duration, Context)}
      */
     public void createIfNotExistsCodeSnippets() {
@@ -220,18 +219,19 @@ public class AppendBlobClientJavaDocCodeSnippets {
         System.out.println("Created AppendBlob");
         // END: com.azure.storage.blob.specialized.AppendBlobClient.createIfNotExists
 
-        // BEGIN: com.azure.storage.blob.specialized.AppendBlobClient.createIfNotExistsWithResponse#BlobHttpHeaders-Map-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobClient.createIfNotExistsWithResponse#AppendBlobCreateOptions-Duration-Context
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setContentType("binary")
             .setContentLanguage("en-US");
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        Map<String, String> tags = Collections.singletonMap("tags", "value");
         Context context = new Context("key", "value");
 
         System.out.printf("Created AppendBlob at %s%n",
-            client.createIfNotExistsWithResponse(headers, metadata, timeout, context).getValue()
+            client.createIfNotExistsWithResponse(new AppendBlobCreateOptions().setHeaders(headers).setMetadata(metadata)
+                    .setTags(tags), timeout, context).getValue()
                 .getLastModified());
-        // END: com.azure.storage.blob.specialized.AppendBlobClient.createIfNotExistsWithResponse#BlobHttpHeaders-Map-Duration-Context
-
+        // END: com.azure.storage.blob.specialized.AppendBlobClient.createIfNotExistsWithResponse#AppendBlobCreateOptions-Duration-Context
 
     }
 }

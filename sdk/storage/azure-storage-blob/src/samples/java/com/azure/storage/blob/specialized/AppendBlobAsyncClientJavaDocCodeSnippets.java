@@ -3,6 +3,8 @@
 
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.http.rest.Response;
+import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -11,6 +13,7 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
 import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -189,36 +192,26 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link AppendBlobAsyncClient#createIfNotExists()},
-     * {@link AppendBlobAsyncClient#createIfNotExistsWithResponse(BlobHttpHeaders, Map)} and
+     * Code snippet for {@link AppendBlobAsyncClient#createIfNotExists()} and
      * {@link AppendBlobAsyncClient#createIfNotExistsWithResponse(AppendBlobCreateOptions)}
      */
     public void createIfNotExistsCodeSnippets() {
         // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExists
-        client.createIfNotExists().subscribe(response ->
+        client.createIfNotExists().switchIfEmpty(Mono.<AppendBlobItem>empty().doOnTerminate(() -> System.out.println("Already exists.")))
+            .subscribe(response ->
             System.out.printf("Created AppendBlob at %s%n", response.getLastModified()));
         // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExists
 
-        // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExistsWithResponse#BlobHttpHeaders-Map
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#AppendBlobCreateOptions
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setContentType("binary")
             .setContentLanguage("en-US");
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-
-        client.createIfNotExistsWithResponse(headers, metadata).subscribe(response ->
-            System.out.printf("Created AppendBlob at %s%n", response.getValue().getLastModified()));
-        // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExistsWithResponse#BlobHttpHeaders-Map
-
-        // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#AppendBlobCreateOptions
-        BlobHttpHeaders httpHeaders = new BlobHttpHeaders()
-            .setContentType("binary")
-            .setContentLanguage("en-US");
-        Map<String, String> metaData = Collections.singletonMap("metadata", "value");
         Map<String, String> tags = Collections.singletonMap("tag", "value");
 
-        client.createIfNotExistsWithResponse(new AppendBlobCreateOptions().setHeaders(httpHeaders).setMetadata(metaData)
-            .setTags(tags)).subscribe(response ->
-            System.out.printf("Created AppendBlob at %s%n", response.getValue().getLastModified()));
+        client.createIfNotExistsWithResponse(new AppendBlobCreateOptions().setHeaders(headers).setMetadata(metadata)
+            .setTags(tags)).switchIfEmpty(Mono.<Response<AppendBlobItem>>empty().doOnTerminate(() -> System.out.println("Already exists.")))
+            .subscribe(response -> System.out.printf("Created AppendBlob at %s%n", response.getValue().getLastModified()));
         // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#AppendBlobCreateOptions
     }
 }

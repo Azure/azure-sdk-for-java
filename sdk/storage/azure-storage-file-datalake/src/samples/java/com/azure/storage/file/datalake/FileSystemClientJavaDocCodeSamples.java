@@ -539,8 +539,7 @@ public class FileSystemClientJavaDocCodeSamples {
     }
 
     /**
-     * Code snippets for {@link DataLakeFileSystemClient#createFileIfNotExists(String)} and
-     * {@link DataLakeFileSystemClient#createFileIfNotExistsWithResponse(String, String, String, PathHttpHeaders, Map, Duration, Context)}
+     * Code snippets for {@link DataLakeFileSystemClient#createFileIfNotExists(String)}
      */
     public void createFileIfNotExistsCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileIfNotExists#String
@@ -548,14 +547,14 @@ public class FileSystemClientJavaDocCodeSamples {
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileIfNotExists#String
 
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-Duration-Context
-        PathHttpHeaders httpHeaders = new PathHttpHeaders()
-            .setContentLanguage("en-US")
-            .setContentType("binary");
-        String permissions = "permissions";
-        String umask = "umask";
-        Response<DataLakeFileClient> newFileClient = client.createFileIfNotExistsWithResponse(fileName, permissions, umask, httpHeaders,
-            Collections.singletonMap("metadata", "value"),
-            timeout, new Context(key1, value1));
+//        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+//            .setContentLanguage("en-US")
+//            .setContentType("binary");
+//        String permissions = "permissions";
+//        String umask = "umask";
+//        Response<DataLakeFileClient> newFileClient = client.createFileIfNotExistsWithResponse(fileName, permissions, umask, httpHeaders,
+//            Collections.singletonMap("metadata", "value"),
+//            timeout, new Context(key1, value1));
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-Duration-Context
     }
 
@@ -579,8 +578,7 @@ public class FileSystemClientJavaDocCodeSamples {
     }
 
     /**
-     * Code snippets for {@link DataLakeFileSystemClient#createDirectoryIfNotExists(String)} and
-     * {@link DataLakeFileSystemClient#createDirectoryIfNotExistsWithResponse(String, String, String, PathHttpHeaders, Map, Duration, Context)}
+     * Code snippets for {@link DataLakeFileSystemClient#createDirectoryIfNotExists(String)}
      */
     public void createDirectoryIfNotExistsCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryIfNotExists#String
@@ -588,14 +586,14 @@ public class FileSystemClientJavaDocCodeSamples {
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryIfNotExists#String
 
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse#String-String-String-PathHttpHeaders-Map-Duration-Context
-        PathHttpHeaders httpHeaders = new PathHttpHeaders()
-            .setContentLanguage("en-US")
-            .setContentType("binary");
-        String permissions = "permissions";
-        String umask = "umask";
-        Response<DataLakeDirectoryClient> newDirectoryClient = client.createDirectoryIfNotExistsWithResponse(directoryName,
-            permissions, umask, httpHeaders, Collections.singletonMap("metadata", "value"),
-            timeout, new Context(key1, value1));
+//        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+//            .setContentLanguage("en-US")
+//            .setContentType("binary");
+//        String permissions = "permissions";
+//        String umask = "umask";
+//        Response<DataLakeDirectoryClient> newDirectoryClient = client.createDirectoryIfNotExistsWithResponse(directoryName,
+//            permissions, umask, httpHeaders, Collections.singletonMap("metadata", "value"),
+//            timeout, new Context(key1, value1));
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse#String-String-String-PathHttpHeaders-Map-Duration-Context
     }
 

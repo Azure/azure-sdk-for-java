@@ -502,8 +502,7 @@ public class PageBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link PageBlobClient#createIfNotExists(long)},
-     * {@link PageBlobClient#createIfNotExistsWithResponse(long, Long, BlobHttpHeaders, Map, Duration, Context)}, and
+     * Code snippets for {@link PageBlobClient#createIfNotExists(long)} and
      * {@link PageBlobClient#createIfNotExistsWithResponse(PageBlobCreateOptions, Duration, Context)}
      */
     public void createIfNotExistsCodeSnippet() {
@@ -512,31 +511,15 @@ public class PageBlobClientJavaDocCodeSnippets {
         System.out.printf("Created page blob with sequence number %s%n", pageBlob.getBlobSequenceNumber());
         // END: com.azure.storage.blob.PageBlobClient.createIfNotExists#long
 
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.createIfNotExistsWithResponse#long-Long-BlobHttpHeaders-Map-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.createIfNotExistsWithResponse#PageBlobCreateOptions-Duration-Context
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setContentLanguage("en-US")
             .setContentType("binary");
-        BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
         Context context = new Context(key, value);
 
-        PageBlobItem blob = client
-            .createIfNotExistsWithResponse(size, sequenceNumber, headers, metadata, timeout, context)
-            .getValue();
-
-        System.out.printf("Created page blob with sequence number %s%n", blob.getBlobSequenceNumber());
-        // END: com.azure.storage.blob.specialized.PageBlobClient.createIfNotExistsWithResponse#long-Long-BlobHttpHeaders-Map-Duration-Context
-
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.createIfNotExistsWithResponse#PageBlobCreateOptions-Duration-Context
-        BlobHttpHeaders httpHeaders = new BlobHttpHeaders()
-            .setContentLanguage("en-US")
-            .setContentType("binary");
-        context = new Context(key, value);
-
         PageBlobItem pageBlobItem = client
-            .createWithResponse(new PageBlobCreateOptions(size).setSequenceNumber(sequenceNumber)
-                    .setHeaders(httpHeaders).setMetadata(metadata).setTags(tags), timeout,
-                context)
-            .getValue();
+            .createIfNotExistsWithResponse(new PageBlobCreateOptions(size).setSequenceNumber(sequenceNumber)
+                    .setHeaders(headers).setMetadata(metadata).setTags(tags), timeout, context).getValue();
 
         System.out.printf("Created page blob with sequence number %s%n", pageBlobItem.getBlobSequenceNumber());
         // END: com.azure.storage.blob.specialized.PageBlobClient.createIfNotExistsWithResponse#PageBlobCreateOptions-Duration-Context

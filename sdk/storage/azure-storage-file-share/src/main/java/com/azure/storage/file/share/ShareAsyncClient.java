@@ -40,6 +40,7 @@ import com.azure.storage.file.share.models.ShareStatistics;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.options.ShareDeleteOptions;
+import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
 import com.azure.storage.file.share.options.ShareGetAccessPolicyOptions;
 import com.azure.storage.file.share.options.ShareGetPropertiesOptions;
 import com.azure.storage.file.share.options.ShareGetStatisticsOptions;
@@ -398,54 +399,7 @@ public class ShareAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareInfo> createIfNotExists() {
-        try {
-            return createIfNotExistsWithResponse(null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Creates the share in the storage account with the specified metadata and quota if it does not exist.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Create the share with metadata "share:metadata"</p>
-     *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.createIfNotExistsWithResponse#map-integer.metadata -->
-     * <pre>
-     * shareAsyncClient.createIfNotExistsWithResponse&#40;Collections.singletonMap&#40;&quot;share&quot;, &quot;metadata&quot;&#41;, null&#41;.subscribe&#40;
-     *     response -&gt; System.out.printf&#40;&quot;Creating the share completed with status code %d&quot;, response.getStatusCode&#40;&#41;&#41;,
-     *     error -&gt; System.err.print&#40;error.toString&#40;&#41;&#41;,
-     *     &#40;&#41; -&gt; System.out.println&#40;&quot;Complete creating the share!&quot;&#41;
-     * &#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.createIfNotExistsWithResponse#map-integer.metadata -->
-     *
-     * <p>Create the share with a quota of 10 GB</p>
-     *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.createIfNotExistsWithResponse#map-integer.quota -->
-     * <pre>
-     * shareAsyncClient.createIfNotExistsWithResponse&#40;null, 10&#41;.subscribe&#40;
-     *     response -&gt; System.out.printf&#40;&quot;Creating the share completed with status code %d&quot;, response.getStatusCode&#40;&#41;&#41;,
-     *     error -&gt; System.err.print&#40;error.toString&#40;&#41;&#41;,
-     *     &#40;&#41; -&gt; System.out.println&#40;&quot;Complete creating the share!&quot;&#41;
-     * &#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.createIfNotExistsWithResponse#map-integer.quota -->
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-share">Azure Docs</a>.</p>
-     *
-     * @param metadata Optional metadata to associate with the share
-     * @param quotaInGB Optional maximum size the share is allowed to grow to in GB. This must be greater than 0 and
-     * less than or equal to 5120. The default value is 5120.
-     * @return A response containing information about the {@link ShareInfo share} and the status its creation, or
-     * null if the share already exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ShareInfo>> createIfNotExistsWithResponse(Map<String, String> metadata, Integer quotaInGB) {
-        return createIfNotExistsWithResponse(new ShareCreateOptions().setMetadata(metadata).setQuotaInGb(quotaInGB));
+        return createIfNotExistsWithResponse(null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -480,13 +434,17 @@ public class ShareAsyncClient {
         try {
             return createIfNotExistsWithResponse(options, null);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
     Mono<Response<ShareInfo>> createIfNotExistsWithResponse(ShareCreateOptions options, Context context) {
-        return createWithResponse(options, context).onErrorResume(t -> t instanceof ShareStorageException &&
-            ((ShareStorageException)t).getStatusCode() == 409, t -> Mono.empty());
+        try {
+            return createWithResponse(options, context).onErrorResume(t -> t instanceof ShareStorageException &&
+                ((ShareStorageException)t).getStatusCode() == 409, t -> Mono.empty());
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -693,7 +651,7 @@ public class ShareAsyncClient {
         try {
             return deleteIfExistsWithResponse().flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -725,7 +683,7 @@ public class ShareAsyncClient {
         try {
             return deleteIfExistsWithResponse(new ShareDeleteOptions());
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -758,7 +716,7 @@ public class ShareAsyncClient {
         try {
             return withContext(context -> deleteIfExistsWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1533,9 +1491,10 @@ public class ShareAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareDirectoryAsyncClient> createDirectoryIfNotExists(String directoryName) {
         try {
-            return createDirectoryIfNotExistsWithResponse(directoryName, null, null, null).flatMap(FluxUtil::toMono);
+            return createDirectoryIfNotExistsWithResponse(directoryName, new ShareDirectoryCreateOptions())
+                .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1551,10 +1510,12 @@ public class ShareAsyncClient {
      * <pre>
      * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;;
      * String filePermission = &quot;filePermission&quot;;
-     * shareAsyncClient.createDirectoryIfNotExistsWithResponse&#40;&quot;documents&quot;, smbProperties, filePermission,
-     *     Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;&#41;
-     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Creating the directory completed with status code %d&quot;,
-     *         response.getStatusCode&#40;&#41;&#41;&#41;;
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;;
+     * ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions&#40;&#41;.setSmbProperties&#40;smbProperties&#41;
+     *      .setFilePermission&#40;filePermission&#41;.setMetadata&#40;metadata&#41;;
+     * shareAsyncClient.createDirectoryIfNotExistsWithResponse&#40;&quot;documents&quot;, options&#41;
+     *      .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Creating the directory completed with status code %d&quot;,
+     * response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareAsyncClient.createDirectoryIfNotExistsWithResponse#String-FileSmbProperties-String-Map -->
      *
@@ -1562,28 +1523,30 @@ public class ShareAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @param directoryName Name of the directory
-     * @param smbProperties The SMB properties of the directory.
-     * @param filePermission The file permission of the directory.
-     * @param metadata Optional metadata to associate with the directory
+     * @param options {@link ShareDirectoryCreateOptions}
      * @return A response containing a {@link ShareDirectoryAsyncClient} to interact with the created directory and the
      * status of its creation, or null if the directory already exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareDirectoryAsyncClient>> createDirectoryIfNotExistsWithResponse(String directoryName,
-        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata) {
+        ShareDirectoryCreateOptions options) {
         try {
             return withContext(context ->
-                createDirectoryIfNotExistsWithResponse(directoryName, smbProperties, filePermission, metadata, context));
+                createDirectoryIfNotExistsWithResponse(directoryName, options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
     Mono<Response<ShareDirectoryAsyncClient>> createDirectoryIfNotExistsWithResponse(String directoryName,
-        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
-        return createDirectoryWithResponse(directoryName, smbProperties, filePermission, metadata, context)
-            .onErrorResume(t -> t instanceof ShareStorageException && ((ShareStorageException)t).getStatusCode() == 409,
-                t -> Mono.empty());
+        ShareDirectoryCreateOptions options, Context context) {
+        try {
+            return createDirectoryWithResponse(directoryName, options.getSmbProperties(), options.getFilePermission(),
+                options.getMetadata(), context).onErrorResume(t -> t instanceof ShareStorageException
+                && ((ShareStorageException)t).getStatusCode() == 409, t -> Mono.empty());
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -1856,7 +1819,7 @@ public class ShareAsyncClient {
         try {
             return deleteDirectoryIfExistsWithResponse(directoryName).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1889,7 +1852,7 @@ public class ShareAsyncClient {
         try {
             return withContext(context -> deleteDirectoryIfExistsWithResponse(directoryName, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -2028,7 +1991,7 @@ public class ShareAsyncClient {
         try {
             return deleteFileIfExistsWithResponse(fileName).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -2061,7 +2024,7 @@ public class ShareAsyncClient {
         try {
             return deleteFileIfExistsWithResponse(fileName, null);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -2096,7 +2059,7 @@ public class ShareAsyncClient {
         try {
             return withContext(context -> deleteFileIfExistsWithResponse(fileName, requestConditions, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 

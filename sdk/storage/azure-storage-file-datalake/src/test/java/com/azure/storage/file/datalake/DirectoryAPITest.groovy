@@ -14,6 +14,7 @@ import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.common.Utility
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.datalake.models.*
+import com.azure.storage.file.datalake.options.DataLakePathCreateOptions
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions
@@ -242,7 +243,7 @@ class DirectoryAPITest extends APISpec {
         dc = fsc.getDirectoryClient(generatePathName())
 
         when:
-        def createResponse = dc.createIfNotExistsWithResponse(null, null, null, null, null, null)
+        def createResponse = dc.createIfNotExistsWithResponse(new DataLakePathCreateOptions(), null, null)
 
         then:
         createResponse.getStatusCode() == 201
@@ -250,12 +251,14 @@ class DirectoryAPITest extends APISpec {
     }
 
     def "Create if not exists overwrite"() {
+        setup:
+        def options = new DataLakePathCreateOptions()
         when:
         dc = fsc.getDirectoryClient(generatePathName())
-        def initialResponse = dc.createIfNotExistsWithResponse(null, null, null, null, null, null)
+        def initialResponse = dc.createIfNotExistsWithResponse(options, null, null)
 
         // Try to create the resource again
-        def secondResponse = dc.createIfNotExistsWithResponse(null, null, null, null, null, null)
+        def secondResponse = dc.createIfNotExistsWithResponse(options, null, null)
 
         then:
         initialResponse.getStatusCode() == 201
@@ -281,9 +284,10 @@ class DirectoryAPITest extends APISpec {
             .setContentLanguage(contentLanguage)
             .setContentType(contentType)
         dc = fsc.getDirectoryClient(generatePathName())
+        def options = new DataLakePathCreateOptions().setPathHttpHeaders(headers)
 
         when:
-        dc.createIfNotExistsWithResponse(null, null, headers, null, null, null)
+        dc.createIfNotExistsWithResponse(options, null, null)
         def response = dc.getPropertiesWithResponse(null, null, null)
 
         // If the value isn't set the service will automatically set it
@@ -308,9 +312,10 @@ class DirectoryAPITest extends APISpec {
         if (key2 != null) {
             metadata.put(key2, value2)
         }
+        def options = new DataLakePathCreateOptions().setMetadata(metadata)
 
         when:
-        dc.createIfNotExistsWithResponse(null, null, null, metadata, null, Context.NONE)
+        dc.createIfNotExistsWithResponse(options, null, Context.NONE)
         def response = dc.getProperties()
 
         then:
@@ -331,9 +336,10 @@ class DirectoryAPITest extends APISpec {
         def client = fsc.getDirectoryClient(generatePathName())
         def permissions = "0777"
         def umask = "0057"
+        def options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
 
         expect:
-        client.createIfNotExistsWithResponse(permissions, umask, null, null, null, Context.NONE).getStatusCode() == 201
+        client.createIfNotExistsWithResponse(options, null, Context.NONE).getStatusCode() == 201
     }
 
     def "Delete min"() {
@@ -2690,17 +2696,7 @@ class DirectoryAPITest extends APISpec {
 
     def "Create if not exists file defaults"() {
         when:
-        def createResponse = dc.createFileIfNotExistsWithResponse(generatePathName(), null, null, null, null, null, null)
-
-        then:
-        createResponse.getStatusCode() == 201
-        validateBasicHeaders(createResponse.getHeaders())
-    }
-
-
-    def "Create if not exists file defaults with response"() {
-        when:
-        def createResponse = dc.createFileWithResponse(generatePathName(), null, null, null, null, null, null, null)
+        def createResponse = dc.createFileIfNotExistsWithResponse(generatePathName(), new DataLakePathCreateOptions(), null, null)
 
         then:
         createResponse.getStatusCode() == 201
@@ -2716,9 +2712,10 @@ class DirectoryAPITest extends APISpec {
             .setContentEncoding(contentEncoding)
             .setContentLanguage(contentLanguage)
             .setContentType(contentType)
+        def options = new DataLakePathCreateOptions().setPathHttpHeaders(headers)
 
         when:
-        def client = dc.createFileIfNotExistsWithResponse(generatePathName(), null, null, headers, null, null, null).getValue()
+        def client = dc.createFileIfNotExistsWithResponse(generatePathName(), options, null, null).getValue()
         def response = client.getPropertiesWithResponse(null, null, null)
 
         // If the value isn't set the service will automatically set it
@@ -2743,9 +2740,10 @@ class DirectoryAPITest extends APISpec {
         if (key2 != null) {
             metadata.put(key2, value2)
         }
+        def options = new DataLakePathCreateOptions().setMetadata(metadata)
 
         when:
-        def client = dc.createFileIfNotExistsWithResponse(generatePathName(), null, null, null, metadata, null, Context.NONE).getValue()
+        def client = dc.createFileIfNotExistsWithResponse(generatePathName(), options, null, Context.NONE).getValue()
         def response = client.getProperties()
 
         then:
@@ -2763,9 +2761,10 @@ class DirectoryAPITest extends APISpec {
         def client = fsc.getDirectoryClient(generatePathName())
         def permissions = "0777"
         def umask = "0057"
+        def options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
 
         expect:
-        client.createFileIfNotExistsWithResponse(generatePathName(), permissions, umask, null, null, null, Context.NONE).getStatusCode() == 201
+        client.createFileIfNotExistsWithResponse(generatePathName(), options, null, Context.NONE).getStatusCode() == 201
     }
 
     def "Delete file min"() {
@@ -3118,10 +3117,10 @@ class DirectoryAPITest extends APISpec {
     def "Create if not exists sub dir that already exists"() {
         setup:
         def pathName = generatePathName()
-        def initialResponse = dc.createSubdirectoryIfNotExistsWithResponse(pathName, null, null, null, null, null, null)
+        def initialResponse = dc.createSubdirectoryIfNotExistsWithResponse(pathName, new DataLakePathCreateOptions(), null, null)
 
         when:
-        def secondResponse = dc.createSubdirectoryIfNotExistsWithResponse(pathName, null, null, null, null, null, null)
+        def secondResponse = dc.createSubdirectoryIfNotExistsWithResponse(pathName, new DataLakePathCreateOptions(), null, null)
 
         then:
         initialResponse.getStatusCode() == 201
@@ -3130,7 +3129,7 @@ class DirectoryAPITest extends APISpec {
 
     def "Create if not exists sub dir defaults"() {
         when:
-        def createResponse = dc.createSubdirectoryIfNotExistsWithResponse(generatePathName(), null, null, null, null, null, null)
+        def createResponse = dc.createSubdirectoryIfNotExistsWithResponse(generatePathName(), new DataLakePathCreateOptions(), null, null)
 
         then:
         createResponse.getStatusCode() == 201
@@ -3146,9 +3145,10 @@ class DirectoryAPITest extends APISpec {
             .setContentEncoding(contentEncoding)
             .setContentLanguage(contentLanguage)
             .setContentType(contentType)
+        def options = new DataLakePathCreateOptions().setPathHttpHeaders(headers)
 
         when:
-        def client = dc.createSubdirectoryIfNotExistsWithResponse(generatePathName(), null, null, headers, null, null, null).getValue()
+        def client = dc.createSubdirectoryIfNotExistsWithResponse(generatePathName(), options, null, null).getValue()
         def response = client.getPropertiesWithResponse(null, null, null)
 
         // If the value isn't set the service will automatically set it
@@ -3173,9 +3173,10 @@ class DirectoryAPITest extends APISpec {
         if (key2 != null) {
             metadata.put(key2, value2)
         }
+        def options = new DataLakePathCreateOptions().setMetadata(metadata)
 
         when:
-        def client = dc.createSubdirectoryIfNotExistsWithResponse(generatePathName(), null, null,null, metadata, null, Context.NONE).getValue()
+        def client = dc.createSubdirectoryIfNotExistsWithResponse(generatePathName(), options, null, Context.NONE).getValue()
         def response = client.getProperties()
 
         then:
@@ -3196,9 +3197,10 @@ class DirectoryAPITest extends APISpec {
         def client = fsc.getDirectoryClient(generatePathName())
         def permissions = "0777"
         def umask = "0057"
+        def options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
 
         expect:
-        client.createSubdirectoryIfNotExistsWithResponse(generatePathName(), permissions, umask, null, null, null, Context.NONE).getStatusCode() == 201
+        client.createSubdirectoryIfNotExistsWithResponse(generatePathName(), options, null, Context.NONE).getStatusCode() == 201
     }
 
     def "Delete sub dir min"() {

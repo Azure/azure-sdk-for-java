@@ -868,6 +868,50 @@ class FileAsyncAPITests extends APISpec {
             .verifyError(ShareStorageException)
     }
 
+    def "Delete if exists file"() {
+        given:
+        primaryFileAsyncClient.create(1024).block()
+
+        expect:
+        StepVerifier.create(primaryFileAsyncClient.deleteIfExistsWithResponse())
+            .assertNext {
+                assert assertResponseStatusCode(it, 202)
+            }.verifyComplete()
+    }
+
+    def "Delete file that does not exist"() {
+        def client = primaryFileAsyncClient.getFileAsyncClient(generateShareName())
+
+        when:
+        def response = client.deleteIfExistsWithResponse(null, null).block()
+
+        then:
+        response == null
+        client.exists().block() == false
+    }
+
+    def "Delete if exists file lease"() {
+        given:
+        primaryFileAsyncClient.create(1024).block()
+        def leaseId = createLeaseClient(primaryFileAsyncClient).acquireLease().block()
+
+        expect:
+        StepVerifier.create(primaryFileAsyncClient.deleteIfExistsWithResponse(new ShareRequestConditions().setLeaseId(leaseId)))
+            .assertNext {
+                assert assertResponseStatusCode(it, 202)
+            }.verifyComplete()
+    }
+
+    def "Delete if exists file lease fail"() {
+        given:
+        primaryFileAsyncClient.create(1024).block()
+        createLeaseClient(primaryFileAsyncClient).acquireLease().block()
+
+        expect:
+        StepVerifier.create(primaryFileAsyncClient.deleteIfExistsWithResponse(new ShareRequestConditions().setLeaseId(namer.getRandomUuid())))
+            .verifyError(ShareStorageException)
+    }
+
     def "Get properties"() {
         given:
         primaryFileAsyncClient.create(1024).block()
@@ -1291,14 +1335,4 @@ class FileAsyncAPITests extends APISpec {
         client.exists().block() == false
     }
 
-    def "Delete file that does not exist"() {
-        def client = primaryFileAsyncClient.getFileAsyncClient(generateShareName())
-
-        when:
-        def response = client.deleteIfExistsWithResponse(null, null).block()
-
-        then:
-        response == null
-        client.exists().block() == false
-    }
 }

@@ -45,6 +45,7 @@ import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileItem;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
 import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
@@ -372,7 +373,7 @@ public class ShareDirectoryAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareDirectoryInfo> createIfNotExists() {
         try {
-            return createIfNotExistsWithResponse(null, null, null).flatMap(FluxUtil::toMono);
+            return createIfNotExistsWithResponse(new ShareDirectoryCreateOptions(), null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -401,27 +402,27 @@ public class ShareDirectoryAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
-     * @param smbProperties The SMB properties of the directory.
-     * @param filePermission The file permission of the directory.
-     * @param metadata Optional metadata to associate with the directory
+     * @param options {@link ShareDirectoryCreateOptions}
      * @return A response containing the directory info and the status of creating the directory, or null if the
      * directory already exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ShareDirectoryInfo>> createIfNotExistsWithResponse(FileSmbProperties smbProperties, String filePermission,
-        Map<String, String> metadata) {
+    public Mono<Response<ShareDirectoryInfo>> createIfNotExistsWithResponse(ShareDirectoryCreateOptions options) {
         try {
-            return createIfNotExistsWithResponse(smbProperties, filePermission, metadata, null);
+            return createIfNotExistsWithResponse(options, null);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    public Mono<Response<ShareDirectoryInfo>> createIfNotExistsWithResponse(FileSmbProperties smbProperties, String filePermission,
-        Map<String, String> metadata, Context context) {
-        return createWithResponse(smbProperties, filePermission, metadata, context).onErrorResume(t -> t instanceof ShareStorageException &&
-                ((ShareStorageException) t).getStatusCode() == 409,
-        t -> Mono.empty());
+    Mono<Response<ShareDirectoryInfo>> createIfNotExistsWithResponse(ShareDirectoryCreateOptions options, Context context) {
+        try {
+            return createWithResponse(options.getSmbProperties(), options.getFilePermission(), options.getMetadata(), context)
+                .onErrorResume(t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 409,
+                t -> Mono.empty());
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -1334,7 +1335,7 @@ public class ShareDirectoryAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareDirectoryAsyncClient> createSubdirectoryIfNotExists(String subdirectoryName) {
         try {
-            return createSubdirectoryIfNotExistsWithResponse(subdirectoryName, null, null, null)
+            return createSubdirectoryIfNotExistsWithResponse(subdirectoryName, new ShareDirectoryCreateOptions())
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -1367,29 +1368,25 @@ public class ShareDirectoryAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @param subdirectoryName Name of the subdirectory
-     * @param smbProperties The SMB properties of the directory.
-     * @param filePermission The file permission of the directory.
-     * @param metadata Optional metadata to associate with the subdirectory
      * @return A response containing the subdirectory client and the status of creating the directory, or null if the
      * specified subdirectory already exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareDirectoryAsyncClient>> createSubdirectoryIfNotExistsWithResponse(String subdirectoryName,
-        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata) {
+        ShareDirectoryCreateOptions options) {
         try {
             return withContext(
-                context -> createSubdirectoryIfNotExistsWithResponse(subdirectoryName, smbProperties, filePermission,
-                    metadata, context));
+                context -> createSubdirectoryIfNotExistsWithResponse(subdirectoryName, options, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
     Mono<Response<ShareDirectoryAsyncClient>> createSubdirectoryIfNotExistsWithResponse(String subdirectoryName,
-        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
+        ShareDirectoryCreateOptions options, Context context) {
         ShareDirectoryAsyncClient createSubClient = getSubdirectoryClient(subdirectoryName);
-        return createSubClient.createIfNotExistsWithResponse(smbProperties, filePermission, metadata, context).onErrorResume(t -> t instanceof ShareStorageException
-                && ((ShareStorageException)t).getStatusCode() == 409, t -> Mono.empty())
+        return createSubClient.createIfNotExistsWithResponse(options, context).onErrorResume(t -> t instanceof
+                ShareStorageException && ((ShareStorageException)t).getStatusCode() == 409, t -> Mono.empty())
             .map(response -> new SimpleResponse<>(response, createSubClient));
     }
 

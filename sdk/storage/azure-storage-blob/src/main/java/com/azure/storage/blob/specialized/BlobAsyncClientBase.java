@@ -1709,7 +1709,7 @@ public class BlobAsyncClientBase {
         try {
             return deleteIfExistsWithResponse(null, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1742,7 +1742,7 @@ public class BlobAsyncClientBase {
             return withContext(context -> deleteIfExistsWithResponse(deleteBlobSnapshotOptions,
                 requestConditions, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 

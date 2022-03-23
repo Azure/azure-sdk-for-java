@@ -58,6 +58,7 @@ import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions;
@@ -404,11 +405,7 @@ public class DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathInfo> createIfNotExists() {
-        try {
-            return createIfNotExistsWithResponse(null, null, null, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return createIfNotExistsWithResponse(new DataLakePathCreateOptions()).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -416,7 +413,7 @@ public class DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExistsWithResponse#String-String-PathHttpHeaders-Map -->
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExistsWithResponse#DataLakePathCreateOptions -->
      * <pre>
      * PathHttpHeaders httpHeaders = new PathHttpHeaders&#40;&#41;
      *      .setContentLanguage&#40;&quot;en-US&quot;&#41;
@@ -424,66 +421,42 @@ public class DataLakePathAsyncClient {
      * String permissions = &quot;permissions&quot;;
      * String umask = &quot;umask&quot;;
      *
-     * client.createIfNotExistsWithResponse&#40;permissions, umask, httpHeaders, Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;
-     *      .subscribe&#40;response -> System.out.printf&#40;&quot;Last Modified Time:%s&quot;, response.getValue&#40;&#41;.getLastModified&#40;&#41;&#41;&#41;;
+     * Map<String, String> metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;);
+     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;.setPathHttpHeaders&#40;headers&#41;
+     *      .setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;.setMetadata&#40;metadata&#41;;
+
+     client.createIfNotExistsWithResponse&#40;options&#41;
+     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Last Modified Time:%s&quot;, response.getValue&#40;&#41;.getLastModified&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExistsWithResponse#String-String-PathHttpHeaders-Map -->
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExistsWithResponse#DataLakePathCreateOptions -->
      *
      * <p>For more information see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
      * Docs</a></p>
      *
-     * @param permissions POSIX access permissions for the resource owner, the resource owning group, and others.
-     * @param umask Restricts permissions of the resource to be created.
-     * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the resource. If there is leading or trailing whitespace in any
-     * metadata key or value, it must be removed or encoded.
-     *
+     * @param options {@link DataLakePathCreateOptions}
      * @return A reactive response containing information about the created resource, or null if resource
      * already exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PathInfo>> createIfNotExistsWithResponse(String permissions, String umask, PathHttpHeaders headers,
-        Map<String, String> metadata) {
-        return withContext(context -> createIfNotExistsWithResponse(permissions, umask, headers, metadata, context));
+    public Mono<Response<PathInfo>> createIfNotExistsWithResponse(DataLakePathCreateOptions options) {
+        try {
+            return withContext(context -> createIfNotExistsWithResponse(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
-    /**
-     * Creates a resource if it does not exist.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExistsWithResponse#String-String-PathHttpHeaders-Map-Context -->
-     * <pre>
-     * client.createIfNotExistsWithResponse&#40;permissions, umask, httpHeaders, Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;,
-     *      new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;.subscribe&#40;response ->
-     *      System.out.printf&#40;&quot;Last Modified Time:%s&quot;, response.getValue&#40;&#41;.getLastModified&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExistsWithResponse#String-String-PathHttpHeaders-Map-Context -->
-     *
-     * <p>For more information see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
-     * Docs</a></p>
-     *
-     * @param permissions POSIX access permissions for the resource owner, the resource owning group, and others.
-     * @param umask Restricts permissions of the resource to be created.
-     * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the resource. If there is leading or trailing whitespace in any
-     * metadata key or value, it must be removed or encoded.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     *
-     * @return A reactive response containing information about the created resource, or null if resource
-     * already exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PathInfo>> createIfNotExistsWithResponse(String permissions, String umask,
-        PathHttpHeaders headers, Map<String, String> metadata, Context context) {
-        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
-            .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
-        return createWithResponse(permissions, umask, pathResourceType,
-            headers, metadata, requestConditions, context)
-            .onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException) t).getStatusCode() == 409,
-                t -> Mono.empty());
+    Mono<Response<PathInfo>> createIfNotExistsWithResponse(DataLakePathCreateOptions options, Context context) {
+        try {
+            options.setRequestConditions(new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
+            return createWithResponse(options.getPermissions(), options.getUmask(), pathResourceType, options.getPathHttpHeaders(),
+                options.getMetadata(), options.getRequestConditions(), context)
+                .onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException) t).getStatusCode() == 409,
+                    t -> Mono.empty());
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -531,12 +504,7 @@ public class DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteIfExists() {
-        try {
-            return deleteIfExistsWithResponse(false, null, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex){
-            return monoError(logger, ex);
-        }
-
+        return deleteIfExistsWithResponse(false, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -564,10 +532,14 @@ public class DataLakePathAsyncClient {
      * @return A response containing status code and HTTP headers, or null if specified resource does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteIfExistsWithResponse(boolean recursive, DataLakeRequestConditions requestConditions, Context context) {
-        return deleteWithResponse(recursive, requestConditions, context)
-            .onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException) t).getStatusCode() == 404,
-                t -> Mono.empty());
+    public Mono<Response<Void>> deleteIfExistsWithResponse(boolean recursive, DataLakeRequestConditions requestConditions,
+        Context context) {
+        try {
+            return deleteWithResponse(recursive, requestConditions, context).onErrorResume(t -> t instanceof
+                    DataLakeStorageException && ((DataLakeStorageException) t).getStatusCode() == 404, t -> Mono.empty());
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**

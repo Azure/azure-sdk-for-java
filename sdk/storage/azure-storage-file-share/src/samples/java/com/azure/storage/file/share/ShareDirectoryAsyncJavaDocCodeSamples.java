@@ -651,9 +651,7 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareDirectoryAsyncClient#createIfNotExists()},
-     * {@link ShareDirectoryAsyncClient#createIfNotExistsWithResponse(FileSmbProperties, String, Map)}and
-     * {@link ShareDirectoryAsyncClient#createIfNotExistsWithResponse(FileSmbProperties, String, Map, Context)}
+     * Generates a code sample for using {@link ShareDirectoryAsyncClient#createIfNotExists()}
      */
     public void createIfNotExistsCodeSnippets() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
@@ -667,14 +665,14 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createIfNotExists
 
         // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.createIfNotExistsWithResponse#FileSmbProperties-String-Map
-        FileSmbProperties smbProperties = new FileSmbProperties();
-        String filePermission = "filePermission";
-        Map<String, String> metadata = Collections.singletonMap("directory", "metadata");
-        shareDirectoryAsyncClient.createIfNotExistsWithResponse(smbProperties, filePermission, metadata).subscribe(
-            response ->
-                System.out.println("Completed creating the directory with status code:" + response.getStatusCode()),
-            error -> System.err.print(error.toString())
-        );
+//        FileSmbProperties smbProperties = new FileSmbProperties();
+//        String filePermission = "filePermission";
+//        Map<String, String> metadata = Collections.singletonMap("directory", "metadata");
+//        shareDirectoryAsyncClient.createIfNotExistsWithResponse(smbProperties, filePermission, metadata).subscribe(
+//            response ->
+//                System.out.println("Completed creating the directory with status code:" + response.getStatusCode()),
+//            error -> System.err.print(error.toString())
+//        );
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createIfNotExistsWithResponse#FileSmbProperties-String-Map
     }
 
@@ -703,7 +701,7 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
 
     /**
      * Generates code sample for creating a subdirectory with {@link ShareDirectoryAsyncClient#createSubdirectoryIfNotExists(String)}
-     * and {@link ShareDirectoryAsyncClient#createSubdirectoryIfNotExistsWithResponse(String, FileSmbProperties, String, Map)}
+     * and
      */
     public void createSubdirectoryIfNotExistsCodeSnippets() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
@@ -713,15 +711,15 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubdirectoryIfNotExists#string
 
         // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse#String-FileSmbProperties-String-Map
-        FileSmbProperties smbProperties = new FileSmbProperties();
-        String filePermission = "filePermission";
-        Map<String, String> metadata = Collections.singletonMap("directory", "metadata");
-        shareDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse("subdir", smbProperties, filePermission, metadata).subscribe(
-            response ->
-                System.out.println("Successfully creating the subdirectory with status code: "
-                    + response.getStatusCode()),
-            error -> System.err.println(error.toString())
-        );
+//        FileSmbProperties smbProperties = new FileSmbProperties();
+//        String filePermission = "filePermission";
+//        Map<String, String> metadata = Collections.singletonMap("directory", "metadata");
+//        shareDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse("subdir", smbProperties, filePermission, metadata).subscribe(
+//            response ->
+//                System.out.println("Successfully creating the subdirectory with status code: "
+//                    + response.getStatusCode()),
+//            error -> System.err.println(error.toString())
+//        );
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse#String-FileSmbProperties-String-Map
     }
 

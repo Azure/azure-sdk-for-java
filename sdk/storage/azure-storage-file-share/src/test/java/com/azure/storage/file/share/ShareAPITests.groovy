@@ -23,6 +23,7 @@ import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType
 import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.options.ShareCreateOptions
 import com.azure.storage.file.share.options.ShareDeleteOptions
+import com.azure.storage.file.share.options.ShareDirectoryCreateOptions
 import com.azure.storage.file.share.options.ShareGetAccessPolicyOptions
 import com.azure.storage.file.share.options.ShareGetPropertiesOptions
 import com.azure.storage.file.share.options.ShareGetStatisticsOptions
@@ -893,7 +894,7 @@ class ShareAPITests extends APISpec {
 
         expect:
         FileTestHelper.assertResponseStatusCode(
-            primaryShareClient.createDirectoryIfNotExistsWithResponse("testCreateDirectory", null, null, null, null, null), 201)
+            primaryShareClient.createDirectoryIfNotExistsWithResponse("testCreateDirectory", new ShareDirectoryCreateOptions(), null, null), 201)
     }
 
     def "Create if not exists directory file permission"() {
@@ -901,7 +902,7 @@ class ShareAPITests extends APISpec {
         primaryShareClient.create()
         expect:
         FileTestHelper.assertResponseStatusCode(
-            primaryShareClient.createDirectoryIfNotExistsWithResponse("testCreateDirectory", null, filePermission, null, null, null), 201)
+            primaryShareClient.createDirectoryIfNotExistsWithResponse("testCreateDirectory", new ShareDirectoryCreateOptions().setFilePermission(filePermission), null, null), 201)
     }
 
     def "Create if not exist directory file permission key"() {
@@ -913,7 +914,7 @@ class ShareAPITests extends APISpec {
             .setFilePermissionKey(filePermissionKey)
         expect:
         FileTestHelper.assertResponseStatusCode(
-            primaryShareClient.createDirectoryIfNotExistsWithResponse("testCreateDirectory", smbProperties, null, null, null, null), 201)
+            primaryShareClient.createDirectoryIfNotExistsWithResponse("testCreateDirectory", new ShareDirectoryCreateOptions().setSmbProperties(smbProperties), null, null), 201)
     }
 
     def "Create if not exists directory invalid name"() {
@@ -934,7 +935,7 @@ class ShareAPITests extends APISpec {
 
         expect:
         FileTestHelper.assertResponseStatusCode(
-            primaryShareClient.createDirectoryIfNotExistsWithResponse("testCreateDirectory", null, null, testMetadata, null, null), 201)
+            primaryShareClient.createDirectoryIfNotExistsWithResponse("testCreateDirectory", new ShareDirectoryCreateOptions().setMetadata( testMetadata), null, null), 201)
     }
 
     def "Create if not exists directory metadata error"() {
@@ -942,7 +943,7 @@ class ShareAPITests extends APISpec {
         primaryShareClient.create()
 
         when:
-        primaryShareClient.createDirectoryIfNotExistsWithResponse("testdirectory", null, null, Collections.singletonMap("", "value"), null, null)
+        primaryShareClient.createDirectoryIfNotExistsWithResponse("testdirectory", new ShareDirectoryCreateOptions().setMetadata(Collections.singletonMap("", "value")), null, null)
 
         then:
         def e = thrown(ShareStorageException)
@@ -953,10 +954,10 @@ class ShareAPITests extends APISpec {
         setup:
         def client = premiumFileServiceClient.getShareClient(generateShareName())
         client.create()
-        def initialResponse = client.createDirectoryIfNotExistsWithResponse("testCreateDirectory", null, null, null, null, null)
+        def initialResponse = client.createDirectoryIfNotExistsWithResponse("testCreateDirectory", new ShareDirectoryCreateOptions(), null, null)
 
         when:
-        def secondResponse = client.createDirectoryIfNotExistsWithResponse("testCreateDirectory", null, null, null, null, null)
+        def secondResponse = client.createDirectoryIfNotExistsWithResponse("testCreateDirectory", new ShareDirectoryCreateOptions(), null, null)
 
         then:
         initialResponse != null
@@ -1232,86 +1233,5 @@ class ShareAPITests extends APISpec {
         notThrown(ShareStorageException)
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
-
-    def "Create share if not exists"() {
-        setup:
-        def client = premiumFileServiceClient.getShareClient(generateShareName())
-
-        when:
-        def result = client.createIfNotExists()
-
-        then:
-        result != null
-        client.exists() == true
-    }
-
-    def "Create share if not exists with response"() {
-        setup:
-        def client = premiumFileServiceClient.getShareClient(generateShareName())
-
-        when:
-        def result = client.createIfNotExistsWithResponse(new ShareCreateOptions(), null, null)
-
-        then:
-        result != null
-        result.getValue() != null
-        result.getStatusCode() == 201
-        client.exists() == true
-    }
-
-    def "Create a share that already exists"() {
-        setup:
-        def client = premiumFileServiceClient.getShareClient(generateShareName())
-        def initialResponse = client.createIfNotExistsWithResponse(new ShareCreateOptions(), null, null)
-
-        when:
-        def secondResponse = client.createIfNotExistsWithResponse(new ShareCreateOptions(), null, null)
-
-        then:
-        initialResponse != null
-        initialResponse.getValue() != null
-        initialResponse.getStatusCode() == 201
-        secondResponse == null
-        client.exists() == true
-    }
-
-    def "Delete a share that exists"() {
-        setup:
-        def client = premiumFileServiceClient.getShareClient(generateShareName())
-        client.create()
-
-        when:
-        client.deleteIfExists()
-        client.getProperties()
-
-        then:
-        thrown(ShareStorageException)
-        client.exists() == false
-    }
-
-    def "Delete a share that exists with response"() {
-        setup:
-        def client = premiumFileServiceClient.getShareClient(generateShareName())
-        client.create()
-
-        when:
-        def response = client.deleteIfExistsWithResponse(null, null)
-
-        then:
-        response != null
-        FileTestHelper.assertResponseStatusCode(response, 202)
-        client.exists() == false
-    }
-
-    def "Delete a share that does not exists"() {
-        setup:
-        def client = premiumFileServiceClient.getShareClient(generateShareName())
-
-        when:
-        def response = client.deleteIfExistsWithResponse(null, null)
-
-        then:
-        response == null
-        client.exists() == false
-    }
+    
 }

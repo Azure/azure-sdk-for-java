@@ -1139,4 +1139,35 @@ public class ShareFileAsyncJavaDocCodeSamples {
         shareFileAsyncClient.generateSas(values, new Context("key", "value"));
         // END: com.azure.storage.file.share.ShareFileAsyncClient.generateSas#ShareServiceSasSignatureValues-Context
     }
+
+    /**
+     * Generates a code sample for using {@link ShareFileAsyncClient#deleteIfExists()},
+     * {@link ShareFileAsyncClient#deleteIfExistsWithResponse()} and
+     * {@link ShareFileAsyncClient#deleteIfExistsWithResponse(ShareRequestConditions)}
+     */
+    public void deleteFileIfExistsCodeSnippets() {
+        ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExists
+        shareFileAsyncClient.deleteIfExists().subscribe(
+            response -> { },
+            error -> System.err.print(error.toString()),
+            () -> System.out.println("Complete deleting the file!")
+        );
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExists
+
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse
+        shareFileAsyncClient.deleteIfExistsWithResponse().subscribe(
+            response -> System.out.println("Complete deleting the file with status code:" + response.getStatusCode()),
+            error -> System.err.print(error.toString())
+        );
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse
+
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse#ShareRequestConditions
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+        shareFileAsyncClient.deleteIfExistsWithResponse(requestConditions).subscribe(
+            response -> System.out.println("Complete deleting the file with status code:" + response.getStatusCode()),
+            error -> System.err.print(error.toString())
+        );
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse#ShareRequestConditions
+    }
 }

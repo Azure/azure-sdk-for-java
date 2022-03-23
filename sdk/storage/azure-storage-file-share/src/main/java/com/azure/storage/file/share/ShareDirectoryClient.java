@@ -23,6 +23,7 @@ import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareFileItem;
+import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
 import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
@@ -241,7 +242,7 @@ public class ShareDirectoryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareDirectoryInfo createIfNotExists() {
-        Response<ShareDirectoryInfo> response = createIfNotExistsWithResponse(null, null, null, null, null);
+        Response<ShareDirectoryInfo> response = createIfNotExistsWithResponse(new ShareDirectoryCreateOptions(), null, null);
         return response == null ? null : response.getValue();
     }
 
@@ -252,7 +253,7 @@ public class ShareDirectoryClient {
      *
      * <p>Create the directory</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.createIfNotExistsWithResponse#FileSmbProperties-String-Map-Duration-Context -->
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.createIfNotExistsWithResponse#ShareDirectoryCreateOptionsn-Context -->
      * <pre>
      * ShareDirectoryClient directoryClient = createClientWithSASToken&#40;&#41;;
      * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;;
@@ -261,24 +262,21 @@ public class ShareDirectoryClient {
      *     Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;, Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
      * System.out.println&#40;&quot;Completed creating the directory with status code: &quot; + response.getStatusCode&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.createIfNotExistsWithResponse#FileSmbProperties-String-Map-Duration-Context -->
+     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.createIfNotExistsWithResponse#ShareDirectoryCreateOptions-Context -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
-     * @param smbProperties The SMB properties of the directory.
-     * @param filePermission The file permission of the directory.
-     * @param metadata Optional metadata to associate with the directory.
+     * @param options {@link ShareDirectoryCreateOptions}
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the directory info and the status of creating the directory, or null if the directory already exists.
      * */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ShareDirectoryInfo> createIfNotExistsWithResponse(FileSmbProperties smbProperties, String filePermission,
-        Map<String, String> metadata, Duration timeout, Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(shareDirectoryAsyncClient
-                .createIfNotExistsWithResponse(smbProperties, filePermission, metadata, context),
+    public Response<ShareDirectoryInfo> createIfNotExistsWithResponse(ShareDirectoryCreateOptions options,
+        Duration timeout, Context context) {
+        return StorageImplUtils.blockWithOptionalTimeout(shareDirectoryAsyncClient.createIfNotExistsWithResponse(options, context),
             timeout);
     }
 
@@ -988,8 +986,7 @@ public class ShareDirectoryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareDirectoryClient createSubdirectoryIfNotExists(String subdirectoryName) {
-        return createSubdirectoryIfNotExistsWithResponse(subdirectoryName, null, null, null,
-            null, Context.NONE).getValue();
+        return createSubdirectoryIfNotExistsWithResponse(subdirectoryName, new ShareDirectoryCreateOptions(), null, Context.NONE).getValue();
     }
 
     /**
@@ -1014,9 +1011,6 @@ public class ShareDirectoryClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @param subdirectoryName Name of the subdirectory
-     * @param smbProperties The SMB properties of the directory.
-     * @param filePermission The file permission of the directory.
-     * @param metadata Optional metadata to associate with the subdirectory
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -1024,10 +1018,9 @@ public class ShareDirectoryClient {
      * specified subdirectory already exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ShareDirectoryClient> createSubdirectoryIfNotExistsWithResponse(String subdirectoryName,
-        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout, Context context) {
+    public Response<ShareDirectoryClient> createSubdirectoryIfNotExistsWithResponse(String subdirectoryName, ShareDirectoryCreateOptions options, Duration timeout, Context context) {
         ShareDirectoryClient shareDirectoryClient = getSubdirectoryClient(subdirectoryName);
-        Response<ShareDirectoryInfo> response = shareDirectoryClient.createIfNotExistsWithResponse(smbProperties, filePermission, metadata, timeout, context);
+        Response<ShareDirectoryInfo> response = shareDirectoryClient.createIfNotExistsWithResponse(options, timeout, context);
         return response == null ? null : new SimpleResponse<>(response, shareDirectoryClient);
     }
 

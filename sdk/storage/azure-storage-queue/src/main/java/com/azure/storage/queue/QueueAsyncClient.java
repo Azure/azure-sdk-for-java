@@ -248,11 +248,7 @@ public final class QueueAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createIfNotExists() {
-        try {
-            return createIfNotExistsWithResponse(null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return createIfNotExistsWithResponse(null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -283,15 +279,18 @@ public final class QueueAsyncClient {
         try {
             return createIfNotExistsWithResponse(metadata, null);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
-
     }
 
     Mono<Response<Void>> createIfNotExistsWithResponse(Map<String, String> metadata, Context context) {
-        return createWithResponse(metadata, context)
-            .onErrorResume(t -> t instanceof QueueStorageException && ((QueueStorageException)t).getStatusCode() == 409,
-                t -> Mono.empty()).filter(res -> res.getStatusCode() != 204);
+        try {
+            return createWithResponse(metadata, context)
+                .onErrorResume(t -> t instanceof QueueStorageException && ((QueueStorageException)t).getStatusCode() == 409,
+                    t -> Mono.empty()).filter(res -> res.getStatusCode() != 204);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -382,7 +381,7 @@ public final class QueueAsyncClient {
         try {
             return deleteIfExistsWithResponse().flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -411,7 +410,7 @@ public final class QueueAsyncClient {
         try {
             return withContext(this::deleteIfExistsWithResponse);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 

@@ -9,7 +9,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerClient;
@@ -54,7 +53,6 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
  */
 @ServiceClient(builder = SpecializedBlobClientBuilder.class)
 public final class AppendBlobClient extends BlobClientBase {
-    private final ClientLogger logger = new ClientLogger(AppendBlobClient.class);
     private final AppendBlobAsyncClient appendBlobAsyncClient;
 
     /**
@@ -262,41 +260,6 @@ public final class AppendBlobClient extends BlobClientBase {
     public AppendBlobItem createIfNotExists() {
         Response<AppendBlobItem> response = createIfNotExistsWithResponse(new AppendBlobCreateOptions(), null, null);
         return response == null ? null : response.getValue();
-    }
-
-    /**
-     * Creates a 0-length append blob if it does not exist. Call appendBlock to append data to an append blob.
-     * <p>
-     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobClient.createIfNotExistsWithResponse#BlobHttpHeaders-Map-Duration-Context -->
-     * <pre>
-     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
-     *     .setContentType&#40;&quot;binary&quot;&#41;
-     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;;
-     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
-     * Context context = new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;;
-     *
-     * System.out.printf&#40;&quot;Created AppendBlob at %s%n&quot;,
-     *     client.createIfNotExistsWithResponse&#40;headers, metadata, requestConditions, timeout, context&#41;.getValue&#40;&#41;
-     *         .getLastModified&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.specialized.AppendBlobClient.createIfNotExistsWithResponse#BlobHttpHeaders-Map-Duration-Context -->
-     *
-     * @param headers {@link BlobHttpHeaders}
-     * @param metadata Metadata to associate with the blob. If there is leading or trailing whitespace in any
-     * metadata key or value, it must be removed or encoded.
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the created appended blob, or null
-     * if the blob already exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AppendBlobItem> createIfNotExistsWithResponse(BlobHttpHeaders headers, Map<String, String> metadata,
-        Duration timeout, Context context) {
-        return this.createIfNotExistsWithResponse(new AppendBlobCreateOptions().setHeaders(headers).setMetadata(metadata), timeout, context);
     }
 
     /**
