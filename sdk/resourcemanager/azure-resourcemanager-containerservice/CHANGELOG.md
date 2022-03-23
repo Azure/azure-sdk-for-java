@@ -14,7 +14,7 @@
 - Changed behavior that `KubernetesCluster` no longer retrieves admin and user KubeConfig during create, update, refresh.
 - Changed behavior that Linux profile is not required for `KubernetesCluster` during create.
 
-### Other Changes
+#### Dependency Updates
 - 
 - Updated `api-version` to `2022-02-01`.
 
