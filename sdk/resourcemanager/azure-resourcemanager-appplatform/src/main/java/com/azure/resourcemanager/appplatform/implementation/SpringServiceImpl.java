@@ -213,11 +213,7 @@ public class SpringServiceImpl
 
     @Override
     public SpringServiceImpl withoutGitConfig() {
-        configServerTask =
-            context -> manager().serviceClient().getConfigServers()
-                .updatePatchAsync(resourceGroupName(), name(), new ConfigServerResourceInner().withProperties(new ConfigServerProperties()))
-                .then(context.voidMono());
-        return this;
+        return withGitConfig(null);
     }
 
     @Override
