@@ -1002,7 +1002,7 @@ public final class PageBlobsImpl {
                                         res.getStatusCode(),
                                         res.getHeaders(),
                                         res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
+                                        res.getValue().getNextMarker(),
                                         res.getDeserializedHeaders()));
     }
 

@@ -589,7 +589,7 @@ directive:
                 }
               },
               "nextLink": {
-                "x-ms-client-name": "NextMarker"
+                "x-ms-client-name": "NextMarker",
                 "type": "string"
               }
             }
