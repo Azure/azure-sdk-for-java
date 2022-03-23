@@ -7,7 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-
+- Entity Name is handled properly when passed in as part of connection string in `ServiceBusClientBuilder`
 ### Other Changes
 
 ## 7.7.0 (2022-03-17)
