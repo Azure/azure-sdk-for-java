@@ -573,17 +573,14 @@ directive:
     $["x-ms-enum"].modelAsString = true;
 ```
 
-### Define PageListCollection
+### Define PageListSegment
 ```yaml
 directive:
 - from: swagger-document
   where: $.definitions
   transform: >
-      $.PageListCollection = {
+      $.PageListSegment = {
             "type": "object",
-            "xml": {
-              "name": "PageList"
-            },
             "properties": {
               "PageRanges": {
                 "type": "array",
@@ -597,8 +594,30 @@ directive:
                   "$ref": "#/definitions/ClearRange"
                 }
               },
-              "nextLink": {
-                "x-ms-client-name": "NextMarker",
+              "NextMarker": {
+                "type": "string"
+              }
+            }
+          }
+    
+```
+
+### Define PageListCollection
+```yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+      $.PageListCollection = {
+            "xml": {
+              "name": "PageList"
+            },
+            "type": "object",
+            "properties": {
+              "Segment": {
+                "$ref": "#/definitions/PageListSegment"
+              },
+              "NextMarker": {
                 "type": "string"
               }
             }
