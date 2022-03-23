@@ -37,7 +37,7 @@ public class KeyVaultPropertySource extends EnumerablePropertySource<KeyVaultOpe
 
     @Override
     public boolean containsProperty(String name) {
-        return (getProperty(name) != null);
+        return getProperty(name) != null;
     }
 
 }
