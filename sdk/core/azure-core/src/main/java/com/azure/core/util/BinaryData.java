@@ -7,6 +7,7 @@ import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.ByteArrayContent;
 import com.azure.core.implementation.util.FileContent;
+import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.implementation.util.InputStreamContent;
 import com.azure.core.implementation.util.SerializableContent;
 import com.azure.core.implementation.util.StringContent;
@@ -293,6 +294,15 @@ public final class BinaryData {
         }
         return FluxUtil.collectBytesInByteBufferStream(data)
                 .flatMap(bytes -> Mono.just(BinaryData.fromBytes(bytes)));
+    }
+
+    /**
+     * TODO (kasobol-msft) this is temporary.
+     * @param data foo.
+     * @return foo.
+     */
+    public static BinaryData fromFluxLazy(Flux<ByteBuffer> data) {
+        return new BinaryData(new FluxByteBufferContent(data));
     }
 
     /**

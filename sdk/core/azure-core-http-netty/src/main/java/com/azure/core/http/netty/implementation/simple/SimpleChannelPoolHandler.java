@@ -8,6 +8,7 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.pool.AbstractChannelPoolHandler;
 import io.netty.handler.codec.http.HttpClientCodec;
 import io.netty.handler.codec.http.HttpContentDecompressor;
+import io.netty.handler.stream.ChunkedWriteHandler;
 
 import static com.azure.core.http.netty.implementation.simple.SimpleNettyConstants.REQUEST_CONTEXT_KEY;
 
@@ -26,8 +27,8 @@ public class SimpleChannelPoolHandler extends AbstractChannelPoolHandler {
         // Remove the following line if you don't want automatic content decompression.
         p.addLast(new HttpContentDecompressor());
 
-        // Uncomment the following line if you don't want to handle HttpContents.
-        //p.addLast(new HttpObjectAggregator(1048576));
+        // to be used since huge file transfer
+        p.addLast("chunkedWriter", new ChunkedWriteHandler());
 
         p.addLast(new SimpleChannelHandler());
     }

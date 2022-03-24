@@ -10,6 +10,12 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.netty.implementation.simple.InMemoryBodyCollector;
 import com.azure.core.http.netty.implementation.simple.SimpleChannelPoolMap;
 import com.azure.core.http.netty.implementation.simple.SimpleRequestContext;
+import com.azure.core.implementation.util.BinaryDataContent;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.ByteArrayContent;
+import com.azure.core.implementation.util.FileContent;
+import com.azure.core.implementation.util.InputStreamContent;
+import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.ByteBuf;
@@ -20,9 +26,15 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.pool.ChannelPool;
 import io.netty.channel.pool.ChannelPoolMap;
 import io.netty.handler.codec.http.DefaultFullHttpRequest;
+import io.netty.handler.codec.http.DefaultHttpRequest;
+import io.netty.handler.codec.http.HttpChunkedInput;
 import io.netty.handler.codec.http.HttpHeaderNames;
+import io.netty.handler.codec.http.HttpHeaderValues;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpVersion;
+import io.netty.handler.stream.ChunkedInput;
+import io.netty.handler.stream.ChunkedNioFile;
+import io.netty.handler.stream.ChunkedStream;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.FutureListener;
 import reactor.core.publisher.Mono;
@@ -118,33 +130,65 @@ public class SimpleNettyHttpClient implements HttpClient {
                     HttpMethod method = mapHttpMethod(request.getHttpMethod());
 
                     // Prepare the HTTP request.
-                    ByteBuf requestBuffer;
+                    io.netty.handler.codec.http.HttpRequest nettyRequest;
+                    Long contentLength = null;
+                    ChunkedInput<ByteBuf> chunkedInput = null;
                     if (request.getContent() != null) {
-                        byte[] requestBytes = request.getContent().toBytes();
-                        requestBuffer = Unpooled.wrappedBuffer(requestBytes);
+                        BinaryDataContent binaryDataContent = BinaryDataHelper.getContent(request.getContent());
+                        contentLength = binaryDataContent.getLength();
+                        if (binaryDataContent instanceof ByteArrayContent
+                            || binaryDataContent instanceof StringContent) {
+                            byte[] requestBytes = binaryDataContent.toBytes();
+                            nettyRequest = new DefaultFullHttpRequest(
+                                HttpVersion.HTTP_1_1, method, request.getUrl().toString(),
+                                Unpooled.wrappedBuffer(requestBytes));
+                        } else if (binaryDataContent instanceof FileContent) {
+                            chunkedInput = new ChunkedNioFile(((FileContent) binaryDataContent).getFile().toFile());
+                            nettyRequest = new DefaultHttpRequest(
+                                HttpVersion.HTTP_1_1, method, request.getUrl().toString());
+                        } else if (binaryDataContent instanceof InputStreamContent) {
+                            chunkedInput = new ChunkedStream(binaryDataContent.toStream());
+                            nettyRequest = new DefaultHttpRequest(
+                                HttpVersion.HTTP_1_1, method, request.getUrl().toString());
+                        } else {
+                            // TODO (kasobol-msft) how do we do Flux ??
+                            byte[] requestBytes = binaryDataContent.toBytes();
+                            contentLength = (long) requestBytes.length;
+                            nettyRequest = new DefaultFullHttpRequest(
+                                HttpVersion.HTTP_1_1, method, request.getUrl().toString(),
+                                Unpooled.wrappedBuffer(requestBytes));
+                        }
                     } else {
-                        requestBuffer = Unpooled.buffer(0);
+                        nettyRequest = new DefaultFullHttpRequest(
+                            HttpVersion.HTTP_1_1, method, request.getUrl().toString());
                     }
-                    io.netty.handler.codec.http.HttpRequest nettyRequest = new DefaultFullHttpRequest(
-                        HttpVersion.HTTP_1_1, method, request.getUrl().toString(), requestBuffer);
 
                     for (HttpHeader header : request.getHeaders()) {
                         nettyRequest.headers().set(header.getName(), header.getValuesList());
                     }
 
                     nettyRequest.headers().set(HttpHeaderNames.HOST, request.getUrl().getHost());
-                    //nettyRequest.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.CLOSE);
-                    //nettyRequest.headers().set(HttpHeaders.Names.ACCEPT_ENCODING, HttpHeaders.Values.GZIP);
 
-                    if (requestBuffer.readableBytes() > 0) {
-                        // TODO (kasobol-msft) what about chunked?
-                        nettyRequest.headers().set(HttpHeaderNames.CONTENT_LENGTH, requestBuffer.readableBytes());
+                    Object chunkedContent = chunkedInput;
+                    if (!nettyRequest.headers().contains(HttpHeaderNames.CONTENT_LENGTH)) {
+                        if (contentLength != null) {
+                            nettyRequest.headers().set(HttpHeaderNames.CONTENT_LENGTH, contentLength);
+                        } else {
+                            nettyRequest.headers().set(HttpHeaderNames.TRANSFER_ENCODING, HttpHeaderValues.CHUNKED);
+                            chunkedContent = new HttpChunkedInput(chunkedInput);
+                        }
                     }
 
                     // Send the HTTP request.
                     ch.attr(REQUEST_CONTEXT_KEY).set(
                         requestContext);
-                    ch.writeAndFlush(nettyRequest);
+
+                    if (chunkedInput == null) {
+                        ch.writeAndFlush(nettyRequest);
+                    } else  {
+                        ch.write(nettyRequest);
+                        ch.writeAndFlush(chunkedContent);
+                    }
                 } catch (RuntimeException e) {
                     requestContext.getChannelPool().release(ch);
                     requestContext.getResponseFuture().completeExceptionally(e);

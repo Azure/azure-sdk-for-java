@@ -297,7 +297,7 @@ public abstract class HttpClientTests {
     public void fluxRequest() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
 
-        BinaryData content = BinaryData.fromFlux(Flux.just(ByteBuffer.wrap(EXPECTED_RETURN_BYTES))).block();
+        BinaryData content = BinaryData.fromFluxLazy(Flux.just(ByteBuffer.wrap(EXPECTED_RETURN_BYTES)));
 
         SyncAsyncExtension.execute(
             () -> {
