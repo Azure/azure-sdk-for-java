@@ -4,9 +4,11 @@
 
 package com.azure.resourcemanager.streamanalytics.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.streamanalytics.fluent.models.ScalarFunctionConfiguration;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -14,28 +16,93 @@ import java.util.List;
 /** The properties that are associated with a scalar function. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Scalar")
-@Immutable
+@Fluent
 public final class ScalarFunctionProperties extends FunctionProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ScalarFunctionProperties.class);
 
-    /** {@inheritDoc} */
-    @Override
+    /*
+     * Describes the configuration of the scalar function.
+     */
+    @JsonProperty(value = "properties")
+    private ScalarFunctionConfiguration innerProperties;
+
+    /**
+     * Get the innerProperties property: Describes the configuration of the scalar function.
+     *
+     * @return the innerProperties value.
+     */
+    private ScalarFunctionConfiguration innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the inputs property: A list of inputs describing the parameters of the function.
+     *
+     * @return the inputs value.
+     */
+    public List<FunctionInput> inputs() {
+        return this.innerProperties() == null ? null : this.innerProperties().inputs();
+    }
+
+    /**
+     * Set the inputs property: A list of inputs describing the parameters of the function.
+     *
+     * @param inputs the inputs value to set.
+     * @return the ScalarFunctionProperties object itself.
+     */
     public ScalarFunctionProperties withInputs(List<FunctionInput> inputs) {
-        super.withInputs(inputs);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScalarFunctionConfiguration();
+        }
+        this.innerProperties().withInputs(inputs);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Get the output property: The output of the function.
+     *
+     * @return the output value.
+     */
+    public FunctionOutput output() {
+        return this.innerProperties() == null ? null : this.innerProperties().output();
+    }
+
+    /**
+     * Set the output property: The output of the function.
+     *
+     * @param output the output value to set.
+     * @return the ScalarFunctionProperties object itself.
+     */
     public ScalarFunctionProperties withOutput(FunctionOutput output) {
-        super.withOutput(output);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScalarFunctionConfiguration();
+        }
+        this.innerProperties().withOutput(output);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Get the binding property: The physical binding of the function. For example, in the Azure Machine Learning web
+     * service’s case, this describes the endpoint.
+     *
+     * @return the binding value.
+     */
+    public FunctionBinding binding() {
+        return this.innerProperties() == null ? null : this.innerProperties().binding();
+    }
+
+    /**
+     * Set the binding property: The physical binding of the function. For example, in the Azure Machine Learning web
+     * service’s case, this describes the endpoint.
+     *
+     * @param binding the binding value to set.
+     * @return the ScalarFunctionProperties object itself.
+     */
     public ScalarFunctionProperties withBinding(FunctionBinding binding) {
-        super.withBinding(binding);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScalarFunctionConfiguration();
+        }
+        this.innerProperties().withBinding(binding);
         return this;
     }
 
@@ -47,5 +114,8 @@ public final class ScalarFunctionProperties extends FunctionProperties {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

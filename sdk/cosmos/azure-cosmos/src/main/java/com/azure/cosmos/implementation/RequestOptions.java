@@ -52,12 +52,15 @@ public class RequestOptions {
         return this.preTriggerInclude;
     }
 
-    public OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
+    OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
         return operationContextAndListenerTuple;
     }
 
-    public void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
-        this.operationContextAndListenerTuple = operationContextAndListenerTuple;
+    public void setOperationContextAndListenerTuple (
+        Object operationContextAndListenerTupleAsObject) {
+
+        this.operationContextAndListenerTuple =
+            (OperationContextAndListenerTuple)operationContextAndListenerTupleAsObject;
     }
 
     /**

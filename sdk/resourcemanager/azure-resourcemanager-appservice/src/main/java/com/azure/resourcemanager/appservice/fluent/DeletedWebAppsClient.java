@@ -21,7 +21,7 @@ public interface DeletedWebAppsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of deleted apps.
+     * @return collection of deleted apps as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DeletedSiteInner> listAsync();
@@ -32,7 +32,7 @@ public interface DeletedWebAppsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of deleted apps.
+     * @return collection of deleted apps as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DeletedSiteInner> list();
@@ -45,7 +45,7 @@ public interface DeletedWebAppsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of deleted apps.
+     * @return collection of deleted apps as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DeletedSiteInner> list(Context context);
@@ -58,7 +58,7 @@ public interface DeletedWebAppsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of deleted apps.
+     * @return collection of deleted apps as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DeletedSiteInner> listByLocationAsync(String location);
@@ -71,7 +71,7 @@ public interface DeletedWebAppsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of deleted apps.
+     * @return collection of deleted apps as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DeletedSiteInner> listByLocation(String location);
@@ -85,7 +85,7 @@ public interface DeletedWebAppsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of deleted apps.
+     * @return collection of deleted apps as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DeletedSiteInner> listByLocation(String location, Context context);
@@ -99,7 +99,7 @@ public interface DeletedWebAppsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted app.
+     * @return a deleted app along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DeletedSiteInner>> getDeletedWebAppByLocationWithResponseAsync(String location, String deletedSiteId);
@@ -113,7 +113,7 @@ public interface DeletedWebAppsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted app.
+     * @return a deleted app on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DeletedSiteInner> getDeletedWebAppByLocationAsync(String location, String deletedSiteId);
@@ -142,7 +142,7 @@ public interface DeletedWebAppsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted app.
+     * @return a deleted app along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DeletedSiteInner> getDeletedWebAppByLocationWithResponse(

@@ -18,6 +18,12 @@ public final class DocTypeInfo {
     private String description;
 
     /*
+     * Custom model build mode.
+     */
+    @JsonProperty(value = "buildMode")
+    private DocumentBuildMode buildMode;
+
+    /*
      * Description of the document semantic schema using a JSON Schema style
      * syntax.
      */
@@ -47,6 +53,26 @@ public final class DocTypeInfo {
      */
     public DocTypeInfo setDescription(String description) {
         this.description = description;
+        return this;
+    }
+
+    /**
+     * Get the buildMode property: Custom model build mode.
+     *
+     * @return the buildMode value.
+     */
+    public DocumentBuildMode getBuildMode() {
+        return this.buildMode;
+    }
+
+    /**
+     * Set the buildMode property: Custom model build mode.
+     *
+     * @param buildMode the buildMode value to set.
+     * @return the DocTypeInfo object itself.
+     */
+    public DocTypeInfo setBuildMode(DocumentBuildMode buildMode) {
+        this.buildMode = buildMode;
         return this;
     }
 

@@ -110,16 +110,18 @@ def update_versions(update_type, version_map, ext_dep_map, target_file, skip_rea
                             continue
                         if is_include:
                             try:
-                                module = ext_dep_map[module_name]
-                                new_include_version = module.string_for_allowlist_include()
-                                newline = re.sub(external_dependency_include_regex, new_include_version, line)
+                                module = ext_dep_map.get(module_name)
+                                if module:
+                                    new_include_version = module.string_for_allowlist_include()
+                                    newline = re.sub(external_dependency_include_regex, new_include_version, line)
                             except AttributeError:
                                 raise ValueError('Module: {0} does not have an external dependency version.\nFile={1}\nLine={2}'.format(module_name, target_file, line))
                         else:
                             try:
-                                module = ext_dep_map[module_name]
-                                new_version = module.external_dependency
-                                newline = re.sub(external_dependency_version_regex, new_version, line)
+                                module = ext_dep_map.get(module_name)
+                                if module:
+                                    new_version = module.external_dependency
+                                    newline = re.sub(external_dependency_version_regex, new_version, line)
                             except AttributeError:
                                 raise ValueError('Module: {0} does not have an external dependency version.\nFile={1}\nLine={2}'.format(module_name, target_file, line))
                     else:

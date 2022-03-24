@@ -5,9 +5,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
     <groupId>com.azure</groupId>
-    <artifactId>azure-client-sdk-parent</artifactId>
-    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
-    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
+    <artifactId>azure-perf-test-parent</artifactId>
+    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-perf-test-parent;current} -->
+    <relativePath>../../parents/azure-perf-test-parent</relativePath>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -18,40 +18,34 @@
   <packaging>jar</packaging>
 
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <checkstyle.skip>true</checkstyle.skip>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
+    <perf.test.mainClass>com.azure.security.keyvault.App</perf.test.mainClass>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-certificates</artifactId>
-      <version>4.3.0-beta.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;current} -->
+      <version>4.3.0-beta.6</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-keys</artifactId>
-      <version>4.4.0-beta.6</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
+      <version>4.4.0-beta.8</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-secrets</artifactId>
-      <version>4.4.0-beta.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;current} -->
+      <version>4.4.0-beta.6</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.4.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.4.6</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.7.5</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.7.9</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -59,34 +53,4 @@
       <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:perf-test-core;current} -->
     </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <version>3.2.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-assembly-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
-            <configuration>
-              <archive>
-                <manifest>
-                  <mainClass>
-                    com.azure.security.keyvault.App
-                  </mainClass>
-                </manifest>
-              </archive>
-              <descriptorRefs>
-                <descriptorRef>jar-with-dependencies</descriptorRef>
-              </descriptorRefs>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
 </project>

@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.24.0-beta.1 (Unreleased)
+### 4.28.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,43 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 4.27.0 (2022-03-10)
+#### Key Bugs Fixes
+* Fixed an issue in `CosmosPagedIterable` resulting in excessive memory consumption due to unbounded prefetch of pages when converting the `CosmosPagedIterable` into an `Iterator<FeedResponse<T>>`. - See [PR 27237](https://github.com/Azure/azure-sdk-for-java/pull/27237) and [PR 27299](https://github.com/Azure/azure-sdk-for-java/pull/27299)
+* Fixed a `NullPointerException` in `CosmosDiagnostics isDiagnosticsCapturedInPagedFlux` - See [PR 27261](https://github.com/Azure/azure-sdk-for-java/pull/27261)
+* Fixed an issue with allowing null values for add, set and replace operations in Patch API - See [PR 27501](https://github.com/Azure/azure-sdk-for-java/pull/27501)
+* Fixed an issue with top query when top x is greater than the total number of items in the database - See [PR 27377](https://github.com/Azure/azure-sdk-for-java/pull/27377)
+* Fixed synchronized lists and maps for order by query race condition - See [PR 27142](https://github.com/Azure/azure-sdk-for-java/pull/27142)
+
+### 4.26.0 (2022-02-11)
+#### Features Added
+* Added support to resume a "multi order by query" from a continuation token - See [PR 26267](https://github.com/Azure/azure-sdk-for-java/pull/26267)
+* Added `RNTBD - open connections` information in `ClientTelemetry`.
+* Added Beta API to set custom `Reactor` scheduler to be used by the `ChangeFeedProcessor` implementation - See [PR 26750](https://github.com/Azure/azure-sdk-for-java/pull/26750)
+* Added support for correlating queries executed via the Cosmos Spark connector with service-telemetry based on the `correlationActivityId` - See [PR 26908](https://github.com/Azure/azure-sdk-for-java/pull/26908)
+
+#### Key Bug Fixes
+* Fixed an issue in `ChangeFeedProcessor` related to `leases` that were found expired - See [PR 26750](https://github.com/Azure/azure-sdk-for-java/pull/26750)
+* Fixed an issue with `QueryPlan` caching double initialization - See [PR 26825](https://github.com/Azure/azure-sdk-for-java/pull/26825)
+
+### 4.26.0-beta.1 (2022-01-25)
+#### Features Added
+* Added support to resume a "multi order by query" from a continuation token - See [PR 26267](https://github.com/Azure/azure-sdk-for-java/pull/26267)
+
+### 4.25.0 (2022-01-14)
+#### Key Bug Fixes
+* Fixed `NullPointerException` in bulk mode for deleted/recreated containers.
+* Added missing exception cause in case of `InternalServerException`.
+
+### 4.24.0 (2021-12-21)
+#### Features Added
+* Added implementation for `CosmosAuthorizationTokenResolver`.
+* Scoped session token per partition level for gateway call.
+
+#### Key Bug Fixes
+* Fixed issue causing CosmosException with statusCode 0 to be thrown on connectivity issues for Gateway.
+* Addressed potential race condition in `ChangeFeedProcessor` when check-pointing current state.
 
 ### 4.23.0 (2021-12-10)
 #### Features Added

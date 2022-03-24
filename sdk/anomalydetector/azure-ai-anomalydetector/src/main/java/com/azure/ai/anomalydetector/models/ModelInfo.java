@@ -13,46 +13,42 @@ import java.util.List;
 @Fluent
 public final class ModelInfo {
     /*
-     * An optional field, indicates how many history points will be used to
-     * determine the anomaly score of one subsequent point.
+     * An optional field, indicating how many previous points will be used to
+     * compute the anomaly score of the subsequent point.
      */
     @JsonProperty(value = "slidingWindow")
     private Integer slidingWindow;
 
     /*
-     * An optional field, since those multivariate need to be aligned in the
-     * same timestamp before starting the detection.
+     * The alignPolicy property.
      */
     @JsonProperty(value = "alignPolicy")
     private AlignPolicy alignPolicy;
 
     /*
-     * source file link of the input variables, each variable will be a csv
-     * with two columns, the first column will be timestamp, the second column
-     * will be value.Besides these variable csv files, an extra meta.json can
-     * be included in th zip file if you would like to rename a variable.Be
-     * default, the file name of the variable will be used as the variable
-     * name.
+     * Source link to the input variables. Each variable should be a csv file
+     * with two columns, `timestamp` and `value`. By default, the file name of
+     * the variable will be used as its variable name.
      */
     @JsonProperty(value = "source", required = true)
     private String source;
 
     /*
-     * require field, start time of data be used for generating multivariate
-     * anomaly detection model, should be data-time
+     * A required field, indicating the start time of training data. Should be
+     * date-time.
      */
     @JsonProperty(value = "startTime", required = true)
     private OffsetDateTime startTime;
 
     /*
-     * require field, end time of data be used for generating multivariate
-     * anomaly detection model, should be data-time
+     * A required field, indicating the end time of training data. Should be
+     * date-time.
      */
     @JsonProperty(value = "endTime", required = true)
     private OffsetDateTime endTime;
 
     /*
-     * optional field, name of the model
+     * An optional field. The name of the model whose maximum length is 24.
      */
     @JsonProperty(value = "displayName")
     private String displayName;
@@ -64,20 +60,20 @@ public final class ModelInfo {
     private ModelStatus status;
 
     /*
-     * Error message when fails to create a model.
+     * Error messages when failed to create a model.
      */
     @JsonProperty(value = "errors", access = JsonProperty.Access.WRITE_ONLY)
     private List<ErrorResponse> errors;
 
     /*
-     * Used for deep analysis model and variables
+     * The diagnosticsInfo property.
      */
     @JsonProperty(value = "diagnosticsInfo", access = JsonProperty.Access.WRITE_ONLY)
     private DiagnosticsInfo diagnosticsInfo;
 
     /**
-     * Get the slidingWindow property: An optional field, indicates how many history points will be used to determine
-     * the anomaly score of one subsequent point.
+     * Get the slidingWindow property: An optional field, indicating how many previous points will be used to compute
+     * the anomaly score of the subsequent point.
      *
      * @return the slidingWindow value.
      */
@@ -86,8 +82,8 @@ public final class ModelInfo {
     }
 
     /**
-     * Set the slidingWindow property: An optional field, indicates how many history points will be used to determine
-     * the anomaly score of one subsequent point.
+     * Set the slidingWindow property: An optional field, indicating how many previous points will be used to compute
+     * the anomaly score of the subsequent point.
      *
      * @param slidingWindow the slidingWindow value to set.
      * @return the ModelInfo object itself.
@@ -98,8 +94,7 @@ public final class ModelInfo {
     }
 
     /**
-     * Get the alignPolicy property: An optional field, since those multivariate need to be aligned in the same
-     * timestamp before starting the detection.
+     * Get the alignPolicy property: The alignPolicy property.
      *
      * @return the alignPolicy value.
      */
@@ -108,8 +103,7 @@ public final class ModelInfo {
     }
 
     /**
-     * Set the alignPolicy property: An optional field, since those multivariate need to be aligned in the same
-     * timestamp before starting the detection.
+     * Set the alignPolicy property: The alignPolicy property.
      *
      * @param alignPolicy the alignPolicy value to set.
      * @return the ModelInfo object itself.
@@ -120,10 +114,8 @@ public final class ModelInfo {
     }
 
     /**
-     * Get the source property: source file link of the input variables, each variable will be a csv with two columns,
-     * the first column will be timestamp, the second column will be value.Besides these variable csv files, an extra
-     * meta.json can be included in th zip file if you would like to rename a variable.Be default, the file name of the
-     * variable will be used as the variable name.
+     * Get the source property: Source link to the input variables. Each variable should be a csv file with two columns,
+     * `timestamp` and `value`. By default, the file name of the variable will be used as its variable name.
      *
      * @return the source value.
      */
@@ -132,10 +124,8 @@ public final class ModelInfo {
     }
 
     /**
-     * Set the source property: source file link of the input variables, each variable will be a csv with two columns,
-     * the first column will be timestamp, the second column will be value.Besides these variable csv files, an extra
-     * meta.json can be included in th zip file if you would like to rename a variable.Be default, the file name of the
-     * variable will be used as the variable name.
+     * Set the source property: Source link to the input variables. Each variable should be a csv file with two columns,
+     * `timestamp` and `value`. By default, the file name of the variable will be used as its variable name.
      *
      * @param source the source value to set.
      * @return the ModelInfo object itself.
@@ -146,8 +136,7 @@ public final class ModelInfo {
     }
 
     /**
-     * Get the startTime property: require field, start time of data be used for generating multivariate anomaly
-     * detection model, should be data-time.
+     * Get the startTime property: A required field, indicating the start time of training data. Should be date-time.
      *
      * @return the startTime value.
      */
@@ -156,8 +145,7 @@ public final class ModelInfo {
     }
 
     /**
-     * Set the startTime property: require field, start time of data be used for generating multivariate anomaly
-     * detection model, should be data-time.
+     * Set the startTime property: A required field, indicating the start time of training data. Should be date-time.
      *
      * @param startTime the startTime value to set.
      * @return the ModelInfo object itself.
@@ -168,8 +156,7 @@ public final class ModelInfo {
     }
 
     /**
-     * Get the endTime property: require field, end time of data be used for generating multivariate anomaly detection
-     * model, should be data-time.
+     * Get the endTime property: A required field, indicating the end time of training data. Should be date-time.
      *
      * @return the endTime value.
      */
@@ -178,8 +165,7 @@ public final class ModelInfo {
     }
 
     /**
-     * Set the endTime property: require field, end time of data be used for generating multivariate anomaly detection
-     * model, should be data-time.
+     * Set the endTime property: A required field, indicating the end time of training data. Should be date-time.
      *
      * @param endTime the endTime value to set.
      * @return the ModelInfo object itself.
@@ -190,7 +176,7 @@ public final class ModelInfo {
     }
 
     /**
-     * Get the displayName property: optional field, name of the model.
+     * Get the displayName property: An optional field. The name of the model whose maximum length is 24.
      *
      * @return the displayName value.
      */
@@ -199,7 +185,7 @@ public final class ModelInfo {
     }
 
     /**
-     * Set the displayName property: optional field, name of the model.
+     * Set the displayName property: An optional field. The name of the model whose maximum length is 24.
      *
      * @param displayName the displayName value to set.
      * @return the ModelInfo object itself.
@@ -219,7 +205,7 @@ public final class ModelInfo {
     }
 
     /**
-     * Get the errors property: Error message when fails to create a model.
+     * Get the errors property: Error messages when failed to create a model.
      *
      * @return the errors value.
      */
@@ -228,7 +214,7 @@ public final class ModelInfo {
     }
 
     /**
-     * Get the diagnosticsInfo property: Used for deep analysis model and variables.
+     * Get the diagnosticsInfo property: The diagnosticsInfo property.
      *
      * @return the diagnosticsInfo value.
      */

@@ -580,7 +580,7 @@ public interface Domain {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Domain.
+     * @return shared access keys of the Domain along with {@link Response}.
      */
     Response<DomainSharedAccessKeys> listSharedAccessKeysWithResponse(Context context);
 
@@ -603,7 +603,7 @@ public interface Domain {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Domain.
+     * @return shared access keys of the Domain along with {@link Response}.
      */
     Response<DomainSharedAccessKeys> regenerateKeyWithResponse(
         DomainRegenerateKeyRequest regenerateKeyRequest, Context context);

@@ -23,7 +23,7 @@ public interface PipelinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of pipeline resources.
+     * @return a list of pipeline resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PipelineResourceInner> listByFactory(String resourceGroupName, String factoryName);
@@ -37,7 +37,7 @@ public interface PipelinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of pipeline resources.
+     * @return a list of pipeline resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PipelineResourceInner> listByFactory(String resourceGroupName, String factoryName, Context context);
@@ -71,7 +71,7 @@ public interface PipelinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pipeline resource type.
+     * @return pipeline resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PipelineResourceInner> createOrUpdateWithResponse(
@@ -108,7 +108,7 @@ public interface PipelinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pipeline.
+     * @return a pipeline along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PipelineResourceInner> getWithResponse(
@@ -137,7 +137,7 @@ public interface PipelinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
@@ -177,7 +177,7 @@ public interface PipelinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body with a run identifier.
+     * @return response body with a run identifier along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CreateRunResponseInner> createRunWithResponse(

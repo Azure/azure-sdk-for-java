@@ -32,13 +32,13 @@ custom-types: AttestationType,PolicyModification,CertificateModification
 custom-types-subpackage: models
 #implementation-subpackage: implementation
 models-subpackage: implementation.models
-add-context-parameter: true
-sync-methods: all
+#add-context-parameter: true
+sync-methods: none
 client-side-validations: true
 context-client-method-parameter: true
-#generate-sync-async-clients: true
 required-fields-as-ctor-args: true
 v3: true
+disable-client-builder: true
 
 #add-credentials: false
 #credential-types: tokencredential

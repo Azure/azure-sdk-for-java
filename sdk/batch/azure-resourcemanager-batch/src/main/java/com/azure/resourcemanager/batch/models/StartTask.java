@@ -5,21 +5,18 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * In some cases the start task may be re-run even though the node was not rebooted. Due to this, start tasks should be
- * idempotent and exit gracefully if the setup they're performing has already been done. Special care should be taken to
- * avoid start tasks which create breakaway process or install/launch services from the start task working directory, as
- * this will block Batch from being able to re-run the start task.
+ * A task which is run when a compute node joins a pool in the Azure Batch service, or when the compute node is rebooted
+ * or reimaged. In some cases the start task may be re-run even though the node was not rebooted. Due to this, start
+ * tasks should be idempotent and exit gracefully if the setup they're performing has already been done. Special care
+ * should be taken to avoid start tasks which create breakaway process or install/launch services from the start task
+ * working directory, as this will block Batch from being able to re-run the start task.
  */
 @Fluent
 public final class StartTask {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StartTask.class);
-
     /*
      * The command line of the start task. The command line does not run under
      * a shell, and therefore cannot take advantage of shell features such as
@@ -59,7 +56,9 @@ public final class StartTask {
      * maximum retry count is 3, Batch tries the task up to 4 times (one
      * initial try and 3 retries). If the maximum retry count is 0, the Batch
      * service does not retry the task. If the maximum retry count is -1, the
-     * Batch service retries the task without limit.
+     * Batch service retries the task without limit, however this is not
+     * recommended for a start task or any task. The default value is 0 (no
+     * retries).
      */
     @JsonProperty(value = "maxTaskRetryCount")
     private Integer maxTaskRetryCount;
@@ -187,7 +186,7 @@ public final class StartTask {
      * Batch service will try the task once, and may then retry up to this limit. For example, if the maximum retry
      * count is 3, Batch tries the task up to 4 times (one initial try and 3 retries). If the maximum retry count is 0,
      * the Batch service does not retry the task. If the maximum retry count is -1, the Batch service retries the task
-     * without limit.
+     * without limit, however this is not recommended for a start task or any task. The default value is 0 (no retries).
      *
      * @return the maxTaskRetryCount value.
      */
@@ -201,7 +200,7 @@ public final class StartTask {
      * Batch service will try the task once, and may then retry up to this limit. For example, if the maximum retry
      * count is 3, Batch tries the task up to 4 times (one initial try and 3 retries). If the maximum retry count is 0,
      * the Batch service does not retry the task. If the maximum retry count is -1, the Batch service retries the task
-     * without limit.
+     * without limit, however this is not recommended for a start task or any task. The default value is 0 (no retries).
      *
      * @param maxTaskRetryCount the maxTaskRetryCount value to set.
      * @return the StartTask object itself.

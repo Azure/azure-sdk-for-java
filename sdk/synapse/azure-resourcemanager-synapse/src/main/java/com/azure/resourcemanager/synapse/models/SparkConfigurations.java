@@ -32,7 +32,7 @@ public interface SparkConfigurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sparkConfiguration by name in a workspace.
+     * @return sparkConfiguration by name in a workspace along with {@link Response}.
      */
     Response<SparkConfigurationResource> getWithResponse(
         String resourceGroupName, String sparkConfigurationName, String workspaceName, Context context);

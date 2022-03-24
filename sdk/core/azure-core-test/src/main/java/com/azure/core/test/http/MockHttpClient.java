@@ -76,7 +76,7 @@ public class MockHttpClient extends NoOpHttpClient {
                     }
                     final Base64Url base64EncodedBytes = bytes.length == 0 ? null : Base64Url.encode(bytes);
                     response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, base64EncodedBytes);
-                } else if (requestPathLower.equals("/base64urllistofbytes")) {
+                } else if ("/base64urllistofbytes".equals(requestPathLower)) {
                     final List<String> base64EncodedBytesList = new ArrayList<>();
                     for (int i = 0; i < 3; ++i) {
                         final int byteCount = (i + 1) * 10;
@@ -88,7 +88,7 @@ public class MockHttpClient extends NoOpHttpClient {
                         base64EncodedBytesList.add(base64UrlEncodedBytes.toString());
                     }
                     response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, base64EncodedBytesList);
-                } else if (requestPathLower.equals("/base64urllistoflistofbytes")) {
+                } else if ("/base64urllistoflistofbytes".equals(requestPathLower)) {
                     final List<List<String>> result = new ArrayList<>();
                     for (int i = 0; i < 2; ++i) {
                         final List<String> innerList = new ArrayList<>();
@@ -105,7 +105,7 @@ public class MockHttpClient extends NoOpHttpClient {
                         result.add(innerList);
                     }
                     response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, result);
-                } else if (requestPathLower.equals("/base64urlmapofbytes")) {
+                } else if ("/base64urlmapofbytes".equals(requestPathLower)) {
                     final Map<String, String> result = new HashMap<>();
                     for (int i = 0; i < 2; ++i) {
                         final String key = Integer.toString(i);
@@ -120,28 +120,28 @@ public class MockHttpClient extends NoOpHttpClient {
                         result.put(key, base64UrlEncodedBytes.toString());
                     }
                     response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, result);
-                } else if (requestPathLower.equals("/datetimerfc1123")) {
+                } else if ("/datetimerfc1123".equals(requestPathLower)) {
                     final DateTimeRfc1123 now = new DateTimeRfc1123(OffsetDateTime.ofInstant(Instant.ofEpochSecond(0), ZoneOffset.UTC));
                     final String result = now.toString();
                     response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, result);
-                } else if (requestPathLower.equals("/unixtime")) {
+                } else if ("/unixtime".equals(requestPathLower)) {
                     response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, 0);
-                } else if (requestPathLower.equals("/delete")) {
+                } else if ("/delete".equals(requestPathLower)) {
                     final HttpBinJSON json = new HttpBinJSON();
                     json.url(cleanseUrl(requestUrl));
                     json.data(createHttpBinResponseDataForRequest(request));
                     response = new MockHttpResponse(request, 200, json);
-                } else if (requestPathLower.equals("/get")) {
+                } else if ("/get".equals(requestPathLower)) {
                     final HttpBinJSON json = new HttpBinJSON();
                     json.url(cleanseUrl(requestUrl));
                     json.headers(toMap(request.getHeaders()));
                     response = new MockHttpResponse(request, 200, json);
-                } else if (requestPathLower.equals("/patch")) {
+                } else if ("/patch".equals(requestPathLower)) {
                     final HttpBinJSON json = new HttpBinJSON();
                     json.url(cleanseUrl(requestUrl));
                     json.data(createHttpBinResponseDataForRequest(request));
                     response = new MockHttpResponse(request, 200, json);
-                } else if (requestPathLower.equals("/post")) {
+                } else if ("/post".equals(requestPathLower)) {
                     if (contentType != null && contentType.contains("x-www-form-urlencoded")) {
                         Map<String, String> parsed = bodyToMap(request);
                         final HttpBinFormDataJSON json = new HttpBinFormDataJSON();
@@ -160,7 +160,7 @@ public class MockHttpClient extends NoOpHttpClient {
                         json.headers(toMap(request.getHeaders()));
                         response = new MockHttpResponse(request, 200, json);
                     }
-                } else if (requestPathLower.equals("/put")) {
+                } else if ("/put".equals(requestPathLower)) {
                     final HttpBinJSON json = new HttpBinJSON();
                     json.url(cleanseUrl(requestUrl));
                     json.data(createHttpBinResponseDataForRequest(request));

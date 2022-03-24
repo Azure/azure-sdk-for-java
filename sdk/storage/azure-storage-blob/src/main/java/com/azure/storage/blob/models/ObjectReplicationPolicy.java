@@ -41,6 +41,6 @@ public class ObjectReplicationPolicy {
      * rule.
      */
     public List<ObjectReplicationRule> getRules() {
-        return Collections.unmodifiableList(this.objectReplicationRules);
+        return this.objectReplicationRules;
     }
 }

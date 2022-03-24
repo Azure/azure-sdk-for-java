@@ -10,7 +10,7 @@ import com.azure.resourcemanager.kusto.models.ManagedPrivateEndpointsCheckNameRe
 /** Samples for ManagedPrivateEndpoints CheckNameAvailability. */
 public final class ManagedPrivateEndpointsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoManagedPrivateEndpointsCheckNameAvailability.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoManagedPrivateEndpointsCheckNameAvailability.json
      */
     /**
      * Sample code: KustoManagedPrivateEndpointsCheckNameAvailability.
@@ -23,7 +23,7 @@ public final class ManagedPrivateEndpointsCheckNameAvailabilitySamples {
             .managedPrivateEndpoints()
             .checkNameAvailabilityWithResponse(
                 "kustorptest",
-                "kustoclusterrptest4",
+                "kustoCluster",
                 new ManagedPrivateEndpointsCheckNameRequest().withName("pme1"),
                 Context.NONE);
     }

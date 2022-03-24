@@ -35,7 +35,9 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -48,6 +50,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -58,11 +61,15 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -73,6 +80,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     private static final DateTimeFormatter RESPONSE_TIME_FORMATTER = DateTimeFormatter.ISO_INSTANT;
     private CosmosClient gatewayClient;
     private CosmosClient directClient;
+    private CosmosAsyncDatabase cosmosAsyncDatabase;
     private CosmosContainer container;
     private CosmosAsyncContainer cosmosAsyncContainer;
 
@@ -92,6 +100,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             .directMode()
             .buildClient();
         cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(this.gatewayClient.asyncClient());
+        cosmosAsyncDatabase = directClient.asyncClient().getDatabase(cosmosAsyncContainer.getDatabase().getId());
         container = gatewayClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
     }
 
@@ -395,6 +404,50 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                 }
             }
         }
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void queryDiagnosticsOnOrderBy() {
+        //  create container with more than 4 physical partitions
+        String containerId = "testcontainer";
+        cosmosAsyncDatabase.createContainer(containerId, "/mypk",
+            ThroughputProperties.createManualThroughput(40000)).block();
+        CosmosAsyncContainer testcontainer = cosmosAsyncDatabase.getContainer(containerId);
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        options.setConsistencyLevel(ConsistencyLevel.EVENTUAL);
+        testcontainer.createItem(getInternalObjectNode()).block();
+        options.setMaxDegreeOfParallelism(-1);
+        String query = "SELECT * from c ORDER BY c._ts DESC";
+        CosmosPagedFlux<InternalObjectNode> cosmosPagedFlux = testcontainer.queryItems(query, options,
+            InternalObjectNode.class);
+        Set<String> partitionKeyRangeIds = new HashSet<>();
+        Set<String> pkRids = new HashSet<>();
+        cosmosPagedFlux.byPage().flatMap(feedResponse -> {
+            String cosmosDiagnosticsString = feedResponse.getCosmosDiagnostics().toString();
+            //  find all partition key range ids in cosmos diagnostics
+            Pattern pattern = Pattern.compile("(\"partitionKeyRangeId\":\")(\\d)");
+            Matcher matcher = pattern.matcher(cosmosDiagnosticsString);
+            while (matcher.find()) {
+                //  get the partition key range id from cosmos diagnostics
+                String group = matcher.group(2);
+                partitionKeyRangeIds.add(group);
+            }
+            //  find all partition key range ids in query metrics
+            pattern = Pattern.compile("(pkrId:)(\\d)");
+            matcher = pattern.matcher(cosmosDiagnosticsString);
+            while (matcher.find()) {
+                //  get the partition key range id from query metrics
+                String group = matcher.group(2);
+                pkRids.add(group);
+            }
+            return Flux.just(feedResponse);
+        }).blockLast();
+
+        // assert that cosmos diagnostics has diagnostics information for all partitions ids same as query metrics
+        assertThat(pkRids).isNotEmpty();
+        assertThat(pkRids).isEqualTo(partitionKeyRangeIds);
+
+        deleteCollection(testcontainer);
     }
 
     private void validateDirectModeQueryDiagnostics(String diagnostics) {
@@ -832,14 +885,14 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(Instant.parse(serviceEndpointStatistics.get("createdTime").asText()))
             .isAfterOrEqualTo(beforeInitializationThreshold);
 
-        // Adding 1 ms to cover for rounding errors (only 3 fractional digits)
-        Instant afterInitializationThreshold = afterInitializingRntbdServiceEndpoint.plusMillis(1);
+        // Adding 2 ms to cover for rounding errors (only 3 fractional digits)
+        Instant afterInitializationThreshold = afterInitializingRntbdServiceEndpoint.plusMillis(2);
         assertThat(Instant.parse(serviceEndpointStatistics.get("createdTime").asText()))
             .isBeforeOrEqualTo(afterInitializationThreshold);
 
-        // Adding 1 ms to cover for rounding errors (only 3 fractional digits)
-        Instant afterOperation2Threshold = afterOperation2.plusMillis(1);
-        Instant beforeOperation2Threshold = beforeOperation2.minusMillis(1);
+        // Adding 2 ms to cover for rounding errors (only 3 fractional digits)
+        Instant afterOperation2Threshold = afterOperation2.plusMillis(2);
+        Instant beforeOperation2Threshold = beforeOperation2.minusMillis(2);
         assertThat(Instant.parse(serviceEndpointStatistics.get("lastRequestTime").asText()))
             .isAfterOrEqualTo(beforeOperation2Threshold)
             .isBeforeOrEqualTo(afterOperation2Threshold);
@@ -998,6 +1051,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("\"eventName\":\"channelAcquisitionStarted\"");
         assertThat(diagnostics).contains("\"eventName\":\"pipelined\"");
         assertThat(diagnostics).contains("\"eventName\":\"transitTime\"");
+        assertThat(diagnostics).contains("\"eventName\":\"decodeTime");
         assertThat(diagnostics).contains("\"eventName\":\"received\"");
         assertThat(diagnostics).contains("\"eventName\":\"completed\"");
         assertThat(diagnostics).contains("\"startTimeUTC\"");

@@ -248,7 +248,7 @@ public final class ApplicationInsightsManager {
                 .append("-")
                 .append("com.azure.resourcemanager.applicationinsights")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")

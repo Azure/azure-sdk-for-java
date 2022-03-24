@@ -10,6 +10,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.dns.fluent.DnsManagementClient;
+import com.azure.resourcemanager.dns.fluent.DnsResourceReferencesClient;
 import com.azure.resourcemanager.dns.fluent.RecordSetsClient;
 import com.azure.resourcemanager.dns.fluent.ZonesClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
@@ -20,11 +21,11 @@ import java.time.Duration;
 public final class DnsManagementClientImpl extends AzureServiceClient implements DnsManagementClient {
     private final ClientLogger logger = new ClientLogger(DnsManagementClientImpl.class);
 
-    /** The ID of the target subscription. */
+    /** Specifies the Azure subscription ID, which uniquely identifies the Microsoft Azure subscription. */
     private final String subscriptionId;
 
     /**
-     * Gets The ID of the target subscription.
+     * Gets Specifies the Azure subscription ID, which uniquely identifies the Microsoft Azure subscription.
      *
      * @return the subscriptionId value.
      */
@@ -116,6 +117,18 @@ public final class DnsManagementClientImpl extends AzureServiceClient implements
         return this.zones;
     }
 
+    /** The DnsResourceReferencesClient object to access its operations. */
+    private final DnsResourceReferencesClient dnsResourceReferences;
+
+    /**
+     * Gets the DnsResourceReferencesClient object to access its operations.
+     *
+     * @return the DnsResourceReferencesClient object.
+     */
+    public DnsResourceReferencesClient getDnsResourceReferences() {
+        return this.dnsResourceReferences;
+    }
+
     /**
      * Initializes an instance of DnsManagementClient client.
      *
@@ -123,7 +136,8 @@ public final class DnsManagementClientImpl extends AzureServiceClient implements
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The ID of the target subscription.
+     * @param subscriptionId Specifies the Azure subscription ID, which uniquely identifies the Microsoft Azure
+     *     subscription.
      * @param endpoint server parameter.
      */
     DnsManagementClientImpl(
@@ -139,8 +153,9 @@ public final class DnsManagementClientImpl extends AzureServiceClient implements
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2018-03-01-preview";
+        this.apiVersion = "2018-05-01";
         this.recordSets = new RecordSetsClientImpl(this);
         this.zones = new ZonesClientImpl(this);
+        this.dnsResourceReferences = new DnsResourceReferencesClientImpl(this);
     }
 }

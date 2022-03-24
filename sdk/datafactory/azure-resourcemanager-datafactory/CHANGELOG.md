@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.9 (Unreleased)
+## 1.0.0-beta.13 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,94 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.12 (2022-02-24)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.SmartsheetLinkedService` was added
+
+* `models.TeamDeskAuthenticationType` was added
+
+* `models.TeamDeskLinkedService` was added
+
+* `models.ZendeskAuthenticationType` was added
+
+* `models.QuickbaseLinkedService` was added
+
+* `models.ZendeskLinkedService` was added
+
+## 1.0.0-beta.11 (2022-02-14)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.ScriptActivityParameter` was added
+
+* `models.ScriptActivityLogDestination` was added
+
+* `models.ScriptActivity` was added
+
+* `models.ScriptActivityParameterType` was added
+
+* `models.ScriptActivityScriptBlock` was added
+
+* `models.ScriptActivityParameterDirection` was added
+
+* `models.ScriptActivityTypePropertiesLogSettings` was added
+
+* `models.ScriptType` was added
+
+## 1.0.0-beta.10 (2022-01-17)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.FailActivity` was added
+
+#### `models.DynamicsLinkedService` was modified
+
+* `withCredential(models.CredentialReference)` was added
+* `credential()` was added
+
+#### `models.CosmosDbLinkedService` was modified
+
+* `withCredential(models.CredentialReference)` was added
+* `credential()` was added
+
+#### `models.AzureBlobFSLinkedService` was modified
+
+* `servicePrincipalCredential()` was added
+* `withServicePrincipalCredential(models.SecretBase)` was added
+* `servicePrincipalCredentialType()` was added
+* `withServicePrincipalCredentialType(java.lang.Object)` was added
+
+#### `models.AzureDatabricksDeltaLakeLinkedService` was modified
+
+* `withCredential(models.CredentialReference)` was added
+* `workspaceResourceId()` was added
+* `credential()` was added
+* `withWorkspaceResourceId(java.lang.Object)` was added
+
+#### `models.LinkedIntegrationRuntimeRbacAuthorization` was modified
+
+* `withCredential(models.CredentialReference)` was added
+* `credential()` was added
+
+## 1.0.0-beta.9 (2021-12-20)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+#### `models.GoogleAdWordsLinkedService` was modified
+
+* `withConnectionProperties(java.lang.Object)` was added
+* `connectionProperties()` was added
 
 ## 1.0.0-beta.8 (2021-11-29)
 

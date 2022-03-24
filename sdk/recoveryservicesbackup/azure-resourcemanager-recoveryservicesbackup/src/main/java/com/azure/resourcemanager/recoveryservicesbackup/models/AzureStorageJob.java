@@ -58,6 +58,12 @@ public final class AzureStorageJob extends Job {
     @JsonProperty(value = "extendedInfo")
     private AzureStorageJobExtendedInfo extendedInfo;
 
+    /*
+     * Indicated that whether the job is adhoc(true) or scheduled(false)
+     */
+    @JsonProperty(value = "isUserTriggered")
+    private Boolean isUserTriggered;
+
     /**
      * Get the duration property: Time elapsed during the execution of this job.
      *
@@ -177,6 +183,26 @@ public final class AzureStorageJob extends Job {
      */
     public AzureStorageJob withExtendedInfo(AzureStorageJobExtendedInfo extendedInfo) {
         this.extendedInfo = extendedInfo;
+        return this;
+    }
+
+    /**
+     * Get the isUserTriggered property: Indicated that whether the job is adhoc(true) or scheduled(false).
+     *
+     * @return the isUserTriggered value.
+     */
+    public Boolean isUserTriggered() {
+        return this.isUserTriggered;
+    }
+
+    /**
+     * Set the isUserTriggered property: Indicated that whether the job is adhoc(true) or scheduled(false).
+     *
+     * @param isUserTriggered the isUserTriggered value to set.
+     * @return the AzureStorageJob object itself.
+     */
+    public AzureStorageJob withIsUserTriggered(Boolean isUserTriggered) {
+        this.isUserTriggered = isUserTriggered;
         return this;
     }
 

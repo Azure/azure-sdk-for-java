@@ -17,7 +17,13 @@ import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SynchronousSink;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
+
+import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
+import static com.azure.core.amqp.implementation.ClientConstants.ERROR_CONDITION_KEY;
+import static com.azure.core.amqp.implementation.ClientConstants.ERROR_DESCRIPTION_KEY;
 
 /**
  * AMQP node responsible for performing management and metadata operations on an Azure AMQP message broker.
@@ -34,8 +40,12 @@ public class ManagementChannel implements AmqpManagementNode {
         this.createChannel = Objects.requireNonNull(createChannel, "'createChannel' cannot be null.");
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
-        this.logger = new ClientLogger(String.format("%s<%s>", ManagementChannel.class.getName(), entityPath));
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
+
+        Map<String, Object> globalLoggingContext = new HashMap<>();
+        globalLoggingContext.put(ENTITY_PATH_KEY, entityPath);
+        this.logger = new ClientLogger(ManagementChannel.class, globalLoggingContext);
+
         this.tokenManager = Objects.requireNonNull(tokenManager, "'tokenManager' cannot be null.");
     }
 
@@ -104,8 +114,11 @@ public class ManagementChannel implements AmqpManagementNode {
 
         final String statusDescription = RequestResponseUtils.getStatusDescription(response);
 
-        logger.warning("status[{}] description[{}] condition[{}] Operation not successful.",
-            statusCode, statusDescription, errorCondition);
+        logger.atWarning()
+            .addKeyValue("status", statusCode)
+            .addKeyValue(ERROR_DESCRIPTION_KEY, statusDescription)
+            .addKeyValue(ERROR_CONDITION_KEY, errorCondition)
+            .log("Operation not successful.");
 
         final Throwable throwable = ExceptionUtil.toException(errorCondition, statusDescription, errorContext);
         sink.error(throwable);

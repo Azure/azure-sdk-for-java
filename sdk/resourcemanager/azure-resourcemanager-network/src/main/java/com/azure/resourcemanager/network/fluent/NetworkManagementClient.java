@@ -845,7 +845,7 @@ public interface NetworkManagementClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for all the Bastion Shareable Link endpoints.
+     * @return response for all the Bastion Shareable Link endpoints as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<BastionShareableLinkInner> putBastionShareableLinkAsync(
@@ -860,7 +860,7 @@ public interface NetworkManagementClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for all the Bastion Shareable Link endpoints.
+     * @return response for all the Bastion Shareable Link endpoints as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BastionShareableLinkInner> putBastionShareableLink(
@@ -876,7 +876,7 @@ public interface NetworkManagementClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for all the Bastion Shareable Link endpoints.
+     * @return response for all the Bastion Shareable Link endpoints as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BastionShareableLinkInner> putBastionShareableLink(
@@ -891,7 +891,7 @@ public interface NetworkManagementClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteBastionShareableLinkWithResponseAsync(
@@ -906,7 +906,7 @@ public interface NetworkManagementClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteBastionShareableLinkAsync(
@@ -921,7 +921,7 @@ public interface NetworkManagementClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteBastionShareableLink(
@@ -937,7 +937,7 @@ public interface NetworkManagementClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteBastionShareableLink(
@@ -952,7 +952,7 @@ public interface NetworkManagementClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteBastionShareableLinkAsync(
@@ -996,7 +996,7 @@ public interface NetworkManagementClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for all the Bastion Shareable Link endpoints.
+     * @return response for all the Bastion Shareable Link endpoints as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<BastionShareableLinkInner> getBastionShareableLinkAsync(
@@ -1011,7 +1011,7 @@ public interface NetworkManagementClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for all the Bastion Shareable Link endpoints.
+     * @return response for all the Bastion Shareable Link endpoints as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BastionShareableLinkInner> getBastionShareableLink(
@@ -1027,7 +1027,7 @@ public interface NetworkManagementClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for all the Bastion Shareable Link endpoints.
+     * @return response for all the Bastion Shareable Link endpoints as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BastionShareableLinkInner> getBastionShareableLink(
@@ -1041,7 +1041,7 @@ public interface NetworkManagementClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for GetActiveSessions.
+     * @return response for GetActiveSessions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<BastionActiveSessionInner> getActiveSessionsAsync(String resourceGroupName, String bastionHostname);
@@ -1054,7 +1054,7 @@ public interface NetworkManagementClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for GetActiveSessions.
+     * @return response for GetActiveSessions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BastionActiveSessionInner> getActiveSessions(String resourceGroupName, String bastionHostname);
@@ -1068,7 +1068,7 @@ public interface NetworkManagementClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for GetActiveSessions.
+     * @return response for GetActiveSessions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BastionActiveSessionInner> getActiveSessions(
@@ -1083,7 +1083,7 @@ public interface NetworkManagementClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for DisconnectActiveSessions.
+     * @return response for DisconnectActiveSessions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<BastionSessionStateInner> disconnectActiveSessionsAsync(
@@ -1098,7 +1098,7 @@ public interface NetworkManagementClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for DisconnectActiveSessions.
+     * @return response for DisconnectActiveSessions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BastionSessionStateInner> disconnectActiveSessions(
@@ -1114,7 +1114,7 @@ public interface NetworkManagementClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for DisconnectActiveSessions.
+     * @return response for DisconnectActiveSessions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BastionSessionStateInner> disconnectActiveSessions(
@@ -1129,7 +1129,8 @@ public interface NetworkManagementClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckDnsNameAvailability API service call.
+     * @return response for the CheckDnsNameAvailability API service call along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DnsNameAvailabilityResultInner>> checkDnsNameAvailabilityWithResponseAsync(
@@ -1144,7 +1145,7 @@ public interface NetworkManagementClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckDnsNameAvailability API service call.
+     * @return response for the CheckDnsNameAvailability API service call on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DnsNameAvailabilityResultInner> checkDnsNameAvailabilityAsync(String location, String domainNameLabel);
@@ -1173,7 +1174,7 @@ public interface NetworkManagementClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckDnsNameAvailability API service call.
+     * @return response for the CheckDnsNameAvailability API service call along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DnsNameAvailabilityResultInner> checkDnsNameAvailabilityWithResponse(
@@ -1187,7 +1188,7 @@ public interface NetworkManagementClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of SecurityProviders.
+     * @return collection of SecurityProviders along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<VirtualWanSecurityProvidersInner>> supportedSecurityProvidersWithResponseAsync(
@@ -1201,7 +1202,7 @@ public interface NetworkManagementClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of SecurityProviders.
+     * @return collection of SecurityProviders on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<VirtualWanSecurityProvidersInner> supportedSecurityProvidersAsync(
@@ -1229,7 +1230,7 @@ public interface NetworkManagementClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of SecurityProviders.
+     * @return collection of SecurityProviders along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VirtualWanSecurityProvidersInner> supportedSecurityProvidersWithResponse(
@@ -1245,7 +1246,8 @@ public interface NetworkManagementClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpn Profile Response for package generation.
+     * @return vpn Profile Response for package generation along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> generatevirtualwanvpnserverconfigurationvpnprofileWithResponseAsync(
@@ -1261,7 +1263,7 @@ public interface NetworkManagementClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpn Profile Response for package generation.
+     * @return the {@link PollerFlux} for polling of vpn Profile Response for package generation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner>
@@ -1278,7 +1280,7 @@ public interface NetworkManagementClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpn Profile Response for package generation.
+     * @return the {@link SyncPoller} for polling of vpn Profile Response for package generation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner>
@@ -1296,7 +1298,7 @@ public interface NetworkManagementClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpn Profile Response for package generation.
+     * @return the {@link SyncPoller} for polling of vpn Profile Response for package generation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner>
@@ -1316,7 +1318,7 @@ public interface NetworkManagementClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpn Profile Response for package generation.
+     * @return vpn Profile Response for package generation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<VpnProfileResponseInner> generatevirtualwanvpnserverconfigurationvpnprofileAsync(

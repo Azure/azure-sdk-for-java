@@ -139,7 +139,8 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnnotationErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of annotations for a component for given time range.
+     * @return the list of annotations for a component for given time range along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AnnotationInner>> listSinglePageAsync(
@@ -203,7 +204,8 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnnotationErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of annotations for a component for given time range.
+     * @return the list of annotations for a component for given time range along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AnnotationInner>> listSinglePageAsync(
@@ -337,7 +339,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnnotationErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Annotation.
+     * @return array of Annotation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<AnnotationInner>>> createWithResponseAsync(
@@ -396,7 +398,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnnotationErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Annotation.
+     * @return array of Annotation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<AnnotationInner>>> createWithResponseAsync(
@@ -451,7 +453,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnnotationErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Annotation.
+     * @return array of Annotation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<List<AnnotationInner>> createAsync(
@@ -496,7 +498,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnnotationErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Annotation.
+     * @return array of Annotation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<AnnotationInner>> createWithResponse(
@@ -513,7 +515,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -566,7 +568,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -615,7 +617,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String annotationId) {
@@ -648,7 +650,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -665,7 +667,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnnotationErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the annotation for given id.
+     * @return the annotation for given id along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<AnnotationInner>>> getWithResponseAsync(
@@ -720,7 +722,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnnotationErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the annotation for given id.
+     * @return the annotation for given id along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<AnnotationInner>>> getWithResponseAsync(
@@ -771,7 +773,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnnotationErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the annotation for given id.
+     * @return the annotation for given id on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<List<AnnotationInner>> getAsync(String resourceGroupName, String resourceName, String annotationId) {
@@ -812,7 +814,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnnotationErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the annotation for given id.
+     * @return the annotation for given id along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<AnnotationInner>> getWithResponse(

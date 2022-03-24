@@ -81,6 +81,13 @@ public final class AzureVMAppContainerProtectionContainer extends AzureWorkloadC
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureVMAppContainerProtectionContainer withProtectableObjectType(String protectableObjectType) {
+        super.withProtectableObjectType(protectableObjectType);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

@@ -67,7 +67,7 @@ public interface SqlPoolSecurityAlertPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool's security alert policy.
+     * @return a Sql pool's security alert policy along with {@link Response}.
      */
     Response<SqlPoolSecurityAlertPolicy> getWithResponse(
         String resourceGroupName,
@@ -83,7 +83,7 @@ public interface SqlPoolSecurityAlertPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool's security alert policy.
+     * @return a Sql pool's security alert policy along with {@link Response}.
      */
     SqlPoolSecurityAlertPolicy getById(String id);
 
@@ -95,7 +95,7 @@ public interface SqlPoolSecurityAlertPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool's security alert policy.
+     * @return a Sql pool's security alert policy along with {@link Response}.
      */
     Response<SqlPoolSecurityAlertPolicy> getByIdWithResponse(String id, Context context);
 

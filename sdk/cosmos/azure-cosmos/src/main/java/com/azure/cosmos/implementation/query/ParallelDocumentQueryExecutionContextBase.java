@@ -17,8 +17,6 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -37,7 +35,6 @@ import java.util.function.Function;
 public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resource>
         extends DocumentQueryExecutionContextBase<T> implements IDocumentQueryExecutionComponent<T> {
 
-    protected final Logger logger;
     protected final List<DocumentProducer<T>> documentProducers;
     protected final SqlQuerySpec querySpec;
     protected int pageSize;
@@ -51,7 +48,6 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
         super(diagnosticsClientContext, client, resourceTypeEnum, resourceType, query, cosmosQueryRequestOptions, resourceLink, getLazyFeedResponse,
                 correlatedActivityId);
 
-        logger = LoggerFactory.getLogger(this.getClass());
         documentProducers = new ArrayList<>();
         if (!Strings.isNullOrEmpty(rewrittenQuery)) {
             this.querySpec = new SqlQuerySpec(rewrittenQuery, super.query.getParameters());
@@ -71,6 +67,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
                 Map<String, String> headers = new HashMap<>(commonRequestHeaders);
                 headers.put(HttpConstants.HttpHeaders.CONTINUATION, continuationToken);
                 headers.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(pageSize));
+                headers.put(HttpConstants.HttpHeaders.CORRELATED_ACTIVITY_ID, correlatedActivityId.toString());
 
                 PartitionKeyInternal partitionKeyInternal = null;
                 if (cosmosQueryRequestOptions.getPartitionKey() != null && cosmosQueryRequestOptions.getPartitionKey() != PartitionKey.NONE) {

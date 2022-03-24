@@ -115,7 +115,7 @@ public class DocumentQueryExecutionContextFactory {
             Instant endTime = Instant.now(); // endTime for query plan diagnostics
             PartitionedQueryExecutionInfo partitionedQueryExecutionInfo = queryPlanCache.get(query.getQueryText());
             if (partitionedQueryExecutionInfo != null) {
-                logger.info("Skipping query plan round trip by using the cached plan");
+                logger.debug("Skipping query plan round trip by using the cached plan");
                 return getTargetRangesFromQueryPlan(cosmosQueryRequestOptions, collection, queryExecutionContext,
                                                     partitionedQueryExecutionInfo, startTime, endTime);
             }

@@ -127,7 +127,7 @@ public final class MetadataRolesImpl {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return list of Metadata roles.
+     * @return list of Metadata roles along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions) {
@@ -205,7 +205,7 @@ public final class MetadataRolesImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return list of Metadata roles.
+     * @return list of Metadata roles along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions, Context context) {
@@ -463,7 +463,7 @@ public final class MetadataRolesImpl {
      * @param nextLink The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return list of Metadata roles.
+     * @return list of Metadata roles along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
@@ -529,7 +529,7 @@ public final class MetadataRolesImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return list of Metadata roles.
+     * @return list of Metadata roles along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(

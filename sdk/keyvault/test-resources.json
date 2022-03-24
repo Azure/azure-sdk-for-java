@@ -67,24 +67,24 @@
     },
     "keyVaultSku": {
       "type": "string",
-      "defaultValue": "Premium",
+      "defaultValue": "premium",
       "allowedValues": [
-        "Standard",
-        "Premium"
+        "standard",
+        "premium"
       ],
       "metadata": {
         "description": "Key Vault SKU to deploy. The default is 'Premium'"
       }
     },
-    "endpointSuffix": {
-      "type": "String",
-      "defaultValue": "vault.azure.net"
+    "keyVaultEndpointSuffix": {
+      "type": "string",
+      "defaultValue": ".vault.azure.net"
     },
     "testApplicationId": {
-      "type": "String"
+      "type": "string"
     },
     "testApplicationSecret": {
-      "type": "String"
+      "type": "string"
     },
     "enabledForDeployment": {
       "type": "bool",
@@ -206,53 +206,53 @@
             "objectId": "[parameters('testApplicationOid')]",
             "permissions": {
               "keys": [
-                "backup",
-                "create",
-                "decrypt",
-                "delete",
-                "encrypt",
-                "get",
-                "getrotationpolicy",
-                "import",
-                "list",
-                "purge",
-                "recover",
-                "restore",
-                "rotate",
-                "sign",
-                "setrotationpolicy",
-                "unwrapKey",
-                "update",
-                "verify",
-                "wrapKey"
+                "Get",
+                "List",
+                "Update",
+                "Create",
+                "Import",
+                "Delete",
+                "Recover",
+                "Backup",
+                "Restore",
+                "Decrypt",
+                "Encrypt",
+                "UnwrapKey",
+                "WrapKey",
+                "Sign",
+                "Purge",
+                "Rotate",
+                "Verify",
+                "GetRotationPolicy",
+                "SetRotationPolicy"
               ],
               "secrets": [
-                "backup",
-                "delete",
-                "get",
-                "list",
-                "purge",
-                "recover",
-                "restore",
-                "set"
+                "Get",
+                "List",
+                "Set",
+                "Delete",
+                "Recover",
+                "Backup",
+                "Restore",
+                "Purge"
               ],
               "certificates": [
-                "backup",
-                "create",
-                "delete",
-                "deleteissuers",
-                "get",
-                "getissuers",
-                "import",
-                "list",
-                "listissuers",
-                "managecontacts",
-                "manageissuers",
-                "purge",
-                "recover",
-                "restore",
-                "setissuers",
-                "update"
+                "Get",
+                "List",
+                "Update",
+                "Create",
+                "Import",
+                "Delete",
+                "Recover",
+                "Backup",
+                "Restore",
+                "ManageContacts",
+                "ManageIssuers",
+                "GetIssuers",
+                "ListIssuers",
+                "SetIssuers",
+                "DeleteIssuers",
+                "Purge"
               ]
             }
           },
@@ -261,53 +261,53 @@
             "objectId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('identityName')), '2018-11-30').principalId]",
             "permissions": {
               "keys": [
-                "backup",
-                "create",
-                "decrypt",
-                "delete",
-                "encrypt",
-                "get",
-                "getrotationpolicy",
-                "import",
-                "list",
-                "purge",
-                "recover",
-                "restore",
-                "rotate",
-                "sign",
-                "setrotationpolicy",
-                "unwrapKey",
-                "update",
-                "verify",
-                "wrapKey"
+                "Get",
+                "List",
+                "Update",
+                "Create",
+                "Import",
+                "Delete",
+                "Recover",
+                "Backup",
+                "Restore",
+                "Decrypt",
+                "Encrypt",
+                "UnwrapKey",
+                "WrapKey",
+                "Sign",
+                "Purge",
+                "Rotate",
+                "Verify",
+                "GetRotationPolicy",
+                "SetRotationPolicy"
               ],
               "secrets": [
-                "backup",
-                "delete",
-                "get",
-                "list",
-                "purge",
-                "recover",
-                "restore",
-                "set"
+                "Get",
+                "List",
+                "Set",
+                "Delete",
+                "Recover",
+                "Backup",
+                "Restore",
+                "Purge"
               ],
               "certificates": [
-                "backup",
-                "create",
-                "delete",
-                "deleteissuers",
-                "get",
-                "getissuers",
-                "import",
-                "list",
-                "listissuers",
-                "managecontacts",
-                "manageissuers",
-                "purge",
-                "recover",
-                "restore",
-                "setissuers",
-                "update"
+                "Get",
+                "List",
+                "Update",
+                "Create",
+                "Import",
+                "Delete",
+                "Recover",
+                "Backup",
+                "Restore",
+                "ManageContacts",
+                "ManageIssuers",
+                "GetIssuers",
+                "ListIssuers",
+                "SetIssuers",
+                "DeleteIssuers",
+                "Purge"
               ]
             }
           }
@@ -508,6 +508,10 @@
     "AZURE_KEYVAULT_ATTESTATION_URL": {
       "type": "string",
       "value": "[parameters('attestationUrl')]"
+    },
+    "KEY_VAULT_ENDPOINT_SUFFIX": {
+      "type": "string",
+      "value": "[parameters('keyVaultEndpointSuffix')]"
     }
   }
 }

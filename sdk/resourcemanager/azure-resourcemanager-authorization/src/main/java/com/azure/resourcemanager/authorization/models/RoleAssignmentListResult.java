@@ -25,7 +25,7 @@ public final class RoleAssignmentListResult {
     /*
      * The URL to use for getting the next set of results.
      */
-    @JsonProperty(value = "nextLink")
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -55,17 +55,6 @@ public final class RoleAssignmentListResult {
      */
     public String nextLink() {
         return this.nextLink;
-    }
-
-    /**
-     * Set the nextLink property: The URL to use for getting the next set of results.
-     *
-     * @param nextLink the nextLink value to set.
-     * @return the RoleAssignmentListResult object itself.
-     */
-    public RoleAssignmentListResult withNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
     }
 
     /**

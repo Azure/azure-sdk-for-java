@@ -34,6 +34,9 @@ public final class DeliveryRuleActionValue extends ExpandableStringEnum<Delivery
     /** Static value OriginGroupOverride for DeliveryRuleActionValue. */
     public static final DeliveryRuleActionValue ORIGIN_GROUP_OVERRIDE = fromString("OriginGroupOverride");
 
+    /** Static value RouteConfigurationOverride for DeliveryRuleActionValue. */
+    public static final DeliveryRuleActionValue ROUTE_CONFIGURATION_OVERRIDE = fromString("RouteConfigurationOverride");
+
     /**
      * Creates or finds a DeliveryRuleActionValue from its string representation.
      *

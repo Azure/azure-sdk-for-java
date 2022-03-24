@@ -20,7 +20,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Serialization")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Parquet", value = ParquetSerialization.class),
-    @JsonSubTypes.Type(name = "CustomClr", value = CustomClrSerialization.class),
     @JsonSubTypes.Type(name = "Csv", value = CsvSerialization.class),
     @JsonSubTypes.Type(name = "Json", value = JsonSerialization.class),
     @JsonSubTypes.Type(name = "Avro", value = AvroSerialization.class)

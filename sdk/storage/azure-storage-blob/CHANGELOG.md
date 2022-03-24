@@ -1,6 +1,6 @@
 # Release History
 
-## 12.15.0-beta.3 (Unreleased)
+## 12.16.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -8,7 +8,49 @@
 
 ### Bugs Fixed
 
+- Fixed a bug where `uploadFromFile(String, boolean)` used a different size to determine whether blob existence should
+  be checked before using chunked upload than the size used to triggered chunked upload.
+
 ### Other Changes
+
+## 12.15.0 (2022-03-09)
+
+### Bugs Fixed
+- Fixed a bug where a timeout parameter was being ignored on an uploadFromFileWithResponse. 
+
+### Other Changes
+- GA release for STG 79, 80, 81
+
+## 12.14.4 (2022-02-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.1` to version `1.25.0`.
+- Upgraded `azure-core-http-netty` from `1.11.6` to version `1.11.7`.
+- Upgraded `azure-storage-common` from `12.14.2` to version `12.14.3`.
+- Upgraded `azure-storage-internal-avro` from `12.1.3` to version `12.1.4`.
+
+## 12.15.0-beta.3 (2022-02-09)
+
+### Features Added
+- Added support for 2021-04-10 service version.
+- Added support for filterBlobs api on container clients.
+
+### Bugs Fixed
+- Fixed a bug in builders that would cause container or blobName to be erased if specified before the connection string.
+
+## 12.14.3 (2022-01-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.22.0` to version `1.24.1`.
+- Upgraded `azure-core-http-netty` from `1.11.2` to version `1.11.6`.
+- Upgraded `azure-storage-common` from `12.14.1` to version `12.14.2`.
+- Upgraded `azure-storage-internal-avro` from `12.1.2` to version `12.1.3`.
 
 ## 12.15.0-beta.2 (2021-12-07)
 

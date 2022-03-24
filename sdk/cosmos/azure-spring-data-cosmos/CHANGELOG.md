@@ -1,6 +1,6 @@
 ## Release History
 
-### 3.16.0-beta.1 (Unreleased)
+### 3.20.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,28 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 3.19.0 (2022-03-10)
+#### Features Added
+* Updated `Spring Boot` to version `2.6.3`.
+* Updated `azure-cosmos` to version `4.27.0`.
+* Added support for container `UniqueKey` policies - See [PR 27270](https://github.com/Azure/azure-sdk-for-java/pull/27270)
+
+#### Key Bug Fixes
+* Fixed an issue with `userAgent` in `azure-spring-data-cosmos` being overridden by other spring modules - See [PR 27311](https://github.com/Azure/azure-sdk-for-java/pull/27311)
+
+### 3.18.0 (2022-02-11)
+#### Features Added
+* Updated `azure-cosmos` to version `4.26.0`.
+
+### 3.17.0 (2022-01-14)
+#### Features Added
+* Updated `Spring Boot` to version `2.6.2`.
+* Updated `azure-cosmos` to version `4.25.0`.
+
+### 3.16.0 (2021-12-21)
+#### Features Added
+* Updated `azure-cosmos` to version `4.24.0`.
 
 ### 3.15.0 (2021-12-10)
 #### Features Added

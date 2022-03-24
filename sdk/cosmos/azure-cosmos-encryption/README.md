@@ -12,7 +12,7 @@ The Azure Cosmos Encryption Plugin is used for encrypting data with user provide
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos-encryption</artifactId>
-  <version>1.0.0-beta.7</version>
+  <version>1.0.0-beta.10</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -56,9 +56,10 @@ CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
     .endpoint("<YOUR ENDPOINT HERE>")
     .key("<YOUR KEY HERE>")
     .buildAsyncClient();
+KeyEncryptionKeyClientBuilder keyEncryptionKeyClientBuilder = new KeyEncryptionKeyClientBuilder().credential(tokenCredentials);
 CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient =
-    CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(cosmosAsyncClient,
-        new AzureKeyVaultKeyStoreProvider(tokenCredentials));
+    new CosmosEncryptionClientBuilder().cosmosAsyncClient(cosmosAsyncClient).keyEncryptionKeyResolver(
+        keyEncryptionKeyClientBuilder).keyEncryptionKeyResolverName(CosmosEncryptionClientBuilder.KEY_RESOLVER_NAME_AZURE_KEY_VAULT).buildAsyncClient();
 ```
 
 ### Create Cosmos Encryption Database
@@ -81,17 +82,17 @@ You need to first create Container with ClientEncryptionPolicy and using cosmos 
 
 ```java readme-sample-createCosmosEncryptionContainer
 //Create Client Encryption Key
-EncryptionKeyWrapMetadata metadata = new EncryptionKeyWrapMetadata(encryptionKeyStoreProvider.getProviderName(), "key", "tempmetadata");
+EncryptionKeyWrapMetadata metadata = new EncryptionKeyWrapMetadata(this.cosmosEncryptionAsyncClient.getKeyEncryptionKeyResolverName(), "key", "tempmetadata", EncryptionAlgorithm.RSA_OAEP.toString());
 CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer = cosmosEncryptionAsyncDatabase
-    .createClientEncryptionKey("key", CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256, metadata)
+    .createClientEncryptionKey("key", CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), metadata)
     // TIP: Our APIs are Reactor Core based, so try to chain your calls
     .then(Mono.defer(() -> {
         //Create Encryption Container
         ClientEncryptionIncludedPath includedPath = new ClientEncryptionIncludedPath();
         includedPath.setClientEncryptionKeyId("key");
         includedPath.setPath("/sensitiveString");
-        includedPath.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
-        includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
+        includedPath.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
+        includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
         List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
         paths.add(includedPath);
@@ -222,7 +223,7 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [troubleshooting]: https://docs.microsoft.com/azure/cosmos-db/troubleshoot-java-sdk-v4-sql
 [perf_guide]: https://docs.microsoft.com/azure/cosmos-db/performance-tips-java-sdk-v4-sql?tabs=api-async
 [sql_api_query]: https://docs.microsoft.com/azure/cosmos-db/sql-api-sql-query
-[getting_started_encryption]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-cosmos-encryption/src/samples/java/com/azure/cosmos
+[getting_started_encryption]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-cosmos-encryption/src/samples/java/com/azure/cosmos/encryption/
 [quickstart]: https://docs.microsoft.com/azure/cosmos-db/create-sql-api-java?tabs=sync
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2Fazure-cosmos-encryption%2FREADME.png)

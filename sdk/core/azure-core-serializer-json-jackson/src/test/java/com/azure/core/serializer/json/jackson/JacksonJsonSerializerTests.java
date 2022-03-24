@@ -140,9 +140,9 @@ public class JacksonJsonSerializerTests {
 
             String fieldName;
             while ((fieldName = parser.nextFieldName()) != null) {
-                if (fieldName.equalsIgnoreCase("name") && parser.nextToken() != JsonToken.VALUE_NULL) {
+                if ("name".equalsIgnoreCase(fieldName) && parser.nextToken() != JsonToken.VALUE_NULL) {
                     name = (String) parser.getCurrentValue();
-                } else if (fieldName.equalsIgnoreCase("age")) {
+                } else if ("age".equalsIgnoreCase(fieldName)) {
                     age = parser.nextIntValue(0);
                 }
             }

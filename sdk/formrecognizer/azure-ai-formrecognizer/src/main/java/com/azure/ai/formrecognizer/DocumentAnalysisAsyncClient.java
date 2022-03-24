@@ -420,7 +420,6 @@ public final class DocumentAnalysisAsyncClient {
                 status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
                 break;
             case FAILED:
-                // TODO (Revisit error logic https://github.com/Azure/azure-sdk-for-java-pr/issues/1337)
                 throw logger.logExceptionAsError(
                     Transforms.toDocumentModelOperationException(analyzeResultOperationResponse.getValue().getError()));
             default:

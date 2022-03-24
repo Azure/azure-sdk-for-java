@@ -24,7 +24,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation.
+     * @return a deployments operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DeploymentOperationInner>> getAtScopeWithResponseAsync(
@@ -39,7 +39,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation.
+     * @return a deployments operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DeploymentOperationInner> getAtScopeAsync(String scope, String deploymentName, String operationId);
@@ -68,7 +68,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation.
+     * @return a deployments operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DeploymentOperationInner> getAtScopeWithResponse(
@@ -83,7 +83,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment.
+     * @return all deployments operations for a deployment as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DeploymentOperationInner> listAtScopeAsync(String scope, String deploymentName, Integer top);
@@ -96,7 +96,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment.
+     * @return all deployments operations for a deployment as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DeploymentOperationInner> listAtScopeAsync(String scope, String deploymentName);
@@ -109,7 +109,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment.
+     * @return all deployments operations for a deployment as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DeploymentOperationInner> listAtScope(String scope, String deploymentName);
@@ -124,7 +124,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment.
+     * @return all deployments operations for a deployment as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DeploymentOperationInner> listAtScope(
@@ -138,7 +138,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation.
+     * @return a deployments operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DeploymentOperationInner>> getAtTenantScopeWithResponseAsync(
@@ -152,7 +152,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation.
+     * @return a deployments operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DeploymentOperationInner> getAtTenantScopeAsync(String deploymentName, String operationId);
@@ -179,7 +179,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation.
+     * @return a deployments operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DeploymentOperationInner> getAtTenantScopeWithResponse(
@@ -193,7 +193,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment.
+     * @return all deployments operations for a deployment as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DeploymentOperationInner> listAtTenantScopeAsync(String deploymentName, Integer top);
@@ -205,7 +205,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment.
+     * @return all deployments operations for a deployment as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DeploymentOperationInner> listAtTenantScopeAsync(String deploymentName);
@@ -217,7 +217,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment.
+     * @return all deployments operations for a deployment as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DeploymentOperationInner> listAtTenantScope(String deploymentName);
@@ -231,7 +231,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment.
+     * @return all deployments operations for a deployment as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DeploymentOperationInner> listAtTenantScope(String deploymentName, Integer top, Context context);
@@ -245,7 +245,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation.
+     * @return a deployments operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DeploymentOperationInner>> getAtManagementGroupScopeWithResponseAsync(
@@ -260,7 +260,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation.
+     * @return a deployments operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DeploymentOperationInner> getAtManagementGroupScopeAsync(
@@ -290,7 +290,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation.
+     * @return a deployments operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DeploymentOperationInner> getAtManagementGroupScopeWithResponse(
@@ -305,7 +305,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment.
+     * @return all deployments operations for a deployment as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DeploymentOperationInner> listAtManagementGroupScopeAsync(
@@ -319,7 +319,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment.
+     * @return all deployments operations for a deployment as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DeploymentOperationInner> listAtManagementGroupScopeAsync(String groupId, String deploymentName);
@@ -332,7 +332,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment.
+     * @return all deployments operations for a deployment as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DeploymentOperationInner> listAtManagementGroupScope(String groupId, String deploymentName);
@@ -347,7 +347,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment.
+     * @return all deployments operations for a deployment as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DeploymentOperationInner> listAtManagementGroupScope(
@@ -361,7 +361,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation.
+     * @return a deployments operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DeploymentOperationInner>> getAtSubscriptionScopeWithResponseAsync(
@@ -375,7 +375,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation.
+     * @return a deployments operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DeploymentOperationInner> getAtSubscriptionScopeAsync(String deploymentName, String operationId);
@@ -402,7 +402,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation.
+     * @return a deployments operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DeploymentOperationInner> getAtSubscriptionScopeWithResponse(
@@ -416,7 +416,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment.
+     * @return all deployments operations for a deployment as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DeploymentOperationInner> listAtSubscriptionScopeAsync(String deploymentName, Integer top);
@@ -428,7 +428,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment.
+     * @return all deployments operations for a deployment as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DeploymentOperationInner> listAtSubscriptionScopeAsync(String deploymentName);
@@ -440,7 +440,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment.
+     * @return all deployments operations for a deployment as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DeploymentOperationInner> listAtSubscriptionScope(String deploymentName);
@@ -454,7 +454,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment.
+     * @return all deployments operations for a deployment as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DeploymentOperationInner> listAtSubscriptionScope(
@@ -469,7 +469,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation.
+     * @return a deployments operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DeploymentOperationInner>> getWithResponseAsync(
@@ -484,7 +484,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation.
+     * @return a deployments operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DeploymentOperationInner> getAsync(String resourceGroupName, String deploymentName, String operationId);
@@ -513,7 +513,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation.
+     * @return a deployments operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DeploymentOperationInner> getWithResponse(
@@ -528,7 +528,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment.
+     * @return all deployments operations for a deployment as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DeploymentOperationInner> listByResourceGroupAsync(
@@ -542,7 +542,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment.
+     * @return all deployments operations for a deployment as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DeploymentOperationInner> listByResourceGroupAsync(String resourceGroupName, String deploymentName);
@@ -555,7 +555,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment.
+     * @return all deployments operations for a deployment as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DeploymentOperationInner> listByResourceGroup(String resourceGroupName, String deploymentName);
@@ -570,7 +570,7 @@ public interface DeploymentOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments operations for a deployment.
+     * @return all deployments operations for a deployment as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DeploymentOperationInner> listByResourceGroup(

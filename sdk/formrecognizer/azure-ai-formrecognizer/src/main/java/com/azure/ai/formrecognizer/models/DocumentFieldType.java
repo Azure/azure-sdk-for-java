@@ -42,6 +42,9 @@ public final class DocumentFieldType extends ExpandableStringEnum<DocumentFieldT
     /** Static value object for DocumentFieldType. */
     public static final DocumentFieldType MAP = fromString("object");
 
+    /** Static value currency for DocumentFieldType. */
+    public static final DocumentFieldType CURRENCY = fromString("currency");
+
     /**
      * Creates or finds a DocumentFieldType from its string representation.
      *

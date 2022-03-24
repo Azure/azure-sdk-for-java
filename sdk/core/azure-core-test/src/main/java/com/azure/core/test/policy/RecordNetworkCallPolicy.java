@@ -195,7 +195,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                     return Tuples.of(bufferedResponse, responseData);
                 });
         } else if (contentType.equalsIgnoreCase(ContentType.APPLICATION_OCTET_STREAM)
-            || contentType.equalsIgnoreCase("avro/binary")) {
+            || "avro/binary".equalsIgnoreCase(contentType)) {
             return responseBody.switchIfEmpty(Mono.defer(() -> Mono.just(new byte[0])))
                 .map(bytes -> {
                     if (bytes.length == 0) {

@@ -16,22 +16,28 @@ public final class RequestSchemeMatchConditionParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RequestSchemeMatchConditionParameters.class);
 
     /*
-     * The @odata.type property.
+     * The typeName property.
      */
-    @JsonProperty(value = "@odata.type", required = true)
-    private String odataType;
+    @JsonProperty(value = "typeName", required = true)
+    private String typeName = "DeliveryRuleRequestSchemeConditionParameters";
 
     /*
      * Describes operator to be matched
      */
     @JsonProperty(value = "operator", required = true)
-    private String operator;
+    private String operator = "Equal";
 
     /*
      * Describes if this is negate condition or not
      */
     @JsonProperty(value = "negateCondition")
     private Boolean negateCondition;
+
+    /*
+     * List of transforms
+     */
+    @JsonProperty(value = "transforms")
+    private List<Transform> transforms;
 
     /*
      * The match value for the condition of the delivery rule
@@ -41,27 +47,27 @@ public final class RequestSchemeMatchConditionParameters {
 
     /** Creates an instance of RequestSchemeMatchConditionParameters class. */
     public RequestSchemeMatchConditionParameters() {
-        odataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleRequestSchemeConditionParameters";
+        typeName = "DeliveryRuleRequestSchemeConditionParameters";
         operator = "Equal";
     }
 
     /**
-     * Get the odataType property: The @odata.type property.
+     * Get the typeName property: The typeName property.
      *
-     * @return the odataType value.
+     * @return the typeName value.
      */
-    public String odataType() {
-        return this.odataType;
+    public String typeName() {
+        return this.typeName;
     }
 
     /**
-     * Set the odataType property: The @odata.type property.
+     * Set the typeName property: The typeName property.
      *
-     * @param odataType the odataType value to set.
+     * @param typeName the typeName value to set.
      * @return the RequestSchemeMatchConditionParameters object itself.
      */
-    public RequestSchemeMatchConditionParameters withOdataType(String odataType) {
-        this.odataType = odataType;
+    public RequestSchemeMatchConditionParameters withTypeName(String typeName) {
+        this.typeName = typeName;
         return this;
     }
 
@@ -102,6 +108,26 @@ public final class RequestSchemeMatchConditionParameters {
      */
     public RequestSchemeMatchConditionParameters withNegateCondition(Boolean negateCondition) {
         this.negateCondition = negateCondition;
+        return this;
+    }
+
+    /**
+     * Get the transforms property: List of transforms.
+     *
+     * @return the transforms value.
+     */
+    public List<Transform> transforms() {
+        return this.transforms;
+    }
+
+    /**
+     * Set the transforms property: List of transforms.
+     *
+     * @param transforms the transforms value to set.
+     * @return the RequestSchemeMatchConditionParameters object itself.
+     */
+    public RequestSchemeMatchConditionParameters withTransforms(List<Transform> transforms) {
+        this.transforms = transforms;
         return this;
     }
 

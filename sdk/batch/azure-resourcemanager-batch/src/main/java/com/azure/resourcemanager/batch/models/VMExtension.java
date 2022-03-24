@@ -6,15 +6,12 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The configuration for virtual machine extensions. */
 @Fluent
 public final class VMExtension {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VMExtension.class);
-
     /*
      * The name of the virtual machine extension.
      */
@@ -243,19 +240,21 @@ public final class VMExtension {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model VMExtension"));
         }
         if (publisher() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property publisher in model VMExtension"));
         }
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property type in model VMExtension"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VMExtension.class);
 }

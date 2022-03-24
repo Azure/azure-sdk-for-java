@@ -134,7 +134,7 @@ public final class SynonymMapsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a synonym map definition.
+     * @return represents a synonym map definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SynonymMap>> createOrUpdateWithResponseAsync(
@@ -177,7 +177,7 @@ public final class SynonymMapsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
@@ -208,7 +208,7 @@ public final class SynonymMapsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a synonym map definition.
+     * @return represents a synonym map definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SynonymMap>> getWithResponseAsync(
@@ -238,7 +238,8 @@ public final class SynonymMapsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List SynonymMaps request.
+     * @return response from a List SynonymMaps request along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ListSynonymMapsResult>> listWithResponseAsync(
@@ -262,7 +263,7 @@ public final class SynonymMapsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a synonym map definition.
+     * @return represents a synonym map definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SynonymMap>> createWithResponseAsync(

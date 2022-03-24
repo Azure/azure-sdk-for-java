@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for AvailabilitySets List. */
 public final class AvailabilitySetsListSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/ListAvailabilitySetsInASubscription.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/ListAvailabilitySetsInASubscription.json
      */
     /**
      * Sample code: List availability sets in a subscription.

@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.communication.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.communication.models.LocationResource;
 import com.azure.resourcemanager.communication.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** A class representing a CommunicationService resource. */
-@JsonFlatten
 @Fluent
-public class CommunicationServiceResourceInner extends LocationResource {
+public final class CommunicationServiceResourceInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CommunicationServiceResourceInner.class);
+
+    /*
+     * The properties of the service.
+     */
+    @JsonProperty(value = "properties")
+    private CommunicationServiceProperties innerProperties;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
@@ -27,48 +32,27 @@ public class CommunicationServiceResourceInner extends LocationResource {
     private SystemData systemData;
 
     /*
-     * Provisioning state of the resource.
+     * The Azure location where the CommunicationService is running.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * FQDN of the CommunicationService instance.
-     */
-    @JsonProperty(value = "properties.hostName", access = JsonProperty.Access.WRITE_ONLY)
-    private String hostname;
-
-    /*
-     * The location where the communication service stores its data at rest.
-     */
-    @JsonProperty(value = "properties.dataLocation")
-    private String dataLocation;
-
-    /*
-     * Resource ID of an Azure Notification Hub linked to this resource.
-     */
-    @JsonProperty(value = "properties.notificationHubId", access = JsonProperty.Access.WRITE_ONLY)
-    private String notificationHubId;
-
-    /*
-     * Version of the CommunicationService resource. Probably you need the same
-     * or higher version of client SDKs.
-     */
-    @JsonProperty(value = "properties.version", access = JsonProperty.Access.WRITE_ONLY)
-    private String version;
-
-    /*
-     * The immutable resource Id of the communication service.
-     */
-    @JsonProperty(value = "properties.immutableResourceId", access = JsonProperty.Access.WRITE_ONLY)
-    private String immutableResourceId;
+    @JsonProperty(value = "location")
+    private String location;
 
     /*
      * Tags of the service which is a list of key value pairs that describe the
      * resource.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /**
+     * Get the innerProperties property: The properties of the service.
+     *
+     * @return the innerProperties value.
+     */
+    private CommunicationServiceProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
@@ -80,69 +64,23 @@ public class CommunicationServiceResourceInner extends LocationResource {
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the resource.
+     * Get the location property: The Azure location where the CommunicationService is running.
      *
-     * @return the provisioningState value.
+     * @return the location value.
      */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
+    public String location() {
+        return this.location;
     }
 
     /**
-     * Get the hostname property: FQDN of the CommunicationService instance.
+     * Set the location property: The Azure location where the CommunicationService is running.
      *
-     * @return the hostname value.
-     */
-    public String hostname() {
-        return this.hostname;
-    }
-
-    /**
-     * Get the dataLocation property: The location where the communication service stores its data at rest.
-     *
-     * @return the dataLocation value.
-     */
-    public String dataLocation() {
-        return this.dataLocation;
-    }
-
-    /**
-     * Set the dataLocation property: The location where the communication service stores its data at rest.
-     *
-     * @param dataLocation the dataLocation value to set.
+     * @param location the location value to set.
      * @return the CommunicationServiceResourceInner object itself.
      */
-    public CommunicationServiceResourceInner withDataLocation(String dataLocation) {
-        this.dataLocation = dataLocation;
+    public CommunicationServiceResourceInner withLocation(String location) {
+        this.location = location;
         return this;
-    }
-
-    /**
-     * Get the notificationHubId property: Resource ID of an Azure Notification Hub linked to this resource.
-     *
-     * @return the notificationHubId value.
-     */
-    public String notificationHubId() {
-        return this.notificationHubId;
-    }
-
-    /**
-     * Get the version property: Version of the CommunicationService resource. Probably you need the same or higher
-     * version of client SDKs.
-     *
-     * @return the version value.
-     */
-    public String version() {
-        return this.version;
-    }
-
-    /**
-     * Get the immutableResourceId property: The immutable resource Id of the communication service.
-     *
-     * @return the immutableResourceId value.
-     */
-    public String immutableResourceId() {
-        return this.immutableResourceId;
     }
 
     /**
@@ -165,11 +103,73 @@ public class CommunicationServiceResourceInner extends LocationResource {
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public CommunicationServiceResourceInner withLocation(String location) {
-        super.withLocation(location);
+    /**
+     * Get the provisioningState property: Provisioning state of the resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the hostname property: FQDN of the CommunicationService instance.
+     *
+     * @return the hostname value.
+     */
+    public String hostname() {
+        return this.innerProperties() == null ? null : this.innerProperties().hostname();
+    }
+
+    /**
+     * Get the dataLocation property: The location where the communication service stores its data at rest.
+     *
+     * @return the dataLocation value.
+     */
+    public String dataLocation() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataLocation();
+    }
+
+    /**
+     * Set the dataLocation property: The location where the communication service stores its data at rest.
+     *
+     * @param dataLocation the dataLocation value to set.
+     * @return the CommunicationServiceResourceInner object itself.
+     */
+    public CommunicationServiceResourceInner withDataLocation(String dataLocation) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CommunicationServiceProperties();
+        }
+        this.innerProperties().withDataLocation(dataLocation);
         return this;
+    }
+
+    /**
+     * Get the notificationHubId property: Resource ID of an Azure Notification Hub linked to this resource.
+     *
+     * @return the notificationHubId value.
+     */
+    public String notificationHubId() {
+        return this.innerProperties() == null ? null : this.innerProperties().notificationHubId();
+    }
+
+    /**
+     * Get the version property: Version of the CommunicationService resource. Probably you need the same or higher
+     * version of client SDKs.
+     *
+     * @return the version value.
+     */
+    public String version() {
+        return this.innerProperties() == null ? null : this.innerProperties().version();
+    }
+
+    /**
+     * Get the immutableResourceId property: The immutable resource Id of the communication service.
+     *
+     * @return the immutableResourceId value.
+     */
+    public String immutableResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().immutableResourceId();
     }
 
     /**
@@ -177,8 +177,9 @@ public class CommunicationServiceResourceInner extends LocationResource {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

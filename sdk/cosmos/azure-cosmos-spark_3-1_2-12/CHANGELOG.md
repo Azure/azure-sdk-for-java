@@ -1,5 +1,60 @@
 ## Release History
-### 4.6.0-beta.1 (Unreleased)
+
+### 4.8.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
+### 4.7.0 (2022-03-11)
+
+#### Features Added
+* Added patch support - See [PR 27435](https://github.com/Azure/azure-sdk-for-java/pull/27435)
+
+#### Bugs Fixed
+* Fixed an issue causing errors deserializing offsets when using Cosmos change feed in Spark structured streaming jobs and upgrading from version 4.2.0 - 4.4.1 to later versions. - See [PR 27455](https://github.com/Azure/azure-sdk-for-java/pull/27455)
+
+### 4.6.2 (2022-02-16)
+#### Key Bug Fixes
+* Fixed an issue preventing preferred regions configured in `spark.cosmos.preferredRegionsList` from being used - See [PR 27084](https://github.com/Azure/azure-sdk-for-java/pull/27084)
+* Fixed `spark.cosmos.changeFeed.itemCountPerTriggerHint` handling when using  structured streaming - there was an issue that would reduce the throughput in subsequent micro batches too aggressively. - See [PR 27101](https://github.com/Azure/azure-sdk-for-java/pull/27101)
+* Fixed an issue preventing driver programs to cleanly shutting down due to active Cosmos Clients being cached. - See [PR 27137](https://github.com/Azure/azure-sdk-for-java/pull/27137)
+* Fixed an issue resulting in excessive memory consumption due to unbounded prefetch of data in Spark queries (batch or structured streaming) using the `cosmos.oltp` or `cosmos.oltp.changeFeed` connector when the data gets consumed slower than retrieved from the Cosmos DB backend. - See [PR 27237](https://github.com/Azure/azure-sdk-for-java/pull/27237) and [PR 27261](https://github.com/Azure/azure-sdk-for-java/pull/27261) and [PR 27299](https://github.com/Azure/azure-sdk-for-java/pull/27299)
+
+### 4.6.1 (2022-02-11)
+#### Key Bug Fixes
+* Fixed a regression introduced in 4.5.0 that could result in returning incomplete query results when Executors are under high CPU load. - See [PR 26991](https://github.com/Azure/azure-sdk-for-java/pull/26991)
+
+#### New Features
+* Added support for reading from a Cosmos table without schema inference and maintaining system properties `_ts` and `_etag` when writing this data to another Cosmos container. This is helpful when moving data from one container to another without always consistent schema of the documents in the source container. - See [PR 26820](https://github.com/Azure/azure-sdk-for-java/pull/26820)
+* Added support for new `spark.cosmos.write.strategy` value  `ItemOverwriteIfNotModified`, which will allow only updating documents that haven't been modified since reading them (optimistic concurrency). - See [PR 26847](https://github.com/Azure/azure-sdk-for-java/pull/26847)
+* Added support for correlating queries executed via the Cosmos Spark connector with service-telemetry based on the `correlationActivityId`. - See [PR 26908](https://github.com/Azure/azure-sdk-for-java/pull/26908)
+* Improved direct transport configuration in Spark to reduce number of transient failures under very high CPU/memory pressure on Spark Executors. - See [PR 27021](https://github.com/Azure/azure-sdk-for-java/pull/27021)
+
+### 4.6.0 (2022-01-25)
+#### Key Bug Fixes
+* Fixed an issue in schema inference logic resulting in only using the first element of an array to derive the schema. - See [PR 26568](https://github.com/Azure/azure-sdk-for-java/pull/26568)
+
+#### New Features
+* Added support for Spark 3.2. Two different maven packages will be published - but we will keep versions with further feature updates and fixes in-sync between both.
+  - Spark 3.1: com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12:4.6.0
+  - Spark 3.2: com.azure.cosmos.spark:azure-cosmos-spark_3-2_2-12:4.6.0
+
+### 4.5.3 (2022-01-06)
+#### Key Bug Fixes
+* Fixed an issue in the Java SDK that would result in NullPointerException when trying to bulk-ingest data into deleted and recreated container. - See [PR 26205](https://github.com/Azure/azure-sdk-for-java/pull/26205)
+
+#### New Features
+* Added support for writing RDDs containing ShortType or ByteType columns into Cosmos DB. - See [PR 26137](https://github.com/Azure/azure-sdk-for-java/pull/26137).
+
+### 4.5.2 (2021-12-17)
+#### Key Bug Fixes
+* Fixed an issue in the Java SDK that would expose request timeouts from the Gateway endpoint with StatusCode==0 instead of 408. This resulted in not retrying these transient errors in the Spark connector as expected. - See [PR 26049](https://github.com/Azure/azure-sdk-for-java/pull/26049)
+* Fixed a bug where bulk responses with mixed results don't handle 400/409 for individual item operations properly. This resulted in silently ignoring these 400/409 errors - the Spark job (for example to Upsert documents) completed "successfully" (because the 400s were silently ignored) without actually upserting the documents. This fix ensures that these errors are thrown, and the Spark job fails. - See [PR 26069](https://github.com/Azure/azure-sdk-for-java/pull/26069)
 
 ### 4.5.1 (2021-12-14)
 #### Key Bug Fixes
@@ -83,7 +138,7 @@
 * Cosmos DB Spark 3.1.1 Connector Preview `4.0.0-beta.3` Release.
 #### Configuration Renames
 * Renamed data source name `cosmos.changeFeed` to `cosmos.oltp.changeFeed`, see [PR](https://github.com/Azure/azure-sdk-for-java/pull/21121).
-* Configuration renamed. See [PR](https://github.com/Azure/azure-sdk-for-java/pull/21004) for list of changes. See [Configuration-Reference](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/configuration-reference.md) for more details.
+* Configuration renamed. See [PR](https://github.com/Azure/azure-sdk-for-java/pull/21004) for list of changes. See [Configuration-Reference](https://aka.ms/azure-cosmos-spark-3-config) for more details.
 
 #### Key Bug Fixes
 * Added validation for all config-settings with a name starting with "spark.cosmos."

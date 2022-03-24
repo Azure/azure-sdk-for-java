@@ -14,7 +14,7 @@ public final class EventHubCaptureFileCreatedEventData {
     /*
      * The path to the capture file.
      */
-    @JsonProperty(value = "fileurl")
+    @JsonProperty(value = "fileUrl")
     private String fileurl;
 
     /*

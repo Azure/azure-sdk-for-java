@@ -25,7 +25,7 @@ public final class AnomalyState {
     private AnomalyValue value;
 
     /*
-     * Error message when inference this timestamp
+     * Error message for the current timestamp
      */
     @JsonProperty(value = "errors")
     private List<ErrorResponse> errors;
@@ -71,7 +71,7 @@ public final class AnomalyState {
     }
 
     /**
-     * Get the errors property: Error message when inference this timestamp.
+     * Get the errors property: Error message for the current timestamp.
      *
      * @return the errors value.
      */
@@ -80,7 +80,7 @@ public final class AnomalyState {
     }
 
     /**
-     * Set the errors property: Error message when inference this timestamp.
+     * Set the errors property: Error message for the current timestamp.
      *
      * @param errors the errors value to set.
      * @return the AnomalyState object itself.

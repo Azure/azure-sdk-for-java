@@ -174,7 +174,7 @@ public interface VirtualMachineScaleSet
     /** @return the name of the OS disk of virtual machines in the scale set */
     String osDiskName();
 
-    /** @return the upgrade model */
+    /** @return the upgrade model, null for scale set with {@link OrchestrationMode#FLEXIBLE} */
     UpgradeMode upgradeModel();
 
     /** @return true if over provision is enabled for the virtual machines, false otherwise */

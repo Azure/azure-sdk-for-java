@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import com.azure.resourcemanager.containerregistry.models.Status;
+import com.azure.resourcemanager.containerregistry.models.ZoneRedundancy;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -37,6 +38,13 @@ public final class ReplicationProperties {
      */
     @JsonProperty(value = "regionEndpointEnabled")
     private Boolean regionEndpointEnabled;
+
+    /*
+     * Whether or not zone redundancy is enabled for this container registry
+     * replication
+     */
+    @JsonProperty(value = "zoneRedundancy")
+    private ZoneRedundancy zoneRedundancy;
 
     /**
      * Get the provisioningState property: The provisioning state of the replication at the time the operation was
@@ -78,6 +86,28 @@ public final class ReplicationProperties {
      */
     public ReplicationProperties withRegionEndpointEnabled(Boolean regionEndpointEnabled) {
         this.regionEndpointEnabled = regionEndpointEnabled;
+        return this;
+    }
+
+    /**
+     * Get the zoneRedundancy property: Whether or not zone redundancy is enabled for this container registry
+     * replication.
+     *
+     * @return the zoneRedundancy value.
+     */
+    public ZoneRedundancy zoneRedundancy() {
+        return this.zoneRedundancy;
+    }
+
+    /**
+     * Set the zoneRedundancy property: Whether or not zone redundancy is enabled for this container registry
+     * replication.
+     *
+     * @param zoneRedundancy the zoneRedundancy value to set.
+     * @return the ReplicationProperties object itself.
+     */
+    public ReplicationProperties withZoneRedundancy(ZoneRedundancy zoneRedundancy) {
+        this.zoneRedundancy = zoneRedundancy;
         return this;
     }
 

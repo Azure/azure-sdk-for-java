@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfo;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
+import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
@@ -220,7 +221,7 @@ public interface AsyncDocumentClient {
             ifThrowIllegalArgException(this.serviceEndpoint == null || StringUtils.isEmpty(this.serviceEndpoint.toString()), "cannot buildAsyncClient client without service endpoint");
             ifThrowIllegalArgException(
                     this.masterKeyOrResourceToken == null && (permissionFeed == null || permissionFeed.isEmpty())
-                        && this.credential == null && this.tokenCredential == null,
+                        && this.credential == null && this.tokenCredential == null && this.cosmosAuthorizationTokenResolver == null,
                     "cannot buildAsyncClient client without any one of masterKey, " +
                         "resource token, permissionFeed and azure key credential");
             ifThrowIllegalArgException(credential != null && StringUtils.isEmpty(credential.getKey()),

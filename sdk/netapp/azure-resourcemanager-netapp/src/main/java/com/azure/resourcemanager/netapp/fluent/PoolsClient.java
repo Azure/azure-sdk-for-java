@@ -24,7 +24,7 @@ public interface PoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of capacity pool resources.
+     * @return list of capacity pool resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CapacityPoolInner> list(String resourceGroupName, String accountName);
@@ -38,7 +38,7 @@ public interface PoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of capacity pool resources.
+     * @return list of capacity pool resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CapacityPoolInner> list(String resourceGroupName, String accountName, Context context);
@@ -67,7 +67,7 @@ public interface PoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified capacity pool.
+     * @return details of the specified capacity pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CapacityPoolInner> getWithResponse(
@@ -83,7 +83,7 @@ public interface PoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return capacity pool resource.
+     * @return the {@link SyncPoller} for polling of capacity pool resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CapacityPoolInner>, CapacityPoolInner> beginCreateOrUpdate(
@@ -100,7 +100,7 @@ public interface PoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return capacity pool resource.
+     * @return the {@link SyncPoller} for polling of capacity pool resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CapacityPoolInner>, CapacityPoolInner> beginCreateOrUpdate(
@@ -149,7 +149,7 @@ public interface PoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return capacity pool resource.
+     * @return the {@link SyncPoller} for polling of capacity pool resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CapacityPoolInner>, CapacityPoolInner> beginUpdate(
@@ -166,7 +166,7 @@ public interface PoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return capacity pool resource.
+     * @return the {@link SyncPoller} for polling of capacity pool resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CapacityPoolInner>, CapacityPoolInner> beginUpdate(
@@ -213,7 +213,7 @@ public interface PoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String poolName);
@@ -228,7 +228,7 @@ public interface PoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(

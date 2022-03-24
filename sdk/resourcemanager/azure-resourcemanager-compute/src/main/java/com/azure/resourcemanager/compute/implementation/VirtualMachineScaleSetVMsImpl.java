@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.resourcemanager.compute.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
@@ -8,7 +9,10 @@ import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetsClient;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetVMInner;
+import com.azure.resourcemanager.compute.models.InstanceViewTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVM;
+import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMExpandType;
+import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMInstanceIDs;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMInstanceRequiredIDs;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMs;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
@@ -45,7 +49,7 @@ class VirtualMachineScaleSetVMsImpl
 
     @Override
     public PagedIterable<VirtualMachineScaleSetVM> list() {
-        return super.wrapList(this.client.list(this.scaleSet.resourceGroupName(), this.scaleSet.name()));
+        return new PagedIterable<>(this.listAsync());
     }
 
     public VirtualMachineScaleSetVMsClient inner() {
@@ -85,15 +89,88 @@ class VirtualMachineScaleSetVMsImpl
     }
 
     @Override
+    public void deallocateInstances(Collection<String> instanceIds) {
+        this.deallocateInstancesAsync(instanceIds).block();
+    }
+
+    @Override
+    public Mono<Void> deallocateInstancesAsync(Collection<String> instanceIds) {
+        return this.scaleSet.manager().serviceClient().getVirtualMachineScaleSets().deallocateAsync(
+            this.scaleSet.resourceGroupName(), this.scaleSet.name(),
+            new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(new ArrayList<>(instanceIds)));
+    }
+
+    @Override
+    public void powerOffInstances(Collection<String> instanceIds, boolean skipShutdown) {
+        this.powerOffInstancesAsync(instanceIds, skipShutdown).block();
+    }
+
+    @Override
+    public Mono<Void> powerOffInstancesAsync(Collection<String> instanceIds, boolean skipShutdown) {
+        return this.scaleSet.manager().serviceClient().getVirtualMachineScaleSets().powerOffAsync(
+            this.scaleSet.resourceGroupName(), this.scaleSet.name(), skipShutdown,
+            new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(new ArrayList<>(instanceIds)));
+    }
+
+    @Override
+    public void startInstances(Collection<String> instanceIds) {
+        this.startInstancesAsync(instanceIds).block();
+    }
+
+    @Override
+    public Mono<Void> startInstancesAsync(Collection<String> instanceIds) {
+        return this.scaleSet.manager().serviceClient().getVirtualMachineScaleSets().startAsync(
+            this.scaleSet.resourceGroupName(), this.scaleSet.name(),
+            new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(new ArrayList<>(instanceIds)));
+    }
+
+    @Override
+    public void restartInstances(Collection<String> instanceIds) {
+        this.restartInstancesAsync(instanceIds).block();
+    }
+
+    @Override
+    public Mono<Void> restartInstancesAsync(Collection<String> instanceIds) {
+        return this.scaleSet.manager().serviceClient().getVirtualMachineScaleSets().restartAsync(
+            this.scaleSet.resourceGroupName(), this.scaleSet.name(),
+            new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(new ArrayList<>(instanceIds)));
+    }
+
+    @Override
+    public void redeployInstances(Collection<String> instanceIds) {
+        this.redeployInstancesAsync(instanceIds).block();
+    }
+
+    @Override
+    public Mono<Void> redeployInstancesAsync(Collection<String> instanceIds) {
+        return this.scaleSet.manager().serviceClient().getVirtualMachineScaleSets().redeployAsync(
+            this.scaleSet.resourceGroupName(), this.scaleSet.name(),
+            new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(new ArrayList<>(instanceIds)));
+    }
+
+//    @Override
+//    public void reimageInstances(Collection<String> instanceIds) {
+//        this.reimageInstancesAsync(instanceIds).block();
+//    }
+//
+//    @Override
+//    public Mono<Void> reimageInstancesAsync(Collection<String> instanceIds) {
+//        return this.scaleSet.manager().serviceClient().getVirtualMachineScaleSets().reimageAsync(
+//            this.scaleSet.resourceGroupName(), this.scaleSet.name(),
+//            new VirtualMachineScaleSetReimageParameters().withInstanceIds(new ArrayList<>(instanceIds)));
+//    }
+
+    @Override
     public VirtualMachineScaleSetVM getInstance(String instanceId) {
-        return this.wrapModel(client.get(this.scaleSet.resourceGroupName(), this.scaleSet.name(), instanceId));
+        return this.getInstanceAsync(instanceId).block();
     }
 
     @Override
     public Mono<VirtualMachineScaleSetVM> getInstanceAsync(String instanceId) {
         return this
             .client
-            .getAsync(this.scaleSet.resourceGroupName(), this.scaleSet.name(), instanceId)
+            .getAsync(this.scaleSet.resourceGroupName(), this.scaleSet.name(), instanceId,
+                InstanceViewTypes.INSTANCE_VIEW)
             .map(this::wrapModel);
     }
 
@@ -131,5 +208,16 @@ class VirtualMachineScaleSetVMsImpl
     @Override
     public void simulateEviction(String instanceId) {
         this.simulateEvictionAsync(instanceId).block();
+    }
+
+    @Override
+    public PagedIterable<VirtualMachineScaleSetVM> list(String filter, VirtualMachineScaleSetVMExpandType expand) {
+        return new PagedIterable<>(this.listAsync(filter, expand));
+    }
+
+    @Override
+    public PagedFlux<VirtualMachineScaleSetVM> listAsync(String filter, VirtualMachineScaleSetVMExpandType expand) {
+        return super.wrapPageAsync(this.client.listAsync(this.scaleSet.resourceGroupName(), this.scaleSet.name(),
+            filter, null, expand.toString()));
     }
 }

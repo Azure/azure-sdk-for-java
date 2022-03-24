@@ -24,17 +24,18 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.2
 
 ### Code generation settings
 ``` yaml
-tag: package-2021-10-08-preview
-require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f2e08ab373eb0e96b54920e89f9fc96d683355ca/specification/communication/data-plane/NetworkTraversal/readme.md
+tag: package-2022-02-01
+require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/1824478ffd262205f5e7ea8218b1d667fe091d9d/specification/communication/data-plane/NetworkTraversal/readme.md
 java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.networktraversal
 generate-client-as-impl: true
-custom-types: CommunicationIceServer,CommunicationErrorResponse,CommunicationRelayConfiguration,CommunicationRelayConfigurationRequest,CommunicationError,CommunicationErrorResponseException,RouteType
+custom-types: CommunicationIceServer,CommunicationRelayConfiguration,RouteType
 custom-types-subpackage: models
 models-subpackage: implementation.models
 sync-methods: all
 add-context-parameter: true
 context-client-method-parameter: true
+customization-class: src/main/java/CommunicationRelayCustomization.java
 ```

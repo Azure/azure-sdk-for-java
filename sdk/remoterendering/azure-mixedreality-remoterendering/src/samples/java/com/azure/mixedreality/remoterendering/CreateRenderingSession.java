@@ -32,6 +32,7 @@ public class CreateRenderingSession extends SampleBase
      * To avoid launching too many sessions during testing, we rely on the live tests.
      */
     public void createRenderingSession() {
+        // BEGIN: readme-sample-createRenderingSession
         BeginSessionOptions options = new BeginSessionOptions()
             .setMaxLeaseTime(Duration.ofMinutes(30))
             .setSize(RenderingSessionSize.STANDARD);
@@ -40,6 +41,7 @@ public class CreateRenderingSession extends SampleBase
         String sessionId = UUID.randomUUID().toString();
 
         SyncPoller<RenderingSession, RenderingSession> startSessionOperation = client.beginSession(sessionId, options);
+        // END: readme-sample-createRenderingSession
 
         RenderingSession session = startSessionOperation.getFinalResult();
         if (session.getStatus() == RenderingSessionStatus.READY) {
@@ -54,6 +56,8 @@ public class CreateRenderingSession extends SampleBase
         // ...
 
         // The session will automatically timeout, but in this sample we also demonstrate how to shut it down explicitly.
+        // BEGIN: readme-sample-stopASession
         client.endSession(sessionId);
+        // END: readme-sample-stopASession
     }
 }

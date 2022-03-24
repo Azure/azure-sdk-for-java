@@ -10,7 +10,7 @@ import com.azure.resourcemanager.compute.fluent.models.AvailabilitySetInner;
 /** Samples for AvailabilitySets CreateOrUpdate. */
 public final class AvailabilitySetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateAnAvailabilitySet.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/CreateAnAvailabilitySet.json
      */
     /**
      * Sample code: Create an availability set.

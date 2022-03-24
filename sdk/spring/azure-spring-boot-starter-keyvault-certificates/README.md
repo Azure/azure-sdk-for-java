@@ -162,7 +162,6 @@ Make sure the client-id can access target Key Vault.
 
 Configure a `RestTemplate` bean which set the `AzureKeyVault` as trust store:
 
-<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/java/com/azure/spring/security/keyvault/certificates/sample/client/side/SampleApplicationConfiguration.java#L25-L45 -->
 ```java
 @Bean
 public RestTemplate restTemplateWithTLS() throws Exception {
@@ -200,7 +199,6 @@ Make sure the managed identity can access target Key Vault.
 
 Configure a `RestTemplate` bean which set the `AzureKeyVault` as trust store:
 
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/keyvault/KeyVaultJcaManagedIdentitySample.java#L22-L40 -->
 ```java
 @Bean
 public RestTemplate restTemplateWithTLS() throws Exception {
@@ -237,7 +235,6 @@ server:
 
 Step 2. On the client side, update `RestTemplate`. Example:
 
-<!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/java/com/azure/spring/security/keyvault/certificates/sample/client/side/SampleApplicationConfiguration.java#L47-L75 -->
 ```java
 @Bean
 public RestTemplate restTemplateWithMTLS() throws Exception {

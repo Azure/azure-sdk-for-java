@@ -22,7 +22,7 @@ public interface CommunityGalleryImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a community gallery image.
+     * @return a community gallery image along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<CommunityGalleryImageInner>> getWithResponseAsync(
@@ -37,7 +37,7 @@ public interface CommunityGalleryImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a community gallery image.
+     * @return a community gallery image on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<CommunityGalleryImageInner> getAsync(String location, String publicGalleryName, String galleryImageName);
@@ -66,7 +66,7 @@ public interface CommunityGalleryImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a community gallery image.
+     * @return a community gallery image along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CommunityGalleryImageInner> getWithResponse(

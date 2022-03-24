@@ -14,7 +14,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.reactivestreams.Subscription;
+import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,12 +24,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -42,6 +46,10 @@ public class SynchronousMessageSubscriberTest {
     private static final int NUMBER_OF_WORK_ITEMS = 4;
     private static final int NUMBER_OF_WORK_ITEMS_2 = 3;
 
+    private final Duration operationTimeout = Duration.ofSeconds(10);
+
+    @Mock
+    private ServiceBusReceiverAsyncClient asyncClient;
     @Mock
     private SynchronousReceiveWork work1;
     @Mock
@@ -66,7 +74,7 @@ public class SynchronousMessageSubscriberTest {
         when(work2.getId()).thenReturn(WORK_ID_2);
         when(work2.getNumberOfEvents()).thenReturn(NUMBER_OF_WORK_ITEMS_2);
 
-        syncSubscriber = new SynchronousMessageSubscriber(work1);
+        syncSubscriber = new SynchronousMessageSubscriber(asyncClient, work1, false, operationTimeout);
     }
 
     @AfterEach
@@ -106,7 +114,7 @@ public class SynchronousMessageSubscriberTest {
     @Test
     public void queueWorkTest() {
         // Arrange
-        syncSubscriber = new SynchronousMessageSubscriber(work1);
+        syncSubscriber = new SynchronousMessageSubscriber(asyncClient, work1, false, operationTimeout);
 
         // Act
         syncSubscriber.queueWork(work2);
@@ -149,7 +157,7 @@ public class SynchronousMessageSubscriberTest {
         when(work2.emitNext(message3)).thenReturn(true);
         when(work2.isTerminal()).thenReturn(false);
 
-        syncSubscriber = new SynchronousMessageSubscriber(work1);
+        syncSubscriber = new SynchronousMessageSubscriber(asyncClient, work1, false, operationTimeout);
         syncSubscriber.queueWork(work2);
         syncSubscriber.queueWork(work3);
 
@@ -237,5 +245,64 @@ public class SynchronousMessageSubscriberTest {
 
         // The current work has been polled, so this should be empty.
         assertEquals(0, syncSubscriber.getWorkQueueSize());
+    }
+
+    @Test
+    public void releaseIfNoActiveReceive() {
+        // Arrange
+
+        // The work1 happily accept any message.
+        when(work1.emitNext(any(ServiceBusReceivedMessage.class))).thenReturn(true);
+
+        // The four messages produced by the link (two before work1 timeout and two after).
+        final ServiceBusReceivedMessage message1beforeTimeout = mock(ServiceBusReceivedMessage.class);
+        final ServiceBusReceivedMessage message2beforeTimeout = mock(ServiceBusReceivedMessage.class);
+        final ServiceBusReceivedMessage message1afterTimeout = mock(ServiceBusReceivedMessage.class);
+        final ServiceBusReceivedMessage message2afterTimeout = mock(ServiceBusReceivedMessage.class);
+
+        // work1 enters terminal-state when isTerminal is set (e.g. when something like timeout happens).
+        final AtomicBoolean isTerminal = new AtomicBoolean(false);
+        doAnswer(invocation -> isTerminal.get()).when(work1).isTerminal();
+
+        // Expect drain loop to invoke release for two messages those were received after timeout of work1
+        // and there were no work queued to receive those late messages.
+        final AtomicInteger expectedReleaseCalls = new AtomicInteger(0);
+        final AtomicBoolean hadUnexpectedReleaseCall = new AtomicBoolean(false);
+        doAnswer(invocation -> {
+            ServiceBusReceivedMessage arg = invocation.getArgument(0);
+            if (arg == message1afterTimeout || arg == message2afterTimeout) {
+                expectedReleaseCalls.incrementAndGet();
+            } else {
+                hadUnexpectedReleaseCall.set(true);
+            }
+            return Mono.empty();
+        }).when(asyncClient).release(any(ServiceBusReceivedMessage.class));
+
+        // The subscriber with prefetch-disabled - indicate any received messages that cannot be emitted should be released.
+        syncSubscriber = new SynchronousMessageSubscriber(asyncClient, work1, true, operationTimeout);
+
+        // Act
+        syncSubscriber.hookOnSubscribe(subscription);
+
+        // The work1 places a credit of 4; let's say link produced two messages
+        syncSubscriber.hookOnNext(message1beforeTimeout);
+        syncSubscriber.hookOnNext(message2beforeTimeout);
+        // then the work1 timeout (terminated)
+        isTerminal.set(true);
+        // then the remaining two messages produced by the link
+        syncSubscriber.hookOnNext(message1afterTimeout);
+        syncSubscriber.hookOnNext(message2afterTimeout);
+
+        // Assert
+
+        // the work1 received first two messages before the timeout
+        verify(work1).emitNext(message1beforeTimeout);
+        verify(work1).emitNext(message2beforeTimeout);
+        // the work1 should never receive two messages arrived later
+        verify(work1, never()).emitNext(message1afterTimeout);
+        verify(work1, never()).emitNext(message2afterTimeout);
+        // rather those late two messages should be released.
+        assertEquals(2, expectedReleaseCalls.get());
+        assertFalse(hadUnexpectedReleaseCall.get());
     }
 }

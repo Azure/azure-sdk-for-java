@@ -9,7 +9,6 @@ parameters:
   PostSteps: []
   TimeoutInMinutes: 60
   TestMode: 'LIVE'
-  TestStepMavenInputs: {}
   TestResultsFiles: ''
   CloudConfig: {}
   ArmTemplateParameters: '@{}'
@@ -18,6 +17,11 @@ parameters:
   DependsOn: ''
   UsePlatformContainer: false
   DisableAzureResourceCreation: false
+  BuildParallelization: '2C'
+  TestGoals: $(TestGoals)
+  TestOptions: $(TestOptions)
+  AdditionalBuildOptions: $(AdditionalBuildOptions)
+  TestParallelization: '1'
 
 jobs:
   - job:
@@ -50,6 +54,10 @@ jobs:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           SDKType: ${{ parameters.SDKType }}
 
+      - template: ../steps/install-reporting-tools.yml
+        parameters:
+          JdkVersion: $(JavaTestVersion)
+
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
         - template: /eng/common/TestResources/build-test-resource-config.yml
           parameters:
@@ -76,29 +84,22 @@ jobs:
 
       - ${{ parameters.PreSteps }}
 
-      - task: Maven@3
-        displayName: 'Build and Install, JDK Version: $(JavaTestVersion)'
-        inputs:
-          mavenPomFile: pom.xml
-          goals: 'install'
-          options: '$(DefaultOptions) -T 1C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaTestVersion)
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-
-      - task: Maven@3
-        displayName: 'Run tests: $(Agent.JobName)'
-        inputs:
-          mavenPomFile: pom.xml
-          ${{ insert }}: ${{ parameters.TestStepMavenInputs }}
-        env:
-          AZURE_TEST_MODE: ${{ parameters.TestMode }}
-          ${{ each var in parameters.EnvVars }}:
-            ${{ var.key }}: ${{ var.value }}
-
-      - template: ../steps/retain-heap-dump-hprofs.yml
+      - template: /eng/pipelines/templates/steps/build-and-test.yml
+        parameters:
+          SDKType: ${{ parameters.SDKType }}
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          ParallelTestPlayback: 'false'
+          SkipAggregateReports: 'true'
+          BuildParallelization: ${{ parameters.BuildParallelization }}
+          IsLiveTest: true
+          TestGoals: ${{ parameters.TestGoals }}
+          TestOptions: ${{ parameters.TestOptions }}
+          AdditionalBuildOptions: ${{ parameters.AdditionalBuildOptions }}
+          TestParallelization: ${{ parameters.TestParallelization }}
+          TestEnvVars:
+            AZURE_TEST_MODE: ${{ parameters.TestMode }}
+            ${{ each var in parameters.EnvVars }}:
+              ${{ var.key }}: ${{ var.value }}
 
       - ${{ parameters.PostSteps }}
 
@@ -114,13 +115,3 @@ jobs:
             parameters:
               ServiceDirectory: '${{ parameters.ServiceDirectory }}'
               SubscriptionConfiguration: $(SubscriptionConfiguration)
-
-      - template: ../steps/upload-repository-on-failure.yml
-
-      - task: PublishTestResults@2
-        condition: always()
-        inputs:
-          mergeTestResults: true
-          testRunTitle: 'Live tests for ${{ parameters.ServiceDirectory }} ${{ parameters.CloudConfig.Cloud }} $(Agent.JobName)'
-          ${{ if ne(parameters.TestResultsFiles, '') }}:
-            testResultsFiles: ${{ parameters.TestResultsFiles }}

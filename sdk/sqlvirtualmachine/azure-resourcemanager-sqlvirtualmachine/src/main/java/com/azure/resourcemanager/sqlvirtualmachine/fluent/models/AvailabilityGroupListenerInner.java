@@ -5,49 +5,49 @@
 package com.azure.resourcemanager.sqlvirtualmachine.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.sqlvirtualmachine.models.AgConfiguration;
 import com.azure.resourcemanager.sqlvirtualmachine.models.LoadBalancerConfiguration;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A SQL Server availability group listener. */
-@JsonFlatten
 @Fluent
-public class AvailabilityGroupListenerInner extends ProxyResource {
+public final class AvailabilityGroupListenerInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailabilityGroupListenerInner.class);
 
     /*
-     * Provisioning state to track the async operation status.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    @JsonProperty(value = "properties")
+    private AvailabilityGroupListenerProperties innerProperties;
 
     /*
-     * Name of the availability group.
+     * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "properties.availabilityGroupName")
-    private String availabilityGroupName;
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
-    /*
-     * List of load balancer configurations for an availability group listener.
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.loadBalancerConfigurations")
-    private List<LoadBalancerConfiguration> loadBalancerConfigurations;
+    private AvailabilityGroupListenerProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Create a default availability group if it does not exist.
+    /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
      */
-    @JsonProperty(value = "properties.createDefaultAvailabilityGroupIfNotExist")
-    private Boolean createDefaultAvailabilityGroupIfNotExist;
-
-    /*
-     * Listener port.
-     */
-    @JsonProperty(value = "properties.port")
-    private Integer port;
+    public SystemData systemData() {
+        return this.systemData;
+    }
 
     /**
      * Get the provisioningState property: Provisioning state to track the async operation status.
@@ -55,7 +55,7 @@ public class AvailabilityGroupListenerInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -64,7 +64,7 @@ public class AvailabilityGroupListenerInner extends ProxyResource {
      * @return the availabilityGroupName value.
      */
     public String availabilityGroupName() {
-        return this.availabilityGroupName;
+        return this.innerProperties() == null ? null : this.innerProperties().availabilityGroupName();
     }
 
     /**
@@ -74,7 +74,10 @@ public class AvailabilityGroupListenerInner extends ProxyResource {
      * @return the AvailabilityGroupListenerInner object itself.
      */
     public AvailabilityGroupListenerInner withAvailabilityGroupName(String availabilityGroupName) {
-        this.availabilityGroupName = availabilityGroupName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AvailabilityGroupListenerProperties();
+        }
+        this.innerProperties().withAvailabilityGroupName(availabilityGroupName);
         return this;
     }
 
@@ -85,7 +88,7 @@ public class AvailabilityGroupListenerInner extends ProxyResource {
      * @return the loadBalancerConfigurations value.
      */
     public List<LoadBalancerConfiguration> loadBalancerConfigurations() {
-        return this.loadBalancerConfigurations;
+        return this.innerProperties() == null ? null : this.innerProperties().loadBalancerConfigurations();
     }
 
     /**
@@ -97,7 +100,10 @@ public class AvailabilityGroupListenerInner extends ProxyResource {
      */
     public AvailabilityGroupListenerInner withLoadBalancerConfigurations(
         List<LoadBalancerConfiguration> loadBalancerConfigurations) {
-        this.loadBalancerConfigurations = loadBalancerConfigurations;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AvailabilityGroupListenerProperties();
+        }
+        this.innerProperties().withLoadBalancerConfigurations(loadBalancerConfigurations);
         return this;
     }
 
@@ -108,7 +114,9 @@ public class AvailabilityGroupListenerInner extends ProxyResource {
      * @return the createDefaultAvailabilityGroupIfNotExist value.
      */
     public Boolean createDefaultAvailabilityGroupIfNotExist() {
-        return this.createDefaultAvailabilityGroupIfNotExist;
+        return this.innerProperties() == null
+            ? null
+            : this.innerProperties().createDefaultAvailabilityGroupIfNotExist();
     }
 
     /**
@@ -120,7 +128,10 @@ public class AvailabilityGroupListenerInner extends ProxyResource {
      */
     public AvailabilityGroupListenerInner withCreateDefaultAvailabilityGroupIfNotExist(
         Boolean createDefaultAvailabilityGroupIfNotExist) {
-        this.createDefaultAvailabilityGroupIfNotExist = createDefaultAvailabilityGroupIfNotExist;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AvailabilityGroupListenerProperties();
+        }
+        this.innerProperties().withCreateDefaultAvailabilityGroupIfNotExist(createDefaultAvailabilityGroupIfNotExist);
         return this;
     }
 
@@ -130,7 +141,7 @@ public class AvailabilityGroupListenerInner extends ProxyResource {
      * @return the port value.
      */
     public Integer port() {
-        return this.port;
+        return this.innerProperties() == null ? null : this.innerProperties().port();
     }
 
     /**
@@ -140,7 +151,34 @@ public class AvailabilityGroupListenerInner extends ProxyResource {
      * @return the AvailabilityGroupListenerInner object itself.
      */
     public AvailabilityGroupListenerInner withPort(Integer port) {
-        this.port = port;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AvailabilityGroupListenerProperties();
+        }
+        this.innerProperties().withPort(port);
+        return this;
+    }
+
+    /**
+     * Get the availabilityGroupConfiguration property: Availability Group configuration.
+     *
+     * @return the availabilityGroupConfiguration value.
+     */
+    public AgConfiguration availabilityGroupConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().availabilityGroupConfiguration();
+    }
+
+    /**
+     * Set the availabilityGroupConfiguration property: Availability Group configuration.
+     *
+     * @param availabilityGroupConfiguration the availabilityGroupConfiguration value to set.
+     * @return the AvailabilityGroupListenerInner object itself.
+     */
+    public AvailabilityGroupListenerInner withAvailabilityGroupConfiguration(
+        AgConfiguration availabilityGroupConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AvailabilityGroupListenerProperties();
+        }
+        this.innerProperties().withAvailabilityGroupConfiguration(availabilityGroupConfiguration);
         return this;
     }
 
@@ -150,8 +188,8 @@ public class AvailabilityGroupListenerInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (loadBalancerConfigurations() != null) {
-            loadBalancerConfigurations().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -19,6 +19,9 @@ public final class SharingUpdateOperationTypes extends ExpandableStringEnum<Shar
     /** Static value Reset for SharingUpdateOperationTypes. */
     public static final SharingUpdateOperationTypes RESET = fromString("Reset");
 
+    /** Static value EnableCommunity for SharingUpdateOperationTypes. */
+    public static final SharingUpdateOperationTypes ENABLE_COMMUNITY = fromString("EnableCommunity");
+
     /**
      * Creates or finds a SharingUpdateOperationTypes from its string representation.
      *

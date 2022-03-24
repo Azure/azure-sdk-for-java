@@ -53,6 +53,7 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.HashMap;
@@ -455,7 +456,6 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
     }
 
     @Test
-    @Disabled("invalid response of list private endpoint connections")
     public void testPrivateEndpointRedis() {
         String redisName = generateRandomResourceName("redis", 10);
         PrivateLinkSubResourceName subResourceName = PrivateLinkSubResourceName.REDIS_CACHE;
@@ -569,6 +569,12 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
 
         // check again
         privateEndpoint.refresh();
+        int retry = 3;  // retry for eventual consistency, Redis having this issue
+        while (retry >= 0 && !"Approved".equals(privateEndpoint.privateLinkServiceConnections().get(pecName).state().status())) {
+            ResourceManagerUtils.sleep(Duration.ofSeconds(30));
+            privateEndpoint.refresh();
+            retry--;
+        }
         Assertions.assertEquals("Approved", privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
     }
 

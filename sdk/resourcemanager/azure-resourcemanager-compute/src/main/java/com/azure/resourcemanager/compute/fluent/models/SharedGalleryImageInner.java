@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.Disallowed;
 import com.azure.resourcemanager.compute.models.GalleryImageFeature;
 import com.azure.resourcemanager.compute.models.GalleryImageIdentifier;
@@ -15,7 +14,6 @@ import com.azure.resourcemanager.compute.models.OperatingSystemStateTypes;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.PirSharedGalleryResource;
 import com.azure.resourcemanager.compute.models.RecommendedMachineConfiguration;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -23,8 +21,6 @@ import java.util.List;
 /** Specifies information about the gallery image definition that you want to create or update. */
 @Fluent
 public final class SharedGalleryImageInner extends PirSharedGalleryResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SharedGalleryImageInner.class);
-
     /*
      * Describes the properties of a gallery image definition.
      */

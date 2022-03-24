@@ -27,7 +27,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr00015/providers/Microsoft.ContainerRegistry/registries/acr72682e?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr00015/providers/Microsoft.ContainerRegistry/registries/acr72682e?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.10.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "1d8f3f70-7c4b-4b65-9d52-d08b9fd03e69",

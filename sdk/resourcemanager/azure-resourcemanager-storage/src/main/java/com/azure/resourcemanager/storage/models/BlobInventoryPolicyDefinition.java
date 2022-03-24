@@ -48,13 +48,14 @@ public final class BlobInventoryPolicyDefinition {
      * 'Name' is always required. The valid values for this field for the
      * 'Blob' definition.objectType include 'Name, Creation-Time,
      * Last-Modified, Content-Length, Content-MD5, BlobType, AccessTier,
-     * AccessTierChangeTime, Expiry-Time, hdi_isfolder, Owner, Group,
-     * Permissions, Acl, Snapshot, VersionId, IsCurrentVersion, Metadata,
-     * LastAccessTime'. The valid values for 'Container' definition.objectType
-     * include 'Name, Last-Modified, Metadata, LeaseStatus, LeaseState,
-     * LeaseDuration, PublicAccess, HasImmutabilityPolicy, HasLegalHold'.
-     * Schema field values 'Expiry-Time, hdi_isfolder, Owner, Group,
-     * Permissions, Acl' are valid only for Hns enabled accounts.
+     * AccessTierChangeTime, AccessTierInferred, Tags, Expiry-Time,
+     * hdi_isfolder, Owner, Group, Permissions, Acl, Snapshot, VersionId,
+     * IsCurrentVersion, Metadata, LastAccessTime'. The valid values for
+     * 'Container' definition.objectType include 'Name, Last-Modified,
+     * Metadata, LeaseStatus, LeaseState, LeaseDuration, PublicAccess,
+     * HasImmutabilityPolicy, HasLegalHold'. Schema field values 'Expiry-Time,
+     * hdi_isfolder, Owner, Group, Permissions, Acl' are valid only for Hns
+     * enabled accounts.'Tags' field is only valid for non Hns accounts
      */
     @JsonProperty(value = "schemaFields", required = true)
     private List<String> schemaFields;
@@ -145,11 +146,12 @@ public final class BlobInventoryPolicyDefinition {
      * Get the schemaFields property: This is a required field. This field specifies the fields and properties of the
      * object to be included in the inventory. The Schema field value 'Name' is always required. The valid values for
      * this field for the 'Blob' definition.objectType include 'Name, Creation-Time, Last-Modified, Content-Length,
-     * Content-MD5, BlobType, AccessTier, AccessTierChangeTime, Expiry-Time, hdi_isfolder, Owner, Group, Permissions,
-     * Acl, Snapshot, VersionId, IsCurrentVersion, Metadata, LastAccessTime'. The valid values for 'Container'
-     * definition.objectType include 'Name, Last-Modified, Metadata, LeaseStatus, LeaseState, LeaseDuration,
-     * PublicAccess, HasImmutabilityPolicy, HasLegalHold'. Schema field values 'Expiry-Time, hdi_isfolder, Owner, Group,
-     * Permissions, Acl' are valid only for Hns enabled accounts.
+     * Content-MD5, BlobType, AccessTier, AccessTierChangeTime, AccessTierInferred, Tags, Expiry-Time, hdi_isfolder,
+     * Owner, Group, Permissions, Acl, Snapshot, VersionId, IsCurrentVersion, Metadata, LastAccessTime'. The valid
+     * values for 'Container' definition.objectType include 'Name, Last-Modified, Metadata, LeaseStatus, LeaseState,
+     * LeaseDuration, PublicAccess, HasImmutabilityPolicy, HasLegalHold'. Schema field values 'Expiry-Time,
+     * hdi_isfolder, Owner, Group, Permissions, Acl' are valid only for Hns enabled accounts.'Tags' field is only valid
+     * for non Hns accounts.
      *
      * @return the schemaFields value.
      */
@@ -161,11 +163,12 @@ public final class BlobInventoryPolicyDefinition {
      * Set the schemaFields property: This is a required field. This field specifies the fields and properties of the
      * object to be included in the inventory. The Schema field value 'Name' is always required. The valid values for
      * this field for the 'Blob' definition.objectType include 'Name, Creation-Time, Last-Modified, Content-Length,
-     * Content-MD5, BlobType, AccessTier, AccessTierChangeTime, Expiry-Time, hdi_isfolder, Owner, Group, Permissions,
-     * Acl, Snapshot, VersionId, IsCurrentVersion, Metadata, LastAccessTime'. The valid values for 'Container'
-     * definition.objectType include 'Name, Last-Modified, Metadata, LeaseStatus, LeaseState, LeaseDuration,
-     * PublicAccess, HasImmutabilityPolicy, HasLegalHold'. Schema field values 'Expiry-Time, hdi_isfolder, Owner, Group,
-     * Permissions, Acl' are valid only for Hns enabled accounts.
+     * Content-MD5, BlobType, AccessTier, AccessTierChangeTime, AccessTierInferred, Tags, Expiry-Time, hdi_isfolder,
+     * Owner, Group, Permissions, Acl, Snapshot, VersionId, IsCurrentVersion, Metadata, LastAccessTime'. The valid
+     * values for 'Container' definition.objectType include 'Name, Last-Modified, Metadata, LeaseStatus, LeaseState,
+     * LeaseDuration, PublicAccess, HasImmutabilityPolicy, HasLegalHold'. Schema field values 'Expiry-Time,
+     * hdi_isfolder, Owner, Group, Permissions, Acl' are valid only for Hns enabled accounts.'Tags' field is only valid
+     * for non Hns accounts.
      *
      * @param schemaFields the schemaFields value to set.
      * @return the BlobInventoryPolicyDefinition object itself.

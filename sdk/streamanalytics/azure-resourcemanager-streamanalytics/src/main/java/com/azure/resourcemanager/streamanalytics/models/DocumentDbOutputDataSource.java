@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.streamanalytics.fluent.models.DocumentDbOutputDataSourceProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -15,57 +15,26 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** Describes a DocumentDB output data source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Microsoft.Storage/DocumentDB")
-@JsonFlatten
 @Fluent
-public class DocumentDbOutputDataSource extends OutputDataSource {
+public final class DocumentDbOutputDataSource extends OutputDataSource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DocumentDbOutputDataSource.class);
 
     /*
-     * The DocumentDB account name or ID. Required on PUT (CreateOrReplace)
-     * requests.
+     * The properties that are associated with a DocumentDB output. Required on
+     * PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "properties.accountId")
-    private String accountId;
+    @JsonProperty(value = "properties")
+    private DocumentDbOutputDataSourceProperties innerProperties;
 
-    /*
-     * The account key for the DocumentDB account. Required on PUT
+    /**
+     * Get the innerProperties property: The properties that are associated with a DocumentDB output. Required on PUT
      * (CreateOrReplace) requests.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.accountKey")
-    private String accountKey;
-
-    /*
-     * The name of the DocumentDB database. Required on PUT (CreateOrReplace)
-     * requests.
-     */
-    @JsonProperty(value = "properties.database")
-    private String database;
-
-    /*
-     * The collection name pattern for the collections to be used. The
-     * collection name format can be constructed using the optional {partition}
-     * token, where partitions start from 0. See the DocumentDB section of
-     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output
-     * for more information. Required on PUT (CreateOrReplace) requests.
-     */
-    @JsonProperty(value = "properties.collectionNamePattern")
-    private String collectionNamePattern;
-
-    /*
-     * The name of the field in output events used to specify the key for
-     * partitioning output across collections. If 'collectionNamePattern'
-     * contains the {partition} token, this property is required to be
-     * specified.
-     */
-    @JsonProperty(value = "properties.partitionKey")
-    private String partitionKey;
-
-    /*
-     * The name of the field in output events used to specify the primary key
-     * which insert or update operations are based on.
-     */
-    @JsonProperty(value = "properties.documentId")
-    private String documentId;
+    private DocumentDbOutputDataSourceProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the accountId property: The DocumentDB account name or ID. Required on PUT (CreateOrReplace) requests.
@@ -73,7 +42,7 @@ public class DocumentDbOutputDataSource extends OutputDataSource {
      * @return the accountId value.
      */
     public String accountId() {
-        return this.accountId;
+        return this.innerProperties() == null ? null : this.innerProperties().accountId();
     }
 
     /**
@@ -83,7 +52,10 @@ public class DocumentDbOutputDataSource extends OutputDataSource {
      * @return the DocumentDbOutputDataSource object itself.
      */
     public DocumentDbOutputDataSource withAccountId(String accountId) {
-        this.accountId = accountId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DocumentDbOutputDataSourceProperties();
+        }
+        this.innerProperties().withAccountId(accountId);
         return this;
     }
 
@@ -94,7 +66,7 @@ public class DocumentDbOutputDataSource extends OutputDataSource {
      * @return the accountKey value.
      */
     public String accountKey() {
-        return this.accountKey;
+        return this.innerProperties() == null ? null : this.innerProperties().accountKey();
     }
 
     /**
@@ -105,7 +77,10 @@ public class DocumentDbOutputDataSource extends OutputDataSource {
      * @return the DocumentDbOutputDataSource object itself.
      */
     public DocumentDbOutputDataSource withAccountKey(String accountKey) {
-        this.accountKey = accountKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DocumentDbOutputDataSourceProperties();
+        }
+        this.innerProperties().withAccountKey(accountKey);
         return this;
     }
 
@@ -115,7 +90,7 @@ public class DocumentDbOutputDataSource extends OutputDataSource {
      * @return the database value.
      */
     public String database() {
-        return this.database;
+        return this.innerProperties() == null ? null : this.innerProperties().database();
     }
 
     /**
@@ -125,7 +100,10 @@ public class DocumentDbOutputDataSource extends OutputDataSource {
      * @return the DocumentDbOutputDataSource object itself.
      */
     public DocumentDbOutputDataSource withDatabase(String database) {
-        this.database = database;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DocumentDbOutputDataSourceProperties();
+        }
+        this.innerProperties().withDatabase(database);
         return this;
     }
 
@@ -138,7 +116,7 @@ public class DocumentDbOutputDataSource extends OutputDataSource {
      * @return the collectionNamePattern value.
      */
     public String collectionNamePattern() {
-        return this.collectionNamePattern;
+        return this.innerProperties() == null ? null : this.innerProperties().collectionNamePattern();
     }
 
     /**
@@ -151,7 +129,10 @@ public class DocumentDbOutputDataSource extends OutputDataSource {
      * @return the DocumentDbOutputDataSource object itself.
      */
     public DocumentDbOutputDataSource withCollectionNamePattern(String collectionNamePattern) {
-        this.collectionNamePattern = collectionNamePattern;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DocumentDbOutputDataSourceProperties();
+        }
+        this.innerProperties().withCollectionNamePattern(collectionNamePattern);
         return this;
     }
 
@@ -163,7 +144,7 @@ public class DocumentDbOutputDataSource extends OutputDataSource {
      * @return the partitionKey value.
      */
     public String partitionKey() {
-        return this.partitionKey;
+        return this.innerProperties() == null ? null : this.innerProperties().partitionKey();
     }
 
     /**
@@ -175,7 +156,10 @@ public class DocumentDbOutputDataSource extends OutputDataSource {
      * @return the DocumentDbOutputDataSource object itself.
      */
     public DocumentDbOutputDataSource withPartitionKey(String partitionKey) {
-        this.partitionKey = partitionKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DocumentDbOutputDataSourceProperties();
+        }
+        this.innerProperties().withPartitionKey(partitionKey);
         return this;
     }
 
@@ -186,7 +170,7 @@ public class DocumentDbOutputDataSource extends OutputDataSource {
      * @return the documentId value.
      */
     public String documentId() {
-        return this.documentId;
+        return this.innerProperties() == null ? null : this.innerProperties().documentId();
     }
 
     /**
@@ -197,7 +181,10 @@ public class DocumentDbOutputDataSource extends OutputDataSource {
      * @return the DocumentDbOutputDataSource object itself.
      */
     public DocumentDbOutputDataSource withDocumentId(String documentId) {
-        this.documentId = documentId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DocumentDbOutputDataSourceProperties();
+        }
+        this.innerProperties().withDocumentId(documentId);
         return this;
     }
 
@@ -209,5 +196,8 @@ public class DocumentDbOutputDataSource extends OutputDataSource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -213,7 +213,7 @@ public final class FunctionsImpl implements Functions {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'functions'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, jobName, functionName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, jobName, functionName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualMachineRunCommands List. */
 public final class VirtualMachineRunCommandsListSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/runCommands/VirtualMachineRunCommandList.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/runCommands/VirtualMachineRunCommandList.json
      */
     /**
      * Sample code: VirtualMachineRunCommandList.

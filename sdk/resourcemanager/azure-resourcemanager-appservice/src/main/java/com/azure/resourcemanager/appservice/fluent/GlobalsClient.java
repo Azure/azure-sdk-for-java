@@ -23,7 +23,7 @@ public interface GlobalsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted app.
+     * @return a deleted app along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DeletedSiteInner>> getDeletedWebAppWithResponseAsync(String deletedSiteId);
@@ -36,7 +36,7 @@ public interface GlobalsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted app.
+     * @return a deleted app on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DeletedSiteInner> getDeletedWebAppAsync(String deletedSiteId);
@@ -63,7 +63,7 @@ public interface GlobalsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted app.
+     * @return a deleted app along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DeletedSiteInner> getDeletedWebAppWithResponse(String deletedSiteId, Context context);
@@ -76,7 +76,7 @@ public interface GlobalsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Snapshot.
+     * @return array of Snapshot along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<List<SnapshotInner>>> getDeletedWebAppSnapshotsWithResponseAsync(String deletedSiteId);
@@ -89,7 +89,7 @@ public interface GlobalsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Snapshot.
+     * @return array of Snapshot on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<List<SnapshotInner>> getDeletedWebAppSnapshotsAsync(String deletedSiteId);
@@ -116,7 +116,7 @@ public interface GlobalsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Snapshot.
+     * @return array of Snapshot along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<List<SnapshotInner>> getDeletedWebAppSnapshotsWithResponse(String deletedSiteId, Context context);
@@ -130,7 +130,7 @@ public interface GlobalsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> getSubscriptionOperationWithAsyncResponseWithResponseAsync(
@@ -145,7 +145,7 @@ public interface GlobalsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> getSubscriptionOperationWithAsyncResponseAsync(String location, String operationId);
@@ -173,7 +173,7 @@ public interface GlobalsClient {
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> getSubscriptionOperationWithAsyncResponseWithResponse(

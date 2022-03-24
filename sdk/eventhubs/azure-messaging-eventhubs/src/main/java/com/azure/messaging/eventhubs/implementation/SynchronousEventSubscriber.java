@@ -9,21 +9,29 @@ import com.azure.messaging.eventhubs.models.PartitionEvent;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.WORK_ID_KEY;
 
 /**
  * Subscriber that takes {@link SynchronousReceiveWork} and publishes events to them in the order received.
  */
 public class SynchronousEventSubscriber extends BaseSubscriber<PartitionEvent> {
     private final Timer timer = new Timer();
-    private final ClientLogger logger = new ClientLogger(SynchronousEventSubscriber.class);
+    private final ClientLogger logger;
     private final SynchronousReceiveWork work;
     private volatile Subscription subscription;
 
     public SynchronousEventSubscriber(SynchronousReceiveWork work) {
         this.work = Objects.requireNonNull(work, "'work' cannot be null.");
+        Map<String, Object> loggingContext = new HashMap<>();
+        loggingContext.put(WORK_ID_KEY, this.work.getId());
+
+        this.logger = new ClientLogger(SynchronousEventSubscriber.class, loggingContext);
     }
 
     /**
@@ -37,10 +45,12 @@ public class SynchronousEventSubscriber extends BaseSubscriber<PartitionEvent> {
             this.subscription = subscription;
         }
 
-        logger.info("Work: {}, Pending: {}, Scheduling receive timeout task.", work.getId(), work.getNumberOfEvents());
+        logger.atInfo()
+            .addKeyValue("pendingEvents", work.getNumberOfEvents())
+            .log("Scheduling receive timeout task.");
         subscription.request(work.getNumberOfEvents());
 
-        timer.schedule(new ReceiveTimeoutTask(work.getId(), this::dispose), work.getTimeout().toMillis());
+        timer.schedule(new ReceiveTimeoutTask(this::dispose, this.logger), work.getTimeout().toMillis());
     }
 
     /**
@@ -54,7 +64,7 @@ public class SynchronousEventSubscriber extends BaseSubscriber<PartitionEvent> {
         work.next(value);
 
         if (work.isTerminal()) {
-            logger.info("Work: {}. Completed. Closing Flux and cancelling subscription.", work.getId());
+            logger.info("Work completed. Closing Flux and cancelling subscription.");
             dispose();
         }
     }
@@ -87,18 +97,17 @@ public class SynchronousEventSubscriber extends BaseSubscriber<PartitionEvent> {
     }
 
     private static class ReceiveTimeoutTask extends TimerTask {
-        private final ClientLogger logger = new ClientLogger(ReceiveTimeoutTask.class);
-        private final long workId;
+        private final ClientLogger logger;
         private final Runnable onDispose;
 
-        ReceiveTimeoutTask(long workId, Runnable onDispose) {
-            this.workId = workId;
+        ReceiveTimeoutTask(Runnable onDispose, ClientLogger logger) {
             this.onDispose = onDispose;
+            this.logger = logger;
         }
 
         @Override
         public void run() {
-            logger.info("Work: {}. Timeout encountered, disposing of subscriber.", workId);
+            logger.info("Timeout encountered, disposing of subscriber.");
             onDispose.run();
         }
     }

@@ -381,13 +381,13 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public UpgradeMode upgradeModel() {
-        // upgradePolicy is a required property so no null check
-        return this.innerModel().upgradePolicy().mode();
+        // flexible vmss won't have an upgrade mode
+        return this.innerModel().upgradePolicy() == null ? null : this.innerModel().upgradePolicy().mode();
     }
 
     @Override
     public boolean overProvisionEnabled() {
-        return this.innerModel().overprovision();
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().overprovision());
     }
 
     @Override
@@ -397,6 +397,9 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public int capacity() {
+        if (this.innerModel().sku() == null) {
+            return 0;
+        }
         return ResourceManagerUtils.toPrimitiveInt(this.innerModel().sku().capacity());
     }
 
@@ -2283,7 +2286,11 @@ public class VirtualMachineScaleSetImpl
 
     private static void associateBackEndsToIpConfiguration(
         String loadBalancerId, VirtualMachineScaleSetIpConfiguration ipConfig, String... backendNames) {
+        if (ipConfig == null || ipConfig.loadBalancerBackendAddressPools() == null) {
+            return;
+        }
         List<SubResource> backendSubResourcesToAssociate = new ArrayList<>();
+
         for (String backendName : backendNames) {
             String backendPoolId = mergePath(loadBalancerId, "backendAddressPools", backendName);
             boolean found = false;
@@ -2327,6 +2334,9 @@ public class VirtualMachineScaleSetImpl
 
     private static Map<String, LoadBalancerBackend> getBackendsAssociatedWithIpConfiguration(
         LoadBalancer loadBalancer, VirtualMachineScaleSetIpConfiguration ipConfig) {
+        if (ipConfig == null || ipConfig.loadBalancerBackendAddressPools() == null) {
+            return Collections.emptyMap();
+        }
         String loadBalancerId = loadBalancer.id();
         Map<String, LoadBalancerBackend> attachedBackends = new HashMap<>();
         Map<String, LoadBalancerBackend> lbBackends = loadBalancer.backends();
@@ -2343,6 +2353,9 @@ public class VirtualMachineScaleSetImpl
 
     private static Map<String, LoadBalancerInboundNatPool> getInboundNatPoolsAssociatedWithIpConfiguration(
         LoadBalancer loadBalancer, VirtualMachineScaleSetIpConfiguration ipConfig) {
+        if (ipConfig == null || ipConfig.loadBalancerInboundNatPools() == null) {
+            return Collections.emptyMap();
+        }
         String loadBalancerId = loadBalancer.id();
         Map<String, LoadBalancerInboundNatPool> attachedInboundNatPools = new HashMap<>();
         Map<String, LoadBalancerInboundNatPool> lbInboundNatPools = loadBalancer.inboundNatPools();
@@ -2388,6 +2401,9 @@ public class VirtualMachineScaleSetImpl
 
     private static void removeAllBackendAssociationFromIpConfiguration(
         LoadBalancer loadBalancer, VirtualMachineScaleSetIpConfiguration ipConfig) {
+        if (ipConfig == null || ipConfig.loadBalancerBackendAddressPools() == null) {
+            return;
+        }
         List<SubResource> toRemove = new ArrayList<>();
         for (SubResource subResource : ipConfig.loadBalancerBackendAddressPools()) {
             if (subResource
@@ -2405,6 +2421,9 @@ public class VirtualMachineScaleSetImpl
 
     private static void removeAllInboundNatPoolAssociationFromIpConfiguration(
         LoadBalancer loadBalancer, VirtualMachineScaleSetIpConfiguration ipConfig) {
+        if (ipConfig == null || ipConfig.loadBalancerInboundNatPools() == null) {
+            return;
+        }
         List<SubResource> toRemove = new ArrayList<>();
         for (SubResource subResource : ipConfig.loadBalancerInboundNatPools()) {
             if (subResource
@@ -2422,6 +2441,9 @@ public class VirtualMachineScaleSetImpl
 
     private static void removeBackendsFromIpConfiguration(
         String loadBalancerId, VirtualMachineScaleSetIpConfiguration ipConfig, String... backendNames) {
+        if (ipConfig == null || ipConfig.loadBalancerBackendAddressPools() == null) {
+            return;
+        }
         List<SubResource> toRemove = new ArrayList<>();
         for (String backendName : backendNames) {
             String backendPoolId = mergePath(loadBalancerId, "backendAddressPools", backendName);
@@ -2440,6 +2462,9 @@ public class VirtualMachineScaleSetImpl
 
     private static void removeInboundNatPoolsFromIpConfiguration(
         String loadBalancerId, VirtualMachineScaleSetIpConfiguration ipConfig, String... inboundNatPoolNames) {
+        if (ipConfig == null || ipConfig.loadBalancerInboundNatPools() == null) {
+            return;
+        }
         List<SubResource> toRemove = new ArrayList<>();
         for (String natPoolName : inboundNatPoolNames) {
             String inboundNatPoolId = mergePath(loadBalancerId, "inboundNatPools", natPoolName);

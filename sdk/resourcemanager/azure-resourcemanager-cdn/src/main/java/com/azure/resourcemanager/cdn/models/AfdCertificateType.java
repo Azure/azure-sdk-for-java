@@ -16,6 +16,10 @@ public final class AfdCertificateType extends ExpandableStringEnum<AfdCertificat
     /** Static value ManagedCertificate for AfdCertificateType. */
     public static final AfdCertificateType MANAGED_CERTIFICATE = fromString("ManagedCertificate");
 
+    /** Static value AzureFirstPartyManagedCertificate for AfdCertificateType. */
+    public static final AfdCertificateType AZURE_FIRST_PARTY_MANAGED_CERTIFICATE =
+        fromString("AzureFirstPartyManagedCertificate");
+
     /**
      * Creates or finds a AfdCertificateType from its string representation.
      *

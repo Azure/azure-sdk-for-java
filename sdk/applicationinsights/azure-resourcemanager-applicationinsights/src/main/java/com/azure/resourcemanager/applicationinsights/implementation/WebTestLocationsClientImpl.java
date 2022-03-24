@@ -83,7 +83,8 @@ public final class WebTestLocationsClientImpl implements WebTestLocationsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of web test locations available to this Application Insights component.
+     * @return a list of web test locations available to this Application Insights component along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationInsightsComponentWebTestLocationInner>> listSinglePageAsync(
@@ -137,7 +138,8 @@ public final class WebTestLocationsClientImpl implements WebTestLocationsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of web test locations available to this Application Insights component.
+     * @return a list of web test locations available to this Application Insights component along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationInsightsComponentWebTestLocationInner>> listSinglePageAsync(

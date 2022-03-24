@@ -7,7 +7,6 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterAgentPoolProfileProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -15,8 +14,6 @@ import java.util.Map;
 /** Profile for the container service agent pool. */
 @Fluent
 public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoolProfileProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterAgentPoolProfile.class);
-
     /*
      * Unique name of the agent pool profile in the context of the subscription
      * and resource group. Windows agent pool names must be 6 characters or
@@ -119,7 +116,7 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
 
     /** {@inheritDoc} */
     @Override
-    public ManagedClusterAgentPoolProfile withOsSku(Ossku osSku) {
+    public ManagedClusterAgentPoolProfile withOsSku(OSSku osSku) {
         super.withOsSku(osSku);
         return this;
     }
@@ -315,10 +312,12 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     public void validate() {
         super.validate();
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model ManagedClusterAgentPoolProfile"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterAgentPoolProfile.class);
 }

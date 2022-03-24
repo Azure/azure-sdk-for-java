@@ -1,14 +1,46 @@
 # Release History
 
-## 4.0.0-beta.3 (Unreleased)
+## 4.0.0-beta.5 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+- Renamed `modelIDs` in method `beginCreateComposedModel` to `componentModelIds`
+- Renamed method `beginCopyModel` to `beginCopyModelTo`
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.0.0-beta.4 (2022-02-10)
+
+### Features Added
+- Added interfaces from `com.azure.core.client.traits` to `DocumentAnalysisClientBuilder`
+  and `DocumentModelAdministrationClientBuilder`
+- Added support for currency type field value.
+- Added support for users to optionally specify tags when building, copying 
+or creating a composed a model using `tags` attribute on `BuildModelOptions`, `CreateComposedModelOptions`
+and `CopyAuthorizationOptions` model.
+- Added `languages` property on `AnalyzeResult`.
+- Added model `DocumentLanguage` that includes information about the detected languages found in a document.
+
+### Breaking Changes
+- Added `DocumentBuildMode` on `beginBuildModel` APIs to support building models with techniques for diverse templates.
+
+## 4.0.0-beta.3 (2022-01-13)
+### Bugs Fixed
+- Fixed confidence value returned on fields.
+
+### Other Changes
+#### Dependency Updates
+- Updated `azure-core` to `1.24.1`.
+- Updated `azure-core-http-netty` to `1.11.6`.
+
+## 3.1.7 (2022-01-13)
+### Other Changes
+#### Dependency Updates
+- Updated `azure-core` to `1.24.1`.
+- Updated `azure-core-http-netty` to `1.11.6`.
 
 ## 4.0.0-beta.2 (2021-11-10)
 

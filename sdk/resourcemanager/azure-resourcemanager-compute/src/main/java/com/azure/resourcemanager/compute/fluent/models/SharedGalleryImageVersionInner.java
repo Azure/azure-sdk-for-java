@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.PirSharedGalleryResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Specifies information about the gallery image version that you want to create or update. */
 @Fluent
 public final class SharedGalleryImageVersionInner extends PirSharedGalleryResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SharedGalleryImageVersionInner.class);
-
     /*
      * Describes the properties of a gallery image version.
      */

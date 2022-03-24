@@ -134,7 +134,7 @@ public final class LineageClient {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return lineage info of the entity specified by GUID.
+     * @return lineage info of the entity specified by GUID along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -247,7 +247,7 @@ public final class LineageClient {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return atlasLineageInfo.
+     * @return atlasLineageInfo along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)

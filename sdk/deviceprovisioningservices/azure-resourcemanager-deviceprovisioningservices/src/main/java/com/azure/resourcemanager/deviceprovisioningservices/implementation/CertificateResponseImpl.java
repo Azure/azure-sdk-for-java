@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.deviceprovisioningservices.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.CertificateResponseInner;
 import com.azure.resourcemanager.deviceprovisioningservices.models.CertificateBodyDescription;
@@ -34,6 +35,10 @@ public final class CertificateResponseImpl
 
     public String etag() {
         return this.innerModel().etag();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public CertificateResponseInner innerModel() {
@@ -183,6 +188,16 @@ public final class CertificateResponseImpl
             return this;
         } else {
             this.updateCertificateDescription.withCertificate(certificate);
+            return this;
+        }
+    }
+
+    public CertificateResponseImpl withIsVerified(Boolean isVerified) {
+        if (isInCreateMode()) {
+            this.createCertificateDescription.withIsVerified(isVerified);
+            return this;
+        } else {
+            this.updateCertificateDescription.withIsVerified(isVerified);
             return this;
         }
     }

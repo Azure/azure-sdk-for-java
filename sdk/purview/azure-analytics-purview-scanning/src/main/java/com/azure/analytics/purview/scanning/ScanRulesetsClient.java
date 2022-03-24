@@ -56,7 +56,7 @@ public final class ScanRulesetsClient {
      * @param scanRulesetName The scanRulesetName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return a scan ruleset.
+     * @return a scan ruleset along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -102,7 +102,7 @@ public final class ScanRulesetsClient {
      * @param scanRulesetName The scanRulesetName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -136,7 +136,7 @@ public final class ScanRulesetsClient {
      * @param scanRulesetName The scanRulesetName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)

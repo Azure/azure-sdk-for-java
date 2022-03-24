@@ -24,11 +24,11 @@ public class KeyVaultClient {
 
     private SecretAsyncClient secretClient;
 
-    private AppConfigurationProperties properties;
+    private final AppConfigurationProperties properties;
 
-    private SecretClientBuilderSetup keyVaultClientProvider;
+    private final SecretClientBuilderSetup keyVaultClientProvider;
 
-    private URI uri;
+    private final URI uri;
 
     private TokenCredential tokenCredential;
 
@@ -57,7 +57,7 @@ public class KeyVaultClient {
         String fullUri = "https://" + uri.getHost();
 
         if (tokenCredential != null && msiProps != null) {
-            throw new IllegalArgumentException("More than 1 Conncetion method was set for connecting to Key Vault.");
+            throw new IllegalArgumentException("More than 1 Connection method was set for connecting to Key Vault.");
         }
 
         if (tokenCredential != null) {

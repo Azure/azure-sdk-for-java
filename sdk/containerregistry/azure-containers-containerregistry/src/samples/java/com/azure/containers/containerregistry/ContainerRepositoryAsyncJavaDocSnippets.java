@@ -3,7 +3,7 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.models.ArtifactManifestOrderBy;
+import com.azure.containers.containerregistry.models.ArtifactManifestOrder;
 import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.containers.containerregistry.models.ContainerRepositoryProperties;
 import com.azure.core.credential.TokenCredential;
@@ -125,7 +125,7 @@ public class ContainerRepositoryAsyncJavaDocSnippets {
     public void listManifestPropertiesWithOptionsCodeSnippet() {
         ContainerRepositoryAsync client = getAsyncClient();
         // BEGIN: com.azure.containers.containerregistry.ContainerRepositoryAsync.listManifestPropertiesWithOptions
-        client.listManifestProperties(ArtifactManifestOrderBy.LAST_UPDATED_ON_DESCENDING).byPage(10)
+        client.listManifestProperties(ArtifactManifestOrder.LAST_UPDATED_ON_DESCENDING).byPage(10)
             .subscribe(ManifestPropertiesPagedResponse -> {
                 ManifestPropertiesPagedResponse.getValue().stream().forEach(
                     ManifestProperties -> System.out.println(ManifestProperties.getDigest()));

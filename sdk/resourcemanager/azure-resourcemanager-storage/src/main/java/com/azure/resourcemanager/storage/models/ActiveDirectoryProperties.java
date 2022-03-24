@@ -51,6 +51,18 @@ public final class ActiveDirectoryProperties {
     @JsonProperty(value = "azureStorageSid", required = true)
     private String azureStorageSid;
 
+    /*
+     * Specifies the Active Directory SAMAccountName for Azure Storage.
+     */
+    @JsonProperty(value = "samAccountName")
+    private String samAccountName;
+
+    /*
+     * Specifies the Active Directory account type for Azure Storage.
+     */
+    @JsonProperty(value = "accountType")
+    private ActiveDirectoryPropertiesAccountType accountType;
+
     /**
      * Get the domainName property: Specifies the primary domain that the AD DNS server is authoritative for.
      *
@@ -168,6 +180,46 @@ public final class ActiveDirectoryProperties {
      */
     public ActiveDirectoryProperties withAzureStorageSid(String azureStorageSid) {
         this.azureStorageSid = azureStorageSid;
+        return this;
+    }
+
+    /**
+     * Get the samAccountName property: Specifies the Active Directory SAMAccountName for Azure Storage.
+     *
+     * @return the samAccountName value.
+     */
+    public String samAccountName() {
+        return this.samAccountName;
+    }
+
+    /**
+     * Set the samAccountName property: Specifies the Active Directory SAMAccountName for Azure Storage.
+     *
+     * @param samAccountName the samAccountName value to set.
+     * @return the ActiveDirectoryProperties object itself.
+     */
+    public ActiveDirectoryProperties withSamAccountName(String samAccountName) {
+        this.samAccountName = samAccountName;
+        return this;
+    }
+
+    /**
+     * Get the accountType property: Specifies the Active Directory account type for Azure Storage.
+     *
+     * @return the accountType value.
+     */
+    public ActiveDirectoryPropertiesAccountType accountType() {
+        return this.accountType;
+    }
+
+    /**
+     * Set the accountType property: Specifies the Active Directory account type for Azure Storage.
+     *
+     * @param accountType the accountType value to set.
+     * @return the ActiveDirectoryProperties object itself.
+     */
+    public ActiveDirectoryProperties withAccountType(ActiveDirectoryPropertiesAccountType accountType) {
+        this.accountType = accountType;
         return this;
     }
 

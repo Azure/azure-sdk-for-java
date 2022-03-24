@@ -11,9 +11,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.authorization.fluent.AuthorizationManagementClient;
 import com.azure.resourcemanager.authorization.fluent.ClassicAdministratorsClient;
+import com.azure.resourcemanager.authorization.fluent.DenyAssignmentsClient;
 import com.azure.resourcemanager.authorization.fluent.GlobalAdministratorsClient;
 import com.azure.resourcemanager.authorization.fluent.PermissionsClient;
 import com.azure.resourcemanager.authorization.fluent.ProviderOperationsMetadatasClient;
+import com.azure.resourcemanager.authorization.fluent.RoleAssignmentMetricsClient;
 import com.azure.resourcemanager.authorization.fluent.RoleAssignmentsClient;
 import com.azure.resourcemanager.authorization.fluent.RoleDefinitionsClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
@@ -121,18 +123,6 @@ public final class AuthorizationManagementClientImpl extends AzureServiceClient
         return this.providerOperationsMetadatas;
     }
 
-    /** The RoleAssignmentsClient object to access its operations. */
-    private final RoleAssignmentsClient roleAssignments;
-
-    /**
-     * Gets the RoleAssignmentsClient object to access its operations.
-     *
-     * @return the RoleAssignmentsClient object.
-     */
-    public RoleAssignmentsClient getRoleAssignments() {
-        return this.roleAssignments;
-    }
-
     /** The PermissionsClient object to access its operations. */
     private final PermissionsClient permissions;
 
@@ -155,6 +145,42 @@ public final class AuthorizationManagementClientImpl extends AzureServiceClient
      */
     public RoleDefinitionsClient getRoleDefinitions() {
         return this.roleDefinitions;
+    }
+
+    /** The DenyAssignmentsClient object to access its operations. */
+    private final DenyAssignmentsClient denyAssignments;
+
+    /**
+     * Gets the DenyAssignmentsClient object to access its operations.
+     *
+     * @return the DenyAssignmentsClient object.
+     */
+    public DenyAssignmentsClient getDenyAssignments() {
+        return this.denyAssignments;
+    }
+
+    /** The RoleAssignmentMetricsClient object to access its operations. */
+    private final RoleAssignmentMetricsClient roleAssignmentMetrics;
+
+    /**
+     * Gets the RoleAssignmentMetricsClient object to access its operations.
+     *
+     * @return the RoleAssignmentMetricsClient object.
+     */
+    public RoleAssignmentMetricsClient getRoleAssignmentMetrics() {
+        return this.roleAssignmentMetrics;
+    }
+
+    /** The RoleAssignmentsClient object to access its operations. */
+    private final RoleAssignmentsClient roleAssignments;
+
+    /**
+     * Gets the RoleAssignmentsClient object to access its operations.
+     *
+     * @return the RoleAssignmentsClient object.
+     */
+    public RoleAssignmentsClient getRoleAssignments() {
+        return this.roleAssignments;
     }
 
     /**
@@ -183,8 +209,10 @@ public final class AuthorizationManagementClientImpl extends AzureServiceClient
         this.classicAdministrators = new ClassicAdministratorsClientImpl(this);
         this.globalAdministrators = new GlobalAdministratorsClientImpl(this);
         this.providerOperationsMetadatas = new ProviderOperationsMetadatasClientImpl(this);
-        this.roleAssignments = new RoleAssignmentsClientImpl(this);
         this.permissions = new PermissionsClientImpl(this);
         this.roleDefinitions = new RoleDefinitionsClientImpl(this);
+        this.denyAssignments = new DenyAssignmentsClientImpl(this);
+        this.roleAssignmentMetrics = new RoleAssignmentMetricsClientImpl(this);
+        this.roleAssignments = new RoleAssignmentsClientImpl(this);
     }
 }

@@ -177,6 +177,43 @@ public interface StreamingJobs {
     void stop(String resourceGroupName, String jobName, Context context);
 
     /**
+     * Scales a streaming job when the job is running.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @param scaleJobParameters Parameters applicable to a scale streaming job operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void scale(String resourceGroupName, String jobName, ScaleStreamingJobParameters scaleJobParameters);
+
+    /**
+     * Scales a streaming job when the job is running.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void scale(String resourceGroupName, String jobName);
+
+    /**
+     * Scales a streaming job when the job is running.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @param scaleJobParameters Parameters applicable to a scale streaming job operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void scale(
+        String resourceGroupName, String jobName, ScaleStreamingJobParameters scaleJobParameters, Context context);
+
+    /**
      * Gets details about the specified streaming job.
      *
      * @param id the resource ID.

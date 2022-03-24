@@ -153,7 +153,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ipConfigurations.
+     * @return ipConfigurations along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<HubIpConfigurationInner>> getWithResponseAsync(
@@ -208,7 +208,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ipConfigurations.
+     * @return ipConfigurations along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HubIpConfigurationInner>> getWithResponseAsync(
@@ -259,7 +259,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ipConfigurations.
+     * @return ipConfigurations on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<HubIpConfigurationInner> getAsync(
@@ -301,7 +301,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ipConfigurations.
+     * @return ipConfigurations along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HubIpConfigurationInner> getWithResponse(
@@ -320,7 +320,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ipConfigurations.
+     * @return ipConfigurations along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -383,7 +383,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ipConfigurations.
+     * @return ipConfigurations along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -446,7 +446,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ipConfigurations.
+     * @return the {@link PollerFlux} for polling of ipConfigurations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<HubIpConfigurationInner>, HubIpConfigurationInner> beginCreateOrUpdateAsync(
@@ -475,7 +475,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ipConfigurations.
+     * @return the {@link PollerFlux} for polling of ipConfigurations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<HubIpConfigurationInner>, HubIpConfigurationInner> beginCreateOrUpdateAsync(
@@ -508,7 +508,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ipConfigurations.
+     * @return the {@link SyncPoller} for polling of ipConfigurations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HubIpConfigurationInner>, HubIpConfigurationInner> beginCreateOrUpdate(
@@ -528,7 +528,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ipConfigurations.
+     * @return the {@link SyncPoller} for polling of ipConfigurations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HubIpConfigurationInner>, HubIpConfigurationInner> beginCreateOrUpdate(
@@ -552,7 +552,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ipConfigurations.
+     * @return ipConfigurations on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<HubIpConfigurationInner> createOrUpdateAsync(
@@ -574,7 +574,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ipConfigurations.
+     * @return ipConfigurations on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<HubIpConfigurationInner> createOrUpdateAsync(
@@ -640,7 +640,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -695,7 +695,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -746,7 +746,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -769,7 +769,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -791,7 +791,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -809,7 +809,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -826,7 +826,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String virtualHubName, String ipConfigName) {
@@ -845,7 +845,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -894,7 +894,8 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHubIpConfigurations list.
+     * @return virtualHubIpConfigurations list along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HubIpConfigurationInner>> listSinglePageAsync(
@@ -953,7 +954,8 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHubIpConfigurations list.
+     * @return virtualHubIpConfigurations list along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HubIpConfigurationInner>> listSinglePageAsync(
@@ -1008,7 +1010,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHubIpConfigurations list.
+     * @return virtualHubIpConfigurations list as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<HubIpConfigurationInner> listAsync(String resourceGroupName, String virtualHubName) {
@@ -1026,7 +1028,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHubIpConfigurations list.
+     * @return virtualHubIpConfigurations list as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<HubIpConfigurationInner> listAsync(
@@ -1044,7 +1046,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHubIpConfigurations list.
+     * @return virtualHubIpConfigurations list as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HubIpConfigurationInner> list(String resourceGroupName, String virtualHubName) {
@@ -1060,7 +1062,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHubIpConfigurations list.
+     * @return virtualHubIpConfigurations list as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HubIpConfigurationInner> list(
@@ -1075,7 +1077,8 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHubIpConfigurations list.
+     * @return virtualHubIpConfigurations list along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HubIpConfigurationInner>> listNextSinglePageAsync(String nextLink) {
@@ -1111,7 +1114,8 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHubIpConfigurations list.
+     * @return virtualHubIpConfigurations list along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HubIpConfigurationInner>> listNextSinglePageAsync(String nextLink, Context context) {

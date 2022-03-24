@@ -3,7 +3,7 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.models.ArtifactManifestOrderBy;
+import com.azure.containers.containerregistry.models.ArtifactManifestOrder;
 import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -26,7 +26,7 @@ public class DeleteImagesAsync {
         final int imagesCountToKeep = 3;
         client.listRepositoryNames()
             .map(repositoryName -> client.getRepository(repositoryName))
-            .flatMap(repository -> repository.listManifestProperties(ArtifactManifestOrderBy.LAST_UPDATED_ON_DESCENDING))
+            .flatMap(repository -> repository.listManifestProperties(ArtifactManifestOrder.LAST_UPDATED_ON_DESCENDING))
             .skip(imagesCountToKeep)
             .subscribe(imageManifest -> {
                 System.out.printf(String.format("Deleting image with digest %s.%n", imageManifest.getDigest()));

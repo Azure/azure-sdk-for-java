@@ -1,0 +1,19 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.adu.microsoft.com/deviceupdate/sdkinstance/updates/providers/foo/names/bar/versions/0.0.0.1?api-version=2021-06-01-preview",
+    "Headers" : { },
+    "Response" : {
+      "content-length" : "161",
+      "Cache-Control" : "max-age=60, private",
+      "traceparent" : "00-cbe3caae50418b4bbcdb6e7bacd0d427-fa113c18c3e09c49-00",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Body" : "{\"type\":\"https://tools.ietf.org/html/rfc7231#section-6.5.4\",\"title\":\"Not Found\",\"status\":404,\"traceId\":\"00-cbe3caae50418b4bbcdb6e7bacd0d427-446dc2c574038141-00\"}",
+      "Date" : "Mon, 29 Nov 2021 06:54:04 GMT",
+      "Content-Type" : "application/problem+json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

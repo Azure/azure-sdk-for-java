@@ -33,7 +33,7 @@ public interface OperationOperations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     Response<ValidateOperationsResponse> validateWithResponse(
         String vaultName, String resourceGroupName, ValidateOperationRequest parameters, Context context);

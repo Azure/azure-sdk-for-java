@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.mysql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents a server firewall rule. */
-@JsonFlatten
 @Fluent
-public class FirewallRuleInner extends ProxyResource {
+public final class FirewallRuleInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallRuleInner.class);
 
     /*
-     * The start IP address of the server firewall rule. Must be IPv4 format.
+     * The properties of a firewall rule.
      */
-    @JsonProperty(value = "properties.startIpAddress", required = true)
-    private String startIpAddress;
+    @JsonProperty(value = "properties", required = true)
+    private FirewallRuleProperties innerProperties = new FirewallRuleProperties();
 
-    /*
-     * The end IP address of the server firewall rule. Must be IPv4 format.
+    /**
+     * Get the innerProperties property: The properties of a firewall rule.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.endIpAddress", required = true)
-    private String endIpAddress;
+    private FirewallRuleProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the startIpAddress property: The start IP address of the server firewall rule. Must be IPv4 format.
@@ -35,7 +36,7 @@ public class FirewallRuleInner extends ProxyResource {
      * @return the startIpAddress value.
      */
     public String startIpAddress() {
-        return this.startIpAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().startIpAddress();
     }
 
     /**
@@ -45,7 +46,10 @@ public class FirewallRuleInner extends ProxyResource {
      * @return the FirewallRuleInner object itself.
      */
     public FirewallRuleInner withStartIpAddress(String startIpAddress) {
-        this.startIpAddress = startIpAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FirewallRuleProperties();
+        }
+        this.innerProperties().withStartIpAddress(startIpAddress);
         return this;
     }
 
@@ -55,7 +59,7 @@ public class FirewallRuleInner extends ProxyResource {
      * @return the endIpAddress value.
      */
     public String endIpAddress() {
-        return this.endIpAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().endIpAddress();
     }
 
     /**
@@ -65,7 +69,10 @@ public class FirewallRuleInner extends ProxyResource {
      * @return the FirewallRuleInner object itself.
      */
     public FirewallRuleInner withEndIpAddress(String endIpAddress) {
-        this.endIpAddress = endIpAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FirewallRuleProperties();
+        }
+        this.innerProperties().withEndIpAddress(endIpAddress);
         return this;
     }
 
@@ -75,16 +82,13 @@ public class FirewallRuleInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (startIpAddress() == null) {
+        if (innerProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property startIpAddress in model FirewallRuleInner"));
-        }
-        if (endIpAddress() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property endIpAddress in model FirewallRuleInner"));
+                        "Missing required property innerProperties in model FirewallRuleInner"));
+        } else {
+            innerProperties().validate();
         }
     }
 }

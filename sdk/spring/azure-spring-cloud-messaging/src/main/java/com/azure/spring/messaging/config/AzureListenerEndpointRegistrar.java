@@ -20,7 +20,7 @@ import org.springframework.util.Assert;
  *
  * @author Warren Zhu
  */
-class AzureListenerEndpointRegistrar implements BeanFactoryAware, InitializingBean {
+public class AzureListenerEndpointRegistrar implements BeanFactoryAware, InitializingBean {
 
     private final List<AzureListenerEndpointDescriptor> endpointDescriptors = new ArrayList<>();
     @Nullable
@@ -53,6 +53,9 @@ class AzureListenerEndpointRegistrar implements BeanFactoryAware, InitializingBe
         registerAllEndpoints();
     }
 
+    /**
+     * Register all {@link AzureListenerEndpoint}s under the registrar to create the associated containers.
+     */
     protected void registerAllEndpoints() {
         Assert.state(this.endpointRegistry != null, "No AzureListenerEndpointRegistry set");
         synchronized (this.mutex) {
@@ -87,6 +90,9 @@ class AzureListenerEndpointRegistrar implements BeanFactoryAware, InitializingBe
      * underlying container.
      * <p>The {@code factory} may be {@code null} if the default factory has to be
      * used for that endpoint.
+     *
+     * @param endpoint the {@link AzureListenerEndpoint} instance to register.
+     * @param factory the {@link ListenerContainerFactory} to use.
      */
     public void registerEndpoint(AzureListenerEndpoint endpoint, @Nullable ListenerContainerFactory<?> factory) {
         Assert.notNull(endpoint, "Endpoint must not be null");
@@ -109,7 +115,7 @@ class AzureListenerEndpointRegistrar implements BeanFactoryAware, InitializingBe
     /**
      * Register a new {@link AzureListenerEndpoint} using the default {@link ListenerContainerFactory} to create the
      * underlying container.
-     *
+     * @param endpoint the {@link AzureListenerEndpoint} instance to register.
      * @see #setContainerFactory(ListenerContainerFactory)
      * @see #registerEndpoint(AzureListenerEndpoint, ListenerContainerFactory)
      */
@@ -117,26 +123,50 @@ class AzureListenerEndpointRegistrar implements BeanFactoryAware, InitializingBe
         registerEndpoint(endpoint, null);
     }
 
+    /**
+     * Set the bean name of the container factory.
+     * @param containerFactoryBeanName the bean name of the container factory.
+     */
     public void setContainerFactoryBeanName(String containerFactoryBeanName) {
         this.containerFactoryBeanName = containerFactoryBeanName;
     }
 
+    /**
+     * Get the {@link AzureListenerEndpointRegistry}.
+     * @return the {@link AzureListenerEndpointRegistry}.
+     */
     public AzureListenerEndpointRegistry getEndpointRegistry() {
         return this.endpointRegistry;
     }
 
+    /**
+     * Set the {@link AzureListenerEndpointRegistry}.
+     * @param endpointRegistry the {@link AzureListenerEndpointRegistry}.
+     */
     public void setEndpointRegistry(AzureListenerEndpointRegistry endpointRegistry) {
         this.endpointRegistry = endpointRegistry;
     }
 
+    /**
+     * Get the {@link MessageHandlerMethodFactory}.
+     * @return the {@link MessageHandlerMethodFactory}.
+     */
     public MessageHandlerMethodFactory getMessageHandlerMethodFactory() {
         return this.messageHandlerMethodFactory;
     }
 
+    /**
+     * Set the {@link MessageHandlerMethodFactory}.
+     * @param messageHandlerMethodFactory the {@link MessageHandlerMethodFactory}.
+     */
     public void setMessageHandlerMethodFactory(MessageHandlerMethodFactory messageHandlerMethodFactory) {
         this.messageHandlerMethodFactory = messageHandlerMethodFactory;
     }
 
+    /**
+     * Set the {@link ListenerContainerFactory}.
+     * @param containerFactory the {@link ListenerContainerFactory}.
+     */
     public void setContainerFactory(ListenerContainerFactory<?> containerFactory) {
         this.containerFactory = containerFactory;
     }

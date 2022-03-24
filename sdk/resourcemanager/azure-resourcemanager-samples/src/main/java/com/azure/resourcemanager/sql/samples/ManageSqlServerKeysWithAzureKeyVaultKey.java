@@ -82,7 +82,6 @@ public class ManageSqlServerKeysWithAzureKeyVaultKey {
                     .allowKeyAllPermissions()
                     .attach()
                 .withSku(SkuName.PREMIUM)
-                .withSoftDeleteEnabled()
                 .create();
 
             ResourceManagerUtils.sleep(Duration.ofMinutes(3));

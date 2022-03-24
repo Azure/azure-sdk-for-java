@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.mysqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ConfigurationSource;
 import com.azure.resourcemanager.mysqlflexibleserver.models.IsConfigPendingRestart;
 import com.azure.resourcemanager.mysqlflexibleserver.models.IsDynamicConfig;
 import com.azure.resourcemanager.mysqlflexibleserver.models.IsReadOnly;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of a configuration. */
 @Fluent
 public final class ConfigurationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationProperties.class);
-
     /*
      * Value of the configuration.
      */

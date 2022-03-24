@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Container for connection string of stores
  */
 public class ConnectionPool {
-    private Map<String, Connection> connectionStringMap = new ConcurrentHashMap<>();
+    private final Map<String, Connection> connectionStringMap = new ConcurrentHashMap<>();
 
     public void put(String endpoint, Connection connectionString) {
         Assert.hasText(endpoint, "Config store endpoint cannot be null or empty.");

@@ -35,10 +35,22 @@ public final class ImmutabilityPolicyProperty {
      * while maintaining immutability protection and compliance. Only new
      * blocks can be added and any existing blocks cannot be modified or
      * deleted. This property cannot be changed with ExtendImmutabilityPolicy
-     * API
+     * API.
      */
     @JsonProperty(value = "allowProtectedAppendWrites")
     private Boolean allowProtectedAppendWrites;
+
+    /*
+     * This property can only be changed for unlocked time-based retention
+     * policies. When enabled, new blocks can be written to both 'Append and
+     * Bock Blobs' while maintaining immutability protection and compliance.
+     * Only new blocks can be added and any existing blocks cannot be modified
+     * or deleted. This property cannot be changed with
+     * ExtendImmutabilityPolicy API. The 'allowProtectedAppendWrites' and
+     * 'allowProtectedAppendWritesAll' properties are mutually exclusive.
+     */
+    @JsonProperty(value = "allowProtectedAppendWritesAll")
+    private Boolean allowProtectedAppendWritesAll;
 
     /**
      * Get the immutabilityPeriodSinceCreationInDays property: The immutability period for the blobs in the container
@@ -96,6 +108,34 @@ public final class ImmutabilityPolicyProperty {
      */
     public ImmutabilityPolicyProperty withAllowProtectedAppendWrites(Boolean allowProtectedAppendWrites) {
         this.allowProtectedAppendWrites = allowProtectedAppendWrites;
+        return this;
+    }
+
+    /**
+     * Get the allowProtectedAppendWritesAll property: This property can only be changed for unlocked time-based
+     * retention policies. When enabled, new blocks can be written to both 'Append and Bock Blobs' while maintaining
+     * immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified
+     * or deleted. This property cannot be changed with ExtendImmutabilityPolicy API. The 'allowProtectedAppendWrites'
+     * and 'allowProtectedAppendWritesAll' properties are mutually exclusive.
+     *
+     * @return the allowProtectedAppendWritesAll value.
+     */
+    public Boolean allowProtectedAppendWritesAll() {
+        return this.allowProtectedAppendWritesAll;
+    }
+
+    /**
+     * Set the allowProtectedAppendWritesAll property: This property can only be changed for unlocked time-based
+     * retention policies. When enabled, new blocks can be written to both 'Append and Bock Blobs' while maintaining
+     * immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified
+     * or deleted. This property cannot be changed with ExtendImmutabilityPolicy API. The 'allowProtectedAppendWrites'
+     * and 'allowProtectedAppendWritesAll' properties are mutually exclusive.
+     *
+     * @param allowProtectedAppendWritesAll the allowProtectedAppendWritesAll value to set.
+     * @return the ImmutabilityPolicyProperty object itself.
+     */
+    public ImmutabilityPolicyProperty withAllowProtectedAppendWritesAll(Boolean allowProtectedAppendWritesAll) {
+        this.allowProtectedAppendWritesAll = allowProtectedAppendWritesAll;
         return this;
     }
 

@@ -31,7 +31,7 @@ public interface NetworkInterfaceTapConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -46,7 +46,7 @@ public interface NetworkInterfaceTapConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -61,7 +61,7 @@ public interface NetworkInterfaceTapConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -77,7 +77,7 @@ public interface NetworkInterfaceTapConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -92,7 +92,7 @@ public interface NetworkInterfaceTapConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String networkInterfaceName, String tapConfigurationName);
@@ -133,7 +133,8 @@ public interface NetworkInterfaceTapConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified tap configuration on a network interface.
+     * @return the specified tap configuration on a network interface along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<NetworkInterfaceTapConfigurationInner>> getWithResponseAsync(
@@ -148,7 +149,7 @@ public interface NetworkInterfaceTapConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified tap configuration on a network interface.
+     * @return the specified tap configuration on a network interface on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<NetworkInterfaceTapConfigurationInner> getAsync(
@@ -179,7 +180,7 @@ public interface NetworkInterfaceTapConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified tap configuration on a network interface.
+     * @return the specified tap configuration on a network interface along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<NetworkInterfaceTapConfigurationInner> getWithResponse(
@@ -195,7 +196,8 @@ public interface NetworkInterfaceTapConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tap configuration in a Network Interface.
+     * @return tap configuration in a Network Interface along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -214,7 +216,7 @@ public interface NetworkInterfaceTapConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tap configuration in a Network Interface.
+     * @return the {@link PollerFlux} for polling of tap configuration in a Network Interface.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<NetworkInterfaceTapConfigurationInner>, NetworkInterfaceTapConfigurationInner>
@@ -234,7 +236,7 @@ public interface NetworkInterfaceTapConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tap configuration in a Network Interface.
+     * @return the {@link SyncPoller} for polling of tap configuration in a Network Interface.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkInterfaceTapConfigurationInner>, NetworkInterfaceTapConfigurationInner>
@@ -255,7 +257,7 @@ public interface NetworkInterfaceTapConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tap configuration in a Network Interface.
+     * @return the {@link SyncPoller} for polling of tap configuration in a Network Interface.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkInterfaceTapConfigurationInner>, NetworkInterfaceTapConfigurationInner>
@@ -276,7 +278,7 @@ public interface NetworkInterfaceTapConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tap configuration in a Network Interface.
+     * @return tap configuration in a Network Interface on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<NetworkInterfaceTapConfigurationInner> createOrUpdateAsync(
@@ -333,7 +335,7 @@ public interface NetworkInterfaceTapConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Tap configurations in a network interface.
+     * @return all Tap configurations in a network interface as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<NetworkInterfaceTapConfigurationInner> listAsync(String resourceGroupName, String networkInterfaceName);
@@ -346,7 +348,7 @@ public interface NetworkInterfaceTapConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Tap configurations in a network interface.
+     * @return all Tap configurations in a network interface as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NetworkInterfaceTapConfigurationInner> list(String resourceGroupName, String networkInterfaceName);
@@ -360,7 +362,7 @@ public interface NetworkInterfaceTapConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Tap configurations in a network interface.
+     * @return all Tap configurations in a network interface as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NetworkInterfaceTapConfigurationInner> list(

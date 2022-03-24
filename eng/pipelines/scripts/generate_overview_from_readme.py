@@ -34,6 +34,8 @@ def generate_overview(readme_file, version, overview_file_path):
         print('{} does not exist'.format(readme_file))
 
     if overview_file_path:
+        if not os.path.exists(overview_file_path):
+            os.makedirs(overview_file_path)
         html_overview_file = overview_file_path + 'readme_overview.html'
     else:
         html_overview_file = str(readme_file).lower().replace('readme.md', 'readme_overview.html')

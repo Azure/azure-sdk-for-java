@@ -1,14 +1,46 @@
 # Release History
 
-## 1.0.0-beta.8 (Unreleased)
+## 1.0.0-beta.10 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
+- Changed `SchemaRegistryApacheAvroEncoder` to `SchemaRegistryApacheAvroSerializer`.
+- Changed `decodeMessageData` and `decodeMessageDataAsync` to `deserializeMessageData` and `deserializeMessageDataAsync`.
+- Changed `encodeMessageData` and `encodeMessageDataAsync` to `serializeMessageData` and `serializeMessageDataAsync`.
+
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.9 (2022-02-12)
+
+### Features Added
+
+- Changed `SchemaRegistryApacheAvroEncoder` to deserialize `MessageWithMetadata` rather than tied to a binary format
+  with preamble. Backwards compatibility with preamble format supported for this release. See issue #26449.
+
+### Breaking Changes
+
+- Renamed `SchemaRegistryApacheAvroSerializer` to `SchemaRegistryApacheAvroEncoder`.
+- `SchemaRegistryApacheAvroEncoder` no longer extends from `ObjectSerializer`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-data-schemaregistry` dependency to `1.0.2`.
+- Remove dependency on `azure-core-serializer-avro-apache`.
+
+## 1.0.0-beta.8 (2022-01-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-data-schemaregistry` dependency to `1.0.1`.
+- Update `azure-core-serializer-avro-apache` dependency to `1.0.0-beta.17`.
 
 ## 1.0.0-beta.7 (2021-11-12)
 
