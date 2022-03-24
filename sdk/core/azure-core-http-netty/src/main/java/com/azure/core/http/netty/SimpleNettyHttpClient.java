@@ -71,7 +71,7 @@ public class SimpleNettyHttpClient implements HttpClient {
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
-        return Mono.fromFuture(sendInternal(request, context));
+        return Mono.fromFuture(() -> sendInternal(request, context));
     }
 
     @Override
