@@ -41,7 +41,7 @@
 
 # PRLabel: %Communication
 /sdk/communication/                                 @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
-/sdk/communication/azure-communication-identity/    @Azure/acs-identity-sdk
+/sdk/communication/azure-communication-identity/    @Azure/acs-identity-sdk @petrsvihlik @AikoBB @maximrytych-ms @martinbarnas-ms
 /sdk/communication/azure-communication-phonenumbers/ @miguhern @whisper6284 @lucasrsant @RoyHerrod @danielav7
 /sdk/communication/azure-communication-sms/         @RoyHerrod @arifibrahim4
 
