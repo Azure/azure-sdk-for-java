@@ -121,5 +121,23 @@ public class ManagedIdentityCredentialTest {
         new ManagedIdentityCredentialBuilder().clientId(CLIENT_ID).resourceId(resourceId).build();
     }
 
+    @Test
+    public void testArcCredentialCreated() {
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+
+        configuration.put("IDENTITY_ENDPOINT", "http://localhost");
+        configuration.put("IMDS_ENDPOINT", "http://localhost");
+        configuration.put("IDENTITY_SERVER_THUMBPRINT", "thumbprint");
+        configuration.put("IDENTITY_HEADER", "header");
+        configuration.put("MSI_ENDPOINT", "http://localhost");
+        configuration.put("MSI_SECRET", "secret");
+        configuration.put("AZURE_TENANT_ID", "tenantId");
+        configuration.put("AZURE_CLIENT_ID", "clientId");
+        configuration.put("AZURE_FEDERATED_TOKEN_FILE", "tokenFile");
+
+        ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
+        cred.
+
+    }
 }
 

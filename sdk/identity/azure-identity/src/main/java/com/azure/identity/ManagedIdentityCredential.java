@@ -48,6 +48,19 @@ public final class ManagedIdentityCredential implements TokenCredential {
         Configuration configuration = identityClientOptions.getConfiguration() == null
             ? Configuration.getGlobalConfiguration().clone() : identityClientOptions.getConfiguration();
 
+
+        /*
+         * Choose credential based on available environment variables in this order:
+         *
+         * Azure Arc: IDENTITY_ENDPOINT, IMDS_ENDPOINT
+         * Service Fabric: IDENTITY_ENDPOINT, IDENTITY_HEADER, IDENTITY_SERVER_THUMBPRINT
+         * App Service 2019-08-01: IDENTITY_ENDPOINT, IDENTITY_HEADER (MSI_ENDPOINT and MSI_SECRET will also be set.)
+         * App Service 2017-09-01: MSI_ENDPOINT, MSI_SECRET
+         * Cloud Shell: MSI_ENDPOINT
+         * Pod Identity V2 (AksExchangeToken): AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_FEDERATED_TOKEN_FILE
+         * IMDS/Pod Identity V1: No variables set.
+         */
+
         if (configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)) {
             managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, clientBuilder.build());
         } else if (configuration.contains(Configuration.PROPERTY_IDENTITY_ENDPOINT)) {
