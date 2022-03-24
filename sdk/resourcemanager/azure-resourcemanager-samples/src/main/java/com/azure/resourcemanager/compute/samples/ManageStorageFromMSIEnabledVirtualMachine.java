@@ -88,10 +88,10 @@ public final class ManageStorageFromMSIEnabledVirtualMachine {
 
             virtualMachine
                     .update()
-                        .defineNewExtension("CustomScriptForLinux")
-                            .withPublisher("Microsoft.OSTCExtensions")
-                            .withType("CustomScriptForLinux")
-                            .withVersion("1.4")
+                        .defineNewExtension("az-create-storage-account")
+                            .withPublisher("Microsoft.Azure.Extensions")
+                            .withType("CustomScript")
+                            .withVersion("2.1")
                             .withMinorVersionAutoUpgrade()
                             .withPublicSetting("fileUris", fileUris)
                             .withPublicSetting("commandToExecute", installCommand)
