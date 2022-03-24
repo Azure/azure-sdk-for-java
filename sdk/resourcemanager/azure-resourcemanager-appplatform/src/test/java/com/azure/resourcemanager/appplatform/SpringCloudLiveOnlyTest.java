@@ -26,10 +26,6 @@ import org.apache.commons.compress.utils.IOUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -44,11 +40,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
-import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -81,6 +74,7 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
 
         File jarFile = new File("gateway.jar");
         if (!jarFile.exists()) {
+            allowAllSSL();
             HttpURLConnection connection = (HttpURLConnection) new URL(GATEWAY_JAR_URL).openConnection();
             connection.connect();
             try (InputStream inputStream = connection.getInputStream();
@@ -116,6 +110,7 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
 
         File gzFile = new File("piggymetrics.tar.gz");
         if (!gzFile.exists()) {
+            allowAllSSL();
             HttpURLConnection connection = (HttpURLConnection) new URL(PIGGYMETRICS_TAR_GZ_URL).openConnection();
             connection.connect();
             try (InputStream inputStream = connection.getInputStream();
@@ -384,25 +379,6 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
             throw new RuntimeException("Exception occurred while invoking command", e);
         }
         return result;
-    }
-
-    private static void allowAllSSL() throws NoSuchAlgorithmException, KeyManagementException {
-        TrustManager[] trustAllCerts = new TrustManager[]{
-            new X509TrustManager() {
-                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                    return null;
-                }
-                public void checkClientTrusted(
-                    java.security.cert.X509Certificate[] certs, String authType) {
-                }
-                public void checkServerTrusted(
-                    java.security.cert.X509Certificate[] certs, String authType) {
-                }
-            }
-        };
-        SSLContext sslContext = SSLContext.getInstance("SSL");
-        sslContext.init(null, trustAllCerts, new SecureRandom());
-        HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
     }
 
     private static final char[] HEX_CODE = "0123456789ABCDEF".toCharArray();
