@@ -53,10 +53,12 @@ public final class ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup {
         final String sshPublicKey = Utils.sshPublicKey();
         final Region region = Region.US_EAST;
 
-        final String installScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/mgmt_fix-msi-sample/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/create_resources_with_msi.sh";
+        final String installScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/create_resources_with_msi.sh";
         String installCommand = "bash create_resources_with_msi.sh {stgName} {rgName} {location}";
         List<String> fileUris = new ArrayList<>();
         fileUris.add(installScript);
+
+        ActiveDirectoryGroup activeDirectoryGroup = null;
 
         try {
 
@@ -65,7 +67,7 @@ public final class ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup {
 
             System.out.println("Creating a AAD security group");
 
-            ActiveDirectoryGroup activeDirectoryGroup = azureResourceManager.accessManagement()
+            activeDirectoryGroup = azureResourceManager.accessManagement()
                     .activeDirectoryGroups()
                     .define(groupName)
                         .withEmailAlias(groupName)
@@ -164,6 +166,15 @@ public final class ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup {
             Utils.print(storageAccount);
             return true;
         } finally {
+            try {
+                if (activeDirectoryGroup != null) {
+                    System.out.println("Deleting AAD Group: " + activeDirectoryGroup.name());
+                    azureResourceManager.accessManagement().activeDirectoryGroups()
+                        .deleteById(activeDirectoryGroup.id());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
                 azureResourceManager.resourceGroups().beginDeleteByName(rgName);

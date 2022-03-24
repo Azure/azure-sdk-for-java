@@ -44,7 +44,7 @@ public final class ManageStorageFromMSIEnabledVirtualMachine {
         final String sshPublicKey = Utils.sshPublicKey();
         final Region region = Region.US_EAST;
 
-        final String installScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/mgmt_fix-msi-sample/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/create_resources_with_msi.sh";
+        final String installScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/create_resources_with_msi.sh";
         String installCommand = "bash create_resources_with_msi.sh {stgName} {rgName} {location}";
         List<String> fileUris = new ArrayList<>();
         fileUris.add(installScript);
