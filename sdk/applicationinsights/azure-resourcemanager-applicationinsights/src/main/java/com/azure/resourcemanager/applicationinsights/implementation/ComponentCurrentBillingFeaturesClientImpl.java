@@ -23,15 +23,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.applicationinsights.fluent.ComponentCurrentBillingFeaturesClient;
 import com.azure.resourcemanager.applicationinsights.fluent.models.ApplicationInsightsComponentBillingFeaturesInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ComponentCurrentBillingFeaturesClient. */
 public final class ComponentCurrentBillingFeaturesClientImpl implements ComponentCurrentBillingFeaturesClient {
-    private final ClientLogger logger = new ClientLogger(ComponentCurrentBillingFeaturesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ComponentCurrentBillingFeaturesService service;
 

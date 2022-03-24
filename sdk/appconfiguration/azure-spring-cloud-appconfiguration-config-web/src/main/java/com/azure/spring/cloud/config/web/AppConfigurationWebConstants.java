@@ -15,6 +15,11 @@ public final class AppConfigurationWebConstants {
      * Validation Topic for push refresh.
      */
     public static final String VALIDATION_TOPIC = "topic";
+
+    public static final String DATA = "data";
+
+    public static final String SYNC_TOKEN = "syncToken";
+    
     /**
      * Prefix of the validation code.
      */
@@ -24,12 +29,12 @@ public final class AppConfigurationWebConstants {
      * Actuator endpoint
      */
     public static final String ACTUATOR = "/actuator/";
-    
+
     /**
      * Azure App Configuration push refresh endpoint
      */
     public static final String APPCONFIGURATION_REFRESH = "appconfiguration-refresh";
-    
+
     /**
      * Azure App Configuration push bus refresh endpoint
      */

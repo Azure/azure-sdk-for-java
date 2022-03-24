@@ -18,10 +18,9 @@ import com.azure.resourcemanager.applicationinsights.models.ComponentPurgeBody;
 import com.azure.resourcemanager.applicationinsights.models.ComponentPurgeResponse;
 import com.azure.resourcemanager.applicationinsights.models.ComponentPurgeStatusResponse;
 import com.azure.resourcemanager.applicationinsights.models.Components;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ComponentsImpl implements Components {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComponentsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ComponentsImpl.class);
 
     private final ComponentsClient innerClient;
 
@@ -141,7 +140,7 @@ public final class ComponentsImpl implements Components {
     public ApplicationInsightsComponent getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -149,7 +148,7 @@ public final class ComponentsImpl implements Components {
         }
         String resourceName = Utils.getValueFromIdByName(id, "components");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'components'.", id)));
@@ -160,7 +159,7 @@ public final class ComponentsImpl implements Components {
     public Response<ApplicationInsightsComponent> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -168,7 +167,7 @@ public final class ComponentsImpl implements Components {
         }
         String resourceName = Utils.getValueFromIdByName(id, "components");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'components'.", id)));
@@ -179,7 +178,7 @@ public final class ComponentsImpl implements Components {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -187,7 +186,7 @@ public final class ComponentsImpl implements Components {
         }
         String resourceName = Utils.getValueFromIdByName(id, "components");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'components'.", id)));
@@ -198,7 +197,7 @@ public final class ComponentsImpl implements Components {
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -206,7 +205,7 @@ public final class ComponentsImpl implements Components {
         }
         String resourceName = Utils.getValueFromIdByName(id, "components");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'components'.", id)));
