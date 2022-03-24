@@ -135,7 +135,7 @@ final class StateHolder {
      */
     static void updateNextRefreshTime(Duration refreshInterval, AppConfigurationProviderProperties properties) {
         if (refreshInterval != null) {
-            Instant newForcedRefresh = BackoffTimeCalculator.getNextRefreshCheck(nextForcedRefresh,
+            Instant newForcedRefresh = getNextRefreshCheck(nextForcedRefresh,
                 clientRefreshAttempts, refreshInterval.getSeconds(), properties);
 
             if (newForcedRefresh.compareTo(nextForcedRefresh) != 0) {
@@ -146,7 +146,7 @@ final class StateHolder {
 
         for (Entry<String, State> entry : STATE.entrySet()) {
             State state = entry.getValue();
-            Instant newRefresh = BackoffTimeCalculator.getNextRefreshCheck(state.getNextRefreshCheck(),
+            Instant newRefresh = getNextRefreshCheck(state.getNextRefreshCheck(),
                 state.getRefreshAttempt(), (long) state.getRefreshInterval(), properties);
 
             if (newRefresh.compareTo(entry.getValue().getNextRefreshCheck()) != 0) {
@@ -155,6 +155,34 @@ final class StateHolder {
             State updatedState = new State(state, newRefresh, entry.getKey());
             STATE.put(entry.getKey(), updatedState);
         }
+    }
+    
+    /**
+     * Calculates the amount of time to the next refresh, if a refresh fails. Takes current Refresh date into account
+     * for watch keys. Used for checking client refresh-interval only.
+     * @param nextRefreshCheck next refresh for the whole client
+     * @param attempt refresh attempt for the client
+     * @param interval the Refresh Interval
+     * @param properties App Configuration Provider Properties
+     * @return new Refresh Date
+     */
+    private static Instant getNextRefreshCheck(Instant nextRefreshCheck, Integer attempt, Long interval,
+        AppConfigurationProviderProperties properties) {
+        // The refresh interval is only updated if it is expired.
+        if (!Instant.now().isAfter(nextRefreshCheck)) {
+            return nextRefreshCheck;
+        }
+
+        int durationPeriod = Math.toIntExact(interval);
+
+        Instant now = Instant.now();
+
+        if (durationPeriod <= properties.getDefaultMinBackoff()) {
+            return now.plusSeconds(interval);
+        }
+
+        return now.plusNanos(
+            BackoffTimeCalculator.calculateBackoff(attempt, interval, properties.getDefaultMaxBackoff(), properties.getDefaultMinBackoff()));
     }
 
     static void clearAttempts() {
