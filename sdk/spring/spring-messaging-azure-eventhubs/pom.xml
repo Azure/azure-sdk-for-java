@@ -144,10 +144,6 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.junit.vintage:junit-vintage-engine:[5.8.2]</include> <!-- {x-include-update;org.junit.vintage:junit-vintage-engine;external_dependency} -->
-                <include>org.mockito:mockito-core:[4.0.0]</include> <!-- {x-include-update;org.mockito:mockito-core;external_dependency} -->
-                <include>org.powermock:powermock-api-mockito2:[2.0.9]</include> <!-- {x-include-update;org.powermock:powermock-api-mockito2;external_dependency} -->
-                <include>org.powermock:powermock-module-junit4:[2.0.9]</include> <!-- {x-include-update;org.powermock:powermock-module-junit4;external_dependency} -->
                 <include>org.springframework:spring-messaging:[5.3.15]</include> <!-- {x-include-update;org.springframework:spring-messaging;external_dependency} -->
                 <include>org.springframework:spring-tx:[5.3.15]</include> <!-- {x-include-update;org.springframework:spring-tx;external_dependency} -->
                 <include>org.springframework.retry:spring-retry:[1.3.1]</include> <!-- {x-include-update;org.springframework.retry:spring-retry;external_dependency} -->

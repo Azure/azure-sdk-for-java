@@ -107,41 +107,6 @@
       <artifactId>pooled-jms</artifactId>
       <version>1.2.3</version> <!-- {x-version-update;org.messaginghub:pooled-jms;external_dependency} -->
     </dependency>
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-buffer</artifactId>
-      <version>4.1.73.Final</version> <!-- {x-version-update;io.netty:netty-buffer;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-common</artifactId>
-      <version>4.1.73.Final</version> <!-- {x-version-update;io.netty:netty-common;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-handler</artifactId>
-      <version>4.1.73.Final</version> <!-- {x-version-update;io.netty:netty-handler;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-transport</artifactId>
-      <version>4.1.73.Final</version> <!-- {x-version-update;io.netty:netty-transport;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-transport-native-epoll</artifactId>
-      <version>4.1.73.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-epoll;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-transport-native-kqueue</artifactId>
-      <version>4.1.73.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-kqueue;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-codec-http</artifactId>
-      <version>4.1.73.Final</version> <!-- {x-version-update;io.netty:netty-codec-http;external_dependency} -->
-    </dependency>
   </dependencies>
 
   <build>
