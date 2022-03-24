@@ -15,7 +15,8 @@ public interface Components {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Application Insights components within a subscription.
+     * @return a list of all Application Insights components within a subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<ApplicationInsightsComponent> list();
 
@@ -26,7 +27,8 @@ public interface Components {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Application Insights components within a subscription.
+     * @return a list of all Application Insights components within a subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<ApplicationInsightsComponent> list(Context context);
 
@@ -37,7 +39,8 @@ public interface Components {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Application Insights components within a resource group.
+     * @return a list of Application Insights components within a resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<ApplicationInsightsComponent> listByResourceGroup(String resourceGroupName);
 
@@ -49,7 +52,8 @@ public interface Components {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Application Insights components within a resource group.
+     * @return a list of Application Insights components within a resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<ApplicationInsightsComponent> listByResourceGroup(String resourceGroupName, Context context);
 
