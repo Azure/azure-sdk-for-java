@@ -33,12 +33,13 @@ import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.LastHttpContent;
-import io.netty.util.AttributeKey;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+
+import static com.azure.core.http.netty.implementation.simple.SimpleNettyConstants.REQUEST_CONTEXT_KEY;
 
 /**
  * TODO (kasobol-msft) add docs.
@@ -46,9 +47,6 @@ import java.util.concurrent.ExecutionException;
 public class SimpleNettyHttpClient implements HttpClient {
 
     private static final ClientLogger LOGGER = new ClientLogger(SimpleNettyHttpClient.class);
-
-    private static final AttributeKey<SimpleRequestContext> REQUEST_CONTEXT_KEY =
-        AttributeKey.newInstance("com.azure.core.simple.netty.request.context.key");
 
     private final EventLoopGroup eventLoopGroup;
 
@@ -58,14 +56,12 @@ public class SimpleNettyHttpClient implements HttpClient {
      * TODO (kasobol-msft) add docs.
      */
     public SimpleNettyHttpClient() {
-        eventLoopGroup = new NioEventLoopGroup();
-        // TODO (kasobol-msft) how this should work ? Closeable ?
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            if (channelPool != null) {
-                channelPool.close();
-            }
-            eventLoopGroup.shutdownGracefully();
-        }));
+        eventLoopGroup = new NioEventLoopGroup(r -> {
+            Thread t = new Thread(r);
+            // TODO (kasobol-msft) is there better way? Closeable? reactor-netty seems to default to daemons.
+            t.setDaemon(true);
+            return t;
+        });
     }
 
     @Override
