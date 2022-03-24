@@ -29,101 +29,101 @@ public final class AzureEnvironment {
      * Provides the settings for authentication with Azure.
      */
     public static final AzureEnvironment AZURE = new AzureEnvironment(new HashMap<String, String>() {{
-        put("portalUrl", "https://portal.azure.com");
-        put("publishingProfileUrl", "http://go.microsoft.com/fwlink/?LinkId=254432");
-        put("managementEndpointUrl", "https://management.core.windows.net/");
-        put("resourceManagerEndpointUrl", "https://management.azure.com/");
-        put("sqlManagementEndpointUrl", "https://management.core.windows.net:8443/");
-        put("sqlServerHostnameSuffix", ".database.windows.net");
-        put("galleryEndpointUrl", "https://gallery.azure.com/");
-        put("activeDirectoryEndpointUrl", "https://login.microsoftonline.com/");
-        put("activeDirectoryResourceId", "https://management.core.windows.net/");
-        put("activeDirectoryGraphResourceId", "https://graph.windows.net/");
-        put("microsoftGraphResourceId", "https://graph.microsoft.com/");
-        put("dataLakeEndpointResourceId", "https://datalake.azure.net/");
-        put("activeDirectoryGraphApiVersion", "2013-04-05");
-        put("storageEndpointSuffix", ".core.windows.net");
-        put("keyVaultDnsSuffix", ".vault.azure.net");
-        put("azureDataLakeStoreFileSystemEndpointSuffix", "azuredatalakestore.net");
-        put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "azuredatalakeanalytics.net");
-        put("azureLogAnalyticsResourceId", "https://api.loganalytics.io/");
-        put("azureApplicationInsightsResourceId", "https://api.applicationinsights.io/");
-    }});
+            put("portalUrl", "https://portal.azure.com");
+            put("publishingProfileUrl", "http://go.microsoft.com/fwlink/?LinkId=254432");
+            put("managementEndpointUrl", "https://management.core.windows.net/");
+            put("resourceManagerEndpointUrl", "https://management.azure.com/");
+            put("sqlManagementEndpointUrl", "https://management.core.windows.net:8443/");
+            put("sqlServerHostnameSuffix", ".database.windows.net");
+            put("galleryEndpointUrl", "https://gallery.azure.com/");
+            put("activeDirectoryEndpointUrl", "https://login.microsoftonline.com/");
+            put("activeDirectoryResourceId", "https://management.core.windows.net/");
+            put("activeDirectoryGraphResourceId", "https://graph.windows.net/");
+            put("microsoftGraphResourceId", "https://graph.microsoft.com/");
+            put("dataLakeEndpointResourceId", "https://datalake.azure.net/");
+            put("activeDirectoryGraphApiVersion", "2013-04-05");
+            put("storageEndpointSuffix", ".core.windows.net");
+            put("keyVaultDnsSuffix", ".vault.azure.net");
+            put("azureDataLakeStoreFileSystemEndpointSuffix", "azuredatalakestore.net");
+            put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "azuredatalakeanalytics.net");
+            put("azureLogAnalyticsResourceId", "https://api.loganalytics.io/");
+            put("azureApplicationInsightsResourceId", "https://api.applicationinsights.io/");
+        }});
 
     /**
      * Provides the settings for authentication with Azure China.
      */
     public static final AzureEnvironment AZURE_CHINA = new AzureEnvironment(new HashMap<String, String>() {{
-        put("portalUrl", "https://portal.azure.cn");
-        put("publishingProfileUrl", "http://go.microsoft.com/fwlink/?LinkID=301774");
-        put("managementEndpointUrl", "https://management.core.chinacloudapi.cn/");
-        put("resourceManagerEndpointUrl", "https://management.chinacloudapi.cn/");
-        put("sqlManagementEndpointUrl", "https://management.core.chinacloudapi.cn:8443/");
-        put("sqlServerHostnameSuffix", ".database.chinacloudapi.cn");
-        put("galleryEndpointUrl", "https://gallery.chinacloudapi.cn/");
-        put("activeDirectoryEndpointUrl", "https://login.chinacloudapi.cn/");
-        put("activeDirectoryResourceId", "https://management.core.chinacloudapi.cn/");
-        put("activeDirectoryGraphResourceId", "https://graph.chinacloudapi.cn/");
-        put("microsoftGraphResourceId", "https://microsoftgraph.chinacloudapi.cn/");
-        put("dataLakeEndpointResourceId", "N/A");
-        put("activeDirectoryGraphApiVersion", "2013-04-05");
-        put("storageEndpointSuffix", ".core.chinacloudapi.cn");
-        put("keyVaultDnsSuffix", ".vault.azure.cn");
-        put("azureDataLakeStoreFileSystemEndpointSuffix", "N/A");
-        put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "N/A");
-        put("azureLogAnalyticsResourceId", "N/A");
-        put("azureApplicationInsightsResourceId", "N/A");
-    }});
+            put("portalUrl", "https://portal.azure.cn");
+            put("publishingProfileUrl", "http://go.microsoft.com/fwlink/?LinkID=301774");
+            put("managementEndpointUrl", "https://management.core.chinacloudapi.cn/");
+            put("resourceManagerEndpointUrl", "https://management.chinacloudapi.cn/");
+            put("sqlManagementEndpointUrl", "https://management.core.chinacloudapi.cn:8443/");
+            put("sqlServerHostnameSuffix", ".database.chinacloudapi.cn");
+            put("galleryEndpointUrl", "https://gallery.chinacloudapi.cn/");
+            put("activeDirectoryEndpointUrl", "https://login.chinacloudapi.cn/");
+            put("activeDirectoryResourceId", "https://management.core.chinacloudapi.cn/");
+            put("activeDirectoryGraphResourceId", "https://graph.chinacloudapi.cn/");
+            put("microsoftGraphResourceId", "https://microsoftgraph.chinacloudapi.cn/");
+            put("dataLakeEndpointResourceId", "N/A");
+            put("activeDirectoryGraphApiVersion", "2013-04-05");
+            put("storageEndpointSuffix", ".core.chinacloudapi.cn");
+            put("keyVaultDnsSuffix", ".vault.azure.cn");
+            put("azureDataLakeStoreFileSystemEndpointSuffix", "N/A");
+            put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "N/A");
+            put("azureLogAnalyticsResourceId", "N/A");
+            put("azureApplicationInsightsResourceId", "N/A");
+        }});
 
     /**
      * Provides the settings for authentication with Azure US Government.
      */
     public static final AzureEnvironment AZURE_US_GOVERNMENT = new AzureEnvironment(new HashMap<String, String>() {{
-        put("portalUrl", "https://portal.azure.us");
-        put("publishingProfileUrl", "https://manage.windowsazure.us/publishsettings/index");
-        put("managementEndpointUrl", "https://management.core.usgovcloudapi.net/");
-        put("resourceManagerEndpointUrl", "https://management.usgovcloudapi.net/");
-        put("sqlManagementEndpointUrl", "https://management.core.usgovcloudapi.net:8443/");
-        put("sqlServerHostnameSuffix", ".database.usgovcloudapi.net");
-        put("galleryEndpointUrl", "https://gallery.usgovcloudapi.net/");
-        put("activeDirectoryEndpointUrl", "https://login.microsoftonline.us/");
-        put("activeDirectoryResourceId", "https://management.core.usgovcloudapi.net/");
-        put("activeDirectoryGraphResourceId", "https://graph.windows.net/");
-        put("microsoftGraphResourceId", "https://graph.microsoft.us/");
-        put("dataLakeEndpointResourceId", "N/A");
-        put("activeDirectoryGraphApiVersion", "2013-04-05");
-        put("storageEndpointSuffix", ".core.usgovcloudapi.net");
-        put("keyVaultDnsSuffix", ".vault.usgovcloudapi.net");
-        put("azureDataLakeStoreFileSystemEndpointSuffix", "N/A");
-        put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "N/A");
-        put("azureLogAnalyticsResourceId", "https://api.loganalytics.us/");
-        put("azureApplicationInsightsResourceId", "N/A");
-    }});
+            put("portalUrl", "https://portal.azure.us");
+            put("publishingProfileUrl", "https://manage.windowsazure.us/publishsettings/index");
+            put("managementEndpointUrl", "https://management.core.usgovcloudapi.net/");
+            put("resourceManagerEndpointUrl", "https://management.usgovcloudapi.net/");
+            put("sqlManagementEndpointUrl", "https://management.core.usgovcloudapi.net:8443/");
+            put("sqlServerHostnameSuffix", ".database.usgovcloudapi.net");
+            put("galleryEndpointUrl", "https://gallery.usgovcloudapi.net/");
+            put("activeDirectoryEndpointUrl", "https://login.microsoftonline.us/");
+            put("activeDirectoryResourceId", "https://management.core.usgovcloudapi.net/");
+            put("activeDirectoryGraphResourceId", "https://graph.windows.net/");
+            put("microsoftGraphResourceId", "https://graph.microsoft.us/");
+            put("dataLakeEndpointResourceId", "N/A");
+            put("activeDirectoryGraphApiVersion", "2013-04-05");
+            put("storageEndpointSuffix", ".core.usgovcloudapi.net");
+            put("keyVaultDnsSuffix", ".vault.usgovcloudapi.net");
+            put("azureDataLakeStoreFileSystemEndpointSuffix", "N/A");
+            put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "N/A");
+            put("azureLogAnalyticsResourceId", "https://api.loganalytics.us/");
+            put("azureApplicationInsightsResourceId", "N/A");
+        }});
 
     /**
      * Provides the settings for authentication with Azure Germany.
      */
     public static final AzureEnvironment AZURE_GERMANY = new AzureEnvironment(new HashMap<String, String>() {{
-        put("portalUrl", "https://portal.microsoftazure.de");
-        put("publishingProfileUrl", "https://manage.microsoftazure.de/publishsettings/index");
-        put("managementEndpointUrl", "https://management.core.cloudapi.de/");
-        put("resourceManagerEndpointUrl", "https://management.microsoftazure.de/");
-        put("sqlManagementEndpointUrl", "https://management.core.cloudapi.de:8443/");
-        put("sqlServerHostnameSuffix", ".database.cloudapi.de");
-        put("galleryEndpointUrl", "https://gallery.cloudapi.de/");
-        put("activeDirectoryEndpointUrl", "https://login.microsoftonline.de/");
-        put("activeDirectoryResourceId", "https://management.core.cloudapi.de/");
-        put("activeDirectoryGraphResourceId", "https://graph.cloudapi.de/");
-        put("microsoftGraphResourceId", "https://graph.microsoft.de/");
-        put("dataLakeEndpointResourceId", "N/A");
-        put("activeDirectoryGraphApiVersion", "2013-04-05");
-        put("storageEndpointSuffix", ".core.cloudapi.de");
-        put("keyVaultDnsSuffix", ".vault.microsoftazure.de");
-        put("azureDataLakeStoreFileSystemEndpointSuffix", "N/A");
-        put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "N/A");
-        put("azureLogAnalyticsResourceId", "N/A");
-        put("azureApplicationInsightsResourceId", "N/A");
-    }});
+            put("portalUrl", "https://portal.microsoftazure.de");
+            put("publishingProfileUrl", "https://manage.microsoftazure.de/publishsettings/index");
+            put("managementEndpointUrl", "https://management.core.cloudapi.de/");
+            put("resourceManagerEndpointUrl", "https://management.microsoftazure.de/");
+            put("sqlManagementEndpointUrl", "https://management.core.cloudapi.de:8443/");
+            put("sqlServerHostnameSuffix", ".database.cloudapi.de");
+            put("galleryEndpointUrl", "https://gallery.cloudapi.de/");
+            put("activeDirectoryEndpointUrl", "https://login.microsoftonline.de/");
+            put("activeDirectoryResourceId", "https://management.core.cloudapi.de/");
+            put("activeDirectoryGraphResourceId", "https://graph.cloudapi.de/");
+            put("microsoftGraphResourceId", "https://graph.microsoft.de/");
+            put("dataLakeEndpointResourceId", "N/A");
+            put("activeDirectoryGraphApiVersion", "2013-04-05");
+            put("storageEndpointSuffix", ".core.cloudapi.de");
+            put("keyVaultDnsSuffix", ".vault.microsoftazure.de");
+            put("azureDataLakeStoreFileSystemEndpointSuffix", "N/A");
+            put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "N/A");
+            put("azureLogAnalyticsResourceId", "N/A");
+            put("azureApplicationInsightsResourceId", "N/A");
+        }});
 
     /**
      * @return the entirety of the endpoints associated with the current environment.
