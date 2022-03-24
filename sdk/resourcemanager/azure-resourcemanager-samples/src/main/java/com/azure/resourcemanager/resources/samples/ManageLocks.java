@@ -43,7 +43,6 @@ public final class ManageLocks {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
 
-        final String password = Utils.randomResourceName(azureResourceManager, "P@s", 14);
         final String rgName = Utils.randomResourceName(azureResourceManager, "rg", 15);
         final String vmName = Utils.randomResourceName(azureResourceManager, "vm", 15);
         final String storageName = Utils.randomResourceName(azureResourceManager, "st", 15);
