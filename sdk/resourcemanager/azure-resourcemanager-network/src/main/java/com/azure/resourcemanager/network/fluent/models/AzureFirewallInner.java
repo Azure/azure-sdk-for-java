@@ -7,7 +7,6 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AzureFirewallApplicationRuleCollection;
 import com.azure.resourcemanager.network.models.AzureFirewallIpConfiguration;
 import com.azure.resourcemanager.network.models.AzureFirewallIpGroups;
@@ -17,7 +16,6 @@ import com.azure.resourcemanager.network.models.AzureFirewallSku;
 import com.azure.resourcemanager.network.models.AzureFirewallThreatIntelMode;
 import com.azure.resourcemanager.network.models.HubIpAddresses;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -25,8 +23,6 @@ import java.util.Map;
 /** Azure Firewall resource. */
 @Fluent
 public final class AzureFirewallInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallInner.class);
-
     /*
      * Properties of the azure firewall.
      */

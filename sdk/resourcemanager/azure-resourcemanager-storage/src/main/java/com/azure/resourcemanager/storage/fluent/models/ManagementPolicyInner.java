@@ -6,17 +6,13 @@ package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.ManagementPolicySchema;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The Get Storage Account ManagementPolicies operation response. */
 @Fluent
 public final class ManagementPolicyInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementPolicyInner.class);
-
     /*
      * Returns the Storage Account Data Policies Rules.
      */

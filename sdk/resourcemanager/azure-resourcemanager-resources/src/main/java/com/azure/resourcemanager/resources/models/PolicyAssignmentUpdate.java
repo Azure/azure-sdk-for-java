@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PolicyAssignmentUpdate model. */
 @Fluent
 public final class PolicyAssignmentUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyAssignmentUpdate.class);
-
     /*
      * The location of the policy assignment. Only required when utilizing
      * managed identity.

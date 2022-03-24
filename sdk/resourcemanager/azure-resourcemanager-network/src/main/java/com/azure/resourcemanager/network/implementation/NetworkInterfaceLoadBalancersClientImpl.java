@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.NetworkInterfaceLoadBalancersClient;
 import com.azure.resourcemanager.network.fluent.models.LoadBalancerInner;
 import com.azure.resourcemanager.network.models.NetworkInterfaceLoadBalancerListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in NetworkInterfaceLoadBalancersClient. */
 public final class NetworkInterfaceLoadBalancersClientImpl implements NetworkInterfaceLoadBalancersClient {
-    private final ClientLogger logger = new ClientLogger(NetworkInterfaceLoadBalancersClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final NetworkInterfaceLoadBalancersService service;
 

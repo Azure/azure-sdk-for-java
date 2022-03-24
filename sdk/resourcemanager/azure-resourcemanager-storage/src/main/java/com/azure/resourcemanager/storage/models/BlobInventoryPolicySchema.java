@@ -6,15 +6,12 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The storage account blob inventory policy rules. */
 @Fluent
 public final class BlobInventoryPolicySchema {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobInventoryPolicySchema.class);
-
     /*
      * Policy is enabled if set to true.
      */
@@ -101,16 +98,18 @@ public final class BlobInventoryPolicySchema {
      */
     public void validate() {
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property type in model BlobInventoryPolicySchema"));
         }
         if (rules() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property rules in model BlobInventoryPolicySchema"));
         } else {
             rules().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BlobInventoryPolicySchema.class);
 }

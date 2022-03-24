@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Object to define the number of days after creation. */
 @Fluent
 public final class DateAfterCreation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DateAfterCreation.class);
-
     /*
      * Value indicating the age in days after creation
      */

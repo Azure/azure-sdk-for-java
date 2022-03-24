@@ -6,15 +6,12 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An object that defines the blob inventory rule. */
 @Fluent
 public final class BlobInventoryPolicyDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobInventoryPolicyDefinition.class);
-
     /*
      * An object that defines the filter set.
      */
@@ -188,28 +185,30 @@ public final class BlobInventoryPolicyDefinition {
             filters().validate();
         }
         if (format() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property format in model BlobInventoryPolicyDefinition"));
         }
         if (schedule() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property schedule in model BlobInventoryPolicyDefinition"));
         }
         if (objectType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property objectType in model BlobInventoryPolicyDefinition"));
         }
         if (schemaFields() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property schemaFields in model BlobInventoryPolicyDefinition"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BlobInventoryPolicyDefinition.class);
 }
