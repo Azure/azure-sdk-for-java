@@ -455,12 +455,13 @@ class RequestResponseChannelTest {
         // Act
         shutdownSignals.next(shutdownSignal);
 
+        // We are in the process of disposing.
+        assertTrue(channel.isDisposed());
+
         // This turns it into a synchronous operation so we know that it is disposed completely.
         channel.closeAsync().block();
 
         // Assert
-        assertTrue(channel.isDisposed());
-        
         verify(receiver).close();
         verify(sender).close();
 

@@ -442,8 +442,8 @@ public class ReactorConnection implements AmqpConnection {
                 .log("Unable to emit shutdown signal.");
         }
 
-        final Mono<Void> managementNodeCloseOperations = Mono.when(
-            Flux.fromStream(managementNodes.values().stream()).flatMap(node -> node.closeAsync()));
+        // Note that we don't need to manually close cbs and management nodes here as RequestResponseChannel
+        // has subscriber to close itself after shutdown signal emitted.
 
         final Mono<Void> closeReactor = Mono.fromRunnable(() -> {
             logger.verbose("Scheduling closeConnection work.");
@@ -468,10 +468,7 @@ public class ReactorConnection implements AmqpConnection {
         });
 
         return Mono.whenDelayError(
-            managementNodeCloseOperations.doFinally(signalType ->
-                logger.atVerbose()
-                    .log("Closed management nodes.")))
-            .then(closeReactor.doFinally(signalType ->
+            closeReactor.doFinally(signalType ->
                 logger.atVerbose()
                     .addKeyValue(SIGNAL_TYPE_KEY, signalType)
                     .log("Closed reactor dispatcher.")))
