@@ -161,7 +161,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
                 if (properties.getRefreshInterval() != null) {
                  // The next refresh will happen sooner if refresh interval is expired.
-                    StateHolder.resetAll(properties.getRefreshInterval(), appProperties);
+                    StateHolder.updateNextRefreshTime(properties.getRefreshInterval(), appProperties);
                 }
                 ReflectionUtils.rethrowRuntimeException(e);
             } else if (store.isFailFast()) {

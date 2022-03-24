@@ -174,7 +174,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
                 }
             } catch (Exception e) {
                 // The next refresh will happen sooner if refresh interval is expired.
-                StateHolder.resetAll(refreshInterval, appProperties);
+                StateHolder.updateNextRefreshTime(refreshInterval, appProperties);
                 throw e;
             } finally {
                 running.set(false);

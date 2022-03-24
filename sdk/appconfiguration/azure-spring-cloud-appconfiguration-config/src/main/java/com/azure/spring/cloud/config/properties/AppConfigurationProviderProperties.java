@@ -46,11 +46,11 @@ public class AppConfigurationProviderProperties {
 
     @NotNull
     @Value("${defaultMinBackoff:30}")
-    private int defaultMinBackoff;
+    private Long defaultMinBackoff;
 
     @NotNull
     @Value("${defaultMaxBackoff:600}")
-    private int defaultMaxBackoff;
+    private Long defaultMaxBackoff;
 
     /**
      * @return the apiVersion
@@ -118,28 +118,28 @@ public class AppConfigurationProviderProperties {
     /**
      * @return the defaultMinBackoff
      */
-    public int getDefaultMinBackoff() {
+    public Long getDefaultMinBackoff() {
         return defaultMinBackoff;
     }
 
     /**
      * @param defaultMinBackoff the defaultMinBackoff to set
      */
-    public void setDefaultMinBackoff(int defaultMinBackoff) {
+    public void setDefaultMinBackoff(Long defaultMinBackoff) {
         this.defaultMinBackoff = defaultMinBackoff;
     }
 
     /**
      * @return the defaultMaxBackoff
      */
-    public int getDefaultMaxBackoff() {
+    public Long getDefaultMaxBackoff() {
         return defaultMaxBackoff;
     }
 
     /**
      * @param defaultMaxBackoff the defaultMaxBackoff to set
      */
-    public void setDefaultMaxBackoff(int defaultMaxBackoff) {
+    public void setDefaultMaxBackoff(Long defaultMaxBackoff) {
         this.defaultMaxBackoff = defaultMaxBackoff;
     }
 
