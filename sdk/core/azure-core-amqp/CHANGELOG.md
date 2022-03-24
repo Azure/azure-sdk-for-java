@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed issue that when connection is closed, the `AmqpChannelProcessor` repeatedly requests and closes `RequestResponseChannel`. ([#24582](https://github.com/Azure/azure-sdk-for-java/issues/24582)) 
+
 ### Other Changes
 
 ## 2.4.1 (2022-03-16)
