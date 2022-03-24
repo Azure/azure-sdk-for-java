@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Class to specify properties of all content keys in Streaming Policy. */
 @Fluent
 public final class StreamingPolicyContentKeys {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StreamingPolicyContentKeys.class);
-
     /*
      * Default content key for an encryption scheme
      */

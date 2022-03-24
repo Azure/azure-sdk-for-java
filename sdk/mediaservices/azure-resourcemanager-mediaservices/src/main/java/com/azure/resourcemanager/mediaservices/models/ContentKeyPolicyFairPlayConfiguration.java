@@ -5,22 +5,17 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Specifies a configuration for FairPlay licenses. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Media.ContentKeyPolicyFairPlayConfiguration")
-@JsonFlatten
 @Fluent
-public class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolicyConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContentKeyPolicyFairPlayConfiguration.class);
-
+public final class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolicyConfiguration {
     /*
      * The key that must be used as FairPlay Application Secret key.
      */
@@ -191,26 +186,26 @@ public class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolicyConfi
     public void validate() {
         super.validate();
         if (ask() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property ask in model ContentKeyPolicyFairPlayConfiguration"));
         }
         if (fairPlayPfxPassword() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property fairPlayPfxPassword in model"
                             + " ContentKeyPolicyFairPlayConfiguration"));
         }
         if (fairPlayPfx() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property fairPlayPfx in model ContentKeyPolicyFairPlayConfiguration"));
         }
         if (rentalAndLeaseKeyType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property rentalAndLeaseKeyType in model"
@@ -220,4 +215,6 @@ public class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolicyConfi
             offlineRentalConfiguration().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ContentKeyPolicyFairPlayConfiguration.class);
 }
