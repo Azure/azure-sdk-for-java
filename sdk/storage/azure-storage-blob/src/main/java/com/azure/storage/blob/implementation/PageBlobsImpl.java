@@ -17,8 +17,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Base64Util;
 import com.azure.core.util.Context;
@@ -27,9 +25,7 @@ import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.PageBlobsClearPagesResponse;
 import com.azure.storage.blob.implementation.models.PageBlobsCopyIncrementalResponse;
 import com.azure.storage.blob.implementation.models.PageBlobsCreateResponse;
-import com.azure.storage.blob.implementation.models.PageBlobsGetPageRangesDiffNextResponse;
 import com.azure.storage.blob.implementation.models.PageBlobsGetPageRangesDiffResponse;
-import com.azure.storage.blob.implementation.models.PageBlobsGetPageRangesNextResponse;
 import com.azure.storage.blob.implementation.models.PageBlobsGetPageRangesResponse;
 import com.azure.storage.blob.implementation.models.PageBlobsResizeResponse;
 import com.azure.storage.blob.implementation.models.PageBlobsUpdateSequenceNumberResponse;
@@ -41,7 +37,6 @@ import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
-import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
@@ -328,43 +323,6 @@ public final class PageBlobsImpl {
                 @HeaderParam("If-None-Match") String ifNoneMatch,
                 @HeaderParam("x-ms-if-tags") String ifTags,
                 @HeaderParam("x-ms-copy-source") String copySource,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<PageBlobsGetPageRangesNextResponse> getPageRangesNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("url") String url,
-                @HeaderParam("x-ms-range") String range,
-                @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
-                @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @HeaderParam("x-ms-if-tags") String ifTags,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<PageBlobsGetPageRangesDiffNextResponse> getPageRangesDiffNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("url") String url,
-                @HeaderParam("x-ms-previous-snapshot-url") String prevSnapshotUrl,
-                @HeaderParam("x-ms-range") String range,
-                @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
-                @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @HeaderParam("x-ms-if-tags") String ifTags,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @HeaderParam("Accept") String accept,
@@ -950,10 +908,10 @@ public final class PageBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the list of pages on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PageRange>> getPageRangesSinglePageAsync(
+    public Mono<PageBlobsGetPageRangesResponse> getPageRangesWithResponseAsync(
             String containerName,
             String blob,
             String snapshot,
@@ -976,34 +934,25 @@ public final class PageBlobsImpl {
         DateTimeRfc1123 ifUnmodifiedSinceConverted =
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.getPageRanges(
-                        this.client.getUrl(),
-                        containerName,
-                        blob,
-                        comp,
-                        snapshot,
-                        timeout,
-                        range,
-                        leaseId,
-                        ifModifiedSinceConverted,
-                        ifUnmodifiedSinceConverted,
-                        ifMatch,
-                        ifNoneMatch,
-                        ifTags,
-                        this.client.getVersion(),
-                        requestId,
-                        marker,
-                        maxresults,
-                        accept,
-                        context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextMarker(),
-                                        res.getDeserializedHeaders()));
+                this.client.getUrl(),
+                containerName,
+                blob,
+                comp,
+                snapshot,
+                timeout,
+                range,
+                leaseId,
+                ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted,
+                ifMatch,
+                ifNoneMatch,
+                ifTags,
+                this.client.getVersion(),
+                requestId,
+                marker,
+                maxresults,
+                accept,
+                context);
     }
 
     /**
@@ -1052,10 +1001,10 @@ public final class PageBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the list of pages on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PageRange>> getPageRangesDiffSinglePageAsync(
+    public Mono<PageBlobsGetPageRangesDiffResponse> getPageRangesDiffWithResponseAsync(
             String containerName,
             String blob,
             String snapshot,
@@ -1080,36 +1029,27 @@ public final class PageBlobsImpl {
         DateTimeRfc1123 ifUnmodifiedSinceConverted =
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.getPageRangesDiff(
-                        this.client.getUrl(),
-                        containerName,
-                        blob,
-                        comp,
-                        snapshot,
-                        timeout,
-                        prevsnapshot,
-                        prevSnapshotUrl,
-                        range,
-                        leaseId,
-                        ifModifiedSinceConverted,
-                        ifUnmodifiedSinceConverted,
-                        ifMatch,
-                        ifNoneMatch,
-                        ifTags,
-                        this.client.getVersion(),
-                        requestId,
-                        marker,
-                        maxresults,
-                        accept,
-                        context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextMarker(),
-                                        res.getDeserializedHeaders()));
+                this.client.getUrl(),
+                containerName,
+                blob,
+                comp,
+                snapshot,
+                timeout,
+                prevsnapshot,
+                prevSnapshotUrl,
+                range,
+                leaseId,
+                ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted,
+                ifMatch,
+                ifNoneMatch,
+                ifTags,
+                this.client.getVersion(),
+                requestId,
+                marker,
+                maxresults,
+                accept,
+                context);
     }
 
     /**
@@ -1339,136 +1279,5 @@ public final class PageBlobsImpl {
                 requestId,
                 accept,
                 context);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param range Return only the bytes of the blob in the specified range.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
-     *     specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
-     *     the specified date/time.
-     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
-     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
-     * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when storage analytics logging is enabled.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PageRange>> getPageRangesNextSinglePageAsync(
-            String nextLink,
-            String range,
-            String leaseId,
-            OffsetDateTime ifModifiedSince,
-            OffsetDateTime ifUnmodifiedSince,
-            String ifMatch,
-            String ifNoneMatch,
-            String ifTags,
-            String requestId,
-            Context context) {
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted =
-                ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted =
-                ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.getPageRangesNext(
-                        nextLink,
-                        this.client.getUrl(),
-                        range,
-                        leaseId,
-                        ifModifiedSinceConverted,
-                        ifUnmodifiedSinceConverted,
-                        ifMatch,
-                        ifNoneMatch,
-                        ifTags,
-                        this.client.getVersion(),
-                        requestId,
-                        accept,
-                        context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextMarker(),
-                                        res.getDeserializedHeaders()));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param prevSnapshotUrl Optional. This header is only supported in service versions 2019-04-19 and after and
-     *     specifies the URL of a previous snapshot of the target blob. The response will only contain pages that were
-     *     changed between the target blob and its previous snapshot.
-     * @param range Return only the bytes of the blob in the specified range.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
-     *     specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
-     *     the specified date/time.
-     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
-     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
-     * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when storage analytics logging is enabled.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PageRange>> getPageRangesDiffNextSinglePageAsync(
-            String nextLink,
-            String prevSnapshotUrl,
-            String range,
-            String leaseId,
-            OffsetDateTime ifModifiedSince,
-            OffsetDateTime ifUnmodifiedSince,
-            String ifMatch,
-            String ifNoneMatch,
-            String ifTags,
-            String requestId,
-            Context context) {
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted =
-                ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted =
-                ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.getPageRangesDiffNext(
-                        nextLink,
-                        this.client.getUrl(),
-                        prevSnapshotUrl,
-                        range,
-                        leaseId,
-                        ifModifiedSinceConverted,
-                        ifUnmodifiedSinceConverted,
-                        ifMatch,
-                        ifNoneMatch,
-                        ifTags,
-                        this.client.getVersion(),
-                        requestId,
-                        accept,
-                        context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextMarker(),
-                                        res.getDeserializedHeaders()));
     }
 }

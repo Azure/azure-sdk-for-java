@@ -555,21 +555,14 @@ directive:
     delete $["x-ms-pageable"];
 ```
 
-[//]: # (### Delete Container_ListBlobHierarchySegment x-ms-pageable as autorest can't recognize the itemName for this)
-
-[//]: # (``` yaml)
-
-[//]: # (directive:)
-
-[//]: # (- from: swagger-document)
-
-[//]: # (  where: $["x-ms-paths"]["/{containerName}?restype=container&comp=list&hierarchy"].get)
-
-[//]: # (  transform: >)
-
-[//]: # (    delete $["x-ms-pageable"];)
-
-[//]: # (```)
+### Delete Container_ListBlobHierarchySegment x-ms-pageable as autorest can't recognize the itemName for this
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}?restype=container&comp=list&hierarchy"].get
+  transform: >
+    delete $["x-ms-pageable"];
+```
 
 ### BlobDeleteType expandable string enum
 ``` yaml
@@ -584,7 +577,7 @@ directive:
 ``` yaml
 directive:
 - from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=pagelist"]
+  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=pagelist"].get
   transform: >
     delete $["x-ms-pageable"];
 ```
@@ -593,170 +586,9 @@ directive:
 ``` yaml
 directive:
 - from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=pagelist&diff"]
+  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=pagelist&diff"].get
   transform: >
     delete $["x-ms-pageable"];
 ```
-
-[//]: # (### Define PageListSegment)
-
-[//]: # (```yaml)
-
-[//]: # (directive:)
-
-[//]: # (- from: swagger-document)
-
-[//]: # (  where: $.definitions)
-
-[//]: # (  transform: >)
-
-[//]: # (      $.PageListSegment = {)
-
-[//]: # (            "type": "object",)
-
-[//]: # (            "properties": {)
-
-[//]: # (              "PageRanges": {)
-
-[//]: # (                "type": "array",)
-
-[//]: # (                "items": {)
-
-[//]: # (                  "$ref": "#/definitions/PageRange")
-
-[//]: # (                })
-
-[//]: # (              },)
-
-[//]: # (              "ClearRanges": {)
-
-[//]: # (                "type": "array",)
-
-[//]: # (                "items": {)
-
-[//]: # (                  "$ref": "#/definitions/ClearRange")
-
-[//]: # (                })
-
-[//]: # (              },)
-
-[//]: # (              "NextMarker": {)
-
-[//]: # (                "type": "string")
-
-[//]: # (              })
-
-[//]: # (            })
-
-[//]: # (          })
-
-[//]: # (    )
-[//]: # (```)
-
-[//]: # ()
-[//]: # (### Define PageListCollection)
-
-[//]: # (```yaml)
-
-[//]: # (directive:)
-
-[//]: # (- from: swagger-document)
-
-[//]: # (  where: $.definitions)
-
-[//]: # (  transform: >)
-
-[//]: # (      $.PageListCollection = {)
-
-[//]: # (            "xml": {)
-
-[//]: # (              "name": "PageList")
-
-[//]: # (            },)
-
-[//]: # (            "type": "object",)
-
-[//]: # (            "properties": {)
-
-[//]: # (              "PageRanges": {)
-
-[//]: # (                "type": "array",)
-
-[//]: # (                "items": {)
-
-[//]: # (                  "$ref": "#/definitions/PageRange")
-
-[//]: # (                })
-
-[//]: # (              },)
-
-[//]: # (              "ClearRanges": {)
-
-[//]: # (                "type": "array",)
-
-[//]: # (                "items": {)
-
-[//]: # (                  "$ref": "#/definitions/ClearRange")
-
-[//]: # (                })
-
-[//]: # (              },)
-
-[//]: # (              "nextMarker": {)
-
-[//]: # (                "type": "string")
-
-[//]: # (              })
-
-[//]: # (            })
-
-[//]: # (          })
-
-[//]: # (    )
-[//]: # (```)
-
-[//]: # (### PageList schema update)
-
-[//]: # (``` yaml)
-
-[//]: # (directive:)
-
-[//]: # (- from: swagger-document)
-
-[//]: # (  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=pagelist"])
-
-[//]: # (  transform: >)
-
-[//]: # (    delete $.get.responses["200"].schema;)
-
-[//]: # (    $.get.responses["200"].schema = {)
-
-[//]: # (      "$ref": "#/definitions/PageListCollection")
-
-[//]: # (    };)
-
-[//]: # (```)
-
-[//]: # (### PageList diff schema update)
-
-[//]: # (``` yaml)
-
-[//]: # (directive:)
-
-[//]: # (- from: swagger-document)
-
-[//]: # (  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=pagelist&diff"])
-
-[//]: # (  transform: >)
-
-[//]: # (    delete $.get.responses["200"].schema;)
-
-[//]: # (    $.get.responses["200"].schema = {)
-
-[//]: # (      "$ref": "#/definitions/PageListCollection")
-
-[//]: # (    };)
-
-[//]: # (```)
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob%2Fswagger%2FREADME.png)
