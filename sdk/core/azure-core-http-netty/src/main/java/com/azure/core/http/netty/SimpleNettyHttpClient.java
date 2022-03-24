@@ -29,7 +29,6 @@ import io.netty.handler.codec.http.HttpClientCodec;
 import io.netty.handler.codec.http.HttpContent;
 import io.netty.handler.codec.http.HttpContentDecompressor;
 import io.netty.handler.codec.http.HttpHeaderNames;
-import io.netty.handler.codec.http.HttpHeaderValues;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpVersion;
@@ -39,6 +38,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.URL;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 /**
  * TODO (kasobol-msft) add docs.
@@ -50,6 +50,24 @@ public class SimpleNettyHttpClient implements HttpClient {
     private static final AttributeKey<SimpleRequestContext> REQUEST_CONTEXT_KEY =
         AttributeKey.newInstance("com.azure.core.simple.netty.request.context.key");
 
+    private final EventLoopGroup eventLoopGroup;
+
+    private volatile Channel channelPool;
+
+    /**
+     * TODO (kasobol-msft) add docs.
+     */
+    public SimpleNettyHttpClient() {
+        eventLoopGroup = new NioEventLoopGroup();
+        // TODO (kasobol-msft) how this should work ? Closeable ?
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            if (channelPool != null) {
+                channelPool.close();
+            }
+            eventLoopGroup.shutdownGracefully();
+        }));
+    }
+
     @Override
     public Mono<HttpResponse> send(HttpRequest request) {
         return this.send(request, Context.NONE);
@@ -57,6 +75,19 @@ public class SimpleNettyHttpClient implements HttpClient {
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
+        return Mono.fromFuture(sendInternal(request, context));
+    }
+
+    @Override
+    public HttpResponse sendSynchronously(HttpRequest request, Context context) {
+        try {
+            return sendInternal(request, context).get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
+    }
+
+    private CompletableFuture<HttpResponse> sendInternal(HttpRequest request, Context context) {
         URL url = request.getUrl();
         String protocol = url.getProtocol();
         String host = url.getHost();
@@ -70,16 +101,18 @@ public class SimpleNettyHttpClient implements HttpClient {
         }
 
         // Configure the client.
-        EventLoopGroup group = new NioEventLoopGroup();
         CompletableFuture<HttpResponse> responseFuture = new CompletableFuture<>();
         try {
-            Bootstrap b = new Bootstrap();
-            b.group(group)
-                .channel(NioSocketChannel.class)
-                .handler(new MyClientInitializer());
-
             // Make the connection attempt.
-            Channel ch = b.connect(host, port).sync().channel();
+            Channel ch = channelPool;
+            if (ch == null || !ch.isActive()) {
+                Bootstrap b = new Bootstrap();
+                b.group(eventLoopGroup)
+                    .channel(NioSocketChannel.class)
+                    .handler(new MyClientInitializer());
+                ch = b.connect(host, port).sync().channel();
+                channelPool = ch;
+            }
 
             HttpMethod method = mapHttpMethod(request.getHttpMethod());
 
@@ -99,7 +132,7 @@ public class SimpleNettyHttpClient implements HttpClient {
             }
 
             nettyRequest.headers().set(HttpHeaderNames.HOST, host);
-            nettyRequest.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.CLOSE);
+            //nettyRequest.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.CLOSE);
             //nettyRequest.headers().set(HttpHeaders.Names.ACCEPT_ENCODING, HttpHeaders.Values.GZIP);
 
             if (requestBuffer.readableBytes() > 0) {
@@ -112,16 +145,17 @@ public class SimpleNettyHttpClient implements HttpClient {
                 new SimpleRequestContext(request, responseFuture, new InMemoryBodyCollector()));
             ch.writeAndFlush(nettyRequest);
 
+            // TODO (kasobol-msft) where do we close conn?
             // Wait for the server to close the connection.
-            ch.closeFuture().sync();
+            //ch.closeFuture().sync();
         } catch (InterruptedException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
-        } finally {
-            // Shut down executor threads to exit.
-            group.shutdownGracefully();
         }
+        // Shut down executor threads to exit.
+        // TODO (kasobol-msft) should we do this somehow ?
+        // group.shutdownGracefully()
 
-        return Mono.fromFuture(responseFuture);
+        return responseFuture;
     }
 
     private static HttpMethod mapHttpMethod(com.azure.core.http.HttpMethod httpMethod) {
@@ -200,9 +234,11 @@ public class SimpleNettyHttpClient implements HttpClient {
                 requestContext.getBodyCollector().collect(content.content());
 
                 if (content instanceof LastHttpContent) {
-                    requestContext.getResponseFuture().complete(new SimpleNettyResponse(requestContext));
-
-                    ctx.close();
+                    CompletableFuture<HttpResponse> responseFuture = requestContext.getResponseFuture();
+                    ctx.channel().attr(REQUEST_CONTEXT_KEY).set(null);
+                    responseFuture.complete(new SimpleNettyResponse(requestContext));
+                    // TODO (kasobol-msft) do not close conn. remove this ?
+                    // ctx.close();
                 }
             }
         }
@@ -210,6 +246,7 @@ public class SimpleNettyHttpClient implements HttpClient {
         @Override
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
             SimpleRequestContext requestContext = ctx.channel().attr(REQUEST_CONTEXT_KEY).get();
+            ctx.channel().attr(REQUEST_CONTEXT_KEY).set(null);
             requestContext.getResponseFuture().completeExceptionally(cause);
             ctx.close();
         }
