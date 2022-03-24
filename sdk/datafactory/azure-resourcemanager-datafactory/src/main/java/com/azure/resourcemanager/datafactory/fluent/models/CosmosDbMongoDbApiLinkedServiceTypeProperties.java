@@ -6,15 +6,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** CosmosDB (MongoDB API) linked service properties. */
 @Fluent
 public final class CosmosDbMongoDbApiLinkedServiceTypeProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(CosmosDbMongoDbApiLinkedServiceTypeProperties.class);
-
     /*
      * Whether the CosmosDB (MongoDB API) server version is higher than 3.2.
      * The default value is false. Type: boolean (or Expression with resultType
@@ -111,17 +107,19 @@ public final class CosmosDbMongoDbApiLinkedServiceTypeProperties {
      */
     public void validate() {
         if (connectionString() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property connectionString in model"
                             + " CosmosDbMongoDbApiLinkedServiceTypeProperties"));
         }
         if (database() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property database in model CosmosDbMongoDbApiLinkedServiceTypeProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CosmosDbMongoDbApiLinkedServiceTypeProperties.class);
 }

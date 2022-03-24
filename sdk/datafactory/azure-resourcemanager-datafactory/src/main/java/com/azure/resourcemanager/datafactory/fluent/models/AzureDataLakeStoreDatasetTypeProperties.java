@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.DatasetCompression;
 import com.azure.resourcemanager.datafactory.models.DatasetStorageFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure Data Lake Store dataset properties. */
 @Fluent
 public final class AzureDataLakeStoreDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureDataLakeStoreDatasetTypeProperties.class);
-
     /*
      * Path to the folder in the Azure Data Lake Store. Type: string (or
      * Expression with resultType string).

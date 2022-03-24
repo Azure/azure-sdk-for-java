@@ -6,15 +6,12 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of exposure control feature values. */
 @Fluent
 public final class ExposureControlBatchResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExposureControlBatchResponseInner.class);
-
     /*
      * List of exposure control feature values.
      */
@@ -49,7 +46,7 @@ public final class ExposureControlBatchResponseInner {
      */
     public void validate() {
         if (exposureControlResponses() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property exposureControlResponses in model"
@@ -58,4 +55,6 @@ public final class ExposureControlBatchResponseInner {
             exposureControlResponses().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ExposureControlBatchResponseInner.class);
 }

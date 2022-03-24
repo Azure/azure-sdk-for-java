@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure ML Execute Pipeline activity properties. */
 @Fluent
 public final class AzureMLExecutePipelineActivityTypeProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(AzureMLExecutePipelineActivityTypeProperties.class);
-
     /*
      * ID of the published Azure ML pipeline. Type: string (or Expression with
      * resultType string).
