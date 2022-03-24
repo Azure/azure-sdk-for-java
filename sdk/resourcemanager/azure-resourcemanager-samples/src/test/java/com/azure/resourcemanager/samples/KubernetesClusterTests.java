@@ -15,27 +15,13 @@ import java.io.IOException;
 
 public class KubernetesClusterTests extends SamplesTestBase {
     @Test
-    @Disabled("QuotaExceeded error: Public preview limit of 5 for managed cluster(AKS) has been reached for subscription sub-id in location ukwest. Same error even after deleting all clusters")
     public void testManageKubernetesCluster() throws IOException, JSchException {
-        if (isPlaybackMode()) {
-            // Disable mocked testing but keep it commented out in case we want to re-enable it later
-            // Assertions.assertTrue(ManageKubernetesCluster.runSample(azure, "client id", "secret"));
-            return;
-        } else {
-            Assertions.assertTrue(ManageKubernetesCluster.runSample(azureResourceManager, "", ""));
-        }
+        Assertions.assertTrue(ManageKubernetesCluster.runSample(azureResourceManager));
     }
 
     @Test
-    @Disabled("QuotaExceeded error: Public preview limit of 5 for managed cluster(AKS) has been reached for subscription sub-id in location ukwest. Same error even after deleting all clusters")
     public void testManageKubernetesClusterWithAdvancedNetworking() throws IOException, JSchException {
-        if (isPlaybackMode()) {
-            // Disable mocked testing but keep it commented out in case we want to re-enable it later
-            // Assertions.assertTrue(ManageKubernetesCluster.runSample(azure, "client id", "secret"));
-            return;
-        } else {
-            Assertions.assertTrue(ManagedKubernetesClusterWithAdvancedNetworking.runSample(azureResourceManager, "", ""));
-        }
+        Assertions.assertTrue(ManagedKubernetesClusterWithAdvancedNetworking.runSample(azureResourceManager));
     }
 
     @Test
