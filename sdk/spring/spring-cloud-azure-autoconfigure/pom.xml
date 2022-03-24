@@ -101,13 +101,6 @@
       <version>2.6.1</version> <!-- {x-version-update;org.springframework.data:spring-data-redis;external_dependency} -->
       <optional>true</optional>
     </dependency>
-		<!-- MongoDB -->
-    <dependency>
-      <groupId>org.springframework.data</groupId>
-      <artifactId>spring-data-mongodb</artifactId>
-      <version>3.3.1</version> <!-- {x-version-update;org.springframework.data:spring-data-mongodb;external_dependency} -->
-      <optional>true</optional>
-    </dependency>
     <!-- Cosmos -->
     <dependency>
       <groupId>com.azure</groupId>

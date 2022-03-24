@@ -107,6 +107,7 @@
       <artifactId>pooled-jms</artifactId>
       <version>1.2.3</version> <!-- {x-version-update;org.messaginghub:pooled-jms;external_dependency} -->
     </dependency>
+    <!-- We should keep these netty dependencies, for the netty version in qpid-jms-client is lower than the ones in azure sdks.  -->
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-buffer</artifactId>
