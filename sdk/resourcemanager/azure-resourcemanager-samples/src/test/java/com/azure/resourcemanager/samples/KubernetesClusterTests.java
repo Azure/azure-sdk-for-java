@@ -14,17 +14,17 @@ import java.io.IOException;
 
 public class KubernetesClusterTests extends SamplesTestBase {
     @Test
-    public void testManageKubernetesCluster() throws IOException, JSchException {
+    public void testManageKubernetesCluster() {
         Assertions.assertTrue(ManageKubernetesCluster.runSample(azureResourceManager));
     }
 
     @Test
-    public void testManageKubernetesClusterWithAdvancedNetworking() throws IOException, JSchException {
+    public void testManageKubernetesClusterWithAdvancedNetworking() {
         Assertions.assertTrue(ManagedKubernetesClusterWithAdvancedNetworking.runSample(azureResourceManager));
     }
 
     @Test
-    public void testDeployImageFromContainerRegistryToKubernetes() throws InterruptedException, JSchException, IOException {
+    public void testDeployImageFromContainerRegistryToKubernetes() throws JSchException, IOException, InterruptedException {
         if (!isPlaybackMode()) {
             Assertions.assertTrue(DeployImageFromContainerRegistryToKubernetes.runSample(azureResourceManager, "", ""));
         }

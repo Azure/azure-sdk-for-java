@@ -15,9 +15,7 @@ import com.azure.resourcemanager.network.models.Network;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
-import com.jcraft.jsch.JSchException;
 
-import java.io.IOException;
 import java.util.Date;
 
 /**
@@ -35,7 +33,7 @@ public class ManagedKubernetesClusterWithAdvancedNetworking {
      * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException, JSchException {
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
         final String rgName = Utils.randomResourceName(azureResourceManager, "rgaks", 15);
         final String vnetName = Utils.randomResourceName(azureResourceManager, "vnetaks", 20);
         final String aksName = Utils.randomResourceName(azureResourceManager, "akssample", 30);
