@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.DatasetCompression;
 import com.azure.resourcemanager.datafactory.models.DatasetLocation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Json dataset properties. */
 @Fluent
 public final class JsonDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JsonDatasetTypeProperties.class);
-
     /*
      * The location of the json data storage.
      */
@@ -112,7 +109,7 @@ public final class JsonDatasetTypeProperties {
      */
     public void validate() {
         if (location() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property location in model JsonDatasetTypeProperties"));
@@ -123,4 +120,6 @@ public final class JsonDatasetTypeProperties {
             compression().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(JsonDatasetTypeProperties.class);
 }

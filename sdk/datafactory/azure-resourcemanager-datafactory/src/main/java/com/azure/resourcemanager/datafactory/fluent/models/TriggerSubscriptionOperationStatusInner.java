@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.EventSubscriptionStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines the response of a trigger subscription operation. */
 @Immutable
 public final class TriggerSubscriptionOperationStatusInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggerSubscriptionOperationStatusInner.class);
-
     /*
      * Trigger name.
      */

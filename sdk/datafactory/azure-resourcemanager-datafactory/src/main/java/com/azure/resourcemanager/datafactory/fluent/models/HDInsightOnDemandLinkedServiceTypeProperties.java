@@ -10,16 +10,12 @@ import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.LinkedServiceReference;
 import com.azure.resourcemanager.datafactory.models.ScriptAction;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** HDInsight ondemand linked service properties. */
 @Fluent
 public final class HDInsightOnDemandLinkedServiceTypeProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(HDInsightOnDemandLinkedServiceTypeProperties.class);
-
     /*
      * Number of worker/data nodes in the cluster. Suggestion value: 4. Type:
      * string (or Expression with resultType string).
@@ -1001,25 +997,25 @@ public final class HDInsightOnDemandLinkedServiceTypeProperties {
      */
     public void validate() {
         if (clusterSize() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property clusterSize in model HDInsightOnDemandLinkedServiceTypeProperties"));
         }
         if (timeToLive() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property timeToLive in model HDInsightOnDemandLinkedServiceTypeProperties"));
         }
         if (version() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property version in model HDInsightOnDemandLinkedServiceTypeProperties"));
         }
         if (linkedServiceName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property linkedServiceName in model"
@@ -1028,7 +1024,7 @@ public final class HDInsightOnDemandLinkedServiceTypeProperties {
             linkedServiceName().validate();
         }
         if (hostSubscriptionId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property hostSubscriptionId in model"
@@ -1038,13 +1034,13 @@ public final class HDInsightOnDemandLinkedServiceTypeProperties {
             servicePrincipalKey().validate();
         }
         if (tenant() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property tenant in model HDInsightOnDemandLinkedServiceTypeProperties"));
         }
         if (clusterResourceGroup() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property clusterResourceGroup in model"
@@ -1069,4 +1065,6 @@ public final class HDInsightOnDemandLinkedServiceTypeProperties {
             credential().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(HDInsightOnDemandLinkedServiceTypeProperties.class);
 }
