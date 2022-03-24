@@ -11,10 +11,9 @@ import com.azure.resourcemanager.kubernetesconfiguration.fluent.OperationsClient
 import com.azure.resourcemanager.kubernetesconfiguration.fluent.models.ResourceProviderOperationInner;
 import com.azure.resourcemanager.kubernetesconfiguration.models.Operations;
 import com.azure.resourcemanager.kubernetesconfiguration.models.ResourceProviderOperation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OperationsImpl implements Operations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OperationsImpl.class);
 
     private final OperationsClient innerClient;
 
