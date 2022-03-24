@@ -989,7 +989,7 @@ public class DataLakePathClient {
             null /* requestId */, null /* timeout */, null /* pathResourceType */,
             null /* continuation */, PathRenameMode.LEGACY, renameSource,
             sourceRequestConditions.getLeaseId(), null /* properties */, null /* permissions */, null /* umask */,
-            null /* headers */, destLac, destMac, sourceConditions, context)
+            null /* headers */, destLac, destMac, sourceConditions, null, context)
             .map(response -> new SimpleResponse<>(response, dataLakePathClient));
     }
 

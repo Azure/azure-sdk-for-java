@@ -323,10 +323,13 @@ class Transforms {
             return null;
         }
         return new PathItem(path.getETag(),
-            path.getLastModified() == null ? null : OffsetDateTime.parse(path.getLastModified(),
-                DateTimeFormatter.RFC_1123_DATE_TIME), path.getContentLength() == null ? 0 : path.getContentLength(),
+            parseDateOrNull(path.getLastModified()), path.getContentLength() == null ? 0 : path.getContentLength(),
             path.getGroup(), path.isDirectory() == null ? false : path.isDirectory(), path.getName(), path.getOwner(),
-            path.getPermissions());
+            path.getPermissions(), parseDateOrNull(path.getCreationTime()), parseDateOrNull(path.getExpiryTime()));
+    }
+
+    private static OffsetDateTime parseDateOrNull(String date) {
+        return date == null ? null : OffsetDateTime.parse(date, DateTimeFormatter.RFC_1123_DATE_TIME);
     }
 
     static BlobRequestConditions toBlobRequestConditions(DataLakeRequestConditions requestConditions) {
