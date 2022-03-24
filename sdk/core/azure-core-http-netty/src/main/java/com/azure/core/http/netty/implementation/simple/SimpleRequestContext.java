@@ -5,11 +5,13 @@ package com.azure.core.http.netty.implementation.simple;
 
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import io.netty.channel.pool.ChannelPool;
 
 import java.util.concurrent.CompletableFuture;
 
 public class SimpleRequestContext {
 
+    private final ChannelPool channelPool;
     private final HttpRequest request;
     private final CompletableFuture<HttpResponse> responseFuture;
     private final SimpleBodyCollector bodyCollector;
@@ -17,9 +19,10 @@ public class SimpleRequestContext {
     private volatile int statusCode;
     private volatile com.azure.core.http.HttpHeaders httpHeaders;
 
-    public SimpleRequestContext(HttpRequest request,
+    public SimpleRequestContext(ChannelPool channelPool, HttpRequest request,
                                 CompletableFuture<HttpResponse> responseFuture,
                                 SimpleBodyCollector bodyCollector) {
+        this.channelPool = channelPool;
         this.request = request;
         this.responseFuture = responseFuture;
         this.bodyCollector = bodyCollector;
@@ -51,5 +54,9 @@ public class SimpleRequestContext {
 
     public SimpleBodyCollector getBodyCollector() {
         return bodyCollector;
+    }
+
+    public ChannelPool getChannelPool() {
+        return channelPool;
     }
 }

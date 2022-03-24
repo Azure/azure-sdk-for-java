@@ -1,0 +1,43 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.core.http.netty.implementation.simple;
+
+import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.pool.AbstractChannelPoolMap;
+import io.netty.channel.pool.ChannelPool;
+import io.netty.channel.pool.SimpleChannelPool;
+import io.netty.channel.socket.nio.NioSocketChannel;
+
+import java.net.InetSocketAddress;
+import java.net.URI;
+
+public class SimpleChannelPoolMap extends AbstractChannelPoolMap<URI, ChannelPool> {
+
+    private final EventLoopGroup eventLoopGroup;
+
+    public SimpleChannelPoolMap(EventLoopGroup eventLoopGroup) {
+        this.eventLoopGroup = eventLoopGroup;
+    }
+
+    @Override
+    protected ChannelPool newPool(URI uri) {
+        String protocol = uri.getScheme();
+        String host = uri.getHost();
+        int port = uri.getPort();
+        if (port == -1) {
+            if ("http".equalsIgnoreCase(protocol)) {
+                port = 80;
+            } else if ("https".equalsIgnoreCase(protocol)) {
+                port = 443;
+            }
+        }
+
+        Bootstrap bootstrap = new Bootstrap();
+        bootstrap.group(eventLoopGroup)
+            .remoteAddress(InetSocketAddress.createUnresolved(host, port))
+            .channel(NioSocketChannel.class);
+        return new SimpleChannelPool(bootstrap, new SimpleChannelPoolHandler());
+    }
+}
