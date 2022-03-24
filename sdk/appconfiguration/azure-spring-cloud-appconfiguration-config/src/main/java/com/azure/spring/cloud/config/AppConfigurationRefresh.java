@@ -92,11 +92,13 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
      * Soft expires refresh interval. Sets amount of time to next refresh to be a random value between 0 and 15 seconds,
      * unless value is less than the amount of time to the next refresh check.
      * @param endpoint Config Store endpoint to expire refresh interval on.
+     * @param syncToken syncToken to verify latest changes are available on pull
      */
-    public void expireRefreshInterval(String endpoint) {
+    public void expireRefreshInterval(String endpoint, String syncToken) {
         for (ConfigStore configStore : configStores) {
             if (configStore.getEndpoint().equals(endpoint)) {
                 LOGGER.debug("Expiring refresh interval for " + configStore.getEndpoint());
+                clientStore.updateSyncToken(endpoint, syncToken);
                 StateHolder.expireState(configStore.getEndpoint());
                 break;
             }

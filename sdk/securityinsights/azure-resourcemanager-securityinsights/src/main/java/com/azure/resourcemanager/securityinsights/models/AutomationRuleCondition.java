@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,11 +16,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     property = "conditionType",
     defaultImpl = AutomationRuleCondition.class)
 @JsonTypeName("AutomationRuleCondition")
-@JsonSubTypes({@JsonSubTypes.Type(name = "Property", value = AutomationRulePropertyValuesCondition.class)})
+@JsonSubTypes({@JsonSubTypes.Type(name = "Property", value = PropertyConditionProperties.class)})
 @Immutable
 public class AutomationRuleCondition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutomationRuleCondition.class);
-
     /**
      * Validates the instance.
      *

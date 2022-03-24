@@ -16,19 +16,28 @@ public final class AppConfigurationBusRefreshEvent extends RemoteApplicationEven
      * Endpoint being refreshed.
      */
     private String endpoint;
+    
+    /**
+     * Sync Token
+     */
+    private final String syncToken;
 
     /**
      * Event object for when a push event is triggered from a web hook. This event is sent to all registered application instances.
      *
      * @param endpoint App Configuration Store endpoint that is requesting a refresh.
+     * @param syncToken App Configuration sync token
      */
-    AppConfigurationBusRefreshEvent(String endpoint, AppConfigurationBusRefreshEndpoint source, String origin, Destination destination) {
+    AppConfigurationBusRefreshEvent(String endpoint, String syncToken, AppConfigurationBusRefreshEndpoint source,
+            String origin, Destination destination) {
         super("App Configuration Refresh Event", origin, destination);
         this.endpoint = endpoint;
+        this.syncToken = syncToken;
     }
 
     AppConfigurationBusRefreshEvent() {
         this.endpoint = "";
+        this.syncToken = "";
     }
 
     /**
@@ -48,6 +57,13 @@ public final class AppConfigurationBusRefreshEvent extends RemoteApplicationEven
         if ("".equals(this.endpoint)) {
             this.endpoint = endpoint;
         }
+    }
+
+    /**
+     * @return the syncToken
+     */
+    public String getSyncToken() {
+        return syncToken;
     }
 
 }

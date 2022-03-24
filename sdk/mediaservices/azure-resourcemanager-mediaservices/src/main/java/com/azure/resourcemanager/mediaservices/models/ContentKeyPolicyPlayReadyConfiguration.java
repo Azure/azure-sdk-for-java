@@ -5,22 +5,17 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /** Specifies a configuration for PlayReady licenses. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Media.ContentKeyPolicyPlayReadyConfiguration")
-@JsonFlatten
 @Fluent
-public class ContentKeyPolicyPlayReadyConfiguration extends ContentKeyPolicyConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContentKeyPolicyPlayReadyConfiguration.class);
-
+public final class ContentKeyPolicyPlayReadyConfiguration extends ContentKeyPolicyConfiguration {
     /*
      * The PlayReady licenses.
      */
@@ -82,7 +77,7 @@ public class ContentKeyPolicyPlayReadyConfiguration extends ContentKeyPolicyConf
     public void validate() {
         super.validate();
         if (licenses() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property licenses in model ContentKeyPolicyPlayReadyConfiguration"));
@@ -90,4 +85,6 @@ public class ContentKeyPolicyPlayReadyConfiguration extends ContentKeyPolicyConf
             licenses().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ContentKeyPolicyPlayReadyConfiguration.class);
 }
