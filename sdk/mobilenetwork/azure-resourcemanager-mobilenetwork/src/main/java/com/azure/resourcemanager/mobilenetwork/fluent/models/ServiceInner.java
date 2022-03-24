@@ -11,7 +11,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mobilenetwork.models.PccRuleConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.QosPolicy;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -19,8 +18,6 @@ import java.util.Map;
 /** Service resource. */
 @Fluent
 public final class ServiceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceInner.class);
-
     /*
      * Service Properties.
      */
@@ -28,10 +25,11 @@ public final class ServiceInner extends Resource {
     private ServicePropertiesFormat innerProperties = new ServicePropertiesFormat();
 
     /*
-     * Metadata pertaining to creation and last modification of the resource.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy
+     * information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData innerSystemData;
+    private SystemData systemData;
 
     /**
      * Get the innerProperties property: Service Properties.
@@ -42,14 +40,14 @@ public final class ServiceInner extends Resource {
         return this.innerProperties;
     }
 
-//    /**
-//     * Get the innerSystemData property: Metadata pertaining to creation and last modification of the resource.
-//     *
-//     * @return the innerSystemData value.
-//     */
-//    private SystemData innerSystemData() {
-//        return this.innerSystemData;
-//    }
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
 
     /** {@inheritDoc} */
     @Override
@@ -158,11 +156,13 @@ public final class ServiceInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property innerProperties in model ServiceInner"));
         } else {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceInner.class);
 }
