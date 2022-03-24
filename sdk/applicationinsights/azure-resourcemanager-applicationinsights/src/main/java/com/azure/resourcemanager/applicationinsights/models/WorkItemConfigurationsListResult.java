@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.applicationinsights.fluent.models.WorkItemConfigurationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Work item configuration list result. */
 @Immutable
 public final class WorkItemConfigurationsListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkItemConfigurationsListResult.class);
-
     /*
      * An array of work item configurations.
      */

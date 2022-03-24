@@ -2,20 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.web.pushrefresh;
 
-import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
-import com.azure.spring.cloud.config.web.AppConfigurationEndpoint;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import static com.azure.spring.cloud.config.web.AppConfigurationWebConstants.APPCONFIGURATION_REFRESH;
 import static com.azure.spring.cloud.config.web.AppConfigurationWebConstants.VALIDATION_CODE_FORMAT_START;
-import static com.azure.spring.cloud.config.web.AppConfigurationWebConstants.VALIDATION_CODE_KEY;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.stream.Collectors;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.actuate.endpoint.web.annotation.ControllerEndpoint;
@@ -27,6 +22,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
+import com.azure.spring.cloud.config.web.AppConfigurationEndpoint;
+import com.fasterxml.jackson.databind.JsonNode;
+
 /**
  * Endpoint for requesting new configurations to be loaded.
  */
@@ -37,8 +36,6 @@ public final class AppConfigurationRefreshEndpoint implements ApplicationEventPu
 
     private final ContextRefresher contextRefresher;
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
     private final AppConfigurationProperties appConfiguration;
 
     private ApplicationEventPublisher publisher;
@@ -47,7 +44,7 @@ public final class AppConfigurationRefreshEndpoint implements ApplicationEventPu
      * Endpoint for triggering a refresh check for a single config store.
      * 
      * @param contextRefresher Used to verify refresh is available.
-     * @param appConfiguration properties set for client library. 
+     * @param appConfiguration properties set for client library.
      */
     public AppConfigurationRefreshEndpoint(ContextRefresher contextRefresher,
         AppConfigurationProperties appConfiguration) {
@@ -70,26 +67,30 @@ public final class AppConfigurationRefreshEndpoint implements ApplicationEventPu
     @ResponseBody
     public String refresh(HttpServletRequest request, HttpServletResponse response,
         @RequestParam Map<String, String> allRequestParams) throws IOException {
+        
+        AppConfigurationEndpoint endpoint;
+        try {
+            endpoint = new AppConfigurationEndpoint(request, appConfiguration.getStores(),
+                allRequestParams);
+        } catch (IllegalArgumentException e) {
+            LOGGER.error(e.getMessage());
+            return HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase();
+        }
 
-        String reference = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-
-        JsonNode kvReference = OBJECT_MAPPER.readTree(reference);
-        AppConfigurationEndpoint validation = new AppConfigurationEndpoint(kvReference, appConfiguration.getStores(),
-            allRequestParams);
-
-        if (!validation.authenticate()) {
+        if (!endpoint.authenticate()) {
             return HttpStatus.UNAUTHORIZED.getReasonPhrase();
         }
 
-        JsonNode validationResponse = kvReference.findValue(VALIDATION_CODE_KEY);
+        String syncToken = endpoint.getSyncToken();
+
+        JsonNode validationResponse = endpoint.getValidationResponse();
         if (validationResponse != null) {
             // Validating Web Hook
             return String.format("%s%s\"}", VALIDATION_CODE_FORMAT_START, validationResponse.asText());
         } else {
             if (contextRefresher != null) {
-                if (validation.triggerRefresh()) {
-                    publisher.publishEvent(
-                        new AppConfigurationRefreshEvent(validation.getEndpoint()));
+                if (endpoint.triggerRefresh()) {
+                    publisher.publishEvent(new AppConfigurationRefreshEvent(endpoint.getEndpoint(), syncToken));
                     return HttpStatus.OK.getReasonPhrase();
                 } else {
                     LOGGER.debug("Non Refreshable notification");
