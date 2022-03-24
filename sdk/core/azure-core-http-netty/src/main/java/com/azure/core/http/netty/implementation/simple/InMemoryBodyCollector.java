@@ -12,23 +12,33 @@ import java.io.UncheckedIOException;
 
 public class InMemoryBodyCollector implements SimpleBodyCollector {
 
-    private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    private volatile ByteArrayOutputStream outputStream;
 
     @Override
     public void collect(ByteBuf buffer) {
         if (buffer.isReadable()) {
+            ensureStream();
             try {
                 buffer.readBytes(outputStream, buffer.readableBytes());
-
             } catch (IOException e) {
                 throw new UncheckedIOException(e);
             }
         }
     }
 
+    private void ensureStream() {
+        if (outputStream == null) {
+            synchronized (this) {
+                if (outputStream == null) {
+                    outputStream = new ByteArrayOutputStream();
+                }
+            }
+        }
+    }
+
     @Override
     public BinaryData toBinaryData() {
-        if (outputStream.size() == 0) {
+        if (outputStream == null || outputStream.size() == 0) {
             return null;
         }
         return BinaryData.fromBytes(outputStream.toByteArray());
