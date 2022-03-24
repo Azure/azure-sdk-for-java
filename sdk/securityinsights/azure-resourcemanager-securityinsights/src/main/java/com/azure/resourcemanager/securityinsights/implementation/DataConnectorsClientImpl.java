@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.DataConnectorsClient;
 import com.azure.resourcemanager.securityinsights.fluent.models.DataConnectorInner;
 import com.azure.resourcemanager.securityinsights.models.DataConnectorConnectBody;
@@ -38,8 +37,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DataConnectorsClient. */
 public final class DataConnectorsClientImpl implements DataConnectorsClient {
-    private final ClientLogger logger = new ClientLogger(DataConnectorsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DataConnectorsService service;
 
@@ -294,7 +291,7 @@ public final class DataConnectorsClientImpl implements DataConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all data connectors.
+     * @return all data connectors as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataConnectorInner> listAsync(String resourceGroupName, String workspaceName) {
@@ -311,7 +308,7 @@ public final class DataConnectorsClientImpl implements DataConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all data connectors.
+     * @return all data connectors as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataConnectorInner> listAsync(String resourceGroupName, String workspaceName, Context context) {
@@ -328,7 +325,7 @@ public final class DataConnectorsClientImpl implements DataConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all data connectors.
+     * @return all data connectors as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataConnectorInner> list(String resourceGroupName, String workspaceName) {
@@ -344,7 +341,7 @@ public final class DataConnectorsClientImpl implements DataConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all data connectors.
+     * @return all data connectors as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataConnectorInner> list(String resourceGroupName, String workspaceName, Context context) {

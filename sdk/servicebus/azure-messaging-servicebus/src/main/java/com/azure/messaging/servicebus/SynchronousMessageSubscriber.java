@@ -136,9 +136,9 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
             .addKeyValue("numberOfEvents", work.getNumberOfEvents())
             .addKeyValue("timeout", work.getTimeout());
 
-        // If previous work items were completed, the message queue is empty and currentWork == null. Update the
-        // current work and request items upstream if we need to.
-        if (workQueue.peek() == work) {
+        // If previous work items were completed, the message queue is empty, and currentWork is null or terminal,
+        // Update the current work and request items upstream if we need to.
+        if (workQueue.peek() == work && (currentWork == null || currentWork.isTerminal())) {
             logBuilder.log("First work in queue. Requesting upstream if needed.");
             getOrUpdateCurrentWork();
         } else {
@@ -236,6 +236,11 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                 numberRequested = REQUESTED.addAndGet(this, -numberConsumed);
             }
         }
+        if (numberRequested == 0L) {
+            logger.atVerbose()
+                .log("Current work is completed. Schedule next work.");
+            getOrUpdateCurrentWork();
+        }
     }
 
     /**
@@ -272,35 +277,17 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
             }
 
             currentWork = workQueue.poll();
-            while (currentWork != null) {
-                // For the terminal work, subtract the remaining number of messages from our current request
-                // count. This is so we don't keep adding credits for work that was expired, but we never
-                // received messages for.
-                if (currentWork.isTerminal()) {
-                    REQUESTED.updateAndGet(this, currentRequest -> {
-                        final int remainingEvents = currentWork.getRemainingEvents();
+            //The work in queue will not be terminal, here is double check
+            while (currentWork != null && currentWork.isTerminal()) {
+                logger.atVerbose()
+                    .addKeyValue(WORK_ID_KEY, currentWork.getId())
+                    .addKeyValue("numberOfEvents", currentWork.getNumberOfEvents())
+                    .log("This work from queue is terminal. Skip it.");
 
-                        // The work had probably emitted all its messages and then terminated.
-                        // The currentRequest is fine.
-                        if (remainingEvents < 1) {
-                            return currentRequest;
-                        }
+                currentWork = workQueue.poll();
+            }
 
-                        final long difference = currentRequest - remainingEvents;
-
-                        logger.atVerbose()
-                            .addKeyValue(NUMBER_OF_REQUESTED_MESSAGES_KEY, currentRequest)
-                            .addKeyValue("remainingEvents", remainingEvents)
-                            .addKeyValue("difference", difference)
-                            .log("Updating REQUESTED because current work item is terminal.");
-
-                        return difference < 0 ? 0 : difference;
-                    });
-
-                    currentWork = workQueue.poll();
-                    continue;
-                }
-
+            if (currentWork != null) {
                 final SynchronousReceiveWork work = currentWork;
                 logger.atVerbose()
                     .addKeyValue(WORK_ID_KEY, work.getId())
@@ -312,8 +299,6 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                 // Now that we updated REQUESTED to account for credits already on the line, we're good to
                 // place any credits for this new work item.
                 requestUpstream(work.getNumberOfEvents());
-
-                return work;
             }
 
             return currentWork;

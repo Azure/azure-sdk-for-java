@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.applicationinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An Application Insights component linked storage account. */
 @Fluent
 public final class LinkedStorageAccountsProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LinkedStorageAccountsProperties.class);
-
     /*
      * Linked storage account resource ID
      */

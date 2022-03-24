@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** MongoDB Atlas database dataset properties. */
 @Fluent
 public final class MongoDbAtlasCollectionDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MongoDbAtlasCollectionDatasetTypeProperties.class);
-
     /*
      * The collection name of the MongoDB Atlas database. Type: string (or
      * Expression with resultType string).
@@ -50,10 +47,12 @@ public final class MongoDbAtlasCollectionDatasetTypeProperties {
      */
     public void validate() {
         if (collection() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property collection in model MongoDbAtlasCollectionDatasetTypeProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MongoDbAtlasCollectionDatasetTypeProperties.class);
 }

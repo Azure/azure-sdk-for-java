@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes threat granular marking model entity. */
 @Fluent
 public final class ThreatIntelligenceGranularMarkingModel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ThreatIntelligenceGranularMarkingModel.class);
-
     /*
      * Language granular marking model
      */

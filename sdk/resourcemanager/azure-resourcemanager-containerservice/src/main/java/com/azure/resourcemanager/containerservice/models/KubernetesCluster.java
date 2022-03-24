@@ -110,6 +110,9 @@ public interface KubernetesCluster
     /** @return whether Azure Role-Based Access Control for Kubernetes authorization is enabled. */
     boolean isAzureRbacEnabled();
 
+    /** @return resource ID of the disk encryption set. */
+    String diskEncryptionSetId();
+
     // Actions
 
     /**
@@ -517,6 +520,17 @@ public interface KubernetesCluster
             WithCreate disableLocalAccounts();
         }
 
+        /** The stage of the Kubernetes cluster definition allowing to specify disk encryption. */
+        interface WithDiskEncryption {
+            /**
+             * Specifies the disk encryption set for the disk in cluster.
+             *
+             * @param diskEncryptionSetId the ID of disk encryption set.
+             * @return the next stage of the definition
+             */
+            WithCreate withDiskEncryptionSet(String diskEncryptionSetId);;
+        }
+
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
@@ -533,6 +547,7 @@ public interface KubernetesCluster
                 WithRBAC,
                 WithAAD,
                 WithLocalAccounts,
+                WithDiskEncryption,
                 Resource.DefinitionWithTags<WithCreate> {
         }
     }

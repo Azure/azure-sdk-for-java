@@ -48,7 +48,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-secrets</artifactId>
-    <version>4.4.0-beta.5</version>
+    <version>4.3.8</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

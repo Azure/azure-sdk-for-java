@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.models.StorageAccountPropertiesUpdateParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** The parameters that can be provided when updating the storage account properties. */
 @Fluent
 public final class StorageAccountUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountUpdateParameters.class);
-
     /*
      * Gets or sets the SKU name. Note that the SKU name cannot be updated to
      * Standard_ZRS, Premium_LRS or Premium_ZRS, nor can accounts of those SKU

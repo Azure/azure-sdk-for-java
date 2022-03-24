@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of the service tag information. */
 @Immutable
 public final class ServiceTagInformationPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceTagInformationPropertiesFormat.class);
-
     /*
      * The iteration number of service tag.
      */

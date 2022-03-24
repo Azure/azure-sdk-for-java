@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Constraints that determine the list of available Internet service providers. */
 @Fluent
 public final class AvailableProvidersListParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableProvidersListParameters.class);
-
     /*
      * A list of Azure regions.
      */

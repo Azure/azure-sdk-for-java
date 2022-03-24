@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.SubscriptionFeatureRegistrationsClient;
 import com.azure.resourcemanager.resources.fluent.models.SubscriptionFeatureRegistrationInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -40,8 +39,6 @@ import reactor.core.publisher.Mono;
  */
 public final class SubscriptionFeatureRegistrationsClientImpl
     implements InnerSupportsDelete<Void>, SubscriptionFeatureRegistrationsClient {
-    private final ClientLogger logger = new ClientLogger(SubscriptionFeatureRegistrationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SubscriptionFeatureRegistrationsService service;
 

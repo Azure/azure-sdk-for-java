@@ -16,6 +16,9 @@ public final class H265VideoProfile extends ExpandableStringEnum<H265VideoProfil
     /** Static value Main for H265VideoProfile. */
     public static final H265VideoProfile MAIN = fromString("Main");
 
+    /** Static value Main10 for H265VideoProfile. */
+    public static final H265VideoProfile MAIN10 = fromString("Main10");
+
     /**
      * Creates or finds a H265VideoProfile from its string representation.
      *

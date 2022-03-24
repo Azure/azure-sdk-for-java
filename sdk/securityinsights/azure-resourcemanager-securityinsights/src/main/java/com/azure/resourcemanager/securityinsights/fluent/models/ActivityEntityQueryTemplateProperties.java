@@ -5,11 +5,9 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.ActivityEntityQueryTemplatePropertiesQueryDefinitions;
 import com.azure.resourcemanager.securityinsights.models.DataTypeDefinitions;
 import com.azure.resourcemanager.securityinsights.models.EntityType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -18,8 +16,6 @@ import java.util.Map;
 /** Describes activity entity query properties. */
 @Fluent
 public final class ActivityEntityQueryTemplateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ActivityEntityQueryTemplateProperties.class);
-
     /*
      * The entity query title
      */

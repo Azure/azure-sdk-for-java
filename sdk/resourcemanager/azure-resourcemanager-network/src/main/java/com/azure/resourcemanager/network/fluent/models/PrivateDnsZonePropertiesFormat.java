@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.RecordSet;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of the private dns zone configuration resource. */
 @Fluent
 public final class PrivateDnsZonePropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateDnsZonePropertiesFormat.class);
-
     /*
      * The resource id of the private dns zone.
      */

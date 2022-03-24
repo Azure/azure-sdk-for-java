@@ -7,14 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Office365 linked service properties. */
 @Fluent
 public final class Office365LinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Office365LinkedServiceTypeProperties.class);
-
     /*
      * Azure tenant ID to which the Office 365 account belongs. Type: string
      * (or Expression with resultType string).
@@ -165,26 +162,26 @@ public final class Office365LinkedServiceTypeProperties {
      */
     public void validate() {
         if (office365TenantId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property office365TenantId in model Office365LinkedServiceTypeProperties"));
         }
         if (servicePrincipalTenantId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property servicePrincipalTenantId in model"
                             + " Office365LinkedServiceTypeProperties"));
         }
         if (servicePrincipalId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property servicePrincipalId in model Office365LinkedServiceTypeProperties"));
         }
         if (servicePrincipalKey() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property servicePrincipalKey in model Office365LinkedServiceTypeProperties"));
@@ -192,4 +189,6 @@ public final class Office365LinkedServiceTypeProperties {
             servicePrincipalKey().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Office365LinkedServiceTypeProperties.class);
 }

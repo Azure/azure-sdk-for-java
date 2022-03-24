@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddressPool;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHealthHttpSettings;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Result of on demand test probe. */
 @Fluent
 public final class ApplicationGatewayBackendHealthOnDemandInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApplicationGatewayBackendHealthOnDemandInner.class);
-
     /*
      * Reference to an ApplicationGatewayBackendAddressPool resource.
      */

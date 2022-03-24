@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.ActionsClient;
 import com.azure.resourcemanager.securityinsights.fluent.models.ActionResponseInner;
 import com.azure.resourcemanager.securityinsights.models.ActionRequest;
@@ -37,8 +36,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ActionsClient. */
 public final class ActionsClientImpl implements ActionsClient {
-    private final ClientLogger logger = new ClientLogger(ActionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ActionsService service;
 
@@ -275,7 +272,7 @@ public final class ActionsClientImpl implements ActionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all actions of alert rule.
+     * @return all actions of alert rule as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ActionResponseInner> listByAlertRuleAsync(
@@ -295,7 +292,7 @@ public final class ActionsClientImpl implements ActionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all actions of alert rule.
+     * @return all actions of alert rule as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ActionResponseInner> listByAlertRuleAsync(
@@ -314,7 +311,7 @@ public final class ActionsClientImpl implements ActionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all actions of alert rule.
+     * @return all actions of alert rule as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ActionResponseInner> listByAlertRule(
@@ -332,7 +329,7 @@ public final class ActionsClientImpl implements ActionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all actions of alert rule.
+     * @return all actions of alert rule as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ActionResponseInner> listByAlertRule(

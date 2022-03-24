@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Network Virtual Appliance Sku Instances List of available Sku and instances. */
 @Immutable
 public final class NetworkVirtualApplianceSkuInstances {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkVirtualApplianceSkuInstances.class);
-
     /*
      * Scale Unit.
      */

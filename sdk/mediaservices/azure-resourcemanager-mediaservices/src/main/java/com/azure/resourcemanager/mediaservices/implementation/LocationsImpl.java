@@ -13,10 +13,9 @@ import com.azure.resourcemanager.mediaservices.fluent.models.EntityNameAvailabil
 import com.azure.resourcemanager.mediaservices.models.CheckNameAvailabilityInput;
 import com.azure.resourcemanager.mediaservices.models.EntityNameAvailabilityCheckOutput;
 import com.azure.resourcemanager.mediaservices.models.Locations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LocationsImpl implements Locations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LocationsImpl.class);
 
     private final LocationsClient innerClient;
 

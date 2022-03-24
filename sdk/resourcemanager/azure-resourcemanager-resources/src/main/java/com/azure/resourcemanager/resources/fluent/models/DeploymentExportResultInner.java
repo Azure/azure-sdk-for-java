@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The deployment export result. */
 @Fluent
 public final class DeploymentExportResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentExportResultInner.class);
-
     /*
      * The template content.
      */

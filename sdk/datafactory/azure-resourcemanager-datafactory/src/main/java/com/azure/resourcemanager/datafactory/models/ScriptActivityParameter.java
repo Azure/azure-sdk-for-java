@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters of a script block. */
 @Fluent
 public final class ScriptActivityParameter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScriptActivityParameter.class);
-
     /*
      * The name of the parameter. Type: string (or Expression with resultType
      * string).

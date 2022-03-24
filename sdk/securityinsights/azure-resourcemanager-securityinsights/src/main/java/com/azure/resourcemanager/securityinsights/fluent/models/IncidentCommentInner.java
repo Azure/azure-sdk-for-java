@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.ClientInfo;
 import com.azure.resourcemanager.securityinsights.models.ResourceWithEtag;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Represents an incident comment. */
 @Fluent
 public final class IncidentCommentInner extends ResourceWithEtag {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IncidentCommentInner.class);
-
     /*
      * Incident comment properties
      */

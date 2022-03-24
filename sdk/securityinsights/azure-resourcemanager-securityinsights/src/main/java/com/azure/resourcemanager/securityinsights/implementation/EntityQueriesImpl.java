@@ -15,10 +15,9 @@ import com.azure.resourcemanager.securityinsights.models.CustomEntityQuery;
 import com.azure.resourcemanager.securityinsights.models.EntityQueries;
 import com.azure.resourcemanager.securityinsights.models.EntityQueriesKind;
 import com.azure.resourcemanager.securityinsights.models.EntityQuery;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class EntityQueriesImpl implements EntityQueries {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EntityQueriesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EntityQueriesImpl.class);
 
     private final EntityQueriesClient innerClient;
 

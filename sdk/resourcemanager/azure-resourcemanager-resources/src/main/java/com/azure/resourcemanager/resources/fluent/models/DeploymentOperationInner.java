@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.DeploymentOperationProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Deployment operation information. */
 @Fluent
 public final class DeploymentOperationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentOperationInner.class);
-
     /*
      * Full deployment operation ID.
      */

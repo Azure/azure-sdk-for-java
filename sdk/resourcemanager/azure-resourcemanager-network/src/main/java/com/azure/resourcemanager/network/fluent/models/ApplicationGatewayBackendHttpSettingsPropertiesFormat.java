@@ -6,21 +6,16 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayConnectionDraining;
 import com.azure.resourcemanager.network.models.ApplicationGatewayCookieBasedAffinity;
 import com.azure.resourcemanager.network.models.ApplicationGatewayProtocol;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of Backend address pool settings of an application gateway. */
 @Fluent
 public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApplicationGatewayBackendHttpSettingsPropertiesFormat.class);
-
     /*
      * The destination port on the backend.
      */

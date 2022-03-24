@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.CorsRules;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of a storage account’s Table service. */
 @Fluent
 public final class TableServicePropertiesProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TableServicePropertiesProperties.class);
-
     /*
      * Specifies CORS rules for the Table service. You can include up to five
      * CorsRule elements in the request. If no CorsRule elements are included

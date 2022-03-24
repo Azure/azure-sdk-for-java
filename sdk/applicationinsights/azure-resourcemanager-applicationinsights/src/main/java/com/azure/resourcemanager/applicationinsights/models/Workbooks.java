@@ -12,19 +12,20 @@ import java.util.List;
 /** Resource collection API of Workbooks. */
 public interface Workbooks {
     /**
-     * Get all private workbooks defined within a specified subscription and category.
+     * Get all Workbooks defined within a specified subscription and category.
      *
      * @param category Category of workbook to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.applicationinsights.models.WorkbookErrorDefinitionException thrown if the
      *     request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private workbooks defined within a specified subscription and category.
+     * @return all Workbooks defined within a specified subscription and category as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<Workbook> list(CategoryType category);
 
     /**
-     * Get all private workbooks defined within a specified subscription and category.
+     * Get all Workbooks defined within a specified subscription and category.
      *
      * @param category Category of workbook to return.
      * @param tags Tags presents on each workbook returned.
@@ -35,7 +36,8 @@ public interface Workbooks {
      * @throws com.azure.resourcemanager.applicationinsights.models.WorkbookErrorDefinitionException thrown if the
      *     request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private workbooks defined within a specified subscription and category.
+     * @return all Workbooks defined within a specified subscription and category as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<Workbook> list(CategoryType category, List<String> tags, Boolean canFetchContent, Context context);
 
@@ -48,7 +50,8 @@ public interface Workbooks {
      * @throws com.azure.resourcemanager.applicationinsights.models.WorkbookErrorDefinitionException thrown if the
      *     request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Workbooks defined within a specified resource group and category.
+     * @return all Workbooks defined within a specified resource group and category as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<Workbook> listByResourceGroup(String resourceGroupName, CategoryType category);
 
@@ -66,7 +69,8 @@ public interface Workbooks {
      * @throws com.azure.resourcemanager.applicationinsights.models.WorkbookErrorDefinitionException thrown if the
      *     request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Workbooks defined within a specified resource group and category.
+     * @return all Workbooks defined within a specified resource group and category as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<Workbook> listByResourceGroup(
         String resourceGroupName,
@@ -94,6 +98,8 @@ public interface Workbooks {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
+     * @param canFetchContent Flag indicating whether or not to return the full content for each applicable workbook. If
+     *     false, only return summary content for workbooks.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.applicationinsights.models.WorkbookErrorDefinitionException thrown if the
@@ -101,7 +107,8 @@ public interface Workbooks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single workbook by its resourceName along with {@link Response}.
      */
-    Response<Workbook> getByResourceGroupWithResponse(String resourceGroupName, String resourceName, Context context);
+    Response<Workbook> getByResourceGroupWithResponse(
+        String resourceGroupName, String resourceName, Boolean canFetchContent, Context context);
 
     /**
      * Delete a workbook.
@@ -138,7 +145,8 @@ public interface Workbooks {
      * @throws com.azure.resourcemanager.applicationinsights.models.WorkbookErrorDefinitionException thrown if the
      *     request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the revisions for the workbook defined by its resourceName.
+     * @return the revisions for the workbook defined by its resourceName as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<Workbook> revisionsList(String resourceGroupName, String resourceName);
 
@@ -152,7 +160,8 @@ public interface Workbooks {
      * @throws com.azure.resourcemanager.applicationinsights.models.WorkbookErrorDefinitionException thrown if the
      *     request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the revisions for the workbook defined by its resourceName.
+     * @return the revisions for the workbook defined by its resourceName as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<Workbook> revisionsList(String resourceGroupName, String resourceName, Context context);
 
@@ -202,6 +211,8 @@ public interface Workbooks {
      * Get a single workbook by its resourceName.
      *
      * @param id the resource ID.
+     * @param canFetchContent Flag indicating whether or not to return the full content for each applicable workbook. If
+     *     false, only return summary content for workbooks.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.applicationinsights.models.WorkbookErrorDefinitionException thrown if the
@@ -209,7 +220,7 @@ public interface Workbooks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single workbook by its resourceName along with {@link Response}.
      */
-    Response<Workbook> getByIdWithResponse(String id, Context context);
+    Response<Workbook> getByIdWithResponse(String id, Boolean canFetchContent, Context context);
 
     /**
      * Delete a workbook.

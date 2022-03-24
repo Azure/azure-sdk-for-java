@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AmazonRdsForLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +18,6 @@ import java.util.Map;
 @JsonTypeName("AmazonRdsForOracle")
 @Fluent
 public final class AmazonRdsForOracleLinkedService extends LinkedService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AmazonRdsForOracleLinkedService.class);
-
     /*
      * AmazonRdsForOracle database linked service properties.
      */
@@ -146,7 +143,7 @@ public final class AmazonRdsForOracleLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model AmazonRdsForOracleLinkedService"));
@@ -154,4 +151,6 @@ public final class AmazonRdsForOracleLinkedService extends LinkedService {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AmazonRdsForOracleLinkedService.class);
 }
