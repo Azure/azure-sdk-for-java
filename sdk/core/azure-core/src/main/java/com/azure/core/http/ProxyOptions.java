@@ -127,7 +127,7 @@ public class ProxyOptions {
     }
 
     /**
-     * Attempts to load a proxy from the environment.
+     * Attempts to load a proxy from the configuration.
      * <p>
      * If a proxy is found and loaded the proxy address is DNS resolved.
      * <p>

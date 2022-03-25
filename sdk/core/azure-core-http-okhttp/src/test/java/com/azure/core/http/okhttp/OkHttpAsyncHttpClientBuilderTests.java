@@ -547,7 +547,7 @@ public class OkHttpAsyncHttpClientBuilderTests {
 
     private static Stream<Arguments> buildWithExplicitConfigurationProxySupplier() {
         Supplier<TestConfigurationBuilder> baseHttpProxy = () -> new TestConfigurationBuilder()
-            .add("http.proxy.host", "localhost")
+            .add("http.proxy.hostname", "localhost")
             .add("http.proxy.port", "12345");
 
         List<Arguments> arguments = new ArrayList<>();

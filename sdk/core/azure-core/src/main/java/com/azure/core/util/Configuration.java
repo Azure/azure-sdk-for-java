@@ -397,7 +397,7 @@ public class Configuration implements Cloneable {
      *
      * <!-- src_embed com.azure.core.util.Configuration.get#ConfigurationProperty -->
      * <pre>
-     * ConfigurationProperty&lt;String&gt; property = ConfigurationProperty.stringPropertyBuilder&#40;&quot;http.proxy.host&quot;&#41;
+     * ConfigurationProperty&lt;String&gt; property = ConfigurationProperty.stringPropertyBuilder&#40;&quot;http.proxy.hostname&quot;&#41;
      *     .shared&#40;true&#41;
      *     .canLogValue&#40;true&#41;
      *     .environmentAliases&#40;&quot;http.proxyHost&quot;&#41;

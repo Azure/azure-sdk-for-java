@@ -38,7 +38,7 @@ public class ConfigurationJavaDocCodeSnippet {
     public void configurationBuilderUsage() {
         Map<String, String> properties = new HashMap<>();
         properties.put("azure.sdk.client-name.http.proxy.port", "8080");
-        properties.put("azure.sdk.http.proxy.host", "<host");
+        properties.put("azure.sdk.http.proxy.hostname", "<host");
         properties.put("azure.sdk.http.proxy.username", "user");
         properties.put("azure.sdk.http.proxy.password", "pwd");
 
@@ -69,7 +69,7 @@ public class ConfigurationJavaDocCodeSnippet {
     public void configurationUsage() {
         Map<String, String> properties = new HashMap<>();
         properties.put("azure.sdk.<client-name>.http.proxy.port", "8080");
-        properties.put("azure.sdk.http.proxy.host", "<host");
+        properties.put("azure.sdk.http.proxy.hostname", "<host");
         properties.put("azure.sdk.http.proxy.username", "user");
         properties.put("azure.sdk.http.proxy.password", "pwd");
 
@@ -78,7 +78,7 @@ public class ConfigurationJavaDocCodeSnippet {
             .buildSection("<client-name>");
 
         // BEGIN: com.azure.core.util.Configuration.get#ConfigurationProperty
-        ConfigurationProperty<String> property = ConfigurationProperty.stringPropertyBuilder("http.proxy.host")
+        ConfigurationProperty<String> property = ConfigurationProperty.stringPropertyBuilder("http.proxy.hostname")
             .shared(true)
             .canLogValue(true)
             .environmentAliases("http.proxyHost")

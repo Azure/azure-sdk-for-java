@@ -201,7 +201,7 @@ public class JdkAsyncHttpClientBuilderTests {
             SimpleBasicAuthHttpProxyServer.ProxyEndpoint proxyEndpoint = proxyServer.start();
 
             Configuration configuration = new TestConfigurationBuilder()
-                .add("http.proxy.host", proxyEndpoint.getHost())
+                .add("http.proxy.hostname", proxyEndpoint.getHost())
                 .add("http.proxy.port", String.valueOf(proxyEndpoint.getPort()))
                 .build();
 
@@ -269,7 +269,7 @@ public class JdkAsyncHttpClientBuilderTests {
         arguments.add(Arguments.of(envConfiguration));
 
         final Configuration explicitConfiguration = new TestConfigurationBuilder()
-            .add("http.proxy.host", "localhost")
+            .add("http.proxy.hostname", "localhost")
             .add("http.proxy.port", "localhost")
             .add("http.proxy.non-proxy-hosts", "localhost")
             .build();

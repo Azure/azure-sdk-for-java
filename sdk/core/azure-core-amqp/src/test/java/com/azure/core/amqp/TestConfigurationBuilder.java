@@ -34,7 +34,7 @@ public class TestConfigurationBuilder {
     private static class TestConfigurationSource implements ConfigurationSource {
         private Map<String, String> testData;
 
-        public TestConfigurationSource(String... testData) {
+        TestConfigurationSource(String... testData) {
             this.testData = new HashMap<>();
 
             if (testData == null) {

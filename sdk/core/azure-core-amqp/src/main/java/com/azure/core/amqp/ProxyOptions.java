@@ -81,6 +81,16 @@ public class ProxyOptions implements AutoCloseable {
         }
     }
 
+    /**
+     * Attempts to load a proxy from the configuration or {@code null} if no proxy was found in the configuration.
+     *
+     * @param configuration The {@link Configuration} that is used to load proxy configurations from the environment. If
+     * {@code null} is passed then {@link Configuration#getGlobalConfiguration()} will be used. If {@link
+     * Configuration#NONE} is passed {@link IllegalArgumentException} will be thrown.
+     * @return A {@link ProxyOptions} reflecting a proxy loaded from the environment, if no proxy is found {@code null}
+     * will be returned.
+     * @throws IllegalArgumentException If {@code configuration} is {@link Configuration#NONE} or configuration is invalid.
+     */
     public static ProxyOptions fromConfiguration(Configuration configuration) {
         if (configuration == Configuration.NONE) {
             throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'configuration' cannot be 'Configuration.NONE'."));
@@ -169,14 +179,16 @@ public class ProxyOptions implements AutoCloseable {
 
     private static class Properties {
         public static final ConfigurationProperty<ProxyAuthenticationType> AUTHENTICATION_TYPE =
-            new ConfigurationPropertyBuilder("amqp.proxy.authentication-type", s -> ProxyAuthenticationType.valueOf((String)s))
+            new ConfigurationPropertyBuilder<>("amqp.proxy.authentication-type", s -> ProxyAuthenticationType.valueOf(s))
                 .shared(true)
+                .canLogValue(true)
                 .defaultValue(ProxyAuthenticationType.NONE)
                 .build();
 
         public static final ConfigurationProperty<Proxy.Type> PROXY_TYPE =
-            new ConfigurationPropertyBuilder("amqp.proxy.type", s -> Proxy.Type.valueOf((String)s))
+            new ConfigurationPropertyBuilder<>("amqp.proxy.type", s -> Proxy.Type.valueOf(s))
                 .shared(true)
+                .canLogValue(true)
                 .defaultValue(Proxy.Type.DIRECT)
                 .build();
 
