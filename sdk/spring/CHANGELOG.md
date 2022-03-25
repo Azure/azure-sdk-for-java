@@ -97,7 +97,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 - Change non-SDK defined boolean configuration properties from `Boolean` to `boolean` [#27321](https://github.com/Azure/azure-sdk-for-java/pull/27321).
 - Delete unused API from `KeyVaultOperation` and `KeyVaultPropertySource` [#27722](https://github.com/Azure/azure-sdk-for-java/pull/27722).
 - Delete `Propagator` from the constructor of `SleuthHttpPolicy` [#27621](https://github.com/Azure/azure-sdk-for-java/pull/27621).
-- Move `*ConfigurationProperties` into the implementation package [#27113](https://github.com/Azure/azure-sdk-for-java/issues/27113).
+- Move classes for internal usage to the implementation pacakge [#27113](https://github.com/Azure/azure-sdk-for-java/issues/27113).
 
 #### Features Added
 - Add a compatibility verifier for Spring Cloud Azure [#25437](https://github.com/Azure/azure-sdk-for-java/issues/25437).
