@@ -21,6 +21,7 @@ import io.netty.handler.codec.http.DefaultLastHttpContent;
 import io.netty.handler.codec.http.HttpChunkedInput;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpHeaderValues;
+import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.stream.ChunkedInput;
@@ -28,8 +29,8 @@ import io.netty.handler.stream.ChunkedNioFile;
 import io.netty.handler.stream.ChunkedStream;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.FutureListener;
-import reactor.core.publisher.Flux;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import static com.azure.core.http.netty.implementation.simple.SimpleNettyConstants.REQUEST_CONTEXT_KEY;
@@ -52,88 +53,25 @@ public class SimpleRequestSender implements FutureListener<Channel> {
                 ch.attr(REQUEST_CONTEXT_KEY).set(requestContext);
 
                 HttpRequest request = requestContext.getRequest();
-                HttpMethod method = mapHttpMethod(request.getHttpMethod());
 
-                // Prepare the HTTP request.
-                io.netty.handler.codec.http.HttpRequest nettyRequest;
-                Long contentLength = null;
-                ChunkedInput<ByteBuf> chunkedInput = null;
-                Flux<ByteBuffer> flux = null;
+                BinaryDataContent binaryDataContent = null;
                 if (request.getContent() != null) {
-                    BinaryDataContent binaryDataContent = BinaryDataHelper.getContent(request.getContent());
-                    contentLength = binaryDataContent.getLength();
+                    binaryDataContent = BinaryDataHelper.getContent(request.getContent());
+                }
+
+                if (binaryDataContent != null) {
                     if (binaryDataContent instanceof ByteArrayContent
                         || binaryDataContent instanceof StringContent) {
-                        byte[] requestBytes = binaryDataContent.toBytes();
-                        nettyRequest = new DefaultFullHttpRequest(
-                            HttpVersion.HTTP_1_1, method, request.getUrl().toString(),
-                            Unpooled.wrappedBuffer(requestBytes));
+                        sendBufferedRequest(request, binaryDataContent, ch);
                     } else if (binaryDataContent instanceof FileContent) {
-                        chunkedInput = new ChunkedNioFile(((FileContent) binaryDataContent).getFile().toFile());
-                        nettyRequest = new DefaultHttpRequest(
-                            HttpVersion.HTTP_1_1, method, request.getUrl().toString());
+                        sendFileRequest(request, (FileContent) binaryDataContent, ch);
                     } else if (binaryDataContent instanceof InputStreamContent) {
-                        chunkedInput = new ChunkedStream(binaryDataContent.toStream());
-                        nettyRequest = new DefaultHttpRequest(
-                            HttpVersion.HTTP_1_1, method, request.getUrl().toString());
+                        sendStreamRequest(request, (InputStreamContent) binaryDataContent, ch);
                     } else {
-                        flux = binaryDataContent.toFluxByteBuffer();
-                        nettyRequest = new DefaultHttpRequest(
-                            HttpVersion.HTTP_1_1, method, request.getUrl().toString());
+                        sendFluxRequest(request, binaryDataContent, ch);
                     }
                 } else {
-                    nettyRequest = new DefaultFullHttpRequest(
-                        HttpVersion.HTTP_1_1, method, request.getUrl().toString());
-                }
-
-                for (HttpHeader header : request.getHeaders()) {
-                    nettyRequest.headers().set(header.getName(), header.getValuesList());
-                }
-
-                nettyRequest.headers().set(HttpHeaderNames.HOST, request.getUrl().getHost());
-
-                Object chunkedContent = chunkedInput;
-                if (!nettyRequest.headers().contains(HttpHeaderNames.CONTENT_LENGTH)) {
-                    if (contentLength != null) {
-                        nettyRequest.headers().set(HttpHeaderNames.CONTENT_LENGTH, contentLength);
-                    } else {
-                        nettyRequest.headers().set(HttpHeaderNames.TRANSFER_ENCODING, HttpHeaderValues.CHUNKED);
-                        chunkedContent = new HttpChunkedInput(chunkedInput);
-                    }
-                }
-
-                if (chunkedInput != null) {
-                    ch.write(nettyRequest);
-                    ch.writeAndFlush(chunkedContent);
-                } else if (flux != null) {
-                    boolean isChunked = contentLength == null;
-                    ch.write(nettyRequest);
-                    flux.doOnEach(signal -> {
-                        if (signal.isOnNext()) {
-                            ByteBuffer byteBuffer = signal.get();
-                            if (byteBuffer != null) {
-                                ch.write(Unpooled.wrappedBuffer(byteBuffer));
-                            }
-                        } else if (signal.isOnComplete()) {
-                            if (isChunked) {
-                                ch.writeAndFlush(new DefaultLastHttpContent());
-                            } else {
-                                ch.flush();
-                            }
-                        } else if (signal.isOnError()) {
-                            ch.close();
-                            requestContext.getChannelPool().release(ch);
-                            Throwable throwable = signal.getThrowable();
-                            if (throwable != null) {
-                                requestContext.getResponseFuture().completeExceptionally(throwable);
-                            } else {
-                                requestContext.getResponseFuture().completeExceptionally(
-                                    new RuntimeException("bad reactor"));
-                            }
-                        }
-                    }).subscribe();
-                } else  {
-                    ch.writeAndFlush(nettyRequest);
+                    sendRequestWithoutBody(request, ch);
                 }
             } catch (RuntimeException e) {
                 ch.close();
@@ -142,6 +80,117 @@ public class SimpleRequestSender implements FutureListener<Channel> {
             }
         } else {
             requestContext.getResponseFuture().completeExceptionally(future.cause());
+        }
+    }
+
+    private static void sendRequestWithoutBody(HttpRequest request, Channel channel) {
+        HttpMethod method = mapHttpMethod(request.getHttpMethod());
+
+        io.netty.handler.codec.http.HttpRequest nettyRequest = new DefaultFullHttpRequest(
+            HttpVersion.HTTP_1_1, method, request.getUrl().toString());
+        setHeaders(nettyRequest, request, null, false);
+
+        channel.writeAndFlush(nettyRequest);
+    }
+
+    private static void sendBufferedRequest(HttpRequest request, BinaryDataContent binaryDataContent, Channel channel) {
+        byte[] requestBytes = binaryDataContent.toBytes();
+        HttpMethod method = mapHttpMethod(request.getHttpMethod());
+
+        io.netty.handler.codec.http.HttpRequest nettyRequest = new DefaultFullHttpRequest(
+            HttpVersion.HTTP_1_1, method, request.getUrl().toString(),
+            Unpooled.wrappedBuffer(requestBytes));
+        setHeaders(nettyRequest, request, binaryDataContent.getLength(), true);
+
+        channel.writeAndFlush(nettyRequest);
+    }
+
+    private static void sendFileRequest(
+        HttpRequest request, FileContent fileContent, Channel channel) throws IOException {
+        HttpMethod method = mapHttpMethod(request.getHttpMethod());
+
+        io.netty.handler.codec.http.HttpRequest nettyRequest = new DefaultHttpRequest(
+            HttpVersion.HTTP_1_1, method, request.getUrl().toString());
+        Long contentLength = fileContent.getLength();
+        setHeaders(nettyRequest, request, contentLength, true);
+        ChunkedInput<ByteBuf> chunkedInput = new ChunkedNioFile(fileContent.getFile().toFile());
+
+        channel.write(nettyRequest);
+        if (contentLength != null) {
+            channel.writeAndFlush(chunkedInput);
+        } else {
+            channel.writeAndFlush(new HttpChunkedInput(chunkedInput));
+        }
+    }
+
+    private static void sendStreamRequest(
+        HttpRequest request, InputStreamContent inputStreamContent, Channel channel) {
+        HttpMethod method = mapHttpMethod(request.getHttpMethod());
+
+        io.netty.handler.codec.http.HttpRequest nettyRequest = new DefaultHttpRequest(
+            HttpVersion.HTTP_1_1, method, request.getUrl().toString());
+        Long contentLength = inputStreamContent.getLength();
+        setHeaders(nettyRequest, request, contentLength, true);
+        ChunkedInput<ByteBuf> chunkedInput = new ChunkedStream(inputStreamContent.toStream());
+
+        channel.write(nettyRequest);
+        if (contentLength != null) {
+            channel.writeAndFlush(chunkedInput);
+        } else {
+            channel.writeAndFlush(new HttpChunkedInput(chunkedInput));
+        }
+    }
+
+    private void sendFluxRequest(
+        HttpRequest request, BinaryDataContent content, Channel channel) {
+        HttpMethod method = mapHttpMethod(request.getHttpMethod());
+        io.netty.handler.codec.http.HttpRequest nettyRequest = new DefaultHttpRequest(
+            HttpVersion.HTTP_1_1, method, request.getUrl().toString());
+        Long contentLength = content.getLength();
+        setHeaders(nettyRequest, request, contentLength, true);
+
+        channel.write(nettyRequest);
+
+        content.toFluxByteBuffer().doOnEach(signal -> {
+            if (signal.isOnNext()) {
+                ByteBuffer byteBuffer = signal.get();
+                if (byteBuffer != null) {
+                    channel.write(Unpooled.wrappedBuffer(byteBuffer));
+                }
+            } else if (signal.isOnComplete()) {
+                if (contentLength == null) {
+                    channel.writeAndFlush(new DefaultLastHttpContent());
+                } else {
+                    channel.flush();
+                }
+            } else if (signal.isOnError()) {
+                channel.close();
+                requestContext.getChannelPool().release(channel);
+                Throwable throwable = signal.getThrowable();
+                if (throwable != null) {
+                    requestContext.getResponseFuture().completeExceptionally(throwable);
+                } else {
+                    requestContext.getResponseFuture().completeExceptionally(
+                        new RuntimeException("bad reactor"));
+                }
+            }
+        }).subscribe();
+    }
+
+    private static void setHeaders(
+        io.netty.handler.codec.http.HttpRequest nettyRequest, HttpRequest request,
+        Long contentLength, boolean hasBody) {
+        HttpHeaders nettyHeaders = nettyRequest.headers();
+        nettyHeaders.set(HttpHeaderNames.HOST, request.getUrl().getHost());
+        for (HttpHeader header : request.getHeaders()) {
+            nettyRequest.headers().set(header.getName(), header.getValuesList());
+        }
+        if (hasBody && !nettyHeaders.contains(HttpHeaderNames.CONTENT_LENGTH)) {
+            if (contentLength != null) {
+                nettyRequest.headers().set(HttpHeaderNames.CONTENT_LENGTH, contentLength);
+            } else {
+                nettyRequest.headers().set(HttpHeaderNames.TRANSFER_ENCODING, HttpHeaderValues.CHUNKED);
+            }
         }
     }
 
