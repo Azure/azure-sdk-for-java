@@ -98,7 +98,6 @@ public class AppPlatformTest extends ResourceManagerTestBase {
     }
 
     protected boolean requestSuccess(String url) throws Exception {
-        allowAllSSL();
         for (int i = 0; i < 60; ++i) {
             HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
             try {
@@ -136,5 +135,6 @@ public class AppPlatformTest extends ResourceManagerTestBase {
         SSLContext sslContext = SSLContext.getInstance("SSL");
         sslContext.init(null, trustAllCerts, new SecureRandom());
         HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
+        HttpsURLConnection.setDefaultHostnameVerifier((urlHostName, session) -> true);
     }
 }
