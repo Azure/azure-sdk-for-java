@@ -162,7 +162,9 @@ function Get-java-UpdatedDocsMsToc($toc) {
     # name, only a repo URL)
     $services = $toc[0].items
     # Add service exsted in old toc.
-    $services += [PSCustomObject]@{
+    $otherService = $services[-1]
+    $sortableServices = $services | Where-Object { $_ –ne $otherService }
+    $sortableServices += [PSCustomObject]@{
         name  = "Active Directory"
         href  = "~/docs-ref-services/{moniker}/resourcemanager-msi-readme.md"
         landingPageType = "Service"
@@ -181,7 +183,7 @@ function Get-java-UpdatedDocsMsToc($toc) {
                     "com.microsoft.identity.client*")
             })
     }
-    $services += [PSCustomObject]@{
+    $sortableServices += [PSCustomObject]@{
         name  = "Edge Gateway"
         landingPageType = "Service"
         items = @(
@@ -190,7 +192,7 @@ function Get-java-UpdatedDocsMsToc($toc) {
                 children = @("com.microsoft.azure.management.edgegateway*")
             })
     }
-    $services += [PSCustomObject]@{
+    $sortableServices += [PSCustomObject]@{
         name  = "Resource Mover"
         landingPageType = "Service"
         items = @(
@@ -199,5 +201,81 @@ function Get-java-UpdatedDocsMsToc($toc) {
                 children = @("com.microsoft.azure.management.resourcemover.v2021_01_01*")
             })
     }
-    $services | Sort-Object -Property name
+    $sortableServices += [PSCustomObject]@{
+        name  = "Bing AutoSuggest"
+        landingPageType = "Service"
+        items = @(
+            [PSCustomObject]@{
+                name  = "Management"
+                href = "~/docs-ref-services/{moniker}/cognitiveservices/bing-autosuggest-readme.md"
+                children = @("com.microsoft.azure.cognitiveservices.search.autosuggest*")
+            })
+    }
+    $sortableServices += [PSCustomObject]@{
+        name  = "Content Moderator"
+        landingPageType = "Service"
+        items = @(
+            [PSCustomObject]@{
+                name  = "Management"
+                children = @("com.microsoft.azure.cognitiveservices.vision.contentmoderator*")
+            })
+    }
+    $sortableServices += [PSCustomObject]@{
+        name  = "Custom Vision"
+        landingPageType = "Service"
+        items = @(
+            [PSCustomObject]@{
+                name  = "Management"
+                children = @("com.microsoft.azure.cognitiveservices.vision.customvision*")
+            })
+    }
+    $sortableServices += [PSCustomObject]@{
+        name  = "Face API"
+        landingPageType = "Service"
+        items = @(
+            [PSCustomObject]@{
+                name  = "Management"
+                children = @("com.microsoft.azure.cognitiveservices.vision.faceapi*")
+            })
+    }
+    $sortableServices += [PSCustomObject]@{
+        name  = "Language Understanding"
+        landingPageType = "Service"
+        items = @(
+            [PSCustomObject]@{
+                name  = "Management"
+                children = @(
+                    "com.microsoft.azure.cognitiveservices.language.luis*", 
+                    "com.microsoft.azure.cognitiveservices.language.luis.authoring*")
+            })
+    }
+    $sortableServices += [PSCustomObject]@{
+        name  = "Speech Service"
+        landingPageType = "Service"
+        items = @(
+            [PSCustomObject]@{
+                name  = "Management"
+                children = @("com.microsoft.cognitiveservices.speech*")
+            })
+    }
+    $sortableServices += [PSCustomObject]@{
+        name  = "Text Analytics"
+        landingPageType = "Service"
+        items = @(
+            [PSCustomObject]@{
+                name  = "Management"
+                children = @("com.microsoft.azure.cognitiveservices.language.text*")
+            })
+    }
+    $services += [PSCustomObject]@{
+        name  = "Cognitive Services"
+        landingPageType = "Service"
+        items = @(
+            [PSCustomObject]@{
+                name  = "Resource Management"
+                children = @("com.microsoft.azure.management.cognitiveservices*")
+            })
+    }
+    $toc[0].items = ($sortableServices | Sort-Object -Property name) + $otherService
+    return , $toc
 }
