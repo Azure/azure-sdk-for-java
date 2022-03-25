@@ -400,7 +400,7 @@ Please refer to [Spring Cloud Azure Migration Guide for 4.0][Spring-Cloud-Azure-
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Breaking Changes
-- Remove the health indicator for `KeyVaultEnvironmentPostProcessor` [https://github.com/Azure/azure-sdk-for-java/pull/24309](https://github.com/Azure/azure-sdk-for-java/pull/24309).
+- Remove the health indicator for `KeyVaultEnvironmentPostProcessor` [#24309](https://github.com/Azure/azure-sdk-for-java/pull/24309).
 
 ### spring-cloud-azure-stream-binder-eventhubs
 
