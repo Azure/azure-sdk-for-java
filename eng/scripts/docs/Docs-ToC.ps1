@@ -104,7 +104,7 @@ function Get-Toc-Children($package, $groupId, $version, $docRepoLocation, $folde
         # Log and warn
         Write-Host "Not able to find namespaces from javadoc jar $package-$version-javadoc.jar"
     }
-    return (Get-Content $filePath | ForEach-Object {$_.Trim()})
+    return (Get-Content $filePath | ForEach-Object {$_.Trim() + "*"})
 }
   
 function Fetch-Namespaces-From-Javadoc ($jarFilePath, $destination) {
@@ -154,4 +154,33 @@ function Parse-Overview-Frame ($filePath, $destination) {
     $namespaces = $packages | ForEach-Object { $_.Groups["package"].Value }    
     Add-Content -Path $destination -Value $namespaces
     Get-Content $destination
+}
+
+function Get-java-UpdatedDocsMsToc($toc) {
+    # Add "ADAL" to "Active Directory" service. This is onboarded through a repo
+    # source process that is not obvious in the CI configuration (no package
+    # name, only a repo URL)
+    $services = $toc[0].items
+    # Add service exsted in old toc.
+    $services += [PSCustomObject]@{
+        name  = "Active Directory"
+        href  = "~/docs-ref-services/{moniker}/resourcemanager-msi-readme.md"
+        landingPageType = "Service"
+        items = @(
+            [PSCustomObject]@{
+                name  = "Resource Management"
+                href  = "~/docs-ref-services/{moniker}/resourcemanager-msi-readme.md"
+                children = @("com.azure.resourcemanager.msi*")
+            }, 
+            [PSCustomObject]@{
+                name  = "client"
+                href  = "~/docs-ref-services/{moniker}/resourcemanager-msi-readme.md"
+                children = @(
+                    "com.microsoft.aad.adal*",
+                    "com.microsoft.aad.adal4j*",
+                    "com.microsoft.identity.client*")
+            })
+    }
+
+    $services | Sort-Object -Property name
 }
