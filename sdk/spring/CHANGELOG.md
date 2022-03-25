@@ -14,8 +14,8 @@
 #### Dependency Updates
 - Use `azure-sdk-bom:1.2.0` instead of including each sdk dependencies [#27850](https://github.com/Azure/azure-sdk-for-java/pull/27850).
 - Use `azure-cosmos:4.28.0` instead of the version `4.27.0` in `azure-sdk-bom` [#27850](https://github.com/Azure/azure-sdk-for-java/pull/27850).
-- Use `azure-resourcemanager:2.13.0`.
-- Use `azure-spring-data-cosmos:3.19.0`.
+- Upgrade `azure-resourcemanager` to 2.13.0.
+- Upgrade `azure-spring-data-cosmos` to 3.19.0.
 
 ### Spring Cloud Azure Starter Active Directory
 This section includes changes in `spring-cloud-azure-starter-active-directory` module.
