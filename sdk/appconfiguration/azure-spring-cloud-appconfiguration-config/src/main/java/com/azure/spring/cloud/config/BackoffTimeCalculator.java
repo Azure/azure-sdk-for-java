@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config;
 
+import java.util.Random;
+
 /**
  * Calculates the amount of time to the next refresh, if a refresh fails.
  */
@@ -34,23 +36,21 @@ final class BackoffTimeCalculator {
             throw new IllegalArgumentException("Number of previous attempts needs to be a positive number.");
         }
 
+        Long minBackoffNano = minBackoff * SECONDS_TO_NANO_SECONDS;
+        Long maxBackoffNano = maxBackoff * SECONDS_TO_NANO_SECONDS;
+
         if (attempts <= 1 || maxBackoff <= minBackoff) {
-            return minBackoff * SECONDS_TO_NANO_SECONDS;
+            return minBackoffNano;
         }
 
-        double maxNanoSeconds = Math.max(1, minBackoff * SECONDS_TO_NANO_SECONDS)
-            * ((long) 1 << Math.min(attempts, MAX_ATTEMPTS));
+        double maxNanoSeconds = Math.max(1, minBackoffNano) * ((long) 1 << Math.min(attempts, MAX_ATTEMPTS));
 
-        if (maxNanoSeconds > maxBackoff * SECONDS_TO_NANO_SECONDS || maxNanoSeconds <= 0) {
-            maxNanoSeconds = maxBackoff * SECONDS_TO_NANO_SECONDS;
+        if (maxNanoSeconds > maxBackoffNano || maxNanoSeconds <= 0) {
+            maxNanoSeconds = maxBackoffNano;
         }
 
-        return (long) ((minBackoff * SECONDS_TO_NANO_SECONDS)
-            + getRandomBackoff(minBackoff * SECONDS_TO_NANO_SECONDS, maxNanoSeconds * SECONDS_TO_NANO_SECONDS));
-    }
-
-    private static double getRandomBackoff(double min, double max) {
-        return ((Math.random() * (max - min)) + min);
+        return (long) (minBackoffNano +
+            ((new Random().nextDouble() * (maxNanoSeconds - minBackoffNano)) + minBackoffNano));
     }
 
 }

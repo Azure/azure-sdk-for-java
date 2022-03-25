@@ -3,7 +3,7 @@
 ## 2.5.0-beta.1 (Unreleased)
 
 * Added refresh interval parameter to `spring.cloud.azure.appconfiguraiton` to force refreshes on a given interval. Can be used to make sure secrets are kept up to date.
-* Added CalculatedBackoffTime, which sets the next refresh period to sooner if a refresh fails.
+* Added BackoffTimeCalculator, which sets the next refresh period to sooner if a refresh fails.
 
 ### Other Changes
 
