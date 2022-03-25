@@ -8,19 +8,27 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.pool.AbstractChannelPoolHandler;
 import io.netty.handler.codec.http.HttpClientCodec;
 import io.netty.handler.codec.http.HttpContentDecompressor;
+import io.netty.handler.ssl.SslContext;
 import io.netty.handler.stream.ChunkedWriteHandler;
 
 import static com.azure.core.http.netty.implementation.simple.SimpleNettyConstants.REQUEST_CONTEXT_KEY;
 
 public class SimpleChannelPoolHandler extends AbstractChannelPoolHandler {
+
+    private final SslContext sslCtx;
+
+    public SimpleChannelPoolHandler(SslContext sslCtx) {
+        this.sslCtx = sslCtx;
+    }
+
     @Override
     public void channelCreated(Channel channel) {
         ChannelPipeline p = channel.pipeline();
 
         // Enable HTTPS if necessary.
-        //if (sslCtx != null) {
-        //    p.addLast(sslCtx.newHandler(ch.alloc()));
-        //}
+        if (sslCtx != null) {
+            p.addLast(sslCtx.newHandler(channel.alloc()));
+        }
 
         p.addLast(new HttpClientCodec());
 
