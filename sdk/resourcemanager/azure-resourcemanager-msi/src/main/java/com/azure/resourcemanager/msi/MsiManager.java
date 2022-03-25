@@ -54,7 +54,7 @@ public final class MsiManager extends Manager<ManagedServiceIdentityClient> {
      * @return the MsiManager
      */
     public static MsiManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return  new MsiManager(httpPipeline, profile);
+        return new MsiManager(httpPipeline, profile);
     }
 
     /**
