@@ -13,6 +13,8 @@ final class BackoffTimeCalculator {
 
     private static final Long SECONDS_TO_NANO_SECONDS = (long) 1000000000;
 
+    private static final Random RANDOM = new Random();
+
     /**
      * Calculates the new Backoff time for requests.
      * 
@@ -49,8 +51,7 @@ final class BackoffTimeCalculator {
             maxNanoSeconds = maxBackoffNano;
         }
 
-        return (long) (minBackoffNano +
-            ((new Random().nextDouble() * (maxNanoSeconds - minBackoffNano)) + minBackoffNano));
+        return (long) (minBackoffNano + ((RANDOM.nextDouble() * (maxNanoSeconds - minBackoffNano)) + minBackoffNano));
     }
 
 }
