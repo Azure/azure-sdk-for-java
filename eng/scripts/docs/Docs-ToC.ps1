@@ -181,6 +181,23 @@ function Get-java-UpdatedDocsMsToc($toc) {
                     "com.microsoft.identity.client*")
             })
     }
-
+    $services += [PSCustomObject]@{
+        name  = "Edge Gateway"
+        landingPageType = "Service"
+        items = @(
+            [PSCustomObject]@{
+                name  = "Resource Management"
+                children = @("com.microsoft.azure.management.edgegateway*")
+            })
+    }
+    $services += [PSCustomObject]@{
+        name  = "Resource Mover"
+        landingPageType = "Service"
+        items = @(
+            [PSCustomObject]@{
+                name  = "Resource Management"
+                children = @("com.microsoft.azure.management.resourcemover.v2021_01_01*")
+            })
+    }
     $services | Sort-Object -Property name
 }
