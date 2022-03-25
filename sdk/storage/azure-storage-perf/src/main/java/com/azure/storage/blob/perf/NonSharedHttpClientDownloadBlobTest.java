@@ -1,0 +1,71 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.storage.blob.perf;
+
+import com.azure.core.util.Configuration;
+import com.azure.perf.test.core.NullOutputStream;
+import com.azure.perf.test.core.PerfStressOptions;
+import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobClientBuilder;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobContainerClientBuilder;
+import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.blob.perf.core.ContainerTest;
+import com.azure.storage.blob.perf.core.HttpClientTest;
+import com.azure.storage.blob.perf.core.ServiceTest;
+import reactor.core.publisher.Mono;
+
+import java.io.OutputStream;
+
+import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
+
+public class NonSharedHttpClientDownloadBlobTest extends ContainerTest<PerfStressOptions> {
+    private static final int BUFFER_SIZE = 16 * 1024 * 1024;
+    private static final OutputStream DEV_NULL = new NullOutputStream();
+    private final BlobAsyncClient blobAsyncClient;
+    String blobName = "downloadTest";
+
+    private final byte[] buffer = new byte[BUFFER_SIZE];
+
+    public NonSharedHttpClientDownloadBlobTest(PerfStressOptions options) {
+        super(options);
+        blobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(blobName);
+    }
+
+    // Required resource setup goes here, upload the file to be downloaded during tests.
+    public Mono<Void> globalSetupAsync() {
+        return super.globalSetupAsync()
+                   .then(blobAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), null))
+                   .then();
+    }
+
+    // Perform the API call to be tested here
+    @Override
+    public void run() {
+        BlobClient blobClient = new BlobClientBuilder().buildClient();
+        blobClient.download(DEV_NULL);
+    }
+
+    @Override
+    public Mono<Void> runAsync() {
+//        System.out.println("----->>><<<______" + Configuration.getGlobalConfiguration().get("AZURE_DISABLE_HTTP_CLIENT_SHARING"));
+        BlobAsyncClient blobAsyncClient = new BlobClientBuilder()
+                                              .containerName(CONTAINER_NAME)
+                                              .connectionString(connectionString)
+                                              .blobName(blobName)
+                                              .buildAsyncClient();
+        return blobAsyncClient.download()
+                   .map(b -> {
+                       int readCount = 0;
+                       int remaining = b.remaining();
+                       while (readCount < remaining) {
+                           int expectedReadCount = Math.min(remaining - readCount, BUFFER_SIZE);
+                           b.get(buffer, 0, expectedReadCount);
+                           readCount += expectedReadCount;
+                       }
+                       return 1;
+                   }).then();
+    }
+}
