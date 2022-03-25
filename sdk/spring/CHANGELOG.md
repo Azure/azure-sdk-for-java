@@ -46,7 +46,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 #### Breaking Changes
 - Refactor retry options [#27332](https://github.com/Azure/azure-sdk-for-java/pull/27332), [#27586](https://github.com/Azure/azure-sdk-for-java/pull/27586).
   + Delete properties `spring.cloud.azure.retry.timeout` and `spring.cloud.azure.<azure-service>.retry.timeout`.
-  + Add properties `spring.cloud.azure.retry.amqp.try-timeout` and `spring.cloud.azure.<azure-amqp-service>.retry.try-timeout` instead. (<azure-amqp-service> means this option only applies to AMQP-based service clients).
+  + Add properties `spring.cloud.azure.retry.amqp.try-timeout` and `spring.cloud.azure.<azure-amqp-service>.retry.try-timeout` instead. (`<azure-amqp-service>` means this option only applies to AMQP-based service clients).
   + Delete properties `spring.cloud.azure.retry.back-off.max-attempts`, `spring.cloud.azure.retry.back-off.delay`, `spring.cloud.azure.retry.back-off.max-delay`, and `spring.cloud.azure.retry.backoff.multiplier`. 
   + Delete properties `spring.cloud.azure.<azure-service>.retry.back-off.max-attempts`, `spring.cloud.azure.<azure-service>.retry.back-off.delay`, `spring.cloud.azure.<azure-service>.retry.back-off..max-delay`, and `spring.cloud.azure.<azure-service>.retry.backoff.multiplier`. 
   + Add properties `spring.cloud.azure.retry.mode`, `spring.cloud.azure.<azure-service>.retry.mode`, `spring.cloud.azure.retry.exponential.*`, `spring.cloud.azure.<azure-service>.retry.exponential.*`, `spring.cloud.azure.retry.fixed*`, and `spring.cloud.azure.<azure-service>.retry.fixed.*` instead:
@@ -56,10 +56,10 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
     - `spring.cloud.azure.retry.fixed.delay`.
     - `spring.cloud.azure.retry.fixed.max-retries`.
 - Refactor proxy options [#27402](https://github.com/Azure/azure-sdk-for-java/pull/27402):  
-  + Change `spring.cloud.azure.<azure-service>.proxy.authentication-type` to `spring.cloud.azure.<azure-amqp-service>.proxy.authentication-type`. (<azure-amqp-service> means this property only applies to AMQP-based service clients).
+  + Change `spring.cloud.azure.<azure-service>.proxy.authentication-type` to `spring.cloud.azure.<azure-amqp-service>.proxy.authentication-type`. (`<azure-amqp-service>` means this property only applies to AMQP-based service clients).
   + Delete `spring.cloud.azure.proxy.authentication-type` and add `spring.cloud.azure.proxy.amqp.authentication-type` instead.
 - Refactor client options [#27402](https://github.com/Azure/azure-sdk-for-java/pull/27511):  
-  + Change `spring.cloud.azure.<azure-service>.client.headers` to `spring.cloud.azure.<azure-http-service>.client.headers`. (<azure-http-service> means this property only applies to HTTP-based service clients).
+  + Change `spring.cloud.azure.<azure-service>.client.headers` to `spring.cloud.azure.<azure-http-service>.client.headers`. (`<azure-http-service>` means this property only applies to HTTP-based service clients).
   + Delete `spring.cloud.azure.client.headers` and add `spring.cloud.azure.client.http.headers` instead.
 - Rename properties `spring.cloud.azure.profile.cloud` and `spring.cloud.azure.<azure-service>.cloud` to `spring.cloud.azure.profile.cloud-type` and `spring.cloud.azure.<azure-service>.cloud-type` [#27258](https://github.com/Azure/azure-sdk-for-java/pull/27258).  
 - Delete properties `spring.cloud.azure.credential.managed-identity-client-id` and `spring.cloud.azure.<azure-service>.credential.managed-identity-client-id`. Add `spring.cloud.azure.credential.managed-identity-enabled` and `spring.cloud.azure.<azure-service>.credential.managed-identity-enabled` instead [#27118](https://github.com/Azure/azure-sdk-for-java/pull/27118), [#27258](https://github.com/Azure/azure-sdk-for-java/pull/27258).
