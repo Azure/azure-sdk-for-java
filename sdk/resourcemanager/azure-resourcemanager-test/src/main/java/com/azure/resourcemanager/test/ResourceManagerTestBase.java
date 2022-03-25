@@ -417,6 +417,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
     protected <T> T buildManager(Class<T> manager, HttpPipeline httpPipeline, AzureProfile profile) {
         try {
             Constructor<T> constructor = manager.getDeclaredConstructor(httpPipeline.getClass(), profile.getClass());
+            setAccessible(constructor);
             return constructor.newInstance(httpPipeline, profile);
 
         } catch (NoSuchMethodException
