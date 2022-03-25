@@ -28,7 +28,7 @@ This section includes changes in `spring-cloud-azure-starter-active-directory` m
   + Rename methods in `AADAuthenticationProperties` from `allowedGroupIdsConfigured/allowedGroupNamesConfigured` to `isAllowedGroupIdsConfigured/isAllowedGroupNamesConfigured`.
   + Rename methods in `AADAuthorizationServerEndpoints` from `authorizationEndpoint/endSessionEndpoint/jwkSetEndpoint/tokenEndpoint` to `getAuthorizationEndpoint/getEndSessionEndpoint/getJwkSetEndpoint/getTokenEndpoint`.
   + Rename method in `UserGroupProperties` from `getUseTransitiveMembers` to `isUseTransitiveMembers`.
-- Delete `AadJwtClaimValidator` and `AadJwtAudienceValidator` [#27365](https://github.com/Azure/azure-sdk-for-java/pull/27365):
+- Improve `AadJwt*Validator` and `AadTokenClaim` [#27365](https://github.com/Azure/azure-sdk-for-java/pull/27365):
   + Delete `AadJwtClaimValidator` and use `JwtClaimValidator` instead.
   + Delete `AadJwtAudienceValidator` and use `JwtClaimValidator` instead.
   + Rename `AadTokenClaim` to `AadJwtClaimNames`.
