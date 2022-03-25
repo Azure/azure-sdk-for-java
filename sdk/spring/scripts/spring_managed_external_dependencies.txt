@@ -20,7 +20,8 @@ com.datastax.oss:native-protocol;1.5.0
 com.ecwid.consul:consul-api;1.4.5
 com.fasterxml.jackson.core:jackson-annotations;2.13.2
 com.fasterxml.jackson.core:jackson-core;2.13.2
-com.fasterxml.jackson.core:jackson-databind;2.13.2
+com.fasterxml.jackson.core:jackson-core;2.13.2
+com.fasterxml.jackson.core:jackson-databind;2.13.2.1
 com.fasterxml.jackson.dataformat:jackson-dataformat-avro;2.13.2
 com.fasterxml.jackson.dataformat:jackson-dataformat-cbor;2.13.2
 com.fasterxml.jackson.dataformat:jackson-dataformat-csv;2.13.2
@@ -79,7 +80,7 @@ com.fasterxml.jackson.module:jackson-module-scala_2.11;2.13.2
 com.fasterxml.jackson.module:jackson-module-scala_2.12;2.13.2
 com.fasterxml.jackson.module:jackson-module-scala_2.13;2.13.2
 com.fasterxml.jackson.module:jackson-module-scala_3;2.13.2
-com.fasterxml.jackson:jackson-bom;2.13.2
+com.fasterxml.jackson:jackson-bom;2.13.2.20220324
 com.fasterxml:classmate;1.5.1
 com.github.ben-manes.caffeine:caffeine;2.9.3
 com.github.ben-manes.caffeine:guava;2.9.3
