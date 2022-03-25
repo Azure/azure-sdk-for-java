@@ -26,6 +26,7 @@ import io.netty.channel.pool.ChannelPool;
 import io.netty.channel.pool.ChannelPoolMap;
 import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.DefaultHttpRequest;
+import io.netty.handler.codec.http.DefaultLastHttpContent;
 import io.netty.handler.codec.http.HttpChunkedInput;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpHeaderValues;
@@ -36,12 +37,14 @@ import io.netty.handler.stream.ChunkedNioFile;
 import io.netty.handler.stream.ChunkedStream;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.FutureListener;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -145,6 +148,7 @@ public class SimpleNettyHttpClient implements HttpClient {
                     io.netty.handler.codec.http.HttpRequest nettyRequest;
                     Long contentLength = null;
                     ChunkedInput<ByteBuf> chunkedInput = null;
+                    Flux<ByteBuffer> flux = null;
                     if (request.getContent() != null) {
                         BinaryDataContent binaryDataContent = BinaryDataHelper.getContent(request.getContent());
                         contentLength = binaryDataContent.getLength();
@@ -163,12 +167,9 @@ public class SimpleNettyHttpClient implements HttpClient {
                             nettyRequest = new DefaultHttpRequest(
                                 HttpVersion.HTTP_1_1, method, request.getUrl().toString());
                         } else {
-                            // TODO (kasobol-msft) how do we do Flux ??
-                            byte[] requestBytes = binaryDataContent.toBytes();
-                            contentLength = (long) requestBytes.length;
-                            nettyRequest = new DefaultFullHttpRequest(
-                                HttpVersion.HTTP_1_1, method, request.getUrl().toString(),
-                                Unpooled.wrappedBuffer(requestBytes));
+                            flux = binaryDataContent.toFluxByteBuffer();
+                            nettyRequest = new DefaultHttpRequest(
+                                HttpVersion.HTTP_1_1, method, request.getUrl().toString());
                         }
                     } else {
                         nettyRequest = new DefaultFullHttpRequest(
@@ -191,17 +192,41 @@ public class SimpleNettyHttpClient implements HttpClient {
                         }
                     }
 
-                    // Send the HTTP request.
-                    ch.attr(REQUEST_CONTEXT_KEY).set(
-                        requestContext);
-
-                    if (chunkedInput == null) {
-                        ch.writeAndFlush(nettyRequest);
-                    } else  {
+                    if (chunkedInput != null) {
                         ch.write(nettyRequest);
                         ch.writeAndFlush(chunkedContent);
+                    } else if (flux != null) {
+                        boolean isChunked = contentLength == null;
+                        ch.write(nettyRequest);
+                        flux.doOnEach(signal -> {
+                            if (signal.isOnNext()) {
+                                ByteBuffer byteBuffer = signal.get();
+                                if (byteBuffer != null) {
+                                    ch.write(Unpooled.wrappedBuffer(byteBuffer));
+                                }
+                            } else if (signal.isOnComplete()) {
+                                if (isChunked) {
+                                    ch.writeAndFlush(new DefaultLastHttpContent());
+                                } else {
+                                    ch.flush();
+                                }
+                            } else if (signal.isOnError()) {
+                                ch.close();
+                                requestContext.getChannelPool().release(ch);
+                                Throwable throwable = signal.getThrowable();
+                                if (throwable != null) {
+                                    requestContext.getResponseFuture().completeExceptionally(throwable);
+                                } else {
+                                    requestContext.getResponseFuture().completeExceptionally(
+                                        new RuntimeException("bad reactor"));
+                                }
+                            }
+                        }).subscribe();
+                    } else  {
+                        ch.writeAndFlush(nettyRequest);
                     }
                 } catch (RuntimeException e) {
+                    ch.close();
                     requestContext.getChannelPool().release(ch);
                     requestContext.getResponseFuture().completeExceptionally(e);
                 }
