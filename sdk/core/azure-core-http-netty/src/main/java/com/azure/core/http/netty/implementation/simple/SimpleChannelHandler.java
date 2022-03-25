@@ -3,14 +3,11 @@
 
 package com.azure.core.http.netty.implementation.simple;
 
-import com.azure.core.http.HttpResponse;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.HttpContent;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.LastHttpContent;
-
-import java.util.concurrent.CompletableFuture;
 
 import static com.azure.core.http.netty.implementation.simple.SimpleNettyConstants.REQUEST_CONTEXT_KEY;
 
@@ -35,19 +32,25 @@ public class SimpleChannelHandler extends SimpleChannelInboundHandler<HttpObject
             }
 
             requestContext.setHttpHeaders(coreHeaders);
+
+            if (!requestContext.isEagerlyReadResponse()) {
+                requestContext.getResponseFuture().complete(new SimpleNettyResponse(requestContext));
+            }
         }
         if (msg instanceof HttpContent) {
             HttpContent content = (HttpContent) msg;
-
-            requestContext.getBodyCollector().collect(content.content());
-
             if (content instanceof LastHttpContent) {
-                CompletableFuture<HttpResponse> responseFuture = requestContext.getResponseFuture();
+                requestContext.getBodyCollector().collect(content.content(), true);
+
                 ctx.channel().attr(REQUEST_CONTEXT_KEY).set(null);
 
                 requestContext.getChannelPool().release(ctx.channel());
 
-                responseFuture.complete(new SimpleNettyResponse(requestContext));
+                if (requestContext.isEagerlyReadResponse()) {
+                    requestContext.getResponseFuture().complete(new SimpleNettyResponse(requestContext));
+                }
+            } else {
+                requestContext.getBodyCollector().collect(content.content(), false);
             }
         }
     }

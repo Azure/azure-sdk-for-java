@@ -8,7 +8,7 @@ import io.netty.buffer.ByteBuf;
 
 public interface SimpleBodyCollector {
 
-    void collect(ByteBuf buffer);
+    void collect(ByteBuf buffer, boolean isLast);
 
     BinaryData toBinaryData();
 }

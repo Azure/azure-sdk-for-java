@@ -15,7 +15,7 @@ public class InMemoryBodyCollector implements SimpleBodyCollector {
     private volatile ByteArrayOutputStream outputStream;
 
     @Override
-    public void collect(ByteBuf buffer) {
+    public void collect(ByteBuf buffer, boolean isLast) {
         if (buffer.isReadable()) {
             ensureStream();
             try {

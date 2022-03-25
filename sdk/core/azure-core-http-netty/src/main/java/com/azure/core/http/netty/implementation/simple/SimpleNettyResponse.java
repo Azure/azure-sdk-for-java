@@ -59,7 +59,14 @@ public class SimpleNettyResponse extends HttpResponse {
         if (content == null) {
             return Mono.empty();
         }
-        return Mono.fromSupplier(content::toBytes);
+        return Mono.fromSupplier(() -> {
+            byte[] bytes = content.toBytes();
+            if (bytes.length == 0) {
+                return null;
+            } else {
+                return bytes;
+            }
+        });
     }
 
     @Override

@@ -15,17 +15,23 @@ public class SimpleRequestContext {
     private final HttpRequest request;
     private final CompletableFuture<HttpResponse> responseFuture;
     private final SimpleBodyCollector bodyCollector;
+    private final boolean eagerlyReadResponse;
 
     private volatile int statusCode;
     private volatile com.azure.core.http.HttpHeaders httpHeaders;
 
     public SimpleRequestContext(ChannelPool channelPool, HttpRequest request,
                                 CompletableFuture<HttpResponse> responseFuture,
-                                SimpleBodyCollector bodyCollector) {
+                                boolean eagerlyReadResponse) {
         this.channelPool = channelPool;
         this.request = request;
         this.responseFuture = responseFuture;
-        this.bodyCollector = bodyCollector;
+        if (eagerlyReadResponse) {
+            this.bodyCollector = new InMemoryBodyCollector();
+        } else {
+            this.bodyCollector = new PipedStreamBodyCollector();
+        }
+        this.eagerlyReadResponse = eagerlyReadResponse;
     }
 
     public HttpRequest getRequest() {
@@ -58,5 +64,9 @@ public class SimpleRequestContext {
 
     public ChannelPool getChannelPool() {
         return channelPool;
+    }
+
+    public boolean isEagerlyReadResponse() {
+        return eagerlyReadResponse;
     }
 }
