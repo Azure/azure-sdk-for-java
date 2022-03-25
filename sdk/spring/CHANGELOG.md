@@ -75,8 +75,8 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
   + `spring.cloud.azure.active-directory.user-group.allowed-groups`.
   + `spring.cloud.azure.active-directory.user-group.enable-full-list`.
 - Delete deprecated properties for AAD B2C [#26598](https://github.com/Azure/azure-sdk-for-java/pull/26598):
-  + `spring.cloud.azure.active-directory.b2c.tenant`.
   + `spring.cloud.azure.active-directory.b2c.allow-telemetry`.
+  + `spring.cloud.azure.active-directory.b2c.tenant`.
 - Delete properties `spring.cloud.azure.cosmos.permissions`. Please use the builder customizer instead. [#27236](https://github.com/Azure/azure-sdk-for-java/pull/27236).
 - Delete properties `spring.cloud.azure.cosmos.gateway-connection.proxy`. Please use `spring.cloud.azure.cosmos.proxy` instead [#27241](https://github.com/Azure/azure-sdk-for-java/pull/27241).
 - Rename property `spring.cloud.azure.eventhubs.processor.partition-ownership-expiration-interval` to `spring.cloud.azure.eventhubs.processor.load-balancing.partition-ownership-expiration-interval` [#27331](https://github.com/Azure/azure-sdk-for-java/pull/27331).
