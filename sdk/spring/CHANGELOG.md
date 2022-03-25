@@ -12,7 +12,23 @@
 
 ### Spring Cloud Azure Dependencies (BOM)
 #### Dependency Updates
-- Use `azure-sdk-bom:1.2.0` instead of including each sdk dependencies [#27850](https://github.com/Azure/azure-sdk-for-java/pull/27850).
+- Delete the direct reference of following Azure SDKs [#27850](https://github.com/Azure/azure-sdk-for-java/pull/27850):
+  + azure-core
+  + azure-core-management
+  + azure-core-amqp
+  + azure-cosmos
+  + azure-data-appconfiguration
+  + azure-identity
+  + azure-messaging-eventhubs
+  + azure-messaging-eventhubs-checkpointstore-blob
+  + azure-messaging-servicebus
+  + azure-security-keyvault-certificates
+  + azure-security-keyvault-secrets
+  + azure-storage-blob
+  + azure-storage-file-share
+  + azure-storage-queue
+  + azure-core-serializer-json-jackson
+- Import `azure-sdk-bom:1.2.0` [#27850](https://github.com/Azure/azure-sdk-for-java/pull/27850).
 - Use `azure-cosmos:4.28.0` instead of the version `4.27.0` in `azure-sdk-bom` [#27850](https://github.com/Azure/azure-sdk-for-java/pull/27850).
 - Upgrade `azure-resourcemanager` to 2.13.0.
 - Upgrade `azure-spring-data-cosmos` to 3.19.0.
