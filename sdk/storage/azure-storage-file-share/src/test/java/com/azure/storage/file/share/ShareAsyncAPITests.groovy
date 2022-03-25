@@ -184,7 +184,7 @@ class ShareAsyncAPITests extends APISpec {
     @Unroll
     def "Create if not exists share with args"() {
         expect:
-        StepVerifier.create(primaryShareAsyncClient.createIfNotExistsWithResponse(metadata, quota))
+        StepVerifier.create(primaryShareAsyncClient.createIfNotExistsWithResponse(new ShareCreateOptions().setMetadata(metadata).setQuotaInGb(quota)))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()

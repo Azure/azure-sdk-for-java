@@ -164,12 +164,13 @@ public final class BlobServiceClient {
      * <!-- end com.azure.storage.blob.BlobServiceClient.createBlobContainerIfNotExists#String -->
      *
      * @param containerName Name of the container to create
-     * @return The {@link BlobContainerClient} used to interact with the container created, or null if the container
-     * already exists.
-     */
+     * @return The {@link BlobContainerClient} used to interact with the container created.
+     * The {@link BlobContainerClient} will be null if a container already exists at this location.
+     *      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobContainerClient createBlobContainerIfNotExists(String containerName) {
-        return createBlobContainerIfNotExistsWithResponse(containerName, null, null, Context.NONE).getValue();
+        Response<BlobContainerClient> response = createBlobContainerIfNotExistsWithResponse(containerName, null, null, Context.NONE);
+        return response == null ? null : response.getValue();
     }
 
     /**
@@ -183,11 +184,16 @@ public final class BlobServiceClient {
      * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
      * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
      *
-     * BlobContainerClient containerClient = client.createBlobContainerIfNotExistsWithResponse&#40;
-     *     &quot;containerName&quot;,
-     *     metadata,
-     *     PublicAccessType.CONTAINER,
-     *     context&#41;.getValue&#40;&#41;;
+     * Response&lt;BlobContainerClient&gt; response = client.createBlobContainerIfNotExistsWithResponse&#40;
+     *      &quot;containerName&quot;,
+     *      metadata,
+     *      PublicAccessType.CONTAINER,
+     *      context&#41;;
+     * if &#40;response == null&#41; &#123;
+     *      System.out.println&#40;&quot;Already existed.&quot;&#41;;
+     * &#125; else &#123;
+     *      System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * &#125;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobServiceClient.createBlobContainerIfNotExistsWithResponse#String-Map-PublicAccessType-Context -->
      *
@@ -198,7 +204,8 @@ public final class BlobServiceClient {
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link BlobContainerClient} used
-     * to interact with the container created, or null if the container already exists.
+     * to interact with the container created. The {@link BlobContainerClient} will be null if a container already
+     * exists at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlobContainerClient> createBlobContainerIfNotExistsWithResponse(String containerName,
@@ -256,12 +263,8 @@ public final class BlobServiceClient {
      *
      * <!-- src_embed com.azure.storage.blob.BlobServiceClient.deleteBlobContainerIfExists#String -->
      * <pre>
-     * try &#123;
-     *     client.deleteBlobContainerIfExists&#40;&quot;container Name&quot;&#41;;
-     *     System.out.printf&#40;&quot;Delete container completed with status %n&quot;&#41;;
-     * &#125; catch &#40;UnsupportedOperationException error&#41; &#123;
-     *     System.out.printf&#40;&quot;Delete container failed: %s%n&quot;, error&#41;;
-     * &#125;
+     * client.deleteBlobContainerIfExists&#40;&quot;container Name&quot;&#41;;
+     * System.out.printf&#40;&quot;Delete container completed with status %n&quot;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobServiceClient.deleteBlobContainerIfExists#String -->
      *
@@ -282,14 +285,20 @@ public final class BlobServiceClient {
      * <!-- src_embed com.azure.storage.blob.BlobServiceClient.deleteBlobContainerIfExistsWithResponse#String-Context -->
      * <pre>
      * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
-     System.out.printf&#40;&quot;Delete container completed with status %d%n&quot;,
-     client.deleteBlobContainerIfExistsWithResponse&#40;&quot;containerName&quot;, context&#41;.getStatusCode&#40;&#41;&#41;;
+     *
+     * Response&lt;Void&gt; response = client.deleteBlobContainerIfExistsWithResponse&#40;&quot;containerName&quot;, context&#41;;
+     * if &#40;response == null&#41; &#123;
+     *      System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     * &#125; else &#123;
+     *      System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * &#125;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobServiceClient.deleteBlobContainerIfExistsWithResponse#String-Context -->
      *
      * @param containerName Name of the container to delete
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing status code and HTTP headers, or null if the container does not exist.
+     * @return A response containing status code and HTTP headers. The presence of a {@link Response} indicates the
+     * container was deleted successfully, {@code null} indicates the container does not exist at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteBlobContainerIfExistsWithResponse(String containerName, Context context) {

@@ -259,8 +259,9 @@ public final class BlobServiceAsyncClient {
      * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerIfNotExists#String -->
      *
      * @param containerName Name of the container to create
-     * @return A {@link Mono} containing a {@link BlobContainerAsyncClient} used to interact with the container created,
-     * or null if the container already exists.
+     * @return A {@link Mono} containing a {@link BlobContainerAsyncClient} used to interact with the container created.
+     * The presence of a {@link BlobContainerAsyncClient} item indicates a new container was created. An empty {@code Mono}
+     * indicates a container already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobContainerAsyncClient> createBlobContainerIfNotExists(String containerName) {
@@ -277,8 +278,15 @@ public final class BlobServiceAsyncClient {
      * <pre>
      * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
      *
-     * BlobContainerAsyncClient containerClient = client
-     *     .createBlobContainerIfNotExistsWithResponse&#40;&quot;containerName&quot;, metadata, PublicAccessType.CONTAINER&#41;.block&#40;&#41;.getValue&#40;&#41;;
+     * Response&lt;BlobContainerAsyncClient&gt; response = client.createBlobContainerIfNotExistsWithResponse&#40;
+     *             &quot;containerName&quot;,
+     *             metadata,
+     *             PublicAccessType.CONTAINER&#41;.block&#40;&#41;;
+     * if &#40;response == null&#41; &#123;
+     *      System.out.println&#40;&quot;Already existed.&quot;&#41;;
+     * &#125; else &#123;
+     *      System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * &#125;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerIfNotExistsWithResponse#String-Map-PublicAccessType -->
      *
@@ -288,7 +296,8 @@ public final class BlobServiceAsyncClient {
      * @param accessType Specifies how the data in this container is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
-     * BlobContainerAsyncClient} used to interact with the container created, or null if the container already exists.
+     * BlobContainerAsyncClient} used to interact with the container created. The presence of a {@link Response} item
+     * indicates a new container was created. An empty {@code Mono} indicates a container already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlobContainerAsyncClient>> createBlobContainerIfNotExistsWithResponse(String containerName,
@@ -303,9 +312,13 @@ public final class BlobServiceAsyncClient {
 
     Mono<Response<BlobContainerAsyncClient>> createBlobContainerIfNotExistsWithResponse(String containerName,
         Map<String, String> metadata, PublicAccessType accessType, Context context) {
-        return createBlobContainerWithResponse(containerName, metadata, accessType, context)
-            .onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException)t).getStatusCode() == 409,
-                t -> Mono.empty());
+        try {
+            return createBlobContainerWithResponse(containerName, metadata, accessType, context)
+                .onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException)t).getStatusCode() == 409,
+                    t -> Mono.empty());
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -370,18 +383,24 @@ public final class BlobServiceAsyncClient {
      *
      * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExists#String -->
      * <pre>
-     * client.deleteBlobContainerIfExists&#40;&quot;containerName&quot;&#41;.subscribe&#40;
-     *     response -&gt; System.out.printf&#40;&quot;Delete container completed%n&quot;&#41;,
-     *     error -&gt; System.out.printf&#40;&quot;Delete container failed: %s%n&quot;, error&#41;&#41;;
+     * client.deleteBlobContainerIfExists&#40;&quot;containerName&quot;&#41;.subscribe&#40;deleted -&gt; &#123;
+     *             if &#40;deleted&#41; &#123;
+     *                 System.out.println&#40;&quot;Successfully deleted.&quot;&#41;;
+     *             &#125; else &#123;
+     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *             &#125;
+     *         &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExists#String -->
      *
      * @param containerName Name of the container to delete
-     * @return A {@link Mono} containing status code and HTTP headers, or null if the container does not exist.
+     * @return A reactive {@link Mono} signaling completion. {@code True} indicates that the container was deleted.
+     * {@code False} indicates the container does not exist at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteBlobContainerIfExists(String containerName) {
-        return deleteBlobContainerIfExistsWithResponse(containerName).flatMap(FluxUtil::toMono);
+    public Mono<Boolean> deleteBlobContainerIfExists(String containerName) {
+        return deleteBlobContainerIfExistsWithResponse(containerName).flatMap(response -> Mono.just(true))
+            .switchIfEmpty(Mono.just(false));
     }
 
     /**
@@ -394,13 +413,16 @@ public final class BlobServiceAsyncClient {
      * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExistsWithResponse#String-Context -->
      * <pre>
      * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
-     * client.deleteBlobContainerIfExistsWithResponse&#40;&quot;containerName&quot;&#41;.subscribe&#40;response -&gt;
-     *     System.out.printf&#40;&quot;Delete container completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * client.deleteBlobContainerIfExistsWithResponse&#40;&quot;containerName&quot;&#41;.switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
+     *             .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;.subscribe&#40;response -&gt;
+     *             System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExistsWithResponse#String-Context -->
      *
      * @param containerName Name of the container to delete
-     * @return A {@link Mono} containing status code and HTTP headers, or null if the container does not exist.
+     * @return A reactive response signaling completion. The presence of a {@link Response} item indicates the container
+     * was deleted. An empty {@code Mono} indicates the container does not exist at this location.
+     *
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteBlobContainerIfExistsWithResponse(String containerName) {
@@ -412,9 +434,13 @@ public final class BlobServiceAsyncClient {
     }
 
     Mono<Response<Void>> deleteBlobContainerIfExistsWithResponse(String containerName, Context context) {
-        return deleteBlobContainerWithResponse(containerName, context)
-            .onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException)t).getStatusCode() == 404,
-                t -> Mono.empty());
+        try {
+            return deleteBlobContainerWithResponse(containerName, context)
+                .onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException)t).getStatusCode() == 404,
+                    t -> Mono.empty());
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**

@@ -1205,9 +1205,13 @@ public class BlobClientBase {
      *
      * <!-- src_embed com.azure.storage.blob.specialized.BlobClientBase.deleteIfExistsWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions-Duration-Context -->
      * <pre>
-     * System.out.printf&#40;&quot;Delete completed with status %d%n&quot;,
-     *     client.deleteIfExistsWithResponse&#40;DeleteSnapshotsOptionType.INCLUDE, null, timeout,
-     *         new Context&#40;key1, value1&#41;&#41;.getStatusCode&#40;&#41;&#41;;
+     * Response&lt;Void&gt; response = client.deleteIfExistsWithResponse&#40;DeleteSnapshotsOptionType.INCLUDE, null, timeout,
+     *      new Context&#40;key1, value1&#41;&#41;;
+     * if &#40;response == null&#41; &#123;
+     *      System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     * &#125; else &#123;
+     *      System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * &#125;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.BlobClientBase.deleteIfExistsWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions-Duration-Context -->
      *
@@ -1220,7 +1224,8 @@ public class BlobClientBase {
      * @param requestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing status code and HTTP headers, or null if specified blob does not exist.
+     * @return A response containing status code and HTTP headers. The presence of a {@link Response} indicates the
+     * blob was deleted successfully, {@code null} indicates the blob does not exist at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteIfExistsWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,

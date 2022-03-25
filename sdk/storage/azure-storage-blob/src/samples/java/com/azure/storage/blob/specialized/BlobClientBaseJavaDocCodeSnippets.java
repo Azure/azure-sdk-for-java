@@ -776,9 +776,13 @@ public class BlobClientBaseJavaDocCodeSnippets {
         // END: com.azure.storage.blob.specialized.BlobClientBase.deleteIfExists
 
         // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.deleteIfExistsWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions-Duration-Context
-        System.out.printf("Delete completed with status %d%n",
-            client.deleteIfExistsWithResponse(DeleteSnapshotsOptionType.INCLUDE, null, timeout,
-                new Context(key1, value1)).getStatusCode());
+        Response<Void> response = client.deleteIfExistsWithResponse(DeleteSnapshotsOptionType.INCLUDE, null, timeout,
+            new Context(key1, value1));
+        if (response == null) {
+            System.out.println("Does not exist.");
+        } else {
+            System.out.printf("Delete completed with status %d%n", response.getStatusCode());
+        }
         // END: com.azure.storage.blob.specialized.BlobClientBase.deleteIfExistsWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions-Duration-Context
     }
 }

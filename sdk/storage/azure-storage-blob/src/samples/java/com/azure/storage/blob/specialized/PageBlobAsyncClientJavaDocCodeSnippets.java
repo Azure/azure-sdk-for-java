@@ -489,7 +489,7 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
      */
     public void createIfNotExistsCodeSnippet() {
         // BEGIN: com.azure.storage.blob.PageBlobAsyncClient.createIfNotExists#long
-        client.createIfNotExists(size).switchIfEmpty(Mono.<PageBlobItem>empty().doOnTerminate(() -> System.out.println("Already exists.")))
+        client.createIfNotExists(size).switchIfEmpty(Mono.<PageBlobItem>empty().doOnSuccess(x -> System.out.println("Already exists.")))
             .subscribe(response -> System.out.printf(
             "Created page blob with sequence number %s%n", response.getBlobSequenceNumber()));
         // END: com.azure.storage.blob.PageBlobAsyncClient.createIfNotExists#long
@@ -501,7 +501,7 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
 
         client.createIfNotExistsWithResponse(new PageBlobCreateOptions(size).setSequenceNumber(sequenceNumber)
                 .setHeaders(headers).setMetadata(metadata).setTags(tags))
-            .switchIfEmpty(Mono.<Response<PageBlobItem>>empty().doOnTerminate(() -> System.out.println("Already exists.")))
+            .switchIfEmpty(Mono.<Response<PageBlobItem>>empty().doOnSuccess(x -> System.out.println("Already exists.")))
             .subscribe(response -> System.out.printf(
                 "Created page blob with sequence number %s%n", response.getValue().getBlobSequenceNumber()));
         // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.createIfNotExistsWithResponse#PageBlobCreateOptions

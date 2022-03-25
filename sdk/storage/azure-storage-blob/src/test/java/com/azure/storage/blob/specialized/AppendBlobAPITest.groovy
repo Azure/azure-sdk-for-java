@@ -199,7 +199,7 @@ class AppendBlobAPITest extends APISpec {
         bc = cc.getBlobClient(blobName).getAppendBlobClient()
 
         when:
-        def createResponse = bc.createIfNotExistsWithResponse(null, null, null, null)
+        def createResponse = bc.createIfNotExistsWithResponse(new AppendBlobCreateOptions(), null, null)
 
         then:
         createResponse.getStatusCode() == 201
@@ -244,9 +244,10 @@ class AppendBlobAPITest extends APISpec {
             .setContentLanguage(contentLanguage)
             .setContentMd5(contentMD5)
             .setContentType(contentType)
+        def options = new AppendBlobCreateOptions().setHeaders(headers)
 
         when:
-        bc.createIfNotExistsWithResponse(headers, null, null, null)
+        bc.createIfNotExistsWithResponse(options, null, null)
         def response = bc.getPropertiesWithResponse(null, null, null)
 
         // If the value isn't set the service will automatically set it
@@ -274,9 +275,10 @@ class AppendBlobAPITest extends APISpec {
         if (key2 != null) {
             metadata.put(key2, value2)
         }
+        def options = new AppendBlobCreateOptions().setMetadata(metadata)
 
         when:
-        bc.createIfNotExistsWithResponse(null, metadata, null, Context.NONE)
+        bc.createIfNotExistsWithResponse(options, null, Context.NONE)
         def response = bc.getProperties()
 
         then:

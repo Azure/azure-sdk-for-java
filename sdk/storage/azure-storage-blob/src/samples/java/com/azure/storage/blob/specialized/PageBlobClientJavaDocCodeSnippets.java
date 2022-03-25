@@ -4,12 +4,15 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.RequestConditions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.CopyStatusType;
+import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.models.PageBlobItem;
@@ -517,11 +520,13 @@ public class PageBlobClientJavaDocCodeSnippets {
             .setContentType("binary");
         Context context = new Context(key, value);
 
-        PageBlobItem pageBlobItem = client
-            .createIfNotExistsWithResponse(new PageBlobCreateOptions(size).setSequenceNumber(sequenceNumber)
-                    .setHeaders(headers).setMetadata(metadata).setTags(tags), timeout, context).getValue();
-
-        System.out.printf("Created page blob with sequence number %s%n", pageBlobItem.getBlobSequenceNumber());
+        Response<PageBlobItem> response = client.createIfNotExistsWithResponse(new PageBlobCreateOptions(size)
+            .setHeaders(headers).setMetadata(metadata).setTags(tags), timeout, context);
+        if (response == null) {
+            System.out.println("Already existed.");
+        } else {
+            System.out.printf("Create completed with status %d%n", response.getStatusCode());
+        }
         // END: com.azure.storage.blob.specialized.PageBlobClient.createIfNotExistsWithResponse#PageBlobCreateOptions-Duration-Context
     }
 

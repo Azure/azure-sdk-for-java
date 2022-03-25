@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobAnalyticsLogging;
 import com.azure.storage.blob.models.BlobContainerListDetails;
@@ -352,11 +353,16 @@ public class BlobServiceClientJavaDocCodeSnippets {
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         Context context = new Context("Key", "Value");
 
-        BlobContainerClient containerClient = client.createBlobContainerWithResponse(
+        Response<BlobContainerClient> response = client.createBlobContainerIfNotExistsWithResponse(
             "containerName",
             metadata,
             PublicAccessType.CONTAINER,
-            context).getValue();
+            context);
+        if (response == null) {
+            System.out.println("Already existed.");
+        } else {
+            System.out.printf("Create completed with status %d%n", response.getStatusCode());
+        }
         // END: com.azure.storage.blob.BlobServiceClient.createBlobContainerIfNotExistsWithResponse#String-Map-PublicAccessType-Context
     }
 
@@ -366,18 +372,19 @@ public class BlobServiceClientJavaDocCodeSnippets {
      */
     public void deleteContainerIfExistsCodeSnippets() {
         // BEGIN: com.azure.storage.blob.BlobServiceClient.deleteBlobContainerIfExists#String
-        try {
-            client.deleteBlobContainerIfExists("container Name");
-            System.out.printf("Delete container completed with status %n");
-        } catch (UnsupportedOperationException error) {
-            System.out.printf("Delete container failed: %s%n", error);
-        }
+        client.deleteBlobContainerIfExists("container Name");
+        System.out.printf("Delete container completed with status %n");
         // END: com.azure.storage.blob.BlobServiceClient.deleteBlobContainerIfExists#String
 
         // BEGIN: com.azure.storage.blob.BlobServiceClient.deleteBlobContainerIfExistsWithResponse#String-Context
         Context context = new Context("Key", "Value");
-        System.out.printf("Delete container completed with status %d%n",
-            client.deleteBlobContainerIfExistsWithResponse("containerName", context).getStatusCode());
+
+        Response<Void> response = client.deleteBlobContainerIfExistsWithResponse("containerName", context);
+        if (response == null) {
+            System.out.println("Does not exist.");
+        } else {
+            System.out.printf("Delete completed with status %d%n", response.getStatusCode());
+        }
         // END: com.azure.storage.blob.BlobServiceClient.deleteBlobContainerIfExistsWithResponse#String-Context
     }
 

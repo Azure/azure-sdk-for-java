@@ -290,13 +290,14 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExists -->
      * <pre>
-     * client.createIfNotExists&#40;&#41;.switchIfEmpty&#40;Mono.&lt;AppendBlobItem&gt;empty&#40;&#41;.doOnTerminate&#40;&#40;&#41; -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
+     * client.createIfNotExists&#40;&#41;.switchIfEmpty&#40;Mono.&lt;AppendBlobItem&gt;empty&#40;&#41;.doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
      *      .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Created AppendBlob at %s%n&quot;, response.getLastModified&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExists -->
      *
-     * @return A {@link Mono} containing the information of the created appended blob, or null if the blob
-     * already exists.
+     * @return A reactive response {@link Mono} signaling completion. The presence of a {@link AppendBlobItem} item
+     * indicates a new append blob was created. An empty {@code Mono} indicates that an append blob already exists at
+     * this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppendBlobItem> createIfNotExists() {
@@ -317,14 +318,14 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * Map&lt;String, String&gt; tags = Collections.singletonMap&#40;&quot;tag&quot;, &quot;value&quot;&#41;;
      *
      * client.createIfNotExistsWithResponse&#40;new AppendBlobCreateOptions&#40;&#41;.setHeaders&#40;headers&#41;.setMetadata&#40;metadata&#41;
-     *     .setTags&#40;tags&#41;.switchIfEmpty&#40;Mono.&lt;AppendBlobItem&gt;empty&#40;&#41;.doOnTerminate&#40;&#40;&#41; -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
+     *     .setTags&#40;tags&#41;.switchIfEmpty&#40;Mono.&lt;AppendBlobItem&gt;empty&#40;&#41;.doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
      *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Created AppendBlob at %s%n&quot;, response.getValue&#40;&#41;.getLastModified&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExistsWithResponse#AppendBlobCreateOptions -->
      *
      * @param options {@link AppendBlobCreateOptions}
-     * @return A {@link Mono} containing {@link Response} whose {@link Response#getValue() value} contains the created
-     * appended blob.
+     * @return A reactive response {@link Mono} signaling completion. The presence of a {@link Response} item indicates
+     * a new append blob was created. An empty {@code Mono} indicates an append blob already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AppendBlobItem>> createIfNotExistsWithResponse(AppendBlobCreateOptions options) {
@@ -336,11 +337,14 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     Mono<Response<AppendBlobItem>> createIfNotExistsWithResponse(AppendBlobCreateOptions options, Context context) {
-        options.setRequestConditions(new AppendBlobRequestConditions()
-            .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
-        return createWithResponse(options, context).onErrorResume(t -> t instanceof BlobStorageException &&
-                ((BlobStorageException) t).getStatusCode() == 409,
-            t -> Mono.empty());
+        try {
+            options = options == null ? new AppendBlobCreateOptions() : options;
+            options.setRequestConditions(new AppendBlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
+            return createWithResponse(options, context).onErrorResume(t -> t instanceof BlobStorageException &&
+                    ((BlobStorageException) t).getStatusCode() == 409, t -> Mono.empty());
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**

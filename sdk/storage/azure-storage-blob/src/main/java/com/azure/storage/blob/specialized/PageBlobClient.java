@@ -12,6 +12,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.implementation.util.ModelHelper;
+import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -278,7 +279,8 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
      * 512-byte boundary.
-     * @return The information of the created page blob, or null if the page blob already exists.
+     * @return {@link PageBlobItem} if the page blob was created successfully, or null if the page blob already exists
+     * at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PageBlobItem createIfNotExists(long size) {
@@ -300,19 +302,21 @@ public final class PageBlobClient extends BlobClientBase {
      *     .setContentType&#40;&quot;binary&quot;&#41;;
      * context = new Context&#40;key, value&#41;;
      *
-     * PageBlobItem pageBlobItem = client
-     *     .createIfNotExistsWithResponse&#40;new PageBlobCreateOptions&#40;size&#41;.setSequenceNumber&#40;sequenceNumber&#41;
-     *             .setHeaders&#40;headers&#41;.setMetadata&#40;metadata&#41;.setTags&#40;tags&#41;, timeout, context&#41;
-     *     .getValue&#40;&#41;;
-     *
-     * System.out.printf&#40;&quot;Created page blob with sequence number %s%n&quot;, pageBlobItem.getBlobSequenceNumber&#40;&#41;&#41;;
+     * Response&lt;PageBlobItem&gt; response = client.createIfNotExistsWithResponse&#40;new PageBlobCreateOptions&#40;size&#41;
+     *             .setHeaders&#40;headers&#41;.setMetadata&#40;metadata&#41;.setTags&#40;tags&#41;, timeout, context&#41;;
+     * if &#40;response == null&#41; &#123;
+     *      System.out.println&#40;&quot;Already existed.&quot;&#41;;
+     * &#125; else &#123;
+     *      System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * &#125;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.PageBlobClient.createIfNotExistsWithResponse#PageBlobCreateOptions-Duration-Context -->
      *
      * @param options {@link PageBlobCreateOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The information of the created page blob, or null if the page blob already exists.
+     * @return A reactive response {@link Response} signaling completion. Upon success, {@link Response#getValue() value}
+     * contains the created {@link PageBlobItem}. If page blob already exists, {@link Response} will be {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PageBlobItem> createIfNotExistsWithResponse(PageBlobCreateOptions options, Duration timeout,

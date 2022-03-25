@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.file.share;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -23,6 +24,7 @@ import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -1148,26 +1150,26 @@ public class ShareFileAsyncJavaDocCodeSamples {
     public void deleteFileIfExistsCodeSnippets() {
         ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExists
-        shareFileAsyncClient.deleteIfExists().subscribe(
-            response -> { },
-            error -> System.err.print(error.toString()),
-            () -> System.out.println("Complete deleting the file!")
-        );
+        shareFileAsyncClient.deleteIfExists().subscribe(deleted -> {
+            if (deleted) {
+                System.out.println("Successfully deleted.");
+            } else {
+                System.out.println("Does not exist.");
+            }
+        });
         // END: com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExists
 
         // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse
-        shareFileAsyncClient.deleteIfExistsWithResponse().subscribe(
-            response -> System.out.println("Complete deleting the file with status code:" + response.getStatusCode()),
-            error -> System.err.print(error.toString())
-        );
+        shareFileAsyncClient.deleteIfExistsWithResponse().switchIfEmpty(Mono.<Response<Void>>empty()
+                .doOnSuccess(x -> System.out.println("Does not exist.")))
+            .subscribe(response -> System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse
 
         // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse#ShareRequestConditions
         ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
-        shareFileAsyncClient.deleteIfExistsWithResponse(requestConditions).subscribe(
-            response -> System.out.println("Complete deleting the file with status code:" + response.getStatusCode()),
-            error -> System.err.print(error.toString())
-        );
+        shareFileAsyncClient.deleteIfExistsWithResponse(requestConditions).switchIfEmpty(Mono.<Response<Void>>empty()
+                .doOnSuccess(x -> System.out.println("Does not exist.")))
+            .subscribe(response -> System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse#ShareRequestConditions
     }
 }

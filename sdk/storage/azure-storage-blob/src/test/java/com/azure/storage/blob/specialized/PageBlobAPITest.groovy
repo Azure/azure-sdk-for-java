@@ -222,7 +222,7 @@ class PageBlobAPITest extends APISpec {
         bc = cc.getBlobClient(generateBlobName()).getPageBlobClient()
 
         when:
-        def response = bc.createIfNotExistsWithResponse(PageBlobClient.PAGE_BYTES, null, null, null, null, null)
+        def response = bc.createIfNotExistsWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES), null, null)
 
         then:
         response.getStatusCode() == 201
@@ -236,10 +236,10 @@ class PageBlobAPITest extends APISpec {
         def blobName = cc.getBlobClient(generateBlobName()).getBlobName()
         bc = cc.getBlobClient(blobName).getPageBlobClient()
         def options = new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES)
-        def initialResponse = bc.createIfNotExistsWithResponse(options)
+        def initialResponse = bc.createIfNotExistsWithResponse(options, null, null)
 
         when:
-        def secondResponse = bc.createIfNotExistsWithResponse(options)
+        def secondResponse = bc.createIfNotExistsWithResponse(options, null, null)
 
         then:
         initialResponse.getStatusCode() == 201
@@ -253,7 +253,7 @@ class PageBlobAPITest extends APISpec {
         bc = cc.getBlobClient(blobName).getPageBlobClient()
 
         expect:
-        bc.createIfNotExistsWithResponse(PageBlobClient.PAGE_BYTES, null, null, null, null, null).getStatusCode() == 201
+        bc.createIfNotExistsWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES), null, null).getStatusCode() == 201
     }
 
     def "Create if not exists sequence number"() {
@@ -262,7 +262,7 @@ class PageBlobAPITest extends APISpec {
         bc = cc.getBlobClient(blobName).getPageBlobClient()
 
         when:
-        bc.createIfNotExistsWithResponse(PageBlobClient.PAGE_BYTES, 2, null, null, null, null)
+        bc.createIfNotExistsWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES).setSequenceNumber(2), null, null)
 
         then:
         bc.getProperties().getBlobSequenceNumber() == 2
@@ -282,7 +282,7 @@ class PageBlobAPITest extends APISpec {
             .setContentType(contentType)
 
         when:
-        bc.createIfNotExistsWithResponse(PageBlobClient.PAGE_BYTES, null, headers, null, null, null)
+        bc.createIfNotExistsWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES).setHeaders(headers), null, null)
 
         def response = bc.getPropertiesWithResponse(null, null, null)
 
@@ -314,7 +314,7 @@ class PageBlobAPITest extends APISpec {
         }
 
         when:
-        bc.createIfNotExistsWithResponse(PageBlobClient.PAGE_BYTES, null, null, metadata, null, null)
+        bc.createIfNotExistsWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES).setMetadata(metadata), null, null)
 
         def response = bc.getPropertiesWithResponse(null, null, null)
 

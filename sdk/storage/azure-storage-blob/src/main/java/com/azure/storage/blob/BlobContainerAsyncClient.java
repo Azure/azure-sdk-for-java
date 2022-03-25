@@ -436,17 +436,23 @@ public final class BlobContainerAsyncClient {
      *
      * <!-- src_embed com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExists -->
      * <pre>
-     * client.createIfNotExists&#40;&#41;.switchIfEmpty&#40;Mono.&lt;Void&gt;empty&#40;&#41;.doOnTerminate&#40;&#40;&#41; -> System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
-     *      .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Create completed%n&quot;&#41;,
-     *     error -&gt; System.out.printf&#40;&quot;Error while creating container %s%n&quot;, error&#41;&#41;;
+     * client.createIfNotExists&#40;&#41;.subscribe&#40;created -&gt; &#123;
+     *      if &#40;created&#41; &#123;
+     *          System.out.println&#40;&quot;successfully created.&quot;&#41;;
+     *      &#125; else &#123;
+     *          System.out.println&#40;&quot;Already exists.&quot;&#41;;
+     *      &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExists -->
      *
-     * @return A reactive response signalling completion, or null if the container already exists.
+     * @return A reactive response signaling completion. {@code True} indicates a new container was created,
+     * {@code False} indicates a container already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createIfNotExists() {
-        return createIfNotExistsWithResponse(null, null, null).flatMap(FluxUtil::toMono);
+    public Mono<Boolean> createIfNotExists() {
+        return createIfNotExistsWithResponse(null, null, null).flatMap(response ->
+            Mono.just(true)).switchIfEmpty(Mono.just(false));
     }
 
     /**
@@ -458,7 +464,8 @@ public final class BlobContainerAsyncClient {
      * <!-- src_embed com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExistsWithResponse#Map-PublicAccessType -->
      * <pre>
      * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
-     * client.createIfNotExistsWithResponse&#40;metadata, PublicAccessType.CONTAINER&#41;.switchIfEmpty&#40;Mono.&lt;Void&gt;empty&#40;&#41;.doOnTerminate&#40;&#40;&#41; -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
+     * client.createIfNotExistsWithResponse&#40;metadata, PublicAccessType.CONTAINER&#41;.switchIfEmpty&#40;Mono.&lt;Void&gt;empty&#40;&#41;
+     *          .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
      *      .subscribe&#40;response -&gt;System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExistsWithResponse#Map-PublicAccessType -->
@@ -467,7 +474,8 @@ public final class BlobContainerAsyncClient {
      * metadata key or value, it must be removed or encoded.
      * @param accessType Specifies how the data in this container is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
-     * @return A reactive response signalling completion, or null if the container already exists.
+     * @return A reactive response signaling completion. The presence of a {@link Response} item indicates a new
+     * container was created. An empty {@code Mono} indicates a container already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createIfNotExistsWithResponse(Map<String, String> metadata, PublicAccessType accessType) {
@@ -569,21 +577,23 @@ public final class BlobContainerAsyncClient {
      *
      * <!-- src_embed com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExists -->
      * <pre>
-     * client.deleteIfExists&#40;&#41;.switchIfEmpty&#40;Mono.&lt;Void&gt;empty&#40;&#41;.doOnTerminate&#40;&#40;&#41; -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;
-     *      .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Delete completed%n&quot;&#41;,
-     *     error -&gt; System.out.printf&#40;&quot;Delete failed: %s%n&quot;, error&#41;&#41;;
+     * client.deleteIfExists&#40;&#41;.subscribe&#40;deleted -&gt; &#123;
+     *      if &#40;deleted&#41; &#123;
+     *          System.out.println&#40;&quot;Successfully deleted.&quot;&#41;;
+     *      &#125; else &#123;
+     *          System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *      &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExists -->
      *
-     * @return A reactive response signalling completion, or null if the container does not exist.
+     * @return A reactive response signaling completion. {@code True} indicates the container was deleted,
+     * {@code False} indicates the container does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteIfExists() {
-        try {
-            return deleteIfExistsWithResponse(null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
+    public Mono<Boolean> deleteIfExists() {
+        return deleteIfExistsWithResponse(null).flatMap(response -> Mono.just(true))
+            .switchIfEmpty(Mono.just(false));
     }
 
     /**
@@ -600,27 +610,35 @@ public final class BlobContainerAsyncClient {
      *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
      *
      * client.deleteIfExistsWithResponse&#40;requestConditions&#41;.switchIfEmpty&#40;Mono.&lt;Response&gt;Void&gt;&gt;empty&#40;&#41;
-     *      .doOnTerminate&#40;&#41; -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;
+     *      .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;
      *      .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExistsWithResponse#BlobRequestConditions -->
      *
      * @param requestConditions {@link BlobRequestConditions}
-     * @return A reactive response signalling completion, or null if the container does not exist.
+     * @return A reactive response signaling completion. The presence of a {@link Response} item indicates the container
+     * was successfully deleted. An empty {@code Mono} indicates that the container did not exist.
      * @throws UnsupportedOperationException If either {@link BlobRequestConditions#getIfMatch()} or
      * {@link BlobRequestConditions#getIfNoneMatch()} is set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteIfExistsWithResponse(BlobRequestConditions requestConditions) {
-        return deleteIfExistsWithResponse(requestConditions, null);
+        try {
+            return deleteIfExistsWithResponse(requestConditions, null);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     Mono<Response<Void>> deleteIfExistsWithResponse(BlobRequestConditions requestConditions, Context context) {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
-
-        return deleteWithResponse(requestConditions, context)
-            .onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 404,
-            t -> Mono.empty());
+        try {
+            return deleteWithResponse(requestConditions, context)
+                .onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 404,
+                    t -> Mono.empty());
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**

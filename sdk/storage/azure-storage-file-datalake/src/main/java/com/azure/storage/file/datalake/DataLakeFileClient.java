@@ -213,8 +213,12 @@ public class DataLakeFileClient extends DataLakePathClient {
      * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
      *     .setLeaseId&#40;leaseId&#41;;
      *
-     * client.deleteIfExistsWithResponse&#40;requestConditions, timeout, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.println&#40;&quot;Delete request completed&quot;&#41;;
+     * Response&lt;Void&gt; response = client.deleteIfExistsWithResponse&#40;requestConditions, timeout, new Context&#40;key1, value1&#41;&#41;;
+     * if &#40;response == null&#41; &#123;
+     *      System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     * &#125; else &#123;
+     *      System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * &#125;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileClient.deleteIfExistsWithResponse#DataLakeRequestConditions-Duration-Context -->
      *
@@ -226,12 +230,14 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A response containing status code and HTTP headers, or null if specified file does not exist.
+     * @return A response containing status code and HTTP headers. The presence of a {@link Response} indicates the
+     * file was deleted successfully, {@code null} indicates the file does not exist at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteIfExistsWithResponse(DataLakeRequestConditions requestConditions, Duration timeout,
         Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(dataLakeFileAsyncClient.deleteIfExistsWithResponse(false, requestConditions, context), timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(dataLakeFileAsyncClient
+            .deleteIfExistsWithResponse(false, requestConditions, context), timeout);
     }
 
 

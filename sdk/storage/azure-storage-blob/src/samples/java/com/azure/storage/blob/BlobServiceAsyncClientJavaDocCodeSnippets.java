@@ -349,8 +349,15 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerIfNotExistsWithResponse#String-Map-PublicAccessType
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
 
-        BlobContainerAsyncClient containerClient = client
-            .createBlobContainerIfNotExistsWithResponse("containerName", metadata, PublicAccessType.CONTAINER).block().getValue();
+        Response<BlobContainerAsyncClient> response = client.createBlobContainerIfNotExistsWithResponse(
+            "containerName",
+            metadata,
+            PublicAccessType.CONTAINER).block();
+        if (response == null) {
+            System.out.println("Already existed.");
+        } else {
+            System.out.printf("Create completed with status %d%n", response.getStatusCode());
+        }
         // END: com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerIfNotExistsWithResponse#String-Map-PublicAccessType
     }
 
@@ -360,15 +367,20 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
      */
     public void deleteContainerIfExistsCodeSnippets() {
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainer#String
-        client.deleteBlobContainer("containerName").subscribe(
-            response -> System.out.printf("Delete container completed%n"),
-            error -> System.out.printf("Delete container failed: %s%n", error));
+        client.deleteBlobContainerIfExists("containerName").subscribe(deleted -> {
+            if (deleted) {
+                System.out.println("Successfully deleted.");
+            } else {
+                System.out.println("Does not exist.");
+            }
+        });
         // END: com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainer#String
 
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExistsWithResponse#String
         Context context = new Context("Key", "Value");
-        client.deleteBlobContainerIfExistsWithResponse("containerName").subscribe(response ->
-            System.out.printf("Delete container completed with status %d%n", response.getStatusCode()));
+        client.deleteBlobContainerIfExistsWithResponse("containerName").switchIfEmpty(Mono.<Response<Void>>empty()
+            .doOnSuccess(x -> System.out.println("Does not exist."))).subscribe(response ->
+            System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExistsWithResponse#String
     }
 

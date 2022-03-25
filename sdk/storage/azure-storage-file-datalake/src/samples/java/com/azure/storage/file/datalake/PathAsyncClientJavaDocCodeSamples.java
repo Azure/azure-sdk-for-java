@@ -9,6 +9,7 @@ import com.azure.storage.file.datalake.models.AccessControlChanges;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
+import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.RolePermissions;
@@ -19,6 +20,7 @@ import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOpti
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import com.azure.storage.file.datalake.sas.PathSasPermission;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -462,8 +464,9 @@ public class PathAsyncClientJavaDocCodeSamples {
      */
     public void createIfNotExistsCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExists
-        client.createIfNotExists().subscribe(response ->
-            System.out.printf("Last Modified Time:%s", response.getLastModified()));
+        client.createIfNotExists().switchIfEmpty(Mono.<PathInfo>empty()
+                .doOnSuccess(x -> System.out.println("Already exists.")))
+            .subscribe(response -> System.out.println("Create completed."));
         // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExists
 
         // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExistsWithResponse#DataLakePathCreateOptions
@@ -476,8 +479,9 @@ public class PathAsyncClientJavaDocCodeSamples {
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(headers)
             .setPermissions(permissions).setUmask(umask).setMetadata(metadata);
 
-        client.createIfNotExistsWithResponse(options)
-            .subscribe(response -> System.out.printf("Last Modified Time:%s", response.getValue().getLastModified()));
+        client.createIfNotExistsWithResponse(options).switchIfEmpty(Mono.<Response<PathInfo>>empty()
+                .doOnSuccess(x -> System.out.println("Already exists.")))
+            .subscribe(response -> System.out.printf("Create completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExistsWithResponse#DataLakePathCreateOptions
     }
 
@@ -495,8 +499,10 @@ public class PathAsyncClientJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.deleteIfExistsWithResponse#boolean-DataLakeRequestConditions-Context
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
             .setLeaseId(leaseId);
-        client.deleteIfExistsWithResponse(false, requestConditions, new Context("key1", "value1")).subscribe(response ->
-            System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
+
+        client.deleteIfExistsWithResponse(false, requestConditions, new Context("key1", "value1"))
+            .switchIfEmpty(Mono.<Response<Void>>empty().doOnSuccess(x -> System.out.println("Does not exist.")))
+            .subscribe(response -> System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.deleteIfExistsWithResponse#boolean-DataLakeRequestConditions-Context
     }
 }

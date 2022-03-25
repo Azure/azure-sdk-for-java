@@ -46,6 +46,7 @@ import com.azure.storage.file.datalake.models.PathHttpHeaders
 import com.azure.storage.file.datalake.models.PathPermissions
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry
 import com.azure.storage.file.datalake.models.RolePermissions
+import com.azure.storage.file.datalake.options.DataLakePathCreateOptions
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions
 import com.azure.storage.file.datalake.options.FileQueryOptions
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions
@@ -281,7 +282,7 @@ class FileAPITest extends APISpec {
         fc = fsc.getFileClient(generatePathName())
 
         when:
-        def createResponse = fc.createIfNotExistsWithResponse(null, null, null, null, null, null)
+        def createResponse = fc.createIfNotExistsWithResponse(new DataLakePathCreateOptions(), null, null)
 
         then:
         createResponse.getStatusCode() == 201
@@ -291,10 +292,10 @@ class FileAPITest extends APISpec {
     def "Create if not exists overwrite"() {
         when:
         fc = fsc.getFileClient(generatePathName())
-        def initialResponse = fc.createIfNotExistsWithResponse(null, null, null, null, null, null)
+        def initialResponse = fc.createIfNotExistsWithResponse(new DataLakePathCreateOptions(), null, null)
 
         // Try to create the resource again
-        def secondResponse = fc.createIfNotExistsWithResponse(null, null, null, null, null, null)
+        def secondResponse = fc.createIfNotExistsWithResponse(new DataLakePathCreateOptions(), null, null)
 
         then:
         initialResponse.getStatusCode() == 201
@@ -323,7 +324,7 @@ class FileAPITest extends APISpec {
         fc = fsc.getFileClient(generatePathName())
 
         when:
-        fc.createIfNotExistsWithResponse(null, null, headers, null, null, null)
+        fc.createIfNotExistsWithResponse(new DataLakePathCreateOptions().setPathHttpHeaders(headers), null, null)
         def response = fc.getPropertiesWithResponse(null, null, null)
 
         // If the value isn't set the service will automatically set it
@@ -351,7 +352,7 @@ class FileAPITest extends APISpec {
 
         when:
         def client = fsc.getFileClient(generatePathName())
-        client.createIfNotExistsWithResponse(null, null, null, metadata, null, Context.NONE)
+        client.createIfNotExistsWithResponse(new DataLakePathCreateOptions().setMetadata(metadata), null, Context.NONE)
         def response = client.getProperties()
 
         then:
@@ -370,7 +371,7 @@ class FileAPITest extends APISpec {
 
         expect:
         def client = fsc.getFileClient(generatePathName())
-        client.createIfNotExistsWithResponse(permissions, umask, null, null, null, Context.NONE).getStatusCode() == 201
+        client.createIfNotExistsWithResponse(new DataLakePathCreateOptions().setUmask(umask), null, Context.NONE).getStatusCode() == 201
     }
 
     def "Delete min"() {

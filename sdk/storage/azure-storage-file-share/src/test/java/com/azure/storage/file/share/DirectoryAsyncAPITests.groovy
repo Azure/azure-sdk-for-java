@@ -11,6 +11,7 @@ import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.models.NtfsFileAttributes
+import com.azure.storage.file.share.options.ShareDirectoryCreateOptions
 import reactor.test.StepVerifier
 import spock.lang.Unroll
 
@@ -126,7 +127,7 @@ class DirectoryAsyncAPITests extends APISpec {
 
     def "Create if not exists directory"() {
         expect:
-        StepVerifier.create(primaryDirectoryAsyncClient.createIfNotExistsWithResponse(null, null, null))
+        StepVerifier.create(primaryDirectoryAsyncClient.createIfNotExistsWithResponse(new ShareDirectoryCreateOptions()))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()
@@ -146,10 +147,10 @@ class DirectoryAsyncAPITests extends APISpec {
     def "Create if not exists directory that already exists"() {
         setup:
         def client = primaryDirectoryAsyncClient.getDirectoryAsyncClient(generatePathName())
-        def initialResponse = client.createIfNotExistsWithResponse(null, null, null, null).block()
+        def initialResponse = client.createIfNotExistsWithResponse(new ShareDirectoryCreateOptions()).block()
 
         when:
-        def secondResponse = client.createIfNotExistsWithResponse(null, null, null, null).block()
+        def secondResponse = client.createIfNotExistsWithResponse(new ShareDirectoryCreateOptions()).block()
 
         then:
         initialResponse != null
@@ -161,7 +162,7 @@ class DirectoryAsyncAPITests extends APISpec {
 
     def "Create if not exists directory with metadata"() {
         expect:
-        StepVerifier.create(primaryDirectoryAsyncClient.createIfNotExistsWithResponse(null, null, testMetadata))
+        StepVerifier.create(primaryDirectoryAsyncClient.createIfNotExistsWithResponse(new ShareDirectoryCreateOptions().setMetadata(testMetadata)))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()
@@ -169,7 +170,8 @@ class DirectoryAsyncAPITests extends APISpec {
 
     def "Create if not exists directory with file permission"() {
         expect:
-        StepVerifier.create(primaryDirectoryAsyncClient.createIfNotExistsWithResponse(null, filePermission, testMetadata))
+        StepVerifier.create(primaryDirectoryAsyncClient.createIfNotExistsWithResponse(new ShareDirectoryCreateOptions()
+            .setFilePermission(filePermission).setMetadata(testMetadata)))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
                 assert it.getValue().getSmbProperties()
@@ -189,7 +191,7 @@ class DirectoryAsyncAPITests extends APISpec {
             .setFileLastWriteTime(namer.getUtcNow())
             .setFilePermissionKey(filePermissionKey)
         expect:
-        StepVerifier.create(primaryDirectoryAsyncClient.createIfNotExistsWithResponse(smbProperties, null, null))
+        StepVerifier.create(primaryDirectoryAsyncClient.createIfNotExistsWithResponse(new ShareDirectoryCreateOptions().setSmbProperties(smbProperties)))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
                 assert it.getValue().getSmbProperties()
@@ -570,7 +572,7 @@ class DirectoryAsyncAPITests extends APISpec {
         given:
         primaryDirectoryAsyncClient.create().block()
         expect:
-        StepVerifier.create(primaryDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse("testCreateSubDirectory", null, null, null))
+        StepVerifier.create(primaryDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse("testCreateSubDirectory", new ShareDirectoryCreateOptions()))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()
@@ -592,10 +594,10 @@ class DirectoryAsyncAPITests extends APISpec {
         def subdirectoryName = generatePathName()
         def client = primaryDirectoryAsyncClient.getDirectoryAsyncClient(generatePathName())
         client.create().block()
-        def initialResponse = client.createSubdirectoryIfNotExistsWithResponse(subdirectoryName, null, null, null).block()
+        def initialResponse = client.createSubdirectoryIfNotExistsWithResponse(subdirectoryName, new ShareDirectoryCreateOptions()).block()
 
         when:
-        def secondResponse = client.createSubdirectoryIfNotExistsWithResponse(subdirectoryName, null, null, null).block()
+        def secondResponse = client.createSubdirectoryIfNotExistsWithResponse(subdirectoryName, new ShareDirectoryCreateOptions()).block()
 
         then:
         initialResponse != null
@@ -609,7 +611,8 @@ class DirectoryAsyncAPITests extends APISpec {
         given:
         primaryDirectoryAsyncClient.create().block()
         expect:
-        StepVerifier.create(primaryDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse("testCreateSubDirectory", null, null, testMetadata))
+        StepVerifier.create(primaryDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse("testCreateSubDirectory",
+            new ShareDirectoryCreateOptions().setMetadata(testMetadata)))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()
@@ -619,7 +622,8 @@ class DirectoryAsyncAPITests extends APISpec {
         given:
         primaryDirectoryAsyncClient.create().block()
         when:
-        def createDirErrorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse("testsubdirectory", null, null, Collections.singletonMap("", "value")))
+        def createDirErrorVerifier = StepVerifier.create(primaryDirectoryAsyncClient
+            .createSubdirectoryIfNotExistsWithResponse("testsubdirectory", new ShareDirectoryCreateOptions().setMetadata(Collections.singletonMap("", "value"))))
         then:
         createDirErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, ShareErrorCode.EMPTY_METADATA_KEY)
@@ -630,7 +634,8 @@ class DirectoryAsyncAPITests extends APISpec {
         given:
         primaryDirectoryAsyncClient.create().block()
         expect:
-        StepVerifier.create(primaryDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse("testCreateSubDirectory", null, filePermission, null))
+        StepVerifier.create(primaryDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse("testCreateSubDirectory",
+            new ShareDirectoryCreateOptions().setFilePermission(filePermission)))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()
@@ -644,7 +649,8 @@ class DirectoryAsyncAPITests extends APISpec {
             .setFilePermissionKey(filePermissionKey)
         primaryDirectoryAsyncClient.create().block()
         expect:
-        StepVerifier.create(primaryDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse("testCreateSubDirectory", smbProperties, null, null))
+        StepVerifier.create(primaryDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse("testCreateSubDirectory",
+            new ShareDirectoryCreateOptions().setSmbProperties(smbProperties)))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()

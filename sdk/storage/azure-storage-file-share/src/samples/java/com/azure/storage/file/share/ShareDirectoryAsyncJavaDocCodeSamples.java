@@ -2,15 +2,19 @@
 // Licensed under the MIT License.
 package com.azure.storage.file.share;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
+import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareRequestConditions;
+import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
 import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
+import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -651,29 +655,29 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareDirectoryAsyncClient#createIfNotExists()}
+     * Generates a code sample for using {@link ShareDirectoryAsyncClient#createIfNotExists()} and
+     * {@link ShareDirectoryAsyncClient#createIfNotExistsWithResponse(ShareDirectoryCreateOptions)}
      */
     public void createIfNotExistsCodeSnippets() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.createIfNotExists
-        shareDirectoryAsyncClient.createIfNotExists().subscribe(
-            response -> {
-            },
-            error -> System.err.print(error.toString()),
-            () -> System.out.println("Completed creating the directory!")
-        );
+        shareDirectoryAsyncClient.createIfNotExists().switchIfEmpty(Mono.<ShareDirectoryInfo>empty()
+                .doOnSuccess(x -> System.out.println("Already exists.")))
+            .subscribe(response -> System.out.println("Create completed."));
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createIfNotExists
 
-        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.createIfNotExistsWithResponse#FileSmbProperties-String-Map
-//        FileSmbProperties smbProperties = new FileSmbProperties();
-//        String filePermission = "filePermission";
-//        Map<String, String> metadata = Collections.singletonMap("directory", "metadata");
-//        shareDirectoryAsyncClient.createIfNotExistsWithResponse(smbProperties, filePermission, metadata).subscribe(
-//            response ->
-//                System.out.println("Completed creating the directory with status code:" + response.getStatusCode()),
-//            error -> System.err.print(error.toString())
-//        );
-        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createIfNotExistsWithResponse#FileSmbProperties-String-Map
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.createIfNotExistsWithResponse#ShareDirectoryCreateOptions
+        FileSmbProperties smbProperties = new FileSmbProperties();
+        String filePermission = "filePermission";
+        Map<String, String> metadata = Collections.singletonMap("directory", "metadata");
+        ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions().setSmbProperties(smbProperties)
+            .setFilePermission(filePermission).setMetadata(metadata);
+
+        shareDirectoryAsyncClient.createIfNotExistsWithResponse(options)
+            .switchIfEmpty(Mono.<Response<ShareDirectoryInfo>>empty()
+                .doOnSuccess(x -> System.out.println("Already exists.")))
+            .subscribe(response -> System.out.printf("Create completed with status %d%n", response.getStatusCode()));
+        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createIfNotExistsWithResponse#ShareDirectoryCreateOptions
     }
 
     /**
@@ -683,19 +687,20 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
     public void deleteIfExistsCodeSnippets() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteIfExists
-        shareDirectoryAsyncClient.deleteIfExists().subscribe(
-            response -> {
-            },
-            error -> System.err.println(error.toString()),
-            () -> System.out.println("Completed deleting the file.")
-        );
+        shareDirectoryAsyncClient.deleteIfExists().subscribe(deleted -> {
+            if (deleted) {
+                System.out.println("Successfully deleted.");
+            } else {
+                System.out.println("Does not exist.");
+            }
+        });
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteIfExists
 
         // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteIfExistsWithResponse
-        shareDirectoryAsyncClient.deleteIfExistsWithResponse().subscribe(
-            response -> System.out.printf("Delete completed with status code %d", response.getStatusCode()),
-            error -> System.err.println(error.toString())
-        );
+        shareDirectoryAsyncClient.deleteIfExistsWithResponse()
+            .switchIfEmpty(Mono.<Response<Void>>empty()
+                .doOnSuccess(x -> System.out.println("Does not exist.")))
+            .subscribe(response -> System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteIfExistsWithResponse
     }
 
@@ -707,19 +712,22 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubdirectoryIfNotExists#string
         shareDirectoryAsyncClient.createSubdirectoryIfNotExists("subdir")
-            .doOnSuccess(response -> System.out.println("Completed creating the subdirectory."));
+            .switchIfEmpty(Mono.<ShareDirectoryAsyncClient>empty()
+                .doOnSuccess(x -> System.out.println("Already exists.")))
+            .subscribe(response -> System.out.println("Create completed."));
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubdirectoryIfNotExists#string
 
         // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse#String-FileSmbProperties-String-Map
-//        FileSmbProperties smbProperties = new FileSmbProperties();
-//        String filePermission = "filePermission";
-//        Map<String, String> metadata = Collections.singletonMap("directory", "metadata");
-//        shareDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse("subdir", smbProperties, filePermission, metadata).subscribe(
-//            response ->
-//                System.out.println("Successfully creating the subdirectory with status code: "
-//                    + response.getStatusCode()),
-//            error -> System.err.println(error.toString())
-//        );
+        FileSmbProperties smbProperties = new FileSmbProperties();
+        String filePermission = "filePermission";
+        Map<String, String> metadata = Collections.singletonMap("directory", "metadata");
+        ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions().setSmbProperties(smbProperties)
+            .setFilePermission(filePermission).setMetadata(metadata);
+
+        shareDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse("subdir", options)
+            .switchIfEmpty(Mono.<Response<ShareDirectoryAsyncClient>>empty()
+                .doOnSuccess(x -> System.out.println("Already exists.")))
+            .subscribe(response -> System.out.printf("Create completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse#String-FileSmbProperties-String-Map
     }
 
@@ -730,21 +738,20 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
     public void deleteSubdirectoryIfExistsCodeSnippets() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubdirectoryIfExists#string
-        shareDirectoryAsyncClient.deleteSubdirectoryIfExists("mysubdirectory").subscribe(
-            response -> {
-            },
-            error -> System.err.println(error.toString()),
-            () -> System.out.println("Completed deleting the subdirectory.")
-        );
+        shareDirectoryAsyncClient.deleteSubdirectoryIfExists("mysubdirectory").subscribe(deleted -> {
+            if (deleted) {
+                System.out.println("Successfully deleted.");
+            } else {
+                System.out.println("Does not exist.");
+            }
+        });
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubdirectoryIfExists#string
 
         // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubdirectoryIfExistsWithResponse#string
-        shareDirectoryAsyncClient.deleteSubdirectoryIfExistsWithResponse("mysubdirectory").subscribe(
-            response -> System.out.printf("Delete subdirectory completed with status code %d",
-                response.getStatusCode()),
-            error -> System.err.println(error.toString()),
-            () -> System.out.println("Completed deleting the subdirectory.")
-        );
+        shareDirectoryAsyncClient.deleteSubdirectoryIfExistsWithResponse("mysubdirectory")
+            .switchIfEmpty(Mono.<Response<Void>>empty()
+                .doOnSuccess(x -> System.out.println("Does not exist.")))
+            .subscribe(response -> System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubdirectoryIfExistsWithResponse#string
     }
 
@@ -756,29 +763,27 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
     public void deleteFileIfExistsCodeSnippets() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExists#string
-        shareDirectoryAsyncClient.deleteFileIfExists("myfile").subscribe(
-            response -> {
-            },
-            error -> System.err.println(error.toString()),
-            () -> System.out.println("Completed deleting the file.")
-        );
+        shareDirectoryAsyncClient.deleteFileIfExists("myfile").subscribe(deleted -> {
+            if (deleted) {
+                System.out.println("Successfully deleted.");
+            } else {
+                System.out.println("Does not exist.");
+            }
+        });
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExists#string
 
         // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExistsWithResponse#string
-        shareDirectoryAsyncClient.deleteFileIfExistsWithResponse("myfile").subscribe(
-            response -> System.out.printf("Delete file completed with status code %d", response.getStatusCode()),
-            error -> System.err.println(error.toString()),
-            () -> System.out.println("Completed deleting the file.")
-        );
+        shareDirectoryAsyncClient.deleteFileIfExistsWithResponse("myfile").switchIfEmpty(Mono.<Response<Void>>empty()
+                .doOnSuccess(x -> System.out.println("Does not exist.")))
+            .subscribe(response -> System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExistsWithResponse#string
 
         // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExistsWithResponse#string-ShareRequestConditions
         ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
-        shareDirectoryAsyncClient.deleteFileIfExistsWithResponse("myfile", requestConditions).subscribe(
-            response -> System.out.printf("Delete file completed with status code %d", response.getStatusCode()),
-            error -> System.err.println(error.toString()),
-            () -> System.out.println("Completed deleting the file.")
-        );
+        shareDirectoryAsyncClient.deleteFileIfExistsWithResponse("myfile", requestConditions)
+            .switchIfEmpty(Mono.<Response<Void>>empty()
+                .doOnSuccess(x -> System.out.println("Does not exist.")))
+            .subscribe(response -> System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExistsWithResponse#string-ShareRequestConditions
     }
 }

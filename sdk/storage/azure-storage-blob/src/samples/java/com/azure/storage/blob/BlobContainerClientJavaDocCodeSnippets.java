@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobAccessPolicy;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
@@ -472,8 +473,12 @@ public class BlobContainerClientJavaDocCodeSnippets {
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         Context context = new Context("Key", "Value");
 
-        System.out.printf("Create completed with status %d%n",
-            client.createIfNotExistsWithResponse(metadata, PublicAccessType.CONTAINER, timeout, context).getStatusCode());
+        Response<Void> response = client.createIfNotExistsWithResponse(metadata, PublicAccessType.CONTAINER, timeout, context);
+        if (response == null) {
+            System.out.println("Already existed.");
+        } else {
+            System.out.printf("Create completed with status %d%n", response.getStatusCode());
+        }
         // END: com.azure.storage.blob.BlobContainerClient.createIfNotExistsWithResponse#Map-PublicAccessType-Duration-Context
     }
 
@@ -493,8 +498,12 @@ public class BlobContainerClientJavaDocCodeSnippets {
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
         Context context = new Context("Key", "Value");
 
-        System.out.printf("Delete completed with status %d%n", client.deleteIfExistsWithResponse(
-            requestConditions, timeout, context).getStatusCode());
+        Response<Void> response = client.deleteIfExistsWithResponse(requestConditions, timeout, context);
+        if (response == null) {
+            System.out.println("Does not exist.");
+        } else {
+            System.out.printf("Delete completed with status %d%n", response.getStatusCode());
+        }
         // END: com.azure.storage.blob.BlobContainerClient.deleteIfExistsWithResponse#BlobRequestConditions-Duration-Context
     }
 //

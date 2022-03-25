@@ -24,6 +24,7 @@ import com.azure.storage.blob.implementation.models.PageBlobsUpdateSequenceNumbe
 import com.azure.storage.blob.implementation.models.PageBlobsUploadPagesFromURLHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobsUploadPagesHeaders;
 import com.azure.storage.blob.implementation.util.ModelHelper;
+import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobRange;
@@ -344,7 +345,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <!-- src_embed com.azure.storage.blob.PageBlobAsyncClient.createIfNotExists#long -->
      * <pre>
-     * client.createIfNotExists&#40;size&#41;.switchIfEmpty&#40;Mono.&lt;PageBlobItem&gt;empty&#40;&#41;.doOnTerminate&#40;&#40;&#41; -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
+     * client.createIfNotExists&#40;size&#41;.switchIfEmpty&#40;Mono.&lt;PageBlobItem&gt;empty&#40;&#41;.doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
      *      .subscribe&#40;response -&gt; System.out.printf&#40;
      *     &quot;Created page blob with sequence number %s%n&quot;, response.getBlobSequenceNumber&#40;&#41;&#41;&#41;;
      * </pre>
@@ -353,8 +354,9 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
      * 512-byte boundary.
      *
-     * @return A reactive response containing the information of the created page blob, or null if the page blob
-     * already exists.
+     * @return A reactive response {@link Mono} signaling completion. The presence of a {@link PageBlobItem} item
+     * indicates a new page blob was created. An empty {@code Mono} indicates that a page blob already exists at
+     * this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageBlobItem> createIfNotExists(long size) {
@@ -376,7 +378,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * client.createIfNotExistsWithResponse&#40;new PageBlobCreateOptions&#40;size&#41;.setSequenceNumber&#40;sequenceNumber&#41;
      *     .setHeaders&#40;headers&#41;.setMetadata&#40;metadata&#41;.setTags&#40;tags&#41;&#41;
-     *     .switchIfEmpty&#40;Mono.&lt;Response&lt;PageBlobItem&gt;&gt;empty&#40;&#41;.doOnTerminate&#40;&#40;&#41; -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
+     *     .switchIfEmpty&#40;Mono.&lt;Response&lt;PageBlobItem&gt;&gt;empty&#40;&#41;.doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
      *     .subscribe&#40;response -&gt; System.out.printf&#40;
      *         &quot;Created page blob with sequence number %s%n&quot;, response.getValue&#40;&#41;.getBlobSequenceNumber&#40;&#41;&#41;&#41;;
      *
@@ -384,8 +386,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * <!-- end com.azure.storage.blob.specialized.PageBlobAsyncClient.createIfNotExistsWithResponse#PageBlobCreateOptions -->
      *
      * @param options {@link PageBlobCreateOptions}
-     * @return A reactive response containing the information of the created page blob, or null if the page blob
-     * already exists.
+     * @return A reactive response {@link Mono} signaling completion. The presence of a {@link Response} item indicates
+     * a new page blob was created. An empty {@code Mono} indicates a page blob already existed at this location.
      *
      * @throws IllegalArgumentException If {@code size} isn't a multiple of {@link PageBlobAsyncClient#PAGE_BYTES} or
      * {@code sequenceNumber} isn't null and is less than 0.
@@ -400,11 +402,15 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     Mono<Response<PageBlobItem>> createIfNotExistsWithResponse(PageBlobCreateOptions options, Context context) {
-        options.setRequestConditions(new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD)
-            .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
-        return createWithResponse(options, context).onErrorResume(t -> t instanceof BlobStorageException
-                && ((BlobStorageException) t).getStatusCode() == 409,
-            t -> Mono.empty());
+        try {
+            options.setRequestConditions(new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD)
+                .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
+            return createWithResponse(options, context).onErrorResume(t -> t instanceof BlobStorageException
+                    && ((BlobStorageException) t).getStatusCode() == 409,
+                t -> Mono.empty());
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**

@@ -391,8 +391,9 @@ public class DataLakePathAsyncClient {
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExists -->
      * <pre>
-     * client.createIfNotExists&#40;&#41;.subscribe&#40;response -&gt;
-     *     System.out.printf&#40;&quot;Last Modified Time:%s&quot;, response.getLastModified&#40;&#41;&#41;&#41;;
+     * client.createIfNotExists&#40;&#41;.switchIfEmpty&#40;Mono.&lt;PathInfo&gt;empty&#40;&#41;
+     *                 .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
+     *             .subscribe&#40;response -&gt; System.out.println&#40;&quot;Create completed.&quot;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExists -->
      *
@@ -400,8 +401,8 @@ public class DataLakePathAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
      * Docs</a></p>
      *
-     * @return A reactive response containing information about the created resource, or null if resource
-     * already exists.
+     * @return A reactive response signaling completion. The presence of a {@link PathInfo} item indicates a new
+     * resource was created. An empty {@code Mono} indicates a resource already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathInfo> createIfNotExists() {
@@ -424,9 +425,10 @@ public class DataLakePathAsyncClient {
      * Map<String, String> metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;);
      * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;.setPathHttpHeaders&#40;headers&#41;
      *      .setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;.setMetadata&#40;metadata&#41;;
-
-     client.createIfNotExistsWithResponse&#40;options&#41;
-     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Last Modified Time:%s&quot;, response.getValue&#40;&#41;.getLastModified&#40;&#41;&#41;&#41;;
+     *
+     * client.createIfNotExistsWithResponse&#40;options&#41;.switchIfEmpty&#40;Mono.&lt;Response&lt;PathInfo&gt;&gt;empty&#40;&#41;
+     *      .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
+     *      .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExistsWithResponse#DataLakePathCreateOptions -->
      *
@@ -435,8 +437,9 @@ public class DataLakePathAsyncClient {
      * Docs</a></p>
      *
      * @param options {@link DataLakePathCreateOptions}
-     * @return A reactive response containing information about the created resource, or null if resource
-     * already exists.
+     * @return A reactive response signaling completion. The presence of a {@link Response} item indicates a new resource
+     * was created, and {@link Response#getValue() value} contains a {@link PathInfo} which contains information about
+     * the resource. An empty {@code Mono} indicates a resource already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PathInfo>> createIfNotExistsWithResponse(DataLakePathCreateOptions options) {
@@ -501,10 +504,13 @@ public class DataLakePathAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
      * Docs</a></p>
      *
+     * @return a reactive response signaling completion. {@code True} indicates that the resource under the path was
+     * successfully deleted, {@code False} indicates the resource did not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteIfExists() {
-        return deleteIfExistsWithResponse(false, null, null).flatMap(FluxUtil::toMono);
+    public Mono<Boolean> deleteIfExists() {
+        return deleteIfExistsWithResponse(false, null, null).flatMap(response ->
+            Mono.just(true)).switchIfEmpty(Mono.just(false));
     }
 
     /**
@@ -516,8 +522,10 @@ public class DataLakePathAsyncClient {
      * <pre>
      * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
      *     .setLeaseId&#40;leaseId&#41;;
-     * client.deleteIfExistsWithResponse&#40;false, requestConditions, new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;.subscribe&#40;response ->
-     * System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     *
+     * client.deleteIfExistsWithResponse&#40;false, requestConditions, new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;
+     *      .switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;.doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;
+     *      .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.deleteIfExistsWithResponse#boolean-DataLakeRequestConditions-Context -->
      *
@@ -529,7 +537,9 @@ public class DataLakePathAsyncClient {
      * @param requestConditions {@link DataLakeRequestConditions}
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A response containing status code and HTTP headers, or null if specified resource does not exist.
+     * @return A reactive response containing status code and HTTP headers signaling completion. The presence of a
+     * {@link Response} item indicates the resource was successfully deleted. An empty {@code Mono} indicates that the
+     * resource did not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteIfExistsWithResponse(boolean recursive, DataLakeRequestConditions requestConditions,

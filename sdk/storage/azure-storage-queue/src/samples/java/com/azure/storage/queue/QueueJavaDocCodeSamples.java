@@ -598,7 +598,11 @@ public class QueueJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueClient.createIfNotExistsWithResponse#map-duration-context
         Response<Void> response = client.createIfNotExistsWithResponse(Collections.singletonMap("queue", "metadataMap"),
             Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.println("Complete creating queue with status code: " + response.getStatusCode());
+        if (response != null) {
+            System.out.printf("Create completed with status %d%n", response.getStatusCode());
+        } else {
+            System.out.println("Queue already exists.");
+        }
         // END: com.azure.storage.queue.queueClient.createIfNotExistsWithResponse#map-duration-context
     }
 
@@ -615,7 +619,11 @@ public class QueueJavaDocCodeSamples {
 
         // BEGIN: com.azure.storage.queue.queueClient.deleteIfExistsWithResponse#duration-context
         Response<Void> response = client.deleteIfExistsWithResponse(Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.println("Complete deleting the queue with status code: " + response.getStatusCode());
+        if (response != null) {
+            System.out.printf("Delete completed with status %d%n", response.getStatusCode());
+        } else {
+            System.out.println("Queue does not exist.");
+        }
         // END: com.azure.storage.queue.queueClient.deleteIfExistsWithResponse#duration-context
     }
 }

@@ -254,7 +254,8 @@ public final class AppendBlobClient extends BlobClientBase {
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.AppendBlobClient.createIfNotExists -->
      *
-     * @return The information of the created appended blob, or null if the blob already exists.
+     * @return {@link AppendBlobItem} if the append blob was created successfully, or null if the append blob already
+     * exists at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AppendBlobItem createIfNotExists() {
@@ -276,18 +277,21 @@ public final class AppendBlobClient extends BlobClientBase {
      * Map&lt;String, String&gt; tags = Collections.singletonMap&#40;&quot;tags&quot;, &quot;value&quot;&#41;;
      * Context context = new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;;
      *
-     * System.out.printf&#40;&quot;Created AppendBlob at %s%n&quot;,
-     *     client.createIfNotExistsWithResponse&#40;new AppendBlobCreateOptions&#40;&#41;.setHeaders&#40;headers&#41;.setMetadata&#40;metadata&#41;
-     *         .setTags&#40;tags&#41;, timeout, context&#41;.getValue&#40;&#41;
-     *         .getLastModified&#40;&#41;&#41;;
+     * Response&lt;AppendBlobItem&gt; response = client.createIfNotExistsWithResponse&#40;new AppendBlobCreateOptions&#40;&#41;
+     *             .setHeaders&#40;headers&#41;.setMetadata&#40;metadata&#41;.setTags&#40;tags&#41;, timeout, context&#41;;
+     * if &#40;response == null&#41; &#123;
+     *      System.out.println&#40;&quot;Already existed.&quot;&#41;;
+     * &#125; else &#123;
+     *      System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * &#125;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.AppendBlobClient.createIfNotExistsWithResponse#AppendBlobCreateOptions-Duration-Context -->
      *
      * @param options {@link AppendBlobCreateOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the created appended blob, or null
-     * if the blob already exists.
+     * @return A reactive response {@link Response} signaling completion. Upon success, {@link Response#getValue() value}
+     * contains the {@link AppendBlobItem}. If append blob already exists, {@link Response} will be {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AppendBlobItem> createIfNotExistsWithResponse(AppendBlobCreateOptions options, Duration timeout, Context context) {

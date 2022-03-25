@@ -3,6 +3,7 @@
 
 package com.azure.storage.queue;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -11,6 +12,7 @@ import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.QueueSignedIdentifier;
 import com.azure.storage.queue.sas.QueueSasPermission;
 import com.azure.storage.queue.sas.QueueServiceSasSignatureValues;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -580,19 +582,20 @@ public class QueueAsyncJavaDocCodeSamples {
      */
     public void createIfNotExistsQueueAsyncCodeSnippets() {
         // BEGIN: com.azure.storage.queue.queueAsyncClient.createIfNotExists
-        client.createIfNotExists().subscribe(
-            response -> {
-            },
-            error -> System.err.print(error.toString()),
-            () -> System.out.println("Complete creating the queue!")
-        );
+        client.createIfNotExists().subscribe(created -> {
+            if (created) {
+                System.out.println("Successfully created.");
+            } else {
+                System.out.println("Already exists.");
+            }
+        });
         // END: com.azure.storage.queue.queueAsyncClient.createIfNotExists
 
         // BEGIN: com.azure.storage.queue.queueAsyncClient.createIfNotExistsWithResponse#map
-        client.createIfNotExistsWithResponse(Collections.singletonMap("queue", "metadataMap")).subscribe(
-            response -> System.out.println("Complete creating the queue with status code:" + response.getStatusCode()),
-            error -> System.err.print(error.toString())
-        );
+        client.createIfNotExistsWithResponse(Collections.singletonMap("queue", "metadataMap"))
+            .switchIfEmpty(Mono.<Response<Void>>empty()
+                .doOnSuccess(x -> System.out.println("Already exists.")))
+            .subscribe(response -> System.out.printf("Create completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.queue.queueAsyncClient.createIfNotExistsWithResponse#map
     }
 
@@ -602,15 +605,19 @@ public class QueueAsyncJavaDocCodeSamples {
      */
     public void deleteQueueIfExistsAsyncCodeSippets() {
         // BEGIN: com.azure.storage.queue.queueAsyncClient.deleteIfExists
-        client.deleteIfExists().doOnSuccess(
-            response -> System.out.println("Deleting the queue completed.")
-        );
+        client.deleteIfExists().subscribe(deleted -> {
+            if (deleted) {
+                System.out.println("Successfully deleted.");
+            } else {
+                System.out.println("Does not exist.");
+            }
+        });
         // END: com.azure.storage.queue.queueAsyncClient.deleteIfExists
 
         // BEGIN: com.azure.storage.queue.queueAsyncClient.deleteIfExistsWithResponse
-        client.deleteIfExistsWithResponse().subscribe(
-            response -> System.out.println("Deleting the queue completed with status code: " + response.getStatusCode())
-        );
+        client.deleteIfExistsWithResponse().switchIfEmpty(Mono.<Response<Void>>empty()
+                .doOnSuccess(x -> System.out.println("Does not exist.")))
+            .subscribe(response -> System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.queue.queueAsyncClient.deleteIfExistsWithResponse
     }
 

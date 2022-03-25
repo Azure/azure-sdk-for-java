@@ -425,8 +425,12 @@ public class DataLakeFileClientJavaDocSamples {
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
             .setLeaseId(leaseId);
 
-        client.deleteIfExistsWithResponse(requestConditions, timeout, new Context(key1, value1));
-        System.out.println("Delete request completed");
+        Response<Void> response = client.deleteIfExistsWithResponse(requestConditions, timeout, new Context(key1, value1));
+        if (response == null) {
+            System.out.println("Does not exist.");
+        } else {
+            System.out.printf("Delete completed with status %d%n", response.getStatusCode());
+        }
         // END: com.azure.storage.file.datalake.DataLakeFileClient.deleteIfExistsWithResponse#DataLakeRequestConditions-Duration-Context
     }
 

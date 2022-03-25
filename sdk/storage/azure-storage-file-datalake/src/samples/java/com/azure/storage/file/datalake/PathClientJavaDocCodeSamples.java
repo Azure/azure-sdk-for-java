@@ -508,7 +508,11 @@ public class PathClientJavaDocCodeSamples {
             .setPermissions(permissions).setUmask(umask).setMetadata(metadata);
 
         Response<PathInfo> response = client.createIfNotExistsWithResponse(options, timeout, new Context(key1, value1));
-        System.out.printf("Last Modified Time:%s", response.getValue().getLastModified());
+        if (response == null) {
+            System.out.println("Already existed.");
+        } else {
+            System.out.printf("Create completed with status %d%n", response.getStatusCode());
+        }
         // END: com.azure.storage.file.datalake.DataLakePathClient.createIfNotExistsWithResponse#DataLakePathCreateOptions-Duration-Context
     }
 

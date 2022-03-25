@@ -197,7 +197,7 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
      */
     public void createIfNotExistsCodeSnippets() {
         // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExists
-        client.createIfNotExists().switchIfEmpty(Mono.<AppendBlobItem>empty().doOnTerminate(() -> System.out.println("Already exists.")))
+        client.createIfNotExists().switchIfEmpty(Mono.<AppendBlobItem>empty().doOnSuccess(x -> System.out.println("Already exists.")))
             .subscribe(response ->
             System.out.printf("Created AppendBlob at %s%n", response.getLastModified()));
         // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExists
@@ -210,7 +210,7 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
         Map<String, String> tags = Collections.singletonMap("tag", "value");
 
         client.createIfNotExistsWithResponse(new AppendBlobCreateOptions().setHeaders(headers).setMetadata(metadata)
-            .setTags(tags)).switchIfEmpty(Mono.<Response<AppendBlobItem>>empty().doOnTerminate(() -> System.out.println("Already exists.")))
+            .setTags(tags)).switchIfEmpty(Mono.<Response<AppendBlobItem>>empty().doOnSuccess(x -> System.out.println("Already exists.")))
             .subscribe(response -> System.out.printf("Created AppendBlob at %s%n", response.getValue().getLastModified()));
         // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#AppendBlobCreateOptions
     }

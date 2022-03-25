@@ -448,15 +448,19 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
      */
     public void createIfNotExistsCodeSnippets() {
         // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExists
-        client.createIfNotExists().switchIfEmpty(Mono.<Void>empty().doOnTerminate(() -> System.out.println("Already exists.")))
-            .subscribe(response -> System.out.printf("Create completed%n"),
-            error -> System.out.printf("Error while creating container %s%n", error));
+        client.createIfNotExists().subscribe(created -> {
+            if (created) {
+                System.out.println("successfully created.");
+            } else {
+                System.out.println("Already exists.");
+            }
+        });
         // END: com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExists
 
         // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExistsWithResponse#Map-PublicAccessType
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        client.createIfNotExistsWithResponse(metadata, PublicAccessType.CONTAINER)
-            .switchIfEmpty(Mono.<Response<Void>>empty().doOnTerminate(() -> System.out.println("Already exists.")))
+        client.createIfNotExistsWithResponse(metadata, PublicAccessType.CONTAINER).switchIfEmpty(Mono.<Response<Void>>empty()
+                .doOnSuccess(x -> System.out.println("Already exists.")))
             .subscribe(response -> System.out.printf("Create completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExistsWithResponse#Map-PublicAccessType
     }
@@ -467,9 +471,13 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
      */
     public void deleteIfExistsCodeSnippets() {
         // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExists
-        client.deleteIfExists().switchIfEmpty(Mono.<Void>empty().doOnTerminate(() -> System.out.println("Does not exist.")))
-            .subscribe(response -> System.out.printf("Delete completed%n"),
-            error -> System.out.printf("Delete failed: %s%n", error));
+        client.deleteIfExists().subscribe(deleted -> {
+            if (deleted) {
+                System.out.println("Successfully deleted.");
+            } else {
+                System.out.println("Does not exist.");
+            }
+        });
         // END: com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExists
 
         // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExistsWithResponse#BlobRequestConditions
@@ -478,7 +486,7 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         client.deleteIfExistsWithResponse(requestConditions).switchIfEmpty(Mono.<Response<Void>>empty()
-            .doOnTerminate(() -> System.out.println("Does not exist."))).subscribe(response ->
+            .doOnSuccess(x -> System.out.println("Does not exist."))).subscribe(response ->
             System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExistsWithResponse#BlobRequestConditions
     }

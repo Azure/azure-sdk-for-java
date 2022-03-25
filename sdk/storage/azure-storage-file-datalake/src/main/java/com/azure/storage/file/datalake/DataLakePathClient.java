@@ -11,6 +11,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -247,7 +248,8 @@ public class DataLakePathClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
      * Docs</a></p>
      *
-     * @return Information about the created resource, or null if a resource already exists at the specified path.
+     * @return {@link PathInfo} that contains information about the created resource. If {@link PathInfo} is
+     * {@code null}, a resource already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PathInfo createIfNotExists() {
@@ -268,14 +270,12 @@ public class DataLakePathClient {
      * String permissions = &quot;permissions&quot;;
      * String umask = &quot;umask&quot;;
      *
-     * Response&lt;PathInfo&gt; response = client.createIfNotExistsWithResponse&#40;permissions, umask, httpHeaders,
-     *      Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;), timeout, new Context&#40;key1, value1));
-     *
-     * if &#40;response != null&#41; &#123;
-     *             System.out.printf&#40;&quot;Last Modified Time:%s&quot;, response.getValue&#40;&#41;.getLastModified&#40;&#41;&#41;;
-     *         &#125; else &#123;
-     *             System.out.println&#40;&quot;already exists.&quot;&#41;;
-     *         &#125;
+     * Response&lt;PathInfo&gt; response = client.createIfNotExistsWithResponse&#40;options, timeout, new Context&#40;key1, value1&#41;&#41;;
+     * if &#40;response == null&#41; &#123;
+     *      System.out.println&#40;&quot;Already existed.&quot;&#41;;
+     * &#125; else &#123;
+     *      System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * &#125;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakePathClient.createIfNotExistsWithResponse#DataLakePathCreateOptions-Duration-Context -->
      *
@@ -287,11 +287,14 @@ public class DataLakePathClient {
      * metadata key or value, it must be removed or encoded.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing information about the created resource, or null if the resource exists on the specified path.
+     * @return A reactive response {@link Response} containing status code and HTTP headers signaling completion.
+     * Upon success, {@link Response#getValue() value} contains the {@link PathInfo} that contains information about
+     * the created resource. If resource already exists, {@link Response} will be {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PathInfo> createIfNotExistsWithResponse(DataLakePathCreateOptions options, Duration timeout, Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(dataLakePathAsyncClient.createIfNotExistsWithResponse(options, context), timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(dataLakePathAsyncClient
+            .createIfNotExistsWithResponse(options, context), timeout);
     }
 
     /**
@@ -349,7 +352,9 @@ public class DataLakePathClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A response containing status code and HTTP headers, or null if specified resource does not exist.
+     * @return A reactive response containing status code and HTTP headers signaling completion. The presence of a
+     * {@link Response} item indicates the resource was deleted successfully. An empty {@code Mono} indicates that the
+     * resource does not exist at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteIfExistsWithResponse(boolean recursive, DataLakeRequestConditions requestConditions,

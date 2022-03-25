@@ -364,15 +364,6 @@ class DirectoryAPITests extends APISpec {
         FileTestHelper.assertResponseStatusCode(primaryDirectoryClient.deleteIfExistsWithResponse(null, null), 202)
     }
 
-    def "Delete if exists directory error"() {
-        when:
-        primaryDirectoryClient.deleteIfExists()
-
-        then:
-        def e = thrown(ShareStorageException)
-        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
-    }
-
     def "Delete if exists directory that does not exist"() {
         setup:
         primaryDirectoryClient = shareClient.getDirectoryClient(generatePathName())
@@ -1058,7 +1049,7 @@ class DirectoryAPITests extends APISpec {
         expect:
         FileTestHelper.assertResponseStatusCode(
             primaryDirectoryClient.createSubdirectoryIfNotExistsWithResponse("testCreateSubDirectory",
-                null, null, null, null, null), 201)
+                new ShareDirectoryCreateOptions(), null, null), 201)
     }
 
     def "Create if not exists subdirectory that already exists"() {
@@ -1066,10 +1057,12 @@ class DirectoryAPITests extends APISpec {
         def subdirectoryName = generatePathName()
         primaryDirectoryClient = shareClient.getDirectoryClient(generatePathName())
         primaryDirectoryClient.create()
-        def initialResponse = primaryDirectoryClient.createSubdirectoryIfNotExistsWithResponse(subdirectoryName, null, null, null, null, null)
+        def initialResponse = primaryDirectoryClient.createSubdirectoryIfNotExistsWithResponse(subdirectoryName,
+            new ShareDirectoryCreateOptions(), null, null)
 
         when:
-        def secondResponse = primaryDirectoryClient.createSubdirectoryIfNotExistsWithResponse(subdirectoryName, null, null, null, null, null)
+        def secondResponse = primaryDirectoryClient.createSubdirectoryIfNotExistsWithResponse(subdirectoryName,
+            new ShareDirectoryCreateOptions(), null, null)
 
         then:
         initialResponse != null
@@ -1097,7 +1090,8 @@ class DirectoryAPITests extends APISpec {
 
         expect:
         FileTestHelper.assertResponseStatusCode(
-            primaryDirectoryClient.createSubdirectoryIfNotExistsWithResponse("testCreateSubDirectory", null, null, testMetadata, null, null), 201)
+            primaryDirectoryClient.createSubdirectoryIfNotExistsWithResponse("testCreateSubDirectory",
+                new ShareDirectoryCreateOptions().setMetadata(testMetadata), null, null), 201)
     }
 
     def "Create if not exists sub directory metadata error"() {
@@ -1105,7 +1099,8 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.create()
 
         when:
-        primaryDirectoryClient.createSubdirectoryIfNotExistsWithResponse("testsubdirectory", null, null, Collections.singletonMap("", "value"), null, null)
+        primaryDirectoryClient.createSubdirectoryIfNotExistsWithResponse("testsubdirectory",
+            new ShareDirectoryCreateOptions().setMetadata(Collections.singletonMap("", "value")), null, null)
 
         then:
         def e = thrown(ShareStorageException)
@@ -1117,7 +1112,8 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.create()
         expect:
         FileTestHelper.assertResponseStatusCode(
-            primaryDirectoryClient.createSubdirectoryIfNotExistsWithResponse("testCreateSubDirectory", null, filePermission, null, null, null), 201)
+            primaryDirectoryClient.createSubdirectoryIfNotExistsWithResponse("testCreateSubDirectory",
+                new ShareDirectoryCreateOptions().setFilePermission(filePermission), null, null), 201)
     }
 
     def "Create if not exists sub directory file permission key"() {
@@ -1129,7 +1125,8 @@ class DirectoryAPITests extends APISpec {
             .setFilePermissionKey(filePermissionKey)
         expect:
         FileTestHelper.assertResponseStatusCode(
-            primaryDirectoryClient.createSubdirectoryIfNotExistsWithResponse("testCreateSubDirectory", smbProperties, null, null, null, null), 201)
+            primaryDirectoryClient.createSubdirectoryIfNotExistsWithResponse("testCreateSubDirectory",
+                new ShareDirectoryCreateOptions().setSmbProperties(smbProperties), null, null), 201)
     }
 
     def "Delete sub directory"() {
@@ -1285,7 +1282,7 @@ class DirectoryAPITests extends APISpec {
             primaryDirectoryClient.deleteFileIfExistsWithResponse(fileName, null, null), 202)
     }
 
-    def "Delete if exists file error"() {
+    def "Delete if exists file that does not exist"() {
         given:
         primaryDirectoryClient.create()
 

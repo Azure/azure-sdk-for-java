@@ -348,8 +348,12 @@ public final class BlobContainerClient {
      * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
      * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
      *
-     * System.out.printf&#40;&quot;Create completed with status %d%n&quot;,
-     *     client.createIfNotExistsWithResponse&#40;metadata, PublicAccessType.CONTAINER, timeout, context&#41;.getStatusCode&#40;&#41;&#41;;
+     * Response&lt;Void&gt; response = client.createIfNotExistsWithResponse&#40;metadata, PublicAccessType.CONTAINER, timeout, context&#41;;
+     * if &#40;response == null&#41; &#123;
+     *      System.out.println&#40;&quot;Already existed.&quot;&#41;;
+     * &#125; else &#123;
+     *      System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * &#125;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerClient.createIfNotExistsWithResponse#Map-PublicAccessType-Duration-Context -->
      *
@@ -359,7 +363,8 @@ public final class BlobContainerClient {
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing status code and HTTP headers, or null if the container already exists.
+     * @return A response containing status code and HTTP headers. The presence of a {@link Response} indicates the new
+     * container was created successfully, {@code null} indicates a container already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createIfNotExistsWithResponse(Map<String, String> metadata, PublicAccessType accessType,
@@ -458,15 +463,20 @@ public final class BlobContainerClient {
      *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
      * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
      *
-     * System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, client.deleteIfExistsWithResponse&#40;
-     *     requestConditions, timeout, context&#41;.getStatusCode&#40;&#41;&#41;;
+     * Response&lt;Void&gt; response = client.deleteIfExistsWithResponse&#40;requestConditions, timeout, context&#41;;
+     * if &#40;response == null&#41; &#123;
+     *      System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     * &#125; else &#123;
+     *      System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * &#125;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerClient.deleteIfExistsWithResponse#BlobRequestConditions-Duration-Context -->
      *
      * @param requestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing status code and HTTP headers, or null if the container does not exist.
+     * @return A response containing status code and HTTP headers. The presence of a {@link Response} indicates the
+     * container was deleted successfully, {@code null} indicates the container does not exist at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteIfExistsWithResponse(BlobRequestConditions requestConditions, Duration timeout,

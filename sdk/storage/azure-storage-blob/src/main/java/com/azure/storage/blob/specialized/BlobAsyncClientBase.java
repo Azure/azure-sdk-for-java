@@ -1695,22 +1695,26 @@ public class BlobAsyncClientBase {
      *
      * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteIfExists -->
      * <pre>
-     * client.deleteIfExists&#40;&#41;.doOnSuccess&#40;response -&gt; System.out.println&#40;&quot;Completed delete&quot;&#41;&#41;;
+     * client.deleteIfExists&#40;&#41;.subscribe&#40;deleted -&gt; &#123;
+     *      if &#40;deleted&#41; &#123;
+     *          System.out.println&#40;&quot;Successfully deleted.&quot;&#41;;
+     *      &#125; else &#123;
+     *          System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *      &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteIfExists -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-blob">Azure Docs</a></p>
      *
-     * @return A reactive response signalling completion, or null if specified blob does not exist.
+     * @return A reactive response signaling completion. {@code True} indicates that the blob was deleted.
+     * {@code False} indicates the blob does not exist at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteIfExists() {
-        try {
-            return deleteIfExistsWithResponse(null, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
+    public Mono<Boolean> deleteIfExists() {
+        return deleteIfExistsWithResponse(null, null).flatMap(response ->
+            Mono.just(true)).switchIfEmpty(Mono.just(false));
     }
 
     /**
@@ -1721,8 +1725,9 @@ public class BlobAsyncClientBase {
      *
      * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteIfExistsWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions -->
      * <pre>
-     * client.deleteIfExistsWithResponse&#40;DeleteSnapshotsOptionType.INCLUDE, null&#41;
-     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * client.deleteIfExistsWithResponse&#40;DeleteSnapshotsOptionType.INCLUDE, null&#41;.switchIfEmpty&#40;Mono.&lt;Response&gt;Void&gt;&gt;empty&#40;&#41;
+     *       .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;
+     *       .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteIfExistsWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions -->
      *
@@ -1733,11 +1738,12 @@ public class BlobAsyncClientBase {
      * will delete the base blob and all snapshots. {@code Only} will delete only the snapshots. If a snapshot is being
      * deleted, you must pass null.
      * @param requestConditions {@link BlobRequestConditions}
-     * @return A reactive response signalling completion, or null if specified blob does not exist.
+     * @return A reactive response signaling completion. The presence of a {@link Response} item indicates the blob was
+     * deleted successfully. An empty {@code Mono} indicates that the blob does not exist at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteIfExistsWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
-                                                   BlobRequestConditions requestConditions) {
+        BlobRequestConditions requestConditions) {
         try {
             return withContext(context -> deleteIfExistsWithResponse(deleteBlobSnapshotOptions,
                 requestConditions, context));

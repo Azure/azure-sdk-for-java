@@ -207,7 +207,7 @@ class ShareAPITests extends APISpec {
     @Unroll
     def "Create if not exists share with invalid args"() {
         when:
-        primaryShareClient.createIfNotExistsWithResponse(metadata, quota, null, null)
+        primaryShareClient.createIfNotExistsWithResponse(new ShareCreateOptions().setMetadata(metadata).setQuotaInGb(quota), null, null)
 
         then:
         def e = thrown(ShareStorageException)
@@ -1233,5 +1233,5 @@ class ShareAPITests extends APISpec {
         notThrown(ShareStorageException)
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
-    
+
 }

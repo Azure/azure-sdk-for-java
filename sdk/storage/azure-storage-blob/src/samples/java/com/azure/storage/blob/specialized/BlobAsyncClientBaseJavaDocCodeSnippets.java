@@ -4,6 +4,7 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.RequestConditions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
@@ -801,12 +802,19 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
      */
     public void deleteIfExistsCodeSnippets() {
         // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteIfExists
-        client.deleteIfExists().doOnSuccess(response -> System.out.println("Completed delete"));
+        client.deleteIfExists().subscribe(deleted -> {
+            if (deleted) {
+                System.out.println("Successfully deleted.");
+            } else {
+                System.out.println("Does not exist.");
+            }
+        });
         // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteIfExists
 
         // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteIfExistsWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions
-        client.deleteIfExistsWithResponse(DeleteSnapshotsOptionType.INCLUDE, null)
-            .subscribe(response -> System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
+        client.deleteIfExistsWithResponse(DeleteSnapshotsOptionType.INCLUDE, null).switchIfEmpty(Mono.<Response<Void>>empty()
+            .doOnSuccess(x -> System.out.println("Does not exist."))).subscribe(response ->
+            System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteIfExistsWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions
     }
 }

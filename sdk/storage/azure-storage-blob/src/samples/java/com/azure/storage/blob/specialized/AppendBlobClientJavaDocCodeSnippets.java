@@ -3,7 +3,11 @@
 
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.models.AppendBlobItem;
+import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -227,10 +231,13 @@ public class AppendBlobClientJavaDocCodeSnippets {
         Map<String, String> tags = Collections.singletonMap("tags", "value");
         Context context = new Context("key", "value");
 
-        System.out.printf("Created AppendBlob at %s%n",
-            client.createIfNotExistsWithResponse(new AppendBlobCreateOptions().setHeaders(headers).setMetadata(metadata)
-                    .setTags(tags), timeout, context).getValue()
-                .getLastModified());
+        Response<AppendBlobItem> response = client.createIfNotExistsWithResponse(new AppendBlobCreateOptions()
+            .setHeaders(headers).setMetadata(metadata).setTags(tags), timeout, context);
+        if (response == null) {
+            System.out.println("Already existed.");
+        } else {
+            System.out.printf("Create completed with status %d%n", response.getStatusCode());
+        }
         // END: com.azure.storage.blob.specialized.AppendBlobClient.createIfNotExistsWithResponse#AppendBlobCreateOptions-Duration-Context
 
     }
