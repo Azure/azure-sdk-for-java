@@ -60,7 +60,7 @@ public final class MonitorManager extends Manager<MonitorClient> {
     /**
      * Creates an instance of MonitorManager that exposes Monitor API entry points.
      *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the profile to use
      * @return the MonitorManager
      */

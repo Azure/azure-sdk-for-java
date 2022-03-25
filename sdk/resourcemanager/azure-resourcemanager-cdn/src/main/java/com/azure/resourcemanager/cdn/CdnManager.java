@@ -50,7 +50,7 @@ public final class CdnManager extends Manager<CdnManagementClient> {
     /**
      * Creates an instance of CDN Manager that exposes CDN manager management API entry points.
      *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the profile to use
      * @return the CDN Manager
      */

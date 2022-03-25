@@ -53,7 +53,7 @@ public final class MsiManager extends Manager<ManagedServiceIdentityClient> {
      * Creates an instance of MsiManager that exposes Managed Service Identity (MSI)
      * resource management API entry points.
      *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the profile to use
      * @return the MsiManager
      */

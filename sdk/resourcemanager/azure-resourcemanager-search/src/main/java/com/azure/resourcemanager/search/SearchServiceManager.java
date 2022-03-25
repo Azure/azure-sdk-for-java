@@ -49,7 +49,7 @@ public final class SearchServiceManager extends Manager<SearchManagementClient> 
     /**
      * Creates an instance of SearchServiceManager that exposes Cognitive Search resource management API entry points.
      *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the profile to use
      * @return the SearchServiceManager
      */

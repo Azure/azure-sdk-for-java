@@ -47,7 +47,7 @@ public final class DnsZoneManager extends Manager<DnsManagementClient> {
     /**
      * Creates an instance of DnsZoneManager that exposes DNS zone management API entry points.
      *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the profile to use
      * @return the DnsZoneManager
      */

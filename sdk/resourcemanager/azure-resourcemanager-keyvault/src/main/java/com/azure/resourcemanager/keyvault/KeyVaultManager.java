@@ -53,7 +53,7 @@ public final class KeyVaultManager extends Manager<KeyVaultManagementClient> {
     /**
      * Creates an instance of KeyVaultManager that exposes KeyVault resource management API entry points.
      *
-     * @param httpPipeline the HttpPipeline to be used for API calls
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the profile to use
      * @return the KeyVaultManager
      */

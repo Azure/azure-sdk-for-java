@@ -47,7 +47,7 @@ public final class TrafficManager extends Manager<TrafficManagerManagementClient
     /**
      * Creates an instance of TrafficManager that exposes traffic manager management API entry points.
      *
-     * @param httpPipeline the RestClient to be used for API calls.
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the profile to use
      * @return the TrafficManager
      */

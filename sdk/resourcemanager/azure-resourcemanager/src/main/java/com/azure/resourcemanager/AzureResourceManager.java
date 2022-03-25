@@ -168,7 +168,7 @@ public final class AzureResourceManager {
     /**
      * Authenticates API access using a RestClient instance.
      *
-     * @param httpPipeline the HttpPipeline configured with Azure authentication credential
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the profile used in Active Directory
      * @return authenticated Azure client
      */

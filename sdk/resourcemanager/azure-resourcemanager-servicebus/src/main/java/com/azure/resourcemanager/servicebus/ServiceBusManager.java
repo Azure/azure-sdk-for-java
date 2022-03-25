@@ -49,7 +49,7 @@ public final class ServiceBusManager extends Manager<ServiceBusManagementClient>
     /**
      * Creates an instance of ServiceBusManager that exposes servicebus management API entry points.
      *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the profile to use
      * @return the ServiceBusManager
      */

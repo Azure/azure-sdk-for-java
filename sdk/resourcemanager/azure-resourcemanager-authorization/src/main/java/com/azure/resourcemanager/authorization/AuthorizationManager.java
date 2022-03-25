@@ -67,7 +67,7 @@ public final class AuthorizationManager implements HasServiceClient<MicrosoftGra
      * Creates an instance of AuthorizationManager that exposes Authorization
      * and Graph RBAC management API entry points.
      *
-     * @param httpPipeline the HttpPipeline to be used for API calls
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the profile used in Active Directory
      * @return the AuthorizationManager instance
      */

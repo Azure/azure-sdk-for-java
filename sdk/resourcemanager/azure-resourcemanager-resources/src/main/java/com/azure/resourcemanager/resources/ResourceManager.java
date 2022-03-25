@@ -87,7 +87,7 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
     /**
      * Creates an instance of ResourceManager that exposes resource management API entry points.
      *
-     * @param httpPipeline the HttpPipeline to be used for API calls
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the profile used in resource management
      * @return the interface exposing resource management API entry points that work across subscriptions
      */

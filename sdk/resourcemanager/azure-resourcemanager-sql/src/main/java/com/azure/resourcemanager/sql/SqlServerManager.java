@@ -74,7 +74,7 @@ public class SqlServerManager extends Manager<SqlManagementClient> {
     /**
      * Creates an instance of SqlServer that exposes Compute resource management API entry points.
      *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the profile to use
      * @return the SqlServer
      */

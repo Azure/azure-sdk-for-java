@@ -45,7 +45,7 @@ public final class CosmosManager extends Manager<CosmosDBManagementClient> {
     /**
      * Creates an instance of ComputeManager that exposes Compute resource management API entry points.
      *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the profile
      * @return the ComputeManager
      */
