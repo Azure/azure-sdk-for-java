@@ -262,6 +262,19 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     }
 
     /**
+     * Gets the client identifier.
+     *
+     * @return The unique identifier string for current client.
+     * @throws RuntimeException Throw exception, if client has not been initialized.
+     */
+    public String getClientId() throws RuntimeException {
+        if (asyncClient.get() != null) {
+            return asyncClient.get().getClientId();
+        }
+        throw new RuntimeException("Client has not been initialized.");
+    }
+
+    /**
      * Returns {@code true} if the processor is running. If the processor is stopped or closed, this method returns
      * {@code false}.
      *

@@ -222,6 +222,7 @@ public final class ServiceBusClientBuilder implements
     private AmqpTransportType transport = AmqpTransportType.AMQP;
     private SslDomain.VerifyMode verifyMode;
     private boolean crossEntityTransactions;
+    private String clientId;
 
     /**
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
@@ -232,6 +233,7 @@ public final class ServiceBusClientBuilder implements
      * Creates a new instance with the default transport {@link AmqpTransportType#AMQP}.
      */
     public ServiceBusClientBuilder() {
+        this.clientId = StringUtil.getRandomString("client-");
     }
 
     /**
@@ -272,6 +274,18 @@ public final class ServiceBusClientBuilder implements
                 new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
         }
         return fullyQualifiedNamespace;
+    }
+
+    /**
+     * Sets the client id for the Service Bus client.
+     *
+     * @param clientId The customized identifier for Service Bus client.
+     *
+     * @return The updated {@link ServiceBusClientBuilder} object.
+     */
+    public ServiceBusClientBuilder clientId(String clientId) {
+        this.clientId = clientId;
+        return this;
     }
 
     /**
@@ -915,7 +929,7 @@ public final class ServiceBusClientBuilder implements
                         new IllegalArgumentException("Unknown entity type: " + entityType));
             }
 
-            return new ServiceBusSenderAsyncClient(entityName, entityType, connectionProcessor, retryOptions,
+            return new ServiceBusSenderAsyncClient(entityName, clientId, entityType, connectionProcessor, retryOptions,
                 tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose, null);
         }
 
@@ -1387,11 +1401,11 @@ public final class ServiceBusClientBuilder implements
                 maxAutoLockRenewDuration, enableAutoComplete, null,
                 maxConcurrentSessions);
 
-            final ServiceBusSessionManager sessionManager = new ServiceBusSessionManager(entityPath, entityType,
+            final ServiceBusSessionManager sessionManager = new ServiceBusSessionManager(entityPath, clientId, entityType,
                 connectionProcessor, tracerProvider, messageSerializer, receiverOptions);
 
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
-                entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
+                clientId, entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
                 tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose, sessionManager);
         }
 
@@ -1457,7 +1471,7 @@ public final class ServiceBusClientBuilder implements
                 maxAutoLockRenewDuration, enableAutoComplete, null, maxConcurrentSessions);
 
             return new ServiceBusSessionReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(),
-                entityPath, entityType, receiverOptions, connectionProcessor, tracerProvider, messageSerializer,
+                entityPath, clientId, entityType, receiverOptions, connectionProcessor, tracerProvider, messageSerializer,
                 ServiceBusClientBuilder.this::onClientClose);
         }
     }
@@ -1891,7 +1905,7 @@ public final class ServiceBusClientBuilder implements
                 maxAutoLockRenewDuration, enableAutoComplete);
 
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
-                entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
+                clientId, entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
                 tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose);
         }
     }

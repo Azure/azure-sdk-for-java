@@ -32,7 +32,7 @@ public interface ServiceBusSession extends AmqpSession {
      *
      * @return A newly created AMQP link.
      */
-    Mono<ServiceBusReceiveLink> createConsumer(String linkName, String entityPath, MessagingEntityType entityType,
+    Mono<ServiceBusReceiveLink> createConsumer(String linkName, String entityPath, String clientId, MessagingEntityType entityType,
         Duration timeout, AmqpRetryPolicy retryPolicy, ServiceBusReceiveMode receiveMode);
 
     /**
@@ -48,7 +48,7 @@ public interface ServiceBusSession extends AmqpSession {
      *
      * @return A newly created AMQP link.
      */
-    Mono<ServiceBusReceiveLink> createConsumer(String linkName, String entityPath, MessagingEntityType entityType,
+    Mono<ServiceBusReceiveLink> createConsumer(String linkName, String entityPath, String clientId, MessagingEntityType entityType,
         Duration timeout, AmqpRetryPolicy retryPolicy, ServiceBusReceiveMode receiveMode, String sessionId);
 
     /**
@@ -60,9 +60,10 @@ public interface ServiceBusSession extends AmqpSession {
      * @param retryPolicy The retry policy to use when sending events.
      * @param transferEntityPath The entity path this link connects to, so that it may transfer events to
      *     the message broker via this entity.
+     * @param clientId The identifier of client.
      *
      * @return A newly created AMQP link.
      */
-    Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout,
+    Mono<AmqpLink> createProducer(String linkName, String entityPath, String clientId, Duration timeout,
         AmqpRetryPolicy retryPolicy, String transferEntityPath);
 }

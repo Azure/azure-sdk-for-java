@@ -146,13 +146,13 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      */
     @Override
     public Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, AmqpRetryOptions retryOptions,
-         String transferEntityPath) {
+         String transferEntityPath, String clientId) {
 
         return createSession(linkName).cast(ServiceBusSession.class).flatMap(session -> {
             logger.atVerbose().addKeyValue(LINK_NAME_KEY, linkName).log("Get or create sender link.");
             final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
-            return session.createProducer(linkName + entityPath, entityPath, retryOptions.getTryTimeout(),
+            return session.createProducer(linkName + entityPath, entityPath, clientId, retryOptions.getTryTimeout(),
                 retryPolicy, transferEntityPath).cast(AmqpSendLink.class);
         });
     }
@@ -171,14 +171,14 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * @return A new or existing receive link that is connected to the given {@code entityPath}.
      */
     @Override
-    public Mono<ServiceBusReceiveLink> createReceiveLink(String linkName, String entityPath,
+    public Mono<ServiceBusReceiveLink> createReceiveLink(String linkName, String entityPath, String clientId,
         ServiceBusReceiveMode receiveMode, String transferEntityPath, MessagingEntityType entityType) {
         return createSession(entityPath).cast(ServiceBusSession.class)
             .flatMap(session -> {
                 logger.atVerbose().addKeyValue(ENTITY_PATH_KEY, entityPath).log("Get or create consumer.");
                 final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
-                return session.createConsumer(linkName, entityPath, entityType, retryOptions.getTryTimeout(),
+                return session.createConsumer(linkName, entityPath, clientId, entityType, retryOptions.getTryTimeout(),
                     retryPolicy, receiveMode);
             });
     }
@@ -202,7 +202,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * @return A new or existing receive link that is connected to the given {@code entityPath}.
      */
     @Override
-    public Mono<ServiceBusReceiveLink> createReceiveLink(String linkName, String entityPath,
+    public Mono<ServiceBusReceiveLink> createReceiveLink(String linkName, String entityPath, String clientId,
         ServiceBusReceiveMode receiveMode, String transferEntityPath, MessagingEntityType entityType,
         String sessionId) {
         return createSession(entityPath).cast(ServiceBusSession.class)
@@ -210,7 +210,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
                 logger.atVerbose().addKeyValue(ENTITY_PATH_KEY, entityPath).log("Get or create consumer.");
                 final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
-                return session.createConsumer(linkName, entityPath, entityType, retryOptions.getTryTimeout(),
+                return session.createConsumer(linkName, entityPath, clientId, entityType, retryOptions.getTryTimeout(),
                     retryPolicy, receiveMode, sessionId);
             });
     }

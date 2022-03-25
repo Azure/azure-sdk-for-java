@@ -77,6 +77,15 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     }
 
     /**
+     * Gets the client identifier.
+     *
+     * @return The unique identifier string for current client.
+     */
+    public String getClientId() {
+        return asyncClient.getClientId();
+    }
+
+    /**
      * Gets the fully qualified Service Bus namespace that the connection is associated with. This is likely similar to
      * {@code {yournamespace}.servicebus.windows.net}.
      *

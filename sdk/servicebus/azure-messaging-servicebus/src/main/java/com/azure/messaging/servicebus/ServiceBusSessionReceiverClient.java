@@ -69,6 +69,15 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
     }
 
     /**
+     * Gets the client identifier.
+     *
+     * @return The unique identifier string for current client.
+     */
+    public String getClientId() {
+        return sessionAsyncClient.getClientId();
+    }
+
+    /**
      * Acquires a session lock for the next available session and creates a {@link ServiceBusReceiverClient}
      * to receive messages from the session. It will wait until a session is available if no one is available
      * immediately.

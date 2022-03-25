@@ -82,6 +82,7 @@ class ServiceBusSessionManagerTest {
 
     private static final String NAMESPACE = "my-namespace-foo.net";
     private static final String ENTITY_PATH = "queue-name";
+    private static final String CLIENT_ID = "my-client-id";
     private static final MessagingEntityType ENTITY_TYPE = MessagingEntityType.QUEUE;
 
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClientTest.class);
@@ -177,7 +178,7 @@ class ServiceBusSessionManagerTest {
     void receiveNull() {
         // Arrange
         ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null, 5);
-        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, CLIENT_ID, ENTITY_TYPE, connectionProcessor,
             tracerProvider, messageSerializer, receiverOptions);
 
         // Act & Assert
@@ -194,7 +195,7 @@ class ServiceBusSessionManagerTest {
         // Arrange
         ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null,
             5);
-        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, CLIENT_ID, ENTITY_TYPE, connectionProcessor,
             tracerProvider, messageSerializer, receiverOptions);
 
         final String sessionId = "session-1";
@@ -219,7 +220,7 @@ class ServiceBusSessionManagerTest {
         when(amqpReceiveLink.addCredits(anyInt())).thenReturn(Mono.empty());
         when(amqpReceiveLink.closeAsync()).thenReturn(Mono.empty());
 
-        when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), any(ServiceBusReceiveMode.class), isNull(),
+        when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), eq(CLIENT_ID), any(ServiceBusReceiveMode.class), isNull(),
             any(MessagingEntityType.class), isNull())).thenReturn(Mono.just(amqpReceiveLink));
 
         when(managementNode.renewSessionLock(sessionId, linkName)).thenReturn(
@@ -249,7 +250,7 @@ class ServiceBusSessionManagerTest {
         // Arrange
         ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null,
             1);
-        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, CLIENT_ID, ENTITY_TYPE, connectionProcessor,
             tracerProvider, messageSerializer, receiverOptions);
 
         final String sessionId = "session-1";
@@ -274,7 +275,7 @@ class ServiceBusSessionManagerTest {
         when(amqpReceiveLink.addCredits(anyInt())).thenReturn(Mono.empty());
         when(amqpReceiveLink.closeAsync()).thenReturn(Mono.empty());
 
-        when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), any(ServiceBusReceiveMode.class), isNull(),
+        when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), eq(CLIENT_ID), any(ServiceBusReceiveMode.class), isNull(),
             any(MessagingEntityType.class), isNull())).thenReturn(Mono.just(amqpReceiveLink));
 
         AtomicBoolean sessionLockRenewCalled = new AtomicBoolean();
@@ -307,7 +308,7 @@ class ServiceBusSessionManagerTest {
         // Arrange
         final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, true,
             null, 5);
-        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, CLIENT_ID, ENTITY_TYPE, connectionProcessor,
             tracerProvider, messageSerializer, receiverOptions);
 
         final int numberOfMessages = 5;
@@ -355,7 +356,7 @@ class ServiceBusSessionManagerTest {
         when(amqpReceiveLink2.closeAsync()).thenReturn(Mono.empty());
 
         final AtomicInteger count = new AtomicInteger();
-        when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), any(ServiceBusReceiveMode.class), isNull(),
+        when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), eq(CLIENT_ID), any(ServiceBusReceiveMode.class), isNull(),
             any(MessagingEntityType.class), isNull())).thenAnswer(invocation -> {
                 final int number = count.getAndIncrement();
                 switch (number) {
@@ -436,7 +437,7 @@ class ServiceBusSessionManagerTest {
         final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, Duration.ZERO, false,
             null, 1);
 
-        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, CLIENT_ID, ENTITY_TYPE, connectionProcessor,
             tracerProvider, messageSerializer, receiverOptions);
 
         final String sessionId = "session-1";
@@ -466,7 +467,7 @@ class ServiceBusSessionManagerTest {
         when(amqpReceiveLink2.closeAsync()).thenReturn(Mono.empty());
 
         final AtomicInteger count = new AtomicInteger();
-        when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), any(ServiceBusReceiveMode.class), isNull(),
+        when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), eq(CLIENT_ID), any(ServiceBusReceiveMode.class), isNull(),
             any(MessagingEntityType.class), isNull())).thenAnswer(invocation -> {
                 final int number = count.getAndIncrement();
                 switch (number) {
@@ -490,8 +491,8 @@ class ServiceBusSessionManagerTest {
             .thenCancel()
             .verify();
 
-        verify(connection, times(2)).createReceiveLink(linkNameCaptor.capture(), eq(ENTITY_PATH), any(
-            ServiceBusReceiveMode.class), isNull(),
+        verify(connection, times(2)).createReceiveLink(linkNameCaptor.capture(), eq(ENTITY_PATH),
+            eq(CLIENT_ID), any(ServiceBusReceiveMode.class), isNull(),
             any(MessagingEntityType.class), isNull());
 
         final List<String> actualLinksCreated = linkNameCaptor.getAllValues();
@@ -508,7 +509,7 @@ class ServiceBusSessionManagerTest {
         // Arrange
         ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null,
             2);
-        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, CLIENT_ID, ENTITY_TYPE, connectionProcessor,
             tracerProvider, messageSerializer, receiverOptions);
 
         final String sessionId = "session-1";
@@ -527,8 +528,8 @@ class ServiceBusSessionManagerTest {
         when(amqpReceiveLink.getSessionId()).thenReturn(Mono.just(sessionId));
         when(amqpReceiveLink.getSessionLockedUntil())
             .thenAnswer(invocation -> Mono.just(sessionLockedUntil));
-        when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), any(ServiceBusReceiveMode.class), isNull(),
-            any(MessagingEntityType.class), isNull())).thenReturn(Mono.just(amqpReceiveLink));
+        when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), eq(CLIENT_ID), any(ServiceBusReceiveMode.class),
+            isNull(), any(MessagingEntityType.class), isNull())).thenReturn(Mono.just(amqpReceiveLink));
         when(amqpReceiveLink.addCredits(anyInt())).thenReturn(Mono.empty());
         when(amqpReceiveLink.closeAsync()).thenReturn(Mono.empty());
 

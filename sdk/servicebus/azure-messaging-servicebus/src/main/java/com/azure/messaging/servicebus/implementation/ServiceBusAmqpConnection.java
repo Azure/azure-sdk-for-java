@@ -27,11 +27,12 @@ public interface ServiceBusAmqpConnection extends AmqpConnection {
      * @param entityPath The remote address to connect to for the message broker.
      * @param retryOptions Options to use when creating the link.
      * @param transferEntityPath Path if the message should be transferred this destination by message broker.
+     * @param clientId
      *
      * @return A new or existing send link that is connected to the given {@code entityPath}.
      */
     Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, AmqpRetryOptions retryOptions,
-        String transferEntityPath);
+        String transferEntityPath, String clientId);
 
     /**
      * Creates or gets an existing receive link. The same link is returned if there is an existing receive link with the
@@ -45,8 +46,8 @@ public interface ServiceBusAmqpConnection extends AmqpConnection {
      *
      * @return A new or existing receive link that is connected to the given {@code entityPath}.
      */
-    Mono<ServiceBusReceiveLink> createReceiveLink(String linkName, String entityPath, ServiceBusReceiveMode receiveMode,
-        String transferEntityPath, MessagingEntityType entityType);
+    Mono<ServiceBusReceiveLink> createReceiveLink(String linkName, String entityPath, String clientId,
+        ServiceBusReceiveMode receiveMode, String transferEntityPath, MessagingEntityType entityType);
 
     /**
      * Creates or gets an existing receive link for a given sessionId. The same link is returned if there is an
@@ -62,6 +63,6 @@ public interface ServiceBusAmqpConnection extends AmqpConnection {
      *
      * @return A new or existing receive link that is connected to the given {@code entityPath}.
      */
-    Mono<ServiceBusReceiveLink> createReceiveLink(String linkName, String entityPath, ServiceBusReceiveMode receiveMode,
-        String transferEntityPath, MessagingEntityType entityType, String sessionId);
+    Mono<ServiceBusReceiveLink> createReceiveLink(String linkName, String entityPath, String clientId,
+        ServiceBusReceiveMode receiveMode, String transferEntityPath, MessagingEntityType entityType, String sessionId);
 }

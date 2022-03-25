@@ -43,6 +43,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static com.azure.core.amqp.implementation.ClientConstants.CLIENT_ID_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 import static com.azure.core.util.FluxUtil.fluxError;
@@ -235,6 +236,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private final Runnable onClientClose;
     private final ServiceBusSessionManager sessionManager;
     private final Semaphore completionLock = new Semaphore(1);
+    private final String clientId;
 
     // Starting at -1 because that is before the beginning of the stream.
     private final AtomicLong lastPeekedSequenceNumber = new AtomicLong(-1);
@@ -252,7 +254,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @param messageSerializer Serializes and deserializes Service Bus messages.
      * @param onClientClose Operation to run when the client completes.
      */
-    ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
+    ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, String clientId, MessagingEntityType entityType,
         ReceiverOptions receiverOptions, ServiceBusConnectionProcessor connectionProcessor, Duration cleanupInterval,
         TracerProvider tracerProvider, MessageSerializer messageSerializer, Runnable onClientClose) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
@@ -264,6 +266,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
+        this.clientId = Objects.requireNonNull(clientId, "'clientId' cannot be null");
 
         this.managementNodeLocks = new LockContainer<>(cleanupInterval);
         this.renewalContainer = new LockContainer<>(Duration.ofMinutes(2), renewal -> {
@@ -277,7 +280,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         this.sessionManager = null;
     }
 
-    ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
+    ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, String clientId, MessagingEntityType entityType,
         ReceiverOptions receiverOptions, ServiceBusConnectionProcessor connectionProcessor, Duration cleanupInterval,
         TracerProvider tracerProvider, MessageSerializer messageSerializer, Runnable onClientClose,
         ServiceBusSessionManager sessionManager) {
@@ -291,6 +294,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
         this.sessionManager = Objects.requireNonNull(sessionManager, "'sessionManager' cannot be null.");
+        this.clientId = Objects.requireNonNull(clientId, "'clientId' cannot be null");
 
         this.managementNodeLocks = new LockContainer<>(cleanupInterval);
         this.renewalContainer = new LockContainer<>(Duration.ofMinutes(2), renewal -> {
@@ -300,6 +304,15 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 .log("Closing expired renewal operation.", renewal.getThrowable());
             renewal.close();
         });
+    }
+
+    /**
+     * Gets the client identifier.
+     *
+     * @return The unique identifier string for current client.
+     */
+    public String getClientId() {
+        return clientId;
     }
 
     /**
@@ -1317,6 +1330,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         logger.atVerbose()
             .addKeyValue(LOCK_TOKEN_KEY, lockToken)
             .addKeyValue(ENTITY_PATH_KEY, entityPath)
+            .addKeyValue(CLIENT_ID_KEY, clientId)
             .addKeyValue(SESSION_ID_KEY, sessionIdToUse)
             .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
             .log("Update started.");
@@ -1330,6 +1344,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 logger.atInfo()
                     .addKeyValue(LOCK_TOKEN_KEY, lockToken)
                     .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                    .addKeyValue(CLIENT_ID_KEY, clientId)
                     .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
                     .log("Management node Update completed.");
 
@@ -1363,6 +1378,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                         logger.atVerbose()
                             .addKeyValue(LOCK_TOKEN_KEY, lockToken)
                             .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                            .addKeyValue(CLIENT_ID_KEY, clientId)
                             .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
                             .log("Update completed.");
 
@@ -1399,22 +1415,23 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         logger.atInfo()
             .addKeyValue(LINK_NAME_KEY, linkName)
             .addKeyValue(ENTITY_PATH_KEY, entityPath)
+            .addKeyValue(CLIENT_ID_KEY, clientId)
             .log("Creating consumer.");
 
         // The Mono, when subscribed, creates a ServiceBusReceiveLink in the ServiceBusAmqpConnection emitted by the connectionProcessor
-        //
         final Mono<ServiceBusReceiveLink> receiveLinkMono = connectionProcessor.flatMap(connection -> {
             if (receiverOptions.isSessionReceiver()) {
-                return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(),
+                return connection.createReceiveLink(linkName, entityPath, clientId, receiverOptions.getReceiveMode(),
                         null, entityType, receiverOptions.getSessionId());
             } else {
-                return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(),
+                return connection.createReceiveLink(linkName, entityPath, clientId, receiverOptions.getReceiveMode(),
                     null, entityType);
             }
         }).doOnNext(next -> {
             logger.atVerbose()
                 .addKeyValue(LINK_NAME_KEY, linkName)
                 .addKeyValue(ENTITY_PATH_KEY, next.getEntityPath())
+                .addKeyValue(CLIENT_ID_KEY, clientId)
                 .addKeyValue("mode", receiverOptions.getReceiveMode())
                 .addKeyValue("isSessionEnabled", CoreUtils.isNullOrEmpty(receiverOptions.getSessionId()))
                 .addKeyValue(ENTITY_TYPE_KEY, entityType)

@@ -179,11 +179,12 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     private final String entityName;
     private final ServiceBusConnectionProcessor connectionProcessor;
     private final String viaEntityName;
+    private final String clientId;
 
     /**
      * Creates a new instance of this {@link ServiceBusSenderAsyncClient} that sends messages to a Service Bus entity.
      */
-    ServiceBusSenderAsyncClient(String entityName, MessagingEntityType entityType,
+    ServiceBusSenderAsyncClient(String entityName, String clientId, MessagingEntityType entityType,
         ServiceBusConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions, TracerProvider tracerProvider,
         MessageSerializer messageSerializer, Runnable onClientClose, String viaEntityName) {
         // Caching the created link so we don't invoke another link creation.
@@ -198,6 +199,16 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         this.entityType = entityType;
         this.viaEntityName = viaEntityName;
         this.onClientClose = onClientClose;
+        this.clientId = clientId;
+    }
+
+    /**
+     * Gets the client identifier.
+     *
+     * @return The unique identifier string for current client.
+     */
+    public String getClientId() {
+        return clientId;
     }
 
     /**
@@ -807,9 +818,9 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             .flatMap(connection -> {
                 if (!CoreUtils.isNullOrEmpty(viaEntityName)) {
                     return connection.createSendLink("VIA-".concat(viaEntityName), viaEntityName, retryOptions,
-                        entityName);
+                        entityName, clientId);
                 } else {
-                    return connection.createSendLink(entityName, entityName, retryOptions, null);
+                    return connection.createSendLink(entityName, entityName, retryOptions, null, clientId);
                 }
             })
             .doOnNext(next -> linkName.compareAndSet(null, next.getLinkName()));

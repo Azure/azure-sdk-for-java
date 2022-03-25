@@ -69,7 +69,7 @@ class ServiceBusSessionManager implements AutoCloseable {
     private final List<Scheduler> schedulers;
     private final Deque<Scheduler> availableSchedulers = new ConcurrentLinkedDeque<>();
     private final Duration maxSessionLockRenewDuration;
-
+    private final String clientId;
     /**
      * SessionId to receiver mapping.
      */
@@ -79,10 +79,11 @@ class ServiceBusSessionManager implements AutoCloseable {
 
     private volatile Flux<ServiceBusMessageContext> receiveFlux;
 
-    ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
+    ServiceBusSessionManager(String entityPath, String clientId, MessagingEntityType entityType,
         ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
         MessageSerializer messageSerializer, ReceiverOptions receiverOptions, ServiceBusReceiveLink receiveLink) {
         this.entityPath = entityPath;
+        this.clientId = clientId;
         this.entityType = entityType;
         this.receiverOptions = receiverOptions;
         this.connectionProcessor = connectionProcessor;
@@ -110,10 +111,10 @@ class ServiceBusSessionManager implements AutoCloseable {
         this.receiveLink = receiveLink;
     }
 
-    ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
+    ServiceBusSessionManager(String entityPath, String clientId, MessagingEntityType entityType,
         ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
         MessageSerializer messageSerializer, ReceiverOptions receiverOptions) {
-        this(entityPath, entityType, connectionProcessor, tracerProvider,
+        this(entityPath, clientId, entityType, connectionProcessor, tracerProvider,
             messageSerializer, receiverOptions, null);
     }
 
@@ -252,7 +253,7 @@ class ServiceBusSessionManager implements AutoCloseable {
             : StringUtil.getRandomString("session-");
         return connectionProcessor
             .flatMap(connection -> {
-                return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(),
+                return connection.createReceiveLink(linkName, entityPath, clientId, receiverOptions.getReceiveMode(),
                 null, entityType, sessionId);
             });
     }

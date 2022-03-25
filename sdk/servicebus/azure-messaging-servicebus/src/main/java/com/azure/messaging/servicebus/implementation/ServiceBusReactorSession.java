@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.azure.core.amqp.implementation.ClientConstants.CLIENT_ID_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 import static com.azure.messaging.servicebus.implementation.MessageUtils.adjustServerTimeout;
@@ -89,26 +90,26 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
     }
 
     @Override
-    public Mono<ServiceBusReceiveLink> createConsumer(String linkName, String entityPath,
+    public Mono<ServiceBusReceiveLink> createConsumer(String linkName, String entityPath, String clientId,
         MessagingEntityType entityType, Duration timeout, AmqpRetryPolicy retry, ServiceBusReceiveMode receiveMode) {
         final Map<Symbol, Object> filter = new HashMap<>();
 
-        return createConsumer(linkName, entityPath, entityType, timeout, retry, receiveMode, filter);
+        return createConsumer(linkName, entityPath, clientId, entityType, timeout, retry, receiveMode, filter);
     }
 
     @Override
-    public Mono<ServiceBusReceiveLink> createConsumer(String linkName, String entityPath,
+    public Mono<ServiceBusReceiveLink> createConsumer(String linkName, String entityPath, String clientId,
         MessagingEntityType entityType, Duration timeout, AmqpRetryPolicy retry, ServiceBusReceiveMode receiveMode,
         String sessionId) {
 
         final Map<Symbol, Object> filter = new HashMap<>();
         filter.put(SESSION_FILTER, sessionId);
 
-        return createConsumer(linkName, entityPath, entityType, timeout, retry, receiveMode, filter);
+        return createConsumer(linkName, entityPath, clientId, entityType, timeout, retry, receiveMode, filter);
     }
 
     @Override
-    public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout,
+    public Mono<AmqpLink> createProducer(String linkName, String entityPath, String clientId, Duration timeout,
         AmqpRetryPolicy retry, String transferEntityPath) {
         Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         Objects.requireNonNull(timeout, "'timeout' cannot be null.");
@@ -118,6 +119,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
         Map<Symbol, Object> linkProperties = new HashMap<>();
 
         linkProperties.put(LINK_TIMEOUT_PROPERTY, UnsignedInteger.valueOf(serverTimeout.toMillis()));
+        linkProperties.put(CLIENT_ID, clientId);
 
         if (!CoreUtils.isNullOrEmpty(transferEntityPath)) {
             linkProperties.put(LINK_TRANSFER_DESTINATION_PROPERTY, transferEntityPath);
@@ -125,6 +127,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
             logger.atVerbose()
                 .addKeyValue(LINK_NAME_KEY, linkName)
                 .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                .addKeyValue(CLIENT_ID_KEY, clientId)
                 .addKeyValue("transferEntityPath", transferEntityPath)
                 .log("Get or create sender link.");
 
@@ -138,6 +141,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
             logger.atVerbose()
                 .addKeyValue(LINK_NAME_KEY, linkName)
                 .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                .addKeyValue(CLIENT_ID_KEY, clientId)
                 .log("Get or create sender link.");
 
             return createProducer(linkName, entityPath, timeout, retry, linkProperties);
@@ -167,7 +171,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
             reactorProvider, retryOptions.getTryTimeout(), retryPolicy);
     }
 
-    private Mono<ServiceBusReceiveLink> createConsumer(String linkName, String entityPath,
+    private Mono<ServiceBusReceiveLink> createConsumer(String linkName, String entityPath, String clientId,
         MessagingEntityType entityType, Duration timeout, AmqpRetryPolicy retry, ServiceBusReceiveMode receiveMode,
         Map<Symbol, Object> filter) {
         Objects.requireNonNull(linkName, "'linkName' cannot be null.");
@@ -175,10 +179,12 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
         Objects.requireNonNull(timeout, "'timeout' cannot be null.");
         Objects.requireNonNull(retry, "'retry' cannot be null.");
         Objects.requireNonNull(receiveMode, "'receiveMode' cannot be null.");
+        Objects.requireNonNull(clientId, "'clientId' cannot be null");
 
         final Map<Symbol, Object> linkProperties = new HashMap<>();
         final Duration serverTimeout = adjustServerTimeout(timeout);
         linkProperties.put(LINK_TIMEOUT_PROPERTY, UnsignedInteger.valueOf(serverTimeout.toMillis()));
+        linkProperties.put(CLIENT_ID, clientId);
         if (entityType != null) {
             linkProperties.put(ENTITY_TYPE_PROPERTY, entityType.getValue());
         }
