@@ -100,6 +100,11 @@ public final class TopicDescription {
                 @JacksonXmlProperty(localName = "AuthorizationRule") List<AuthorizationRuleImpl> items) {
             this.items = items;
         }
+        
+        @JsonCreator
+        private AuthorizationRulesWrapper() {
+            this.items = new ArrayList<>();
+        }
     }
 
     /*
