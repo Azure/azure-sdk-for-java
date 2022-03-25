@@ -92,6 +92,8 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
   + Rename property `spring.cloud.azure.storage.fileshare.file-name` to `spring.cloud.azure.storage.fileshare.file-path`.
   + Add property `spring.cloud.azure.storage.fileshare.directory-path`.
 - Delete `EventHubsInitializationContextConsumer`, `EventHubsCloseContextConsumer`, `EventHubsErrorContextConsumer` and `ServiceBusErrorContextConsumer`. Please use `Consumer<>` directly if you want to configure them [#27288](https://github.com/Azure/azure-sdk-for-java/pull/27288).
+- Delete the bean of `EventHubsProcessorContainer` in the autoconfiguration for Event Hubs Spring Messaging support. When needed, a user-defined `EventHubsMessageListenerContainer` bean should be provided for the replacement [#27216](https://github.com/Azure/azure-sdk-for-java/pull/27216).
+- Delete the bean of `ServiceBusProcessorContainer` in the autoconfiguration for Service Bus Spring Messaging support. When needed, a user-defined `ServiceBusMessageListenerContainer` bean should be provided for the replacement [#27216](https://github.com/Azure/azure-sdk-for-java/pull/27216).
 - Rename Beans in `AadAuthenticationFilterAutoConfiguration` from `azureADJwtTokenFilter\getJWTResourceRetriever\getJWKSetCache` to `aadAuthenticationFilter\jwtResourceRetriever\jwkSetCache` [#27301](https://github.com/Azure/azure-sdk-for-java/pull/27301).  
 - Rename Bean in `AadB2cResourceServerAutoConfiguration` from `aadIssuerJWSKeySelector` to `aadIssuerJwsKeySelector` [#27301](https://github.com/Azure/azure-sdk-for-java/pull/27301).  
 - Change non-SDK defined boolean configuration properties from `Boolean` to `boolean` [#27321](https://github.com/Azure/azure-sdk-for-java/pull/27321).
@@ -170,6 +172,7 @@ This section includes changes in the `spring-integration-azure-eventhubs` module
 #### Breaking Changes
 - Move classes for internal usage to the implementation pacakge [#27281](https://github.com/Azure/azure-sdk-for-java/pull/27281).
 - Change the message header prefix from `azure_eventhub` to `azure_eventhubs_` [#27746](https://github.com/Azure/azure-sdk-for-java/pull/27746).
+- Refactor the constructors of `EventHubsInboundChannelAdapter` to `EventHubsInboundChannelAdapter(EventHubsMessageListenerContainer)` and `EventHubsInboundChannelAdapter(EventHubsMessageListenerContainer, ListenerMode)` [#27216](https://github.com/Azure/azure-sdk-for-java/pull/27216), [#27421](https://github.com/Azure/azure-sdk-for-java/pull/27421).
 
 ### Spring Integration Azure Service Bus
 This section includes changes in the `spring-integration-azure-servicebus` module.
@@ -179,6 +182,7 @@ This section includes changes in the `spring-integration-azure-servicebus` modul
 - Delete message header of `AzureHeaders.RAW_ID`. Please use `ServiceBusMessageHeaders.MESSAGE_ID` instead [#27675](https://github.com/Azure/azure-sdk-for-java/pull/27675).
 - Delete class `CheckpointConfig`. Please use `ServiceBusContainerProperties#setAutoComplete` instead. To disable the auto-complete mode is 
 equivalent to `MANUAL` checkpoint mode and to enable it will trigger the `RECORD` mode [#27615](https://github.com/Azure/azure-sdk-for-java/pull/27615), [#27646](https://github.com/Azure/azure-sdk-for-java/pull/27646).
+- Refactor the constructors of `ServiceBusInboundChannelAdapter` to `ServiceBusInboundChannelAdapter(ServiceBusMessageListenerContainer)` and `ServiceBusInboundChannelAdapter(ServiceBusMessageListenerContainer, ListenerMode)` [#27216](https://github.com/Azure/azure-sdk-for-java/pull/27216), [#27421](https://github.com/Azure/azure-sdk-for-java/pull/27421).
 
 #### Features Added
 - Support converting all headers and properties exposed directly by `ServiceBusReceivedMessage` when receiving messages [#27675](https://github.com/Azure/azure-sdk-for-java/pull/27675), newly supported headers and properties can be get according to the keys of:
