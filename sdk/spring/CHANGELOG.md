@@ -105,7 +105,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 - Add more hints for configuration properties in `additional-spring-configuration-metadata.json` file [#26600](https://github.com/Azure/azure-sdk-for-java/issues/26600).
 - Add descriptions and logs for `namespacce` property of Service Bus and Event Hubs [#27053](https://github.com/Azure/azure-sdk-for-java/issues/27053).
 
-#### Bug Fixed
+#### Bugs Fixed
 - Fix AAD autoconfiguration activated when no web dependencies on the classpath [#26915](https://github.com/Azure/azure-sdk-for-java/issues/26915).
 - Fix inconsistency between `getPropertyNames()` and `containsProperty(String name)` in `KeyVaultPropertySource` [#23815](https://github.com/Azure/azure-sdk-for-java/issues/23815).
 - Fix Cosmos direct/gateway connection properties cannot be configured bug [#27241](https://github.com/Azure/azure-sdk-for-java/pull/27241).
@@ -134,7 +134,7 @@ This section includes changes in `spring-cloud-azure-stream-binder-eventhubs` mo
 #### Features Added
 - Support `EventHubsProducerFactoryCustomizer` and `EventHubsProcessorFactoryCustomizer` in `EventHubsMessageChannelBinder` [#27351](https://github.com/Azure/azure-sdk-for-java/issues/27351), [#27653](https://github.com/Azure/azure-sdk-for-java/pull/27653), [#27775](https://github.com/Azure/azure-sdk-for-java/pull/27775).
 
-#### Bug Fixed
+#### Bugs Fixed
 - Fix exception when trying to send a message that was received as part of a batch [#26213](https://github.com/Azure/azure-sdk-for-java/issues/26213).
 - Fix bug when provisioning an Event Hubs consumer group not uses the correct consumer group name [#26622](https://github.com/Azure/azure-sdk-for-java/pull/26622).
 
