@@ -53,7 +53,7 @@ public class AadClientRegistrationRepository implements ClientRegistrationReposi
         Set<String> authorizationCodeScopes = new HashSet<>(); // Used to get authorization code.
         authorizationCodeScopes.addAll(accessTokenScopes);
         authorizationCodeScopes.addAll(delegatedScopes);
-        if (resourceServerCount(accessTokenScopes) == 0 && resourceServerCount((authorizationCodeScopes)) > 1) {
+        if (resourceServerCount(accessTokenScopes) == 0 && resourceServerCount(authorizationCodeScopes) > 1) {
             // AAD server will return error if:
             // 1. authorizationCodeScopes have more than one resource server.
             // 2. accessTokenScopes have no resource server
