@@ -12,7 +12,7 @@ import java.util.function.Function;
  *
  * @param <T> Type of property value.
  */
-public class ConfigurationProperty<T> {
+public final class ConfigurationProperty<T> {
     private static final Function<String, Boolean> BOOLEAN_CONVERTER = (value) -> Boolean.parseBoolean(value);
     private static final Function<String, Duration> DURATION_CONVERTER = (value) -> {
         long timeoutMillis = Long.parseLong(value);

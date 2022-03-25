@@ -34,9 +34,6 @@ public class ProxyOptions {
      */
     private static final String JAVA_SYSTEM_PROXY_PREREQUISITE = "java.net.useSystemProxies";
 
-    private static final int DEFAULT_HTTPS_PORT = 443;
-    private static final int DEFAULT_HTTP_PORT = 80;
-
     /*
      * The 'http.nonProxyHosts' system property is expected to be delimited by '|', but don't split escaped '|'s.
      */
@@ -164,8 +161,7 @@ public class ProxyOptions {
             ? Configuration.getGlobalConfiguration()
             : configuration;
 
-        boolean createUnresolved = proxyConfiguration.get(Properties.CREATE_UNRESOLVED);
-        return attemptToLoadProxy(proxyConfiguration, createUnresolved);
+        return attemptToLoadProxy(proxyConfiguration, false);
     }
 
     /**
@@ -227,15 +223,13 @@ public class ProxyOptions {
             }
         }
 
-        proxyOptions = attemptToLoadJavaProxy(configuration, createUnresolved,
-            Properties.HTTPS_PROXY_HOST, Properties.HTTPS_PROXY_PORT, Properties.HTTPS_PROXY_USER, Properties.HTTPS_PROXY_PASSWORD, DEFAULT_HTTPS_PORT);
+        proxyOptions = attemptToLoadJavaProxy(configuration, createUnresolved, true);
         if (proxyOptions != null) {
             LOGGER.verbose("Using proxy created from JVM HTTPS system properties.");
             return proxyOptions;
         }
 
-        proxyOptions = attemptToLoadJavaProxy(configuration, createUnresolved,
-            Properties.HTTP_PROXY_HOST, Properties.HTTP_PROXY_PORT, Properties.HTTP_PROXY_USER, Properties.HTTP_PROXY_PASSWORD, DEFAULT_HTTP_PORT);
+        proxyOptions = attemptToLoadJavaProxy(configuration, createUnresolved, false);
         if (proxyOptions != null) {
             LOGGER.verbose("Using proxy created from JVM HTTP system properties.");
             return proxyOptions;
@@ -299,25 +293,15 @@ public class ProxyOptions {
         return sanitizeNonProxyHosts(NO_PROXY_SPLIT.split(noProxyString));
     }
 
-    private static ProxyOptions attemptToLoadJavaProxy(Configuration configuration, boolean createUnresolved,
-                                                       ConfigurationProperty<String> hostProperty,
-                                                       ConfigurationProperty<Integer> portProperty,
-                                                       ConfigurationProperty<String> userProperty,
-                                                       ConfigurationProperty<String> passwordProperty,
-                                                       Integer defaultPort) {
-        String host = configuration.get(hostProperty);
+    private static ProxyOptions attemptToLoadJavaProxy(Configuration configuration, boolean createUnresolved, boolean isHttps) {
+        String host = Properties.getProxyHost(configuration, isHttps);
 
         // No proxy configuration setup.
         if (CoreUtils.isNullOrEmpty(host)) {
             return null;
         }
 
-        int port;
-        try {
-            port = configuration.get(portProperty);
-        } catch (NumberFormatException ex) {
-            port = defaultPort;
-        }
+        int port = Properties.getProxyPort(configuration, isHttps);
 
         InetSocketAddress socketAddress = (createUnresolved)
             ? InetSocketAddress.createUnresolved(host, port)
@@ -332,8 +316,8 @@ public class ProxyOptions {
             LOGGER.log(LogLevel.VERBOSE, () -> "Using non-proxy host regex: " + proxyOptions.nonProxyHosts);
         }
 
-        String username = configuration.get(userProperty);
-        String password = configuration.get(passwordProperty);
+        String username = Properties.getProxyUser(configuration, isHttps);
+        String password = Properties.getProxyPassword(configuration, isHttps);
 
         if (username != null && password != null) {
             proxyOptions.setCredentials(username, password);
@@ -478,44 +462,64 @@ public class ProxyOptions {
             .canLogValue(true)
             .build();
 
-        public static final ConfigurationProperty<Boolean> CREATE_UNRESOLVED = ConfigurationUtils.booleanSharedPropertyBuilder("http.proxy.create-unresolved")
-            .defaultValue(false)
-            .build();
-
-        public static final ConfigurationProperty<String> HTTP_PROXY_HOST = ConfigurationUtils.stringSharedPropertyBuilder("http.proxy.host")
-            .environmentAliases("http.proxyHost")
+        public static final ConfigurationProperty<String> PROXY_HOST = ConfigurationUtils.stringSharedPropertyBuilder("http.proxy.hostname")
             .canLogValue(true)
             .build();
 
-        public static final ConfigurationProperty<Integer> HTTP_PROXY_PORT = ConfigurationUtils.integerSharedPropertyBuilder("http.proxy.port")
-            .environmentAliases("http.proxyPort")
-            .defaultValue(DEFAULT_HTTP_PORT)
+        public static final ConfigurationProperty<Integer> PROXY_PORT = ConfigurationUtils.integerSharedPropertyBuilder("http.proxy.port")
             .build();
 
-        public static final ConfigurationProperty<String> HTTP_PROXY_USER = ConfigurationUtils.stringSharedPropertyBuilder("http.proxy.username")
-            .environmentAliases("http.proxyUser")
-            .build();
-
-        public static final ConfigurationProperty<String> HTTP_PROXY_PASSWORD = ConfigurationUtils.stringSharedPropertyBuilder("http.proxy.password")
-            .environmentAliases("http.proxyPassword")
-            .build();
-
-        public static final ConfigurationProperty<String> HTTPS_PROXY_HOST = ConfigurationUtils.stringSharedPropertyBuilder("https.proxy.host")
-            .environmentAliases("https.proxyHost")
+        public static final ConfigurationProperty<String> PROXY_USER = ConfigurationUtils.stringSharedPropertyBuilder("http.proxy.username")
             .canLogValue(true)
             .build();
 
-        public static final ConfigurationProperty<Integer> HTTPS_PROXY_PORT = ConfigurationUtils.integerSharedPropertyBuilder("https.proxy.port")
-            .environmentAliases("https.proxyPort")
-            .defaultValue(DEFAULT_HTTPS_PORT)
-            .build();
+        public static final ConfigurationProperty<String> PROXY_PASSWORD = ConfigurationUtils.stringSharedPropertyBuilder("http.proxy.password").build();
 
-        public static final ConfigurationProperty<String> HTTPS_PROXY_USER = ConfigurationUtils.stringSharedPropertyBuilder("https.proxy.username")
-            .environmentAliases("https.proxyUser")
-            .build();
+        private static final int DEFAULT_HTTPS_PORT = 443;
+        private static final int DEFAULT_HTTP_PORT = 80;
 
-        public static final ConfigurationProperty<String> HTTPS_PROXY_PASSWORD = ConfigurationUtils.stringSharedPropertyBuilder("https.proxy.password")
-            .environmentAliases("https.proxyPassword")
-            .build();
+
+        public static String getProxyHost(Configuration configuration, boolean isHttps) {
+            String host = configuration.get(PROXY_HOST);
+            if (host == null) {
+                host = configuration.get(isHttps ? "https.proxyHost" : "http.proxyHost");
+            }
+
+            return host;
+        }
+
+        public static String getProxyUser(Configuration configuration, boolean isHttps) {
+            String user = configuration.get(PROXY_USER);
+            if (user == null) {
+                user = configuration.get(isHttps ? "https.proxyUser" : "http.proxyUser");
+            }
+
+            return user;
+        }
+
+        public static String getProxyPassword(Configuration configuration, boolean isHttps) {
+            String password = configuration.get(PROXY_PASSWORD);
+            if (password == null) {
+                password = configuration.get(isHttps ? "https.proxyPassword" : "http.proxyPassword");
+            }
+
+            return password;
+        }
+
+        public static Integer getProxyPort(Configuration configuration, boolean isHttps) {
+            // not tolerating errors with new configuration options.
+            Integer port = configuration.get(PROXY_PORT);
+
+            if (port == null) {
+                // but preserving existing behavior and tolerating errors in environment configuration
+                try {
+                    port = Integer.parseInt(configuration.get(isHttps ? "https.proxyPort" : "http.proxyPort"));
+                } catch (NumberFormatException ex) {
+                    port = null;
+                }
+            }
+
+            return port != null ? port : (isHttps ? DEFAULT_HTTPS_PORT : DEFAULT_HTTP_PORT);
+        }
     }
 }

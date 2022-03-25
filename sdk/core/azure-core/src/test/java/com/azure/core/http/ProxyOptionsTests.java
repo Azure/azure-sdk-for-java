@@ -12,8 +12,11 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -136,17 +139,18 @@ public class ProxyOptionsTests {
     @Test
     public void mixedExplicitAndEnvironmentConfiguration() {
         Configuration configuration = new TestConfigurationBuilder()
-            .addEnv("https.proxyHost", PROXY_HOST)
+            .addEnv("https.proxyHost", "ignored")
             .addEnv("https.proxyPort", "8080")
-            .add("foo.https.proxy.username", PROXY_USER)
-            .add("https.proxy.password", PROXY_PASSWORD)
-            .add("foo.http.proxy.host", "ignored")
+            .add("foo.http.proxy.username", PROXY_USER)
+            .add("http.proxy.password", PROXY_PASSWORD)
+            .add("foo.http.proxy.hostname", PROXY_HOST)
             .buildSection("foo");
 
         ProxyOptions proxyOptions = fromConfiguration(configuration, true);
 
         assertNotNull(proxyOptions);
         assertTrue(proxyOptions.getAddress().isUnresolved());
+        assertEquals(Proxy.Type.HTTP, proxyOptions.getType().toProxyType());
         assertEquals(PROXY_HOST, proxyOptions.getAddress().getHostName());
         assertEquals(8080, proxyOptions.getAddress().getPort());
         assertEquals(PROXY_USER, proxyOptions.getUsername());
@@ -158,8 +162,8 @@ public class ProxyOptionsTests {
         Configuration configuration = new TestConfigurationBuilder()
             .add("https.proxyHost", PROXY_HOST)
             .add("https.proxyPort", "8080")
-            .add("https.proxy.username", PROXY_USER)
-            .add("https.proxy.password", PROXY_PASSWORD)
+            .add("http.proxy.username", PROXY_USER)
+            .add("http.proxy.password", PROXY_PASSWORD)
             .buildSection("foo");
 
         ProxyOptions proxyOptions = fromConfiguration(configuration, true);
@@ -167,43 +171,12 @@ public class ProxyOptionsTests {
         assertNull(proxyOptions);
     }
 
-    @Test
-    public void createUnresolvedExplicitOverridesConfig() {
-        Configuration configuration = new TestConfigurationBuilder()
-            .add("http.proxy.host", PROXY_HOST)
-            .add("http.proxy.port", "80")
-            .add("foo.http.proxy.username", PROXY_USER)
-            .add("foo.http.proxy.password", PROXY_PASSWORD)
-            .add("foo.http.proxy.create-unresolved", "false")
-            .buildSection("foo");
-
-        ProxyOptions proxyOptions = fromConfiguration(configuration, true);
-
-        assertNotNull(proxyOptions);
-        assertTrue(proxyOptions.getAddress().isUnresolved());
-    }
-
-    @Test
-    public void createUnresolvedExplicit() {
-        Configuration configuration = new TestConfigurationBuilder()
-            .add("foo.http.proxy.host", PROXY_HOST)
-            .add("foo.http.proxy.port", "80")
-            .add("http.proxy.username", PROXY_USER)
-            .add("http.proxy.password", PROXY_PASSWORD)
-            .add("http.proxy.create-unresolved", "true")
-            .buildSection("foo");
-
-        ProxyOptions proxyOptions = fromConfiguration(configuration);
-
-        assertNotNull(proxyOptions);
-        assertTrue(proxyOptions.getAddress().isUnresolved());
-    }
-
     @ParameterizedTest
-    @MethodSource("notInts")
-    public void defaultHttpPort(String port) {
+    @NullSource
+    @ValueSource(strings = {""})
+    public void defaultHttpPortNullAndEmpty(String port) {
         TestConfigurationBuilder configBuilder = new TestConfigurationBuilder()
-            .add("http.proxy.host", PROXY_HOST)
+            .add("http.proxy.hostname", PROXY_HOST)
             .add("http.proxy.username", PROXY_USER)
             .add("http.proxy.password", PROXY_PASSWORD);
 
@@ -214,29 +187,48 @@ public class ProxyOptionsTests {
         ProxyOptions proxyOptions = fromConfiguration(configBuilder.build());
 
         assertNotNull(proxyOptions);
-        assertEquals(80, proxyOptions.getAddress().getPort());
+        assertEquals(443, proxyOptions.getAddress().getPort());
     }
 
     @ParameterizedTest
-    @MethodSource("notInts")
-    public void defaultHttpsPort(String port) {
-        TestConfigurationBuilder configBuilder = new TestConfigurationBuilder()
-            .add("https.proxy.host", PROXY_HOST)
-            .add("https.proxy.username", PROXY_USER)
-            .add("https.proxy.password", PROXY_PASSWORD);
+    @ValueSource(strings = {"   ", "not-an-int"})
+    public void invalidHttpPortExplicitConfigThrows(String port) {
+        Configuration configuration = new TestConfigurationBuilder()
+            .add("http.proxy.hostname", PROXY_HOST)
+            .add("http.proxy.username", PROXY_USER)
+            .add("http.proxy.password", PROXY_PASSWORD)
+            .add("http.proxy.port", port)
+            .build();
 
-        if (port != null) {
-            configBuilder.add("https.proxy.port", port);
-        }
+        assertThrows(NumberFormatException.class, () -> fromConfiguration(configuration));
+    }
 
-        ProxyOptions proxyOptions = fromConfiguration(configBuilder.build());
+    @ParameterizedTest
+    @ValueSource(strings = {"   ", "not-an-int"})
+    public void invalidHttpsPortEnvironmentConfigDefault(String port) {
+        Configuration configuration = new TestConfigurationBuilder()
+            .addEnv("https.proxyHost", PROXY_HOST)
+            .addEnv("https.proxyPort", port)
+            .build();
+
+        ProxyOptions proxyOptions = fromConfiguration(configuration);
 
         assertNotNull(proxyOptions);
         assertEquals(443, proxyOptions.getAddress().getPort());
     }
 
-    static Stream<String> notInts() {
-        return Stream.of("", "   ", "not-an-int", null);
+    @ParameterizedTest
+    @ValueSource(strings = {"   ", "not-an-int"})
+    public void invalidHttpPortEnvironmentConfigDefault(String port) {
+        Configuration configuration = new TestConfigurationBuilder()
+            .addEnv("http.proxyHost", PROXY_HOST)
+            .addEnv("http.proxyPort", port)
+            .build();
+
+        ProxyOptions proxyOptions = fromConfiguration(configuration);
+
+        assertNotNull(proxyOptions);
+        assertEquals(80, proxyOptions.getAddress().getPort());
     }
 
     private static Stream<Arguments> loadFromEnvironmentSupplier() {
@@ -336,36 +328,20 @@ public class ProxyOptionsTests {
              */
 
             // Basic Java HTTPS proxy.
-            Arguments.of(createExplicitConfiguration(443, null, null, null, true),
+            Arguments.of(createExplicitConfiguration(443, null, null, null),
                 PROXY_HOST, 443, null, null, null),
 
             // Username only Java HTTPS proxy.
-            Arguments.of(createExplicitConfiguration(443, PROXY_USER, null, null, true),
+            Arguments.of(createExplicitConfiguration(443, PROXY_USER, null, null),
                 PROXY_HOST, 443, null, null, null),
 
             // Complete Java HTTPS proxy.
-            Arguments.of(createExplicitConfiguration(443, PROXY_USER, PROXY_PASSWORD, null, true),
+            Arguments.of(createExplicitConfiguration(443, PROXY_USER, PROXY_PASSWORD, null),
                 PROXY_HOST, 443, PROXY_USER, PROXY_PASSWORD, null),
 
             // Java HTTPS proxy with non-proxying hosts.
-            Arguments.of(createExplicitConfiguration(443, null, null, NON_PROXY_HOSTS, true),
-                PROXY_HOST, 443, null, null, "(" + NON_PROXY_HOSTS + ")"),
-
-            // Basic Java HTTP proxy.
-            Arguments.of(createExplicitConfiguration(80, null, null, null, false),
-                PROXY_HOST, 80, null, null, null),
-
-            // Username only Java HTTP proxy.
-            Arguments.of(createExplicitConfiguration(80, PROXY_USER, null, null, false),
-                PROXY_HOST, 80, null, null, null),
-
-            // Complete Java HTTP proxy.
-            Arguments.of(createExplicitConfiguration(80, PROXY_USER, PROXY_PASSWORD, null, false),
-                PROXY_HOST, 80, PROXY_USER, PROXY_PASSWORD, null),
-
-            // Java HTTP proxy with non-proxying hosts.
-            Arguments.of(createExplicitConfiguration(80, null, null, NON_PROXY_HOSTS, false),
-                PROXY_HOST, 80, null, null, "(" + NON_PROXY_HOSTS + ")")
+            Arguments.of(createExplicitConfiguration(443, null, null, NON_PROXY_HOSTS),
+                PROXY_HOST, 443, null, null, "(" + NON_PROXY_HOSTS + ")")
         );
     }
 
@@ -420,23 +396,15 @@ public class ProxyOptionsTests {
         return testSource.build();
     }
 
-    private static Configuration createExplicitConfiguration(int port, String username, String password,
-                                                            String nonProxyHosts, boolean isHttps) {
+    private static Configuration createExplicitConfiguration(int port, String username, String password, String nonProxyHosts) {
         TestConfigurationBuilder testSource = new TestConfigurationBuilder()
             .add("http.proxy.non-proxy-hosts", CoreUtils.isNullOrEmpty(nonProxyHosts) ? "" : nonProxyHosts);
 
 
-        if (isHttps) {
-            testSource.add("https.proxy.host", PROXY_HOST)
-                .add("https.proxy.port", String.valueOf(port))
-                .add("https.proxy.username", username)
-                .add("https.proxy.password", password);
-        } else {
-            testSource.add("http.proxy.host", PROXY_HOST)
-                .add("http.proxy.port", String.valueOf(port))
-                .add("http.proxy.username", username)
-                .add("http.proxy.password", password);
-        }
+        testSource.add("http.proxy.hostname", PROXY_HOST)
+            .add("http.proxy.port", String.valueOf(port))
+            .add("http.proxy.username", username)
+            .add("http.proxy.password", password);
 
         // in case something is set up on the machine
         testSource.addEnv("http.nonProxyHosts", null);

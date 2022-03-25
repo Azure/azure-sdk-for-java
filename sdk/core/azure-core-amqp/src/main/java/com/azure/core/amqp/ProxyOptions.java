@@ -4,8 +4,13 @@
 package com.azure.core.amqp;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationProperty;
+import com.azure.core.util.ConfigurationPropertyBuilder;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.net.InetSocketAddress;
 import java.net.PasswordAuthentication;
 import java.net.Proxy;
 import java.util.Arrays;
@@ -76,6 +81,33 @@ public class ProxyOptions implements AutoCloseable {
         }
     }
 
+    public static ProxyOptions fromConfiguration(Configuration configuration) {
+        if (configuration == Configuration.NONE) {
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'configuration' cannot be 'Configuration.NONE'."));
+        }
+
+        Configuration proxyConfiguration = (configuration == null)
+            ? Configuration.getGlobalConfiguration()
+            : configuration;
+
+        String host = proxyConfiguration.get(Properties.PROXY_HOST);
+
+        // No proxy configuration setup.
+        if (CoreUtils.isNullOrEmpty(host)) {
+            return null;
+        }
+
+        int port = proxyConfiguration.get(Properties.PROXY_PORT);
+        InetSocketAddress socketAddress = new InetSocketAddress(host, port);
+
+        Proxy.Type proxyType = proxyConfiguration.get(Properties.PROXY_TYPE);
+        ProxyAuthenticationType authType = proxyConfiguration.get(Properties.AUTHENTICATION_TYPE);
+        String username = proxyConfiguration.get(Properties.PROXY_USER);
+        String password = proxyConfiguration.get(Properties.PROXY_PASSWORD);
+
+        return new ProxyOptions(authType, new Proxy(proxyType, socketAddress), username, password);
+    }
+
     /**
      * Gets the proxy authentication type.
      *
@@ -133,5 +165,39 @@ public class ProxyOptions implements AutoCloseable {
         if (credentials != null) {
             Arrays.fill(credentials.getPassword(), '\0');
         }
+    }
+
+    private static class Properties {
+        public static final ConfigurationProperty<ProxyAuthenticationType> AUTHENTICATION_TYPE =
+            new ConfigurationPropertyBuilder("amqp.proxy.authentication-type", s -> ProxyAuthenticationType.valueOf((String)s))
+                .shared(true)
+                .defaultValue(ProxyAuthenticationType.NONE)
+                .build();
+
+        public static final ConfigurationProperty<Proxy.Type> PROXY_TYPE =
+            new ConfigurationPropertyBuilder("amqp.proxy.type", s -> Proxy.Type.valueOf((String)s))
+                .shared(true)
+                .defaultValue(Proxy.Type.DIRECT)
+                .build();
+
+        public static final ConfigurationProperty<String> PROXY_HOST = ConfigurationProperty.stringPropertyBuilder("amqp.proxy.hostname")
+            .shared(true)
+            .canLogValue(true)
+            .build();
+
+        public static final ConfigurationProperty<Integer> PROXY_PORT = ConfigurationProperty.integerPropertyBuilder("amqp.proxy.port")
+            .shared(true)
+            .required(true)
+            .build();
+
+        public static final ConfigurationProperty<String> PROXY_USER = ConfigurationProperty.stringPropertyBuilder("amqp.proxy.username")
+            .shared(true)
+            .canLogValue(true)
+            .build();
+
+        public static final ConfigurationProperty<String> PROXY_PASSWORD = ConfigurationProperty.stringPropertyBuilder("amqp.proxy.password")
+            .shared(true)
+            .build();
+
     }
 }

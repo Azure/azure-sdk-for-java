@@ -10,7 +10,7 @@ import java.util.function.Function;
  * Builds configuration property.
  * @param <T> The property value type.
  */
-public class ConfigurationPropertyBuilder<T> {
+public final class ConfigurationPropertyBuilder<T> {
     private static final String[] EMPTY_ARRAY = new String[0];
     private static final Function<String, String> PERMIT_VALUE_SANITIZER = (value) -> value;
 
