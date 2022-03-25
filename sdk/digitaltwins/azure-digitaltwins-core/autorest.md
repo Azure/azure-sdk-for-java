@@ -20,10 +20,10 @@ Run `generate.ps1` in this directory to generate the code.
 
 ``` yaml
 #When generating from the official specifications repository
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/14fb40342c19f8b483e132038f8424ee62b745d9/specification/digitaltwins/data-plane/Microsoft.DigitalTwins/stable/2020-10-31/digitaltwins.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/1233f92f47db0cc4201cb4065180d9f4b67d2b6b/specification/digitaltwins/data-plane/Microsoft.DigitalTwins/preview/2021-06-30-preview/digitaltwins.json
 
 #if you want to generate using local swagger copy:
-#input-file: $(this-folder)/swagger/2020-`0-31/digitaltwins.json
+#input-file: $(this-folder)/swagger/2021-06-30-preview/digitaltwins.json
 
 output-folder: "./"
 license-header: MICROSOFT_MIT_SMALL

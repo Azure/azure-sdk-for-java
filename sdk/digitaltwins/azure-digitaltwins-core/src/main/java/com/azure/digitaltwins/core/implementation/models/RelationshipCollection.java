@@ -6,7 +6,6 @@ package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /** A collection of relationships which relate digital twins together. */
@@ -69,5 +68,5 @@ public final class RelationshipCollection {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    public void validate() { }
+    public void validate() {}
 }
