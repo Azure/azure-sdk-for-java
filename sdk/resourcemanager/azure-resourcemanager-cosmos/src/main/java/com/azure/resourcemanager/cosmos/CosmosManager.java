@@ -10,9 +10,9 @@ import com.azure.resourcemanager.cosmos.implementation.CosmosDBManagementClientB
 import com.azure.resourcemanager.cosmos.implementation.CosmosDBAccountsImpl;
 import com.azure.resourcemanager.cosmos.models.CosmosDBAccounts;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 
 /** Entry point to Azure compute resource management. */
@@ -45,7 +45,7 @@ public final class CosmosManager extends Manager<CosmosDBManagementClient> {
      * @param profile the profile
      * @return the ComputeManager
      */
-    private static CosmosManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static CosmosManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return new CosmosManager(httpPipeline, profile);
     }
 

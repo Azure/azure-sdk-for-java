@@ -11,9 +11,9 @@ import com.azure.resourcemanager.msi.implementation.ManagedServiceIdentityClient
 import com.azure.resourcemanager.msi.implementation.IdentitesImpl;
 import com.azure.resourcemanager.msi.models.Identities;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 
 /**
@@ -53,7 +53,7 @@ public final class MsiManager extends Manager<ManagedServiceIdentityClient> {
      * @param profile the profile to use
      * @return the MsiManager
      */
-    private static MsiManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static MsiManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return  new MsiManager(httpPipeline, profile);
     }
 
@@ -87,9 +87,7 @@ public final class MsiManager extends Manager<ManagedServiceIdentityClient> {
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
-        authorizationManager = AzureConfigurableImpl
-            .configureHttpPipeline(httpPipeline, AuthorizationManager.configure())
-            .authenticate(null, profile);
+        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile);
     }
 
     /**

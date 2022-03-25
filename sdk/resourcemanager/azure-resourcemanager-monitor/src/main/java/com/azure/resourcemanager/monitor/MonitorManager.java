@@ -20,9 +20,9 @@ import com.azure.resourcemanager.monitor.models.AutoscaleSettings;
 import com.azure.resourcemanager.monitor.models.DiagnosticSettings;
 import com.azure.resourcemanager.monitor.models.MetricDefinitions;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 
 /** Entry point to Azure Monitor. */
@@ -61,7 +61,7 @@ public final class MonitorManager extends Manager<MonitorClient> {
      * @param profile the profile to use
      * @return the MonitorManager
      */
-    private static MonitorManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static MonitorManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return new MonitorManager(httpPipeline, profile);
     }
 

@@ -23,9 +23,9 @@ import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.dns.DnsZoneManager;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.storage.StorageManager;
 
@@ -71,7 +71,7 @@ public final class AppServiceManager extends Manager<WebSiteManagementClient> {
      * @param profile the profile to use
      * @return the StorageManager
      */
-    private static AppServiceManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static AppServiceManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return new AppServiceManager(httpPipeline, profile);
     }
 
@@ -103,15 +103,10 @@ public final class AppServiceManager extends Manager<WebSiteManagementClient> {
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
-        keyVaultManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, KeyVaultManager.configure())
-            .authenticate(null, profile);
-        storageManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, StorageManager.configure())
-            .authenticate(null, profile);
-        authorizationManager = AzureConfigurableImpl
-            .configureHttpPipeline(httpPipeline, AuthorizationManager.configure())
-            .authenticate(null, profile);
-        dnsZoneManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, DnsZoneManager.configure())
-            .authenticate(null, profile);
+        keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile);
+        storageManager = StorageManager.authenticate(httpPipeline, profile);
+        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile);
+        dnsZoneManager = DnsZoneManager.authenticate(httpPipeline, profile);
     }
 
     /** @return the authorization manager instance. */

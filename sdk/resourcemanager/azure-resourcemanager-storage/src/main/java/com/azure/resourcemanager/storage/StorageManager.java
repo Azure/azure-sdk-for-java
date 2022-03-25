@@ -6,9 +6,9 @@ package com.azure.resourcemanager.storage;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.storage.fluent.StorageManagementClient;
 import com.azure.resourcemanager.storage.implementation.StorageManagementClientBuilder;
@@ -62,7 +62,7 @@ public final class StorageManager extends Manager<StorageManagementClient> {
      * @param profile the profile to use
      * @return the StorageManager
      */
-    private static StorageManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static StorageManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return new StorageManager(httpPipeline, profile);
     }
 

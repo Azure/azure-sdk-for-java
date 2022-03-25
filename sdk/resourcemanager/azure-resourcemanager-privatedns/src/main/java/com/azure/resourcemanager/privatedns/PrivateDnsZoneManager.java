@@ -9,9 +9,9 @@ import com.azure.resourcemanager.privatedns.implementation.PrivateDnsManagementC
 import com.azure.resourcemanager.privatedns.implementation.PrivateDnsZonesImpl;
 import com.azure.resourcemanager.privatedns.models.PrivateDnsZones;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 
 /** Entry point to Azure private DNS zone management. */
@@ -46,7 +46,7 @@ public final class PrivateDnsZoneManager extends Manager<PrivateDnsManagementCli
      * @param profile the profile to use
      * @return the PrivateDnsZoneManager
      */
-    private static PrivateDnsZoneManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static PrivateDnsZoneManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return new PrivateDnsZoneManager(httpPipeline, profile);
     }
 

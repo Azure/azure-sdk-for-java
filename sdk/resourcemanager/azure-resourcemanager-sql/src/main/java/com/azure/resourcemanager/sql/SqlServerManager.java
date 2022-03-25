@@ -6,9 +6,9 @@ package com.azure.resourcemanager.sql;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.sql.fluent.SqlManagementClient;
 import com.azure.resourcemanager.sql.implementation.SqlManagementClientBuilder;
@@ -38,8 +38,7 @@ public class SqlServerManager extends Manager<SqlManagementClient> {
                 .subscriptionId(profile.getSubscriptionId())
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .buildClient());
-        this.storageManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, StorageManager.configure())
-            .authenticate(null, profile);
+        this.storageManager = StorageManager.authenticate(httpPipeline, profile);
         this.tenantId = profile.getTenantId();
     }
 
@@ -75,7 +74,7 @@ public class SqlServerManager extends Manager<SqlManagementClient> {
      * @param profile the profile to use
      * @return the SqlServer
      */
-    private static SqlServerManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static SqlServerManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return new SqlServerManager(httpPipeline, profile);
     }
 

@@ -22,9 +22,9 @@ import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorization
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaces;
 import com.azure.resourcemanager.eventhubs.models.EventHubs;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.storage.StorageManager;
 
@@ -69,7 +69,7 @@ public final class EventHubsManager extends Manager<EventHubManagementClient> {
      * @param profile the profile to use
      * @return the EventHubsManager
      */
-    private static EventHubsManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static EventHubsManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return new EventHubsManager(httpPipeline, profile);
     }
 
@@ -103,8 +103,7 @@ public final class EventHubsManager extends Manager<EventHubManagementClient> {
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
-        storageManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, StorageManager.configure())
-            .authenticate(null, profile);
+        storageManager = StorageManager.authenticate(httpPipeline, profile);
     }
 
     /**

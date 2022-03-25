@@ -14,9 +14,9 @@ import com.azure.resourcemanager.containerregistry.models.Registries;
 import com.azure.resourcemanager.containerregistry.models.RegistryTaskRuns;
 import com.azure.resourcemanager.containerregistry.models.RegistryTasks;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 
 /** Entry point to Azure container registry management. */
@@ -54,7 +54,7 @@ public final class ContainerRegistryManager
      * @param profile the profile to use
      * @return the ContainerRegistryManager
      */
-    private static ContainerRegistryManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static ContainerRegistryManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return new ContainerRegistryManager(httpPipeline, profile);
     }
 

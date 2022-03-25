@@ -10,9 +10,9 @@ import com.azure.resourcemanager.containerservice.implementation.ContainerServic
 import com.azure.resourcemanager.containerservice.implementation.KubernetesClustersImpl;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusters;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 
 /** Entry point to Azure Container Service management. */
@@ -49,7 +49,7 @@ public final class ContainerServiceManager
      * @param profile the profile to use
      * @return the ContainerServiceManager
      */
-    private static ContainerServiceManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static ContainerServiceManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return new ContainerServiceManager(httpPipeline, profile);
     }
 

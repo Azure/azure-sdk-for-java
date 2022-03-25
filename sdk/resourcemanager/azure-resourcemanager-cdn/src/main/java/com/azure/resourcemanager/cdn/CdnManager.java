@@ -50,7 +50,7 @@ public final class CdnManager extends Manager<CdnManagementClient> {
      * @param profile the profile to use
      * @return the CDN Manager
      */
-    private static CdnManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static CdnManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return new CdnManager(httpPipeline, profile);
     }
 
@@ -71,10 +71,7 @@ public final class CdnManager extends Manager<CdnManagementClient> {
     /**
      * The implementation for Configurable interface.
      */
-    private static class ConfigurableImpl
-            extends AzureConfigurableImpl<Configurable>
-            implements Configurable {
-
+    private static class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         public CdnManager authenticate(TokenCredential credential, AzureProfile profile) {
             return CdnManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }

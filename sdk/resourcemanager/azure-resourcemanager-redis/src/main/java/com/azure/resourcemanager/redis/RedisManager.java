@@ -10,9 +10,9 @@ import com.azure.resourcemanager.redis.implementation.RedisManagementClientBuild
 import com.azure.resourcemanager.redis.implementation.RedisCachesImpl;
 import com.azure.resourcemanager.redis.models.RedisCaches;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 
 /** Entry point to Azure redis resource management. */
@@ -47,7 +47,7 @@ public final class RedisManager extends Manager<RedisManagementClient> {
      * @param profile the profile to use
      * @return the RedisManager
      */
-    private static RedisManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static RedisManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return new RedisManager(httpPipeline, profile);
     }
 

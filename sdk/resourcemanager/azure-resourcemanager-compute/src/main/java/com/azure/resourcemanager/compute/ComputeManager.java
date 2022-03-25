@@ -37,9 +37,9 @@ import com.azure.resourcemanager.compute.models.VirtualMachines;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.storage.StorageManager;
 
@@ -107,7 +107,7 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
      * @param profile the profile to use
      * @return the ComputeManager
      */
-    private static ComputeManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static ComputeManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return new ComputeManager(httpPipeline, profile);
     }
 
@@ -140,13 +140,9 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
-        storageManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, StorageManager.configure())
-            .authenticate(null, profile);
-        networkManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, NetworkManager.configure())
-            .authenticate(null, profile);
-        authorizationManager = AzureConfigurableImpl
-            .configureHttpPipeline(httpPipeline, AuthorizationManager.configure())
-            .authenticate(null, profile);
+        storageManager = StorageManager.authenticate(httpPipeline, profile);
+        networkManager = NetworkManager.authenticate(httpPipeline, profile);
+        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile);
     }
 
     /** @return the availability set resource management API entry point */

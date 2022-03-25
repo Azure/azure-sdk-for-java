@@ -49,7 +49,7 @@ public final class SearchServiceManager extends Manager<SearchManagementClient> 
      * @param profile the profile to use
      * @return the SearchServiceManager
      */
-    private static SearchServiceManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static SearchServiceManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return new SearchServiceManager(httpPipeline, profile);
     }
 

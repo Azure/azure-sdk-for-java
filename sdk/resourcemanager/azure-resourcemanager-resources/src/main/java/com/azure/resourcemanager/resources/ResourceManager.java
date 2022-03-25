@@ -7,6 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.resources.fluent.FeatureClient;
 import com.azure.resourcemanager.resources.fluent.ManagementLockClient;
+import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.resourcemanager.resources.implementation.FeatureClientBuilder;
 import com.azure.resourcemanager.resources.fluent.PolicyClient;
@@ -41,7 +42,6 @@ import com.azure.resourcemanager.resources.models.Subscriptions;
 import com.azure.resourcemanager.resources.models.TagOperations;
 import com.azure.resourcemanager.resources.models.Tenants;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 
@@ -89,7 +89,7 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
      * @param profile the profile used in resource management
      * @return the interface exposing resource management API entry points that work across subscriptions
      */
-    private static ResourceManager.Authenticated authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static ResourceManager.Authenticated authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return new AuthenticatedImpl(httpPipeline, profile);
     }
 

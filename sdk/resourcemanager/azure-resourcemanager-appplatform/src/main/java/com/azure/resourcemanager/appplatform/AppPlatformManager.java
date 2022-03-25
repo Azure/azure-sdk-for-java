@@ -10,9 +10,9 @@ import com.azure.resourcemanager.appplatform.implementation.AppPlatformManagemen
 import com.azure.resourcemanager.appplatform.implementation.SpringServicesImpl;
 import com.azure.resourcemanager.appplatform.models.SpringServices;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 
 /** Entry point to Azure App Platform management. */
@@ -46,7 +46,7 @@ public final class AppPlatformManager extends Manager<AppPlatformManagementClien
      * @param profile the profile to use
      * @return the AppPlatformManager
      */
-    private static AppPlatformManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static AppPlatformManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return new AppPlatformManager(httpPipeline, profile);
     }
 

@@ -67,7 +67,7 @@ public final class AuthorizationManager implements HasServiceClient<MicrosoftGra
      * @param profile the profile used in Active Directory
      * @return the AuthorizationManager instance
      */
-    private static AuthorizationManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static AuthorizationManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return new AuthorizationManager(httpPipeline, profile);
     }
 
