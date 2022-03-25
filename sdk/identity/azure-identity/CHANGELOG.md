@@ -5,6 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
+Removed `disableAuthoriyValidaionSafetyCheck` for GA, will reintroduce in next beta.
 
 ### Bugs Fixed
 
