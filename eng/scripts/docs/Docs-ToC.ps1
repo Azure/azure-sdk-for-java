@@ -267,7 +267,7 @@ function Get-java-UpdatedDocsMsToc($toc) {
                 children = @("com.microsoft.azure.cognitiveservices.language.text*")
             })
     }
-    $services += [PSCustomObject]@{
+    $sortableServices += [PSCustomObject]@{
         name  = "Cognitive Services"
         landingPageType = "Service"
         items = @(
