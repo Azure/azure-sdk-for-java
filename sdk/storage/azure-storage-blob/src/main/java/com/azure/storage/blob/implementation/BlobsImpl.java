@@ -25,7 +25,6 @@ import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.Base64Util;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
-import com.azure.storage.blob.implementation.models.BlobCopySourceTags;
 import com.azure.storage.blob.implementation.models.BlobDeleteType;
 import com.azure.storage.blob.implementation.models.BlobExpiryOptions;
 import com.azure.storage.blob.implementation.models.BlobTags;
@@ -487,7 +486,6 @@ public final class BlobsImpl {
                 @HeaderParam("x-ms-legal-hold") Boolean legalHold,
                 @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
                 @HeaderParam("x-ms-encryption-scope") String encryptionScope,
-                @HeaderParam("x-ms-copy-source-tag-option") BlobCopySourceTags copySourceTags,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -1868,8 +1866,6 @@ public final class BlobsImpl {
      * @param legalHold Specified if a legal hold should be set on the blob.
      * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
      *     copy source.
-     * @param copySourceTags Optional, default 'replace'. Indicates if source tags should be copied or replaced with the
-     *     tags specified by x-ms-tags.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1902,7 +1898,6 @@ public final class BlobsImpl {
             BlobImmutabilityPolicyMode immutabilityPolicyMode,
             Boolean legalHold,
             String copySourceAuthorization,
-            BlobCopySourceTags copySourceTags,
             EncryptionScope encryptionScopeParam,
             Context context) {
         final String xMsRequiresSync = "true";
@@ -1951,7 +1946,6 @@ public final class BlobsImpl {
                 legalHold,
                 copySourceAuthorization,
                 encryptionScope,
-                copySourceTags,
                 accept,
                 context);
     }

@@ -21,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Base64Util;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
-import com.azure.storage.blob.implementation.models.BlobCopySourceTags;
 import com.azure.storage.blob.implementation.models.BlockBlobsCommitBlockListResponse;
 import com.azure.storage.blob.implementation.models.BlockBlobsGetBlockListResponse;
 import com.azure.storage.blob.implementation.models.BlockBlobsPutBlobFromUrlResponse;
@@ -149,7 +148,6 @@ public final class BlockBlobsImpl {
                 @HeaderParam("x-ms-copy-source") String copySource,
                 @HeaderParam("x-ms-copy-source-blob-properties") Boolean copySourceBlobProperties,
                 @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
-                @HeaderParam("x-ms-copy-source-tag-option") BlobCopySourceTags copySourceTags,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -478,8 +476,6 @@ public final class BlockBlobsImpl {
      *     copied.
      * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
      *     copy source.
-     * @param copySourceTags Optional, default 'replace'. Indicates if source tags should be copied or replaced with the
-     *     tags specified by x-ms-tags.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
@@ -515,7 +511,6 @@ public final class BlockBlobsImpl {
             String blobTagsString,
             Boolean copySourceBlobProperties,
             String copySourceAuthorization,
-            BlobCopySourceTags copySourceTags,
             BlobHttpHeaders blobHttpHeaders,
             CpkInfo cpkInfo,
             EncryptionScope encryptionScopeParam,
@@ -621,7 +616,6 @@ public final class BlockBlobsImpl {
                 copySource,
                 copySourceBlobProperties,
                 copySourceAuthorization,
-                copySourceTags,
                 accept,
                 context);
     }
