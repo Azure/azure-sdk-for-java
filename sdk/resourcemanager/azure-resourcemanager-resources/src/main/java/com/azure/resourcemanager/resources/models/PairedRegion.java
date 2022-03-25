@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Information regarding paired region. */
 @Immutable
 public final class PairedRegion {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PairedRegion.class);
-
     /*
      * The name of the paired region.
      */

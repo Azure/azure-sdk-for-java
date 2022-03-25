@@ -6,14 +6,11 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The available data types for Threat Intelligence TAXII data connector. */
 @Fluent
 public final class TiTaxiiDataConnectorDataTypes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TiTaxiiDataConnectorDataTypes.class);
-
     /*
      * Data type for TAXII connector.
      */
@@ -47,7 +44,7 @@ public final class TiTaxiiDataConnectorDataTypes {
      */
     public void validate() {
         if (taxiiClient() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property taxiiClient in model TiTaxiiDataConnectorDataTypes"));
@@ -55,4 +52,6 @@ public final class TiTaxiiDataConnectorDataTypes {
             taxiiClient().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TiTaxiiDataConnectorDataTypes.class);
 }

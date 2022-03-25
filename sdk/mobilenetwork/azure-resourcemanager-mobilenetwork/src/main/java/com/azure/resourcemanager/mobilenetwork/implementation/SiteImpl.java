@@ -6,6 +6,7 @@ package com.azure.resourcemanager.mobilenetwork.implementation;
 
 import com.azure.core.management.Region;
 import com.azure.core.management.SubResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.SiteInner;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
@@ -43,6 +44,10 @@ public final class SiteImpl implements Site, Site.Definition, Site.Update {
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public ProvisioningState provisioningState() {

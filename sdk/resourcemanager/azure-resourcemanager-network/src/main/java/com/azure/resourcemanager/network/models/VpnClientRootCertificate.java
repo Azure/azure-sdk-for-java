@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.VpnClientRootCertificatePropertiesFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** VPN client root certificate of virtual network gateway. */
 @Fluent
 public final class VpnClientRootCertificate extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnClientRootCertificate.class);
-
     /*
      * Properties of the vpn client root certificate.
      */
@@ -121,7 +118,7 @@ public final class VpnClientRootCertificate extends SubResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model VpnClientRootCertificate"));
@@ -129,4 +126,6 @@ public final class VpnClientRootCertificate extends SubResource {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VpnClientRootCertificate.class);
 }

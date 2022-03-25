@@ -43,9 +43,9 @@ public final class ClientStore {
     private final ConfigurationClientBuilderSetup clientProvider;
 
     private final HashMap<String, ConfigurationClient> clients;
-    
+
     private final boolean isDev;
-    
+
     private final boolean isKeyVaultConfigurated;
 
     /**
@@ -75,7 +75,7 @@ public final class ClientStore {
         }
         ExponentialBackoff retryPolicy = new ExponentialBackoff(appProperties.getMaxRetries(),
             Duration.ofMillis(800), Duration.ofSeconds(8));
-        
+
         ConfigurationClientBuilder builder = getBuilder()
             .addPolicy(new BaseAppConfigurationPolicy(isDev, isKeyVaultConfigurated))
             .retryPolicy(new RetryPolicy(retryPolicy));
@@ -167,7 +167,8 @@ public final class ClientStore {
      * @param storeName Name of the App Configuration store to query against.
      * @return List of Configuration Settings.
      */
-    public PagedIterable<ConfigurationSetting> getFeatureFlagWatchKey(SettingSelector settingSelector, String storeName) {
+    public PagedIterable<ConfigurationSetting> getFeatureFlagWatchKey(SettingSelector settingSelector,
+        String storeName) {
         return getClient(storeName).listConfigurationSettings(settingSelector);
     }
 
@@ -180,6 +181,12 @@ public final class ClientStore {
      */
     public PagedIterable<ConfigurationSetting> listSettings(SettingSelector settingSelector, String storeName) {
         return getClient(storeName).listConfigurationSettings(settingSelector);
+    }
+
+    public void updateSyncToken(String storeName, String syncToken) {
+        if (syncToken != null) {
+            getClient(storeName).updateSyncToken(syncToken);
+        }
     }
 
     ConfigurationClientBuilder getBuilder() {

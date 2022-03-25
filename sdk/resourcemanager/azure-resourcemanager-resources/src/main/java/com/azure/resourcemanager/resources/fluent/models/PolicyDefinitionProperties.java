@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.ParameterDefinitionsValue;
 import com.azure.resourcemanager.resources.models.PolicyType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** The policy definition properties. */
 @Fluent
 public final class PolicyDefinitionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyDefinitionProperties.class);
-
     /*
      * The type of policy definition. Possible values are NotSpecified,
      * BuiltIn, Custom, and Static.

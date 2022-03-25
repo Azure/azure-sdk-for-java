@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.LinkedServiceReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** HDInsight linked service properties. */
 @Fluent
 public final class HDInsightLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HDInsightLinkedServiceTypeProperties.class);
-
     /*
      * HDInsight cluster URI. Type: string (or Expression with resultType
      * string).
@@ -247,7 +244,7 @@ public final class HDInsightLinkedServiceTypeProperties {
      */
     public void validate() {
         if (clusterUri() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property clusterUri in model HDInsightLinkedServiceTypeProperties"));
@@ -262,4 +259,6 @@ public final class HDInsightLinkedServiceTypeProperties {
             hcatalogLinkedServiceName().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(HDInsightLinkedServiceTypeProperties.class);
 }

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The available data types for Microsoft Threat Intelligence Platforms data connector. */
 @Fluent
 public final class MstiDataConnectorDataTypes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MstiDataConnectorDataTypes.class);
-
     /*
      * Data type for Microsoft Threat Intelligence Platforms data connector.
      */
@@ -77,7 +74,7 @@ public final class MstiDataConnectorDataTypes {
      */
     public void validate() {
         if (bingSafetyPhishingUrl() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property bingSafetyPhishingUrl in model MstiDataConnectorDataTypes"));
@@ -85,7 +82,7 @@ public final class MstiDataConnectorDataTypes {
             bingSafetyPhishingUrl().validate();
         }
         if (microsoftEmergingThreatFeed() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property microsoftEmergingThreatFeed in model MstiDataConnectorDataTypes"));
@@ -93,4 +90,6 @@ public final class MstiDataConnectorDataTypes {
             microsoftEmergingThreatFeed().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MstiDataConnectorDataTypes.class);
 }

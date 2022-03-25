@@ -7,15 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SharePoint Online List linked service properties. */
 @Fluent
 public final class SharePointOnlineListLinkedServiceTypeProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(SharePointOnlineListLinkedServiceTypeProperties.class);
-
     /*
      * The URL of the SharePoint Online site. For example,
      * https://contoso.sharepoint.com/sites/siteName. Type: string (or
@@ -174,26 +170,26 @@ public final class SharePointOnlineListLinkedServiceTypeProperties {
      */
     public void validate() {
         if (siteUrl() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property siteUrl in model SharePointOnlineListLinkedServiceTypeProperties"));
         }
         if (tenantId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property tenantId in model SharePointOnlineListLinkedServiceTypeProperties"));
         }
         if (servicePrincipalId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property servicePrincipalId in model"
                             + " SharePointOnlineListLinkedServiceTypeProperties"));
         }
         if (servicePrincipalKey() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property servicePrincipalKey in model"
@@ -202,4 +198,6 @@ public final class SharePointOnlineListLinkedServiceTypeProperties {
             servicePrincipalKey().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SharePointOnlineListLinkedServiceTypeProperties.class);
 }

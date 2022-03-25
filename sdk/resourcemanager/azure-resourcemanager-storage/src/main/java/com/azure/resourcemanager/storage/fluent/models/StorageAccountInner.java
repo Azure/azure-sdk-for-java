@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.AccessTier;
 import com.azure.resourcemanager.storage.models.AccountStatus;
 import com.azure.resourcemanager.storage.models.AllowedCopyScope;
@@ -29,7 +28,6 @@ import com.azure.resourcemanager.storage.models.PublicNetworkAccess;
 import com.azure.resourcemanager.storage.models.RoutingPreference;
 import com.azure.resourcemanager.storage.models.SasPolicy;
 import com.azure.resourcemanager.storage.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -38,8 +36,6 @@ import java.util.Map;
 /** The storage account. */
 @Fluent
 public final class StorageAccountInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountInner.class);
-
     /*
      * Gets the SKU.
      */

@@ -6,17 +6,13 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.AzureFirewallNatRuleCollectionProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** NAT rule collection resource. */
 @Fluent
 public final class AzureFirewallNatRuleCollection extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallNatRuleCollection.class);
-
     /*
      * Properties of the azure firewall NAT rule collection.
      */

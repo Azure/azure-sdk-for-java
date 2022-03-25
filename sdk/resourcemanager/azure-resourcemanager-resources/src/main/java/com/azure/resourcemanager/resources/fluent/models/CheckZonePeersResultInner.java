@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.AvailabilityZonePeers;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Result of the Check zone peers operation. */
 @Fluent
 public final class CheckZonePeersResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckZonePeersResultInner.class);
-
     /*
      * The subscription ID.
      */

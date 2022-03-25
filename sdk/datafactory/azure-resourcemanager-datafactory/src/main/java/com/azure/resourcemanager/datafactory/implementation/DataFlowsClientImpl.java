@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.DataFlowsClient;
 import com.azure.resourcemanager.datafactory.fluent.models.DataFlowResourceInner;
 import com.azure.resourcemanager.datafactory.models.DataFlowListResponse;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DataFlowsClient. */
 public final class DataFlowsClientImpl implements DataFlowsClient {
-    private final ClientLogger logger = new ClientLogger(DataFlowsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DataFlowsService service;
 

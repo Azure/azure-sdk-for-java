@@ -15,10 +15,9 @@ import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeNodeIpAddr
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeNodes;
 import com.azure.resourcemanager.datafactory.models.SelfHostedIntegrationRuntimeNode;
 import com.azure.resourcemanager.datafactory.models.UpdateIntegrationRuntimeNodeRequest;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IntegrationRuntimeNodesImpl implements IntegrationRuntimeNodes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationRuntimeNodesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationRuntimeNodesImpl.class);
 
     private final IntegrationRuntimeNodesClient innerClient;
 

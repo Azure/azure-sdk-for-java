@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Office365 dataset properties. */
 @Fluent
 public final class Office365DatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Office365DatasetTypeProperties.class);
-
     /*
      * Name of the dataset to extract from Office 365. Type: string (or
      * Expression with resultType string).
@@ -80,10 +77,12 @@ public final class Office365DatasetTypeProperties {
      */
     public void validate() {
         if (tableName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property tableName in model Office365DatasetTypeProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Office365DatasetTypeProperties.class);
 }
