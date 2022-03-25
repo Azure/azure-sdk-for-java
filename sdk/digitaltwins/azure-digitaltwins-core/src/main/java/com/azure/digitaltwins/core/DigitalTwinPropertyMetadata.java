@@ -43,7 +43,7 @@ public final class DigitalTwinPropertyMetadata {
      * @return The date and time the value of the property was last sourced.
      */
     public OffsetDateTime getSourceTime() {
-    	return sourceTime;
+        return sourceTime;
     }
     
     /**
@@ -52,7 +52,7 @@ public final class DigitalTwinPropertyMetadata {
      * @return The DigitalTwinPropertyMetadata object itself.
      */
     public DigitalTwinPropertyMetadata setSourceTime(OffsetDateTime sourceTime) {
-    	this.sourceTime = sourceTime;
-    	return this;
+        this.sourceTime = sourceTime;
+        return this;
     }
 }
