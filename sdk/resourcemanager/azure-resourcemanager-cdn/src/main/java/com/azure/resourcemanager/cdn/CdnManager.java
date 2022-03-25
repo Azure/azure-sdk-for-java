@@ -15,6 +15,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureCo
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.cdn.models.CdnProfiles;
 
+import java.util.Objects;
+
 /**
  * Entry point to Azure CDN management.
  */
@@ -40,6 +42,8 @@ public final class CdnManager extends Manager<CdnManagementClient> {
      * @return the CDN Manager
      */
     public static CdnManager authenticate(TokenCredential credential, AzureProfile profile) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
@@ -51,6 +55,8 @@ public final class CdnManager extends Manager<CdnManagementClient> {
      * @return the CDN Manager
      */
     public static CdnManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return new CdnManager(httpPipeline, profile);
     }
 

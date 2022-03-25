@@ -15,6 +15,8 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 
+import java.util.Objects;
+
 /** Entry point to Azure redis resource management. */
 public final class RedisManager extends Manager<RedisManagementClient> {
     // Collections
@@ -37,6 +39,8 @@ public final class RedisManager extends Manager<RedisManagementClient> {
      * @return the RedisManager
      */
     public static RedisManager authenticate(TokenCredential credential, AzureProfile profile) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
@@ -48,6 +52,8 @@ public final class RedisManager extends Manager<RedisManagementClient> {
      * @return the RedisManager
      */
     public static RedisManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return new RedisManager(httpPipeline, profile);
     }
 

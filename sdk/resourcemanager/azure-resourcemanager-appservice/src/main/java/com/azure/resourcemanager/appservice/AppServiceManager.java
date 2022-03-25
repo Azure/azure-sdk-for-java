@@ -29,6 +29,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureCo
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.storage.StorageManager;
 
+import java.util.Objects;
+
 /** Entry point to Azure storage resource management. */
 public final class AppServiceManager extends Manager<WebSiteManagementClient> {
     // Managers
@@ -61,6 +63,8 @@ public final class AppServiceManager extends Manager<WebSiteManagementClient> {
      * @return the StorageManager
      */
     public static AppServiceManager authenticate(TokenCredential credential, AzureProfile profile) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
@@ -72,6 +76,8 @@ public final class AppServiceManager extends Manager<WebSiteManagementClient> {
      * @return the StorageManager
      */
     public static AppServiceManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return new AppServiceManager(httpPipeline, profile);
     }
 

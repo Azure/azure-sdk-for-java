@@ -16,6 +16,8 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 
+import java.util.Objects;
+
 /**
  * Entry point to Azure Managed Service Identity (MSI) resource management.
  */
@@ -42,6 +44,8 @@ public final class MsiManager extends Manager<ManagedServiceIdentityClient> {
      * @return the MsiManager
      */
     public static MsiManager authenticate(TokenCredential credential, AzureProfile profile) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return new MsiManager(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
@@ -54,6 +58,8 @@ public final class MsiManager extends Manager<ManagedServiceIdentityClient> {
      * @return the MsiManager
      */
     public static MsiManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return new MsiManager(httpPipeline, profile);
     }
 

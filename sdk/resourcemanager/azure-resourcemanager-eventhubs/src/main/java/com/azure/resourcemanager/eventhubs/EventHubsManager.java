@@ -28,6 +28,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureCo
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.storage.StorageManager;
 
+import java.util.Objects;
+
 /**
  * Entry point to Azure EventHub resource management.
  */
@@ -59,6 +61,8 @@ public final class EventHubsManager extends Manager<EventHubManagementClient> {
      * @return the EventHubsManager
      */
     public static EventHubsManager authenticate(TokenCredential credential, AzureProfile profile) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
@@ -70,6 +74,8 @@ public final class EventHubsManager extends Manager<EventHubManagementClient> {
      * @return the EventHubsManager
      */
     public static EventHubsManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return new EventHubsManager(httpPipeline, profile);
     }
 

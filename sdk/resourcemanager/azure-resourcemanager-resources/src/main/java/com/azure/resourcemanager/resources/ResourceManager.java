@@ -79,6 +79,8 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
      * @return the ResourceManager instance
      */
     public static ResourceManager.Authenticated authenticate(TokenCredential credential, AzureProfile profile) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return new AuthenticatedImpl(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
@@ -90,6 +92,8 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
      * @return the interface exposing resource management API entry points that work across subscriptions
      */
     public static ResourceManager.Authenticated authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return new AuthenticatedImpl(httpPipeline, profile);
     }
 

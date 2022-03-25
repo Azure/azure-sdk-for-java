@@ -160,6 +160,8 @@ public final class AzureResourceManager {
      * @return the authenticated Azure client
      */
     public static Authenticated authenticate(TokenCredential credential, AzureProfile profile) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return new AuthenticatedImpl(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
@@ -171,6 +173,8 @@ public final class AzureResourceManager {
      * @return authenticated Azure client
      */
     public static Authenticated authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return new AuthenticatedImpl(httpPipeline, profile);
     }
 

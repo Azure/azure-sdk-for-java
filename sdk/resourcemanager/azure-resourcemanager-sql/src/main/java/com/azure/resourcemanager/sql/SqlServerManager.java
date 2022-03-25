@@ -16,6 +16,8 @@ import com.azure.resourcemanager.sql.implementation.SqlServersImpl;
 import com.azure.resourcemanager.sql.models.SqlServers;
 import com.azure.resourcemanager.storage.StorageManager;
 
+import java.util.Objects;
+
 /** Entry point to Azure SQLServer resource management. */
 public class SqlServerManager extends Manager<SqlManagementClient> {
     private SqlServers sqlServers;
@@ -64,6 +66,8 @@ public class SqlServerManager extends Manager<SqlManagementClient> {
      * @return the SqlServer
      */
     public static SqlServerManager authenticate(TokenCredential credential, AzureProfile profile) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
@@ -75,6 +79,8 @@ public class SqlServerManager extends Manager<SqlManagementClient> {
      * @return the SqlServer
      */
     public static SqlServerManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return new SqlServerManager(httpPipeline, profile);
     }
 

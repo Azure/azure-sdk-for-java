@@ -14,6 +14,8 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 
+import java.util.Objects;
+
 /** Entry point to Azure private DNS zone management. */
 public final class PrivateDnsZoneManager extends Manager<PrivateDnsManagementClient> {
 
@@ -36,6 +38,8 @@ public final class PrivateDnsZoneManager extends Manager<PrivateDnsManagementCli
      * @return the PrivateDnsZoneManager
      */
     public static PrivateDnsZoneManager authenticate(TokenCredential credential, AzureProfile profile) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
@@ -47,6 +51,8 @@ public final class PrivateDnsZoneManager extends Manager<PrivateDnsManagementCli
      * @return the PrivateDnsZoneManager
      */
     public static PrivateDnsZoneManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return new PrivateDnsZoneManager(httpPipeline, profile);
     }
 

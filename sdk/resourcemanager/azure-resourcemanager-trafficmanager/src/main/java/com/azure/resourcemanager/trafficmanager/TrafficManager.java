@@ -15,6 +15,8 @@ import com.azure.resourcemanager.trafficmanager.implementation.TrafficManagerMan
 import com.azure.resourcemanager.trafficmanager.implementation.TrafficManagerProfilesImpl;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfiles;
 
+import java.util.Objects;
+
 /** Entry point to Azure traffic manager management. */
 public final class TrafficManager extends Manager<TrafficManagerManagementClient> {
     // Collections
@@ -37,6 +39,8 @@ public final class TrafficManager extends Manager<TrafficManagerManagementClient
      * @return the TrafficManager
      */
     public static TrafficManager authenticate(TokenCredential credential, AzureProfile profile) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
@@ -48,6 +52,8 @@ public final class TrafficManager extends Manager<TrafficManagerManagementClient
      * @return the TrafficManager
      */
     public static TrafficManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return new TrafficManager(httpPipeline, profile);
     }
 
