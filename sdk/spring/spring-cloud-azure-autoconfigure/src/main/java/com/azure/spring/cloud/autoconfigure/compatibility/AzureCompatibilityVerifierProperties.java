@@ -17,7 +17,7 @@ public class AzureCompatibilityVerifierProperties {
     /**
      * Whether to enable the Spring Cloud Azure compatibility verifier.
      */
-    private boolean enabled;
+    private boolean enabled = true;
     /**
      * Comma-delimited list of Spring Boot versions that are compatible with current Spring Cloud Azure's version.
      */
