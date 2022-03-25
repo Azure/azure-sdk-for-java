@@ -22,14 +22,18 @@ public class SimpleRequestContext {
 
     public SimpleRequestContext(ChannelPool channelPool, HttpRequest request,
                                 CompletableFuture<HttpResponse> responseFuture,
-                                boolean eagerlyReadResponse) {
+                                boolean eagerlyReadResponse, boolean isSync) {
         this.channelPool = channelPool;
         this.request = request;
         this.responseFuture = responseFuture;
         if (eagerlyReadResponse) {
             this.bodyCollector = new InMemoryBodyCollector();
         } else {
-            this.bodyCollector = new PipedStreamBodyCollector();
+            if (isSync) {
+                this.bodyCollector = new PipedStreamBodyCollector();
+            } else {
+                this.bodyCollector = new SinkBodyCollector();
+            }
         }
         this.eagerlyReadResponse = eagerlyReadResponse;
     }

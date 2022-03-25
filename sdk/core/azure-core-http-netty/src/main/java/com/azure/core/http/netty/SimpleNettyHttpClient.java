@@ -58,10 +58,10 @@ public class SimpleNettyHttpClient implements HttpClient {
     @Override
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
         boolean eagerlyReadResponse = (boolean) context.getData(AZURE_EAGERLY_READ_RESPONSE).orElse(false);
-        Mono<HttpResponse> responseMono = Mono.fromFuture(() -> sendInternal(request, context, eagerlyReadResponse));
+        Mono<HttpResponse> responseMono = Mono.fromFuture(
+            () -> sendInternal(request, context, eagerlyReadResponse, false));
         if (!eagerlyReadResponse) {
-            // TODO (kasobol-msft) maybe replace with dedicated reactor friendly collector later.
-            // Otherwise there's deadlock in channel handler.
+            // Otherwise deadlocks.
             responseMono = responseMono.publishOn(Schedulers.boundedElastic());
         }
         return responseMono;
@@ -71,14 +71,14 @@ public class SimpleNettyHttpClient implements HttpClient {
     public HttpResponse sendSynchronously(HttpRequest request, Context context) {
         try {
             boolean eagerlyReadResponse = (boolean) context.getData(AZURE_EAGERLY_READ_RESPONSE).orElse(false);
-            return sendInternal(request, context, eagerlyReadResponse).get();
+            return sendInternal(request, context, eagerlyReadResponse, true).get();
         } catch (InterruptedException | ExecutionException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 
     private CompletableFuture<HttpResponse> sendInternal(
-        HttpRequest request, Context context, boolean eagerlyReadResponse) {
+        HttpRequest request, Context context, boolean eagerlyReadResponse, boolean isSync) {
         URL url = request.getUrl();
 
         // Configure the client.
@@ -94,7 +94,7 @@ public class SimpleNettyHttpClient implements HttpClient {
         ChannelPool channelPool = channelPoolMap.get(channelPoolKey);
 
         SimpleRequestContext requestContext = new SimpleRequestContext(
-            channelPool, request, responseFuture, eagerlyReadResponse);
+            channelPool, request, responseFuture, eagerlyReadResponse, isSync);
         channelPool.acquire()
             .addListener(new SimpleRequestSender(requestContext));
 
