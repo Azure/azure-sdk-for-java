@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.changefeed.implementation.leaseManagement.ServiceItemLeaseEpk;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
@@ -90,12 +91,15 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory {
         checkNotNull(observer, "Argument 'observer' can not be null");
         checkNotNull(lease, "Argument 'lease' can not be null");
 
-        FeedRangeInternal feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
+        // If the lease represents a full partition (old schema) then use a FeedRangePartitionKeyRange
+        // If the lease represents an EPK range (new schema) the use the FeedRange in the lease
+        FeedRangeInternal feedRange =
+                lease instanceof ServiceItemLeaseEpk ? lease.getFeedRange() : new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
         ChangeFeedState state;
         if (Strings.isNullOrWhiteSpace(lease.getContinuationToken())) {
             state = new ChangeFeedStateV1(
                 BridgeInternal.extractContainerSelfLink(this.monitoredContainer),
-                new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken()),
+                feedRange,
                 ChangeFeedMode.INCREMENTAL,
                 getStartFromSettings(
                     feedRange,

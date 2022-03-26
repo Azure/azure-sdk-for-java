@@ -67,7 +67,10 @@ class PartitionProcessorImpl implements PartitionProcessor {
 
     @Override
     public Mono<Void> run(CancellationToken cancellationToken) {
-        logger.info("Lease with token {}: processing task started with owner {}.", this.lease.getLeaseToken(), this.lease.getOwner());
+        logger.info(
+                "Lease with token {}: processing task started with owner {}.",
+                this.lease.getLeaseToken(),
+                this.lease.getOwner());
         this.isFirstQueryForChangeFeeds = true;
         this.checkpointer.setCancellationToken(cancellationToken);
 
@@ -155,8 +158,12 @@ class PartitionProcessorImpl implements PartitionProcessor {
                     // we know it is a terminal event.
 
                     CosmosException clientException = (CosmosException) throwable;
-                    logger.warn("Lease with token {}: CosmosException was thrown from thread {} for lease with owner {}",
-                        this.lease.getLeaseToken(), Thread.currentThread().getId(), this.lease.getOwner(), clientException);
+                    logger.warn(
+                            "Lease with token {}: CosmosException was thrown from thread {} for lease with owner {}",
+                            this.lease.getLeaseToken(),
+                            Thread.currentThread().getId(),
+                            this.lease.getOwner(),
+                            clientException);
                     StatusCodeErrorType docDbError = ExceptionClassifier.classifyClientException(clientException);
 
                     switch (docDbError) {
@@ -256,7 +263,10 @@ class PartitionProcessorImpl implements PartitionProcessor {
             })
             .then()
             .doFinally(any -> {
-                logger.info("Lease with token {}: processing task exited with owner {}.", this.lease.getLeaseToken(), this.lease.getOwner());
+                logger.info(
+                        "Lease with token {}: processing task exited with owner {}.",
+                        this.lease.getLeaseToken(),
+                        this.lease.getOwner());
             });
     }
 

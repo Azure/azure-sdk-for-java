@@ -45,13 +45,20 @@ public class FeedRangeGoneMergeHandler implements FeedRangeGoneHandler {
         if (this.lease instanceof ServiceItemLeaseCore) {
             // Switch from partition based lease to epk based lease.
             return this.leaseManager.createLeaseIfNotExist((FeedRangeEpkImpl)this.lease.getFeedRange(), this.lease.getContinuationToken())
-                    .doOnSuccess(lease -> this.logger.info("Lease with token {} redirected to partition {}", this.lease.getLeaseToken(), this.overlappingRange.getId()))
+                    .doOnSuccess(
+                            lease -> this.logger.info(
+                                    "Lease with token {} redirected to partition {}",
+                                    this.lease.getLeaseToken(),
+                                    this.overlappingRange.getId()))
                     .flux();
         }
 
         if (lease instanceof ServiceItemLeaseEpk) {
             // The epk range just remapped to another partition
-            this.logger.info("Lease {} redirected to {}", this.lease.getLeaseToken(), this.overlappingRange.getId());
+            this.logger.info(
+                    "Lease {} redirected to {}",
+                    this.lease.getLeaseToken(),
+                    this.overlappingRange.getId());
             return Flux.just(this.lease);
         }
 
