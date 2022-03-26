@@ -150,7 +150,7 @@ class PartitionControllerImpl implements PartitionController {
             .onErrorResume(throwable -> {
                 if (throwable instanceof FeedRangeGoneException) {
                     FeedRangeGoneException ex = (FeedRangeGoneException) throwable;
-                    return this.handlePartitionGone(lease, ex.getLastContinuation());
+                    return this.handleFeedRangeGone(lease, ex.getLastContinuation());
                 } else if (throwable instanceof TaskCancelledException) {
                     logger.debug("Lease with token {}: processing canceled.", lease.getLeaseToken());
                 } else {
@@ -162,9 +162,9 @@ class PartitionControllerImpl implements PartitionController {
             .then(this.removeLease(lease));
     }
 
-    private Mono<Void> handlePartitionGone(Lease lease, String lastContinuationToken) {
+    private Mono<Void> handleFeedRangeGone(Lease lease, String lastContinuationToken) {
         lease.setContinuationToken(lastContinuationToken);
-        return this.synchronizer.getPartitionGoneHandler(lease)
+        return this.synchronizer.getFeedRangeGoneHandler(lease)
                 .flatMap(partitionGoneHandler -> {
                     return partitionGoneHandler.handlePartitionGone()
                             .flatMap(l -> {

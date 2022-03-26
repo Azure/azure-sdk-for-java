@@ -18,10 +18,10 @@ public interface PartitionSynchronizer {
     Mono<Void> createMissingLeases();
 
     /***
-     * Get the partition gone handler.
+     * Get the feed range gone handler.
      *
      * @param lease the lease.
      * @return a {@link FeedRangeGoneHandler}.
      */
-    Mono<FeedRangeGoneHandler> getPartitionGoneHandler(Lease lease);
+    Mono<FeedRangeGoneHandler> getFeedRangeGoneHandler(Lease lease);
 }

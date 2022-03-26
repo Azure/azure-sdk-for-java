@@ -93,7 +93,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
      * @return Returns a flux of leases to create.
      */
     @Override
-    public Mono<FeedRangeGoneHandler> getPartitionGoneHandler(Lease lease) {
+    public Mono<FeedRangeGoneHandler> getFeedRangeGoneHandler(Lease lease) {
         checkNotNull(lease, "Argument 'lease' can not be null");
 
         final String leaseToken = lease.getLeaseToken();
