@@ -17,6 +17,8 @@ import com.azure.cosmos.implementation.changefeed.PartitionProcessor;
 import com.azure.cosmos.implementation.changefeed.PartitionProcessorFactory;
 import com.azure.cosmos.implementation.changefeed.ProcessorSettings;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 /**
  * Implementation for {@link PartitionProcessorFactory}.
  */
@@ -24,7 +26,7 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory {
     private final ChangeFeedContextClient documentClient;
     private final ChangeFeedProcessorOptions changeFeedProcessorOptions;
     private final LeaseCheckpointer leaseCheckpointer;
-    private final CosmosAsyncContainer collectionSelfLink;
+    private final CosmosAsyncContainer monitoredContainer;
     private final String collectionResourceId;
 
     public PartitionProcessorFactoryImpl(
@@ -57,7 +59,7 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory {
         this.documentClient = documentClient;
         this.changeFeedProcessorOptions = changeFeedProcessorOptions;
         this.leaseCheckpointer = leaseCheckpointer;
-        this.collectionSelfLink = collectionSelfLink;
+        this.monitoredContainer = collectionSelfLink;
         this.collectionResourceId = collectionResourceId;
     }
 
@@ -85,19 +87,14 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory {
 
     @Override
     public PartitionProcessor create(Lease lease, ChangeFeedObserver observer) {
-        if (observer == null) {
-            throw new IllegalArgumentException("observer");
-        }
-
-        if (lease == null) {
-            throw new IllegalArgumentException("lease");
-        }
+        checkNotNull(observer, "Argument 'observer' can not be null");
+        checkNotNull(lease, "Argument 'lease' can not be null");
 
         FeedRangeInternal feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
         ChangeFeedState state;
         if (Strings.isNullOrWhiteSpace(lease.getContinuationToken())) {
             state = new ChangeFeedStateV1(
-                BridgeInternal.extractContainerSelfLink(this.collectionSelfLink),
+                BridgeInternal.extractContainerSelfLink(this.monitoredContainer),
                 new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken()),
                 ChangeFeedMode.INCREMENTAL,
                 getStartFromSettings(
@@ -108,7 +105,7 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory {
             state = lease.getContinuationState(this.collectionResourceId, feedRange);
         }
 
-        ProcessorSettings settings = new ProcessorSettings(state, this.collectionSelfLink)
+        ProcessorSettings settings = new ProcessorSettings(state, this.monitoredContainer)
             .withFeedPollDelay(this.changeFeedProcessorOptions.getFeedPollDelay())
             .withMaxItemCount(this.changeFeedProcessorOptions.getMaxItemCount());
 

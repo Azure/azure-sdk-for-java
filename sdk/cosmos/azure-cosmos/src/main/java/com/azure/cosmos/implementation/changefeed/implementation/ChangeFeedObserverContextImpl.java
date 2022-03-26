@@ -2,11 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.implementation;
 
-
-import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverContext;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.PartitionCheckpointer;
+import com.azure.cosmos.models.FeedResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Mono;
 
@@ -15,13 +14,13 @@ import reactor.core.publisher.Mono;
  */
 class ChangeFeedObserverContextImpl implements ChangeFeedObserverContext {
     private final PartitionCheckpointer checkpointer;
-    private final String partitionKeyRangeId;
+    private final String leaseToken;
     private final FeedResponse<JsonNode> feedResponse;
     private final ChangeFeedState continuationState;
 
 
     public ChangeFeedObserverContextImpl(String leaseToken) {
-        this.partitionKeyRangeId = leaseToken;
+        this.leaseToken = leaseToken;
         this.checkpointer = null;
         this.feedResponse = null;
         this.continuationState = null;
@@ -31,7 +30,7 @@ class ChangeFeedObserverContextImpl implements ChangeFeedObserverContext {
                                          FeedResponse<JsonNode> feedResponse,
                                          ChangeFeedState continuationState,
                                          PartitionCheckpointer checkpointer) {
-        this.partitionKeyRangeId = leaseToken;
+        this.leaseToken = leaseToken;
         this.feedResponse = feedResponse;
         this.checkpointer = checkpointer;
         this.continuationState = continuationState;
@@ -52,11 +51,11 @@ class ChangeFeedObserverContextImpl implements ChangeFeedObserverContext {
     }
 
     /**
-     * @return the id of the partition for the current event.
+     * @return the lease token for the current event.
      */
     @Override
-    public String getPartitionKeyRangeId() {
-        return this.partitionKeyRangeId;
+    public String getLeaseToken() {
+        return this.leaseToken;
     }
 
     /**

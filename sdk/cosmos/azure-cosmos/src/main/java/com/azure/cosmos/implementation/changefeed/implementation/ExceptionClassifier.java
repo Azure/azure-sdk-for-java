@@ -27,8 +27,9 @@ class ExceptionClassifier {
             return StatusCodeErrorType.PARTITION_NOT_FOUND;
         }
 
+        // TODO: Annie: confirm the status code for merge
         if (clientException.getStatusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_GONE && (subStatusCode == SubStatusCode_PartitionKeyRangeGone || subStatusCode == SubStatusCode_Splitting)) {
-            return StatusCodeErrorType.PARTITION_SPLIT;
+            return StatusCodeErrorType.PARTITION_SPLIT_OR_MERGE;
         }
 
         if (clientException.getStatusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_TOO_MANY_REQUESTS || clientException.getStatusCode() >= ChangeFeedHelper.HTTP_STATUS_CODE_INTERNAL_SERVER_ERROR) {

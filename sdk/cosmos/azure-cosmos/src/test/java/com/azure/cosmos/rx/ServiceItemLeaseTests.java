@@ -3,7 +3,6 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.implementation.changefeed.Lease;
-import com.azure.cosmos.implementation.changefeed.ServiceItemLease;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.testng.annotations.Test;
@@ -20,22 +19,24 @@ public class ServiceItemLeaseTests {
         Instant timeNow = Instant.now();
         String timeNowValue = timeNow.toString();
 
-        Lease lease1 = new ServiceItemLease()
-            .withId("id1")
-            .withLeaseToken("1")
-            .withETag("etag1")
-            .withOwner("Owner1")
-            .withContinuationToken("12")
-            .withTimestamp(timeNow)
-            .withTs("122311231");
+        Lease lease1 = Lease.builder()
+            .id("id1")
+            .leaseToken("1")
+            .etag("etag1")
+            .owner("Owner1")
+            .continuationToken("12")
+            .timestamp(timeNowValue)
+            .ts("122311231")
+            .buildPartitionBasedLease();
 
-        Lease lease2 = new ServiceItemLease()
-            .withId("id2")
-            .withLeaseToken("2")
-            .withETag("etag2")
-            .withContinuationToken("22")
-            .withTimestamp(timeNow)
-            .withTs("122311232");
+        Lease lease2 = Lease.builder()
+            .id("id2")
+            .leaseToken("2")
+            .etag("etag2")
+            .continuationToken("22")
+            .timestamp(timeNowValue)
+            .ts("122311232")
+            .buildPartitionBasedLease();
 
         ObjectMapper mapper = new ObjectMapper();
 

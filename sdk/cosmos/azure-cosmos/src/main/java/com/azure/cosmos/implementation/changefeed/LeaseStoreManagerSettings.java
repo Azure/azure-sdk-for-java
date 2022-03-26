@@ -3,6 +3,10 @@
 package com.azure.cosmos.implementation.changefeed;
 
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Captures LeaseStoreManager properties.
@@ -10,7 +14,9 @@ import com.azure.cosmos.CosmosAsyncContainer;
 public class LeaseStoreManagerSettings {
     String containerNamePrefix;
 
-    CosmosAsyncContainer leaseCollectionLink;
+    CosmosAsyncContainer leaseContainer;
+    CosmosAsyncContainer monitoredContainer;
+    String monitoredContainerRid;
 
     String hostName;
 
@@ -23,12 +29,12 @@ public class LeaseStoreManagerSettings {
         return this;
     }
 
-    public CosmosAsyncContainer getLeaseCollectionLink() {
-        return this.leaseCollectionLink;
+    public CosmosAsyncContainer getLeaseContainer() {
+        return this.leaseContainer;
     }
 
-    public LeaseStoreManagerSettings withLeaseCollectionLink(CosmosAsyncContainer collectionLink) {
-        this.leaseCollectionLink = collectionLink;
+    public LeaseStoreManagerSettings withLeaseContainer(CosmosAsyncContainer leaseContainer) {
+        this.leaseContainer = leaseContainer;
         return this;
     }
 
@@ -39,5 +45,31 @@ public class LeaseStoreManagerSettings {
     public LeaseStoreManagerSettings withHostName(String hostName) {
         this.hostName = hostName;
         return this;
+    }
+
+    public LeaseStoreManagerSettings withMonitoredContainer(CosmosAsyncContainer monitoredContainer) {
+        this.monitoredContainer = monitoredContainer;
+        return this;
+    }
+
+    public CosmosAsyncContainer getMonitoredContainer() {
+        return this.monitoredContainer;
+    }
+
+    public LeaseStoreManagerSettings withMonitoredContainerRid(String monitoredContainerRid) {
+        this.monitoredContainerRid = monitoredContainerRid;
+        return this;
+    }
+
+    public String getMonitoredContainerRid() {
+        return this.monitoredContainerRid;
+    }
+
+    public void validate() {
+        checkNotNull(this.containerNamePrefix, "Settings.containerNamePrefix can not be null");
+        checkNotNull(this.leaseContainer, "Settings.leaseContainer can not be null");
+        checkNotNull(this.hostName, "Settings.hostName can not be null");
+        checkNotNull(this.monitoredContainer, "Settings.monitored container can not be null");
+        checkArgument(!StringUtils.isEmpty(this.monitoredContainerRid), "Settings.monitoredContainerRid can not be null nor empty");
     }
 }

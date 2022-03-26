@@ -4,6 +4,8 @@ package com.azure.cosmos.implementation.changefeed;
 
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.implementation.leaseManagement.LeaseBuilder;
+import com.azure.cosmos.implementation.changefeed.implementation.leaseManagement.ServiceItemLeaseVersion;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 
 import java.time.Instant;
@@ -133,4 +135,34 @@ public interface Lease {
      * @param lease the input representation of a lease document.
      */
     void setServiceItemLease(Lease lease);
+
+    /***
+     * Get the feed range for the lease.
+     *
+     * @return the feed range for the lease.
+     */
+    FeedRangeInternal getFeedRange();
+
+    /***
+     * Set the feed range for the lease.
+     *
+     * @param feedRangeInternal the feed range for the lease.
+     */
+    void setFeedRange(FeedRangeInternal feedRangeInternal);
+
+    /***
+     * Get the version of the lease.
+     *
+     * @return get the version of the lease.
+     */
+    ServiceItemLeaseVersion getVersion();
+
+    /**
+     * Get the lease builder.
+     *
+     * @return the {@link LeaseBuilder}.
+     */
+    static LeaseBuilder builder() {
+        return new LeaseBuilder();
+    }
 }

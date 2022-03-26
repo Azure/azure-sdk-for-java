@@ -1,15 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
-import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
-import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
-import com.azure.cosmos.models.ChangeFeedProcessorOptions;
-import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.changefeed.Bootstrapper;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
@@ -23,6 +21,9 @@ import com.azure.cosmos.implementation.changefeed.PartitionLoadBalancingStrategy
 import com.azure.cosmos.implementation.changefeed.PartitionManager;
 import com.azure.cosmos.implementation.changefeed.PartitionSupervisorFactory;
 import com.azure.cosmos.implementation.changefeed.RequestOptionsFactory;
+import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
+import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
+import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.ChangeFeedProcessorState;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -155,7 +156,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
 
         return this.leaseStoreManager.getAllLeases()
             .flatMap(lease -> {
-                final FeedRangeInternal feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
+                final FeedRangeInternal feedRange = lease.getFeedRange();
                 final CosmosChangeFeedRequestOptions options =
                     ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(
                         lease.getContinuationState(
@@ -436,7 +437,6 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
                             collectionSettings.getPartitionKeyDefinition().getPaths() != null &&
                             collectionSettings.getPartitionKeyDefinition().getPaths().size() > 0;
                     if (!isPartitioned || (collectionSettings.getPartitionKeyDefinition().getPaths().size() != 1 || !collectionSettings.getPartitionKeyDefinition().getPaths().get(0).equals("/id"))) {
-//                        throw new IllegalArgumentException("The lease collection, if partitioned, must have partition key equal to id.");
                         return Mono.error(new IllegalArgumentException("The lease collection must have partition key equal to id."));
                     }
 
@@ -446,8 +446,9 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
 
                     return LeaseStoreManager.builder()
                         .leasePrefix(leasePrefix)
-                        .leaseCollectionLink(this.leaseContextClient.getContainerClient())
+                        .leaseContainer(this.leaseContextClient.getContainerClient())
                         .leaseContextClient(this.leaseContextClient)
+                        .monitoredContainer(this.feedContextClient.getContainerClient())
                         .requestOptionsFactory(requestOptionsFactory)
                         .hostName(this.hostName)
                         .build()

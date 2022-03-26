@@ -9,7 +9,6 @@ import com.azure.cosmos.implementation.changefeed.PartitionCheckpointer;
 import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
@@ -31,7 +30,7 @@ class PartitionCheckpointerImpl implements PartitionCheckpointer {
 
     @Override
     public Mono<Lease> checkpointPartition(ChangeFeedState continuationState) {
-        checkNotNull(continuationState, "Argument 'continuationSttae' must not be null.");
+        checkNotNull(continuationState, "Argument 'continuationState' must not be null.");
         checkArgument(
             continuationState.getContinuation().getContinuationTokenCount() == 1,
             "For ChangeFeedProcessor the continuation state should always have one range/continuation");
@@ -44,7 +43,10 @@ class PartitionCheckpointerImpl implements PartitionCheckpointer {
             cancellationToken)
             .map(lease1 -> {
                 this.lease = lease1;
-                logger.info("Checkpoint: partition {}, new continuation {}", this.lease.getLeaseToken(), this.lease.getContinuationToken());
+                logger.info(
+                        "Lease with token {}: Checkpoint completed with new continuation '{}'",
+                        this.lease.getLeaseToken(),
+                        this.lease.getContinuationToken());
                 return lease1;
             });
     }

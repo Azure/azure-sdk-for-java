@@ -15,7 +15,7 @@ import java.time.Duration;
 /**
  * Implementation for the bootstrapping interface.
  */
-class BootstrapperImpl implements Bootstrapper {
+public class BootstrapperImpl implements Bootstrapper {
     private final Logger logger = LoggerFactory.getLogger(BootstrapperImpl.class);
     private final PartitionSynchronizer synchronizer;
     private final LeaseStore leaseStore;

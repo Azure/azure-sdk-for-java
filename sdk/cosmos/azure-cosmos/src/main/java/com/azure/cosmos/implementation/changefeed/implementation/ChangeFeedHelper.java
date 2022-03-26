@@ -15,7 +15,7 @@ import static com.azure.cosmos.implementation.changefeed.implementation.ChangeFe
 /**
  * Implement static methods used for various simple transformations and tasks.
  */
-class ChangeFeedHelper {
+public class ChangeFeedHelper {
     private static final String DEFAULT_USER_AGENT_SUFFIX = "changefeed-2.2.6";
 
     public static final int HTTP_STATUS_CODE_NOT_FOUND = 404;

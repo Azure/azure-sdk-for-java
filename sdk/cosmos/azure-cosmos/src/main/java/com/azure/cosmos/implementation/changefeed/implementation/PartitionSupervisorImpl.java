@@ -14,11 +14,10 @@ import com.azure.cosmos.implementation.changefeed.PartitionProcessor;
 import com.azure.cosmos.implementation.changefeed.PartitionSupervisor;
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
 import com.azure.cosmos.implementation.changefeed.exceptions.ObserverException;
-import com.azure.cosmos.implementation.changefeed.exceptions.PartitionSplitException;
+import com.azure.cosmos.implementation.changefeed.exceptions.FeedRangeGoneException;
 import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledException;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 
@@ -92,7 +91,7 @@ class PartitionSupervisorImpl implements PartitionSupervisor {
         } catch (LeaseLostException llex) {
             closeReason = ChangeFeedObserverCloseReason.LEASE_LOST;
             this.resultException = llex;
-        } catch (PartitionSplitException pex) {
+        } catch (FeedRangeGoneException pex) {
             closeReason = ChangeFeedObserverCloseReason.LEASE_GONE;
             this.resultException = pex;
         } catch (TaskCancelledException tcex) {

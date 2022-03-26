@@ -1,18 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos.implementation.changefeed.implementation;
+package com.azure.cosmos.implementation.changefeed.implementation.leaseManagement;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.InternalObjectNode;
-import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
+import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseStore;
 import com.azure.cosmos.implementation.changefeed.RequestOptionsFactory;
-import com.azure.cosmos.implementation.changefeed.ServiceItemLease;
+import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedHelper;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.PartitionKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -22,24 +23,23 @@ import java.time.Duration;
 /**
  * Implementation for LeaseStore.
  */
-class DocumentServiceLeaseStore implements LeaseStore {
-    private final Logger logger = LoggerFactory.getLogger(BootstrapperImpl.class);
+class LeaseStoreImpl implements LeaseStore {
+    private final Logger logger = LoggerFactory.getLogger(LeaseStoreImpl.class);
     private ChangeFeedContextClient client;
     private String containerNamePrefix;
-    private CosmosAsyncContainer leaseCollectionLink;
+    private CosmosAsyncContainer leaseContainer;
     private RequestOptionsFactory requestOptionsFactory;
     private volatile String lockETag;
 
-    //  TODO: rename to LeaseStoreImpl
-    public DocumentServiceLeaseStore(
+    public LeaseStoreImpl(
             ChangeFeedContextClient client,
             String containerNamePrefix,
-            CosmosAsyncContainer leaseCollectionLink,
+            CosmosAsyncContainer leaseContainer,
             RequestOptionsFactory requestOptionsFactory) {
 
         this.client = client;
         this.containerNamePrefix = containerNamePrefix;
-        this.leaseCollectionLink = leaseCollectionLink;
+        this.leaseContainer = leaseContainer;
         this.requestOptionsFactory = requestOptionsFactory;
     }
 
@@ -51,7 +51,7 @@ class DocumentServiceLeaseStore implements LeaseStore {
         doc.setId(markerDocId);
 
         CosmosItemRequestOptions requestOptions = this.requestOptionsFactory.createItemRequestOptions(
-            ServiceItemLease.fromDocument(doc));
+                Lease.builder().buildFromDocument(doc));
 
         return this.client.readItem(markerDocId, new PartitionKey(markerDocId), requestOptions, InternalObjectNode.class)
             .flatMap(documentResourceResponse -> Mono.just(BridgeInternal.getProperties(documentResourceResponse) != null))
@@ -74,7 +74,7 @@ class DocumentServiceLeaseStore implements LeaseStore {
         InternalObjectNode containerDocument = new InternalObjectNode();
         containerDocument.setId(markerDocId);
 
-        return this.client.createItem(this.leaseCollectionLink, containerDocument, new CosmosItemRequestOptions(), false)
+        return this.client.createItem(this.leaseContainer, containerDocument, new CosmosItemRequestOptions(), false)
             .map( item -> true)
             .onErrorResume(throwable -> {
                 if (throwable instanceof CosmosException) {
@@ -96,7 +96,7 @@ class DocumentServiceLeaseStore implements LeaseStore {
         containerDocument.setId(lockId);
         BridgeInternal.setProperty(containerDocument, Constants.Properties.TTL, Long.valueOf(lockExpirationTime.getSeconds()).intValue());
 
-        return this.client.createItem(this.leaseCollectionLink, containerDocument, new CosmosItemRequestOptions(), false)
+        return this.client.createItem(this.leaseContainer, containerDocument, new CosmosItemRequestOptions(), false)
             .map(documentResourceResponse -> {
                 if (BridgeInternal.getProperties(documentResourceResponse) != null) {
                     this.lockETag = BridgeInternal.getProperties(documentResourceResponse).getETag();
@@ -125,7 +125,7 @@ class DocumentServiceLeaseStore implements LeaseStore {
         doc.setId(lockId);
 
         CosmosItemRequestOptions requestOptions = this.requestOptionsFactory.createItemRequestOptions(
-            ServiceItemLease.fromDocument(doc));
+                Lease.builder().buildFromDocument(doc));
 
         if (requestOptions == null) {
             requestOptions = new CosmosItemRequestOptions();

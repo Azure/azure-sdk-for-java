@@ -23,6 +23,8 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchExecutor;
 import com.azure.cosmos.implementation.batch.BulkExecutor;
+import com.azure.cosmos.implementation.caches.IPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.QueryInfo;
@@ -1715,6 +1717,11 @@ public class CosmosAsyncContainer {
                                                                                                                CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions,
                                                                                                                Class<T> classType) {
                     return cosmosAsyncContainer.queryChangeFeedInternalFunc(cosmosChangeFeedRequestOptions, classType);
+                }
+
+                @Override
+                public IPartitionKeyRangeCache getPartitionKeyRangeCache(CosmosAsyncContainer cosmosAsyncContainer) {
+                    return cosmosAsyncContainer.getDatabase().getDocClientWrapper().getPartitionKeyRangeCache();
                 }
             });
     }

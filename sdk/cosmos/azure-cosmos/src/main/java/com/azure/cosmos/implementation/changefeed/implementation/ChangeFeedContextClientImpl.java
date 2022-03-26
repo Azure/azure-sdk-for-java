@@ -91,7 +91,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
 
     @Override
     public Flux<FeedResponse<JsonNode>> createDocumentChangeFeedQuery(
-        CosmosAsyncContainer collectionLink,
+        CosmosAsyncContainer container,
         CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
 
         // ChangeFeed processor relies on getting GoneException signals
@@ -101,13 +101,13 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
             ModelBridgeInternal.disableSplitHandling(changeFeedRequestOptions);
 
         AsyncDocumentClient clientWrapper =
-            CosmosBridgeInternal.getAsyncDocumentClient(collectionLink.getDatabase());
+            CosmosBridgeInternal.getAsyncDocumentClient(container.getDatabase());
         Flux<FeedResponse<JsonNode>> feedResponseFlux =
             clientWrapper
                 .getCollectionCache()
                 .resolveByNameAsync(
                     null,
-                    BridgeInternal.extractContainerSelfLink(collectionLink),
+                    BridgeInternal.extractContainerSelfLink(container),
                     null)
                 .flatMapMany((collection) -> {
                     if (collection == null) {

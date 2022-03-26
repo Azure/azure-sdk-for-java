@@ -1,8 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.cosmos.implementation.changefeed;
 
+import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import reactor.core.publisher.Mono;
 
 /**
@@ -12,11 +15,21 @@ public interface LeaseManager {
     /**
      * Checks whether the lease exists and creates it if it does not exist.
      *
-     * @param leaseToken the lease token to work with.
+     * @param partitionKeyRange the partition key range for the lease.
      * @param continuationToken the continuation token if it exists.
      * @return the lease.
      */
-    Mono<Lease> createLeaseIfNotExist(String leaseToken, String continuationToken);
+    Mono<Lease> createLeaseIfNotExist(PartitionKeyRange partitionKeyRange, String continuationToken);
+
+    /***
+     * Checks whether the lease exists and creates it if it does not exist.
+     *
+     * @param feedRange the feed range for the lease.
+     * @param continuationToken the continuation token if it exists.
+     *
+     * @return the lease.
+     */
+    Mono<Lease> createLeaseIfNotExist(FeedRangeEpkImpl feedRange, String continuationToken);
 
     /**
      * Deletes the lease.

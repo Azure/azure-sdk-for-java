@@ -4,12 +4,15 @@ package com.azure.cosmos.rx;
 
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.ChangeFeedProcessorBuilder;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.changefeed.Lease;
+import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.ChangeFeedProcessorState;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
@@ -19,9 +22,6 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.implementation.InternalObjectNode;
-import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.changefeed.ServiceItemLease;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -447,7 +447,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                         createdLeaseCollection.queryItems(querySpec, cosmosQueryRequestOptions, InternalObjectNode.class).byPage()
                                               .flatMap(documentFeedResponse -> reactor.core.publisher.Flux.fromIterable(documentFeedResponse.getResults()))
                                               .flatMap(doc -> {
-                                ServiceItemLease leaseDocument = ServiceItemLease.fromDocument(doc);
+                                Lease leaseDocument = Lease.builder().buildFromDocument(doc);
                                 leaseDocument.setOwner("TEMP_OWNER");
                                 CosmosItemRequestOptions options = new CosmosItemRequestOptions();
 
@@ -586,7 +586,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                                 return createdLeaseCollection.queryItems(querySpec, cosmosQueryRequestOptions, InternalObjectNode.class).byPage()
                                     .flatMap(documentFeedResponse -> reactor.core.publisher.Flux.fromIterable(documentFeedResponse.getResults()))
                                     .flatMap(doc -> {
-                                        ServiceItemLease leaseDocument = ServiceItemLease.fromDocument(doc);
+                                        Lease leaseDocument = Lease.builder().buildFromDocument(doc);
                                         leaseDocument.setOwner(null);
                                         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
                                         return createdLeaseCollection.replaceItem(leaseDocument, leaseDocument.getId(), new PartitionKey(leaseDocument.getId()), options)
@@ -878,7 +878,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
             createdLeaseCollection.queryItems(querySpec, cosmosQueryRequestOptions, InternalObjectNode.class).byPage()
                 .flatMap(documentFeedResponse -> reactor.core.publisher.Flux.fromIterable(documentFeedResponse.getResults()))
                 .flatMap(doc -> {
-                    ServiceItemLease leaseDocument = ServiceItemLease.fromDocument(doc);
+                    Lease leaseDocument = Lease.builder().buildFromDocument(doc);
                     leaseDocument.setOwner(RandomStringUtils.randomAlphabetic(10));
                     CosmosItemRequestOptions options = new CosmosItemRequestOptions();
                     return createdLeaseCollection.replaceItem(leaseDocument, leaseDocument.getId(), new PartitionKey(leaseDocument.getId()), options)
@@ -886,7 +886,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 })
                 .flatMap(leaseDocument -> createdLeaseCollection.readItem(leaseDocument.getId(), new PartitionKey(leaseDocument.getId()), InternalObjectNode.class))
                 .map(doc -> {
-                    ServiceItemLease leaseDocument = ServiceItemLease.fromDocument(doc.getItem());
+                    Lease leaseDocument = Lease.builder().buildFromDocument(doc.getItem());
                     ChangeFeedProcessorTest.log.info("Change feed processor current Owner is'{}'", leaseDocument.getOwner());
                     return leaseDocument;
                 })

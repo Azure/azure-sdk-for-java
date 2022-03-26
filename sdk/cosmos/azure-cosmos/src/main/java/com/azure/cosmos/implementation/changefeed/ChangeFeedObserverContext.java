@@ -12,11 +12,11 @@ import reactor.core.publisher.Mono;
 public interface ChangeFeedObserverContext {
 
     /**
-     * Gets the id of the partition for the current event.
+     * Gets the lease token for the current event.
      *
-     * @return the id of the partition for the current event.
+     * @return the lease token for the current event.
      */
-    String getPartitionKeyRangeId();
+    String getLeaseToken();
 
     /**
      * Gets the response from the underlying call.

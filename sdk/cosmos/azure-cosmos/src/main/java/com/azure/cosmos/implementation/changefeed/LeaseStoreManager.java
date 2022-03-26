@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed;
 
-import com.azure.cosmos.implementation.changefeed.implementation.LeaseStoreManagerImpl;
+import com.azure.cosmos.implementation.changefeed.implementation.leaseManagement.LeaseStoreManagerImpl;
 import com.azure.cosmos.CosmosAsyncContainer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -23,7 +23,9 @@ public interface LeaseStoreManager extends LeaseContainer, LeaseManager, LeaseSt
 
         LeaseStoreManagerBuilderDefinition leasePrefix(String leasePrefix);
 
-        LeaseStoreManagerBuilderDefinition leaseCollectionLink(CosmosAsyncContainer leaseCollectionLink);
+        LeaseStoreManagerBuilderDefinition leaseContainer(CosmosAsyncContainer leaseContainer);
+
+        LeaseStoreManagerBuilderDefinition monitoredContainer(CosmosAsyncContainer monitoredContainer);
 
         LeaseStoreManagerBuilderDefinition requestOptionsFactory(RequestOptionsFactory requestOptionsFactory);
 
@@ -45,15 +47,6 @@ public interface LeaseStoreManager extends LeaseContainer, LeaseManager, LeaseSt
      * @return all leases owned by the current host.
      */
     Flux<Lease> getOwnedLeases();
-
-    /**
-     * Checks whether the lease exists and creates it if it does not exist.
-     *
-     * @param leaseToken the partition to work on.
-     * @param continuationToken the continuation token if it exists.
-     * @return the lease.
-     */
-    Mono<Lease> createLeaseIfNotExist(String leaseToken, String continuationToken);
 
     /**
      * DELETE the lease.

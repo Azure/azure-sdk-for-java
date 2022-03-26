@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.cosmos.implementation.changefeed;
 
-import reactor.core.publisher.Flux;
+import com.azure.cosmos.implementation.changefeed.implementation.FeedRangeGoneHandler.FeedRangeGoneHandler;
 import reactor.core.publisher.Mono;
 
 /**
@@ -16,11 +17,11 @@ public interface PartitionSynchronizer {
      */
     Mono<Void> createMissingLeases();
 
-    /**
-     * Handles partition slip.
+    /***
+     * Get the partition gone handler.
      *
      * @param lease the lease.
-     * @return the split partition documents.
+     * @return a {@link FeedRangeGoneHandler}.
      */
-    Flux<Lease> splitPartition(Lease lease);
+    Mono<FeedRangeGoneHandler> getPartitionGoneHandler(Lease lease);
 }

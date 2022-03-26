@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.cosmos.implementation.changefeed.implementation;
 
 /**
@@ -8,7 +9,7 @@ package com.azure.cosmos.implementation.changefeed.implementation;
 enum StatusCodeErrorType {
     UNDEFINED,
     PARTITION_NOT_FOUND,
-    PARTITION_SPLIT,
+    PARTITION_SPLIT_OR_MERGE,
     TRANSIENT_ERROR,
     MAX_ITEM_COUNT_TOO_LARGE
 }
