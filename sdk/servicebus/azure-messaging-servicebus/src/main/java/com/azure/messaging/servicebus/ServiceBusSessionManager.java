@@ -70,6 +70,7 @@ class ServiceBusSessionManager implements AutoCloseable {
     private final Deque<Scheduler> availableSchedulers = new ConcurrentLinkedDeque<>();
     private final Duration maxSessionLockRenewDuration;
     private final String clientId;
+
     /**
      * SessionId to receiver mapping.
      */
