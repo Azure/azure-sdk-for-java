@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Contains FQDN of the DNS record associated with the public IP address. */
 @Fluent
 public final class PublicIpAddressDnsSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PublicIpAddressDnsSettings.class);
-
     /*
      * The domain name label. The concatenation of the domain name label and
      * the regionalized DNS zone make up the fully qualified domain name

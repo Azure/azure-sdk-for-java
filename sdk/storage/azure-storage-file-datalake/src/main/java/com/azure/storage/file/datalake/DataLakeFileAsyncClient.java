@@ -6,6 +6,7 @@ package com.azure.storage.file.datalake;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -110,15 +111,17 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @param blockBlobAsyncClient The underlying {@link BlobContainerAsyncClient}
      */
     DataLakeFileAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
-        String accountName, String fileSystemName, String fileName, BlockBlobAsyncClient blockBlobAsyncClient) {
+        String accountName, String fileSystemName, String fileName, BlockBlobAsyncClient blockBlobAsyncClient,
+        AzureSasCredential sasToken) {
         super(pipeline, url, serviceVersion, accountName, fileSystemName, fileName, PathResourceType.FILE,
-            blockBlobAsyncClient);
+            blockBlobAsyncClient, sasToken);
     }
 
     DataLakeFileAsyncClient(DataLakePathAsyncClient pathAsyncClient) {
         super(pathAsyncClient.getHttpPipeline(), pathAsyncClient.getAccountUrl(), pathAsyncClient.getServiceVersion(),
             pathAsyncClient.getAccountName(), pathAsyncClient.getFileSystemName(),
-            Utility.urlEncode(pathAsyncClient.pathName), PathResourceType.FILE, pathAsyncClient.getBlockBlobAsyncClient());
+            Utility.urlEncode(pathAsyncClient.pathName), PathResourceType.FILE,
+            pathAsyncClient.getBlockBlobAsyncClient(), pathAsyncClient.getSasToken());
     }
 
     /**
@@ -558,8 +561,10 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         DataLakeRequestConditions requestConditions = null;
 
         // Note that if the file will be uploaded using a putBlob, we also can skip the exists check.
+        //
+        // Default behavior is to use uploading in chunks when the file size is greater than 100 MB.
         if (!overwrite) {
-            if (UploadUtils.shouldUploadInChunks(filePath, DataLakeFileAsyncClient.MAX_APPEND_FILE_BYTES, LOGGER)) {
+            if (UploadUtils.shouldUploadInChunks(filePath, ModelHelper.FILE_DEFAULT_MAX_SINGLE_UPLOAD_SIZE, LOGGER)) {
                 overwriteCheck = exists().flatMap(exists -> exists
                     ? monoError(LOGGER, new IllegalArgumentException(Constants.FILE_ALREADY_EXISTS))
                     : Mono.empty());
@@ -636,6 +641,9 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Size of the file must be "
                                 + "greater than 0."));
                         }
+
+                        // By default, if the file is larger than 100 MB chunk it and append it in stages.
+                        // But, this is configurable by the user passing options with max single upload size configured.
                         if (UploadUtils.shouldUploadInChunks(filePath,
                             finalParallelTransferOptions.getMaxSingleUploadSizeLong(), LOGGER)) {
                             return createWithResponse(null, null, headers, metadata, validatedRequestConditions)

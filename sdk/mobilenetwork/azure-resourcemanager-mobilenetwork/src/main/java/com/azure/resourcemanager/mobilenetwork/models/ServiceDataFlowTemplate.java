@@ -6,15 +6,12 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Service data flow (SDF) template. */
 @Fluent
 public final class ServiceDataFlowTemplate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceDataFlowTemplate.class);
-
     /*
      * The name of the SDF template. This must be unique within the parent
      * PccRuleConfiguration. You must not use any of the following reserved
@@ -196,28 +193,30 @@ public final class ServiceDataFlowTemplate {
      */
     public void validate() {
         if (templateName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property templateName in model ServiceDataFlowTemplate"));
         }
         if (direction() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property direction in model ServiceDataFlowTemplate"));
         }
         if (protocol() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property protocol in model ServiceDataFlowTemplate"));
         }
         if (remoteIpList() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property remoteIpList in model ServiceDataFlowTemplate"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceDataFlowTemplate.class);
 }

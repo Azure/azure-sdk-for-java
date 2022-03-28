@@ -49,7 +49,6 @@
       <codesnippet.skip>false</codesnippet.skip>
       <javadocDoclet></javadocDoclet>
       <javadocDocletOptions></javadocDocletOptions>
-      <revapi.skip>true</revapi.skip>
     </properties>
 
     <developers>

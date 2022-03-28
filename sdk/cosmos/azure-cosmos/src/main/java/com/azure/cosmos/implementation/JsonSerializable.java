@@ -35,6 +35,8 @@ import reactor.util.annotation.Nullable;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -463,7 +465,7 @@ public class JsonSerializable {
     public <T> List<T> getList(String propertyName, Class<T> c, boolean... convertFromCamelCase) {
         if (this.propertyBag.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
             JsonNode jsonArray = this.propertyBag.get(propertyName);
-            ArrayList<T> result = new ArrayList<T>();
+            ArrayList<T> result = new ArrayList<>();
 
             boolean isBaseClass = false;
             boolean isEnumClass = false;
@@ -645,8 +647,12 @@ public class JsonSerializable {
     }
 
     private String toJson(Object object) {
+        return toJson(getMapper(), object);
+    }
+
+    private static String toJson(ObjectMapper mapper, Object object) {
         try {
-            return getMapper().writeValueAsString(object);
+            return mapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
             throw new IllegalStateException("Unable to convert JSON to STRING", e);
         }
@@ -715,6 +721,66 @@ public class JsonSerializable {
     }
 
     /**
+     * Converts to an Object (only POJOs and JsonNode are supported).
+     *
+     * @param <T> the type of the object.
+     * @param c the class of the object, either a POJO class or JsonNode. If c is a POJO class, it must be a member
+     * (and not an anonymous or local) and a static one.
+     * @return the POJO.
+     * @throws IllegalArgumentException thrown if an error occurs
+     * @throws IllegalStateException thrown when objectmapper is unable to read tree
+     */
+    @SuppressWarnings("unchecked")
+    // Implicit or explicit cast to T is done after checking values are assignable from Class<T>.
+    public static <T> T toObjectFromObjectNode(JsonNode node, boolean isValueQuery, Class<T> c) {
+        if (isValueQuery && node.has(Constants.Properties.VALUE)) {
+            return OBJECT_MAPPER.convertValue(node.get(Constants.Properties.VALUE), c);
+        }
+
+        if (InternalObjectNode.class.isAssignableFrom(c)) {
+            return (T) new InternalObjectNode((ObjectNode)node);
+        }
+
+        if (node instanceof ObjectNode &&
+            (JsonSerializable.class.isAssignableFrom(c) || containsJsonSerializable(c))) {
+
+            return c.cast(instantiateFromObjectNodeAndType((ObjectNode)node, c));
+        }
+
+        if (List.class.isAssignableFrom(c)) {
+            try {
+                return OBJECT_MAPPER.readValue(node.toString(), c);
+            } catch (IOException e) {
+                throw new IllegalStateException("Failed to convert to collection.", e);
+            }
+        }
+        if (JsonNode.class.isAssignableFrom(c) || ObjectNode.class.isAssignableFrom(c)) {
+            // JsonNode
+            if (JsonNode.class != c) {
+                if (ObjectNode.class != c) {
+                    throw new IllegalArgumentException(
+                        "We support JsonNode but not its sub-classes.");
+                }
+            }
+
+            return c.cast(node);
+        } else {
+            // POJO
+            JsonSerializable.checkForValidPOJO(c);
+            try {
+                return OBJECT_MAPPER.treeToValue(node, c);
+            } catch (IOException e) {
+               throw new IllegalStateException(
+                    String.format(
+                        "Failed to get POJO of type '%s' for json '%s'.",
+                        c.getName(),
+                        toJson(OBJECT_MAPPER, node)),
+                    e);
+            }
+        }
+    }
+
+    /**
      * Converts to a JSON string.
      *
      * @return the JSON string.
@@ -754,7 +820,7 @@ public class JsonSerializable {
         return this.propertyBag;
     }
 
-    <T> boolean containsJsonSerializable(Class<T> c) {
+    static <T> boolean containsJsonSerializable(Class<T> c) {
         return CompositePath.class.equals(c)
             || ConflictResolutionPolicy.class.equals(c)
             || ChangeFeedPolicy.class.equals(c)

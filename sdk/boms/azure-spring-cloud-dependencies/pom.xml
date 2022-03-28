@@ -44,10 +44,10 @@
     <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <azure.core.version>1.26.0</azure.core.version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
-    <azure.eventhubs.checkpoint.version>1.11.0</azure.eventhubs.checkpoint.version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
-    <azure.eventhubs.version>5.11.0</azure.eventhubs.version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+    <azure.eventhubs.checkpoint.version>1.12.0</azure.eventhubs.checkpoint.version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
+    <azure.eventhubs.version>5.11.1</azure.eventhubs.version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
     <azure.identity.version>1.4.6</azure.identity.version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
-    <azure.servicebus.version>7.6.0</azure.servicebus.version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
+    <azure.servicebus.version>7.7.0</azure.servicebus.version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
     <azure.spring.cloud.version>${project.version}</azure.spring.cloud.version>
     <azure.storage.queue.version>12.12.0</azure.storage.queue.version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
     <azure.resourcemanager.version>2.13.0</azure.resourcemanager.version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;dependency} -->

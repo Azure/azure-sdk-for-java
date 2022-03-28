@@ -33,7 +33,7 @@ public class HttpPipelineAdapterTests {
     public void testSendRequest() throws Exception {
         Mono<String> bodyResponse = Mono.just("dummy-body");
         HttpPipeline pipeline = PowerMockito.mock(HttpPipeline.class);
-        HttpPipelineAdapter pipelineAdapter = new HttpPipelineAdapter(pipeline);
+        HttpPipelineAdapter pipelineAdapter = new HttpPipelineAdapter(pipeline, new IdentityClientOptions());
         HttpRequest req = mockForSendRequest(bodyResponse, pipeline);
         pipelineAdapter.send(req);
     }
@@ -41,7 +41,7 @@ public class HttpPipelineAdapterTests {
     @Test
     public void testSendRequestEmptyBody() throws Exception {
         HttpPipeline pipeline = PowerMockito.mock(HttpPipeline.class);
-        HttpPipelineAdapter pipelineAdapter = new HttpPipelineAdapter(pipeline);
+        HttpPipelineAdapter pipelineAdapter = new HttpPipelineAdapter(pipeline, new IdentityClientOptions());
         HttpRequest req = mockForSendRequest(Mono.empty(), pipeline);
         pipelineAdapter.send(req);
     }

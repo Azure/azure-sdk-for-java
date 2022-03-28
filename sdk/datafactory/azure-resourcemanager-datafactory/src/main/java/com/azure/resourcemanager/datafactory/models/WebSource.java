@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("WebSource")
 @Fluent
 public final class WebSource extends CopySource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebSource.class);
-
     /*
      * Specifies the additional columns to be added to source data. Type: array
      * of objects(AdditionalColumns) (or Expression with resultType array of

@@ -5,6 +5,7 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInner;
@@ -310,6 +311,9 @@ public interface VirtualMachine
 
     /** @return the resource ID of the availability set associated with this virtual machine */
     String availabilitySetId();
+
+    /** @return the resource ID of the virtual machine scale set associated with this virtual machine */
+    String virtualMachineScaleSetId();
 
     /** @return the provisioningState value */
     String provisioningState();
@@ -1215,7 +1219,7 @@ public interface VirtualMachine
             WithEphemeralOSDisk withEphemeralOSDisk();
         }
 
-        /** The stage of a virtual machine definition allowing to select Ephemeral OS disk placement. */
+        /** The stage of a virtual machine definition allowing to set OS disk to be ephemeral. */
         interface WithEphemeralOSDisk {
             /**
              * Selects where you want to place the Ephemeral OS disk.
@@ -1229,6 +1233,9 @@ public interface VirtualMachine
         interface WithVMSize {
             /**
              * Selects the size of the virtual machine.
+             * <p>
+             * See {@link ComputeSkus#listByRegion(Region)} for virtual machine sizes in region,
+             * and {@link AvailabilitySet#listVirtualMachineSizes()} for virtual machine sizes in availability set.
              *
              * @param sizeName the name of a size for the virtual machine as text
              * @return the next stage of the definition
@@ -1237,6 +1244,10 @@ public interface VirtualMachine
 
             /**
              * Specifies the size of the virtual machine.
+             * <p>
+             * {@link VirtualMachineSizeTypes} is not the complete list of virtual machine sizes.
+             * See {@link ComputeSkus#listByRegion(Region)} for virtual machine sizes in region,
+             * and {@link AvailabilitySet#listVirtualMachineSizes()} for virtual machine sizes in availability set.
              *
              * @param size a size from the list of available sizes for the virtual machine
              * @return the next stage of the definition
@@ -1765,6 +1776,16 @@ public interface VirtualMachine
             WithManagedCreate withAvailabilityZone(AvailabilityZoneId zoneId);
         }
 
+        /** The stage of the VM definition allowing to specify virtual machine scale set */
+        interface WithScaleSet {
+            /**
+             * Specifies an existing virtual machine scale set for the virtual machine.
+             * @param scaleSet the virtual machine scale set with flexible orchestration mode
+             * @return the next stage of the definition
+             */
+            WithManagedCreate withExistingVirtualMachineScaleSet(VirtualMachineScaleSet scaleSet);
+        }
+
         /**
          * The stage of the definition which contains all the minimum required inputs for the VM using managed OS disk
          * to be created and optionally allow managed data disks specific settings to be specified.
@@ -1842,7 +1863,7 @@ public interface VirtualMachine
         interface WithAdditionalCapacities {
             /**
              * Enables hibernation feature.
-             *
+             * <p>
              * Hibernation is supported on premium general purpose SKUs, e.g. STANDARD_D2S_V3.
              * Hibernation is supported on Windows 10 19H1 and higher, and Windows Server 2019 and higher.
              * For Ubuntu 18.04 or higher, hibernation-setup-tool is required to be installed on the virtual machine.
@@ -1874,7 +1895,8 @@ public interface VirtualMachine
                 DefinitionStages.WithLicenseType,
                 DefinitionStages.WithAdditionalCapacities,
                 DefinitionStages.WithNetworkInterfaceDeleteOptions,
-                DefinitionStages.WithEphemeralOSDisk {
+                DefinitionStages.WithEphemeralOSDisk,
+                DefinitionStages.WithScaleSet {
 
             /**
              * Begins creating the virtual machine resource.
@@ -2425,6 +2447,8 @@ public interface VirtualMachine
 
         /**
          * Specifies a new size for the virtual machine.
+         * <p>
+         * See {@link VirtualMachine#availableSizes()} for resizing.
          *
          * @param sizeName the name of a size for the virtual machine as text
          * @return the next stage of the update
@@ -2433,6 +2457,9 @@ public interface VirtualMachine
 
         /**
          * Specifies a new size for the virtual machine.
+         * <p>
+         * {@link VirtualMachineSizeTypes} is not the complete list of virtual machine sizes.
+         * See {@link VirtualMachine#availableSizes()} for resizing.
          *
          * @param size a size from the list of available sizes for the virtual machine
          * @return the next stage of the definition

@@ -191,7 +191,7 @@ public final class CommunicationNetworkTraversalClientImplBuilder {
      */
     public CommunicationNetworkTraversalClientImpl buildClient() {
         if (apiVersion == null) {
-            this.apiVersion = "2022-02-01";
+            this.apiVersion = "2022-03-01-preview";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();

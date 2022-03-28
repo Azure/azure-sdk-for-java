@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Identifier resource specific properties. */
 @Fluent
 public final class IdentifierProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IdentifierProperties.class);
-
     /*
      * String representation of the identity.
      */

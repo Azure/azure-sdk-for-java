@@ -5,12 +5,10 @@
 package com.azure.resourcemanager.applicationinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.applicationinsights.models.WebTestGeolocation;
 import com.azure.resourcemanager.applicationinsights.models.WebTestKind;
 import com.azure.resourcemanager.applicationinsights.models.WebTestPropertiesConfiguration;
 import com.azure.resourcemanager.applicationinsights.models.WebtestsResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -18,8 +16,6 @@ import java.util.Map;
 /** An Application Insights web test definition. */
 @Fluent
 public final class WebTestInner extends WebtestsResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebTestInner.class);
-
     /*
      * The kind of web test that this web test watches. Choices are ping and
      * multistep.

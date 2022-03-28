@@ -7,14 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Concur Service linked service properties. */
 @Fluent
 public final class ConcurLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConcurLinkedServiceTypeProperties.class);
-
     /*
      * Properties used to connect to Concur. It is mutually exclusive with any
      * other properties in the linked service. Type: object.
@@ -248,13 +245,13 @@ public final class ConcurLinkedServiceTypeProperties {
      */
     public void validate() {
         if (clientId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property clientId in model ConcurLinkedServiceTypeProperties"));
         }
         if (username() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property username in model ConcurLinkedServiceTypeProperties"));
@@ -263,4 +260,6 @@ public final class ConcurLinkedServiceTypeProperties {
             password().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConcurLinkedServiceTypeProperties.class);
 }

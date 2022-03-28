@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SKU of a public IP address. */
 @Fluent
 public final class PublicIpAddressSku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PublicIpAddressSku.class);
-
     /*
      * Name of a public IP address SKU.
      */

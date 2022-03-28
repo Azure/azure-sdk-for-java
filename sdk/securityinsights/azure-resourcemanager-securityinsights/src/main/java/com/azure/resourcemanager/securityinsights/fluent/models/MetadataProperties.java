@@ -12,7 +12,6 @@ import com.azure.resourcemanager.securityinsights.models.MetadataCategories;
 import com.azure.resourcemanager.securityinsights.models.MetadataDependencies;
 import com.azure.resourcemanager.securityinsights.models.MetadataSource;
 import com.azure.resourcemanager.securityinsights.models.MetadataSupport;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDate;
 import java.util.List;
@@ -20,8 +19,6 @@ import java.util.List;
 /** Metadata property bag. */
 @Fluent
 public final class MetadataProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetadataProperties.class);
-
     /*
      * Static ID for the content.  Used to identify dependencies and content
      * from solutions or community.  Hard-coded/static for out of the box
@@ -103,6 +100,53 @@ public final class MetadataProperties {
      */
     @JsonProperty(value = "lastPublishDate")
     private LocalDate lastPublishDate;
+
+    /*
+     * The custom version of the content. A optional free text
+     */
+    @JsonProperty(value = "customVersion")
+    private String customVersion;
+
+    /*
+     * Schema version of the content. Can be used to distinguish between
+     * different flow based on the schema version
+     */
+    @JsonProperty(value = "contentSchemaVersion")
+    private String contentSchemaVersion;
+
+    /*
+     * the icon identifier. this id can later be fetched from the solution
+     * template
+     */
+    @JsonProperty(value = "icon")
+    private String icon;
+
+    /*
+     * the tactics the resource covers
+     */
+    @JsonProperty(value = "threatAnalysisTactics")
+    private List<String> threatAnalysisTactics;
+
+    /*
+     * the techniques the resource covers, these have to be aligned with the
+     * tactics being used
+     */
+    @JsonProperty(value = "threatAnalysisTechniques")
+    private List<String> threatAnalysisTechniques;
+
+    /*
+     * preview image file names. These will be taken from the solution
+     * artifacts
+     */
+    @JsonProperty(value = "previewImages")
+    private List<String> previewImages;
+
+    /*
+     * preview image file names. These will be taken from the solution
+     * artifacts. used for dark theme support
+     */
+    @JsonProperty(value = "previewImagesDark")
+    private List<String> previewImagesDark;
 
     /**
      * Get the contentId property: Static ID for the content. Used to identify dependencies and content from solutions
@@ -359,18 +403,164 @@ public final class MetadataProperties {
     }
 
     /**
+     * Get the customVersion property: The custom version of the content. A optional free text.
+     *
+     * @return the customVersion value.
+     */
+    public String customVersion() {
+        return this.customVersion;
+    }
+
+    /**
+     * Set the customVersion property: The custom version of the content. A optional free text.
+     *
+     * @param customVersion the customVersion value to set.
+     * @return the MetadataProperties object itself.
+     */
+    public MetadataProperties withCustomVersion(String customVersion) {
+        this.customVersion = customVersion;
+        return this;
+    }
+
+    /**
+     * Get the contentSchemaVersion property: Schema version of the content. Can be used to distinguish between
+     * different flow based on the schema version.
+     *
+     * @return the contentSchemaVersion value.
+     */
+    public String contentSchemaVersion() {
+        return this.contentSchemaVersion;
+    }
+
+    /**
+     * Set the contentSchemaVersion property: Schema version of the content. Can be used to distinguish between
+     * different flow based on the schema version.
+     *
+     * @param contentSchemaVersion the contentSchemaVersion value to set.
+     * @return the MetadataProperties object itself.
+     */
+    public MetadataProperties withContentSchemaVersion(String contentSchemaVersion) {
+        this.contentSchemaVersion = contentSchemaVersion;
+        return this;
+    }
+
+    /**
+     * Get the icon property: the icon identifier. this id can later be fetched from the solution template.
+     *
+     * @return the icon value.
+     */
+    public String icon() {
+        return this.icon;
+    }
+
+    /**
+     * Set the icon property: the icon identifier. this id can later be fetched from the solution template.
+     *
+     * @param icon the icon value to set.
+     * @return the MetadataProperties object itself.
+     */
+    public MetadataProperties withIcon(String icon) {
+        this.icon = icon;
+        return this;
+    }
+
+    /**
+     * Get the threatAnalysisTactics property: the tactics the resource covers.
+     *
+     * @return the threatAnalysisTactics value.
+     */
+    public List<String> threatAnalysisTactics() {
+        return this.threatAnalysisTactics;
+    }
+
+    /**
+     * Set the threatAnalysisTactics property: the tactics the resource covers.
+     *
+     * @param threatAnalysisTactics the threatAnalysisTactics value to set.
+     * @return the MetadataProperties object itself.
+     */
+    public MetadataProperties withThreatAnalysisTactics(List<String> threatAnalysisTactics) {
+        this.threatAnalysisTactics = threatAnalysisTactics;
+        return this;
+    }
+
+    /**
+     * Get the threatAnalysisTechniques property: the techniques the resource covers, these have to be aligned with the
+     * tactics being used.
+     *
+     * @return the threatAnalysisTechniques value.
+     */
+    public List<String> threatAnalysisTechniques() {
+        return this.threatAnalysisTechniques;
+    }
+
+    /**
+     * Set the threatAnalysisTechniques property: the techniques the resource covers, these have to be aligned with the
+     * tactics being used.
+     *
+     * @param threatAnalysisTechniques the threatAnalysisTechniques value to set.
+     * @return the MetadataProperties object itself.
+     */
+    public MetadataProperties withThreatAnalysisTechniques(List<String> threatAnalysisTechniques) {
+        this.threatAnalysisTechniques = threatAnalysisTechniques;
+        return this;
+    }
+
+    /**
+     * Get the previewImages property: preview image file names. These will be taken from the solution artifacts.
+     *
+     * @return the previewImages value.
+     */
+    public List<String> previewImages() {
+        return this.previewImages;
+    }
+
+    /**
+     * Set the previewImages property: preview image file names. These will be taken from the solution artifacts.
+     *
+     * @param previewImages the previewImages value to set.
+     * @return the MetadataProperties object itself.
+     */
+    public MetadataProperties withPreviewImages(List<String> previewImages) {
+        this.previewImages = previewImages;
+        return this;
+    }
+
+    /**
+     * Get the previewImagesDark property: preview image file names. These will be taken from the solution artifacts.
+     * used for dark theme support.
+     *
+     * @return the previewImagesDark value.
+     */
+    public List<String> previewImagesDark() {
+        return this.previewImagesDark;
+    }
+
+    /**
+     * Set the previewImagesDark property: preview image file names. These will be taken from the solution artifacts.
+     * used for dark theme support.
+     *
+     * @param previewImagesDark the previewImagesDark value to set.
+     * @return the MetadataProperties object itself.
+     */
+    public MetadataProperties withPreviewImagesDark(List<String> previewImagesDark) {
+        this.previewImagesDark = previewImagesDark;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (parentId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property parentId in model MetadataProperties"));
         }
         if (kind() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property kind in model MetadataProperties"));
         }
@@ -390,4 +580,6 @@ public final class MetadataProperties {
             categories().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MetadataProperties.class);
 }

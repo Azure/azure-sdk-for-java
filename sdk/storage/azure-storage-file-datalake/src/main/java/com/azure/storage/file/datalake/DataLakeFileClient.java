@@ -20,6 +20,7 @@ import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.blob.specialized.BlobInputStream;
 import com.azure.storage.blob.specialized.BlockBlobClient;
+import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
@@ -28,6 +29,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
 import com.azure.storage.file.datalake.implementation.models.InternalDataLakeFileOpenInputStreamResult;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
+import com.azure.storage.file.datalake.implementation.util.ModelHelper;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
@@ -346,7 +348,9 @@ public class DataLakeFileClient extends DataLakePathClient {
 
         if (!overwrite) {
             // Note we only want to make the exists call if we will be uploading in stages. Otherwise it is superfluous.
-            if (UploadUtils.shouldUploadInChunks(filePath, DataLakeFileClient.MAX_APPEND_FILE_BYTES, LOGGER)
+            //
+            // Default behavior is to use uploading in chunks when the file size is greater than 100 MB.
+            if (UploadUtils.shouldUploadInChunks(filePath, ModelHelper.FILE_DEFAULT_MAX_SINGLE_UPLOAD_SIZE, LOGGER)
                 && exists()) {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
             }
@@ -864,10 +868,18 @@ public class DataLakeFileClient extends DataLakePathClient {
         DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destinationRequestConditions,
         Duration timeout, Context context) {
 
-        Mono<Response<DataLakePathClient>> response = renameWithResponse(destinationFileSystem, destinationPath,
-            sourceRequestConditions, destinationRequestConditions, context);
+        Mono<Response<DataLakeFileClient>> response =
+            dataLakeFileAsyncClient.renameWithResponse(destinationFileSystem, destinationPath,
+                    sourceRequestConditions, destinationRequestConditions, context)
+                .map(asyncResponse ->
+                    new SimpleResponse<>(asyncResponse.getRequest(), asyncResponse.getStatusCode(),
+                        asyncResponse.getHeaders(),
+                        new DataLakeFileClient(new DataLakeFileAsyncClient(asyncResponse.getValue()),
+                            new SpecializedBlobClientBuilder()
+                                .blobAsyncClient(asyncResponse.getValue().blockBlobAsyncClient)
+                                .buildBlockBlobClient())));
 
-        Response<DataLakePathClient> resp = StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        Response<DataLakeFileClient> resp = StorageImplUtils.blockWithOptionalTimeout(response, timeout);
         return new SimpleResponse<>(resp, new DataLakeFileClient(resp.getValue()));
     }
 

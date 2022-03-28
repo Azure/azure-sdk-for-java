@@ -6,14 +6,11 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Information of a specific aggregation in the incident related entities result. */
 @Fluent
 public final class IncidentEntitiesResultsMetadata {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IncidentEntitiesResultsMetadata.class);
-
     /*
      * Total number of aggregations of the given kind in the incident related
      * entities result.
@@ -74,10 +71,12 @@ public final class IncidentEntitiesResultsMetadata {
      */
     public void validate() {
         if (entityKind() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property entityKind in model IncidentEntitiesResultsMetadata"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IncidentEntitiesResultsMetadata.class);
 }

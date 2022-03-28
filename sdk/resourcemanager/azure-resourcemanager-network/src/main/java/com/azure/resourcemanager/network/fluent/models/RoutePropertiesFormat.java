@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RouteNextHopType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Route resource. */
 @Fluent
 public final class RoutePropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoutePropertiesFormat.class);
-
     /*
      * The destination CIDR to which the route applies.
      */
@@ -148,10 +145,12 @@ public final class RoutePropertiesFormat {
      */
     public void validate() {
         if (nextHopType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property nextHopType in model RoutePropertiesFormat"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RoutePropertiesFormat.class);
 }

@@ -5,9 +5,6 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -18,15 +15,12 @@ import java.time.OffsetDateTime;
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
-    property = "@odata\\.type",
+    property = "@odata.type",
     defaultImpl = JobOutput.class)
 @JsonTypeName("JobOutput")
 @JsonSubTypes({@JsonSubTypes.Type(name = "#Microsoft.Media.JobOutputAsset", value = JobOutputAsset.class)})
-@JsonFlatten
 @Fluent
 public class JobOutput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobOutput.class);
-
     /*
      * If the JobOutput is in the Error state, it contains the details of the
      * error.

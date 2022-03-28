@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure SQL Managed Instance dataset properties. */
 @Fluent
 public final class AzureSqlMITableDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureSqlMITableDatasetTypeProperties.class);
-
     /*
      * This property will be retired. Please consider using schema + table
      * properties instead.

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Reference to a Mobile Network resource. */
 @Fluent
 public final class MobileNetworkResourceId {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MobileNetworkResourceId.class);
-
     /*
      * Mobile Network resource ID.
      */
@@ -47,9 +44,11 @@ public final class MobileNetworkResourceId {
      */
     public void validate() {
         if (id() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property id in model MobileNetworkResourceId"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MobileNetworkResourceId.class);
 }

@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.HDInsightActivityDebugInfoOption;
 import com.azure.resourcemanager.datafactory.models.LinkedServiceReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** HDInsight MapReduce activity properties. */
 @Fluent
 public final class HDInsightMapReduceActivityTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HDInsightMapReduceActivityTypeProperties.class);
-
     /*
      * Storage linked service references.
      */
@@ -239,13 +236,13 @@ public final class HDInsightMapReduceActivityTypeProperties {
             storageLinkedServices().forEach(e -> e.validate());
         }
         if (className() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property className in model HDInsightMapReduceActivityTypeProperties"));
         }
         if (jarFilePath() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property jarFilePath in model HDInsightMapReduceActivityTypeProperties"));
@@ -254,4 +251,6 @@ public final class HDInsightMapReduceActivityTypeProperties {
             jarLinkedService().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(HDInsightMapReduceActivityTypeProperties.class);
 }

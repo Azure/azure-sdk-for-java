@@ -6,6 +6,7 @@ package com.azure.identity;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClientOptions;
 
@@ -104,6 +105,24 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
     @SuppressWarnings("unchecked")
     public T configuration(Configuration configuration) {
         identityClientOptions.setConfiguration(configuration);
+        return (T) this;
+    }
+
+    /**
+     * Sets the {@link IdentityLogOptions} which enables identity logging options to be set on the client. For example
+     * configuring {@code accountIdentifierLogging} using
+     * {@link com.azure.identity.IdentityLogOptions#setLoggingAccountIdentifiersAllowed(boolean)} to allow account
+     * identifier logs to be enabled on client side debugging/monitoring purposes.
+     *
+     * @param identityLogOptions the {@link IdentityLogOptions} to be set on the credential client.
+     *
+     * @return An updated instance of this builder with the {@link ClientOptions} set as specified.
+     */
+    @SuppressWarnings("unchecked")
+    public T identityLogOptions(IdentityLogOptions identityLogOptions) {
+        identityClientOptions
+            .getIdentityLogOptionsImpl()
+            .setLoggingAccountIdentifiersAllowed(identityLogOptions.isLoggingAccountIdentifiersAllowed());
         return (T) this;
     }
 }

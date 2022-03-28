@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.ElevationToken;
 import com.azure.resourcemanager.securityinsights.models.EntityCommonProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Process entity property bag. */
 @Fluent
 public final class ProcessEntityProperties extends EntityCommonProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProcessEntityProperties.class);
-
     /*
      * The account entity id running the processes.
      */
