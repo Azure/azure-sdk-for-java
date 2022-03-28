@@ -28,7 +28,6 @@ import com.azure.storage.file.share.ShareFileClientBuilder;
 import reactor.core.publisher.Mono;
 
 import java.io.File;
-import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.function.Function;
@@ -73,16 +72,6 @@ public class SpringAppDeploymentImpl
             return false;
         }
         return innerModel().properties().active();
-    }
-
-    @Override
-    public OffsetDateTime createdTime() {
-        if (innerModel().properties() == null) {
-            return null;
-        }
-//        return innerModel().properties().createdTime();
-        // TODO (xiaofei) createdTime
-        return OffsetDateTime.now();
     }
 
     @Override

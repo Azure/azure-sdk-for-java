@@ -26,7 +26,6 @@ import com.azure.resourcemanager.resources.fluentcore.dag.FunctionalTaskItem;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import reactor.core.publisher.Mono;
 
-import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -94,16 +93,6 @@ public class SpringAppImpl
     @Override
     public ManagedIdentityProperties identity() {
         return innerModel().identity();
-    }
-
-    @Override
-    public OffsetDateTime createdTime() {
-        if (innerModel().properties() == null) {
-            return null;
-        }
-        // TODO (xiaofei) createdTime
-//        return innerModel().properties().createdTime();
-        return OffsetDateTime.now();
     }
 
     @Override
