@@ -16,6 +16,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.DefaultFullHttpRequest;
+import io.netty.handler.codec.http.DefaultHttpContent;
 import io.netty.handler.codec.http.DefaultHttpRequest;
 import io.netty.handler.codec.http.DefaultLastHttpContent;
 import io.netty.handler.codec.http.HttpChunkedInput;
@@ -116,11 +117,7 @@ public class SimpleRequestSender implements FutureListener<Channel> {
         ChunkedInput<ByteBuf> chunkedInput = new ChunkedNioFile(fileContent.getFile().toFile());
 
         channel.write(nettyRequest);
-        if (contentLength != null) {
-            channel.writeAndFlush(chunkedInput);
-        } else {
-            channel.writeAndFlush(new HttpChunkedInput(chunkedInput));
-        }
+        channel.writeAndFlush(new HttpChunkedInput(chunkedInput));
     }
 
     private static void sendStreamRequest(
@@ -134,11 +131,7 @@ public class SimpleRequestSender implements FutureListener<Channel> {
         ChunkedInput<ByteBuf> chunkedInput = new ChunkedStream(inputStreamContent.toStream());
 
         channel.write(nettyRequest);
-        if (contentLength != null) {
-            channel.writeAndFlush(chunkedInput);
-        } else {
-            channel.writeAndFlush(new HttpChunkedInput(chunkedInput));
-        }
+        channel.writeAndFlush(new HttpChunkedInput(chunkedInput));
     }
 
     private void sendFluxRequest(
@@ -155,14 +148,10 @@ public class SimpleRequestSender implements FutureListener<Channel> {
             if (signal.isOnNext()) {
                 ByteBuffer byteBuffer = signal.get();
                 if (byteBuffer != null) {
-                    channel.write(Unpooled.wrappedBuffer(byteBuffer));
+                    channel.write(new DefaultHttpContent(Unpooled.wrappedBuffer(byteBuffer)));
                 }
             } else if (signal.isOnComplete()) {
-                if (contentLength == null) {
-                    channel.writeAndFlush(new DefaultLastHttpContent());
-                } else {
-                    channel.flush();
-                }
+                channel.writeAndFlush(new DefaultLastHttpContent());
             } else if (signal.isOnError()) {
                 channel.close();
                 requestContext.getChannelPool().release(channel);
