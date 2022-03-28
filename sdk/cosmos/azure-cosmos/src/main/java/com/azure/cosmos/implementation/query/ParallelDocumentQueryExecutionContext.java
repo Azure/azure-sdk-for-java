@@ -46,8 +46,7 @@ import java.util.stream.Collectors;
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
  */
-public class ParallelDocumentQueryExecutionContext<T>
-        extends ParallelDocumentQueryExecutionContextBase<T> {
+public class ParallelDocumentQueryExecutionContext<T> extends ParallelDocumentQueryExecutionContextBase<T> {
     private static final Logger logger = LoggerFactory.getLogger(ParallelDocumentQueryExecutionContext.class);
 
     private final CosmosQueryRequestOptions cosmosQueryRequestOptions;
@@ -434,7 +433,6 @@ public class ParallelDocumentQueryExecutionContext<T>
 
     protected DocumentProducer<T> createDocumentProducer(
             String collectionRid,
-            PartitionKeyRange targetRange,
             String initialContinuationToken,
             int initialPageSize,
             CosmosQueryRequestOptions cosmosQueryRequestOptions,
@@ -442,20 +440,22 @@ public class ParallelDocumentQueryExecutionContext<T>
             Map<String, String> commonRequestHeaders,
             TriFunction<FeedRangeEpkImpl, String, Integer, RxDocumentServiceRequest> createRequestFunc,
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
-            Callable<DocumentClientRetryPolicy> createRetryPolicyFunc, FeedRangeEpkImpl feedRange) {
-        return new DocumentProducer<>(client,
+            Callable<DocumentClientRetryPolicy> createRetryPolicyFunc,
+            FeedRangeEpkImpl feedRange) {
+        return new DocumentProducer<>(
+                client,
                 collectionRid,
                 cosmosQueryRequestOptions,
                 createRequestFunc,
                 executeFunc,
-                targetRange,
                 collectionRid,
                 createRetryPolicyFunc,
                 resourceType,
                 correlatedActivityId,
                 initialPageSize,
                 initialContinuationToken,
-                top, feedRange);
+                top,
+                feedRange);
     }
 
     private int fluxSequentialMergeConcurrency(CosmosQueryRequestOptions options, int numberOfPartitions) {

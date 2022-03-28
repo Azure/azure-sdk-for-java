@@ -58,8 +58,11 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
         }
     }
 
-    protected void initialize(String collectionRid,
-            Map<FeedRangeEpkImpl, String> feedRangeToContinuationTokenMap, int initialPageSize,
+    protected void initialize(
+            String collectionRid,
+            Map<FeedRangeEpkImpl,
+            String> feedRangeToContinuationTokenMap,
+            int initialPageSize,
             SqlQuerySpec querySpecForInit) {
         this.pageSize = initialPageSize;
         Map<String, String> commonRequestHeaders = createCommonHeadersAsync(this.getFeedOptions(null, null));
@@ -86,26 +89,34 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
                     request);
             final FeedRangeEpkImpl targetRange = entry.getKey();
             final String continuationToken = entry.getValue();
-            DocumentProducer<T> dp = createDocumentProducer(collectionRid,
-                                                            null,
-                                                            continuationToken, initialPageSize, cosmosQueryRequestOptions,
-                                                            querySpecForInit, commonRequestHeaders, createRequestFunc, executeFunc,
-                                                            () -> client.getResetSessionTokenRetryPolicy().getRequestPolicy(), targetRange);
+            DocumentProducer<T> dp =
+                    createDocumentProducer(
+                            collectionRid,
+                            continuationToken,
+                            initialPageSize,
+                            cosmosQueryRequestOptions,
+                            querySpecForInit,
+                            commonRequestHeaders,
+                            createRequestFunc,
+                            executeFunc,
+                            () -> client.getResetSessionTokenRetryPolicy().getRequestPolicy(),
+                            targetRange);
 
             documentProducers.add(dp);
         }
     }
 
-    abstract protected DocumentProducer<T> createDocumentProducer(String collectionRid, PartitionKeyRange targetRange,
-                                                                  String initialContinuationToken, int initialPageSize,
-                                                                  CosmosQueryRequestOptions cosmosQueryRequestOptions,
-                                                                  SqlQuerySpec querySpecForInit,
-                                                                  Map<String, String> commonRequestHeaders,
-                                                                  TriFunction<FeedRangeEpkImpl, String, Integer,
-                                                                      RxDocumentServiceRequest> createRequestFunc,
-                                                                  Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
-                                                                  Callable<DocumentClientRetryPolicy> createRetryPolicyFunc,
-                                                                  FeedRangeEpkImpl feedRange);
+    abstract protected DocumentProducer<T> createDocumentProducer(
+            String collectionRid,
+            String initialContinuationToken,
+            int initialPageSize,
+            CosmosQueryRequestOptions cosmosQueryRequestOptions,
+            SqlQuerySpec querySpecForInit,
+            Map<String, String> commonRequestHeaders,
+            TriFunction<FeedRangeEpkImpl, String, Integer, RxDocumentServiceRequest> createRequestFunc,
+            Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
+            Callable<DocumentClientRetryPolicy> createRetryPolicyFunc,
+            FeedRangeEpkImpl feedRange);
 
     @Override
     abstract public Flux<FeedResponse<T>> drainAsync(int maxPageSize);
@@ -148,12 +159,17 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
                     request);
 
             // TODO: Review pagesize -1
-            DocumentProducer<T> dp = createDocumentProducer(collectionRid, targetRange,
-                                                            null, -1, cosmosQueryRequestOptions,
-                                                            querySpec,
-                                                            commonRequestHeaders, createRequestFunc, executeFunc,
-                                                            () -> client.getResetSessionTokenRetryPolicy()
-                                                                      .getRequestPolicy(), feedRangeEpk);
+            DocumentProducer<T> dp =
+                createDocumentProducer(
+                        collectionRid,
+                        null,
+                        -1,
+                        cosmosQueryRequestOptions,
+                        querySpec,
+                        commonRequestHeaders,
+                        createRequestFunc,
+                        executeFunc,
+                        () -> client.getResetSessionTokenRetryPolicy().getRequestPolicy(), feedRangeEpk);
 
             documentProducers.add(dp);
         }

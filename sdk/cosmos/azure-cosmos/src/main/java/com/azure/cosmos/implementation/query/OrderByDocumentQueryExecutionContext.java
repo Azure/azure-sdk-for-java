@@ -535,7 +535,6 @@ public class OrderByDocumentQueryExecutionContext
     @Override
     protected OrderByDocumentProducer createDocumentProducer(
             String collectionRid,
-            PartitionKeyRange targetRange,
             String continuationToken,
             int initialPageSize,
             CosmosQueryRequestOptions cosmosQueryRequestOptions,
@@ -550,7 +549,6 @@ public class OrderByDocumentQueryExecutionContext
                 cosmosQueryRequestOptions,
                 createRequestFunc,
                 executeFunc,
-                targetRange,
                 feedRange,
                 collectionRid,
                 createRetryPolicyFunc,

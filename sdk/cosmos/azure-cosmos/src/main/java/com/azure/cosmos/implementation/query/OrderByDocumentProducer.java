@@ -5,11 +5,6 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedRange;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -17,8 +12,11 @@ import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.RequestChargeTracker;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -42,7 +40,6 @@ class OrderByDocumentProducer extends DocumentProducer<Document> {
             CosmosQueryRequestOptions cosmosQueryRequestOptions,
             TriFunction<FeedRangeEpkImpl, String, Integer, RxDocumentServiceRequest> createRequestFunc,
             Function<RxDocumentServiceRequest, Mono<FeedResponse<Document>>> executeRequestFunc,
-            PartitionKeyRange targetRange,
             FeedRangeEpkImpl feedRange,
             String collectionLink,
             Callable<DocumentClientRetryPolicy> createRetryPolicyFunc,
@@ -52,7 +49,7 @@ class OrderByDocumentProducer extends DocumentProducer<Document> {
             String initialContinuationToken,
             int top,
             Map<FeedRangeEpkImpl, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap) {
-        super(client, collectionResourceId, cosmosQueryRequestOptions, createRequestFunc, executeRequestFunc, targetRange,
+        super(client, collectionResourceId, cosmosQueryRequestOptions, createRequestFunc, executeRequestFunc,
               collectionLink, createRetryPolicyFunc, resourceType, correlatedActivityId, initialPageSize,
               initialContinuationToken,top, feedRange);
         this.consumeComparer = consumeComparer;
@@ -89,7 +86,6 @@ class OrderByDocumentProducer extends DocumentProducer<Document> {
             cosmosQueryRequestOptions,
             createRequestFunc,
             executeRequestFuncWithRetries,
-            targetRange,
             new FeedRangeEpkImpl(targetRange.toRange()),
             collectionLink,
             createRetryPolicyFunc,

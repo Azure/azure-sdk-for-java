@@ -3,31 +3,30 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
-import com.azure.cosmos.implementation.apachecommons.lang.RandomUtils;
-import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
-import com.azure.cosmos.implementation.guava25.collect.Iterables;
-import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
-import com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer;
-import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IRetryPolicyFactory;
-import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RetryPolicy;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.RandomUtils;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
-import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
-import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.guava25.base.Strings;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
+import com.azure.cosmos.implementation.guava25.collect.Iterables;
 import com.azure.cosmos.implementation.guava25.collect.LinkedListMultimap;
+import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
+import com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer;
+import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
+import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.FeedResponse;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.reactivex.subscribers.TestSubscriber;
 import org.assertj.core.api.Assertions;
@@ -160,7 +159,6 @@ public class DocumentProducerTest {
                     fromPartitionAnswer(ImmutableList.of(answerFromParentPartition, splitAnswerFromParentPartition,
                                                          answerFromLeftChildPartition, answerFromRightChildPartition));
 
-            PartitionKeyRange parentPartitionKeyRange = mockPartitionKeyRange(parentPartitionId, parentRange);
             PartitionKeyRange leftChildPartitionKeyRange = mockPartitionKeyRange(leftChildPartitionId, leftChildRange);
             PartitionKeyRange rightChildPartitionKeyRange = mockPartitionKeyRange(rightChildPartitionId, rightChildRange);
 
@@ -174,7 +172,6 @@ public class DocumentProducerTest {
                     null,
                     requestCreator,
                     requestExecutor,
-                    parentPartitionKeyRange,
                     collectionLink,
                     () -> mockDocumentClientIRetryPolicyFactory().getRequestPolicy(),
                     Document.class,
@@ -273,7 +270,6 @@ public class DocumentProducerTest {
                     fromPartitionAnswer(ImmutableList.of(answerFromParentPartition, splitAnswerFromParentPartition,
                                                          answerFromLeftChildPartition, answerFromRightChildPartition));
 
-            PartitionKeyRange parentPartitionKeyRange = mockPartitionKeyRange(parentPartitionId, parentRange);
             PartitionKeyRange leftChildPartitionKeyRange = mockPartitionKeyRange(leftChildPartitionId, leftChildRange);
             PartitionKeyRange rightChildPartitionKeyRange = mockPartitionKeyRange(rightChildPartitionId, rightChildRange);
 
@@ -282,11 +278,22 @@ public class DocumentProducerTest {
                                                                             rightChildPartitionKeyRange));
 
             OrderByDocumentProducer documentProducer =
-                    new OrderByDocumentProducer(new OrderbyRowComparer<>(ImmutableList.of(SortOrder.Ascending)),
-                                                  queryCl, collectionRid, null, requestCreator, requestExecutor,
-                                                  parentPartitionKeyRange, range1, collectionLink, null, Document.class,
-                                                  null, initialPageSize, initialContinuationToken, top,
-                                                  new HashMap<>());
+                    new OrderByDocumentProducer(
+                        new OrderbyRowComparer<>(ImmutableList.of(SortOrder.Ascending)),
+                        queryCl,
+                        collectionRid,
+                        null,
+                        requestCreator,
+                        requestExecutor,
+                        range1,
+                        collectionLink,
+                        null,
+                        Document.class,
+                        null,
+                        initialPageSize,
+                        initialContinuationToken,
+                        top,
+                        new HashMap<>());
 
             TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
 
@@ -335,20 +342,23 @@ public class DocumentProducerTest {
             RequestExecutor requestExecutor = RequestExecutor.fromPartitionAnswer(RequestExecutor.PartitionAnswer.just("1"
                     , responses));
 
-            PartitionKeyRange targetRange = mockPartitionKeyRange(partitionId, range1.getRange());
-
             IDocumentQueryClient queryClient = Mockito.mock(IDocumentQueryClient.class);
             String initialContinuationToken = "initial-cp";
-            DocumentProducer<Document> documentProducer = new DocumentProducer<>(queryClient, collectionRid, null,
-                                                                                 requestCreator, requestExecutor,
-                                                                                 targetRange, collectionLink,
-                                                                                 () -> mockDocumentClientIRetryPolicyFactory()
-                                                                                           .getRequestPolicy(),
-                                                                                 Document.class,
-                                                                                 null,
-                                                                                 initialPageSize,
-                                                                                 initialContinuationToken,
-                                                                                 top, range1);
+            DocumentProducer<Document> documentProducer =
+                    new DocumentProducer<>(
+                        queryClient,
+                        collectionRid,
+                        null,
+                        requestCreator,
+                        requestExecutor,
+                        collectionLink,
+                        () -> mockDocumentClientIRetryPolicyFactory().getRequestPolicy(),
+                        Document.class,
+                        null,
+                        initialPageSize,
+                        initialContinuationToken,
+                        top,
+                        range1);
 
             TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
 
@@ -409,20 +419,23 @@ public class DocumentProducerTest {
                                                                                   exceptionBehaviour,
                                                                                   behaviourAfterException);
 
-            PartitionKeyRange targetRange = mockPartitionKeyRange(partitionKeyRangeId, feedRangeEpk.getRange());
-
             IDocumentQueryClient queryClient = Mockito.mock(IDocumentQueryClient.class);
             String initialContinuationToken = "initial-cp";
-            DocumentProducer<Document> documentProducer = new DocumentProducer<>(queryClient, collectionRid, null,
-                                                                                 requestCreator, requestExecutor,
-                                                                                 targetRange, collectionLink,
-                                                                                 () -> mockDocumentClientIRetryPolicyFactory()
-                                                                                           .getRequestPolicy(),
-                                                                                 Document.class,
-                                                                                 null,
-                                                                                 initialPageSize,
-                                                                                 initialContinuationToken,
-                                                                                 top, feedRangeEpk);
+            DocumentProducer<Document> documentProducer =
+                    new DocumentProducer<>(
+                        queryClient,
+                        collectionRid,
+                        null,
+                        requestCreator,
+                        requestExecutor,
+                        collectionLink,
+                        () -> mockDocumentClientIRetryPolicyFactory().getRequestPolicy(),
+                        Document.class,
+                        null,
+                        initialPageSize,
+                        initialContinuationToken,
+                        top,
+                        feedRangeEpk);
 
             TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
 
@@ -487,22 +500,23 @@ public class DocumentProducerTest {
             RequestExecutor requestExecutor = RequestExecutor.fromPartitionAnswer(behaviourBeforeException,
                                                                                   exceptionBehaviour);
 
-            PartitionKeyRange targetRange = mockPartitionKeyRange(partitionKeyRangeId, feedRangeEpk.getRange());
-
             IDocumentQueryClient queryClient = Mockito.mock(IDocumentQueryClient.class);
             String initialContinuationToken = "initial-cp";
-            DocumentProducer<Document> documentProducer = new DocumentProducer<Document>(queryClient, collectionRid,
-                                                                                         null,
-                                                                                         requestCreator,
-                                                                                         requestExecutor,
-                                                                                         targetRange, collectionRid,
-                                                                                         () -> mockDocumentClientIRetryPolicyFactory()
-                                                                                                   .getRequestPolicy(),
-                                                                                         Document.class,
-                                                                                         null,
-                                                                                         initialPageSize,
-                                                                                         initialContinuationToken,
-                                                                                         top, feedRangeEpk);
+            DocumentProducer<Document> documentProducer =
+                    new DocumentProducer<Document>(
+                        queryClient,
+                        collectionRid,
+                        null,
+                        requestCreator,
+                        requestExecutor,
+                        collectionRid,
+                        () -> mockDocumentClientIRetryPolicyFactory().getRequestPolicy(),
+                        Document.class,
+                        null,
+                        initialPageSize,
+                        initialContinuationToken,
+                        top,
+                        feedRangeEpk);
 
             TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
 

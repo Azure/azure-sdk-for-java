@@ -48,11 +48,11 @@ class OrderByUtils {
     }
 
     private static Flux<OrderByRowResult<Document>> toOrderByQueryResultObservable(DocumentProducer<Document> producer,
-                                                                                                 RequestChargeTracker tracker,
-                                                                                                 Map<String, QueryMetrics> queryMetricsMap,
-                                                                                                 Map<FeedRangeEpkImpl, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap,
-                                                                                                 List<SortOrder> sortOrders,
-                                                                                                 List<ClientSideRequestStatistics> clientSideRequestStatisticsList) {
+                                                                                 RequestChargeTracker tracker,
+                                                                                 Map<String, QueryMetrics> queryMetricsMap,
+                                                                                 Map<FeedRangeEpkImpl, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap,
+                                                                                 List<SortOrder> sortOrders,
+                                                                                 List<ClientSideRequestStatistics> clientSideRequestStatisticsList) {
         return producer
                 .produceAsync()
                    .transformDeferred(new OrderByUtils.PageToItemTransformer(tracker, queryMetricsMap,

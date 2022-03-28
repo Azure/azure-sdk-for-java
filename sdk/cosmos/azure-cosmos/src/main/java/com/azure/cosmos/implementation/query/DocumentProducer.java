@@ -111,7 +111,6 @@ class DocumentProducer<T> {
             CosmosQueryRequestOptions cosmosQueryRequestOptions,
             TriFunction<FeedRangeEpkImpl, String, Integer, RxDocumentServiceRequest> createRequestFunc,
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeRequestFunc,
-            PartitionKeyRange targetRange,
             String collectionLink,
             Callable<DocumentClientRetryPolicy> createRetryPolicyFunc,
             Class<T> resourceType ,
@@ -163,7 +162,6 @@ class DocumentProducer<T> {
         ModelBridgeInternal.setQueryRequestOptionsContinuationToken(this.cosmosQueryRequestOptions, initialContinuationToken);
         this.lastResponseContinuationToken = initialContinuationToken;
         this.resourceType = resourceType;
-        this.targetRange = targetRange;
         this.collectionLink = collectionLink;
         this.createRetryPolicyFunc = createRetryPolicyFunc;
         this.pageSize = initialPageSize;
@@ -280,7 +278,6 @@ class DocumentProducer<T> {
                 cosmosQueryRequestOptions,
                 createRequestFunc,
                 executeRequestFuncWithRetries,
-                targetRange,
                 collectionLink,
                 null,
                 resourceType ,
