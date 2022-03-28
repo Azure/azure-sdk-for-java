@@ -1,6 +1,6 @@
 # Release History
 
-## 4.0.0-beta.4 (Unreleased)
+## 4.0.0 (2022-03-28)
 - Support Spring Boot versions: 2.5.0 ~ 2.5.11, and 2.6.0 ~ 2.6.5. (Note: 2.5.x (x>11) and 2.6.y (y>5) should be supported, but they aren't tested with this release.)
 - Support Spring Cloud versions: 2020.0.3 ~ 2020.0.5 and 2021.0.0 ~ 2021.0.1. (Note: 2020.0.x (x>5) and 2021.0.y (y>1) should be supported, but they aren't tested with this release.)
 
