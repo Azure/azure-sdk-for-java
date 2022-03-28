@@ -38,6 +38,10 @@ public final class HttpResponseDecoder {
         return response.map(r -> new HttpDecodedResponse(r, this.serializer, decodeData));
     }
 
+    public HttpDecodedResponse decodeSync(HttpResponse response, HttpResponseDecodeData decodeData) {
+        return new HttpDecodedResponse(response, this.serializer, decodeData);
+    }
+
     /**
      * A decorated HTTP response which has subscribable body and headers that supports lazy decoding.
      *
@@ -49,6 +53,7 @@ public final class HttpResponseDecoder {
         private final SerializerAdapter serializer;
         private final HttpResponseDecodeData decodeData;
         private Mono<Object> bodyCached;
+        private Object bodyCachedObject;
         private Object headersCached;
 
         /**
@@ -96,6 +101,16 @@ public final class HttpResponseDecoder {
                     this.decodeData).cache();
             }
             return this.bodyCached;
+        }
+
+        public Object getDecodedBodySync(byte[] body) {
+            if (this.bodyCachedObject == null) {
+                this.bodyCachedObject = HttpResponseBodyDecoder.decodeByteArraySync(body,
+                    this.response,
+                    this.serializer,
+                    this.decodeData);
+            }
+            return this.bodyCachedObject;
         }
 
         /**

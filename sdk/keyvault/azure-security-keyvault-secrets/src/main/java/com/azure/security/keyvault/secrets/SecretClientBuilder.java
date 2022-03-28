@@ -155,7 +155,68 @@ public final class SecretClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public SecretClient buildClient() {
-        return new SecretClient(buildAsyncClient());
+        Configuration buildConfiguration =
+            (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
+        URL buildEndpoint = getBuildEndpoint(buildConfiguration);
+
+        if (buildEndpoint == null) {
+            throw logger.logExceptionAsError(
+                new IllegalStateException(
+                    KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED)));
+        }
+
+        SecretServiceVersion serviceVersion = version != null ? version : SecretServiceVersion.getLatest();
+
+        if (pipeline != null) {
+            return new SecretClient(vaultUrl, pipeline, serviceVersion, buildAsyncClient());
+        }
+
+        if (credential == null) {
+            throw logger.logExceptionAsError(
+                new IllegalStateException(
+                    KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.CREDENTIAL_REQUIRED)));
+        }
+
+        // Closest to API goes first, closest to wire goes last.
+        final List<HttpPipelinePolicy> policies = new ArrayList<>();
+
+        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
+
+        httpLogOptions = (httpLogOptions == null) ? new HttpLogOptions() : httpLogOptions;
+
+        policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(clientOptions, httpLogOptions), clientName,
+            clientVersion, buildConfiguration));
+
+        if (clientOptions != null) {
+            List<HttpHeader> httpHeaderList = new ArrayList<>();
+            clientOptions.getHeaders().forEach(header ->
+                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
+        }
+
+        // Add per call additional policies.
+        policies.addAll(perCallPolicies);
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+
+        // Add retry policy.
+        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
+
+        policies.add(new KeyVaultCredentialPolicy(credential));
+
+        // Add per retry additional policies.
+        policies.addAll(perRetryPolicies);
+
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+        policies.add(new HttpLoggingPolicy(httpLogOptions));
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .build();
+
+        return new SecretClient(vaultUrl, pipeline, serviceVersion, buildAsyncClient());
+
     }
 
     /**

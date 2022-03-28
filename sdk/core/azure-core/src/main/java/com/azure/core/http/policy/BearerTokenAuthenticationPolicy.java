@@ -60,7 +60,7 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
      * @param context The request context.
      */
     public void authorizeRequestSynchronously(HttpPipelineCallContext context) {
-        if (this.scopes == null) {
+        if (this.scopes == null || this.scopes.length == 0) {
             return;
         }
         setAuthorizationHeaderHelperSynchronously(context, new TokenRequestContext().addScopes(this.scopes), false);

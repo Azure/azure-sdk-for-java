@@ -132,6 +132,30 @@ final class ResponseConstructorsCache {
         }
     }
 
+    //TODO: add javadoc g2vinay
+    Response<?> invokeSync(final MethodHandle handle,
+                             final HttpResponseDecoder.HttpDecodedResponse decodedResponse, final Object bodyAsObject) {
+        final HttpResponse httpResponse = decodedResponse.getSourceResponse();
+        final HttpRequest httpRequest = httpResponse.getRequest();
+        final int responseStatusCode = httpResponse.getStatusCode();
+        final HttpHeaders responseHeaders = httpResponse.getHeaders();
+
+        final int paramCount = handle.type().parameterCount();
+        switch (paramCount) {
+            case 3:
+                return constructResponseSync(handle, THREE_PARAM_ERROR, LOGGER, httpRequest, responseStatusCode,
+                        responseHeaders);
+            case 4:
+                return constructResponseSync(handle, FOUR_PARAM_ERROR, LOGGER, httpRequest, responseStatusCode,
+                        responseHeaders, bodyAsObject);
+            case 5:
+                return constructResponseSync(handle, FIVE_PARAM_ERROR, LOGGER, httpRequest, responseStatusCode,
+                        responseHeaders, bodyAsObject, decodedResponse.getDecodedHeaders());
+            default:
+                throw LOGGER.logExceptionAsError(new IllegalStateException(INVALID_PARAM_COUNT));
+        }
+    }
+
     private static Mono<Response<?>> constructResponse(MethodHandle handle, String exceptionMessage,
         ClientLogger logger, Object... params) {
         return Mono.defer(() -> {
@@ -141,5 +165,14 @@ final class ResponseConstructorsCache {
                 return monoError(logger, new RuntimeException(exceptionMessage, throwable));
             }
         });
+    }
+
+    private static Response<?> constructResponseSync(MethodHandle handle, String exceptionMessage,
+                                                       ClientLogger logger, Object... params) {
+            try {
+                return (Response<?>) handle.invokeWithArguments(params);
+            } catch (Throwable throwable) {
+                throw logger.logExceptionAsError(new RuntimeException(exceptionMessage, throwable));
+            }
     }
 }

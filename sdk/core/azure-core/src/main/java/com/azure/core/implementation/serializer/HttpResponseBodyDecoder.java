@@ -120,6 +120,52 @@ public final class HttpResponseBodyDecoder {
         });
     }
 
+    //TODO: Add Javadoc g2vinay
+    static Object decodeByteArraySync(final byte[] body,
+                                        final HttpResponse httpResponse,
+                                        final SerializerAdapter serializer,
+                                        final HttpResponseDecodeData decodeData) {
+        ensureRequestSet(httpResponse);
+
+        if (isErrorStatus(httpResponse, decodeData)) {
+            byte[] bodyAsByteArray = body == null ? httpResponse.getBodyAsByteArray().block() : body;
+            try {
+                final Object decodedErrorEntity = deserializeBody(bodyAsByteArray,
+                    decodeData.getUnexpectedException(httpResponse.getStatusCode()).getExceptionBodyType(),
+                    null, serializer, SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
+
+                return decodedErrorEntity;
+            } catch (IOException | MalformedValueException ex) {
+                // This translates in RestProxy as a RestException with no deserialized body.
+                // The response content will still be accessible via the .response() member.
+                LOGGER.warning("Failed to deserialize the error entity.", ex);
+                return null;
+            }
+        } else if (httpResponse.getRequest().getHttpMethod() == HttpMethod.HEAD) {
+            // RFC: A response to a HEAD method should not have a body. If so, it must be ignored
+            return null;
+        } else {
+            if (!isReturnTypeDecodable(decodeData.getReturnType())) {
+                return null;
+            }
+
+            byte[] bodyAsByteArray = body == null ? httpResponse.getBodyAsByteArray().block() : body;
+            try {
+                final Object decodedSuccessEntity = deserializeBody(bodyAsByteArray,
+                    extractEntityTypeFromReturnType(decodeData), decodeData.getReturnValueWireType(),
+                    serializer, SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
+
+                return decodedSuccessEntity;
+            } catch (MalformedValueException e) {
+                return new HttpResponseException("HTTP response has a malformed body.",
+                    httpResponse, e);
+            } catch (IOException e) {
+                return new HttpResponseException("Deserialization Failed.", httpResponse, e);
+            }
+        }
+    }
+
+
     /**
      * @return the decoded type used to decode the response body, null if the body is not decodable.
      */
