@@ -571,7 +571,9 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws IllegalStateException if the receiver is a session receiver or the receiver is disposed.
      * @throws IllegalArgumentException if {@code message.getLockToken()} is an empty value.
      * @throws ServiceBusException If the message cannot be renewed.
+     * @deprecated auto lock renewal should not be supported through the basic receiver client
      */
+    @Deprecated
     public void renewMessageLock(ServiceBusReceivedMessage message, Duration maxLockRenewalDuration,
         Consumer<Throwable> onError) {
         final String lockToken = message != null ? message.getLockToken() : "null";
@@ -749,7 +751,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         if (!syncSubscribed.getAndSet(true)) {
             // The 'subscribeWith' has side effects hence must not be called from
             // the above updateFunction of AtomicReference::updateAndGet.
-            asyncClient.receiveMessagesNoBackPressure().subscribeWith(messageSubscriber);
+            asyncClient.receiveNoBackPressure().subscribeWith(messageSubscriber);
         } else {
             messageSubscriber.queueWork(work);
         }

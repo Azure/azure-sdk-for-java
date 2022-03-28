@@ -1227,7 +1227,11 @@ public final class ServiceBusClientBuilder implements
          * abandoned}.
          *
          * @return The modified {@link ServiceBusSessionReceiverClientBuilder} object.
+         *
+         * @deprecated Auto complete will be removed on the session receiver client
+         * When using the bare session receiver client, users will have to determine when a message can be completed (settled).
          */
+        @Deprecated
         public ServiceBusSessionReceiverClientBuilder disableAutoComplete() {
             this.enableAutoComplete = false;
             return this;
@@ -1243,7 +1247,11 @@ public final class ServiceBusClientBuilder implements
          *
          * @return The updated {@link ServiceBusSessionReceiverClientBuilder} object.
          * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
+         *
+         * @deprecated Auto lock renewal will be removed on session receiver client
+         * When using the bare session receiver client, users will have to renew the lock when necessary.
          */
+        @Deprecated
         public ServiceBusSessionReceiverClientBuilder maxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
             validateAndThrow(maxAutoLockRenewDuration);
             this.maxAutoLockRenewDuration = maxAutoLockRenewDuration;
@@ -1723,7 +1731,11 @@ public final class ServiceBusClientBuilder implements
          * abandoned}.
          *
          * @return The modified {@link ServiceBusReceiverClientBuilder} object.
+         *
+         * @deprecated Auto complete will be removed on receiver client
+         * When using the bare receiver client, users will have to determine when a message can be completed (settled).
          */
+        @Deprecated
         public ServiceBusReceiverClientBuilder disableAutoComplete() {
             this.enableAutoComplete = false;
             return this;
@@ -1739,7 +1751,11 @@ public final class ServiceBusClientBuilder implements
          *
          * @return The updated {@link ServiceBusReceiverClientBuilder} object.
          * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
+         *
+         * @deprecated Auto lock renewal will be removed on receiver client
+         * When using the bare receiver client, users will have to renew the lock when necessary.
          */
+        @Deprecated
         public ServiceBusReceiverClientBuilder maxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
             validateAndThrow(maxAutoLockRenewDuration);
             this.maxAutoLockRenewDuration = maxAutoLockRenewDuration;

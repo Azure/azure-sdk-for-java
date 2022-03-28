@@ -221,7 +221,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private static final DeadLetterOptions DEFAULT_DEAD_LETTER_OPTIONS = new DeadLetterOptions();
     private static final String TRANSACTION_LINK_NAME = "coordinator";
 
-    private final LockContainer<LockRenewalOperation> renewalContainer;
+
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final LockContainer<OffsetDateTime> managementNodeLocks;
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClient.class);
@@ -234,7 +234,18 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private final MessageSerializer messageSerializer;
     private final Runnable onClientClose;
     private final ServiceBusSessionManager sessionManager;
+
+    /**
+     * @deprecated completion lock used as part of AutoComplete functionality should not be present in receiver.
+     */
+    @Deprecated
     private final Semaphore completionLock = new Semaphore(1);
+    /**
+     * @deprecated This container is used to store items that are periodically cleaned and used as part of lock renewal
+     * which should not be present in receiver.
+     */
+    @Deprecated
+    private final LockContainer<LockRenewalOperation> renewalContainer;
 
     // Starting at -1 because that is before the beginning of the stream.
     private final AtomicLong lastPeekedSequenceNumber = new AtomicLong(-1);
@@ -730,6 +741,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
     /**
      * Receives an <b>infinite</b> stream of {@link ServiceBusReceivedMessage messages} from the Service Bus entity.
+     * This does not auto-complete or auto-renew the lock on the received messages.
+     * Users need to handle completion of the message and renewal of lock when necessary.
      * This Flux continuously receives messages from a Service Bus entity until either:
      *
      * <ul>
@@ -744,6 +757,71 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws IllegalStateException if receiver is already disposed.
      * @throws ServiceBusException if an error occurs while receiving messages.
      */
+    public Flux<ServiceBusReceivedMessage> receive() {
+        if (isDisposed.get()) {
+            return fluxError(logger, new IllegalStateException(
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "receiveMessages")));
+        }
+        // Without limitRate(), if the user calls receive().subscribe(), it will call
+        // ServiceBusReceiveLinkProcessor.request(long request) where request = Long.MAX_VALUE.
+        // We turn this one-time non-backpressure request to continuous requests with backpressure.
+        // If receiverOptions.prefetchCount is set to non-zero, it will be passed to ServiceBusReceiveLinkProcessor
+        // to auto-refill the prefetch buffer. A request will retrieve one message from this buffer.
+        // If receiverOptions.prefetchCount is 0 (default value),
+        // the request will add a link credit so one message is retrieved from the service.
+        return receiveNoBackPressure().limitRate(1, 0);
+    }
+
+    Flux<ServiceBusReceivedMessage> receiveNoBackPressure() {
+        return receiveWithContext(0)
+            .handle((serviceBusMessageContext, sink) -> {
+                if (serviceBusMessageContext.hasError()) {
+                    sink.error(serviceBusMessageContext.getThrowable());
+                    return;
+                }
+                sink.next(serviceBusMessageContext.getMessage());
+            });
+    }
+
+    Flux<ServiceBusMessageContext> receiveWithContext() {
+        return receiveWithContext(1);
+    }
+
+    Flux<ServiceBusMessageContext> receiveWithContext(int highTide) {
+        final Flux<ServiceBusMessageContext> messageFlux = sessionManager != null
+            ? sessionManager.receive()
+            : getOrCreateConsumer().receive().map(ServiceBusMessageContext::new);
+
+        final Flux<ServiceBusMessageContext> rateLimitedFlux = highTide > 0
+            ? messageFlux.limitRate(highTide, 0)
+            : messageFlux;
+
+        return rateLimitedFlux
+            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE));
+    }
+
+    /**
+     * Receives an <b>infinite</b> stream of {@link ServiceBusReceivedMessage messages} from the Service Bus entity.
+     * This Flux continuously receives messages from a Service Bus entity until either:
+     *
+     * <ul>
+     *     <li>The receiver is closed.</li>
+     *     <li>The subscription to the Flux is disposed.</li>
+     *     <li>A terminal signal from a downstream subscriber is propagated upstream (ie. {@link Flux#take(long)} or
+     *     {@link Flux#take(Duration)}).</li>
+     *     <li>An {@link AmqpException} occurs that causes the receive link to stop.</li>
+     * </ul>
+     *
+     * @return An <b>infinite</b> stream of messages from the Service Bus entity.
+     * @throws IllegalStateException if receiver is already disposed.
+     * @throws ServiceBusException if an error occurs while receiving messages.
+     *
+     * @deprecated The bare receiver client should not be auto completing or auto-renewing messages.
+     * As this method currently allows both operations, this will be deprecated.
+     * If you need auto-complete and auto lock renewal, {@link ServiceBusProcessorClient} is the correct client to use.
+     * To continue using the {@link ServiceBusReceiverClient}, please use the {@code receive()} method instead.
+     */
+    @Deprecated
     public Flux<ServiceBusReceivedMessage> receiveMessages() {
         if (isDisposed.get()) {
             return fluxError(logger, new IllegalStateException(
@@ -759,6 +837,13 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return receiveMessagesNoBackPressure().limitRate(1, 0);
     }
 
+    /**
+     * Receive helper. Creates Flux with No backpressure
+     * @return An <b>infinite</b> stream of messages from the Service Bus entity.
+     *
+     * @deprecated This method is part of the chain which included auto-complete and lock auto-renewal.
+     */
+    @Deprecated
     Flux<ServiceBusReceivedMessage> receiveMessagesNoBackPressure() {
         return receiveMessagesWithContext(0)
             .handle((serviceBusMessageContext, sink) -> {
@@ -783,11 +868,25 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * </ul>
      *
      * @return An <b>infinite</b> stream of messages from the Service Bus entity.
+     * @deprecated This method is part of the chain which included auto-complete and lock auto-renewal.
      */
+    @Deprecated
     Flux<ServiceBusMessageContext> receiveMessagesWithContext() {
         return receiveMessagesWithContext(1);
     }
 
+    /**
+     * Internal receive which connects auto-completion and lock renewal operators to the receive flux
+     *
+     * @param highTide maximum number of messages that will be requested from the service
+     * @return An <b>infinite</b> stream of messages from the Service Bus entity.
+     *
+     * @deprecated This method implementation adds auto-completion and auto-lock renewal functionality
+     * to the receive flux, which makes the assumption that there will be no operators after this which
+     * cache the ServiceBus messages before processing. This is not always true.
+     * {@code receiveWithContext(int highTide)} does not make this assumption and should be used going ahead
+     */
+    @Deprecated
     Flux<ServiceBusMessageContext> receiveMessagesWithContext(int highTide) {
         final Flux<ServiceBusMessageContext> messageFlux = sessionManager != null
             ? sessionManager.receive()
@@ -1002,7 +1101,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws IllegalStateException if the receiver is a session receiver or the receiver is disposed.
      * @throws IllegalArgumentException if {@code message.getLockToken()} is an empty value.
      * @throws ServiceBusException If the message lock cannot be renewed.
+     * @deprecated auto lock renewal should not be supported through the basic receiver client
      */
+    @Deprecated
     public Mono<Void> renewMessageLock(ServiceBusReceivedMessage message, Duration maxLockRenewalDuration) {
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(

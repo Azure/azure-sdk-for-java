@@ -9,12 +9,16 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusProcessorClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder;
+import com.azure.messaging.servicebus.implementation.LockContainer;
 import com.azure.messaging.servicebus.implementation.models.ServiceBusProcessorClientOptions;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
 import reactor.core.scheduler.Schedulers;
 
+import java.time.Duration;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -22,6 +26,7 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -36,6 +41,7 @@ import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_NAMESPACE_VALUE;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_SERVICE_NAME;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.LOCK_TOKEN_KEY;
 
 /**
  * The processor client for processing Service Bus messages. {@link ServiceBusProcessorClient} provides a push-based
@@ -134,6 +140,8 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     private final Map<Subscription, Subscription> receiverSubscriptions = new ConcurrentHashMap<>();
     private final AtomicReference<ServiceBusReceiverAsyncClient> asyncClient = new AtomicReference<>();
     private final AtomicBoolean isRunning = new AtomicBoolean();
+    private final Semaphore completionLock = new Semaphore(1);
+    private final LockContainer<LockRenewalOperation> renewalContainer;
     private final TracerProvider tracerProvider;
     private final String queueName;
     private final String topicName;
@@ -167,6 +175,13 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         this.queueName = queueName;
         this.topicName = topicName;
         this.subscriptionName = subscriptionName;
+        this.renewalContainer = new LockContainer<>(Duration.ofMinutes(2), renewal -> {
+            logger.atVerbose()
+                .addKeyValue(LOCK_TOKEN_KEY, renewal.getLockToken())
+                .addKeyValue("status", renewal.getStatus())
+                .log("Closing expired renewal operation.", renewal.getThrowable());
+            renewal.close();
+        });
     }
 
     /**
@@ -194,6 +209,13 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         this.queueName = queueName;
         this.topicName = topicName;
         this.subscriptionName = subscriptionName;
+        this.renewalContainer = new LockContainer<>(Duration.ofMinutes(2), renewal -> {
+            logger.atVerbose()
+                .addKeyValue(LOCK_TOKEN_KEY, renewal.getLockToken())
+                .addKeyValue("status", renewal.getStatus())
+                .log("Closing expired renewal operation.", renewal.getThrowable());
+            renewal.close();
+        });
     }
 
     /**
@@ -375,7 +397,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
             };
         }
 
-        receiverClient.receiveMessagesWithContext()
+        generateMessageFlux(receiverClient)
             .parallel(processorOptions.getMaxConcurrentCalls(), 1)
             .runOn(Schedulers.boundedElastic(), 1)
             .subscribe(subscribers);
@@ -465,5 +487,17 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
             : this.receiverBuilder.buildAsyncClient();
         asyncClient.set(newReceiverClient);
         receiveMessages();
+    }
+
+    private Flux<ServiceBusMessageContext> generateMessageFlux(ServiceBusReceiverAsyncClient asyncClient) {
+        final Flux<ServiceBusMessageContext> withAutoLockRenewal = new FluxAutoLockRenew(
+            asyncClient.receiveWithContext(),
+            asyncClient.getReceiverOptions(),
+            renewalContainer,
+            asyncClient::renewMessageLock);
+
+        return new FluxAutoComplete(withAutoLockRenewal, completionLock,
+            context -> context.getMessage() != null ? asyncClient.complete(context.getMessage()) : Mono.empty(),
+            context -> context.getMessage() != null ? asyncClient.abandon(context.getMessage()) : Mono.empty());
     }
 }

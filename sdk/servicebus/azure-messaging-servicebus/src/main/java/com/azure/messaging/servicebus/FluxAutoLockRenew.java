@@ -66,6 +66,7 @@ final class FluxAutoLockRenew extends FluxOperator<ServiceBusMessageContext, Ser
     public void subscribe(CoreSubscriber<? super ServiceBusMessageContext> coreSubscriber) {
         Objects.requireNonNull(coreSubscriber, "'coreSubscriber' cannot be null.");
 
+        // TODO (krajasekar) - remove check for auto complete
         final LockRenewSubscriber newLockRenewSubscriber = new LockRenewSubscriber(coreSubscriber,
             receivingOptions.getMaxLockRenewDuration(), messageLockContainer, onRenewLock,
             receivingOptions.isEnableAutoComplete());

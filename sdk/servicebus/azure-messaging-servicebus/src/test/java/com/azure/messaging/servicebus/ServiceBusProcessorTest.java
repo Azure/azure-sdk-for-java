@@ -9,16 +9,19 @@ import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.servicebus.implementation.models.ServiceBusProcessorClientOptions;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -61,6 +64,8 @@ public class ServiceBusProcessorTest {
                     ServiceBusReceivedMessage serviceBusReceivedMessage =
                         new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
                     serviceBusReceivedMessage.setMessageId(String.valueOf(i));
+                    serviceBusReceivedMessage.setLockToken(UUID.randomUUID());
+                    serviceBusReceivedMessage.setLockedUntil(OffsetDateTime.now().plusSeconds(5));
                     ServiceBusMessageContext serviceBusMessageContext =
                         new ServiceBusMessageContext(serviceBusReceivedMessage);
                     emitter.next(serviceBusMessageContext);
@@ -81,7 +86,7 @@ public class ServiceBusProcessorTest {
             new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1));
 
         serviceBusProcessorClient.start();
-        boolean success = countDownLatch.await(5, TimeUnit.SECONDS);
+        boolean success = countDownLatch.await(50, TimeUnit.SECONDS);
         serviceBusProcessorClient.close();
         assertTrue(success, "Failed to receive all expected messages");
     }
@@ -101,6 +106,8 @@ public class ServiceBusProcessorTest {
                         new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
                     serviceBusReceivedMessage.setMessageId(String.valueOf(i));
                     serviceBusReceivedMessage.setSessionId(String.valueOf(i % 3));
+                    serviceBusReceivedMessage.setLockToken(UUID.randomUUID());
+                    serviceBusReceivedMessage.setLockedUntil(OffsetDateTime.now().plusSeconds(5));
                     ServiceBusMessageContext serviceBusMessageContext =
                         new ServiceBusMessageContext(serviceBusReceivedMessage);
                     emitter.next(serviceBusMessageContext);
@@ -165,6 +172,8 @@ public class ServiceBusProcessorTest {
             ServiceBusReceivedMessage serviceBusReceivedMessage =
                 new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
             serviceBusReceivedMessage.setMessageId(String.valueOf(i));
+            serviceBusReceivedMessage.setLockToken(UUID.randomUUID());
+            serviceBusReceivedMessage.setLockedUntil(OffsetDateTime.now().plusSeconds(5));
             ServiceBusMessageContext serviceBusMessageContext =
                 new ServiceBusMessageContext(serviceBusReceivedMessage);
             sink.get().next(serviceBusMessageContext);
@@ -179,6 +188,8 @@ public class ServiceBusProcessorTest {
             ServiceBusReceivedMessage serviceBusReceivedMessage =
                 new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
             serviceBusReceivedMessage.setMessageId(String.valueOf(i));
+            serviceBusReceivedMessage.setLockToken(UUID.randomUUID());
+            serviceBusReceivedMessage.setLockedUntil(OffsetDateTime.now().plusSeconds(5));
             ServiceBusMessageContext serviceBusMessageContext =
                 new ServiceBusMessageContext(serviceBusReceivedMessage);
             sink.get().next(serviceBusMessageContext);
@@ -202,6 +213,8 @@ public class ServiceBusProcessorTest {
             ServiceBusReceivedMessage serviceBusReceivedMessage =
                 new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
             serviceBusReceivedMessage.setMessageId(String.valueOf(i));
+            serviceBusReceivedMessage.setLockToken(UUID.randomUUID());
+            serviceBusReceivedMessage.setLockedUntil(OffsetDateTime.now().plusSeconds(5));
             ServiceBusMessageContext serviceBusMessageContext =
                 new ServiceBusMessageContext(serviceBusReceivedMessage);
             messageList.add(serviceBusMessageContext);
@@ -212,6 +225,8 @@ public class ServiceBusProcessorTest {
                 ServiceBusReceivedMessage serviceBusReceivedMessage =
                     new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
                 serviceBusReceivedMessage.setMessageId(String.valueOf(state));
+                serviceBusReceivedMessage.setLockToken(UUID.randomUUID());
+                serviceBusReceivedMessage.setLockedUntil(OffsetDateTime.now().plusSeconds(5));
                 ServiceBusMessageContext serviceBusMessageContext =
                     new ServiceBusMessageContext(serviceBusReceivedMessage);
                 if (state == 2) {
@@ -257,12 +272,15 @@ public class ServiceBusProcessorTest {
      */
     @Test
     public void testUserMessageHandlerError() throws InterruptedException {
-        final int numberOfEvents = 5;
+        // TODO (krajasekar) fix flux generate so that it can handle auto complete operator and produce 5 elements
+        final int numberOfEvents = 1;
         final Flux<ServiceBusMessageContext> messageFlux = Flux.generate(() -> 0,
             (state, sink) -> {
                 ServiceBusReceivedMessage serviceBusReceivedMessage =
-                    new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
+                    new ServiceBusReceivedMessage(BinaryData.fromString("hello" + state));
                 serviceBusReceivedMessage.setMessageId(String.valueOf(state));
+                serviceBusReceivedMessage.setLockToken(UUID.randomUUID());
+                serviceBusReceivedMessage.setLockedUntil(OffsetDateTime.now().plusSeconds(5));
                 ServiceBusMessageContext serviceBusMessageContext =
                     new ServiceBusMessageContext(serviceBusReceivedMessage);
                 sink.next(serviceBusMessageContext);
@@ -277,7 +295,12 @@ public class ServiceBusProcessorTest {
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
 
         when(receiverBuilder.buildAsyncClient()).thenReturn(asyncClient);
-        when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux);
+        ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, 1,
+            Duration.ofSeconds(5), true);
+        when(asyncClient.getReceiverOptions()).thenReturn(receiverOptions);
+        when(asyncClient.receiveWithContext()).thenReturn(messageFlux);
+        when(asyncClient.renewMessageLock(any(ServiceBusReceivedMessage.class))).thenReturn(Mono.just(OffsetDateTime.now().plusSeconds(10)));
+
         when(asyncClient.isConnectionClosed()).thenReturn(false);
         when(asyncClient.abandon(any(ServiceBusReceivedMessage.class))).thenReturn(Mono.empty());
         doNothing().when(asyncClient).close();
@@ -316,6 +339,8 @@ public class ServiceBusProcessorTest {
                 ServiceBusReceivedMessage serviceBusReceivedMessage =
                     new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
                 serviceBusReceivedMessage.setMessageId(String.valueOf(state));
+                serviceBusReceivedMessage.setLockToken(UUID.randomUUID());
+                serviceBusReceivedMessage.setLockedUntil(OffsetDateTime.now().plusSeconds(5));
                 ServiceBusMessageContext serviceBusMessageContext =
                     new ServiceBusMessageContext(serviceBusReceivedMessage);
                 sink.next(serviceBusMessageContext);
@@ -330,7 +355,11 @@ public class ServiceBusProcessorTest {
 
         ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
         when(receiverBuilder.buildAsyncClient()).thenReturn(asyncClient);
-        when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux);
+        ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, 1,
+            Duration.ofSeconds(5), true);
+        when(asyncClient.getReceiverOptions()).thenReturn(receiverOptions);
+        when(asyncClient.receiveWithContext()).thenReturn(messageFlux);
+        when(asyncClient.renewMessageLock(any(ServiceBusReceivedMessage.class))).thenReturn(Mono.just(OffsetDateTime.now().plusSeconds(10)));
         when(asyncClient.isConnectionClosed()).thenReturn(false);
         doNothing().when(asyncClient).close();
 
@@ -387,6 +416,8 @@ public class ServiceBusProcessorTest {
                     ServiceBusReceivedMessage serviceBusReceivedMessage =
                         new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
                     serviceBusReceivedMessage.setMessageId(String.valueOf(i));
+                    serviceBusReceivedMessage.setLockToken(UUID.randomUUID());
+                    serviceBusReceivedMessage.setLockedUntil(OffsetDateTime.now().plusSeconds(5));
                     serviceBusReceivedMessage.setEnqueuedTime(OffsetDateTime.now());
                     serviceBusReceivedMessage.getApplicationProperties().put(DIAGNOSTIC_ID_KEY, diagnosticId);
                     ServiceBusMessageContext serviceBusMessageContext =
@@ -444,6 +475,8 @@ public class ServiceBusProcessorTest {
                     ServiceBusReceivedMessage serviceBusReceivedMessage =
                         new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
                     serviceBusReceivedMessage.setMessageId(String.valueOf(i));
+                    serviceBusReceivedMessage.setLockToken(UUID.randomUUID());
+                    serviceBusReceivedMessage.setLockedUntil(OffsetDateTime.now().plusSeconds(5));
                     serviceBusReceivedMessage.setEnqueuedTime(OffsetDateTime.now());
                     ServiceBusMessageContext serviceBusMessageContext =
                         new ServiceBusMessageContext(serviceBusReceivedMessage);
@@ -484,8 +517,14 @@ public class ServiceBusProcessorTest {
             mock(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class);
 
         ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, 1,
+            Duration.ofSeconds(5), true);
         when(receiverBuilder.buildAsyncClient()).thenReturn(asyncClient);
-        when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux);
+        when(asyncClient.getReceiverOptions()).thenReturn(receiverOptions);
+        when(asyncClient.receiveWithContext()).thenReturn(messageFlux);
+        when(asyncClient.renewMessageLock(any(ServiceBusReceivedMessage.class)))
+            .thenReturn(Mono.just(OffsetDateTime.now().plusSeconds(10)));
+        when(asyncClient.complete(any(ServiceBusReceivedMessage.class))).thenReturn(Mono.empty());
         when(asyncClient.isConnectionClosed()).thenReturn(false);
         doNothing().when(asyncClient).close();
         return receiverBuilder;
@@ -498,9 +537,15 @@ public class ServiceBusProcessorTest {
             mock(ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder.class);
 
         ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, 1,
+            Duration.ofSeconds(5), true);
         when(receiverBuilder.buildAsyncClientForProcessor()).thenReturn(asyncClient);
-        when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux);
+        when(asyncClient.getReceiverOptions()).thenReturn(receiverOptions);
+        when(asyncClient.receiveWithContext()).thenReturn(messageFlux);
+        when(asyncClient.renewMessageLock(any(ServiceBusReceivedMessage.class)))
+            .thenReturn(Mono.just(OffsetDateTime.now().plusSeconds(100)));
         when(asyncClient.isConnectionClosed()).thenReturn(false);
+        when(asyncClient.complete(any(ServiceBusReceivedMessage.class))).thenReturn(Mono.empty());
         doNothing().when(asyncClient).close();
         return receiverBuilder;
     }

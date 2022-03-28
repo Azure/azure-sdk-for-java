@@ -658,7 +658,7 @@ class ServiceBusReceiverClientTest {
                 sink.complete();
             });
         });
-        when(asyncClient.receiveMessagesNoBackPressure()).thenReturn(messageSink);
+        when(asyncClient.receiveNoBackPressure()).thenReturn(messageSink);
 
         // Act
         final IterableStream<ServiceBusReceivedMessage> actual = client.receiveMessages(maxMessages, receiveTimeout);
@@ -705,7 +705,7 @@ class ServiceBusReceiverClientTest {
             });
         });
 
-        when(asyncClient.receiveMessagesNoBackPressure()).thenReturn(messageSink);
+        when(asyncClient.receiveNoBackPressure()).thenReturn(messageSink);
 
         // Act
         final IterableStream<ServiceBusReceivedMessage> actual = client.receiveMessages(maxMessages);
@@ -751,7 +751,7 @@ class ServiceBusReceiverClientTest {
                 sink.complete();
             });
         });
-        when(asyncClient.receiveMessagesNoBackPressure()).thenReturn(messageSink);
+        when(asyncClient.receiveNoBackPressure()).thenReturn(messageSink);
 
         // Act
         final IterableStream<ServiceBusReceivedMessage> actual = client.receiveMessages(maxMessages);
