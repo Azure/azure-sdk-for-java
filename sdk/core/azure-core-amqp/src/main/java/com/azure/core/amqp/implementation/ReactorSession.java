@@ -55,7 +55,6 @@ import java.util.function.Consumer;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addErrorCondition;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeAndResult;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
-import static com.azure.core.amqp.implementation.ClientConstants.CLIENT_ID_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
@@ -99,7 +98,6 @@ public class ReactorSession implements AmqpSession {
     private final Flux<AmqpShutdownSignal> shutdownSignals;
 
     public static final Symbol CLIENT_ID = Symbol.getSymbol(AmqpConstants.VENDOR + ":receiver-name");
-
 
     /**
      * Creates a new AMQP session using proton-j.
@@ -534,7 +532,7 @@ public class ReactorSession implements AmqpSession {
         if (linkProperties != null && linkProperties.size() > 0) {
             sender.setProperties(linkProperties);
             String clientId = (String) linkProperties.get(CLIENT_ID);
-            if (clientId != null && !clientId.equals("")) {
+            if (clientId != null && !"".equals(clientId)) {
                 final Source source = new Source();
                 source.setAddress(clientId);
                 sender.setSource(source);
@@ -597,7 +595,7 @@ public class ReactorSession implements AmqpSession {
         if (receiverProperties != null && !receiverProperties.isEmpty()) {
             receiver.setProperties(receiverProperties);
             String clientId = (String) receiverProperties.get(CLIENT_ID);
-            if (clientId != null && clientId != "") {
+            if (clientId != null && !"".equals(clientId)) {
                 final Target target = new Target();
                 target.setAddress(clientId);
                 receiver.setTarget(target);
