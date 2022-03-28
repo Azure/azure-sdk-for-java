@@ -1,8 +1,8 @@
 # Release History
 
 ## 4.0.0-beta.4 (Unreleased)
-- Support Spring Boot version: 2.5.5+ and 2.6.0+.
-- Support Spring Cloud version: 2020.0.3+ and 2021.0.0+.
+- Support Spring Boot version: 2.5.0+ and 2.6.0+. (Note: 2.5.11+ and 2.6.5+ should be supported, but they aren't tested with this release.)
+- Support Spring Cloud version: 2020.0.3+ and 2021.0.0+. (Note: 2020.0.5+ and 2021.0.1+ should be supported, but they aren't tested with this release.)
 
 ### Dependency Updates
 - Upgrade dependency according to spring-boot-dependencies:2.6.3 and spring-cloud-dependencies:2021.0.0.
