@@ -54,6 +54,7 @@ import static com.azure.messaging.eventhubs.TestUtils.getMessage;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -124,7 +125,7 @@ public class EventHubConsumerClientTest {
         connectionStates.next(AmqpEndpointState.ACTIVE);
 
         when(connection.createReceiveLink(any(), argThat(name -> name.endsWith(PARTITION_ID)),
-            any(EventPosition.class), any(ReceiveOptions.class), CLIENT_ID)).thenReturn(
+            any(EventPosition.class), any(ReceiveOptions.class), anyString())).thenReturn(
             Mono.fromCallable(() -> {
                 System.out.println("Returning first link");
                 return amqpReceiveLink;
