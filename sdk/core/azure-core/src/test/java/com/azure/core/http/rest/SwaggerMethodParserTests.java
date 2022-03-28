@@ -503,7 +503,7 @@ public class SwaggerMethodParserTests {
 
         return Stream.of(
             Arguments.of(swaggerMethodParser, toObjectArray(Context.NONE), Context.NONE),
-            Arguments.of(swaggerMethodParser, toObjectArray((Object) null), null),
+            Arguments.of(swaggerMethodParser, toObjectArray((Object) null), Context.NONE),
             Arguments.of(swaggerMethodParser, toObjectArray(context), context)
         );
     }
