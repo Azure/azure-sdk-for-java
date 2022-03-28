@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,8 +63,6 @@ public class LeaseBuilder {
     }
 
     public LeaseBuilder owner(String owner) {
-        checkArgument(!StringUtils.isEmpty(owner), "Argument 'owner' can not be null nor empty");
-
         this.owner = owner;
         return this;
     }
@@ -130,21 +129,20 @@ public class LeaseBuilder {
             .continuationToken(ModelBridgeInternal.getStringFromJsonSerializable(document, LeaseConstants.PROPERTY_NAME_CONTINUATION_TOKEN))
             .timestamp(ModelBridgeInternal.getStringFromJsonSerializable(document, LeaseConstants.PROPERTY_NAME_TIMESTAMP));
 
-        try {
-            this
-                .feedRange(
-                        Utils.getSimpleObjectMapper().readValue(
-                            ModelBridgeInternal.getStringFromJsonSerializable(document, LeaseConstants.PROPERTY_FEED_RANGE),
-                            FeedRangeInternal.class));
-        } catch (Exception e) {
-           logger.warn("Failed to parse feed range ", e);
+        JsonNode feedRangeNode = (JsonNode) document.get(LeaseConstants.PROPERTY_FEED_RANGE);
+        if (feedRangeNode != null) {
+            try {
+                this.feedRange(
+                    Utils.getSimpleObjectMapper().convertValue(
+                            feedRangeNode, FeedRangeInternal.class));
+            } catch (Exception e) {
+                logger.warn("Failed to parse feed range ", e);
+            }
         }
 
-        // check version
         ServiceItemLeaseVersion version =
-                Enum.valueOf(
-                    ServiceItemLeaseVersion.class,
-                    ModelBridgeInternal.getStringFromJsonSerializable(document, LeaseConstants.PROPERTY_VERSION));
+                ServiceItemLeaseVersion.valueOf(
+                        ModelBridgeInternal.getIntFromJsonSerializable(document, LeaseConstants.PROPERTY_VERSION)).get();
 
         switch (version) {
             case PartitionKeyRangeBasedLease:

@@ -445,8 +445,9 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
                         createdLeaseCollection.queryItems(querySpec, cosmosQueryRequestOptions, InternalObjectNode.class).byPage()
-                                              .flatMap(documentFeedResponse -> reactor.core.publisher.Flux.fromIterable(documentFeedResponse.getResults()))
-                                              .flatMap(doc -> {
+                            .flatMap(documentFeedResponse -> reactor.core.publisher.Flux.fromIterable(documentFeedResponse.getResults()))
+                            .filter( doc -> !doc.getId().endsWith(".info"))
+                            .flatMap(doc -> {
                                 Lease leaseDocument = Lease.builder().buildFromDocument(doc);
                                 leaseDocument.setOwner("TEMP_OWNER");
                                 CosmosItemRequestOptions options = new CosmosItemRequestOptions();
@@ -458,8 +459,8 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                                 ChangeFeedProcessorTest.log.info("QueryItems after Change feed processor processing; found host {}", leaseDocument.getOwner());
                                 return leaseDocument;
                             })
-                                              .last()
-                                              .flatMap(leaseDocument -> {
+                            .last()
+                            .flatMap(leaseDocument -> {
                                 ChangeFeedProcessorTest.log.info("Start creating documents");
                                 List<InternalObjectNode> docDefList = new ArrayList<>();
 
@@ -877,6 +878,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
 
             createdLeaseCollection.queryItems(querySpec, cosmosQueryRequestOptions, InternalObjectNode.class).byPage()
                 .flatMap(documentFeedResponse -> reactor.core.publisher.Flux.fromIterable(documentFeedResponse.getResults()))
+                .filter(doc -> !doc.getId().endsWith(".info"))
                 .flatMap(doc -> {
                     Lease leaseDocument = Lease.builder().buildFromDocument(doc);
                     leaseDocument.setOwner(RandomStringUtils.randomAlphabetic(10));

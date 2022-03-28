@@ -111,6 +111,15 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
     }
 
     @Override
+    public LeaseStoreManagerBuilderDefinition monitoredContainerRid(String monitoredContainerRid) {
+        checkArgument(!StringUtils.isEmpty(monitoredContainerRid), "Argument 'monitoredContainerRid' can not be null nor empty");
+
+        this.settings.withMonitoredContainerRid(monitoredContainerRid);
+        return this;
+    }
+
+
+    @Override
     public Mono<LeaseStoreManager> build() {
 
         checkNotNull(this.leaseDocumentClient, "LeaseDocumentClient can not be null");

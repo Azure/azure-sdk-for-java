@@ -14,6 +14,7 @@ import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -235,7 +236,7 @@ public abstract class ServiceItemLease implements Lease {
                 writer.writeStringField(LeaseConstants.PROPERTY_NAME_CONTINUATION_TOKEN, lease.getContinuationToken());
                 writer.writeStringField(LeaseConstants.PROPERTY_NAME_TIMESTAMP, lease.getTimestamp());
                 writer.writeStringField(LeaseConstants.PROPERTY_NAME_OWNER, lease.getOwner());
-                writer.writeNumberField(LeaseConstants.PROPERTY_VERSION, lease.getVersion().getValue());
+                writer.writeNumberField(LeaseConstants.PROPERTY_VERSION, lease.getVersion().getVersion());
                 writer.writeObjectField(LeaseConstants.PROPERTY_FEED_RANGE, lease.getFeedRange());
                 writer.writeEndObject();
             } catch (IOException e) {
@@ -256,15 +257,39 @@ public abstract class ServiceItemLease implements Lease {
 
         @Override
         public ServiceItemLease deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException, JacksonException {
-            JsonNode node = jsonParser.getCodec().readTree(jsonParser);
+            JsonNode rootNode = jsonParser.getCodec().readTree(jsonParser);
 
-            ServiceItemLeaseVersion version = ServiceItemLeaseVersion.valueOf(node.get(LeaseConstants.PROPERTY_VERSION).numberValue().toString());
+            String id = rootNode.get(Constants.Properties.ID).asText();
+            String etag = rootNode.get(Constants.Properties.E_TAG).asText();
+            String leaseToken = rootNode.get(LeaseConstants.PROPERTY_NAME_LEASE_TOKEN).asText();
+            String continuationToken = rootNode.get(LeaseConstants.PROPERTY_NAME_CONTINUATION_TOKEN).asText();
+            String timeStamp = rootNode.get(LeaseConstants.PROPERTY_NAME_TIMESTAMP).asText();
+            String owner = rootNode.get(LeaseConstants.PROPERTY_NAME_OWNER).asText();
+
+            JsonNode feedRangeNode = rootNode.get(LeaseConstants.PROPERTY_FEED_RANGE);
+            FeedRangeInternal feedRange = jsonParser.getCodec().treeToValue(feedRangeNode, FeedRangeInternal.class);
+
+            LeaseBuilder leaseBuilder = Lease.builder()
+                    .id(id)
+                    .etag(etag)
+                    .owner(owner)
+                    .leaseToken(leaseToken)
+                    .continuationToken(continuationToken)
+                    .timestamp(timeStamp)
+                    .feedRange(feedRange);
+
+            ServiceItemLeaseVersion version = ServiceItemLeaseVersion.valueOf(rootNode.get(LeaseConstants.PROPERTY_VERSION).intValue()).get();
 
             if (version == ServiceItemLeaseVersion.EPKRangeBasedLease) {
-                return jsonParser.getCodec().treeToValue(node, ServiceItemLeaseEpk.class);
+                return (ServiceItemLease) leaseBuilder.buildEpkBasedLease();
+            }
+            if (version == ServiceItemLeaseVersion.PartitionKeyRangeBasedLease) {
+                return (ServiceItemLease) leaseBuilder.buildPartitionBasedLease();
             }
 
-            return jsonParser.getCodec().treeToValue(node, ServiceItemLeaseCore.class);
+            throw JsonMappingException.from(
+                    jsonParser,
+                    "Unsupported lease type: " + version);
         }
     }
 }

@@ -171,7 +171,7 @@ class PartitionControllerImpl implements PartitionController {
                                 l.setProperties(lease.getProperties());
                                 return this.addOrUpdateLease(l);
                             })
-                            .then(this.tryRemoveCurrentLease(lease, partitionGoneHandler.isRemoveCurrentLease()));
+                            .then(this.tryRemoveGoneLease(lease, partitionGoneHandler.shouldRemoveGoneLease()));
                 })
                 .onErrorResume(throwable -> {
                     logger.warn("Lease with token {}: failed to handle partition gone", lease.getLeaseToken(), throwable);
@@ -179,7 +179,7 @@ class PartitionControllerImpl implements PartitionController {
                 });
     }
 
-    private Mono tryRemoveCurrentLease(Lease lease, boolean shouldRemoveLease) {
+    private Mono tryRemoveGoneLease(Lease lease, boolean shouldRemoveLease) {
         if (shouldRemoveLease) {
             return this.leaseManager.delete(lease);
         }

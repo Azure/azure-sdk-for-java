@@ -420,13 +420,13 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
         return this.feedContextClient
             .readDatabase(this.feedContextClient.getDatabaseClient(), null)
             .map( databaseResourceResponse -> {
-                this.databaseResourceId = databaseResourceResponse.getProperties().getId();
+                this.databaseResourceId = databaseResourceResponse.getProperties().getResourceId();
                 return this.databaseResourceId;
             })
             .flatMap( id -> this.feedContextClient
                 .readContainer(this.feedContextClient.getContainerClient(), null)
                 .map(documentCollectionResourceResponse -> {
-                    this.collectionResourceId = documentCollectionResourceResponse.getProperties().getId();
+                    this.collectionResourceId = documentCollectionResourceResponse.getProperties().getResourceId();
                     return this;
                 }));
     }
@@ -453,6 +453,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
                         .leaseContainer(this.leaseContextClient.getContainerClient())
                         .leaseContextClient(this.leaseContextClient)
                         .monitoredContainer(this.feedContextClient.getContainerClient())
+                        .monitoredContainerRid(this.collectionResourceId)
                         .requestOptionsFactory(requestOptionsFactory)
                         .hostName(this.hostName)
                         .build()

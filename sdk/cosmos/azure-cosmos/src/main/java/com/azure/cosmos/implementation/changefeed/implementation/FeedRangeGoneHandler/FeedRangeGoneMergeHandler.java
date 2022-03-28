@@ -66,7 +66,7 @@ public class FeedRangeGoneMergeHandler implements FeedRangeGoneHandler {
     }
 
     @Override
-    public boolean isRemoveCurrentLease() {
+    public boolean shouldRemoveGoneLease() {
         return this.removeCurrentLease;
     }
 }

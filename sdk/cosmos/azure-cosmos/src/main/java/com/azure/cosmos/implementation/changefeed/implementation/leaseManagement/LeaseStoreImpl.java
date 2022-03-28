@@ -50,10 +50,7 @@ class LeaseStoreImpl implements LeaseStore {
         InternalObjectNode doc = new InternalObjectNode();
         doc.setId(markerDocId);
 
-        CosmosItemRequestOptions requestOptions = this.requestOptionsFactory.createItemRequestOptions(
-                Lease.builder().buildFromDocument(doc));
-
-        return this.client.readItem(markerDocId, new PartitionKey(markerDocId), requestOptions, InternalObjectNode.class)
+        return this.client.readItem(markerDocId, new PartitionKey(markerDocId), new CosmosItemRequestOptions(), InternalObjectNode.class)
             .flatMap(documentResourceResponse -> Mono.just(BridgeInternal.getProperties(documentResourceResponse) != null))
             .onErrorResume(throwable -> {
                 if (throwable instanceof CosmosException) {
@@ -124,13 +121,7 @@ class LeaseStoreImpl implements LeaseStore {
         InternalObjectNode doc = new InternalObjectNode();
         doc.setId(lockId);
 
-        CosmosItemRequestOptions requestOptions = this.requestOptionsFactory.createItemRequestOptions(
-                Lease.builder().buildFromDocument(doc));
-
-        if (requestOptions == null) {
-            requestOptions = new CosmosItemRequestOptions();
-        }
-
+        CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
         requestOptions.setIfMatchETag(this.lockETag);
 
         return this.client.deleteItem(lockId, new PartitionKey(lockId), requestOptions)

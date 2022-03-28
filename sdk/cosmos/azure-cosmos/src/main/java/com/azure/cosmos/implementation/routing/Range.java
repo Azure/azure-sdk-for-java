@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.Serializable;
 import java.util.Comparator;
 
-@JsonIgnoreProperties({ "empty", "singleValue", "hashMap" })
+@JsonIgnoreProperties({ "empty", "singleValue", "map", "propertyBag" })
 public final class Range<T extends Comparable<T>> extends JsonSerializable {
     private static final String MIN_PROPERTY = "min";
     private static final String MAX_PROPERTY = "max";

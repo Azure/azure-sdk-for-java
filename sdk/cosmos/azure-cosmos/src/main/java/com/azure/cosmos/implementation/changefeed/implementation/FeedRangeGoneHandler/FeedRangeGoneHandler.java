@@ -8,5 +8,5 @@ import reactor.core.publisher.Flux;
 
 public interface FeedRangeGoneHandler {
     Flux<Lease> handlePartitionGone();
-    boolean isRemoveCurrentLease();
+    boolean shouldRemoveGoneLease();
 }

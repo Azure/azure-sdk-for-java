@@ -5,18 +5,34 @@ package com.azure.cosmos.implementation.changefeed.implementation.leaseManagemen
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+
 public enum ServiceItemLeaseVersion {
     PartitionKeyRangeBasedLease(0),
     EPKRangeBasedLease(1);
 
-    private final int value;
+    private final int version;
 
-    ServiceItemLeaseVersion(int value) {
-        this.value = value;
+    private static final Map<Integer, ServiceItemLeaseVersion> versionMap;
+
+    static {
+        versionMap = new ConcurrentHashMap<>();
+        Arrays.stream(values()).forEach(value -> versionMap.put(value.version, value));
+    }
+
+    public static Optional<ServiceItemLeaseVersion> valueOf(final int version) {
+        return Optional.ofNullable(versionMap.get(version));
+    }
+
+    ServiceItemLeaseVersion(int version) {
+        this.version = version;
     }
 
     @JsonValue
-    public int getValue() {
-        return this.value;
+    public int getVersion() {
+        return this.version;
     }
 }
