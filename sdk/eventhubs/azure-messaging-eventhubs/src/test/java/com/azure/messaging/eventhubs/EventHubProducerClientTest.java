@@ -71,6 +71,7 @@ import static org.mockito.Mockito.when;
 public class EventHubProducerClientTest {
     private static final String HOSTNAME = "my-host-name";
     private static final String EVENT_HUB_NAME = "my-event-hub-name";
+    private static final String CLIENT_ID = "my-client-id";
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(30));
     private final MessageSerializer messageSerializer = new EventHubMessageSerializer();
 
@@ -109,7 +110,7 @@ public class EventHubProducerClientTest {
             .subscribeWith(new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                 "event-hub-path", connectionOptions.getRetry()));
         asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
-            tracerProvider, messageSerializer, Schedulers.parallel(), false, onClientClosed);
+            tracerProvider, messageSerializer, Schedulers.parallel(), false, onClientClosed, CLIENT_ID);
 
         when(connection.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(connection.closeAsync()).thenReturn(Mono.empty());
@@ -134,7 +135,7 @@ public class EventHubProducerClientTest {
         final EventData eventData = new EventData("hello-world".getBytes(UTF_8));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), any()))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), any(), eq(CLIENT_ID)))
             .thenReturn(Mono.just(sendLink));
 
         // Act
@@ -163,12 +164,12 @@ public class EventHubProducerClientTest {
         final TracerProvider tracerProvider = new TracerProvider(tracers);
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
             connectionProcessor, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(),
-            false, onClientClosed);
+            false, onClientClosed, CLIENT_ID);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
         final EventData eventData = new EventData("hello-world".getBytes(UTF_8));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), any()))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), any(), eq(CLIENT_ID)))
             .thenReturn(Mono.just(sendLink));
 
         when(tracer1.start(eq("EventHubs.send"), any(), eq(ProcessKind.SEND))).thenAnswer(
@@ -220,11 +221,12 @@ public class EventHubProducerClientTest {
         TracerProvider tracerProvider = new TracerProvider(tracers);
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), any()))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), any(), eq(CLIENT_ID)))
             .thenReturn(Mono.just(sendLink));
 
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(), false, onClientClosed);
+            connectionProcessor, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(),
+            false, onClientClosed, CLIENT_ID);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
         final EventData eventData = new EventData("hello-world".getBytes(UTF_8))
             .addContext(SPAN_CONTEXT_KEY, Context.NONE);
@@ -267,12 +269,13 @@ public class EventHubProducerClientTest {
     public void sendEventsExceedsBatchSize() {
         //Arrange
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), any()))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), any(), eq(CLIENT_ID)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.getLinkSize()).thenReturn(Mono.just(1024));
         TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(), false, onClientClosed);
+            connectionProcessor, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(),
+            false, onClientClosed, CLIENT_ID);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
 
         //Act & Assert
@@ -304,7 +307,7 @@ public class EventHubProducerClientTest {
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
         when(connection.createSendLink(argThat(name -> name.endsWith(partitionId)),
-            argThat(name -> name.endsWith(partitionId)), any()))
+            argThat(name -> name.endsWith(partitionId)), any(), eq(CLIENT_ID)))
             .thenReturn(Mono.just(sendLink));
 
         // Act
@@ -342,7 +345,7 @@ public class EventHubProducerClientTest {
         when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), any()))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), any(), eq(CLIENT_ID)))
             .thenReturn(Mono.just(link));
 
         // This event is 1024 bytes when serialized.
@@ -375,14 +378,14 @@ public class EventHubProducerClientTest {
         final TracerProvider tracerProvider = new TracerProvider(tracers);
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
             connectionProcessor, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(),
-            false, onClientClosed);
+            false, onClientClosed, CLIENT_ID);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
 
         final AmqpSendLink link = mock(AmqpSendLink.class);
         when(link.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), any()))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), any(), eq(CLIENT_ID)))
             .thenReturn(Mono.just(sendLink));
 
         when(tracer1.start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE))).thenAnswer(
@@ -422,7 +425,7 @@ public class EventHubProducerClientTest {
         int maxEventPayload = maxBatchSize - eventOverhead;
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), any()))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), any(), eq(CLIENT_ID)))
             .thenReturn(Mono.just(sendLink));
 
         // This event is 1024 bytes when serialized.
@@ -458,7 +461,7 @@ public class EventHubProducerClientTest {
 
         // PS is the prefix when a partition sender link is created.
         when(connection.createSendLink(argThat(name -> name.endsWith(partitionId)),
-            argThat(name -> name.endsWith(partitionId)), any()))
+            argThat(name -> name.endsWith(partitionId)), any(), eq(CLIENT_ID)))
             .thenReturn(Mono.just(sendLink));
 
         // This event is 1024 bytes when serialized.
@@ -491,7 +494,7 @@ public class EventHubProducerClientTest {
         int maxEventPayload = maxBatchSize - eventOverhead;
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), any()))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), any(), eq(CLIENT_ID)))
             .thenReturn(Mono.just(sendLink));
 
 

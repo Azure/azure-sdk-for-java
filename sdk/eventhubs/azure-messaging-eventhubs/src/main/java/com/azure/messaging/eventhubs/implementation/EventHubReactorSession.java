@@ -9,6 +9,7 @@ import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
+import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
@@ -69,18 +70,30 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
             tokenManagerProvider, messageSerializer, retryOptions);
     }
 
+    @Override
+    public Mono<AmqpSendLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retryPolicy, String clientId) {
+        Objects.requireNonNull(linkName, "'linkName' cannot be null.");
+        Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
+        Objects.requireNonNull(timeout, "'timeout' cannot be null.");
+        Objects.requireNonNull(clientId, "'clientId' cannot be null.");
+        final Map<Symbol, Object> properties = new HashMap<>();
+        properties.put(CLIENT_ID, clientId);
+        return createProducer(linkName, entityPath, timeout, retryPolicy, properties);
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public Mono<AmqpReceiveLink> createConsumer(String linkName, String entityPath, Duration timeout,
-            AmqpRetryPolicy retry, EventPosition eventPosition, ReceiveOptions options) {
+                                                AmqpRetryPolicy retry, EventPosition eventPosition, ReceiveOptions options, String clientId) {
         Objects.requireNonNull(linkName, "'linkName' cannot be null.");
         Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         Objects.requireNonNull(timeout, "'timeout' cannot be null.");
         Objects.requireNonNull(retry, "'retry' cannot be null.");
         Objects.requireNonNull(eventPosition, "'eventPosition' cannot be null.");
         Objects.requireNonNull(options, "'options' cannot be null.");
+        Objects.requireNonNull(clientId, "'clientId' cannot be null.");
 
         final String eventPositionExpression = getExpression(eventPosition);
         final Map<Symbol, Object> filter = new HashMap<>();
@@ -91,6 +104,7 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
         if (options.getOwnerLevel() != null) {
             properties.put(EPOCH, options.getOwnerLevel());
         }
+        properties.put(CLIENT_ID, clientId);
 
         final Symbol[] desiredCapabilities = options.getTrackLastEnqueuedEventProperties()
             ? new Symbol[]{ENABLE_RECEIVER_RUNTIME_METRIC_NAME}

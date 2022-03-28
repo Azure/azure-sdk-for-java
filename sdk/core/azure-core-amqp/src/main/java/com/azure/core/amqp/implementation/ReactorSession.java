@@ -97,6 +97,8 @@ public class ReactorSession implements AmqpSession {
     private final AtomicReference<TransactionCoordinator> transactionCoordinator = new AtomicReference<>();
     private final Flux<AmqpShutdownSignal> shutdownSignals;
 
+    public static final Symbol CLIENT_ID = Symbol.getSymbol(AmqpConstants.VENDOR + ":receiver-name");
+
     /**
      * Creates a new AMQP session using proton-j.
      *
@@ -223,7 +225,8 @@ public class ReactorSession implements AmqpSession {
     @Override
     public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry) {
         return createProducer(linkName, entityPath, timeout, retry, null)
-            .or(onClosedError("Connection closed while waiting for new producer link.", entityPath, linkName));
+            .or(onClosedError("Connection closed while waiting for new producer link.", entityPath, linkName))
+            .cast(AmqpLink.class);
     }
 
     /**
@@ -428,7 +431,7 @@ public class ReactorSession implements AmqpSession {
      *
      * @return A new instance of an {@link AmqpLink} with the correct properties set.
      */
-    protected Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout,
+    protected Mono<AmqpSendLink> createProducer(String linkName, String entityPath, Duration timeout,
         AmqpRetryPolicy retry, Map<Symbol, Object> linkProperties) {
 
         final Target target = new Target();
@@ -442,8 +445,7 @@ public class ReactorSession implements AmqpSession {
             options.setTryTimeout(timeout);
         }
 
-        return createProducer(linkName, entityPath, target, options, linkProperties, true)
-            .cast(AmqpLink.class);
+        return createProducer(linkName, entityPath, target, options, linkProperties, true);
     }
 
     private Mono<AmqpSendLink> createProducer(String linkName, String entityPath,
@@ -525,13 +527,16 @@ public class ReactorSession implements AmqpSession {
 
         final Sender sender = session.sender(linkName);
         sender.setTarget(target);
-
-        final Source source = new Source();
-        sender.setSource(source);
         sender.setSenderSettleMode(SenderSettleMode.UNSETTLED);
 
         if (linkProperties != null && linkProperties.size() > 0) {
             sender.setProperties(linkProperties);
+            String clientId = (String) linkProperties.get(CLIENT_ID);
+            if (clientId != null && !"".equals(clientId)) {
+                final Source source = new Source();
+                source.setAddress(clientId);
+                sender.setSource(source);
+            }
         }
 
         final SendLinkHandler sendLinkHandler = handlerProvider.createSendLinkHandler(
@@ -583,15 +588,18 @@ public class ReactorSession implements AmqpSession {
 
         receiver.setSource(source);
 
-        final Target target = new Target();
-        receiver.setTarget(target);
-
         // Use explicit settlement via dispositions (not pre-settled)
         receiver.setSenderSettleMode(senderSettleMode);
         receiver.setReceiverSettleMode(receiverSettleMode);
 
         if (receiverProperties != null && !receiverProperties.isEmpty()) {
             receiver.setProperties(receiverProperties);
+            String clientId = (String) receiverProperties.get(CLIENT_ID);
+            if (clientId != null && !"".equals(clientId)) {
+                final Target target = new Target();
+                target.setAddress(clientId);
+                receiver.setTarget(target);
+            }
         }
 
         if (receiverDesiredCapabilities != null && receiverDesiredCapabilities.length > 0) {

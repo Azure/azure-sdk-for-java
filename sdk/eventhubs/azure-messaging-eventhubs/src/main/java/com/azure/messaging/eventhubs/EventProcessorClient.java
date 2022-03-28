@@ -55,6 +55,7 @@ public class EventProcessorClient {
     private final String eventHubName;
     private final String consumerGroup;
     private final Duration loadBalancerUpdateInterval;
+    private final String clientId;
 
     /**
      * Package-private constructor. Use {@link EventHubClientBuilder} to create an instance.
@@ -100,6 +101,7 @@ public class EventProcessorClient {
         this.eventHubName = eventHubAsyncClient.getEventHubName().toLowerCase(Locale.ROOT);
         this.consumerGroup = consumerGroup.toLowerCase(Locale.ROOT);
         this.loadBalancerUpdateInterval = loadBalancerUpdateInterval;
+        this.clientId = eventHubAsyncClient.getClientId();
 
         this.partitionPumpManager = new PartitionPumpManager(checkpointStore, partitionProcessorFactory,
             eventHubClientBuilder, trackLastEnqueuedEventProperties, tracerProvider, initialPartitionEventPosition,
@@ -201,5 +203,14 @@ public class EventProcessorClient {
             .collect(Collectors.toList())
             .flatMapMany(checkpointStore::claimOwnership)
             .blockLast(Duration.ofSeconds(10)); // block until the checkpoint store is updated
+    }
+
+    /**
+     * Gets the client identifier.
+     *
+     * @return The unique identifier string for current client.
+     */
+    public String getClientId() {
+        return clientId;
     }
 }

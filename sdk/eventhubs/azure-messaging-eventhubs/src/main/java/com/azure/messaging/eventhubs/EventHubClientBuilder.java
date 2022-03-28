@@ -792,6 +792,10 @@ public class EventHubClientBuilder implements
             prefetchCount = DEFAULT_PREFETCH_COUNT;
         }
 
+        if (clientOptions == null) {
+            clientOptions = new ClientOptions();
+        }
+
         final MessageSerializer messageSerializer = new EventHubMessageSerializer();
 
         final EventHubConnectionProcessor processor;
@@ -813,7 +817,7 @@ public class EventHubClientBuilder implements
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
         return new EventHubAsyncClient(processor, tracerProvider, messageSerializer, scheduler,
-            isSharedConnection.get(), this::onClientClose);
+            isSharedConnection.get(), this::onClientClose, clientOptions.getClientId());
     }
 
     /**

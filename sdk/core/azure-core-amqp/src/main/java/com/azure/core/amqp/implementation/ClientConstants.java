@@ -16,6 +16,7 @@ public final class ClientConstants {
     public static final String CONNECTION_ID_KEY = "connectionId";
     public static final String LINK_NAME_KEY = "linkName";
     public static final String ENTITY_PATH_KEY = "entityPath";
+    public static final String CLIENT_ID_KEY = "clientId";
     public static final String SESSION_NAME_KEY = "sessionName";
     public static final String FULLY_QUALIFIED_NAMESPACE_KEY = "namespace";
     public static final String ERROR_CONDITION_KEY = "errorCondition";

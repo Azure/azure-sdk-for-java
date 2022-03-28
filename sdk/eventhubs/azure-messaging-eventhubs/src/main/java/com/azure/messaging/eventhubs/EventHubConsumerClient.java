@@ -295,4 +295,13 @@ public class EventHubConsumerClient implements Closeable {
 
         consumer.receiveFromPartition(partitionId, startingPosition, receiveOptions).subscribeWith(syncSubscriber);
     }
+
+    /**
+     * Gets the client identifier.
+     *
+     * @return The unique identifier string for current client.
+     */
+    public String getClientId() {
+        return this.consumer.getClientId();
+    }
 }
