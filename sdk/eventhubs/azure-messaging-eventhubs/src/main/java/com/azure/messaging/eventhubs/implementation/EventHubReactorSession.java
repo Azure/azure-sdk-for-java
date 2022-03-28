@@ -86,7 +86,7 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
      */
     @Override
     public Mono<AmqpReceiveLink> createConsumer(String linkName, String entityPath, Duration timeout,
-                                                AmqpRetryPolicy retry, EventPosition eventPosition, ReceiveOptions options, String clientId) {
+        AmqpRetryPolicy retry, EventPosition eventPosition, ReceiveOptions options, String clientId) {
         Objects.requireNonNull(linkName, "'linkName' cannot be null.");
         Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         Objects.requireNonNull(timeout, "'timeout' cannot be null.");

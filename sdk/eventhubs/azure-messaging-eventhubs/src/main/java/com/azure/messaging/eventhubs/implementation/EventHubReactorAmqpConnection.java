@@ -131,7 +131,7 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
      */
     @Override
     public Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, EventPosition eventPosition,
-                                                   ReceiveOptions options, String clientId) {
+        ReceiveOptions options, String clientId) {
         return createSession(entityPath).cast(EventHubSession.class)
             .flatMap(session -> {
                 logger.atVerbose()
