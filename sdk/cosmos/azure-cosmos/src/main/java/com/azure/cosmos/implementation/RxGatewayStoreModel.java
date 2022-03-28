@@ -78,6 +78,8 @@ class RxGatewayStoreModel implements RxStoreModel {
                 "no-cache");
         this.defaultHeaders.put(HttpConstants.HttpHeaders.VERSION,
                 HttpConstants.Versions.CURRENT_VERSION);
+        this.defaultHeaders.put(HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES,
+                String.valueOf(HttpConstants.SDKSupportedCapabilities.SUPPRTED_CAPABILITIES));
 
         if (apiType != null){
             this.defaultHeaders.put(HttpConstants.HttpHeaders.API_TYPE, apiType.toString());

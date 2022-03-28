@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
@@ -585,7 +586,8 @@ public final class RntbdConstants {
         PopulateIndexMetrics((short) 0x00A9, RntbdTokenType.Byte, false),
         IsClientEncrypted((short) 0x0087, RntbdTokenType.Byte, false),
         IntendedCollectionRid((short) 0x009D, RntbdTokenType.String, false),
-        CorrelatedActivityId((short) 0x00B0, RntbdTokenType.Guid, false);
+        CorrelatedActivityId((short) 0x00B0, RntbdTokenType.Guid, false),
+        SDKSupportedCapabilities((short) 0x00A2, RntbdTokenType.ULong, false);
 
         public static final ImmutableMap<Short, RntbdRequestHeader> map;
         public static final ImmutableSet<RntbdRequestHeader> set = Sets.immutableEnumSet(EnumSet.allOf(RntbdRequestHeader.class));

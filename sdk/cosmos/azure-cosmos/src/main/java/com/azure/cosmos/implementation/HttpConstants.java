@@ -4,7 +4,9 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.core.util.CoreUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -274,6 +276,9 @@ public class HttpConstants {
         // Client Encryption Headers
         public static final String IS_CLIENT_ENCRYPTED_HEADER = "x-ms-cosmos-is-client-encrypted";
         public static final String INTENDED_COLLECTION_RID_HEADER = "x-ms-cosmos-intended-collection-rid";
+
+        // SDK supported capacities headers
+        public static final String SDK_SUPPORTED_CAPABILITIES = "x-ms-cosmos-sdk-supported-capabilities";
     }
 
     public static class A_IMHeaderValues {
@@ -393,5 +398,16 @@ public class HttpConstants {
         public static final String NO_CACHE = "no-cache";
         public static final String PREFER_RETURN_MINIMAL = "return=minimal";
         public static final String IF_NONE_MATCH_ALL = "*";
+    }
+
+    public static class SDKSupportedCapabilities {
+        private static final long None = 0; // 0
+        private static final long PartitionMerge = 1; // 1 << 0
+
+        public static final long SUPPRTED_CAPABILITIES;
+        static {
+            // TODO: check whether the current version is higher than v2018_12_31
+            SUPPRTED_CAPABILITIES = PartitionMerge;
+        }
     }
 }
