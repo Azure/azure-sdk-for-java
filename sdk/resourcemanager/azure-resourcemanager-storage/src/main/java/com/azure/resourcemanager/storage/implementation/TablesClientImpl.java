@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.storage.implementation;
 
+import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
@@ -71,6 +72,7 @@ public final class TablesClientImpl implements TablesClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("tableName") String tableName,
+            @BodyParam("application/json") TableInner parameters,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -87,6 +89,7 @@ public final class TablesClientImpl implements TablesClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("tableName") String tableName,
+            @BodyParam("application/json") TableInner parameters,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -157,6 +160,7 @@ public final class TablesClientImpl implements TablesClient {
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param tableName A table name must be unique within a storage account and must be between 3 and 63 characters.The
      *     name must comprise of only alphanumeric characters and it cannot begin with a numeric character.
+     * @param parameters The parameters to provide to create a table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -165,7 +169,7 @@ public final class TablesClientImpl implements TablesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TableInner>> createWithResponseAsync(
-        String resourceGroupName, String accountName, String tableName) {
+        String resourceGroupName, String accountName, String tableName, TableInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -188,6 +192,9 @@ public final class TablesClientImpl implements TablesClient {
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
+        if (parameters != null) {
+            parameters.validate();
+        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -200,6 +207,7 @@ public final class TablesClientImpl implements TablesClient {
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             tableName,
+                            parameters,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -214,6 +222,7 @@ public final class TablesClientImpl implements TablesClient {
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param tableName A table name must be unique within a storage account and must be between 3 and 63 characters.The
      *     name must comprise of only alphanumeric characters and it cannot begin with a numeric character.
+     * @param parameters The parameters to provide to create a table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -223,7 +232,7 @@ public final class TablesClientImpl implements TablesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TableInner>> createWithResponseAsync(
-        String resourceGroupName, String accountName, String tableName, Context context) {
+        String resourceGroupName, String accountName, String tableName, TableInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -246,6 +255,9 @@ public final class TablesClientImpl implements TablesClient {
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
+        if (parameters != null) {
+            parameters.validate();
+        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -256,8 +268,39 @@ public final class TablesClientImpl implements TablesClient {
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 tableName,
+                parameters,
                 accept,
                 context);
+    }
+
+    /**
+     * Creates a new table with the specified table name, under the specified account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param tableName A table name must be unique within a storage account and must be between 3 and 63 characters.The
+     *     name must comprise of only alphanumeric characters and it cannot begin with a numeric character.
+     * @param parameters The parameters to provide to create a table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of the table, including Id, resource name, resource type on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TableInner> createAsync(
+        String resourceGroupName, String accountName, String tableName, TableInner parameters) {
+        return createWithResponseAsync(resourceGroupName, accountName, tableName, parameters)
+            .flatMap(
+                (Response<TableInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -277,7 +320,8 @@ public final class TablesClientImpl implements TablesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TableInner> createAsync(String resourceGroupName, String accountName, String tableName) {
-        return createWithResponseAsync(resourceGroupName, accountName, tableName)
+        final TableInner parameters = null;
+        return createWithResponseAsync(resourceGroupName, accountName, tableName, parameters)
             .flatMap(
                 (Response<TableInner> res) -> {
                     if (res.getValue() != null) {
@@ -304,7 +348,8 @@ public final class TablesClientImpl implements TablesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TableInner create(String resourceGroupName, String accountName, String tableName) {
-        return createAsync(resourceGroupName, accountName, tableName).block();
+        final TableInner parameters = null;
+        return createAsync(resourceGroupName, accountName, tableName, parameters).block();
     }
 
     /**
@@ -316,6 +361,7 @@ public final class TablesClientImpl implements TablesClient {
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param tableName A table name must be unique within a storage account and must be between 3 and 63 characters.The
      *     name must comprise of only alphanumeric characters and it cannot begin with a numeric character.
+     * @param parameters The parameters to provide to create a table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -324,8 +370,8 @@ public final class TablesClientImpl implements TablesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableInner> createWithResponse(
-        String resourceGroupName, String accountName, String tableName, Context context) {
-        return createWithResponseAsync(resourceGroupName, accountName, tableName, context).block();
+        String resourceGroupName, String accountName, String tableName, TableInner parameters, Context context) {
+        return createWithResponseAsync(resourceGroupName, accountName, tableName, parameters, context).block();
     }
 
     /**
@@ -337,6 +383,7 @@ public final class TablesClientImpl implements TablesClient {
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param tableName A table name must be unique within a storage account and must be between 3 and 63 characters.The
      *     name must comprise of only alphanumeric characters and it cannot begin with a numeric character.
+     * @param parameters The parameters to provide to create a table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -345,7 +392,7 @@ public final class TablesClientImpl implements TablesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TableInner>> updateWithResponseAsync(
-        String resourceGroupName, String accountName, String tableName) {
+        String resourceGroupName, String accountName, String tableName, TableInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -368,6 +415,9 @@ public final class TablesClientImpl implements TablesClient {
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
+        if (parameters != null) {
+            parameters.validate();
+        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -380,6 +430,7 @@ public final class TablesClientImpl implements TablesClient {
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             tableName,
+                            parameters,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -394,6 +445,7 @@ public final class TablesClientImpl implements TablesClient {
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param tableName A table name must be unique within a storage account and must be between 3 and 63 characters.The
      *     name must comprise of only alphanumeric characters and it cannot begin with a numeric character.
+     * @param parameters The parameters to provide to create a table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -403,7 +455,7 @@ public final class TablesClientImpl implements TablesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TableInner>> updateWithResponseAsync(
-        String resourceGroupName, String accountName, String tableName, Context context) {
+        String resourceGroupName, String accountName, String tableName, TableInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -426,6 +478,9 @@ public final class TablesClientImpl implements TablesClient {
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
+        if (parameters != null) {
+            parameters.validate();
+        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -436,8 +491,39 @@ public final class TablesClientImpl implements TablesClient {
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 tableName,
+                parameters,
                 accept,
                 context);
+    }
+
+    /**
+     * Creates a new table with the specified table name, under the specified account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param tableName A table name must be unique within a storage account and must be between 3 and 63 characters.The
+     *     name must comprise of only alphanumeric characters and it cannot begin with a numeric character.
+     * @param parameters The parameters to provide to create a table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of the table, including Id, resource name, resource type on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TableInner> updateAsync(
+        String resourceGroupName, String accountName, String tableName, TableInner parameters) {
+        return updateWithResponseAsync(resourceGroupName, accountName, tableName, parameters)
+            .flatMap(
+                (Response<TableInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -457,7 +543,8 @@ public final class TablesClientImpl implements TablesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TableInner> updateAsync(String resourceGroupName, String accountName, String tableName) {
-        return updateWithResponseAsync(resourceGroupName, accountName, tableName)
+        final TableInner parameters = null;
+        return updateWithResponseAsync(resourceGroupName, accountName, tableName, parameters)
             .flatMap(
                 (Response<TableInner> res) -> {
                     if (res.getValue() != null) {
@@ -484,7 +571,8 @@ public final class TablesClientImpl implements TablesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TableInner update(String resourceGroupName, String accountName, String tableName) {
-        return updateAsync(resourceGroupName, accountName, tableName).block();
+        final TableInner parameters = null;
+        return updateAsync(resourceGroupName, accountName, tableName, parameters).block();
     }
 
     /**
@@ -496,6 +584,7 @@ public final class TablesClientImpl implements TablesClient {
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param tableName A table name must be unique within a storage account and must be between 3 and 63 characters.The
      *     name must comprise of only alphanumeric characters and it cannot begin with a numeric character.
+     * @param parameters The parameters to provide to create a table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -504,8 +593,8 @@ public final class TablesClientImpl implements TablesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableInner> updateWithResponse(
-        String resourceGroupName, String accountName, String tableName, Context context) {
-        return updateWithResponseAsync(resourceGroupName, accountName, tableName, context).block();
+        String resourceGroupName, String accountName, String tableName, TableInner parameters, Context context) {
+        return updateWithResponseAsync(resourceGroupName, accountName, tableName, parameters, context).block();
     }
 
     /**

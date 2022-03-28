@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BlobContainers Get. */
 public final class BlobContainersGetSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/BlobContainersGet.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/BlobContainersGet.json
      */
     /**
      * Sample code: GetContainers.
@@ -26,7 +26,7 @@ public final class BlobContainersGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/BlobContainersGetWithAllowProtectedAppendWritesAll.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/BlobContainersGetWithAllowProtectedAppendWritesAll.json
      */
     /**
      * Sample code: GetBlobContainersGetWithAllowProtectedAppendWritesAll.
