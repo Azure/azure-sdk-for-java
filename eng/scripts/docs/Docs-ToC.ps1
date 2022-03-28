@@ -153,15 +153,11 @@ function Parse-Overview-Frame ($filePath, $destination) {
     
     $namespaces = $packages | ForEach-Object { $_.Groups["package"].Value }    
     Add-Content -Path $destination -Value $namespaces
-    Get-Content $destination
 }
 
 function Get-java-UpdatedDocsMsToc($toc) {
-    # Add "ADAL" to "Active Directory" service. This is onboarded through a repo
-    # source process that is not obvious in the CI configuration (no package
-    # name, only a repo URL)
     $services = $toc[0].items
-    # Add service exsted in old toc.
+    # Add services exsting in old toc but missing in automation.
     $otherService = $services[-1]
     $sortableServices = $services | Where-Object { $_ –ne $otherService }
     $sortableServices += [PSCustomObject]@{
