@@ -21,6 +21,8 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.mockito.Mockito.when;
 
 @RunWith(PowerMockRunner.class)
@@ -129,8 +131,8 @@ public class ManagedIdentityCredentialTest {
         configuration.put("IMDS_ENDPOINT", "http://localhost");
 
         ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
-        Assert.assertTrue("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
-            cred.managedIdentityServiceCredential instanceof ArcIdentityCredential);
+        assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
+            cred.managedIdentityServiceCredential, instanceOf(ArcIdentityCredential.class));
     }
 
     @Test
@@ -142,8 +144,8 @@ public class ManagedIdentityCredentialTest {
         configuration.put("IDENTITY_HEADER", "header");
 
         ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
-        Assert.assertTrue("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
-            cred.managedIdentityServiceCredential instanceof ServiceFabricMsiCredential);
+        assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
+            cred.managedIdentityServiceCredential, instanceOf(ServiceFabricMsiCredential.class));
     }
 
     @Test
@@ -154,8 +156,8 @@ public class ManagedIdentityCredentialTest {
         configuration.put("IDENTITY_HEADER", "header");
 
         ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
-        Assert.assertTrue("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
-            cred.managedIdentityServiceCredential instanceof AppServiceMsiCredential);
+        assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
+            cred.managedIdentityServiceCredential, instanceOf(AppServiceMsiCredential.class));
     }
 
     @Test
@@ -166,8 +168,8 @@ public class ManagedIdentityCredentialTest {
         configuration.put("MSI_SECRET", "secret");
 
         ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
-        Assert.assertTrue("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
-            cred.managedIdentityServiceCredential instanceof AppServiceMsiCredential);
+        assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
+            cred.managedIdentityServiceCredential, instanceOf(AppServiceMsiCredential.class));
     }
 
     @Test
@@ -177,8 +179,8 @@ public class ManagedIdentityCredentialTest {
         configuration.put("MSI_ENDPOINT", "http://localhost");
 
         ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
-        Assert.assertTrue("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
-            cred.managedIdentityServiceCredential instanceof AppServiceMsiCredential);
+        assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
+            cred.managedIdentityServiceCredential, instanceOf(AppServiceMsiCredential.class));
     }
 
     @Test
@@ -190,8 +192,8 @@ public class ManagedIdentityCredentialTest {
         configuration.put("AZURE_FEDERATED_TOKEN_FILE", "tokenFile");
 
         ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
-        Assert.assertTrue("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
-            cred.managedIdentityServiceCredential instanceof AksExchangeTokenCredential);
+        assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
+            cred.managedIdentityServiceCredential, instanceOf(AksExchangeTokenCredential.class));
     }
 
     @Test
@@ -199,8 +201,8 @@ public class ManagedIdentityCredentialTest {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
 
         ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
-        Assert.assertTrue("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
-            cred.managedIdentityServiceCredential instanceof VirtualMachineMsiCredential);
+        assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
+            cred.managedIdentityServiceCredential,  instanceOf(VirtualMachineMsiCredential.class));
     }
 }
 
