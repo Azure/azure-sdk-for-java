@@ -524,9 +524,9 @@ public final class RestProxy implements InvocationHandler {
             });
         }
 
-        // Otherwise, rely on reflection, for now, to get the best constructor to use to create the Response sub-type.
+        // Otherwise, rely on reflection, for now, to get the best constructor to use to create the Response subtype.
         //
-        // Ideally, in the future the SDKs won't need to dabble in reflection here as the Response sub-types should be
+        // Ideally, in the future the SDKs won't need to dabble in reflection here as the Response subtypes should be
         // given a way to register their constructor as a callback method that consumes HttpDecodedResponse and the
         // body as an Object.
         return Mono.just(RESPONSE_CONSTRUCTORS_CACHE.get(cls))

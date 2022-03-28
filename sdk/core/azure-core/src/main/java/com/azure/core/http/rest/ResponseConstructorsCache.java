@@ -132,7 +132,7 @@ final class ResponseConstructorsCache {
         }
     }
 
-    private static Mono<Response<?>> constructResponse(MethodHandle handle, String exceptionMessage,
+    static Mono<Response<?>> constructResponse(MethodHandle handle, String exceptionMessage,
         ClientLogger logger, Object... params) {
         return Mono.defer(() -> {
             try {
