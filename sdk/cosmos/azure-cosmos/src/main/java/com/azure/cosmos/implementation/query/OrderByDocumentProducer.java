@@ -59,7 +59,7 @@ class OrderByDocumentProducer extends DocumentProducer<Document> {
         this.targetRangeToOrderByContinuationTokenMap = targetRangeToOrderByContinuationTokenMap;
     }
 
-    protected Flux<DocumentProducerFeedResponse> produceOnSplit(Flux<DocumentProducer<Document>> replacementProducers) {
+    protected Flux<DocumentProducerFeedResponse> produceOnFeedRangeGone(Flux<DocumentProducer<Document>> replacementProducers) {
         return replacementProducers.collectList().flux().flatMap(documentProducers -> {
             RequestChargeTracker tracker = new RequestChargeTracker();
             Map<String, QueryMetrics> queryMetricsMap = new HashMap<>();
