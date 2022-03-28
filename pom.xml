@@ -845,6 +845,7 @@
         <module>sdk/anomalydetector</module>
         <module>sdk/aot</module>
         <module>sdk/apimanagement</module>
+        <module>sdk/app</module>
         <module>sdk/appconfiguration</module>
         <module>sdk/applicationinsights</module>
         <module>sdk/attestation</module>
