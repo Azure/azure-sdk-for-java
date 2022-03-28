@@ -23,7 +23,7 @@ import java.time.Duration;
 public final class ManagedIdentityCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(ManagedIdentityCredential.class);
 
-    private final ManagedIdentityServiceCredential managedIdentityServiceCredential;
+    final ManagedIdentityServiceCredential managedIdentityServiceCredential;
     private final IdentityClientOptions identityClientOptions;
 
     static final String PROPERTY_IMDS_ENDPOINT = "IMDS_ENDPOINT";
