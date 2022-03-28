@@ -8,8 +8,10 @@
 Removed `disableAuthoriyValidaionSafetyCheck` for GA, will reintroduce in next beta.
 
 ### Bugs Fixed
+Correctly use an `AppServiceMsiCredential` in the case both `IDENTITY_ENDPOINT` and `IDENTITY_HEADER` are set.
 
 ### Other Changes
+Added tests to validate ManagedIdentityCredential cases based on environment variables
 
 ## 1.5.0-beta.2 (2022-03-21)
 
