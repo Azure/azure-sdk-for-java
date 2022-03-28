@@ -95,7 +95,7 @@
     <dependency>
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest</artifactId>
-      <version>2.2</version>
+      <version>2.2</version> <!-- {x-version-update;org.hamcrest:hamcrest;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
