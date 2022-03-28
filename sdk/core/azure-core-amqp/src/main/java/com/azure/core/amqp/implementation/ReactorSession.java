@@ -17,6 +17,7 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LoggingEventBuilder;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -529,15 +530,15 @@ public class ReactorSession implements AmqpSession {
         sender.setTarget(target);
         sender.setSenderSettleMode(SenderSettleMode.UNSETTLED);
 
+        final Source source = new Source();
         if (linkProperties != null && linkProperties.size() > 0) {
             sender.setProperties(linkProperties);
             String clientId = (String) linkProperties.get(CLIENT_ID);
-            if (clientId != null && !"".equals(clientId)) {
-                final Source source = new Source();
+            if (CoreUtils.isNullOrEmpty(clientId)) {
                 source.setAddress(clientId);
-                sender.setSource(source);
             }
         }
+        sender.setSource(source);
 
         final SendLinkHandler sendLinkHandler = handlerProvider.createSendLinkHandler(
             sessionHandler.getConnectionId(), sessionHandler.getHostname(), linkName, entityPath);
@@ -592,15 +593,15 @@ public class ReactorSession implements AmqpSession {
         receiver.setSenderSettleMode(senderSettleMode);
         receiver.setReceiverSettleMode(receiverSettleMode);
 
+        final Target target = new Target();
         if (receiverProperties != null && !receiverProperties.isEmpty()) {
             receiver.setProperties(receiverProperties);
             String clientId = (String) receiverProperties.get(CLIENT_ID);
-            if (clientId != null && !"".equals(clientId)) {
-                final Target target = new Target();
+            if (CoreUtils.isNullOrEmpty(clientId)) {
                 target.setAddress(clientId);
-                receiver.setTarget(target);
             }
         }
+        receiver.setTarget(target);
 
         if (receiverDesiredCapabilities != null && receiverDesiredCapabilities.length > 0) {
             receiver.setDesiredCapabilities(receiverDesiredCapabilities);
