@@ -13,7 +13,6 @@ import com.azure.resourcemanager.applicationinsights.models.IngestionMode;
 import com.azure.resourcemanager.applicationinsights.models.PrivateLinkScopedResource;
 import com.azure.resourcemanager.applicationinsights.models.PublicNetworkAccessType;
 import com.azure.resourcemanager.applicationinsights.models.RequestSource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -22,8 +21,6 @@ import java.util.Map;
 /** An Application Insights component definition. */
 @Fluent
 public final class ApplicationInsightsComponentInner extends ComponentsResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationInsightsComponentInner.class);
-
     /*
      * The kind of application that this component refers to, used to customize
      * UI. This value is a freeform string, values should typically be one of
@@ -564,7 +561,7 @@ public final class ApplicationInsightsComponentInner extends ComponentsResource 
     public void validate() {
         super.validate();
         if (kind() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property kind in model ApplicationInsightsComponentInner"));
@@ -573,4 +570,6 @@ public final class ApplicationInsightsComponentInner extends ComponentsResource 
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationInsightsComponentInner.class);
 }

@@ -7,15 +7,12 @@ package com.azure.resourcemanager.securityinsights.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.models.WatchlistItemInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List all the watchlist items. */
 @Fluent
 public final class WatchlistItemList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WatchlistItemList.class);
-
     /*
      * URL to fetch the next set of watchlist item.
      */
@@ -64,11 +61,13 @@ public final class WatchlistItemList {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model WatchlistItemList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WatchlistItemList.class);
 }

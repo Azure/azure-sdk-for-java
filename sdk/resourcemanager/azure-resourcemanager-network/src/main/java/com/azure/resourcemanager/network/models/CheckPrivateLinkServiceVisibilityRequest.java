@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Request body of the CheckPrivateLinkServiceVisibility API service call. */
 @Fluent
 public final class CheckPrivateLinkServiceVisibilityRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckPrivateLinkServiceVisibilityRequest.class);
-
     /*
      * The alias of the private link service.
      */

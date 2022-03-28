@@ -22,7 +22,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.ExposureControlsClient;
 import com.azure.resourcemanager.datafactory.fluent.models.ExposureControlBatchResponseInner;
 import com.azure.resourcemanager.datafactory.fluent.models.ExposureControlResponseInner;
@@ -32,8 +31,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ExposureControlsClient. */
 public final class ExposureControlsClientImpl implements ExposureControlsClient {
-    private final ClientLogger logger = new ClientLogger(ExposureControlsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ExposureControlsService service;
 

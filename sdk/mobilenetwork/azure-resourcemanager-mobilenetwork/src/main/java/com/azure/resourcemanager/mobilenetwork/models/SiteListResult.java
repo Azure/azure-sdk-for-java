@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.SiteInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for sites API service call. */
 @Fluent
 public final class SiteListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SiteListResult.class);
-
     /*
      * A list of sites in a resource group.
      */

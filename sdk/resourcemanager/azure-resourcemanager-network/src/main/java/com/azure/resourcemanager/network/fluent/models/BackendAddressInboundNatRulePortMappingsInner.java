@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.InboundNatRulePortMapping;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response for a QueryInboundNatRulePortMapping API. */
 @Fluent
 public final class BackendAddressInboundNatRulePortMappingsInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(BackendAddressInboundNatRulePortMappingsInner.class);
-
     /*
      * Collection of inbound NAT rule port mappings.
      */

@@ -308,7 +308,7 @@ public final class ServiceBusClientBuilder implements
         this.fullyQualifiedNamespace = properties.getEndpoint().getHost();
 
         String entityPath = properties.getEntityPath();
-        if (CoreUtils.isNullOrEmpty(entityPath)) {
+        if (!CoreUtils.isNullOrEmpty(entityPath)) {
             logger.atInfo()
                 .addKeyValue(ENTITY_PATH_KEY, entityPath)
                 .log("Setting entity from connection string.");

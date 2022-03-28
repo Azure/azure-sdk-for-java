@@ -818,6 +818,54 @@
           ]
         },
         {
+          "label": "Communication - Calling Server",
+          "pathFilter": [
+            "/sdk/communication/azure-communication-callingserver/"
+          ]
+        },
+        {
+          "label": "Communication - Chat",
+          "pathFilter": [
+            "/sdk/communication/azure-communication-chat/"
+          ]
+        },
+        {
+          "label": "Communication - Common",
+          "pathFilter": [
+            "/sdk/communication/azure-communication-common/"
+          ]
+        },
+        {
+          "label": "Communication - Identity",
+          "pathFilter": [
+            "/sdk/communication/azure-communication-identity/"
+          ]
+        },
+        {
+          "label": "Communication - Network Traversal",
+          "pathFilter": [
+            "/sdk/communication/azure-communication-networktraversal/"
+          ]
+        },
+        {
+          "label": "Communication - Phone Numbers",
+          "pathFilter": [
+            "/sdk/communication/azure-communication-phonenumbers/"
+          ]
+        },
+        {
+          "label": "Communication - SMS",
+          "pathFilter": [
+            "/sdk/communication/azure-communication-sms/"
+          ]
+        },
+        {
+          "label": "Communication - Resource Manager",
+          "pathFilter": [
+            "/sdk/communication/azure-resourcemanager-communication/"
+          ]
+        },
+        {
           "label": "Azure.Core",
           "pathFilter": [
             "sdk/core/"

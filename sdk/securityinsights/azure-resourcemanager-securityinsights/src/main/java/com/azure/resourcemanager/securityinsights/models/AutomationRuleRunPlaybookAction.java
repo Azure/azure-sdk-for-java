@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,31 +14,28 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("RunPlaybook")
 @Fluent
 public final class AutomationRuleRunPlaybookAction extends AutomationRuleAction {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutomationRuleRunPlaybookAction.class);
-
     /*
-     * The configuration of the run playbook automation rule action
+     * The actionConfiguration property.
      */
-    @JsonProperty(value = "actionConfiguration", required = true)
-    private AutomationRuleRunPlaybookActionConfiguration actionConfiguration;
+    @JsonProperty(value = "actionConfiguration")
+    private PlaybookActionProperties actionConfiguration;
 
     /**
-     * Get the actionConfiguration property: The configuration of the run playbook automation rule action.
+     * Get the actionConfiguration property: The actionConfiguration property.
      *
      * @return the actionConfiguration value.
      */
-    public AutomationRuleRunPlaybookActionConfiguration actionConfiguration() {
+    public PlaybookActionProperties actionConfiguration() {
         return this.actionConfiguration;
     }
 
     /**
-     * Set the actionConfiguration property: The configuration of the run playbook automation rule action.
+     * Set the actionConfiguration property: The actionConfiguration property.
      *
      * @param actionConfiguration the actionConfiguration value to set.
      * @return the AutomationRuleRunPlaybookAction object itself.
      */
-    public AutomationRuleRunPlaybookAction withActionConfiguration(
-        AutomationRuleRunPlaybookActionConfiguration actionConfiguration) {
+    public AutomationRuleRunPlaybookAction withActionConfiguration(PlaybookActionProperties actionConfiguration) {
         this.actionConfiguration = actionConfiguration;
         return this;
     }
@@ -60,12 +55,7 @@ public final class AutomationRuleRunPlaybookAction extends AutomationRuleAction 
     @Override
     public void validate() {
         super.validate();
-        if (actionConfiguration() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property actionConfiguration in model AutomationRuleRunPlaybookAction"));
-        } else {
+        if (actionConfiguration() != null) {
             actionConfiguration().validate();
         }
     }

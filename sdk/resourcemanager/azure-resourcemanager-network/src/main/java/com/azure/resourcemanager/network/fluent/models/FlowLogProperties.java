@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.FlowLogFormatParameters;
 import com.azure.resourcemanager.network.models.RetentionPolicyParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters that define the configuration of flow log. */
 @Fluent
 public final class FlowLogProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FlowLogProperties.class);
-
     /*
      * ID of the storage account which is used to store the flow log.
      */
@@ -127,7 +124,7 @@ public final class FlowLogProperties {
      */
     public void validate() {
         if (storageId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property storageId in model FlowLogProperties"));
         }
@@ -138,4 +135,6 @@ public final class FlowLogProperties {
             format().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FlowLogProperties.class);
 }

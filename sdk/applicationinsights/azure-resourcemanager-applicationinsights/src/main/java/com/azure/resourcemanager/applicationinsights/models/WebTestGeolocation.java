@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Geo-physical location to run a web test from. You must specify one or more locations for the test to run from. */
 @Fluent
 public final class WebTestGeolocation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebTestGeolocation.class);
-
     /*
      * Location ID for the webtest to run from.
      */

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** Resource type managed by the resource provider. */
 @Fluent
 public final class ProviderResourceType {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProviderResourceType.class);
-
     /*
      * The resource type.
      */
