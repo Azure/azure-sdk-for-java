@@ -17,23 +17,27 @@ public class InMemoryBodyCollector implements SimpleBodyCollector {
     @Override
     public void collect(ByteBuf buffer, boolean isLast) {
         if (buffer.isReadable()) {
-            ensureStream();
+            ByteArrayOutputStream result = ensureStream();
             try {
-                buffer.readBytes(outputStream, buffer.readableBytes());
+                buffer.readBytes(result, buffer.readableBytes());
             } catch (IOException e) {
                 throw new UncheckedIOException(e);
             }
         }
     }
 
-    private void ensureStream() {
-        if (outputStream == null) {
+    private ByteArrayOutputStream ensureStream() {
+        ByteArrayOutputStream result = outputStream;
+        if (result == null) {
             synchronized (this) {
-                if (outputStream == null) {
-                    outputStream = new ByteArrayOutputStream();
+                result = outputStream;
+                if (result == null) {
+                    result = new ByteArrayOutputStream();
+                    outputStream = result;
                 }
             }
         }
+        return result;
     }
 
     @Override
