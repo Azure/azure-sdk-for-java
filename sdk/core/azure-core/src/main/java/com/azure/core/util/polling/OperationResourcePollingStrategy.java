@@ -55,6 +55,18 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
      * @param httpPipeline an instance of {@link HttpPipeline} to send requests with
      * @param serializer a custom serializer for serializing and deserializing polling responses
      * @param operationLocationHeaderName a custom header for polling the long running operation
+     */
+    public OperationResourcePollingStrategy(HttpPipeline httpPipeline, ObjectSerializer serializer,
+                                            String operationLocationHeaderName) {
+        this(Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null"), serializer != null ? serializer : new DefaultJsonSerializer(), operationLocationHeaderName != null ? operationLocationHeaderName
+            : DEFAULT_OPERATION_LOCATION_HEADER, Context.NONE);
+    }
+
+    /**
+     * Creates an instance of the operation resource polling strategy.
+     * @param httpPipeline an instance of {@link HttpPipeline} to send requests with
+     * @param serializer a custom serializer for serializing and deserializing polling responses
+     * @param operationLocationHeaderName a custom header for polling the long running operation
      * @param context an instance of {@link com.azure.core.util.Context}
      */
     public OperationResourcePollingStrategy(HttpPipeline httpPipeline, ObjectSerializer serializer,

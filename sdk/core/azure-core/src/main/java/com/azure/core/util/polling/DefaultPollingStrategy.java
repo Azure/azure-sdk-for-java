@@ -44,6 +44,22 @@ public final class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U>
      *
      * @param httpPipeline an instance of {@link HttpPipeline} to send requests with
      * @param serializer a custom serializer for serializing and deserializing polling responses
+     * @throws NullPointerException If {@code httpPipeline} is null.
+     */
+    public DefaultPollingStrategy(HttpPipeline httpPipeline, JsonSerializer serializer) {
+        this.chainedPollingStrategy = new ChainedPollingStrategy<>(Arrays.asList(
+            new OperationResourcePollingStrategy<>(httpPipeline, serializer, null, Context.NONE),
+            new LocationPollingStrategy<>(httpPipeline, serializer, Context.NONE),
+            new StatusCheckPollingStrategy<>(serializer, Context.NONE)));
+    }
+
+    /**
+     * Creates a chained polling strategy with 3 known polling strategies, {@link OperationResourcePollingStrategy},
+     * {@link LocationPollingStrategy}, and {@link StatusCheckPollingStrategy}, in this order, with a custom
+     * serializer.
+     *
+     * @param httpPipeline an instance of {@link HttpPipeline} to send requests with
+     * @param serializer a custom serializer for serializing and deserializing polling responses
      * @param context an instance of {@link Context}
      * @throws NullPointerException If {@code httpPipeline} is null.
      */

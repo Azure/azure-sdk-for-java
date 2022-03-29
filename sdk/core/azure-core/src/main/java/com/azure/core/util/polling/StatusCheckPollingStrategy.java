@@ -40,6 +40,14 @@ public class StatusCheckPollingStrategy<T, U> implements PollingStrategy<T, U> {
     /**
      * Creates a status check polling strategy with a custom object serializer.
      * @param serializer a custom serializer for serializing and deserializing polling responses
+     */
+    public StatusCheckPollingStrategy(ObjectSerializer serializer) {
+        this((serializer == null) ? DEFAULT_SERIALIZER : serializer, Context.NONE);
+    }
+
+    /**
+     * Creates a status check polling strategy with a custom object serializer.
+     * @param serializer a custom serializer for serializing and deserializing polling responses
      * @param context an instance of {@link Context}
      */
     public StatusCheckPollingStrategy(ObjectSerializer serializer, Context context) {
