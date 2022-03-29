@@ -155,7 +155,7 @@ com.azure.spring:azure-spring-cloud-appconfiguration-config-web;2.5.0;2.6.0-beta
 com.azure.spring:azure-spring-cloud-appconfiguration-config;2.5.0;2.6.0-beta.1
 com.azure.spring:azure-spring-cloud-feature-management-web;2.4.0;2.5.0-beta.1
 com.azure.spring:azure-spring-cloud-feature-management;2.4.0;2.5.0-beta.1
-com.azure.spring:azure-spring-cloud-starter-appconfiguration-config;2.4.0;2.5.0
+com.azure.spring:azure-spring-cloud-starter-appconfiguration-config;2.5.0;2.6.0-beta.1
 com.azure.spring:azure-identity-spring;1.14.0;1.15.0-beta.1
 com.azure.spring:azure-spring-boot-bom;3.14.0;3.15.0-beta.1
 com.azure.spring:azure-spring-boot-starter-active-directory-b2c;3.14.0;3.15.0-beta.1
