@@ -1,0 +1,60 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/issuers/56dc144b-9003-41e8-803e-33c2c3b5ea86-testIssuer03?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "385",
+      "x-ms-keyvault-rbac-assignment-id" : "f4e2dde1-5ff5-56c6-8923-012f34e01597",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 29 Mar 2022 01:47:36 GMT",
+      "x-ms-keyvault-rbac-cache" : "ra_age=0;da_age=0;rd_age=0;brd_age=5077;ra_notif_age=2782;dec_lev=3;",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "westus2",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "fe31833c-6f57-4181-86f4-1aab1ea50d8b",
+      "x-ms-keyvault-service-version" : "1.9.331.5",
+      "Body" : "{\"id\":\"https://azsdktests.vault.azure.net/certificates/issuers/56dc144b-9003-41e8-803e-33c2c3b5ea86-testIssuer03\",\"provider\":\"Test\",\"credentials\":{\"account_id\":\"issuerAccountId\"},\"org_details\":{\"zip\":0,\"admin_details\":[{\"first_name\":\"first\",\"last_name\":\"last\",\"email\":\"first.last@hotmail.com\",\"phone\":\"12345\"}]},\"attributes\":{\"enabled\":true,\"created\":1648518456,\"updated\":1648518456}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/issuers/56dc144b-9003-41e8-803e-33c2c3b5ea86-testIssuer03?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "385",
+      "x-ms-keyvault-rbac-assignment-id" : "f4e2dde1-5ff5-56c6-8923-012f34e01597",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 29 Mar 2022 01:47:36 GMT",
+      "x-ms-keyvault-rbac-cache" : "ra_age=1;da_age=1;rd_age=1;brd_age=5077;ra_notif_age=2782;dec_lev=0;",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "westus2",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "4e923aff-c9cd-4f54-a233-14f678dae2e4",
+      "x-ms-keyvault-service-version" : "1.9.331.5",
+      "Body" : "{\"id\":\"https://azsdktests.vault.azure.net/certificates/issuers/56dc144b-9003-41e8-803e-33c2c3b5ea86-testIssuer03\",\"provider\":\"Test\",\"credentials\":{\"account_id\":\"issuerAccountId\"},\"org_details\":{\"zip\":0,\"admin_details\":[{\"first_name\":\"first\",\"last_name\":\"last\",\"email\":\"first.last@hotmail.com\",\"phone\":\"12345\"}]},\"attributes\":{\"enabled\":true,\"created\":1648518456,\"updated\":1648518456}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
