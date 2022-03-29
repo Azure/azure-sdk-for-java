@@ -80,7 +80,7 @@ stages:
 
           - AZURE_TEST.*=.*/
           - ${{ if eq(parameters.SDKType, 'data') }}:
-            - JavaTestVersion=(.*)1.17(.*)/$11.11$2
+            - JavaTestVersion=(.*)1\.17(.*)/$1\1.11$2
         PreBuildSteps: ${{ parameters.PreBuildSteps }}
         AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
         ${{ if eq(parameters.SDKType, 'data') }}:
