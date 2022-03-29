@@ -84,7 +84,7 @@ jobs:
           options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip -Dspotbugs.skip -Drevapi.skip=true -Djacoco.skip=true '
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaBuildVersion)
+          jdkVersionOption: 1.8
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
         condition: and(succeeded(), ne(variables['LintingGoals'], ''))
@@ -100,7 +100,7 @@ jobs:
           options: '$(DefaultOptions) -T 2C -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.failBuildOnProblemsFound=false -pl "!com.azure:azure-sdk-from-source,$(SkipLintingProjects)"'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaBuildVersion)
+          jdkVersionOption: 1.8
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
         condition: and(succeeded(), ne(variables['LintingGoals'], ''))
