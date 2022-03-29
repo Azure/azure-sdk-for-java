@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.models.AwsS3DataConnectorProperties;
 import com.azure.resourcemanager.securityinsights.fluent.models.DataConnectorInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +17,6 @@ import java.util.List;
 @JsonTypeName("AmazonWebServicesS3")
 @Fluent
 public final class AwsS3DataConnector extends DataConnectorInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AwsS3DataConnector.class);
-
     /*
      * Amazon Web Services S3 data connector properties.
      */

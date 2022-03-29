@@ -58,7 +58,7 @@ public final class ReactorUtils {
      * @return The {@link Flux} with {@link Context}.
      * @throws RuntimeException If an exception occurs while creating the {@link Flux} with {@link Context}.
      */
-    <T> Flux<T> withFluxContext(Function<Context, Flux<T>> contextFunction) {
+    public static <T> Flux<T> withFluxContext(Function<Context, Flux<T>> contextFunction) {
         try {
             return SHIM.withFluxContext(contextFunction);
         } catch (Exception ex) {

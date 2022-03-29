@@ -6,17 +6,13 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.ServiceDelegationPropertiesFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Details the service to which the subnet is delegated. */
 @Fluent
 public final class Delegation extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Delegation.class);
-
     /*
      * Properties of the subnet.
      */

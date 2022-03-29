@@ -21,7 +21,6 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
-import reactor.util.context.ContextView;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -412,7 +411,7 @@ public final class FluxUtil {
      * @return The response from service call
      */
     public static <T> Flux<T> fluxContext(Function<Context, Flux<T>> serviceCall) {
-        return Flux.deferContextual(context -> serviceCall.apply(toAzureContext(context)));
+        return ReactorUtils.withFluxContext(context -> serviceCall.apply(toAzureContext(context)));
     }
 
     /**
@@ -422,7 +421,7 @@ public final class FluxUtil {
      * @param context The reactor context
      * @return The azure context
      */
-    private static Context toAzureContext(ContextView context) {
+    private static Context toAzureContext(reactor.util.context.Context context) {
         final Context[] azureContext = new Context[]{Context.NONE};
 
         if (!context.isEmpty()) {

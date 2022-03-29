@@ -6,15 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The routing policy object used in a RoutingIntent resource. */
 @Fluent
 public final class RoutingPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoutingPolicy.class);
-
     /*
      * The unique name for the routing policy.
      */
@@ -103,19 +100,21 @@ public final class RoutingPolicy {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model RoutingPolicy"));
         }
         if (destinations() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property destinations in model RoutingPolicy"));
         }
         if (nextHop() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property nextHop in model RoutingPolicy"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RoutingPolicy.class);
 }

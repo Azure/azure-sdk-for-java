@@ -3,45 +3,43 @@
 
 package com.azure.core.perf;
 
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.rest.RestProxy;
-import com.azure.core.perf.core.MockHttpClient;
-import com.azure.core.perf.core.MyRestProxyService;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.perf.core.CorePerfStressOptions;
 import com.azure.core.perf.core.RestProxyTestBase;
-import com.azure.perf.test.core.PerfStressOptions;
+import com.azure.perf.test.core.TestDataCreationHelper;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Random;
+import java.util.function.Function;
 
-public class ByteBufferReceiveTest extends RestProxyTestBase<PerfStressOptions> {
-    private final MockHttpClient mockHTTPClient;
-    private final MyRestProxyService service;
-    private final byte[] bodyBytes;
+public class ByteBufferReceiveTest extends RestProxyTestBase<CorePerfStressOptions> {
 
-    public ByteBufferReceiveTest(PerfStressOptions options) throws IOException, URISyntaxException {
-        super(options);
-        bodyBytes = new byte[(int) options.getSize()];
+    public ByteBufferReceiveTest(CorePerfStressOptions options) {
+        super(options, createMockResponseSupplier(options));
+    }
+
+    private static Function<HttpRequest, HttpResponse> createMockResponseSupplier(CorePerfStressOptions options) {
+        byte[] bodyBytes = new byte[(int) options.getSize()];
         new Random(0).nextBytes(bodyBytes);
-        mockHTTPClient = new MockHttpClient(httpRequest -> createMockResponse(httpRequest,
-            "application/octet-stream", bodyBytes));
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(mockHTTPClient)
-            .build();
+        return httpRequest -> createMockResponse(httpRequest,
+            "application/octet-stream", bodyBytes);
+    }
 
-        service = RestProxy.create(MyRestProxyService.class, pipeline);
+    @Override
+    public Mono<Void> setupAsync() {
+        return service.setRawData(
+            endpoint, id, TestDataCreationHelper.createRandomByteBufferFlux(options.getSize()), options.getSize());
     }
 
     @Override
     public void run() {
-        throw new UnsupportedOperationException();
+        runAsync().block();
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return service.getRawDataAsync()
+        return service.getRawDataAsync(endpoint, id)
            .flatMapMany(response -> response.getValue())
            .map(byteBuffer -> {
                for (int i = 0; i < byteBuffer.remaining(); i++) {

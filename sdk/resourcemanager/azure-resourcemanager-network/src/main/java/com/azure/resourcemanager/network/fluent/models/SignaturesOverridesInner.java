@@ -6,16 +6,12 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.SignaturesOverridesProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Contains all specific policy signatures overrides for the IDPS. */
 @Fluent
 public final class SignaturesOverridesInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SignaturesOverridesInner.class);
-
     /*
      * Contains the name of the resource (default)
      */

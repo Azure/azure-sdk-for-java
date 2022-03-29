@@ -7,6 +7,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.implementation.jackson.ObjectMapperShim;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.Header;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -241,6 +242,12 @@ public class JacksonAdapter implements SerializerAdapter {
     @Override
     public <T> T deserialize(HttpHeaders headers, Type deserializedHeadersType) throws IOException {
         return (T) useAccessHelper(() -> headerMapper.deserialize(headers, deserializedHeadersType));
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T deserializeHeader(Header header, Type type) throws IOException {
+        return (T) useAccessHelper(() -> headerMapper.readValue(header.getValue(), type));
     }
 
     @SuppressWarnings("removal")

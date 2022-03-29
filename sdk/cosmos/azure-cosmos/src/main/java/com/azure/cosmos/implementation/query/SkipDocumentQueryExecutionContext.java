@@ -6,7 +6,6 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -18,7 +17,8 @@ import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
-public final class SkipDocumentQueryExecutionContext<T extends Resource> implements IDocumentQueryExecutionComponent<T> {
+public final class SkipDocumentQueryExecutionContext<T>
+    implements IDocumentQueryExecutionComponent<T> {
 
     private final IDocumentQueryExecutionComponent<T> component;
     private int skipCount;
@@ -31,7 +31,7 @@ public final class SkipDocumentQueryExecutionContext<T extends Resource> impleme
         this.skipCount = skipCount;
     }
 
-    public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
+    public static <T> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
         BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createSourceComponentFunction,
         int skipCount,
         String continuationToken,
@@ -86,9 +86,5 @@ public final class SkipDocumentQueryExecutionContext<T extends Resource> impleme
                 false,
                 tFeedResponse.getCosmosDiagnostics());
         });
-    }
-
-    IDocumentQueryExecutionComponent<T> getComponent() {
-        return this.component;
     }
 }

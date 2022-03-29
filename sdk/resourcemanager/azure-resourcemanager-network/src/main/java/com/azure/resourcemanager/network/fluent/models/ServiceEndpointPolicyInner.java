@@ -6,9 +6,7 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** Service End point policy resource. */
 @Fluent
 public final class ServiceEndpointPolicyInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceEndpointPolicyInner.class);
-
     /*
      * Properties of the service end point policy.
      */

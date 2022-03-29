@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.AccessTier;
 import com.azure.resourcemanager.storage.models.AllowedCopyScope;
 import com.azure.resourcemanager.storage.models.AzureFilesIdentityBasedAuthentication;
@@ -19,14 +18,11 @@ import com.azure.resourcemanager.storage.models.NetworkRuleSet;
 import com.azure.resourcemanager.storage.models.PublicNetworkAccess;
 import com.azure.resourcemanager.storage.models.RoutingPreference;
 import com.azure.resourcemanager.storage.models.SasPolicy;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters used when updating a storage account. */
 @Fluent
 public final class StorageAccountPropertiesUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountPropertiesUpdateParameters.class);
-
     /*
      * Custom domain assigned to the storage account by the user. Name is the
      * CNAME source. Only one custom domain is supported per storage account at

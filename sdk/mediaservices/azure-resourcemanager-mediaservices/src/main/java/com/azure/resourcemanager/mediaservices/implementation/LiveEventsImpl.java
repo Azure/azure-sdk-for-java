@@ -14,10 +14,9 @@ import com.azure.resourcemanager.mediaservices.fluent.models.LiveEventInner;
 import com.azure.resourcemanager.mediaservices.models.LiveEvent;
 import com.azure.resourcemanager.mediaservices.models.LiveEventActionInput;
 import com.azure.resourcemanager.mediaservices.models.LiveEvents;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LiveEventsImpl implements LiveEvents {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LiveEventsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LiveEventsImpl.class);
 
     private final LiveEventsClient innerClient;
 
@@ -112,7 +111,7 @@ public final class LiveEventsImpl implements LiveEvents {
     public LiveEvent getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -120,14 +119,14 @@ public final class LiveEventsImpl implements LiveEvents {
         }
         String accountName = Utils.getValueFromIdByName(id, "mediaservices");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'mediaservices'.", id)));
         }
         String liveEventName = Utils.getValueFromIdByName(id, "liveEvents");
         if (liveEventName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'liveEvents'.", id)));
@@ -138,7 +137,7 @@ public final class LiveEventsImpl implements LiveEvents {
     public Response<LiveEvent> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -146,14 +145,14 @@ public final class LiveEventsImpl implements LiveEvents {
         }
         String accountName = Utils.getValueFromIdByName(id, "mediaservices");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'mediaservices'.", id)));
         }
         String liveEventName = Utils.getValueFromIdByName(id, "liveEvents");
         if (liveEventName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'liveEvents'.", id)));
@@ -164,7 +163,7 @@ public final class LiveEventsImpl implements LiveEvents {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -172,14 +171,14 @@ public final class LiveEventsImpl implements LiveEvents {
         }
         String accountName = Utils.getValueFromIdByName(id, "mediaservices");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'mediaservices'.", id)));
         }
         String liveEventName = Utils.getValueFromIdByName(id, "liveEvents");
         if (liveEventName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'liveEvents'.", id)));
@@ -190,7 +189,7 @@ public final class LiveEventsImpl implements LiveEvents {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -198,14 +197,14 @@ public final class LiveEventsImpl implements LiveEvents {
         }
         String accountName = Utils.getValueFromIdByName(id, "mediaservices");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'mediaservices'.", id)));
         }
         String liveEventName = Utils.getValueFromIdByName(id, "liveEvents");
         if (liveEventName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'liveEvents'.", id)));

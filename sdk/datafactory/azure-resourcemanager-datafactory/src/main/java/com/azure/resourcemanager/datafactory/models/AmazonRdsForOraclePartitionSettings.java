@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The settings that will be leveraged for AmazonRdsForOracle source partitioning. */
 @Fluent
 public final class AmazonRdsForOraclePartitionSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AmazonRdsForOraclePartitionSettings.class);
-
     /*
      * Names of the physical partitions of AmazonRdsForOracle table.
      */

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Amazon Redshift table dataset properties. */
 @Fluent
 public final class AmazonRedshiftTableDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AmazonRedshiftTableDatasetTypeProperties.class);
-
     /*
      * This property will be retired. Please consider using schema + table
      * properties instead.

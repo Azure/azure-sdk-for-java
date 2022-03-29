@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.models.TableInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response schema. Contains list of tables returned. */
 @Immutable
 public final class ListTableResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListTableResource.class);
-
     /*
      * List of tables returned.
      */

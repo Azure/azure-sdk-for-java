@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.IncidentAdditionalData;
 import com.azure.resourcemanager.securityinsights.models.IncidentClassification;
 import com.azure.resourcemanager.securityinsights.models.IncidentClassificationReason;
@@ -14,7 +13,6 @@ import com.azure.resourcemanager.securityinsights.models.IncidentOwnerInfo;
 import com.azure.resourcemanager.securityinsights.models.IncidentSeverity;
 import com.azure.resourcemanager.securityinsights.models.IncidentStatus;
 import com.azure.resourcemanager.securityinsights.models.ResourceWithEtag;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -22,8 +20,6 @@ import java.util.List;
 /** Represents an incident in Azure Security Insights. */
 @Fluent
 public final class IncidentInner extends ResourceWithEtag {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IncidentInner.class);
-
     /*
      * Incident properties
      */

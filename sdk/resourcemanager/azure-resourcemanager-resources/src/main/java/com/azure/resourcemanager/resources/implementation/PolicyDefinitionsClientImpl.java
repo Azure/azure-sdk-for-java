@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.PolicyDefinitionsClient;
 import com.azure.resourcemanager.resources.fluent.models.PolicyDefinitionInner;
 import com.azure.resourcemanager.resources.models.PolicyDefinitionListResult;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PolicyDefinitionsClient. */
 public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClient {
-    private final ClientLogger logger = new ClientLogger(PolicyDefinitionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PolicyDefinitionsService service;
 

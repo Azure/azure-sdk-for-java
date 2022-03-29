@@ -5,7 +5,7 @@
 package com.azure.analytics.purview.catalog.generated;
 
 import com.azure.analytics.purview.catalog.EntityClient;
-import com.azure.analytics.purview.catalog.PurviewCatalogClientBuilder;
+import com.azure.analytics.purview.catalog.EntityClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -13,13 +13,15 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class EntityGetByGuid {
     public static void main(String[] args) {
-        EntityClient client =
-                new PurviewCatalogClientBuilder()
+        // BEGIN: com.azure.analytics.purview.catalog.generated.entitygetbyguid.entitygetbyguid
+        EntityClient entityClient =
+                new EntityClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
-                        .buildEntityClient();
+                        .buildClient();
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                client.getByGuidWithResponse("5cf8a9e5-c9fd-abe0-2e8c-d40024263dcb", requestOptions);
+                entityClient.getByGuidWithResponse("5cf8a9e5-c9fd-abe0-2e8c-d40024263dcb", requestOptions);
+        // END: com.azure.analytics.purview.catalog.generated.entitygetbyguid.entitygetbyguid
     }
 }
