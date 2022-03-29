@@ -723,7 +723,7 @@ public class IdentityClient {
                }
                )).onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with username and "
                 + "password. To mitigate this issue, please refer to the troubleshooting guidelines "
-                + "here at https://aka.ms/azsdk/net/identity/usernamepasswordcredential/troubleshoot",
+                + "here at https://aka.ms/azsdk/java/identity/usernamepasswordcredential/troubleshoot",
                 null, t)).map(MsalToken::new);
     }
 
@@ -848,7 +848,7 @@ public class IdentityClient {
                 new CredentialUnavailableException("VsCodeCredential  "
                 + "authentication unavailable. ADFS tenant/authorities are not supported. "
                 + "To mitigate this issue, please refer to the troubleshooting guidelines here at "
-                + "https://aka.ms/azsdk/net/identity/vscodecredential/troubleshoot")));
+                + "https://aka.ms/azsdk/java/identity/vscodecredential/troubleshoot")));
         }
         VisualStudioCacheAccessor accessor = new VisualStudioCacheAccessor();
 
@@ -875,7 +875,7 @@ public class IdentityClient {
                             new CredentialUnavailableException("Failed to acquire token with"
                             + " VS code credential."
                             + " To mitigate this issue, please refer to the troubleshooting guidelines here at "
-                            + "https://aka.ms/azsdk/net/identity/vscodecredential/troubleshoot", t)));
+                            + "https://aka.ms/azsdk/java/identity/vscodecredential/troubleshoot", t)));
                     }
                     return Mono.error(new ClientAuthenticationException("Failed to acquire token with"
                         + " VS code credential", null, t));
