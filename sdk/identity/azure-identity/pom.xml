@@ -92,6 +92,12 @@
       <artifactId>json-smart</artifactId>
       <version>2.4.7</version> <!-- {x-version-update;net.minidev:json-smart;external_dependency} -->
     </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest</artifactId>
+      <version>2.2</version> <!-- {x-version-update;org.hamcrest:hamcrest;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
