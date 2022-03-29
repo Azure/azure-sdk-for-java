@@ -1,14 +1,34 @@
 # Release History
 
-## 2.11.0-beta.1 (Unreleased)
+## 2.14.0-beta.1 (Unreleased)
 
 ### Features Added
 
-### Breaking Changes
+- Supported `authenticate(HttpPipeline, AzureProfile)` in managers.
 
-### Bugs Fixed
+## 2.13.0 (2022-03-11)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.12.0 (2022-02-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources
+
+## 2.11.0 (2022-01-17)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources
 
 ## 2.10.0 (2021-11-22)
 

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.VirtualRouterPeeringInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for ListVirtualRouterPeerings API service call. */
 @Fluent
 public final class VirtualRouterPeeringListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualRouterPeeringListResult.class);
-
     /*
      * List of VirtualRouterPeerings in a VirtualRouter.
      */

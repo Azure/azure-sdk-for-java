@@ -2,7 +2,7 @@
 
 This package helps Spring Application to load properties from Azure Configuration Store.
 
-[Package (Maven)][package] | [Samples][app_configuration_sample]
+[Package (Maven)][package] | [Samples][app_configuration_sample] | [Reference Documentation][reference_docs]
 
 ## Getting started
 
@@ -21,7 +21,7 @@ There are two libraries that can be used azure-spring-cloud-appconfiguration-con
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-cloud-appconfiguration-config</artifactId>
-    <version>2.1.1</version>
+    <version>2.4.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -33,7 +33,7 @@ or
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-cloud-appconfiguration-config-web</artifactId>
-    <version>2.1.1</version>
+    <version>2.4.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -52,6 +52,7 @@ Name | Description | Required | Default
 ---|---|---|---
 spring.cloud.azure.appconfiguration.stores | List of configuration stores from which to load configuration properties | Yes | true
 spring.cloud.azure.appconfiguration.enabled | Whether enable spring-cloud-azure-appconfiguration-config or not | No | true
+spring.cloud.azure.appconfiguration.refresh-interval | Amount of time, of type Duration, configurations are stored before a check can occur. | No | null
 
 `spring.cloud.azure.appconfiguration.stores` is a list of stores, where each store follows the following format:
 
@@ -169,7 +170,7 @@ spring.cloud.azure.appconfiguration.stores[0].monitoring.triggers[0].label=[my-w
 
 When using the web library, applications will attempt a refresh whenever a servlet request occurs after the watch interval time when monitoring is enabled.
 
-In the console library calling refreshConfiguration on `AzureCloudConfigRefresh` will result in a refresh if the watch interval has passed. The web library can also use this method along with servlet request method.
+In the console library calling refreshConfiguration on `AppConfigurationRefresh` will result in a refresh if the watch interval has passed. The web library can also use this method along with servlet request method.
 
 ##### Push Based Refresh
 
@@ -352,3 +353,4 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [azure_rbac]: https://docs.microsoft.com/azure/role-based-access-control/role-assignments-portal
 [app_configuration_SDK]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/appconfiguration/azure-data-appconfiguration#key-concepts
 [key_vault_SDK]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-secrets#key-concepts
+[reference_docs]: https://microsoft.github.io/spring-cloud-azure/docs/azure-app-configuration/index.html

@@ -6,6 +6,7 @@ package com.azure.data.schemaregistry.apacheavro;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.experimental.models.MessageWithMetadata;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
@@ -24,9 +25,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 
@@ -98,10 +96,10 @@ public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestBase 
      * Verifies that we can register a schema, fetch it, and deserialize it.
      */
     @Test
-    public void registerAndGetSchema() throws IOException {
+    public void registerAndGetSchema() {
         // Arrange
         final SchemaRegistryClient registryClient = builder.buildClient();
-        final SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()
+        final SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializerBuilder()
             .schemaGroup(schemaGroup)
             .schemaRegistryAsyncClient(builder.buildAsyncClient())
             .avroSpecificReader(true)
@@ -133,18 +131,15 @@ public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestBase 
         assertNotNull(schemaProperties);
 
         // Act & Assert
-        byte[] outputArray;
-        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream(4096)) {
-            serializer.serialize(outputStream, cards);
-            outputArray = outputStream.toByteArray();
-        }
+        final MessageWithMetadata encodedMessage = encoder.serializeMessageData(cards,
+            TypeReference.createInstance(MessageWithMetadata.class));
+        assertNotNull(encodedMessage);
 
+        final byte[] outputArray = encodedMessage.getBodyAsBinaryData().toBytes();
         assertTrue(outputArray.length > 0, "There should have been contents in array.");
 
-        final HandOfCards actual;
-        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(outputArray)) {
-            actual = serializer.deserialize(inputStream, TypeReference.createInstance(HandOfCards.class));
-        }
+        final HandOfCards actual = encoder.deserializeMessageData(encodedMessage,
+            TypeReference.createInstance(HandOfCards.class));
 
         assertNotNull(actual);
         assertNotNull(actual.getCards());

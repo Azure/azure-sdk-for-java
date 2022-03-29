@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Get Data Plane read only token request definition. */
 @Fluent
 public final class UserAccessPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserAccessPolicy.class);
-
     /*
      * The string with permissions for Data Plane access. Currently only 'r' is
      * supported which grants read only access.

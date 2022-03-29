@@ -84,10 +84,12 @@
             "matcher": "java-package",
             "match": "/com\\.azure\\.data\\.cosmos(\\..*)?/"
           },
-          {
-            "matcher": "java-package",
-            "match": "/com\\.azure\\.spring(\\..*)?/"
-          },
+          "class com\\.azure\\.spring\\.cloud\\.config\\.State",
+          "class com\\.azure\\.spring\\.cloud\\.config\\.AppConfigurationRefresh",
+          "class com\\.azure\\.spring\\.cloud\\.config\\.properties\\.AppConfigurationProviderProperties",
+          "class com\\.azure\\.spring\\.cloud\\.config\\.State",
+          "class com\\.azure\\.spring\\.cloud\\.config\\.web\\.pushrefresh\\.AppConfigurationRefreshEvent",
+          "class com\\.azure\\.spring\\.cloud\\.config\\.web\\.AppConfigurationEndpoint",
           {
             "matcher": "java-package",
             "match": "/org\\.apache\\.avro(\\..*)?/"
@@ -95,6 +97,10 @@
           {
             "matcher": "java-package",
             "match": "/com\\.azure\\.resourcemanager(\\..+?)?\\.fluent(\\..*)?/"
+          },
+          {
+            "matcher": "java-package",
+            "match": "/org\\.junit(\\..*)?/"
           }
         ]
       }
@@ -105,6 +111,36 @@
     "configuration": {
       "ignore": true,
       "differences": [
+        {
+          "regex": true,
+          "code": "java.class.defaultSerializationChanged",
+          "new": "class org.springframework.beans.factory.support.DefaultListableBeanFactory",
+          "justification": "We allow this in org.springframework.beans.factory.support.DefaultListableBeanFactory"
+        },
+        {
+          "regex": true,
+          "code": "java.class.nonPublicPartOfAPI",
+          "new": "class com.azure.spring.messaging.container.DefaultMessageListenerContainer",
+          "justification": "We allow this in azure.spring.messaging."
+        },
+        {
+          "regex": true,
+          "code": "java.method.addedToInterface",
+          "new": "method <A extends java.lang.annotation.Annotation> A org.springframework.beans.factory.ListableBeanFactory..*",
+          "justification": "springframework are allowed to add methods.."
+        },
+        {
+          "regex": true,
+          "code": "java.class.nonPublicPartOfAPI",
+          "new": "(class|interface) org.springframework..*",
+          "justification": "We allow this in springframework"
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "old": "method com.azure.spring.messaging.container.ListenerContainerFactory<? extends com.azure.spring.messaging.container.MessageListenerContainer> com.azure.spring.messaging.config.AzureMessagingConfiguration::azureListenerContainerFactory(com.azure.spring.integration.core.api.SubscribeByGroupOperation)",
+          "new": "method com.azure.spring.messaging.container.ListenerContainerFactory<? extends com.azure.spring.messaging.container.MessageListenerContainer> com.azure.spring.messaging.config.AzureMessagingConfiguration::azureListenerContainerFactory(com.azure.spring.integration.core.api.SubscribeByGroupOperation, org.springframework.beans.factory.ObjectProvider<org.springframework.util.ErrorHandler>)",
+          "justification": "In order to support configuration of error handler for message listener container"
+        },
         {
           "regex": true,
           "code": "java.class.nonPublicPartOfAPI",
@@ -127,7 +163,7 @@
         {
           "regex": true,
           "code": "java\\.class\\.externalClassExposedInAPI",
-          "new": "(interface|class|enum) com\\.azure\\.(communication\\.common|core|cosmos|data\\.schemaregistry|resourcemanager|security\\.keyvault|storage).*",
+          "new": "(interface|class|enum) com\\.azure\\.(communication\\.common|core|cosmos|data\\.schemaregistry|messaging\\.eventgrid|messaging.servicebus|resourcemanager|security\\.keyvault|storage).*",
           "justification": "SDK classes are allowed to be exposed by dependencies using them."
         },
         {
@@ -156,6 +192,18 @@
         },
         {
           "regex": true,
+          "code": "java\\.class\\.externalClassExposedInAPI",
+          "new": "(interface|enum) io\\.cloudevents.*",
+          "justification": "Azure Event Grid cloud native cloud event is allowed to use CloudEvents types in public APIs as it implements interfaces defined by CloudEvents"
+        },
+        {
+          "regex": true,
+          "code": "java\\.class\\.externalClassExposedInAPI",
+          "new": "(interface|class) org\\.springframework.util\\.ErrorHandler",
+          "justification": "Azure Spring Cloud Messaging need the Spring's public interface for error handler registration, it is a common class for users to handle runtime errors."
+        },
+        {
+          "regex": true,
           "code": "java\\.annotation\\.added",
           "old": ".*",
           "annotationType": "com\\.azure\\.core\\.annotation\\.Service(Method|Client)",
@@ -174,24 +222,21 @@
           "justification": "Generated classes were moved into public API, these annotations were already being used in implementation used during serialization and deserialization."
         },
         {
+          "regex": true,
+          "code": "java\\.annotation\\.added",
+          "new": "(class|interface|method|parameter) org\\.springframework\\.data\\.repository\\.query\\..*",
+          "justification": "Spring Data Commons framework 2.6.1 added Nullable annotations to its interfaces."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.added",
+          "new": "(class|interface|method|parameter) com\\.azure\\.spring\\.data\\.cosmos\\.repository\\.query\\..*",
+          "justification": "Spring Data Commons framework 2.6.1 added Nullable annotations to its interfaces which are implemented by Cosmos Spring Data SDK for internal usage."
+        },
+        {
           "code": "java.method.added",
           "new": "method boolean com.google.gson.JsonArray::isEmpty()",
           "justification": "com.google.code.gson:gson:jar:2.8.7 added this new method."
-        },
-        {
-          "code": "java.method.added",
-          "new": "method reactor.core.publisher.Mono<java.io.InputStream> com.azure.core.http.HttpResponse::getBodyAsInputStream()",
-          "justification": "New default method added to HttpResponse in azure-core."
-        },
-        {
-          "code": "java.method.added",
-          "new": "method java.lang.String com.azure.core.credential.TokenRequestContext::getTenantId()",
-          "justification": "New method added to TokenRequestContext in azure-core."
-        },
-        {
-          "code": "java.method.added",
-          "new": "method com.azure.core.credential.TokenRequestContext com.azure.core.credential.TokenRequestContext::setTenantId(java.lang.String)",
-          "justification": "New method added to TokenRequestContext in azure-core."
         },
         {
           "code": "java.method.added",
@@ -199,14 +244,9 @@
           "justification": "New method added to SharedKeyCredential in common not intended for use by customers. Only public for access by other packages."
         },
         {
-          "code": "java.method.added",
-          "new": "method <T, U> com.azure.core.util.polling.PollerFlux<T, U> com.azure.core.util.polling.PollerFlux<T, U>::create(java.time.Duration, java.util.function.Supplier<reactor.core.publisher.Mono<? extends com.azure.core.http.rest.Response<?>>>, com.azure.core.util.polling.PollingStrategy<T, U>, com.azure.core.util.serializer.TypeReference<T>, com.azure.core.util.serializer.TypeReference<U>)",
-          "justification": "New method added to PollerFlux in azure-core."
-        },
-        {
-          "code": "java.method.added",
-          "new": "method java.lang.Class<T> com.azure.core.util.serializer.TypeReference<T>::getJavaClass()",
-          "justification": "New method added to TypeReference in azure-core."
+          "code": "java.field.removedWithConstant",
+          "old": "field com.azure.messaging.eventhubs.EventProcessorClientBuilder.DEFAULT_OWNERSHIP_EXPIRATION_FACTOR",
+          "justification": "The default ownership expiration factor is an implementation detail that users can override via configuration."
         }
       ]
     }

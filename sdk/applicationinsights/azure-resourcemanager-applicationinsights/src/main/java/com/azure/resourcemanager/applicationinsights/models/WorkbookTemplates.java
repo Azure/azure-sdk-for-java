@@ -17,7 +17,8 @@ public interface WorkbookTemplates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Workbook templates defined within a specified resource group.
+     * @return all Workbook templates defined within a specified resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<WorkbookTemplate> listByResourceGroup(String resourceGroupName);
 
@@ -29,7 +30,8 @@ public interface WorkbookTemplates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Workbook templates defined within a specified resource group.
+     * @return all Workbook templates defined within a specified resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<WorkbookTemplate> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -54,7 +56,7 @@ public interface WorkbookTemplates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single workbook template by its resourceName.
+     * @return a single workbook template by its resourceName along with {@link Response}.
      */
     Response<WorkbookTemplate> getByResourceGroupWithResponse(
         String resourceGroupName, String resourceName, Context context);
@@ -79,7 +81,7 @@ public interface WorkbookTemplates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, Context context);
 
@@ -90,7 +92,7 @@ public interface WorkbookTemplates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single workbook template by its resourceName.
+     * @return a single workbook template by its resourceName along with {@link Response}.
      */
     WorkbookTemplate getById(String id);
 
@@ -102,7 +104,7 @@ public interface WorkbookTemplates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single workbook template by its resourceName.
+     * @return a single workbook template by its resourceName along with {@link Response}.
      */
     Response<WorkbookTemplate> getByIdWithResponse(String id, Context context);
 
@@ -124,7 +126,7 @@ public interface WorkbookTemplates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

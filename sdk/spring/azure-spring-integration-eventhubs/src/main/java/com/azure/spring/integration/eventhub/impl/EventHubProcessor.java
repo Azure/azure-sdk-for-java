@@ -22,6 +22,7 @@ import com.azure.spring.integration.eventhub.converter.EventHubBatchMessageConve
 import com.azure.spring.integration.eventhub.converter.EventHubMessageConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.lang.Nullable;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 
@@ -37,6 +38,7 @@ import java.util.function.Consumer;
 public class EventHubProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubProcessor.class);
     protected final Consumer<Message<?>> consumer;
+    private final Consumer<Throwable> errorHandler;
     protected final Class<?> payloadType;
     protected final CheckpointConfig checkpointConfig;
     protected final EventHubMessageConverter messageConverter;
@@ -44,9 +46,18 @@ public class EventHubProcessor {
     protected final CheckpointManager checkpointManager;
     protected EventPosition eventPosition = EventPosition.latest();
 
+    private static final String MSG_ERROR_INFORMATION = "Error while processing partition id %s from event hub %s,"
+        + "consumer group #s of Event Hubs namespace %s.";
+
     public EventHubProcessor(Consumer<Message<?>> consumer, Class<?> payloadType, CheckpointConfig checkpointConfig,
                              EventHubMessageConverter messageConverter) {
+        this(consumer, null, payloadType, checkpointConfig, messageConverter);
+    }
+
+    public EventHubProcessor(Consumer<Message<?>> consumer, @Nullable Consumer<Throwable> errorHandler, Class<?> payloadType,
+                             CheckpointConfig checkpointConfig, EventHubMessageConverter messageConverter) {
         this.consumer = consumer;
+        this.errorHandler = errorHandler;
         this.payloadType = payloadType;
         this.checkpointConfig = checkpointConfig;
         this.messageConverter = messageConverter;
@@ -104,8 +115,18 @@ public class EventHubProcessor {
         }
     }
     public void onError(ErrorContext context) {
-        LOGGER.error("Error occurred on partition: {}. Error: {}", context.getPartitionContext().getPartitionId(),
-            context.getThrowable());
+        if (this.errorHandler == null) {
+            LOGGER.error("Error occurred on partition: {}. Error: {}", context.getPartitionContext().getPartitionId(),
+                context.getThrowable());
+        } else {
+            PartitionContext partitionContext = context.getPartitionContext();
+            String detailMessage = String.format(MSG_ERROR_INFORMATION, partitionContext.getPartitionId(),
+                partitionContext.getEventHubName(), partitionContext.getConsumerGroup(),
+                partitionContext.getFullyQualifiedNamespace());
+            EventHubRuntimeException exception = new EventHubRuntimeException(detailMessage,
+                context.getThrowable());
+            this.errorHandler.accept(exception);
+        }
     }
 
     public void setEventPosition(EventPosition eventPosition) {

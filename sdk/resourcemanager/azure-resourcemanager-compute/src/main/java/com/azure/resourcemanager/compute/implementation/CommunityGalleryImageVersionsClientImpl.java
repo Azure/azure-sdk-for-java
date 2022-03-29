@@ -20,7 +20,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.CommunityGalleryImageVersionsClient;
 import com.azure.resourcemanager.compute.fluent.models.CommunityGalleryImageVersionInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
@@ -28,8 +27,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in CommunityGalleryImageVersionsClient. */
 public final class CommunityGalleryImageVersionsClientImpl implements CommunityGalleryImageVersionsClient {
-    private final ClientLogger logger = new ClientLogger(CommunityGalleryImageVersionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final CommunityGalleryImageVersionsService service;
 
@@ -88,7 +85,7 @@ public final class CommunityGalleryImageVersionsClientImpl implements CommunityG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a community gallery image version.
+     * @return a community gallery image version along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CommunityGalleryImageVersionInner>> getWithResponseAsync(
@@ -153,7 +150,7 @@ public final class CommunityGalleryImageVersionsClientImpl implements CommunityG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a community gallery image version.
+     * @return a community gallery image version along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CommunityGalleryImageVersionInner>> getWithResponseAsync(
@@ -218,7 +215,7 @@ public final class CommunityGalleryImageVersionsClientImpl implements CommunityG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a community gallery image version.
+     * @return a community gallery image version on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CommunityGalleryImageVersionInner> getAsync(
@@ -267,7 +264,7 @@ public final class CommunityGalleryImageVersionsClientImpl implements CommunityG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a community gallery image version.
+     * @return a community gallery image version along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommunityGalleryImageVersionInner> getWithResponse(

@@ -11,6 +11,7 @@ omitted_paths:
   - "*/resource-manager/*"
   - "sdk/*/mgmt-*/*"
   - "sdk/*/swagger/*"
+  - doc/*
   - eng/*
   - common/smoke-tests/*
   - samples/*
@@ -110,12 +111,14 @@ known_content_issues:
   - ['sdk/cosmos/azure-cosmos-examples/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-encryption/README.md', '#3113']
+  - ['sdk/cosmos/azure-cosmos-spark_3_2-12/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark_3-1_2-12/README.md', '#3113']
-  - ['sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/catalog-api.md', '#3113']
-  - ['sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/configuration-reference.md', '#3113']
-  - ['sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/local-emulator.md', '#3113']
-  - ['sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/quick-start.md', '#3113']
-  - ['sdk/cosmos/azure-cosmos-spark_3-1_2-12/dev/README.md', '#3113']
+  - ['sdk/cosmos/azure-cosmos-spark_3-2_2-12/README.md', '#3113']
+  - ['sdk/cosmos/azure-cosmos-spark_3_2-12/dev/README.md', '#3113']
+  - ['sdk/cosmos/azure-cosmos-spark_3_2-12/docs/catalog-api.md', '#3113']
+  - ['sdk/cosmos/azure-cosmos-spark_3_2-12/docs/configuration-reference.md', '#3113']
+  - ['sdk/cosmos/azure-cosmos-spark_3_2-12/docs/local-emulator.md', '#3113']
+  - ['sdk/cosmos/azure-cosmos-spark_3_2-12/docs/quick-start.md', '#3113']
   - ['sdk/cosmos/README.md', '#3113']
   - ['sdk/e2e/README.md', '#3113']
   - ['sdk/eventgrid/microsoft-azure-eventgrid/README.md', '#3113']
@@ -137,6 +140,10 @@ known_content_issues:
   - ['sdk/storage/azure-storage-internal-avro/README.md', '#3113']
   - ['sdk/storage/README.md', '#3113']
   - ['sdk/tools/azure-sdk-archetype/README.md', '#3113']
+  - ['sdk/tools/azure-sdk-build-tool/README.md', '#3113']
+  - ['sdk/appconfiguration/azure-spring-cloud-appconfiguration-config-web/README.md', '#3113']
+  - ['sdk/appconfiguration/azure-spring-cloud-appconfiguration-config/README.md', '#3113']
+  - ['sdk/appconfiguration/azure-spring-cloud-feature-management-web/README.md', '#3113']
 
 package_indexing_exclusion_list:
   - azure-loganalytics-sample

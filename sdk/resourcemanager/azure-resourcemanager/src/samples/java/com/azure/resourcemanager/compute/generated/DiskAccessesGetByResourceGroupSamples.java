@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DiskAccesses GetByResourceGroup. */
 public final class DiskAccessesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-04-01/examples/GetInformationAboutADiskAccess.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/GetInformationAboutADiskAccess.json
      */
     /**
      * Sample code: Get information about a disk access resource.
@@ -26,7 +26,7 @@ public final class DiskAccessesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-04-01/examples/GetInformationAboutADiskAccessWithPrivateEndpoints.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/GetInformationAboutADiskAccessWithPrivateEndpoints.json
      */
     /**
      * Sample code: Get information about a disk access resource with private endpoints.

@@ -28,8 +28,8 @@ public final class WafRankingType extends ExpandableStringEnum<WafRankingType> {
     /** Static value url for WafRankingType. */
     public static final WafRankingType URL = fromString("url");
 
-    /** Static value country for WafRankingType. */
-    public static final WafRankingType COUNTRY = fromString("country");
+    /** Static value countryOrRegion for WafRankingType. */
+    public static final WafRankingType COUNTRY_OR_REGION = fromString("countryOrRegion");
 
     /** Static value ruleType for WafRankingType. */
     public static final WafRankingType RULE_TYPE = fromString("ruleType");

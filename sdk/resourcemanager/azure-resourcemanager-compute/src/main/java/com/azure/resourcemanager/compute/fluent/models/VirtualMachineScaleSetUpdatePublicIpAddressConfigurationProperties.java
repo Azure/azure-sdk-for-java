@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.compute.models.DeleteOptions;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a virtual machines scale set IP Configuration's PublicIPAddress configuration. */
 @Fluent
 public final class VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties.class);
-
     /*
      * The idle timeout of the public IP address.
      */
@@ -29,6 +24,12 @@ public final class VirtualMachineScaleSetUpdatePublicIpAddressConfigurationPrope
      */
     @JsonProperty(value = "dnsSettings")
     private VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings dnsSettings;
+
+    /*
+     * The PublicIPPrefix from which to allocate publicIP addresses.
+     */
+    @JsonProperty(value = "publicIPPrefix")
+    private SubResource publicIpPrefix;
 
     /*
      * Specify what happens to the public IP when the VM is deleted
@@ -75,6 +76,27 @@ public final class VirtualMachineScaleSetUpdatePublicIpAddressConfigurationPrope
     public VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties withDnsSettings(
         VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings dnsSettings) {
         this.dnsSettings = dnsSettings;
+        return this;
+    }
+
+    /**
+     * Get the publicIpPrefix property: The PublicIPPrefix from which to allocate publicIP addresses.
+     *
+     * @return the publicIpPrefix value.
+     */
+    public SubResource publicIpPrefix() {
+        return this.publicIpPrefix;
+    }
+
+    /**
+     * Set the publicIpPrefix property: The PublicIPPrefix from which to allocate publicIP addresses.
+     *
+     * @param publicIpPrefix the publicIpPrefix value to set.
+     * @return the VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties object itself.
+     */
+    public VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties withPublicIpPrefix(
+        SubResource publicIpPrefix) {
+        this.publicIpPrefix = publicIpPrefix;
         return this;
     }
 

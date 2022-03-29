@@ -45,7 +45,7 @@ public interface EventSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of an event subscription.
+     * @return properties of an event subscription along with {@link Response}.
      */
     Response<EventSubscription> getWithResponse(String scope, String eventSubscriptionName, Context context);
 
@@ -121,7 +121,7 @@ public interface EventSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the full endpoint URL for an event subscription.
+     * @return the full endpoint URL for an event subscription along with {@link Response}.
      */
     Response<EventSubscriptionFullUrl> getFullUrlWithResponse(
         String scope, String eventSubscriptionName, Context context);
@@ -131,7 +131,7 @@ public interface EventSubscriptions {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EventSubscription> list();
 
@@ -150,7 +150,7 @@ public interface EventSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EventSubscription> list(String filter, Integer top, Context context);
 
@@ -161,7 +161,7 @@ public interface EventSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EventSubscription> listGlobalBySubscriptionForTopicType(String topicTypeName);
 
@@ -181,7 +181,7 @@ public interface EventSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EventSubscription> listGlobalBySubscriptionForTopicType(
         String topicTypeName, String filter, Integer top, Context context);
@@ -193,7 +193,7 @@ public interface EventSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EventSubscription> listByResourceGroup(String resourceGroupName);
 
@@ -213,7 +213,7 @@ public interface EventSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EventSubscription> listByResourceGroup(
         String resourceGroupName, String filter, Integer top, Context context);
@@ -226,7 +226,7 @@ public interface EventSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EventSubscription> listGlobalByResourceGroupForTopicType(
         String resourceGroupName, String topicTypeName);
@@ -248,7 +248,7 @@ public interface EventSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EventSubscription> listGlobalByResourceGroupForTopicType(
         String resourceGroupName, String topicTypeName, String filter, Integer top, Context context);
@@ -260,7 +260,7 @@ public interface EventSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EventSubscription> listRegionalBySubscription(String location);
 
@@ -280,7 +280,7 @@ public interface EventSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EventSubscription> listRegionalBySubscription(
         String location, String filter, Integer top, Context context);
@@ -293,7 +293,7 @@ public interface EventSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EventSubscription> listRegionalByResourceGroup(String resourceGroupName, String location);
 
@@ -314,7 +314,7 @@ public interface EventSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EventSubscription> listRegionalByResourceGroup(
         String resourceGroupName, String location, String filter, Integer top, Context context);
@@ -327,7 +327,7 @@ public interface EventSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EventSubscription> listRegionalBySubscriptionForTopicType(String location, String topicTypeName);
 
@@ -348,7 +348,7 @@ public interface EventSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EventSubscription> listRegionalBySubscriptionForTopicType(
         String location, String topicTypeName, String filter, Integer top, Context context);
@@ -363,7 +363,7 @@ public interface EventSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EventSubscription> listRegionalByResourceGroupForTopicType(
         String resourceGroupName, String location, String topicTypeName);
@@ -387,13 +387,13 @@ public interface EventSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EventSubscription> listRegionalByResourceGroupForTopicType(
         String resourceGroupName, String location, String topicTypeName, String filter, Integer top, Context context);
 
     /**
-     * List all event subscriptions that have been created for a specific topic.
+     * List all event subscriptions that have been created for a specific resource.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param providerNamespace Namespace of the provider of the topic.
@@ -402,13 +402,13 @@ public interface EventSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EventSubscription> listByResource(
         String resourceGroupName, String providerNamespace, String resourceTypeName, String resourceName);
 
     /**
-     * List all event subscriptions that have been created for a specific topic.
+     * List all event subscriptions that have been created for a specific resource.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param providerNamespace Namespace of the provider of the topic.
@@ -426,7 +426,7 @@ public interface EventSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EventSubscription> listByResource(
         String resourceGroupName,
@@ -446,7 +446,7 @@ public interface EventSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EventSubscription> listByDomainTopic(String resourceGroupName, String domainName, String topicName);
 
@@ -468,7 +468,7 @@ public interface EventSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EventSubscription> listByDomainTopic(
         String resourceGroupName, String domainName, String topicName, String filter, Integer top, Context context);
@@ -508,7 +508,7 @@ public interface EventSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription.
+     * @return all delivery attributes for an event subscription along with {@link Response}.
      */
     Response<DeliveryAttributeListResult> getDeliveryAttributesWithResponse(
         String scope, String eventSubscriptionName, Context context);
@@ -520,7 +520,7 @@ public interface EventSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of an event subscription.
+     * @return properties of an event subscription along with {@link Response}.
      */
     EventSubscription getById(String id);
 
@@ -532,7 +532,7 @@ public interface EventSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of an event subscription.
+     * @return properties of an event subscription along with {@link Response}.
      */
     Response<EventSubscription> getByIdWithResponse(String id, Context context);
 

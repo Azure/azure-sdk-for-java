@@ -95,7 +95,8 @@ public final class SqlPoolOperationsClientImpl implements SqlPoolOperationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of operations performed on the SQL pool.
+     * @return a list of operations performed on the SQL pool along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlPoolOperationInner>> listSinglePageAsync(
@@ -159,7 +160,8 @@ public final class SqlPoolOperationsClientImpl implements SqlPoolOperationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of operations performed on the SQL pool.
+     * @return a list of operations performed on the SQL pool along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlPoolOperationInner>> listSinglePageAsync(
@@ -291,7 +293,8 @@ public final class SqlPoolOperationsClientImpl implements SqlPoolOperationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list Sql pool operations request.
+     * @return the response to a list Sql pool operations request along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlPoolOperationInner>> listNextSinglePageAsync(String nextLink) {
@@ -327,7 +330,8 @@ public final class SqlPoolOperationsClientImpl implements SqlPoolOperationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list Sql pool operations request.
+     * @return the response to a list Sql pool operations request along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlPoolOperationInner>> listNextSinglePageAsync(String nextLink, Context context) {

@@ -13,12 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HomeController {
 
+    // BEGIN: readme-sample-file
     @GetMapping("/webapiB")
     @ResponseBody
     @PreAuthorize("hasAuthority('SCOPE_WebApiB.ExampleScope')")
     public String file() {
         return "Response from webApiB.";
     }
+    // END: readme-sample-file
 
     @GetMapping("/user")
     @ResponseBody

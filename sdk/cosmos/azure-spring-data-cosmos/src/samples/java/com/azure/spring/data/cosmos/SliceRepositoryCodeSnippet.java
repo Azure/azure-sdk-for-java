@@ -2,12 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos;
 
-/**
- * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
- * ARE USED TO EXTRACT APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING
- * LINE NUMBERS OF EXISTING CODE SAMPLES.
- */
-
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +13,7 @@ public class SliceRepositoryCodeSnippet {
     @Autowired
     private SliceQueriesUserRepository repository;
 
+    // BEGIN: readme-sample-getUsersByLastName
     private List<User> getUsersByLastName(String lastName, int pageSize) {
 
         final CosmosPageRequest pageRequest = new CosmosPageRequest(0, pageSize, null);
@@ -31,4 +26,5 @@ public class SliceRepositoryCodeSnippet {
         }
         return content;
     }
+    // END: readme-sample-getUsersByLastName
 }

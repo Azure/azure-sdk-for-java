@@ -40,7 +40,7 @@ public interface SqlVirtualMachineGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL virtual machine group.
+     * @return a SQL virtual machine group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SqlVirtualMachineGroupInner> getByResourceGroupWithResponse(
@@ -56,9 +56,9 @@ public interface SqlVirtualMachineGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL virtual machine group.
+     * @return the {@link SyncPoller} for polling of a SQL virtual machine group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SqlVirtualMachineGroupInner>, SqlVirtualMachineGroupInner> beginCreateOrUpdate(
         String resourceGroupName, String sqlVirtualMachineGroupName, SqlVirtualMachineGroupInner parameters);
 
@@ -73,9 +73,9 @@ public interface SqlVirtualMachineGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL virtual machine group.
+     * @return the {@link SyncPoller} for polling of a SQL virtual machine group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SqlVirtualMachineGroupInner>, SqlVirtualMachineGroupInner> beginCreateOrUpdate(
         String resourceGroupName,
         String sqlVirtualMachineGroupName,
@@ -127,9 +127,9 @@ public interface SqlVirtualMachineGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String sqlVirtualMachineGroupName);
 
     /**
@@ -142,9 +142,9 @@ public interface SqlVirtualMachineGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String sqlVirtualMachineGroupName, Context context);
 
@@ -185,9 +185,9 @@ public interface SqlVirtualMachineGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL virtual machine group.
+     * @return the {@link SyncPoller} for polling of a SQL virtual machine group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SqlVirtualMachineGroupInner>, SqlVirtualMachineGroupInner> beginUpdate(
         String resourceGroupName, String sqlVirtualMachineGroupName, SqlVirtualMachineGroupUpdate parameters);
 
@@ -202,9 +202,9 @@ public interface SqlVirtualMachineGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL virtual machine group.
+     * @return the {@link SyncPoller} for polling of a SQL virtual machine group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SqlVirtualMachineGroupInner>, SqlVirtualMachineGroupInner> beginUpdate(
         String resourceGroupName,
         String sqlVirtualMachineGroupName,
@@ -255,7 +255,7 @@ public interface SqlVirtualMachineGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all SQL virtual machine groups in a resource group.
+     * @return all SQL virtual machine groups in a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SqlVirtualMachineGroupInner> listByResourceGroup(String resourceGroupName);
@@ -269,7 +269,7 @@ public interface SqlVirtualMachineGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all SQL virtual machine groups in a resource group.
+     * @return all SQL virtual machine groups in a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SqlVirtualMachineGroupInner> listByResourceGroup(String resourceGroupName, Context context);
@@ -279,7 +279,7 @@ public interface SqlVirtualMachineGroupsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all SQL virtual machine groups in a subscription.
+     * @return all SQL virtual machine groups in a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SqlVirtualMachineGroupInner> list();
@@ -291,7 +291,7 @@ public interface SqlVirtualMachineGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all SQL virtual machine groups in a subscription.
+     * @return all SQL virtual machine groups in a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SqlVirtualMachineGroupInner> list(Context context);

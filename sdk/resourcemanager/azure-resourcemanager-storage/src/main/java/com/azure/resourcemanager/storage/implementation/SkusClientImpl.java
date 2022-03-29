@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.SkusClient;
 import com.azure.resourcemanager.storage.fluent.models.SkuInformationInner;
 import com.azure.resourcemanager.storage.models.StorageSkuListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SkusClient. */
 public final class SkusClientImpl implements SkusClient {
-    private final ClientLogger logger = new ClientLogger(SkusClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SkusService service;
 
@@ -75,7 +72,8 @@ public final class SkusClientImpl implements SkusClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage SKUs operation.
+     * @return the response from the List Storage SKUs operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuInformationInner>> listSinglePageAsync() {
@@ -116,7 +114,8 @@ public final class SkusClientImpl implements SkusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage SKUs operation.
+     * @return the response from the List Storage SKUs operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuInformationInner>> listSinglePageAsync(Context context) {
@@ -152,7 +151,7 @@ public final class SkusClientImpl implements SkusClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage SKUs operation.
+     * @return the response from the List Storage SKUs operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SkuInformationInner> listAsync() {
@@ -166,7 +165,7 @@ public final class SkusClientImpl implements SkusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage SKUs operation.
+     * @return the response from the List Storage SKUs operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SkuInformationInner> listAsync(Context context) {
@@ -178,7 +177,7 @@ public final class SkusClientImpl implements SkusClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage SKUs operation.
+     * @return the response from the List Storage SKUs operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SkuInformationInner> list() {
@@ -192,7 +191,7 @@ public final class SkusClientImpl implements SkusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage SKUs operation.
+     * @return the response from the List Storage SKUs operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SkuInformationInner> list(Context context) {

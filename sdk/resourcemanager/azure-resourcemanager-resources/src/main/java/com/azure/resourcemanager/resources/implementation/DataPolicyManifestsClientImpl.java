@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.DataPolicyManifestsClient;
 import com.azure.resourcemanager.resources.fluent.models.DataPolicyManifestInner;
 import com.azure.resourcemanager.resources.models.DataPolicyManifestListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DataPolicyManifestsClient. */
 public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsClient {
-    private final ClientLogger logger = new ClientLogger(DataPolicyManifestsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DataPolicyManifestsService service;
 
@@ -99,7 +96,7 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the data policy manifest.
+     * @return the data policy manifest along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataPolicyManifestInner>> getByPolicyModeWithResponseAsync(String policyMode) {
@@ -128,7 +125,7 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the data policy manifest.
+     * @return the data policy manifest along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataPolicyManifestInner>> getByPolicyModeWithResponseAsync(
@@ -155,7 +152,7 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the data policy manifest.
+     * @return the data policy manifest on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataPolicyManifestInner> getByPolicyModeAsync(String policyMode) {
@@ -192,7 +189,7 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the data policy manifest.
+     * @return the data policy manifest along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataPolicyManifestInner> getByPolicyModeWithResponse(String policyMode, Context context) {
@@ -211,7 +208,7 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of data policy manifests.
+     * @return list of data policy manifests along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataPolicyManifestInner>> listSinglePageAsync(String filter) {
@@ -250,7 +247,7 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of data policy manifests.
+     * @return list of data policy manifests along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataPolicyManifestInner>> listSinglePageAsync(String filter, Context context) {
@@ -288,7 +285,7 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of data policy manifests.
+     * @return list of data policy manifests as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataPolicyManifestInner> listAsync(String filter) {
@@ -303,7 +300,7 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of data policy manifests.
+     * @return list of data policy manifests as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataPolicyManifestInner> listAsync() {
@@ -324,7 +321,7 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of data policy manifests.
+     * @return list of data policy manifests as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataPolicyManifestInner> listAsync(String filter, Context context) {
@@ -340,7 +337,7 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of data policy manifests.
+     * @return list of data policy manifests as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataPolicyManifestInner> list() {
@@ -361,7 +358,7 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of data policy manifests.
+     * @return list of data policy manifests as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataPolicyManifestInner> list(String filter, Context context) {
@@ -375,7 +372,7 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of data policy manifests.
+     * @return list of data policy manifests along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataPolicyManifestInner>> listNextSinglePageAsync(String nextLink) {
@@ -411,7 +408,7 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of data policy manifests.
+     * @return list of data policy manifests along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataPolicyManifestInner>> listNextSinglePageAsync(String nextLink, Context context) {

@@ -231,7 +231,7 @@ class KeyRequestParameters {
      * Set the policy rules under which the key can be exported.
      *
      * @param releasePolicy The policy rules to set.
-     * 
+     *
      * @return The updated {@link KeyRequestParameters} object.
      */
     public KeyRequestParameters setReleasePolicy(KeyReleasePolicy releasePolicy) {

@@ -4,6 +4,7 @@
 package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
+import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
 import com.azure.ai.formrecognizer.administration.models.DocumentModel;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.credential.AzureKeyCredential;
@@ -15,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Async sample to build a model with training data.
  * For instructions on setting up documents for training in an Azure Storage Blob Container, see
- * <a href="https://aka.ms/azsdk/formrecognizer/buildtrainingset">here</a>.
+ * <a href="https://aka.ms/azsdk/formrecognizer/buildcustommodel">here</a>.
  * <p>
  * For this sample, you can use the training documents found in
  * <a href="https://aka.ms/azsdk/formrecognizer/sampletrainingfiles">here</a>
@@ -43,8 +44,10 @@ public class BuildModelAsync {
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
         PollerFlux<DocumentOperationResult, DocumentModel> buildModelPoller =
             client.beginBuildModel(trainingFilesUrl,
-                "my-document-analysis-model",
-                new BuildModelOptions().setDescription("my custom model desc"));
+                DocumentBuildMode.TEMPLATE,
+                new BuildModelOptions()
+                    .setModelId("custom-model-id")
+                    .setDescription("my custom model desc"));
 
         Mono<DocumentModel> customFormModelResult = buildModelPoller
             .last()

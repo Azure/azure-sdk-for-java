@@ -167,9 +167,7 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
                                 "The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.",
                                 id)));
         }
-        this
-            .deleteWithResponse(resourceGroupName, resourceName, privateEndpointConnectionName, Context.NONE)
-            .getValue();
+        this.deleteWithResponse(resourceGroupName, resourceName, privateEndpointConnectionName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {

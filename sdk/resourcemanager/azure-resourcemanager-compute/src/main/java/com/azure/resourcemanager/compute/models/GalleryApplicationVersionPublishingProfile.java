@@ -6,7 +6,6 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -14,8 +13,6 @@ import java.util.List;
 /** The publishing profile of a gallery image version. */
 @Fluent
 public final class GalleryApplicationVersionPublishingProfile extends GalleryArtifactPublishingProfileBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryApplicationVersionPublishingProfile.class);
-
     /*
      * The source image from which the Image Version is going to be created.
      */
@@ -136,6 +133,14 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public GalleryApplicationVersionPublishingProfile withTargetExtendedLocations(
+        List<GalleryTargetExtendedLocation> targetExtendedLocations) {
+        super.withTargetExtendedLocations(targetExtendedLocations);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
@@ -145,7 +150,7 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
     public void validate() {
         super.validate();
         if (source() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property source in model GalleryApplicationVersionPublishingProfile"));
@@ -156,4 +161,6 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
             manageActions().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GalleryApplicationVersionPublishingProfile.class);
 }

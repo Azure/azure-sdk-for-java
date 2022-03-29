@@ -7,14 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.AzureKeyVaultSecretReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Oracle database linked service properties. */
 @Fluent
 public final class OracleLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OracleLinkedServiceTypeProperties.class);
-
     /*
      * The connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
@@ -107,7 +104,7 @@ public final class OracleLinkedServiceTypeProperties {
      */
     public void validate() {
         if (connectionString() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property connectionString in model OracleLinkedServiceTypeProperties"));
@@ -116,4 +113,6 @@ public final class OracleLinkedServiceTypeProperties {
             password().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OracleLinkedServiceTypeProperties.class);
 }

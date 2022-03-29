@@ -23,7 +23,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.applicationinsights.fluent.ProactiveDetectionConfigurationsClient;
 import com.azure.resourcemanager.applicationinsights.fluent.models.ApplicationInsightsComponentProactiveDetectionConfigurationInner;
 import java.util.List;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in ProactiveDetectionConfigurationsClient.
  */
 public final class ProactiveDetectionConfigurationsClientImpl implements ProactiveDetectionConfigurationsClient {
-    private final ClientLogger logger = new ClientLogger(ProactiveDetectionConfigurationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ProactiveDetectionConfigurationsService service;
 
@@ -121,7 +118,8 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of ProactiveDetection configurations of an Application Insights component.
+     * @return a list of ProactiveDetection configurations of an Application Insights component along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<ApplicationInsightsComponentProactiveDetectionConfigurationInner>>>
@@ -171,7 +169,8 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of ProactiveDetection configurations of an Application Insights component.
+     * @return a list of ProactiveDetection configurations of an Application Insights component along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<ApplicationInsightsComponentProactiveDetectionConfigurationInner>>>
@@ -217,7 +216,8 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of ProactiveDetection configurations of an Application Insights component.
+     * @return a list of ProactiveDetection configurations of an Application Insights component on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<List<ApplicationInsightsComponentProactiveDetectionConfigurationInner>> listAsync(
@@ -258,7 +258,8 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of ProactiveDetection configurations of an Application Insights component.
+     * @return a list of ProactiveDetection configurations of an Application Insights component along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<ApplicationInsightsComponentProactiveDetectionConfigurationInner>> listWithResponse(
@@ -276,7 +277,8 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ProactiveDetection configuration for this configuration id.
+     * @return the ProactiveDetection configuration for this configuration id along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentProactiveDetectionConfigurationInner>> getWithResponseAsync(
@@ -333,7 +335,8 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ProactiveDetection configuration for this configuration id.
+     * @return the ProactiveDetection configuration for this configuration id along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentProactiveDetectionConfigurationInner>> getWithResponseAsync(
@@ -386,7 +389,7 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ProactiveDetection configuration for this configuration id.
+     * @return the ProactiveDetection configuration for this configuration id on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationInsightsComponentProactiveDetectionConfigurationInner> getAsync(
@@ -431,7 +434,7 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ProactiveDetection configuration for this configuration id.
+     * @return the ProactiveDetection configuration for this configuration id along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInsightsComponentProactiveDetectionConfigurationInner> getWithResponse(
@@ -451,7 +454,8 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define a ProactiveDetection configuration.
+     * @return properties that define a ProactiveDetection configuration along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentProactiveDetectionConfigurationInner>> updateWithResponseAsync(
@@ -522,7 +526,8 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define a ProactiveDetection configuration.
+     * @return properties that define a ProactiveDetection configuration along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentProactiveDetectionConfigurationInner>> updateWithResponseAsync(
@@ -590,7 +595,7 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define a ProactiveDetection configuration.
+     * @return properties that define a ProactiveDetection configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationInsightsComponentProactiveDetectionConfigurationInner> updateAsync(
@@ -645,7 +650,7 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define a ProactiveDetection configuration.
+     * @return properties that define a ProactiveDetection configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInsightsComponentProactiveDetectionConfigurationInner> updateWithResponse(

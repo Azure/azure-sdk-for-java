@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The API entity reference. */
 @Fluent
 public final class ApiEntityReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiEntityReference.class);
-
     /*
      * The ARM resource id in the form of
      * /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/...

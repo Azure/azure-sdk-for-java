@@ -100,10 +100,8 @@ stages:
         Clouds: ${{ parameters.Clouds }}
         TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
         Artifacts: ${{ parameters.Artifacts }}
-        TestStepMavenInputs:
-          options: '$(DefaultTestOptions) -DskipSpringITs=false'
-          mavenOptions: '$(DefaultTestMavenOptions)'
-          goals: "verify"
+        TestGoals: 'verify'
+        TestOptions: '-DskipSpringITs=false'
         PreSteps:
             - script: |
                   az cloud set --name AzureChinaCloud

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Table Update. */
 public final class TableUpdateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-04-01/examples/TableOperationPatch.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/TableOperationPatch.json
      */
     /**
      * Sample code: TableOperationPatch.

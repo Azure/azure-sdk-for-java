@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.HubVirtualNetworkConnectionsClient;
@@ -41,8 +40,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in HubVirtualNetworkConnectionsClient. */
 public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualNetworkConnectionsClient {
-    private final ClientLogger logger = new ClientLogger(HubVirtualNetworkConnectionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final HubVirtualNetworkConnectionsService service;
 
@@ -155,7 +152,8 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hubVirtualNetworkConnection Resource.
+     * @return hubVirtualNetworkConnection Resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -224,7 +222,8 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hubVirtualNetworkConnection Resource.
+     * @return hubVirtualNetworkConnection Resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -290,7 +289,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hubVirtualNetworkConnection Resource.
+     * @return the {@link PollerFlux} for polling of hubVirtualNetworkConnection Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<HubVirtualNetworkConnectionInner>, HubVirtualNetworkConnectionInner>
@@ -324,7 +323,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hubVirtualNetworkConnection Resource.
+     * @return the {@link PollerFlux} for polling of hubVirtualNetworkConnection Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<HubVirtualNetworkConnectionInner>, HubVirtualNetworkConnectionInner>
@@ -359,7 +358,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hubVirtualNetworkConnection Resource.
+     * @return the {@link SyncPoller} for polling of hubVirtualNetworkConnection Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HubVirtualNetworkConnectionInner>, HubVirtualNetworkConnectionInner>
@@ -385,7 +384,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hubVirtualNetworkConnection Resource.
+     * @return the {@link SyncPoller} for polling of hubVirtualNetworkConnection Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HubVirtualNetworkConnectionInner>, HubVirtualNetworkConnectionInner>
@@ -411,7 +410,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hubVirtualNetworkConnection Resource.
+     * @return hubVirtualNetworkConnection Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<HubVirtualNetworkConnectionInner> createOrUpdateAsync(
@@ -437,7 +436,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hubVirtualNetworkConnection Resource.
+     * @return hubVirtualNetworkConnection Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<HubVirtualNetworkConnectionInner> createOrUpdateAsync(
@@ -511,7 +510,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -566,7 +565,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -617,7 +616,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -640,7 +639,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -662,7 +661,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -680,7 +679,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -697,7 +696,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String virtualHubName, String connectionName) {
@@ -716,7 +715,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -766,7 +765,8 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hubVirtualNetworkConnection Resource.
+     * @return hubVirtualNetworkConnection Resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<HubVirtualNetworkConnectionInner>> getWithResponseAsync(
@@ -821,7 +821,8 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hubVirtualNetworkConnection Resource.
+     * @return hubVirtualNetworkConnection Resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HubVirtualNetworkConnectionInner>> getWithResponseAsync(
@@ -872,7 +873,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hubVirtualNetworkConnection Resource.
+     * @return hubVirtualNetworkConnection Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<HubVirtualNetworkConnectionInner> getAsync(
@@ -915,7 +916,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hubVirtualNetworkConnection Resource.
+     * @return hubVirtualNetworkConnection Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HubVirtualNetworkConnectionInner> getWithResponse(
@@ -931,7 +932,8 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of HubVirtualNetworkConnections and a URL nextLink to get the next set of results.
+     * @return list of HubVirtualNetworkConnections and a URL nextLink to get the next set of results along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HubVirtualNetworkConnectionInner>> listSinglePageAsync(
@@ -990,7 +992,8 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of HubVirtualNetworkConnections and a URL nextLink to get the next set of results.
+     * @return list of HubVirtualNetworkConnections and a URL nextLink to get the next set of results along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HubVirtualNetworkConnectionInner>> listSinglePageAsync(
@@ -1045,7 +1048,8 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of HubVirtualNetworkConnections and a URL nextLink to get the next set of results.
+     * @return list of HubVirtualNetworkConnections and a URL nextLink to get the next set of results as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<HubVirtualNetworkConnectionInner> listAsync(String resourceGroupName, String virtualHubName) {
@@ -1063,7 +1067,8 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of HubVirtualNetworkConnections and a URL nextLink to get the next set of results.
+     * @return list of HubVirtualNetworkConnections and a URL nextLink to get the next set of results as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<HubVirtualNetworkConnectionInner> listAsync(
@@ -1081,7 +1086,8 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of HubVirtualNetworkConnections and a URL nextLink to get the next set of results.
+     * @return list of HubVirtualNetworkConnections and a URL nextLink to get the next set of results as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HubVirtualNetworkConnectionInner> list(String resourceGroupName, String virtualHubName) {
@@ -1097,7 +1103,8 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of HubVirtualNetworkConnections and a URL nextLink to get the next set of results.
+     * @return list of HubVirtualNetworkConnections and a URL nextLink to get the next set of results as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HubVirtualNetworkConnectionInner> list(
@@ -1112,7 +1119,8 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of HubVirtualNetworkConnections and a URL nextLink to get the next set of results.
+     * @return list of HubVirtualNetworkConnections and a URL nextLink to get the next set of results along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HubVirtualNetworkConnectionInner>> listNextSinglePageAsync(String nextLink) {
@@ -1148,7 +1156,8 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of HubVirtualNetworkConnections and a URL nextLink to get the next set of results.
+     * @return list of HubVirtualNetworkConnections and a URL nextLink to get the next set of results along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HubVirtualNetworkConnectionInner>> listNextSinglePageAsync(

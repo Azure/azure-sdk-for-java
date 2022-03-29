@@ -8,6 +8,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.botservice.fluent.models.ConnectionSettingInner;
+import java.util.List;
 import java.util.Map;
 
 /** An immutable client-side representation of ConnectionSetting. */
@@ -74,6 +75,13 @@ public interface ConnectionSetting {
      * @return the etag value.
      */
     String etag();
+
+    /**
+     * Gets the zones property: Entity zones.
+     *
+     * @return the zones value.
+     */
+    List<String> zones();
 
     /**
      * Gets the region of the resource.
@@ -326,7 +334,7 @@ public interface ConnectionSetting {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Connection Setting registration for a Bot Service.
+     * @return a Connection Setting registration for a Bot Service along with {@link Response}.
      */
     Response<ConnectionSetting> listWithSecretsWithResponse(Context context);
 }

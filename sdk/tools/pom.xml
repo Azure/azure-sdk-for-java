@@ -7,8 +7,9 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-tools-service</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.0</version><!-- Need not change for every release-->
+  <version>1.0.0</version> <!-- Need not change for every release-->
   <modules>
     <module>azure-sdk-archetype</module>
+    <module>azure-sdk-build-tool</module>
   </modules>
 </project>

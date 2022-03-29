@@ -95,7 +95,7 @@ public final class SystemScanRulesetsClient {
      * @param dataSourceType The dataSourceType parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return a system scan ruleset for a data source.
+     * @return a system scan ruleset for a data source along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -130,7 +130,7 @@ public final class SystemScanRulesetsClient {
      * @param version The version parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return a scan ruleset by version.
+     * @return a scan ruleset by version along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -164,7 +164,7 @@ public final class SystemScanRulesetsClient {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the latest version of a system scan ruleset.
+     * @return the latest version of a system scan ruleset along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)

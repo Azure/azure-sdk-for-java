@@ -26,7 +26,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.ProvidersClient;
 import com.azure.resourcemanager.resources.fluent.models.ProviderInner;
 import com.azure.resourcemanager.resources.models.ProviderListResult;
@@ -34,8 +33,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ProvidersClient. */
 public final class ProvidersClientImpl implements ProvidersClient {
-    private final ClientLogger logger = new ClientLogger(ProvidersClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ProvidersService service;
 
@@ -175,7 +172,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource provider information.
+     * @return resource provider information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ProviderInner>> unregisterWithResponseAsync(String resourceProviderNamespace) {
@@ -220,7 +217,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource provider information.
+     * @return resource provider information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProviderInner>> unregisterWithResponseAsync(
@@ -262,7 +259,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource provider information.
+     * @return resource provider information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProviderInner> unregisterAsync(String resourceProviderNamespace) {
@@ -299,7 +296,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource provider information.
+     * @return resource provider information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProviderInner> unregisterWithResponse(String resourceProviderNamespace, Context context) {
@@ -314,7 +311,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> registerAtManagementGroupScopeWithResponseAsync(
@@ -358,7 +355,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> registerAtManagementGroupScopeWithResponseAsync(
@@ -398,7 +395,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> registerAtManagementGroupScopeAsync(String resourceProviderNamespace, String groupId) {
@@ -429,7 +426,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> registerAtManagementGroupScopeWithResponse(
@@ -444,7 +441,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource provider information.
+     * @return resource provider information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ProviderInner>> registerWithResponseAsync(String resourceProviderNamespace) {
@@ -489,7 +486,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource provider information.
+     * @return resource provider information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProviderInner>> registerWithResponseAsync(String resourceProviderNamespace, Context context) {
@@ -530,7 +527,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource provider information.
+     * @return resource provider information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProviderInner> registerAsync(String resourceProviderNamespace) {
@@ -567,7 +564,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource provider information.
+     * @return resource provider information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProviderInner> registerWithResponse(String resourceProviderNamespace, Context context) {
@@ -584,7 +581,8 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all resource providers for a subscription.
+     * @return all resource providers for a subscription along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProviderInner>> listSinglePageAsync(Integer top, String expand) {
@@ -636,7 +634,8 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all resource providers for a subscription.
+     * @return all resource providers for a subscription along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProviderInner>> listSinglePageAsync(Integer top, String expand, Context context) {
@@ -684,7 +683,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all resource providers for a subscription.
+     * @return all resource providers for a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ProviderInner> listAsync(Integer top, String expand) {
@@ -696,7 +695,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all resource providers for a subscription.
+     * @return all resource providers for a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ProviderInner> listAsync() {
@@ -716,7 +715,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all resource providers for a subscription.
+     * @return all resource providers for a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProviderInner> listAsync(Integer top, String expand, Context context) {
@@ -729,7 +728,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all resource providers for a subscription.
+     * @return all resource providers for a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProviderInner> list() {
@@ -749,7 +748,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all resource providers for a subscription.
+     * @return all resource providers for a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProviderInner> list(Integer top, String expand, Context context) {
@@ -766,7 +765,8 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all resource providers for the tenant.
+     * @return all resource providers for the tenant along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProviderInner>> listAtTenantScopeSinglePageAsync(Integer top, String expand) {
@@ -806,7 +806,8 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all resource providers for the tenant.
+     * @return all resource providers for the tenant along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProviderInner>> listAtTenantScopeSinglePageAsync(
@@ -842,7 +843,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all resource providers for the tenant.
+     * @return all resource providers for the tenant as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ProviderInner> listAtTenantScopeAsync(Integer top, String expand) {
@@ -856,7 +857,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all resource providers for the tenant.
+     * @return all resource providers for the tenant as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ProviderInner> listAtTenantScopeAsync() {
@@ -878,7 +879,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all resource providers for the tenant.
+     * @return all resource providers for the tenant as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProviderInner> listAtTenantScopeAsync(Integer top, String expand, Context context) {
@@ -892,7 +893,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all resource providers for the tenant.
+     * @return all resource providers for the tenant as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProviderInner> listAtTenantScope() {
@@ -912,7 +913,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all resource providers for the tenant.
+     * @return all resource providers for the tenant as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProviderInner> listAtTenantScope(Integer top, String expand, Context context) {
@@ -928,7 +929,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified resource provider.
+     * @return the specified resource provider along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ProviderInner>> getWithResponseAsync(String resourceProviderNamespace, String expand) {
@@ -976,7 +977,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified resource provider.
+     * @return the specified resource provider along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProviderInner>> getWithResponseAsync(
@@ -1021,7 +1022,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified resource provider.
+     * @return the specified resource provider on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProviderInner> getAsync(String resourceProviderNamespace, String expand) {
@@ -1043,7 +1044,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified resource provider.
+     * @return the specified resource provider on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProviderInner> getAsync(String resourceProviderNamespace) {
@@ -1084,7 +1085,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified resource provider.
+     * @return the specified resource provider along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProviderInner> getWithResponse(String resourceProviderNamespace, String expand, Context context) {
@@ -1100,7 +1101,8 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified resource provider at the tenant level.
+     * @return the specified resource provider at the tenant level along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ProviderInner>> getAtTenantScopeWithResponseAsync(
@@ -1142,7 +1144,8 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified resource provider at the tenant level.
+     * @return the specified resource provider at the tenant level along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProviderInner>> getAtTenantScopeWithResponseAsync(
@@ -1180,7 +1183,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified resource provider at the tenant level.
+     * @return the specified resource provider at the tenant level on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProviderInner> getAtTenantScopeAsync(String resourceProviderNamespace, String expand) {
@@ -1202,7 +1205,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified resource provider at the tenant level.
+     * @return the specified resource provider at the tenant level on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProviderInner> getAtTenantScopeAsync(String resourceProviderNamespace) {
@@ -1243,7 +1246,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified resource provider at the tenant level.
+     * @return the specified resource provider at the tenant level along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProviderInner> getAtTenantScopeWithResponse(
@@ -1258,7 +1261,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource providers.
+     * @return list of resource providers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProviderInner>> listNextSinglePageAsync(String nextLink) {
@@ -1294,7 +1297,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource providers.
+     * @return list of resource providers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProviderInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1329,7 +1332,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource providers.
+     * @return list of resource providers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProviderInner>> listAtTenantScopeNextSinglePageAsync(String nextLink) {
@@ -1365,7 +1368,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource providers.
+     * @return list of resource providers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProviderInner>> listAtTenantScopeNextSinglePageAsync(String nextLink, Context context) {

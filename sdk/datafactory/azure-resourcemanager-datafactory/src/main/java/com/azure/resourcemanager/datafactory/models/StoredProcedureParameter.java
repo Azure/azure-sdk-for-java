@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SQL stored procedure parameter. */
 @Fluent
 public final class StoredProcedureParameter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StoredProcedureParameter.class);
-
     /*
      * Stored procedure parameter value. Type: string (or Expression with
      * resultType string).

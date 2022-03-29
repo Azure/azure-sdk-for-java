@@ -7,14 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Eloqua server linked service properties. */
 @Fluent
 public final class EloquaLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EloquaLinkedServiceTypeProperties.class);
-
     /*
      * The endpoint of the Eloqua server. (i.e. eloqua.example.com)
      */
@@ -221,13 +218,13 @@ public final class EloquaLinkedServiceTypeProperties {
      */
     public void validate() {
         if (endpoint() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property endpoint in model EloquaLinkedServiceTypeProperties"));
         }
         if (username() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property username in model EloquaLinkedServiceTypeProperties"));
@@ -236,4 +233,6 @@ public final class EloquaLinkedServiceTypeProperties {
             password().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EloquaLinkedServiceTypeProperties.class);
 }

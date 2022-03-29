@@ -110,20 +110,6 @@ public final class BigDataPoolResourceInfoInner extends Resource {
     }
 
     /**
-     * Set the creationDate property: The time when the Big Data pool was created.
-     *
-     * @param creationDate the creationDate value to set.
-     * @return the BigDataPoolResourceInfoInner object itself.
-     */
-    public BigDataPoolResourceInfoInner withCreationDate(OffsetDateTime creationDate) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new BigDataPoolResourceProperties();
-        }
-        this.innerProperties().withCreationDate(creationDate);
-        return this;
-    }
-
-    /**
      * Get the autoPause property: Spark pool auto-pausing properties Auto-pausing properties.
      *
      * @return the autoPause value.

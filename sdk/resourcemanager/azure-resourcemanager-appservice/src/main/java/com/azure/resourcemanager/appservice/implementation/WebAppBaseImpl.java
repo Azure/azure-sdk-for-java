@@ -1146,7 +1146,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     @SuppressWarnings("unchecked")
     public FluentImplT withManagedHostnameBindings(AppServiceDomain domain, String... hostnames) {
         for (String hostname : hostnames) {
-            if (hostname.equals("@") || hostname.equalsIgnoreCase(domain.name())) {
+            if ("@".equals(hostname) || hostname.equalsIgnoreCase(domain.name())) {
                 defineHostnameBinding()
                     .withAzureManagedDomain(domain)
                     .withSubDomain(hostname)

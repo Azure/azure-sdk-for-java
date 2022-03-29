@@ -1,6 +1,31 @@
 # Release History
 
-## 2.11.0-beta.1 (Unreleased)
+## 2.14.0-beta.1 (Unreleased)
+
+###  Bugs Fixed
+
+- Fixed a bug that `WebAppBase.getPublishingProfile()` failed to extract FTP profile, when web app is FTPS-only.
+- Supported Java SE 17 in `RuntimeStack` for `WebApp`.
+
+## 2.13.0 (2022-03-11)
+
+### Features Added
+
+- Supported Tomcat 10 and Java 8, 11, 17 in `RuntimeStack` for `WebApp`.
+
+## 2.12.0 (2022-02-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources
+
+## 2.11.0 (2022-01-17)
+
+### Features Added
+
+- Supported option for tracking deployment status via `pushDeploy` in `WebApp` and `DeploymentSlot`.
 
 ### Other Changes
 

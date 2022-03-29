@@ -40,13 +40,12 @@ and then include the direct dependency in the dependencies section without the v
 #### Include direct dependency
 If you want to take dependency on a particular version of the library that is not present in the BOM,
 add the direct dependency to your project as follows.
-
 [//]: # ({x-version-update-start;com.azure:azure-cosmos;current})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos</artifactId>
-  <version>4.24.0</version>
+  <version>4.28.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

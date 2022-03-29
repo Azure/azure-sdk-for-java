@@ -23,6 +23,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -37,7 +38,6 @@ import com.azure.security.keyvault.keys.models.KeyReleasePolicy;
 import com.azure.security.keyvault.keys.models.KeyRotationLifetimeAction;
 import com.azure.security.keyvault.keys.models.KeyRotationPolicy;
 import com.azure.security.keyvault.keys.models.KeyRotationPolicyAction;
-import com.azure.security.keyvault.keys.models.KeyRotationPolicyProperties;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -46,7 +46,6 @@ import org.junit.jupiter.params.provider.Arguments;
 
 import java.io.IOException;
 import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -437,24 +436,23 @@ public abstract class KeyClientTestBase extends TestBase {
             "{"
                 + "\"anyOf\": ["
                     + "{"
-                        + "\"anyOf\": ["
+                        + "\"allOf\": ["
                             + "{"
                                 + "\"claim\": \"sdk-test\","
-                                + "\"condition\": \"equals\","
-                                + "\"value\": \"true\""
+                                + "\"equals\": \"true\""
                             + "}"
                         + "],"
                         + "\"authority\": \"" + attestationUrl + "\""
                     + "}"
                 + "],"
-                + "\"version\": \"1.0\""
+                + "\"version\": \"1.0.0\""
             + "}";
 
         final CreateRsaKeyOptions keyToRelease =
             new CreateRsaKeyOptions(testResourceNamer.randomName("keyToRelease", 20))
                 .setKeySize(2048)
                 .setHardwareProtected(runManagedHsmTest)
-                .setReleasePolicy(new KeyReleasePolicy(releasePolicyContents.getBytes(StandardCharsets.UTF_8)))
+                .setReleasePolicy(new KeyReleasePolicy(BinaryData.fromString(releasePolicyContents)))
                 .setExportable(true);
 
         testRunner.accept(keyToRelease, attestationUrl);
@@ -469,19 +467,19 @@ public abstract class KeyClientTestBase extends TestBase {
     @Test
     public abstract void updateGetKeyRotationPolicyWithMinimumProperties(HttpClient httpClient, KeyServiceVersion serviceVersion);
 
-    void updateGetKeyRotationPolicyWithMinimumPropertiesRunner(BiConsumer<String, KeyRotationPolicyProperties> testRunner) {
+    void updateGetKeyRotationPolicyWithMinimumPropertiesRunner(BiConsumer<String, KeyRotationPolicy> testRunner) {
         String keyName = testResourceNamer.randomName("rotateKey", 20);
 
-        KeyRotationPolicyProperties keyRotationPolicyProperties = new KeyRotationPolicyProperties()
+        KeyRotationPolicy keyRotationPolicy = new KeyRotationPolicy()
             .setLifetimeActions(Collections.emptyList());
 
-        testRunner.accept(keyName, keyRotationPolicyProperties);
+        testRunner.accept(keyName, keyRotationPolicy);
     }
 
     @Test
     public abstract void updateGetKeyRotationPolicyWithAllProperties(HttpClient httpClient, KeyServiceVersion serviceVersion);
 
-    void updateGetKeyRotationPolicyWithAllPropertiesRunner(BiConsumer<String, KeyRotationPolicyProperties> testRunner) {
+    void updateGetKeyRotationPolicyWithAllPropertiesRunner(BiConsumer<String, KeyRotationPolicy> testRunner) {
         String keyName = testResourceNamer.randomName("rotateKey", 20);
 
         List<KeyRotationLifetimeAction> keyRotationLifetimeActionList = new ArrayList<>();
@@ -493,11 +491,11 @@ public abstract class KeyClientTestBase extends TestBase {
         keyRotationLifetimeActionList.add(rotateLifetimeAction);
         keyRotationLifetimeActionList.add(notifyLifetimeAction);
 
-        KeyRotationPolicyProperties keyRotationPolicyProperties = new KeyRotationPolicyProperties()
+        KeyRotationPolicy keyRotationPolicy = new KeyRotationPolicy()
             .setLifetimeActions(keyRotationLifetimeActionList)
-            .setExpiryTime("P6M");
+            .setExpiresIn("P6M");
 
-        testRunner.accept(keyName, keyRotationPolicyProperties);
+        testRunner.accept(keyName, keyRotationPolicy);
     }
 
     @Test
@@ -714,7 +712,7 @@ public abstract class KeyClientTestBase extends TestBase {
         assertEquals(expected.getId(), actual.getId());
         assertEquals(expected.getCreatedOn(), actual.getCreatedOn());
         assertEquals(expected.getUpdatedOn(), actual.getUpdatedOn());
-        assertEquals(expected.getExpiryTime(), actual.getExpiryTime());
+        assertEquals(expected.getExpiresIn(), actual.getExpiresIn());
 
         List<KeyRotationLifetimeAction> expectedLifetimeActions = expected.getLifetimeActions();
         List<KeyRotationLifetimeAction> actualLifetimeActions = actual.getLifetimeActions();
@@ -729,7 +727,7 @@ public abstract class KeyClientTestBase extends TestBase {
                 KeyRotationLifetimeAction expectedLifetimeAction = expectedLifetimeActions.get(i);
                 KeyRotationLifetimeAction actualLifetimeAction = actualLifetimeActions.get(i);
 
-                assertEquals(expectedLifetimeAction.getType(), actualLifetimeAction.getType());
+                assertEquals(expectedLifetimeAction.getAction(), actualLifetimeAction.getAction());
                 assertEquals(expectedLifetimeAction.getTimeAfterCreate(), actualLifetimeAction.getTimeAfterCreate());
                 assertEquals(expectedLifetimeAction.getTimeBeforeExpiry(), actualLifetimeAction.getTimeBeforeExpiry());
             }

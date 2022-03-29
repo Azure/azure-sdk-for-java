@@ -18,7 +18,7 @@ public interface Notifications {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Notification list representation.
+     * @return paged Notification list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<NotificationContract> listByService(String resourceGroupName, String serviceName);
 
@@ -33,7 +33,7 @@ public interface Notifications {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Notification list representation.
+     * @return paged Notification list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<NotificationContract> listByService(
         String resourceGroupName, String serviceName, Integer top, Integer skip, Context context);
@@ -61,7 +61,7 @@ public interface Notifications {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the Notification specified by its identifier.
+     * @return the details of the Notification specified by its identifier along with {@link Response}.
      */
     Response<NotificationContract> getWithResponse(
         String resourceGroupName, String serviceName, NotificationName notificationName, Context context);
@@ -91,7 +91,7 @@ public interface Notifications {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return notification details.
+     * @return notification details along with {@link Response}.
      */
     Response<NotificationContract> createOrUpdateWithResponse(
         String resourceGroupName,

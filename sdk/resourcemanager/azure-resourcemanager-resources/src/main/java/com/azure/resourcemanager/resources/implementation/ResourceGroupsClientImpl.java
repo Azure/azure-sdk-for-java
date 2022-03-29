@@ -47,8 +47,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ResourceGroupsClient. */
 public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
-    private final ClientLogger logger = new ClientLogger(ResourceGroupsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ResourceGroupsService service;
 
@@ -180,7 +178,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
+     * @return whether resource exists along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> checkExistenceWithResponseAsync(String resourceGroupName) {
@@ -223,7 +221,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
+     * @return whether resource exists along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Boolean>> checkExistenceWithResponseAsync(String resourceGroupName, Context context) {
@@ -262,7 +260,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
+     * @return whether resource exists on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> checkExistenceAsync(String resourceGroupName) {
@@ -292,7 +290,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
         if (value != null) {
             return value;
         } else {
-            throw logger.logExceptionAsError(new NullPointerException());
+            throw LOGGER.logExceptionAsError(new NullPointerException());
         }
     }
 
@@ -304,7 +302,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return whether resource exists along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> checkExistenceWithResponse(String resourceGroupName, Context context) {
@@ -321,7 +319,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource group information.
+     * @return resource group information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ResourceGroupInner>> createOrUpdateWithResponseAsync(
@@ -374,7 +372,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource group information.
+     * @return resource group information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ResourceGroupInner>> createOrUpdateWithResponseAsync(
@@ -423,7 +421,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource group information.
+     * @return resource group information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResourceGroupInner> createOrUpdateAsync(String resourceGroupName, ResourceGroupInner parameters) {
@@ -466,7 +464,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource group information.
+     * @return resource group information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceGroupInner> createOrUpdateWithResponse(
@@ -484,7 +482,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -532,7 +530,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -576,7 +574,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String forceDeletionTypes) {
@@ -598,7 +596,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -620,7 +618,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String forceDeletionTypes) {
@@ -638,7 +636,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -656,7 +654,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String forceDeletionTypes) {
@@ -673,7 +671,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName) {
@@ -694,7 +692,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String forceDeletionTypes, Context context) {
@@ -758,7 +756,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a resource group.
+     * @return a resource group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ResourceGroupInner>> getWithResponseAsync(String resourceGroupName) {
@@ -801,7 +799,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a resource group.
+     * @return a resource group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ResourceGroupInner>> getWithResponseAsync(String resourceGroupName, Context context) {
@@ -840,7 +838,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a resource group.
+     * @return a resource group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResourceGroupInner> getAsync(String resourceGroupName) {
@@ -877,7 +875,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a resource group.
+     * @return a resource group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceGroupInner> getWithResponse(String resourceGroupName, Context context) {
@@ -893,7 +891,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource group information.
+     * @return resource group information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ResourceGroupInner>> updateWithResponseAsync(
@@ -945,7 +943,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource group information.
+     * @return resource group information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ResourceGroupInner>> updateWithResponseAsync(
@@ -993,7 +991,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource group information.
+     * @return resource group information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResourceGroupInner> updateAsync(String resourceGroupName, ResourceGroupPatchable parameters) {
@@ -1034,7 +1032,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource group information.
+     * @return resource group information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceGroupInner> updateWithResponse(
@@ -1050,7 +1048,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource group export result.
+     * @return resource group export result along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> exportTemplateWithResponseAsync(
@@ -1101,7 +1099,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource group export result.
+     * @return resource group export result along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> exportTemplateWithResponseAsync(
@@ -1148,7 +1146,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource group export result.
+     * @return the {@link PollerFlux} for polling of resource group export result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ResourceGroupExportResultInner>, ResourceGroupExportResultInner>
@@ -1173,7 +1171,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource group export result.
+     * @return the {@link PollerFlux} for polling of resource group export result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ResourceGroupExportResultInner>, ResourceGroupExportResultInner>
@@ -1198,7 +1196,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource group export result.
+     * @return the {@link SyncPoller} for polling of resource group export result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResourceGroupExportResultInner>, ResourceGroupExportResultInner> beginExportTemplate(
@@ -1215,7 +1213,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource group export result.
+     * @return the {@link SyncPoller} for polling of resource group export result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResourceGroupExportResultInner>, ResourceGroupExportResultInner> beginExportTemplate(
@@ -1231,7 +1229,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource group export result.
+     * @return resource group export result on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResourceGroupExportResultInner> exportTemplateAsync(
@@ -1250,7 +1248,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource group export result.
+     * @return resource group export result on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ResourceGroupExportResultInner> exportTemplateAsync(
@@ -1301,7 +1299,8 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the resource groups for a subscription.
+     * @return all the resource groups for a subscription along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceGroupInner>> listSinglePageAsync(String filter, Integer top) {
@@ -1352,7 +1351,8 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the resource groups for a subscription.
+     * @return all the resource groups for a subscription along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceGroupInner>> listSinglePageAsync(String filter, Integer top, Context context) {
@@ -1399,7 +1399,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the resource groups for a subscription.
+     * @return all the resource groups for a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ResourceGroupInner> listAsync(String filter, Integer top) {
@@ -1411,7 +1411,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the resource groups for a subscription.
+     * @return all the resource groups for a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ResourceGroupInner> listAsync() {
@@ -1430,7 +1430,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the resource groups for a subscription.
+     * @return all the resource groups for a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ResourceGroupInner> listAsync(String filter, Integer top, Context context) {
@@ -1443,7 +1443,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the resource groups for a subscription.
+     * @return all the resource groups for a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceGroupInner> list() {
@@ -1462,7 +1462,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the resource groups for a subscription.
+     * @return all the resource groups for a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceGroupInner> list(String filter, Integer top, Context context) {
@@ -1476,7 +1476,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource groups.
+     * @return list of resource groups along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceGroupInner>> listNextSinglePageAsync(String nextLink) {
@@ -1512,7 +1512,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource groups.
+     * @return list of resource groups along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceGroupInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1539,4 +1539,6 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
                         res.getValue().nextLink(),
                         null));
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceGroupsClientImpl.class);
 }

@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.SessionContainer;
 import com.azure.cosmos.implementation.UserAgentContainer;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 
 // We suppress the "try" warning here because the close() method's signature
 // allows it to throw InterruptedException which is strongly advised against
@@ -28,7 +29,8 @@ public class StoreClientFactory implements AutoCloseable {
         Configs configs,
         ConnectionPolicy connectionPolicy,
         UserAgentContainer userAgent,
-        boolean enableTransportClientSharing) {
+        boolean enableTransportClientSharing,
+        ClientTelemetry clientTelemetry) {
 
         this.configs = configs;
         Protocol protocol = configs.getProtocol();
@@ -39,7 +41,8 @@ public class StoreClientFactory implements AutoCloseable {
                 connectionPolicy,
                 userAgent,
                 diagnosticsClientConfig,
-                addressResolver);
+                addressResolver,
+                clientTelemetry);
         } else {
             if (protocol == Protocol.HTTPS) {
                 this.transportClient = new HttpTransportClient(configs, connectionPolicy, userAgent);
@@ -47,7 +50,7 @@ public class StoreClientFactory implements AutoCloseable {
 
                 RntbdTransportClient.Options rntbdOptions =
                     new RntbdTransportClient.Options.Builder(connectionPolicy).userAgent(userAgent).build();
-                this.transportClient = new RntbdTransportClient(rntbdOptions, configs.getSslContext(), addressResolver);
+                this.transportClient = new RntbdTransportClient(rntbdOptions, configs.getSslContext(), addressResolver, clientTelemetry);
                 diagnosticsClientConfig.withRntbdOptions(rntbdOptions);
 
             } else {

@@ -9,6 +9,7 @@ import com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsy
 import com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient;
 import com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClientBuilder;
 import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
+import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
 import com.azure.ai.formrecognizer.administration.models.DocumentModel;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.credential.AzureKeyCredential;
@@ -79,7 +80,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
             SyncPoller<DocumentOperationResult, DocumentModel>
                 syncPoller = documentModelAdministrationAsyncClient
                 .beginBuildModel(trainingDocumentsUrl,
-                    null,
+                    DocumentBuildMode.TEMPLATE,
                     new BuildModelOptions().setDescription("perf-model"))
                 .getSyncPoller();
             modelId = syncPoller.getFinalResult().getModelId();

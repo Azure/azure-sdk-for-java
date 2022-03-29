@@ -74,3 +74,6 @@ extends:
       - name: azure-keyvault-webkey
         groupId: com.microsoft.azure
         safeName: azurekeyvaultwebkey
+    JavaBuildVersion: '1.11'
+    MatrixReplace:
+      - JavaTestVersion=(.*)1.17(.*)/$11.11$2

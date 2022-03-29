@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.models.ApiVersionSetContractInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Paged Api Version Set list representation. */
+/** Paged API Version Set list representation. */
 @Fluent
 public final class ApiVersionSetCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiVersionSetCollection.class);
-
     /*
      * Page values.
      */

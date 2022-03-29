@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -14,8 +12,6 @@ import java.util.List;
 /** Describes the properties of a Virtual Machine software patch. */
 @Immutable
 public final class VirtualMachineSoftwarePatchProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineSoftwarePatchProperties.class);
-
     /*
      * A unique identifier for the patch.
      */

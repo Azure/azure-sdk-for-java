@@ -44,6 +44,20 @@ public final class TelegramChannel extends Channel {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public TelegramChannel withEtag(String etag) {
+        super.withEtag(etag);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TelegramChannel withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

@@ -18,7 +18,7 @@ public interface EmailTemplates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all email templates.
+     * @return all email templates as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EmailTemplateContract> listByService(String resourceGroupName, String serviceName);
 
@@ -36,7 +36,7 @@ public interface EmailTemplates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all email templates.
+     * @return all email templates as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EmailTemplateContract> listByService(
         String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
@@ -122,7 +122,7 @@ public interface EmailTemplates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String serviceName, TemplateName templateName, String ifMatch, Context context);
@@ -170,7 +170,7 @@ public interface EmailTemplates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context);
 

@@ -11,6 +11,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
@@ -55,7 +56,7 @@ import java.util.Objects;
  */
 @ServiceClient(builder = BlobClientBuilder.class)
 public class BlobClient extends BlobClientBase {
-    private final ClientLogger logger = new ClientLogger(BlobClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BlobClient.class);
 
     /**
      * The block size to use if none is specified in parallel operations.
@@ -304,7 +305,7 @@ public class BlobClient extends BlobClientBase {
         try {
             return StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
-            throw logger.logExceptionAsError(e);
+            throw LOGGER.logExceptionAsError(e);
         }
     }
 
@@ -359,9 +360,11 @@ public class BlobClient extends BlobClientBase {
 
         if (!overwrite) {
             // Note we only want to make the exists call if we will be uploading in stages. Otherwise it is superfluous.
-            if (UploadUtils.shouldUploadInChunks(filePath,
-                BlockBlobClient.MAX_UPLOAD_BLOB_BYTES_LONG, logger) && exists()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
+            //
+            // Default behavior is to use uploading in chunks when the file size is greater than 256 MB.
+            if (UploadUtils.shouldUploadInChunks(filePath, ModelHelper.BLOB_DEFAULT_MAX_SINGLE_UPLOAD_SIZE, LOGGER)
+                && exists()) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
             }
             requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
@@ -416,7 +419,7 @@ public class BlobClient extends BlobClientBase {
         Duration timeout) {
         this.uploadFromFileWithResponse(new BlobUploadFromFileOptions(filePath)
             .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
-            .setTier(tier).setRequestConditions(requestConditions), null, null);
+            .setTier(tier).setRequestConditions(requestConditions), timeout, null);
     }
 
     /**
@@ -469,7 +472,7 @@ public class BlobClient extends BlobClientBase {
         try {
             return StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
-            throw logger.logExceptionAsError(e);
+            throw LOGGER.logExceptionAsError(e);
         }
     }
 }

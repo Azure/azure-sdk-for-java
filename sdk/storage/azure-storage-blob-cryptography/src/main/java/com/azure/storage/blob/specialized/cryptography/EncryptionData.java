@@ -92,7 +92,7 @@ final class EncryptionData {
     /**
      * Gets the encryption agent that is used to identify the encryption protocol version and encryption algorithm.
      *
-     * @return an {@Link EncryptionAgent}.
+     * @return an {@link EncryptionAgent}.
      */
     EncryptionAgent getEncryptionAgent() {
         return this.encryptionAgent;

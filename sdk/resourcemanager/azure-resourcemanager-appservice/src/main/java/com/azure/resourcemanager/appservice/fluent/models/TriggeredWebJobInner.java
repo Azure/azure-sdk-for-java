@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.TriggeredJobRun;
 import com.azure.resourcemanager.appservice.models.WebJobType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Triggered Web Job Information. */
 @Fluent
 public final class TriggeredWebJobInner extends ProxyOnlyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggeredWebJobInner.class);
-
     /*
      * TriggeredWebJob resource specific properties
      */

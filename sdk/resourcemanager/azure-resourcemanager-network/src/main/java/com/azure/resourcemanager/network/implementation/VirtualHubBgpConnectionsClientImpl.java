@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.VirtualHubBgpConnectionsClient;
@@ -43,8 +42,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VirtualHubBgpConnectionsClient. */
 public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpConnectionsClient {
-    private final ClientLogger logger = new ClientLogger(VirtualHubBgpConnectionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final VirtualHubBgpConnectionsService service;
 
@@ -186,7 +183,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Appliance Site resource.
+     * @return virtual Appliance Site resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BgpConnectionInner>> getWithResponseAsync(
@@ -241,7 +238,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Appliance Site resource.
+     * @return virtual Appliance Site resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BgpConnectionInner>> getWithResponseAsync(
@@ -292,7 +289,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Appliance Site resource.
+     * @return virtual Appliance Site resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BgpConnectionInner> getAsync(String resourceGroupName, String virtualHubName, String connectionName) {
@@ -333,7 +330,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Appliance Site resource.
+     * @return virtual Appliance Site resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BgpConnectionInner> getWithResponse(
@@ -351,7 +348,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Appliance Site resource.
+     * @return virtual Appliance Site resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -413,7 +410,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Appliance Site resource.
+     * @return virtual Appliance Site resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -475,7 +472,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Appliance Site resource.
+     * @return the {@link PollerFlux} for polling of virtual Appliance Site resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<BgpConnectionInner>, BgpConnectionInner> beginCreateOrUpdateAsync(
@@ -503,7 +500,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Appliance Site resource.
+     * @return the {@link PollerFlux} for polling of virtual Appliance Site resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BgpConnectionInner>, BgpConnectionInner> beginCreateOrUpdateAsync(
@@ -531,7 +528,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Appliance Site resource.
+     * @return the {@link SyncPoller} for polling of virtual Appliance Site resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BgpConnectionInner>, BgpConnectionInner> beginCreateOrUpdate(
@@ -550,7 +547,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Appliance Site resource.
+     * @return the {@link SyncPoller} for polling of virtual Appliance Site resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BgpConnectionInner>, BgpConnectionInner> beginCreateOrUpdate(
@@ -573,7 +570,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Appliance Site resource.
+     * @return virtual Appliance Site resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BgpConnectionInner> createOrUpdateAsync(
@@ -594,7 +591,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Appliance Site resource.
+     * @return virtual Appliance Site resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BgpConnectionInner> createOrUpdateAsync(
@@ -658,7 +655,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -713,7 +710,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -764,7 +761,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -787,7 +784,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -809,7 +806,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -827,7 +824,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -844,7 +841,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String virtualHubName, String connectionName) {
@@ -863,7 +860,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -912,7 +909,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHubBgpConnections list.
+     * @return virtualHubBgpConnections list along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BgpConnectionInner>> listSinglePageAsync(
@@ -971,7 +968,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHubBgpConnections list.
+     * @return virtualHubBgpConnections list along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BgpConnectionInner>> listSinglePageAsync(
@@ -1026,7 +1023,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHubBgpConnections list.
+     * @return virtualHubBgpConnections list as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BgpConnectionInner> listAsync(String resourceGroupName, String virtualHubName) {
@@ -1044,7 +1041,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHubBgpConnections list.
+     * @return virtualHubBgpConnections list as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BgpConnectionInner> listAsync(String resourceGroupName, String virtualHubName, Context context) {
@@ -1061,7 +1058,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHubBgpConnections list.
+     * @return virtualHubBgpConnections list as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BgpConnectionInner> list(String resourceGroupName, String virtualHubName) {
@@ -1077,7 +1074,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHubBgpConnections list.
+     * @return virtualHubBgpConnections list as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BgpConnectionInner> list(String resourceGroupName, String virtualHubName, Context context) {
@@ -1093,7 +1090,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual router peer routes.
+     * @return list of virtual router peer routes along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> listLearnedRoutesWithResponseAsync(
@@ -1148,7 +1145,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual router peer routes.
+     * @return list of virtual router peer routes along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> listLearnedRoutesWithResponseAsync(
@@ -1199,7 +1196,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual router peer routes.
+     * @return the {@link PollerFlux} for polling of list of virtual router peer routes.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<PeerRouteListInner>, PeerRouteListInner> beginListLearnedRoutesAsync(
@@ -1226,7 +1223,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual router peer routes.
+     * @return the {@link PollerFlux} for polling of list of virtual router peer routes.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PeerRouteListInner>, PeerRouteListInner> beginListLearnedRoutesAsync(
@@ -1249,7 +1246,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual router peer routes.
+     * @return the {@link SyncPoller} for polling of list of virtual router peer routes.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PeerRouteListInner>, PeerRouteListInner> beginListLearnedRoutes(
@@ -1267,7 +1264,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual router peer routes.
+     * @return the {@link SyncPoller} for polling of list of virtual router peer routes.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PeerRouteListInner>, PeerRouteListInner> beginListLearnedRoutes(
@@ -1284,7 +1281,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual router peer routes.
+     * @return list of virtual router peer routes on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PeerRouteListInner> listLearnedRoutesAsync(
@@ -1304,7 +1301,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual router peer routes.
+     * @return list of virtual router peer routes on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PeerRouteListInner> listLearnedRoutesAsync(
@@ -1357,7 +1354,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual router peer routes.
+     * @return list of virtual router peer routes along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> listAdvertisedRoutesWithResponseAsync(
@@ -1412,7 +1409,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual router peer routes.
+     * @return list of virtual router peer routes along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> listAdvertisedRoutesWithResponseAsync(
@@ -1463,7 +1460,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual router peer routes.
+     * @return the {@link PollerFlux} for polling of list of virtual router peer routes.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<PeerRouteListInner>, PeerRouteListInner> beginListAdvertisedRoutesAsync(
@@ -1490,7 +1487,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual router peer routes.
+     * @return the {@link PollerFlux} for polling of list of virtual router peer routes.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PeerRouteListInner>, PeerRouteListInner> beginListAdvertisedRoutesAsync(
@@ -1513,7 +1510,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual router peer routes.
+     * @return the {@link SyncPoller} for polling of list of virtual router peer routes.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PeerRouteListInner>, PeerRouteListInner> beginListAdvertisedRoutes(
@@ -1531,7 +1528,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual router peer routes.
+     * @return the {@link SyncPoller} for polling of list of virtual router peer routes.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PeerRouteListInner>, PeerRouteListInner> beginListAdvertisedRoutes(
@@ -1548,7 +1545,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual router peer routes.
+     * @return list of virtual router peer routes on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PeerRouteListInner> listAdvertisedRoutesAsync(
@@ -1568,7 +1565,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual router peer routes.
+     * @return list of virtual router peer routes on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PeerRouteListInner> listAdvertisedRoutesAsync(
@@ -1619,7 +1616,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHubBgpConnections list.
+     * @return virtualHubBgpConnections list along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BgpConnectionInner>> listNextSinglePageAsync(String nextLink) {
@@ -1655,7 +1652,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualHubBgpConnections list.
+     * @return virtualHubBgpConnections list along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BgpConnectionInner>> listNextSinglePageAsync(String nextLink, Context context) {

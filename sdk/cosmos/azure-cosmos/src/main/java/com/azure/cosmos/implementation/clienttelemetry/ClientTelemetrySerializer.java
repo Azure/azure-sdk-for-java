@@ -20,6 +20,7 @@ public class ClientTelemetrySerializer extends StdSerializer<ClientTelemetryInfo
     public void serialize(ClientTelemetryInfo telemetry, JsonGenerator generator, SerializerProvider serializerProvider) throws IOException {
         generator.writeStartObject();
         generator.writeStringField("timeStamp", telemetry.getTimeStamp());
+        generator.writeStringField("machineId", telemetry.getMachineId());
         generator.writeStringField("clientId", telemetry.getClientId());
 
         if (telemetry.getProcessId() != null) {

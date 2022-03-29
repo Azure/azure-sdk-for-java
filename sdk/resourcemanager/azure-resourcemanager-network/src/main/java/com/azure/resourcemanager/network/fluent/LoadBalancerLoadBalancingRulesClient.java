@@ -23,7 +23,7 @@ public interface LoadBalancerLoadBalancingRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the load balancing rules in a load balancer.
+     * @return all the load balancing rules in a load balancer as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<LoadBalancingRuleInner> listAsync(String resourceGroupName, String loadBalancerName);
@@ -36,7 +36,7 @@ public interface LoadBalancerLoadBalancingRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the load balancing rules in a load balancer.
+     * @return all the load balancing rules in a load balancer as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LoadBalancingRuleInner> list(String resourceGroupName, String loadBalancerName);
@@ -50,7 +50,7 @@ public interface LoadBalancerLoadBalancingRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the load balancing rules in a load balancer.
+     * @return all the load balancing rules in a load balancer as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LoadBalancingRuleInner> list(String resourceGroupName, String loadBalancerName, Context context);
@@ -64,7 +64,8 @@ public interface LoadBalancerLoadBalancingRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer load balancing rule.
+     * @return the specified load balancer load balancing rule along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<LoadBalancingRuleInner>> getWithResponseAsync(
@@ -79,7 +80,7 @@ public interface LoadBalancerLoadBalancingRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer load balancing rule.
+     * @return the specified load balancer load balancing rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<LoadBalancingRuleInner> getAsync(
@@ -109,7 +110,7 @@ public interface LoadBalancerLoadBalancingRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer load balancing rule.
+     * @return the specified load balancer load balancing rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<LoadBalancingRuleInner> getWithResponse(

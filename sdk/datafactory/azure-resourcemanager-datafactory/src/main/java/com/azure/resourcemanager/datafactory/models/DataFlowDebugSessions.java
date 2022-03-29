@@ -47,7 +47,7 @@ public interface DataFlowDebugSessions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of active debug sessions.
+     * @return a list of active debug sessions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DataFlowDebugSessionInfo> queryByFactory(String resourceGroupName, String factoryName);
 
@@ -60,7 +60,7 @@ public interface DataFlowDebugSessions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of active debug sessions.
+     * @return a list of active debug sessions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DataFlowDebugSessionInfo> queryByFactory(
         String resourceGroupName, String factoryName, Context context);
@@ -89,7 +89,7 @@ public interface DataFlowDebugSessions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure for starting data flow debug session.
+     * @return response body structure for starting data flow debug session along with {@link Response}.
      */
     Response<AddDataFlowToDebugSessionResponse> addDataFlowWithResponse(
         String resourceGroupName, String factoryName, DataFlowDebugPackage request, Context context);
@@ -116,7 +116,7 @@ public interface DataFlowDebugSessions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String factoryName, DeleteDataFlowDebugSessionRequest request, Context context);

@@ -1,6 +1,6 @@
 # Release History
 
-## 2.4.0-beta.1 (Unreleased)
+## 2.5.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,39 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.4.1 (2022-03-16)
+
+### Bugs Fixed
+
+- Fixed issue where EndpointStates were not emitted serially. ([#24762](https://github.com/Azure/azure-sdk-for-java/issues/24762))
+- Fixed issue of not emitting the shutdown signal serially when ClosedChannelException thrown concurrently. ([#27320](https://github.com/Azure/azure-sdk-for-java/issues/27320))
+- Fixed the issue of leaving downstream in an unterminated state when RequestResponseChannel is disposed after invoking sendWithAck ([27482](https://github.com/Azure/azure-sdk-for-java/issues/27482))
+- Removing CustomIOHandler.onUnhandled which listens to every proton-j reactor event that could cause excessive logging. The underlying library could encounter `NullPointerException` if the selector is null.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.25.0` to `1.26.0`.
+
+## 2.4.0 (2022-02-04)
+
+### Features Added
+
+- Added `AmqpTrait` interface that represent common cross-cutting (and AMQP-related) aspects of functionality offered
+  by libraries in the Azure SDK for Java.
+- Added structured logging to generate more easily queried log messages. ([#26561](https://github.com/Azure/azure-sdk-for-java/pull/26561))
+
+### Bugs Fixed
+
+- Fixed a bug which resulted in higher than needed memory consumption when sending messages. ([#26373](https://github.com/Azure/azure-sdk-for-java/pull/26373))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.1` to `1.25.0`.
 
 ## 2.3.7 (2022-01-11)
 

@@ -34,7 +34,7 @@ public final class EventHub extends DigitalTwinsEndpointResourceProperties {
 
     /*
      * The URL of the EventHub namespace for identity-based authentication. It
-     * must include the protocol sb://
+     * must include the protocol 'sb://'.
      */
     @JsonProperty(value = "endpointUri")
     private String endpointUri;
@@ -92,7 +92,7 @@ public final class EventHub extends DigitalTwinsEndpointResourceProperties {
 
     /**
      * Get the endpointUri property: The URL of the EventHub namespace for identity-based authentication. It must
-     * include the protocol sb://.
+     * include the protocol 'sb://'.
      *
      * @return the endpointUri value.
      */
@@ -102,7 +102,7 @@ public final class EventHub extends DigitalTwinsEndpointResourceProperties {
 
     /**
      * Set the endpointUri property: The URL of the EventHub namespace for identity-based authentication. It must
-     * include the protocol sb://.
+     * include the protocol 'sb://'.
      *
      * @param endpointUri the endpointUri value to set.
      * @return the EventHub object itself.

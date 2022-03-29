@@ -25,26 +25,26 @@
       }
     },
     "tenantId": {
-      "type": "String",
+      "type": "string",
       "metadata": {
         "description": "The tenant id to which the application and resources belong."
       }
     },
     "testApplicationId": {
-      "type": "String",
+      "type": "string",
       "metadata": {
         "description": "The application client id used to run tests."
       }
     },
     "testApplicationSecret": {
-      "type": "String",
+      "type": "string",
       "metadata": {
         "description": "The application client secret used to run tests."
       }
     },
-    "formRecognizerEndpointSuffix": {
+    "cognitiveServicesEndpointSuffix": {
       "defaultValue": ".cognitiveservices.azure.com/",
-      "type": "String"
+      "type": "string"
     },
     "blobStorageAccount": {
       "type": "string",
@@ -54,14 +54,27 @@
       "type": "string",
       "defaultValue": "trainingdata"
     },
+    "errorTrainingDataContainer": {
+      "type": "string",
+      "defaultValue": "trainingdata-error"
+    },
     "blobResourceId": {
       "type": "string",
-      "defaultValue": "[resourceId('2cd617ea-1866-46b1-90e3-fffb087ebf9b', 'TrainingData', 'Microsoft.Storage/storageAccounts', parameters('blobStorageAccount'))]"
+      "defaultValue": "[resourceId(subscription().subscriptionId, 'TrainingData', 'Microsoft.Storage/storageAccounts', parameters('blobStorageAccount'))]"
     },
     "trainingDataSasProperties": {
       "type": "object",
       "defaultValue": {
         "canonicalizedResource": "[concat('/blob/', parameters('blobStorageAccount'), '/', parameters('trainingDataContainer'))]",
+        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'PT2H')]",
+        "signedPermission": "rl",
+        "signedResource": "c"
+      }
+    },
+    "errorTrainingDataSasProperties": {
+      "type": "object",
+      "defaultValue": {
+        "canonicalizedResource": "[concat('/blob/', parameters('blobStorageAccount'), '/', parameters('errorTrainingDataContainer'))]",
         "signedExpiry": "[dateTimeAdd(utcNow('u'), 'PT2H')]",
         "signedPermission": "rl",
         "signedResource": "c"
@@ -111,7 +124,7 @@
     "authorizationApiVersion": "2018-09-01-preview",
     "formRecognizerBaseName": "[concat('formRecognizer', parameters('baseName'))]",
     "formRecognizerApiVersion": "2017-04-18",
-    "azureFormRecognizerUrl": "[concat('https://', variables('formRecognizerBaseName'), parameters('formRecognizerEndpointSuffix'))]",
+    "azureFormRecognizerUrl": "[concat('https://', variables('formRecognizerBaseName'), parameters('cognitiveServicesEndpointSuffix'))]",
     "cognitiveServiceUserRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/a97b65f3-24c7-4388-baec-2e87135dc908')]"
   },
   "resources": [
@@ -143,15 +156,15 @@
   ],
   "outputs": {
     "AZURE_TENANT_ID": {
-      "type": "String",
+      "type": "string",
       "value": "[parameters('tenantId')]"
     },
     "AZURE_CLIENT_ID": {
-      "type": "String",
+      "type": "string",
       "value": "[parameters('testApplicationId')]"
     },
     "AZURE_CLIENT_SECRET": {
-      "type": "String",
+      "type": "string",
       "value": "[parameters('testApplicationSecret')]"
     },
     "AZURE_FORM_RECOGNIZER_API_KEY": {
@@ -165,6 +178,10 @@
     "FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL": {
       "type": "string",
       "value": "[concat(reference(parameters('blobResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('trainingDataContainer'), '?', listServiceSas(parameters('blobResourceId'), '2019-06-01', parameters('trainingDataSasProperties')).serviceSasToken)]"
+    },
+    "FORM_RECOGNIZER_ERROR_TRAINING_BLOB_CONTAINER_SAS_URL": {
+      "type": "string",
+      "value": "[concat(reference(parameters('blobResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('errorTrainingDataContainer'), '?', listServiceSas(parameters('blobResourceId'), '2019-06-01', parameters('errorTrainingDataSasProperties')).serviceSasToken)]"
     },
     "FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL": {
       "type": "string",

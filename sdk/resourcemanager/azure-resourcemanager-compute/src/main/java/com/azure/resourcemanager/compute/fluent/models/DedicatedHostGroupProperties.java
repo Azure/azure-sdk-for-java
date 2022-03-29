@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.DedicatedHostGroupInstanceView;
 import com.azure.resourcemanager.compute.models.SubResourceReadOnly;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Dedicated Host Group Properties. */
 @Fluent
 public final class DedicatedHostGroupProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedHostGroupProperties.class);
-
     /*
      * Number of fault domains that the host group can span.
      */

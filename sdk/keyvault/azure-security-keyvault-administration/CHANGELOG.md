@@ -1,6 +1,6 @@
 # Release History
 
-## 4.1.0-beta.4 (Unreleased)
+## 4.1.0-beta.6 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,49 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.0.8 (2022-03-17)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.26.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.8`
+
+## 4.1.0-beta.5 (2022-02-11)
+
+### Features added
+- Implemented new traits (micro-interfaces) in `KeyVaultAccessControlClientBuilder` and `KeyVaultBackupClientBuilder`. This makes the experience of using client builders more consistent across libraries in the Azure SDK for Java.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.25.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.7`
+
+## 4.0.7 (2022-02-11)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.25.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.7`
+
+## 4.1.0-beta.4 (2022-01-13)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.24.1`
+- Upgraded `azure-core-http-netty` dependency to `1.11.6`
+
+## 4.0.6 (2022-01-12)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.24.1`
+- Upgraded `azure-core-http-netty` dependency to `1.11.6`
 
 ## 4.1.0-beta.3 (2021-11-12)
 

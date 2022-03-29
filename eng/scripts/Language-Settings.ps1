@@ -5,6 +5,9 @@ $packagePattern = "*.pom"
 $MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/main/_data/releases/latest/java-packages.csv"
 $BlobStorageUrl = "https://azuresdkdocs.blob.core.windows.net/%24web?restype=container&comp=list&prefix=java%2F&delimiter=%2F"
 $CampaignTag = Resolve-Path (Join-Path -Path $PSScriptRoot -ChildPath "../repo-docs/ga_tag.html")
+$packageDownloadUrl = "https://repo1.maven.org/maven2"
+
+. "$PSScriptRoot/docs/Docs-ToC.ps1"
 
 function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory)
 {
@@ -243,7 +246,7 @@ function Update-java-CIConfig($pkgs, $ciRepo, $locationInDocRepo, $monikerId=$nu
     }
     else {
       $newItem = New-Object PSObject -Property @{
-        packageDownloadUrl = "https://repo1.maven.org/maven2"
+        packageDownloadUrl = $packageDownloadUrl
         packageGroupId = $releasingPkg.GroupId
         packageArtifactId = $releasingPkg.PackageId
         packageVersion = $releasingPkg.PackageVersion
@@ -263,6 +266,9 @@ function Update-java-CIConfig($pkgs, $ciRepo, $locationInDocRepo, $monikerId=$nu
 $PackageExclusions = @{
   "azure-core-experimental" = "Don't want to include an experimental package.";
   "azure-sdk-bom" = "Don't want to include the sdk bom.";
+  "azure-storage-internal-avro" = "No external APIs.";
+  "azure-cosmos-spark_3-1_2-12" = "Javadoc dependency issue.";
+  "azure-cosmos-spark_3-2_2-12" = "Javadoc dependency issue.";
 }
 
 # Validates if the package will succeed in the CI build by validating the
@@ -533,7 +539,7 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
       packageArtifactId = $packageName
       packageGroupId = $packageGroupId
       packageVersion = $packageVersion
-      packageDownloadUrl = "https://repo1.maven.org/maven2"
+      packageDownloadUrl = $packageDownloadUrl
     }
 
     $outputPackages += $package
@@ -604,6 +610,7 @@ function SetPackageVersion ($PackageName, $Version, $ServiceDirectory, $ReleaseD
   }
   python "$EngDir/versioning/set_versions.py" --build-type $BuildType --new-version $Version --ai $PackageName --gi $GroupId
   python "$EngDir/versioning/update_versions.py" --update-type library --build-type $BuildType --sr
+  python "$EngDir/versioning/update_versions.py" --update-type library --build-type $BuildType --tf $PackageProperties.ReadMePath
   & "$EngCommonScriptsDir/Update-ChangeLog.ps1" -Version $Version -ServiceDirectory $ServiceDirectory -PackageName $PackageName `
   -Unreleased $False -ReplaceLatestEntryTitle $ReplaceLatestEntryTitle -ReleaseDate $ReleaseDate
 }

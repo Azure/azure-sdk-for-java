@@ -29,11 +29,13 @@ public class ListConversions extends SampleBase {
     public void listConversions() {
         logger.info("Successful conversions since yesterday:");
 
+        // BEGIN: readme-sample-listConversions
         for (AssetConversion conversion : client.listConversions()) {
             if ((conversion.getStatus() == AssetConversionStatus.SUCCEEDED)
                 && (conversion.getCreationTime().isAfter(OffsetDateTime.now().minusDays(1)))) {
                 logger.info("Output Asset URL: {}", conversion.getOutputAssetUrl());
             }
         }
+        // END: readme-sample-listConversions
     }
 }

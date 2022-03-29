@@ -5,11 +5,13 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncClientEncryptionKey;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
@@ -17,7 +19,6 @@ import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosBatch;
-import com.azure.cosmos.models.CosmosBatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
 import com.azure.cosmos.models.CosmosBatchRequestOptions;
 import com.azure.cosmos.models.CosmosBatchResponse;
@@ -25,6 +26,7 @@ import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkExecutionThresholdsState;
 import com.azure.cosmos.models.CosmosBulkItemResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.CosmosClientEncryptionKeyResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -33,14 +35,17 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.CosmosPagedFlux;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
@@ -80,6 +85,12 @@ public class ImplementationBridgeHelpers {
             void setCosmosClientApiType(CosmosClientBuilder builder, ApiType apiType);
 
             ApiType getCosmosClientApiType(CosmosClientBuilder builder);
+
+            ConnectionPolicy getConnectionPolicy(CosmosClientBuilder builder);
+
+            Configs getConfigs(CosmosClientBuilder builder);
+
+            ConsistencyLevel getConsistencyLevel(CosmosClientBuilder builder);
         }
     }
 
@@ -140,6 +151,9 @@ public class ImplementationBridgeHelpers {
             int getIoThreadCountPerCoreFactor(DirectConnectionConfig config);
             DirectConnectionConfig setIoThreadCountPerCoreFactor(
                 DirectConnectionConfig config, int ioThreadCountPerCoreFactor);
+            int getIoThreadPriority(DirectConnectionConfig config);
+            DirectConnectionConfig setIoThreadPriority(
+                DirectConnectionConfig config, int ioThreadPriority);
         }
     }
 
@@ -174,6 +188,12 @@ public class ImplementationBridgeHelpers {
             Map<String, String> getHeader(CosmosQueryRequestOptions queryRequestOptions);
             boolean isQueryPlanRetrievalDisallowed(CosmosQueryRequestOptions queryRequestOptions);
             CosmosQueryRequestOptions disallowQueryPlanRetrieval(CosmosQueryRequestOptions queryRequestOptions);
+            UUID getCorrelationActivityId(CosmosQueryRequestOptions queryRequestOptions);
+            CosmosQueryRequestOptions setCorrelationActivityId(CosmosQueryRequestOptions queryRequestOptions, UUID correlationActivityId);
+            boolean isEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions);
+            CosmosQueryRequestOptions setEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions, boolean emptyPageDiagnosticsEnabled);
+            <T> Function<JsonNode, T> getItemFactoryMethod(CosmosQueryRequestOptions queryRequestOptions, Class<T> classOfT);
+            CosmosQueryRequestOptions setItemFactoryMethod(CosmosQueryRequestOptions queryRequestOptions, Function<JsonNode, ?> factoryMethod);
         }
     }
 
@@ -204,6 +224,10 @@ public class ImplementationBridgeHelpers {
         public interface CosmosChangeFeedRequestOptionsAccessor {
             CosmosChangeFeedRequestOptions setHeader(CosmosChangeFeedRequestOptions changeFeedRequestOptions, String name, String value);
             Map<String, String> getHeader(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
+            void setOperationContext(CosmosChangeFeedRequestOptions changeFeedRequestOptions, OperationContextAndListenerTuple operationContext);
+            OperationContextAndListenerTuple getOperationContext(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
+            <T> Function<JsonNode, T> getItemFactoryMethod(CosmosChangeFeedRequestOptions queryRequestOptions, Class<T> classOfT);
+            CosmosChangeFeedRequestOptions setItemFactoryMethod(CosmosChangeFeedRequestOptions queryRequestOptions, Function<JsonNode, ?> factoryMethod);
         }
     }
 
@@ -294,6 +318,13 @@ public class ImplementationBridgeHelpers {
                 CosmosBulkExecutionOptions options, int mxConcurrentCosmosPartitions);
 
             Duration getMaxMicroBatchInterval(CosmosBulkExecutionOptions options);
+
+            CosmosBulkExecutionOptions setHeader(CosmosBulkExecutionOptions cosmosBulkExecutionOptions,
+                                                 String name, String value);
+
+            Map<String, String> getHeader(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
+
+            Map<String, String> getCustomOptions(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
         }
     }
 
@@ -395,6 +426,7 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosContainerPropertiesAccessor {
             String getSelfLink(CosmosContainerProperties cosmosContainerProperties);
+            void setSelfLink(CosmosContainerProperties cosmosContainerProperties, String selfLink);
         }
     }
 
@@ -457,6 +489,7 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosAsyncDatabaseAccessor {
             CosmosAsyncClient getCosmosAsyncClient(CosmosAsyncDatabase cosmosAsyncDatabase);
+            String getLink(CosmosAsyncDatabase cosmosAsyncDatabase);
         }
     }
 
@@ -588,6 +621,7 @@ public class ImplementationBridgeHelpers {
 
         public interface FeedResponseAccessor {
             <T> boolean getNoChanges(FeedResponse<T> feedResponse);
+            <TNew, T> FeedResponse<TNew> convertGenericType(FeedResponse<T> feedResponse, Function<T, TNew> conversion);
         }
     }
 
@@ -724,6 +758,9 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosBulkItemResponseAccessor {
             ObjectNode getResourceObject(CosmosBulkItemResponse cosmosBulkItemResponse);
+
+            void setResourceObject(CosmosBulkItemResponse cosmosBulkItemResponse,
+                                   ObjectNode objectNode);
         }
     }
 
@@ -755,6 +792,69 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosBatchResponseAccessor {
             List<CosmosBatchOperationResult> getResults(CosmosBatchResponse cosmosBatchResponse);
+        }
+    }
+
+    public static final class CosmosAsyncClientEncryptionKeyHelper {
+        private static CosmosAsyncClientEncryptionKeyAccessor accessor;
+
+        private CosmosAsyncClientEncryptionKeyHelper() {
+        }
+
+        static {
+            ensureClassLoaded(CosmosAsyncClientEncryptionKey.class);
+        }
+
+        public static CosmosAsyncClientEncryptionKeyAccessor getCosmosAsyncClientEncryptionKeyAccessor() {
+            if (accessor == null) {
+                throw new IllegalStateException("CosmosAsyncClientEncryptionKeyAccessor is not initialized yet!");
+            }
+
+            return accessor;
+        }
+
+        public static void setCosmosAsyncClientEncryptionKeyAccessor(final CosmosAsyncClientEncryptionKeyAccessor newAccessor) {
+            if (accessor != null) {
+                throw new IllegalStateException("CosmosAsyncClientEncryptionKeyAccessor already initialized!");
+            }
+
+            accessor = newAccessor;
+        }
+
+        public interface CosmosAsyncClientEncryptionKeyAccessor {
+            Mono<CosmosClientEncryptionKeyResponse> readClientEncryptionKey(CosmosAsyncClientEncryptionKey cosmosAsyncClientEncryptionKey,
+                                                                            RequestOptions requestOptions);
+        }
+    }
+
+    public static final class CosmosExceptionHelper {
+        private static CosmosExceptionAccessor accessor;
+
+        private CosmosExceptionHelper() {
+        }
+
+        static {
+            ensureClassLoaded(CosmosException.class);
+        }
+
+        public static CosmosExceptionAccessor getCosmosExceptionAccessor() {
+            if (accessor == null) {
+                throw new IllegalStateException("CosmosExceptionAccessor is not initialized yet!");
+            }
+
+            return accessor;
+        }
+
+        public static void setCosmosExceptionAccessor(final CosmosExceptionAccessor newAccessor) {
+            if (accessor != null) {
+                throw new IllegalStateException("CosmosExceptionAccessor already initialized!");
+            }
+
+            accessor = newAccessor;
+        }
+
+        public interface CosmosExceptionAccessor {
+            CosmosException createCosmosException(int statusCode, Exception innerException);
         }
     }
 

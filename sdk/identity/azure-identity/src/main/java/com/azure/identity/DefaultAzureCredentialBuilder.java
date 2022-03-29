@@ -7,6 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.implementation.IdentityLogOptionsImpl;
 import com.azure.identity.implementation.util.IdentityConstants;
 
 import java.util.ArrayList;
@@ -19,9 +20,11 @@ import java.util.concurrent.ForkJoinPool;
  * @see DefaultAzureCredential
  */
 public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<DefaultAzureCredentialBuilder> {
+    private static final ClientLogger LOGGER = new ClientLogger(DefaultAzureCredentialBuilder.class);
+
     private String tenantId;
     private String managedIdentityClientId;
-    private final ClientLogger logger = new ClientLogger(DefaultAzureCredentialBuilder.class);
+    private String managedIdentityResourceId;
 
     /**
      * Creates an instance of a DefaultAzureCredentialBuilder.
@@ -30,6 +33,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
         tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);
         managedIdentityClientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
+        this.identityClientOptions.setIdentityLogOptionsImpl(new IdentityLogOptionsImpl(true));
     }
 
     /**
@@ -71,7 +75,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      */
     public DefaultAzureCredentialBuilder intelliJKeePassDatabasePath(String databasePath) {
         if (CoreUtils.isNullOrEmpty(databasePath)) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("The KeePass database path is either empty or not configured."
                                                    + " Please configure it on the builder."));
         }
@@ -85,11 +89,29 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      * will be used. If neither is set, the default value is null and will only work with system assigned
      * managed identities and not user assigned managed identities.
      *
+     * Only one of managedIdentityClientId and managedIdentityResourceId can be specified.
+     *
      * @param clientId the client ID
      * @return the DefaultAzureCredentialBuilder itself
      */
     public DefaultAzureCredentialBuilder managedIdentityClientId(String clientId) {
         this.managedIdentityClientId = clientId;
+        return this;
+    }
+
+    /**
+     * Specifies the resource ID of user assigned or system assigned identity, when this credential is running
+     * in an environment with managed identities. If unset, the value in the AZURE_CLIENT_ID environment variable
+     * will be used. If neither is set, the default value is null and will only work with system assigned
+     * managed identities and not user assigned managed identities.
+     *
+     * Only one of managedIdentityResourceId and managedIdentityClientId can be specified.
+     *
+     * @param resourceId the resource ID
+     * @return the DefaultAzureCredentialBuilder itself
+     */
+    public DefaultAzureCredentialBuilder managedIdentityResourceId(String resourceId) {
+        this.managedIdentityResourceId = resourceId;
         return this;
     }
 
@@ -118,15 +140,20 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      * Creates new {@link DefaultAzureCredential} with the configured options set.
      *
      * @return a {@link DefaultAzureCredential} with the current configurations.
+     * @throws IllegalStateException if clientId and resourceId are both set.
      */
     public DefaultAzureCredential build() {
+        if (managedIdentityClientId != null && managedIdentityResourceId != null) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("Only one of managedIdentityResourceId and managedIdentityClientId can be specified."));
+        }
         return new DefaultAzureCredential(getCredentialsChain());
     }
 
     private ArrayList<TokenCredential> getCredentialsChain() {
         ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(6);
         output.add(new EnvironmentCredential(identityClientOptions));
-        output.add(new ManagedIdentityCredential(managedIdentityClientId, identityClientOptions));
+        output.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId, identityClientOptions));
         output.add(new SharedTokenCacheCredential(null, IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID,
             tenantId, identityClientOptions));
         output.add(new IntelliJCredential(tenantId, identityClientOptions));

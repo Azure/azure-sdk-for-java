@@ -46,7 +46,7 @@ public interface DataMaskingRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Sql pool data masking rule.
+     * @return represents a Sql pool data masking rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DataMaskingRuleInner> createOrUpdateWithResponse(
@@ -84,7 +84,7 @@ public interface DataMaskingRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific Sql pool data masking rule.
+     * @return the specific Sql pool data masking rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DataMaskingRuleInner> getWithResponse(

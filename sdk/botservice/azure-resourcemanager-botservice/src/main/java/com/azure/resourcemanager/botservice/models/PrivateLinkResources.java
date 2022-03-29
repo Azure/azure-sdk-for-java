@@ -30,7 +30,7 @@ public interface PrivateLinkResources {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a Bot.
+     * @return the private link resources that need to be created for a Bot along with {@link Response}.
      */
     Response<PrivateLinkResourceListResult> listByBotResourceWithResponse(
         String resourceGroupName, String resourceName, Context context);

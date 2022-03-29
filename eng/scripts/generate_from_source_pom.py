@@ -42,14 +42,25 @@ class Project:
         if dependent not in self.dependents:
             self.dependents.append(dependent)
 
+class ArtifactVersion:
+    def __init__(self, dependency_version: str, current_version: str):
+        self.dependency_version = dependency_version
+        self.current_version = current_version
+    
+    def matches_version(self, version: str, match_any_version: bool = False):
+        if match_any_version:
+            return version == self.dependency_version or version == self.current_version
+        
+        return version == self.current_version
+
 default_project = Project(None, None, None, None)
 
 # azure-client-sdk-parent, azure-perf-test-parent, spring-boot-starter-parent, and azure-spring-boot-test-parent are
 # valid parent POMs for Track 2 libraries.
-valid_parents = ['com.azure:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent', 'org.springframework.boot:spring-boot-starter-parent', 'com.azure.spring:azure-spring-boot-test-parent']
+valid_parents = ['com.azure:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent', 'org.springframework.boot:spring-boot-starter-parent', 'com.azure.spring:azure-spring-boot-test-parent', 'com.azure.cosmos.spark:azure-cosmos-spark_3_2-12']
 
 # List of parent POMs that should be retained as projects to create a full from source POM.
-parent_pom_identifiers = ['com.azure:azure-sdk-parent', 'com.azure:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent', 'com.azure.spring:azure-spring-boot-test-parent']
+parent_pom_identifiers = ['com.azure:azure-sdk-parent', 'com.azure:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent', 'com.azure.spring:azure-spring-boot-test-parent', 'com.azure.cosmos.spark:azure-cosmos-spark_3_2-12']
 
 # From this file get to the root path of the repo.
 root_path = os.path.normpath(os.path.abspath(__file__) + '/../../../')
@@ -80,13 +91,13 @@ pom_file_end = '''  </modules>
 maven_xml_namespace = '{http://maven.apache.org/POM/4.0.0}'
 
 # Function that creates the aggregate POM.
-def create_from_source_pom(project_list: str, set_pipeline_variable: str, set_skip_linting_projects: str):
+def create_from_source_pom(project_list: str, set_pipeline_variable: str, set_skip_linting_projects: str, match_any_version: bool):
     project_list_identifiers = project_list.split(',')
 
     # Get the artifact identifiers from client_versions.txt to act as our source of truth.
-    artifact_identifier_to_source_version = load_client_artifact_identifiers()
+    artifact_identifier_to_version = load_client_artifact_identifiers()
 
-    projects = create_projects(project_list_identifiers, artifact_identifier_to_source_version)
+    projects = create_projects(project_list_identifiers, artifact_identifier_to_version, match_any_version)
 
     dependent_modules: Set[str] = set()
 
@@ -109,7 +120,7 @@ def create_from_source_pom(project_list: str, set_pipeline_variable: str, set_sk
     add_source_projects(source_projects, dependent_modules, projects)
     add_source_projects(source_projects, dependency_modules, projects)
     
-    modules = list(set(sorted([p.module_path for p in source_projects])))
+    modules = sorted(list(set([p.module_path for p in source_projects])))
     with open(file=client_from_source_pom_path, mode='w') as fromSourcePom:
         fromSourcePom.write(pom_file_start)
 
@@ -133,7 +144,7 @@ def create_from_source_pom(project_list: str, set_pipeline_variable: str, set_sk
 
 
 # Function that loads and parses client_versions.txt into a artifact identifier - source version mapping.
-def load_client_artifact_identifiers() -> Dict[str, str]:
+def load_client_artifact_identifiers() -> Dict[str, ArtifactVersion]:
     artifact_identifiers: Dict[str, str] = {}
     with open(file=client_versions_path, mode='r') as f:
         for line in f:
@@ -147,13 +158,13 @@ def load_client_artifact_identifiers() -> Dict[str, str]:
             splitVersionLine = stripped_line.split(";")
 
             # From the split lines create the artifact identifier - source version map entry.
-            artifact_identifiers[splitVersionLine[0]]=splitVersionLine[2]
+            artifact_identifiers[splitVersionLine[0]] = ArtifactVersion(splitVersionLine[1], splitVersionLine[2])
 
     return artifact_identifiers
 
 # Function that creates the Projects within the repository.
 # Projects contain a Maven identifier, module path, parent POM, its dependency Maven identifiers, and Maven identifiers for projects dependent on it.
-def create_projects(project_list_identifiers: list, artifact_identifier_to_source_version: dict) -> Dict[str, Project]:
+def create_projects(project_list_identifiers: list, artifact_identifier_to_version: Dict[str, ArtifactVersion], match_any_version: bool) -> Dict[str, Project]:
     projects: Dict[str, Project] = {}
 
     for root, _, files in os.walk(root_path):
@@ -166,7 +177,7 @@ def create_projects(project_list_identifiers: list, artifact_identifier_to_sourc
 
             # Only parse files that are pom.xml files.
             if (file_name.startswith('pom') and file_name.endswith('.xml')):
-                project = create_project_for_pom(file_path, project_list_identifiers, artifact_identifier_to_source_version)
+                project = create_project_for_pom(file_path, project_list_identifiers, artifact_identifier_to_version, match_any_version)
                 if project is not None:
                     projects[project.identifier] = project
 
@@ -178,7 +189,7 @@ def create_projects(project_list_identifiers: list, artifact_identifier_to_sourc
 
     return projects
 
-def create_project_for_pom(pom_path: str, project_list_identifiers: list, artifact_identifier_to_source_version: dict):
+def create_project_for_pom(pom_path: str, project_list_identifiers: list, artifact_identifier_to_version: Dict[str, ArtifactVersion], match_any_version: bool):
     if 'eng' in pom_path.split(os.sep):
         return
 
@@ -208,12 +219,12 @@ def create_project_for_pom(pom_path: str, project_list_identifiers: list, artifa
             continue
 
         dependency_identifier = create_artifact_identifier(dependency)
-        if not dependency_identifier in artifact_identifier_to_source_version:
+        if not dependency_identifier in artifact_identifier_to_version:
             continue
 
         dependency_version = get_dependency_version(dependency)
 
-        if dependency_version != artifact_identifier_to_source_version[dependency_identifier]:
+        if not artifact_identifier_to_version[dependency_identifier].matches_version(dependency_version, match_any_version):
             continue
 
         project.add_dependency(dependency_identifier)
@@ -298,11 +309,12 @@ def main():
     parser.add_argument('--project-list', '--pl', type=str)
     parser.add_argument('--set-pipeline-variable', type=str)
     parser.add_argument('--set-skip-linting-projects', type=str)
+    parser.add_argument('--match-any-version', action='store_true')
     args = parser.parse_args()
     if args.project_list == None:
         raise ValueError('Missing project list.')
     start_time = time.time()
-    create_from_source_pom(args.project_list, args.set_pipeline_variable, args.set_skip_linting_projects)
+    create_from_source_pom(args.project_list, args.set_pipeline_variable, args.set_skip_linting_projects, args.match_any_version)
     elapsed_time = time.time() - start_time
 
     print('Effective From Source POM File')

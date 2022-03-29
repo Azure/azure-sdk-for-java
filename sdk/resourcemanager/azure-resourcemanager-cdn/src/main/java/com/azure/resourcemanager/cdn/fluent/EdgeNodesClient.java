@@ -18,7 +18,7 @@ public interface EdgeNodesClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list CDN edgenodes.
+     * @return result of the request to list CDN edgenodes as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<EdgeNodeInner> listAsync();
@@ -28,7 +28,7 @@ public interface EdgeNodesClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list CDN edgenodes.
+     * @return result of the request to list CDN edgenodes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<EdgeNodeInner> list();
@@ -40,7 +40,7 @@ public interface EdgeNodesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list CDN edgenodes.
+     * @return result of the request to list CDN edgenodes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<EdgeNodeInner> list(Context context);

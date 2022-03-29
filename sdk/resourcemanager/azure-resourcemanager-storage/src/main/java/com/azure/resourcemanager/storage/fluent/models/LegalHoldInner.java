@@ -6,15 +6,12 @@ package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The LegalHold property of a blob container. */
 @Fluent
 public final class LegalHoldInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LegalHoldInner.class);
-
     /*
      * The hasLegalHold public property is set to true by SRP if there are at
      * least one existing tag. The hasLegalHold public property is set to false
@@ -31,6 +28,14 @@ public final class LegalHoldInner {
      */
     @JsonProperty(value = "tags", required = true)
     private List<String> tags;
+
+    /*
+     * When enabled, new blocks can be written to both 'Append and Bock Blobs'
+     * while maintaining legal hold protection and compliance. Only new blocks
+     * can be added and any existing blocks cannot be modified or deleted.
+     */
+    @JsonProperty(value = "allowProtectedAppendWritesAll")
+    private Boolean allowProtectedAppendWritesAll;
 
     /**
      * Get the hasLegalHold property: The hasLegalHold public property is set to true by SRP if there are at least one
@@ -64,15 +69,41 @@ public final class LegalHoldInner {
     }
 
     /**
+     * Get the allowProtectedAppendWritesAll property: When enabled, new blocks can be written to both 'Append and Bock
+     * Blobs' while maintaining legal hold protection and compliance. Only new blocks can be added and any existing
+     * blocks cannot be modified or deleted.
+     *
+     * @return the allowProtectedAppendWritesAll value.
+     */
+    public Boolean allowProtectedAppendWritesAll() {
+        return this.allowProtectedAppendWritesAll;
+    }
+
+    /**
+     * Set the allowProtectedAppendWritesAll property: When enabled, new blocks can be written to both 'Append and Bock
+     * Blobs' while maintaining legal hold protection and compliance. Only new blocks can be added and any existing
+     * blocks cannot be modified or deleted.
+     *
+     * @param allowProtectedAppendWritesAll the allowProtectedAppendWritesAll value to set.
+     * @return the LegalHoldInner object itself.
+     */
+    public LegalHoldInner withAllowProtectedAppendWritesAll(Boolean allowProtectedAppendWritesAll) {
+        this.allowProtectedAppendWritesAll = allowProtectedAppendWritesAll;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (tags() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property tags in model LegalHoldInner"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LegalHoldInner.class);
 }

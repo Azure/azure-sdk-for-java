@@ -6,14 +6,11 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Key Vault Key Url to be used for server side encryption of Managed Disks and Snapshots. */
 @Fluent
 public final class KeyForDiskEncryptionSet {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyForDiskEncryptionSet.class);
-
     /*
      * Resource id of the KeyVault containing the key or secret. This property
      * is optional and cannot be used if the KeyVault subscription is not the
@@ -84,9 +81,11 @@ public final class KeyForDiskEncryptionSet {
             sourceVault().validate();
         }
         if (keyUrl() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property keyUrl in model KeyForDiskEncryptionSet"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(KeyForDiskEncryptionSet.class);
 }

@@ -6,19 +6,25 @@ package com.azure.data.schemaregistry.apacheavro;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.experimental.models.MessageWithMetadata;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestContextManager;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
 import com.azure.data.schemaregistry.SchemaRegistryClientBuilder;
+import com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person;
+import com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person2;
 import com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCard;
 import com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCardSuit;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.apache.avro.Schema;
 import org.apache.avro.SchemaBuilder;
 import org.apache.avro.generic.GenericData;
@@ -33,21 +39,24 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.nio.BufferUnderflowException;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Stream;
 
+import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroSerializer.AVRO_MIME_TYPE;
 import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroSerializer.RECORD_FORMAT_INDICATOR;
 import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroSerializer.RECORD_FORMAT_INDICATOR_SIZE;
 import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroSerializer.SCHEMA_ID_SIZE;
@@ -58,7 +67,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -73,7 +81,7 @@ public class SchemaRegistryApacheAvroSerializerTest {
     private static final DecoderFactory DECODER_FACTORY = DecoderFactory.get();
     private static final EncoderFactory ENCODER_FACTORY = EncoderFactory.get();
 
-    private Schema.Parser parser;
+    private InterceptorManager interceptorManager;
     private AutoCloseable mocksCloseable;
     private TestInfo testInfo;
 
@@ -99,20 +107,23 @@ public class SchemaRegistryApacheAvroSerializerTest {
 
         this.testInfo = testInfo;
         this.mocksCloseable = MockitoAnnotations.openMocks(this);
-        this.parser = new Schema.Parser();
     }
 
     @AfterEach
     public void afterEach() throws Exception {
+        if (interceptorManager != null) {
+            interceptorManager.close();
+        }
+
         if (mocksCloseable != null) {
             mocksCloseable.close();
         }
     }
 
     @Test
-    void testRegistryGuidPrefixedToPayload() throws IOException {
+    public void testRegistryGuidPrefixedToPayload() {
         // manually add SchemaRegistryObject into mock registry client cache
-        final AvroSerializer avroSerializer = new AvroSerializer(false, new Schema.Parser(),
+        final AvroSerializer avroSerializer = new AvroSerializer(false,
             ENCODER_FACTORY, DECODER_FACTORY);
         final PlayingCard playingCard = new PlayingCard(true, 10, PlayingCardSuit.DIAMONDS);
         final Schema playingClassSchema = PlayingCard.getClassSchema();
@@ -122,45 +133,40 @@ public class SchemaRegistryApacheAvroSerializerTest {
         when(client.getSchemaProperties(MOCK_SCHEMA_GROUP, playingClassSchema.getFullName(),
             playingClassSchema.toString(), SchemaFormat.AVRO)).thenReturn(Mono.just(registered));
 
-        final SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializer(client,
+        final String expectedContentType = AVRO_MIME_TYPE + "+" + MOCK_GUID;
+        final SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializer(client,
             avroSerializer, serializerOptions);
 
-        try (ByteArrayOutputStream payload = new ByteArrayOutputStream()) {
-            StepVerifier.create(serializer.serializeAsync(payload, playingCard))
-                .verifyComplete();
-
-            final ByteBuffer buffer = ByteBuffer.wrap(payload.toByteArray());
-            buffer.get(new byte[RECORD_FORMAT_INDICATOR_SIZE]);
-
-            final byte[] schemaGuidByteArray = new byte[SCHEMA_ID_SIZE];
-            buffer.get(schemaGuidByteArray);
-
-            // guid should match preloaded SchemaRegistryObject guid
-            assertEquals(MOCK_GUID, new String(schemaGuidByteArray));
-        } catch (RuntimeException e) {
-            fail("Exception occurred", e);
-        }
+        StepVerifier.create(encoder.serializeMessageDataAsync(playingCard,
+                TypeReference.createInstance(MessageWithMetadata.class)))
+            .assertNext(message -> {
+                // guid should match preloaded SchemaRegistryObject guid
+                assertEquals(expectedContentType, message.getContentType());
+                assertNotNull(message.getBodyAsBinaryData());
+            })
+            .verifyComplete();
     }
 
     @Test
-    void testNullPayloadThrowsSerializationException() {
+    public void testNullPayloadThrowsSerializationException() {
         // Arrange
-        final AvroSerializer encoder = new AvroSerializer(false, parser, ENCODER_FACTORY,
+        final AvroSerializer avroSerializer = new AvroSerializer(false, ENCODER_FACTORY,
             DECODER_FACTORY);
         final SerializerOptions serializerOptions = new SerializerOptions(MOCK_SCHEMA_GROUP, false, MOCK_CACHE_SIZE);
+        final SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializer(client, avroSerializer,
+            serializerOptions);
 
-        SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializer(
-            client, encoder, serializerOptions);
+        final MessageWithMetadata message = new MessageWithMetadata();
 
         // Act & Assert
-        StepVerifier.create(serializer.serializeAsync(new ByteArrayOutputStream(), null))
+        StepVerifier.create(encoder.serializeMessageDataAsync(message, null))
             .verifyError(NullPointerException.class);
     }
 
     @Test
-    void testIfRegistryNullThenThrow() {
+    public void testIfRegistryNullThenThrow() {
         // Arrange
-        AvroSerializer encoder = new AvroSerializer(false, parser, ENCODER_FACTORY,
+        AvroSerializer encoder = new AvroSerializer(false, ENCODER_FACTORY,
             DECODER_FACTORY);
         final SerializerOptions serializerOptions = new SerializerOptions(MOCK_SCHEMA_GROUP, false, MOCK_CACHE_SIZE);
 
@@ -172,7 +178,7 @@ public class SchemaRegistryApacheAvroSerializerTest {
     @Test
     void testGetSchemaAndDeserialize() throws IOException {
         // manually add SchemaRegistryObject to cache
-        final AvroSerializer decoder = new AvroSerializer(false, parser, ENCODER_FACTORY,
+        final AvroSerializer decoder = new AvroSerializer(false, ENCODER_FACTORY,
             DECODER_FACTORY);
         final PlayingCard playingCard = new PlayingCard(true, 10, PlayingCardSuit.DIAMONDS);
         final String playingClassSchema = PlayingCard.getClassSchema().toString();
@@ -180,7 +186,7 @@ public class SchemaRegistryApacheAvroSerializerTest {
         final SchemaRegistrySchema registrySchema = new SchemaRegistrySchema(registered, playingClassSchema);
         final SerializerOptions serializerOptions = new SerializerOptions(MOCK_SCHEMA_GROUP, true, MOCK_CACHE_SIZE);
 
-        final SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializer(client, decoder,
+        final SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializer(client, decoder,
             serializerOptions);
 
         assertNotNull(registrySchema.getProperties());
@@ -196,77 +202,110 @@ public class SchemaRegistryApacheAvroSerializerTest {
             })
             .verifyComplete();
 
-        final byte[] serializedPayload = getPayload(playingCard);
+        final MockMessage message = getPayload(playingCard);
 
-        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(serializedPayload)) {
-            StepVerifier.create(serializer.deserializeAsync(inputStream, TypeReference.createInstance(PlayingCard.class)))
+        StepVerifier.create(encoder.deserializeMessageDataAsync(message, TypeReference.createInstance(PlayingCard.class)))
+            .assertNext(actual -> {
+                assertEquals(playingCard.getPlayingCardSuit(), actual.getPlayingCardSuit());
+                assertEquals(playingCard.getCardValue(), actual.getCardValue());
+                assertEquals(playingCard.getIsFaceCard(), actual.getIsFaceCard());
+            })
+            .verifyComplete();
+
+        // Deserializing the same message again should work.
+        StepVerifier.create(encoder.deserializeMessageDataAsync(message, TypeReference.createInstance(PlayingCard.class)))
                 .assertNext(actual -> {
                     assertEquals(playingCard.getPlayingCardSuit(), actual.getPlayingCardSuit());
                     assertEquals(playingCard.getCardValue(), actual.getCardValue());
                     assertEquals(playingCard.getIsFaceCard(), actual.getIsFaceCard());
                 })
                 .verifyComplete();
-        }
     }
 
-    @Test
-    void testNullPayload() {
-        final AvroSerializer avroSerializer = new AvroSerializer(false, parser, ENCODER_FACTORY, DECODER_FACTORY);
+    public static Stream<Arguments> testEmptyPayload() {
+        return Stream.of(
+            Arguments.of(
+                new MockMessage(),
+                new MessageWithMetadata().setContentType("avro/binary"))
+        );
+    }
+
+    /**
+     * Checks that an empty payload completes the mono.
+     */
+    @MethodSource
+    @ParameterizedTest
+    public void testEmptyPayload(MessageWithMetadata message) {
+        // Arrange
+        final AvroSerializer avroSerializer = new AvroSerializer(false, ENCODER_FACTORY, DECODER_FACTORY);
         final SerializerOptions serializerOptions = new SerializerOptions(MOCK_SCHEMA_GROUP, true, MOCK_CACHE_SIZE);
 
-        SchemaRegistryApacheAvroSerializer deserializer = new SchemaRegistryApacheAvroSerializer(client,
+        final SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializer(client,
             avroSerializer, serializerOptions);
 
-        // Null payload should just complete the mono.
-        StepVerifier.create(deserializer.deserializeAsync(null, null))
-            .verifyComplete();
+        // Act & Assert
+        StepVerifier.create(encoder.deserializeMessageDataAsync(message, TypeReference.createInstance(PlayingCard.class)))
+            .expectComplete()
+            .verify();
     }
 
+    /**
+     * Checks that an empty payload returns null.
+     */
     @Test
-    void testNullPayloadSync() {
-        final AvroSerializer avroSerializer = new AvroSerializer(false, parser, ENCODER_FACTORY, DECODER_FACTORY);
+    public void testEmptyPayloadSync() {
+        // Arrange
+        final AvroSerializer avroSerializer = new AvroSerializer(false, ENCODER_FACTORY, DECODER_FACTORY);
         final SerializerOptions serializerOptions = new SerializerOptions(MOCK_SCHEMA_GROUP, true, MOCK_CACHE_SIZE);
+        final MockMessage message = new MockMessage();
 
-        SchemaRegistryApacheAvroSerializer deserializer = new SchemaRegistryApacheAvroSerializer(
-            client, avroSerializer, serializerOptions);
+        final SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializer(client,
+            avroSerializer, serializerOptions);
 
-        // Null payload should return null.
-        final Object actual = deserializer.deserialize(null, null);
+        // Act
+        final Person actual = encoder.deserializeMessageData(message, TypeReference.createInstance(Person.class));
 
         // Assert
         assertNull(actual);
     }
 
+    /**
+     * Asserts that NPE is thrown to align with exception behaviour with other languages.
+     */
     @Test
-    void testIfTooShortPayloadThrow() throws IOException {
-        final AvroSerializer avroSerializer = new AvroSerializer(false, parser, ENCODER_FACTORY, DECODER_FACTORY);
+    public void testNullPayload() {
+        final AvroSerializer avroSerializer = new AvroSerializer(false, ENCODER_FACTORY, DECODER_FACTORY);
         final SerializerOptions serializerOptions = new SerializerOptions(MOCK_SCHEMA_GROUP, true, MOCK_CACHE_SIZE);
 
-        SchemaRegistryApacheAvroSerializer deserializer = new SchemaRegistryApacheAvroSerializer(
+        final SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializer(client,
+            avroSerializer, serializerOptions);
+
+        // Null payload should throw NullPointerException.
+        StepVerifier.create(encoder.serializeMessageDataAsync(null, null))
+            .expectError(NullPointerException.class)
+            .verify();
+    }
+
+    /**
+     * Asserts that NPE is thrown to align with exception behaviour with other languages.
+     */
+    @Test
+    public void testNullPayloadSync() {
+        final AvroSerializer avroSerializer = new AvroSerializer(false, ENCODER_FACTORY, DECODER_FACTORY);
+        final SerializerOptions serializerOptions = new SerializerOptions(MOCK_SCHEMA_GROUP, true, MOCK_CACHE_SIZE);
+
+        SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializer(
             client, avroSerializer, serializerOptions);
 
-        try (ByteArrayInputStream inputStream = new ByteArrayInputStream("aaa".getBytes())) {
-            StepVerifier.create(deserializer.deserializeAsync(inputStream, TypeReference.createInstance(String.class)))
-                .verifyError(BufferUnderflowException.class);
-        }
-
-        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-            outputStream.write(new byte[]{0x00, 0x00, 0x00, 0x00});
-            outputStream.write("aa".getBytes());
-
-            try (ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray())) {
-                StepVerifier.create(deserializer.deserializeAsync(inputStream,
-                    TypeReference.createInstance(String.class)))
-                    .verifyError(BufferUnderflowException.class);
-            }
-        }
+        // Null payload should throw NullPointerException.
+        assertThrows(NullPointerException.class, () -> encoder.deserializeMessageData(null, null));
     }
 
     /**
      * Tests that a schema registered in the portal can be deserialized here.
      */
     @Test
-    public void serializeFromPortal() throws IOException {
+    public void serializeFromPortal() {
         // Arrange
         final Schema schema = SchemaBuilder.record("Person").namespace("com.example")
             .fields()
@@ -284,59 +323,228 @@ public class SchemaRegistryApacheAvroSerializerTest {
             .set("favourite_colour", expectedColour)
             .build();
 
-        final TestContextManager testContextManager = new TestContextManager(testInfo.getTestMethod().get(), TestMode.PLAYBACK);
-        final InterceptorManager interceptorManager;
+        final SchemaRegistryAsyncClient client = getSchemaRegistryClient(testInfo, TestMode.PLAYBACK);
+        final SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializerBuilder()
+            .schemaGroup(PLAYBACK_TEST_GROUP)
+            .schemaRegistryAsyncClient(client)
+            .avroSpecificReader(true)
+            .buildSerializer();
+        final String expectedContentType = AVRO_MIME_TYPE + "+64fc737160ff41bdb8a0b8af028e6827";
+
+        // Act
+        StepVerifier.create(encoder.serializeMessageDataAsync(record, TypeReference.createInstance(MockMessage.class)))
+            .assertNext(message -> {
+                assertEquals(expectedContentType, message.getContentType());
+                assertNotNull(message.getBodyAsBinaryData());
+                assertTrue(message.getBodyAsBinaryData().getLength() > 0, "There should have been contents in array.");
+            })
+            .expectComplete()
+            .verify(Duration.ofSeconds(30));
+    }
+
+    /**
+     * Verifies that we can deserialize and serialize when the writer schema is newer than the reader schema. Writer
+     * schema is using a forward compatible schema.
+     */
+    @Test
+    public void serializeForwardCompatibility() {
+        // Arrange
+        final SchemaRegistryAsyncClient client = getSchemaRegistryClient(testInfo, TestMode.PLAYBACK);
+        final SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializerBuilder()
+            .schemaGroup(PLAYBACK_TEST_GROUP)
+            .schemaRegistryAsyncClient(client)
+            .avroSpecificReader(true)
+            .buildSerializer();
+        final String expectedContentType = AVRO_MIME_TYPE + "+f047cfa64b374167b3a1d101370c1483";
+
+        final String name = "Jackson";
+        final String colour = "green";
+        final String pet = "Gophers";
+        final int number = 19;
+
+        // The writer has a newer schema.
+        final Person2 writerPerson = Person2.newBuilder()
+            .setName(name)
+            .setFavouriteNumber(number)
+            .setFavouriteColour(colour)
+            .setFavouritePet(pet)
+            .build();
+        final AtomicReference<MessageWithMetadata> outputData = new AtomicReference<>();
+
+        // Act: Serialize the new Person2.
+        StepVerifier.create(encoder.serializeMessageDataAsync(writerPerson, TypeReference.createInstance(MockMessage.class)))
+            .assertNext(message -> {
+                assertEquals(expectedContentType, message.getContentType());
+
+                assertNotNull(message.getBodyAsBinaryData());
+                assertTrue(message.getBodyAsBinaryData().getLength() > 0, "There should have been contents in array.");
+                assertTrue(outputData.compareAndSet(null, message), "There should not have been a value set.");
+            })
+            .expectComplete()
+            .verify(Duration.ofSeconds(30));
+
+        // Act: Deserialize Person (the older schema)
+        assertNotNull(outputData.get(), "Value should have been set from the test.");
+
+        final Person readerPerson = encoder.deserializeMessageData(outputData.get(), TypeReference.createInstance(Person.class));
+
+        assertNotNull(readerPerson);
+        assertEquals(name, readerPerson.getName());
+        assertEquals(number, readerPerson.getFavouriteNumber());
+        assertEquals(colour, readerPerson.getFavouriteColour());
+    }
+
+    /**
+     * Verifies that we get an {@link IllegalArgumentException} if the implementing class does not have an no-args
+     * constructor.
+     */
+    @Test
+    public void throwsWhenConstructorNotAvailable() {
+        // Arrange
+        final AvroSerializer avroSerializer = new AvroSerializer(false, ENCODER_FACTORY, DECODER_FACTORY);
+        final SerializerOptions serializerOptions = new SerializerOptions(MOCK_SCHEMA_GROUP, true, MOCK_CACHE_SIZE);
+        final SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializer(
+            client, avroSerializer, serializerOptions);
+
+        final PlayingCard playingCard = new PlayingCard(true, 10, PlayingCardSuit.DIAMONDS);
+        final TypeReference<InvalidMessage> typeReference = TypeReference.createInstance(InvalidMessage.class);
+
+        // Act & Assert
+        StepVerifier.create(encoder.serializeMessageDataAsync(playingCard, typeReference))
+            .expectError(IllegalArgumentException.class)
+            .verify();
+    }
+
+    /**
+     * Test that the original preamble payload can be deserialized.
+     */
+    @Test
+    public void backwardsCompatiblePreamble() throws IOException {
+        // Arrange
+        final PlayingCard expected = PlayingCard.newBuilder()
+            .setIsFaceCard(true)
+            .setCardValue(15)
+            .setPlayingCardSuit(PlayingCardSuit.SPADES)
+            .build();
+        final SchemaRegistrySchema schemaResponse = new SchemaRegistrySchema(
+            new SchemaProperties(MOCK_GUID, SchemaFormat.AVRO), expected.getSchema().toString());
+        final AvroSerializer avroSerializer = new AvroSerializer(true, ENCODER_FACTORY,
+            DECODER_FACTORY);
+        final SerializerOptions serializerOptions = new SerializerOptions(MOCK_SCHEMA_GROUP, true, MOCK_CACHE_SIZE);
+        final SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializer(client, avroSerializer,
+            serializerOptions);
+
+        when(client.getSchema(MOCK_GUID)).thenReturn(Mono.just(schemaResponse));
+
+        // Manually serialize the data with the preamble.
+        final BinaryData binaryData;
+        final byte[] encodedCard = avroSerializer.encode(expected);
+        final int size = RECORD_FORMAT_INDICATOR_SIZE + SCHEMA_ID_SIZE + encodedCard.length;
+        final byte[] guidBytes = MOCK_GUID.getBytes(StandardCharsets.UTF_8);
+
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream(size)) {
+            outputStream.write(RECORD_FORMAT_INDICATOR, 0, RECORD_FORMAT_INDICATOR.length);
+            outputStream.write(guidBytes, 0, guidBytes.length);
+            outputStream.write(encodedCard, 0, encodedCard.length);
+            outputStream.flush();
+
+            binaryData = BinaryData.fromBytes(outputStream.toByteArray());
+        }
+
+        final MockMessage message = new MockMessage();
+        message.setBodyAsBinaryData(binaryData);
+
+        // Act
+        final PlayingCard actual = encoder.deserializeMessageData(message, TypeReference.createInstance(PlayingCard.class));
+
+        // Assert
+        assertNotNull(actual);
+        assertEquals(expected.getCardValue(), actual.getCardValue());
+        assertEquals(expected.getIsFaceCard(), actual.getIsFaceCard());
+        assertEquals(expected.getPlayingCardSuit(), actual.getPlayingCardSuit());
+    }
+
+    private static MockMessage getPayload(PlayingCard card) throws IOException {
+        final MockMessage message = new MockMessage();
+        message.setContentType(AVRO_MIME_TYPE + "+" + MOCK_GUID);
+
+        final RawMessageEncoder<PlayingCard> encoder = new RawMessageEncoder<>(new GenericData(),
+            PlayingCard.getClassSchema());
+
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            encoder.encode(card, outputStream);
+
+            final BinaryData data = BinaryData.fromBytes(outputStream.toByteArray());
+            message.setBodyAsBinaryData(data);
+        }
+
+        return message;
+    }
+
+    /**
+     * Creates the schema registry client based on the test mode.
+     *
+     * @param testInfo Information about current test.
+     * @param testMode Test mode
+     *
+     * @return Corresponding SchemaRegistryAsyncClient.
+     */
+    private SchemaRegistryAsyncClient getSchemaRegistryClient(TestInfo testInfo, TestMode testMode) {
+        final TestContextManager testContextManager = new TestContextManager(testInfo.getTestMethod().get(), testMode);
         try {
             interceptorManager = new InterceptorManager(testContextManager);
         } catch (UncheckedIOException e) {
             Assertions.fail(e);
-            return;
+            throw e;
         }
 
-        final TokenCredential tokenCredential = mock(TokenCredential.class);
-        when(tokenCredential.getToken(any(TokenRequestContext.class))).thenAnswer(invocationOnMock -> {
-            return Mono.fromCallable(() -> {
-                return new AccessToken("foo", OffsetDateTime.now().plusMinutes(20));
-            });
-        });
+        TokenCredential tokenCredential;
+        String endpoint;
+        if (testMode == TestMode.PLAYBACK) {
+            tokenCredential = mock(TokenCredential.class);
 
-        final SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBuilder()
-            .httpClient(interceptorManager.getPlaybackClient())
+            // Sometimes it throws an "NotAMockException", so we had to change from thenReturn to thenAnswer.
+            when(tokenCredential.getToken(any(TokenRequestContext.class)))
+                    .thenAnswer(invocationOnMock -> Mono.fromCallable(() ->
+                            new AccessToken("foo", OffsetDateTime.now().plusMinutes(20))));
+
+            endpoint = PLAYBACK_ENDPOINT;
+        } else {
+            tokenCredential = new DefaultAzureCredentialBuilder().build();
+            endpoint = System.getenv(SchemaRegistryApacheAvroSerializerIntegrationTest.SCHEMA_REGISTRY_ENDPOINT);
+
+            assertNotNull(endpoint, "'endpoint' cannot be null in LIVE/RECORD mode.");
+        }
+
+        final SchemaRegistryClientBuilder builder = new SchemaRegistryClientBuilder()
             .credential(tokenCredential)
-            .fullyQualifiedNamespace(PLAYBACK_ENDPOINT)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .buildAsyncClient();
+            .fullyQualifiedNamespace(endpoint);
 
-        final SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()
-            .schemaGroup(PLAYBACK_TEST_GROUP)
-            .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
-            .avroSpecificReader(true)
-            .buildSerializer();
-
-        // Act
-        byte[] outputArray;
-        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream(4096)) {
-            StepVerifier.create(serializer.serializeAsync(outputStream, record))
-                .expectComplete()
-                .verify(Duration.ofSeconds(30));
-
-            outputArray = outputStream.toByteArray();
+        if (testMode == TestMode.PLAYBACK) {
+            builder.httpClient(interceptorManager.getPlaybackClient());
+        } else {
+            builder.addPolicy(new RetryPolicy())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .addPolicy(interceptorManager.getRecordPolicy());
         }
 
-        assertTrue(outputArray.length > 0, "There should have been contents in array.");
+        return builder.buildAsyncClient();
     }
 
-    private static byte[] getPayload(PlayingCard card) throws IOException {
-        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-            outputStream.write(RECORD_FORMAT_INDICATOR);
-            outputStream.write(MOCK_GUID.getBytes(StandardCharsets.UTF_8));
+    /**
+     * Test class that extends from MessageWithMetadata
+     */
+    static class MockMessage extends MessageWithMetadata {
+    }
 
-            final RawMessageEncoder<PlayingCard> encoder = new RawMessageEncoder<>(new GenericData(),
-                PlayingCard.getClassSchema());
+    /**
+     * This class does not expose the no-args constructor that we look for.
+     */
+    static class InvalidMessage extends MessageWithMetadata {
+        InvalidMessage(String contents) {
+            super();
 
-            encoder.encode(card, outputStream);
-
-            return outputStream.toByteArray();
+            setBodyAsBinaryData(BinaryData.fromString(contents));
         }
     }
 }

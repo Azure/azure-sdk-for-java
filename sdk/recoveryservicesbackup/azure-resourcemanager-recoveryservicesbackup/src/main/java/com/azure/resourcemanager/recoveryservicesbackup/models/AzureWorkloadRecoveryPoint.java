@@ -50,7 +50,7 @@ public class AzureWorkloadRecoveryPoint extends RecoveryPoint {
      * Recovery point tier information.
      */
     @JsonProperty(value = "recoveryPointTierDetails")
-    private List<RecoveryPointTierInformation> recoveryPointTierDetails;
+    private List<RecoveryPointTierInformationV2> recoveryPointTierDetails;
 
     /*
      * Eligibility of RP to be moved to another tier
@@ -104,7 +104,7 @@ public class AzureWorkloadRecoveryPoint extends RecoveryPoint {
      *
      * @return the recoveryPointTierDetails value.
      */
-    public List<RecoveryPointTierInformation> recoveryPointTierDetails() {
+    public List<RecoveryPointTierInformationV2> recoveryPointTierDetails() {
         return this.recoveryPointTierDetails;
     }
 
@@ -115,7 +115,7 @@ public class AzureWorkloadRecoveryPoint extends RecoveryPoint {
      * @return the AzureWorkloadRecoveryPoint object itself.
      */
     public AzureWorkloadRecoveryPoint withRecoveryPointTierDetails(
-        List<RecoveryPointTierInformation> recoveryPointTierDetails) {
+        List<RecoveryPointTierInformationV2> recoveryPointTierDetails) {
         this.recoveryPointTierDetails = recoveryPointTierDetails;
         return this;
     }

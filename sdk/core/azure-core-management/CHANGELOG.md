@@ -8,7 +8,25 @@
 
 ### Bugs Fixed
 
+- Corrected the Portal URL in `AzureEnvironment`.
+
 ### Other Changes
+
+## 1.5.3 (2022-03-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.25.0` to `1.26.0`.
+
+## 1.5.2 (2022-02-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.1` to `1.25.0`.
 
 ## 1.5.1 (2022-01-11)
 

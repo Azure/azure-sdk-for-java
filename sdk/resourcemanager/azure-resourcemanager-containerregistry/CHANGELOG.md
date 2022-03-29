@@ -1,6 +1,32 @@
 # Release History
 
-## 2.11.0-beta.1 (Unreleased)
+## 2.14.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.13.0 (2022-03-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.12.0 (2022-02-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources
+
+## 2.11.0 (2022-01-17)
 
 ### Breaking Changes
 

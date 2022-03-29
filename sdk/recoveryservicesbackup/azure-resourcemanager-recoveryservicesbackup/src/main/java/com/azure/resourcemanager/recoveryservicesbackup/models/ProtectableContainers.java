@@ -18,7 +18,7 @@ public interface ProtectableContainers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectableContainer resources.
+     * @return list of ProtectableContainer resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ProtectableContainerResource> list(String vaultName, String resourceGroupName, String fabricName);
 
@@ -33,7 +33,7 @@ public interface ProtectableContainers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectableContainer resources.
+     * @return list of ProtectableContainer resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ProtectableContainerResource> list(
         String vaultName, String resourceGroupName, String fabricName, String filter, Context context);

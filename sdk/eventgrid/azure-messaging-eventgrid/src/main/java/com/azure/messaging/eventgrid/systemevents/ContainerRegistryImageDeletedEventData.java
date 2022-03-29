@@ -33,6 +33,13 @@ public final class ContainerRegistryImageDeletedEventData extends ContainerRegis
 
     /** {@inheritDoc} */
     @Override
+    public ContainerRegistryImageDeletedEventData setLocation(String location) {
+        super.setLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public ContainerRegistryImageDeletedEventData setTarget(ContainerRegistryEventTarget target) {
         super.setTarget(target);
         return this;
@@ -56,6 +63,14 @@ public final class ContainerRegistryImageDeletedEventData extends ContainerRegis
     @Override
     public ContainerRegistryImageDeletedEventData setSource(ContainerRegistryEventSource source) {
         super.setSource(source);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ContainerRegistryImageDeletedEventData setConnectedRegistry(
+            ContainerRegistryEventConnectedRegistry connectedRegistry) {
+        super.setConnectedRegistry(connectedRegistry);
         return this;
     }
 }

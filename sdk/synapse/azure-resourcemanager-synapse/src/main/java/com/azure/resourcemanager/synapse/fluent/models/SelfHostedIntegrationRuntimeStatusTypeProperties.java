@@ -132,6 +132,18 @@ public final class SelfHostedIntegrationRuntimeStatusTypeProperties {
     @JsonProperty(value = "autoUpdateETA", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime autoUpdateEta;
 
+    /*
+     * The service region of the integration runtime
+     */
+    @JsonProperty(value = "serviceRegion")
+    private String serviceRegion;
+
+    /*
+     * The newer versions on download center.
+     */
+    @JsonProperty(value = "newerVersions")
+    private List<String> newerVersions;
+
     /**
      * Get the createTime property: The time at which the integration runtime was created, in ISO8601 format.
      *
@@ -311,6 +323,46 @@ public final class SelfHostedIntegrationRuntimeStatusTypeProperties {
      */
     public OffsetDateTime autoUpdateEta() {
         return this.autoUpdateEta;
+    }
+
+    /**
+     * Get the serviceRegion property: The service region of the integration runtime.
+     *
+     * @return the serviceRegion value.
+     */
+    public String serviceRegion() {
+        return this.serviceRegion;
+    }
+
+    /**
+     * Set the serviceRegion property: The service region of the integration runtime.
+     *
+     * @param serviceRegion the serviceRegion value to set.
+     * @return the SelfHostedIntegrationRuntimeStatusTypeProperties object itself.
+     */
+    public SelfHostedIntegrationRuntimeStatusTypeProperties withServiceRegion(String serviceRegion) {
+        this.serviceRegion = serviceRegion;
+        return this;
+    }
+
+    /**
+     * Get the newerVersions property: The newer versions on download center.
+     *
+     * @return the newerVersions value.
+     */
+    public List<String> newerVersions() {
+        return this.newerVersions;
+    }
+
+    /**
+     * Set the newerVersions property: The newer versions on download center.
+     *
+     * @param newerVersions the newerVersions value to set.
+     * @return the SelfHostedIntegrationRuntimeStatusTypeProperties object itself.
+     */
+    public SelfHostedIntegrationRuntimeStatusTypeProperties withNewerVersions(List<String> newerVersions) {
+        this.newerVersions = newerVersions;
+        return this;
     }
 
     /**

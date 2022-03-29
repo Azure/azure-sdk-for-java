@@ -18,6 +18,7 @@ import com.azure.resourcemanager.communication.fluent.models.NameAvailabilityInn
 import com.azure.resourcemanager.communication.models.LinkNotificationHubParameters;
 import com.azure.resourcemanager.communication.models.NameAvailabilityParameters;
 import com.azure.resourcemanager.communication.models.RegenerateKeyParameters;
+import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in CommunicationServicesClient. */
 public interface CommunicationServicesClient {
@@ -39,7 +40,7 @@ public interface CommunicationServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to check name availability.
+     * @return result of the request to check name availability along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<NameAvailabilityInner> checkNameAvailabilityWithResponse(
@@ -68,7 +69,7 @@ public interface CommunicationServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a notification hub that has been linked to the communication service.
+     * @return a notification hub that has been linked to the communication service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<LinkedNotificationHubInner> linkNotificationHubWithResponse(
@@ -147,7 +148,7 @@ public interface CommunicationServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class representing a CommunicationService resource.
+     * @return a class representing a CommunicationService resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CommunicationServiceResourceInner> updateWithResponse(
@@ -178,7 +179,7 @@ public interface CommunicationServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the CommunicationService and its properties.
+     * @return the CommunicationService and its properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CommunicationServiceResourceInner> getByResourceGroupWithResponse(
@@ -193,9 +194,10 @@ public interface CommunicationServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class representing a CommunicationService resource.
+     * @return a class representing a CommunicationService resource along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommunicationServiceResourceInner>, CommunicationServiceResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String communicationServiceName, CommunicationServiceResourceInner parameters);
 
@@ -209,9 +211,10 @@ public interface CommunicationServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class representing a CommunicationService resource.
+     * @return a class representing a CommunicationService resource along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommunicationServiceResourceInner>, CommunicationServiceResourceInner> beginCreateOrUpdate(
         String resourceGroupName,
         String communicationServiceName,
@@ -273,9 +276,9 @@ public interface CommunicationServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String communicationServiceName);
 
     /**
@@ -287,9 +290,9 @@ public interface CommunicationServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String communicationServiceName, Context context);
 
@@ -340,7 +343,7 @@ public interface CommunicationServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the access keys of the CommunicationService resource.
+     * @return the access keys of the CommunicationService resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CommunicationServiceKeysInner> listKeysWithResponse(
@@ -371,7 +374,7 @@ public interface CommunicationServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class representing the access keys of a CommunicationService.
+     * @return a class representing the access keys of a CommunicationService along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CommunicationServiceKeysInner> regenerateKeyWithResponse(

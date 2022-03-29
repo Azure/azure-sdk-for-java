@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/rotatekey06005233/create?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/rotatekey88198313/create?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -12,22 +12,22 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Wed, 20 Oct 2021 20:41:14 GMT",
+      "Date" : "Thu, 10 Feb 2022 03:44:15 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
       "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "0a528332-6905-45a4-a13a-10e5e5ae804a",
-      "x-ms-keyvault-service-version" : "1.9.150.1",
-      "Body" : "{\"key\":{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/rotatekey06005233/67d97629bc914d699e1fa214a2ca0f72\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"y1OLwlJEZ0vitZbVnMBNf0zCPz3vUeGUNSJgv1JaMG8OEVY9kxZHoDsteO7yGLbkjATUM5prmh1HPJJC-Lbv4ogDwN85eAPuzS77qBqMycgndvUm13l-yuLgOLTHzuxAerlVt0aU-G8USiFxIOybfRyO7qLZ_qsjXGNU1ORMSwxn-hMP1ZGFSjM68NWfKbpQCFVh2zsYTP4rVbdxhmtgIczzve_OkIMI25mbhUK4JRIqtPctRcWNtU9KCCgbKPi6nvqXKkiNLdDHa0a4ZSVrQyLZ04dqDAPqYscU-P14OQOwfGRCTpK_SUVxtXfj6Fecy2b_rnxXtrpmrQopbmA2DQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"created\":1634762473,\"updated\":1634762473,\"recoveryLevel\":\"Recoverable+Purgeable\",\"recoverableDays\":90}}",
+      "x-ms-request-id" : "b22cded1-0e09-421d-b0fb-21767a5e1c42",
+      "x-ms-keyvault-service-version" : "1.9.276.1",
+      "Body" : "{\"key\":{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/rotatekey88198313/63a1380704ca40e6ace4c79bc58641c2\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"t9VhY4qXSYrchJX_Sls5Pbu9RmxRcLcikNpn0iL8EKxI83mriXiwiGMkBFBf8jgPrVUeeODHC9coiDQzSNTLFXmFcFzyULWV8aOgl4nOg2sln0XNQb8QVXDhNYwM_4LjHdH5HkUCQavTGfvWqnrs1EgSNnKhDobAdf0HZsbyrpZL-viJEg-_E2yD4AJYifpXXFDlFU7NVNhjSsSqg1XdSTkJ86hBospEkBwHcwKJqk_OSpOmU1zJYi_PvVCrL0fyZYouDb4nxDKMv-75PXUrzjQntNVOcwbCTPBvDJJrYdK5kTqAPBDcaxg76-Khw6U3Qht8CAsqHgEcEUImuyuE0Q\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"created\":1644464656,\"updated\":1644464656,\"recoveryLevel\":\"Recoverable+Purgeable\",\"recoverableDays\":90}}",
       "Content-Type" : "application/json; charset=utf-8",
       "X-Powered-By" : "ASP.NET"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/rotatekey06005233/rotationpolicy?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/rotatekey88198313/rotationpolicy?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
     },
@@ -37,19 +37,19 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Wed, 20 Oct 2021 20:41:14 GMT",
+      "Date" : "Thu, 10 Feb 2022 03:44:15 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
       "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "aeb63e2b-6f9d-4837-b1dc-77fb7a2be176",
-      "x-ms-keyvault-service-version" : "1.9.150.1",
+      "x-ms-request-id" : "1e63c6c8-c8f5-403f-b252-68f224735d65",
+      "x-ms-keyvault-service-version" : "1.9.276.1",
       "Body" : "{\"lifetimeActions\":[{\"trigger\":{\"timeBeforeExpiry\":\"P30D\"},\"action\":{\"type\":\"Notify\"}}],\"attributes\":null}",
       "Content-Type" : "application/json; charset=utf-8",
       "X-Powered-By" : "ASP.NET"
     },
     "Exception" : null
   } ],
-  "variables" : [ "rotatekey06005233" ]
+  "variables" : [ "rotatekey88198313" ]
 }

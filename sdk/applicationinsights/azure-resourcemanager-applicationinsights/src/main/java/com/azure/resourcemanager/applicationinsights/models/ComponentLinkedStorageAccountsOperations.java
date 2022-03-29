@@ -32,7 +32,7 @@ public interface ComponentLinkedStorageAccountsOperations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component linked storage accounts.
+     * @return an Application Insights component linked storage accounts along with {@link Response}.
      */
     Response<ComponentLinkedStorageAccounts> getWithResponse(
         String resourceGroupName, String resourceName, StorageType storageType, Context context);
@@ -59,7 +59,7 @@ public interface ComponentLinkedStorageAccountsOperations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String resourceName, StorageType storageType, Context context);
@@ -71,7 +71,7 @@ public interface ComponentLinkedStorageAccountsOperations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component linked storage accounts.
+     * @return an Application Insights component linked storage accounts along with {@link Response}.
      */
     ComponentLinkedStorageAccounts getById(String id);
 
@@ -83,7 +83,7 @@ public interface ComponentLinkedStorageAccountsOperations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component linked storage accounts.
+     * @return an Application Insights component linked storage accounts along with {@link Response}.
      */
     Response<ComponentLinkedStorageAccounts> getByIdWithResponse(String id, Context context);
 
@@ -105,7 +105,7 @@ public interface ComponentLinkedStorageAccountsOperations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The identity information with the event subscription. */
 @Fluent
 public class EventSubscriptionIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventSubscriptionIdentity.class);
-
     /*
      * The type of managed identity used. The type 'SystemAssigned,
      * UserAssigned' includes both an implicitly created identity and a set of

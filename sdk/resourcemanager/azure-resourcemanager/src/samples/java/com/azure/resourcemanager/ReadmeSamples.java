@@ -41,24 +41,14 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
- * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
- * ARE USED TO EXTRACT APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING
- * LINE NUMBERS OF EXISTING CODE SAMPLES.
- *
  * Code samples for the README.md
  */
 public class ReadmeSamples {
 
     private final String rgName = "rg-test";
 
-    // extra empty lines to compensate import lines
-
-
-
-
-
-    // THIS LINE MUST BE AT LINE NO. 60
     public void authenticate() {
+        // BEGIN: readme-sample-authenticate
         AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
         TokenCredential credential = new DefaultAzureCredentialBuilder()
             .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
@@ -66,6 +56,7 @@ public class ReadmeSamples {
         AzureResourceManager azure = AzureResourceManager
             .authenticate(credential, profile)
             .withDefaultSubscription();
+        // END: readme-sample-authenticate
     }
 
     public void configureWithLogging() {
@@ -73,11 +64,13 @@ public class ReadmeSamples {
         TokenCredential credential = new DefaultAzureCredentialBuilder()
             .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
             .build();
+        // BEGIN: readme-sample-configureWithLogging
         AzureResourceManager azure = AzureResourceManager
             .configure()
             .withLogLevel(HttpLogDetailLevel.BASIC)
             .authenticate(credential, profile)
             .withDefaultSubscription();
+        // END: readme-sample-configureWithLogging
     }
 
     public void authenticateComputeManager() {
@@ -85,13 +78,16 @@ public class ReadmeSamples {
         TokenCredential credential = new DefaultAzureCredentialBuilder()
             .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
             .build();
+        // BEGIN: readme-sample-authenticateComputeManager
         ComputeManager manager = ComputeManager.authenticate(credential, profile);
         manager.virtualMachines().list();
+        // END: readme-sample-authenticateComputeManager
     }
 
     public void createAndUpdateVirtualMachine() {
         AzureResourceManager azure = newAzureResourceManager();
 
+        // BEGIN: readme-sample-createVirtualMachine
         VirtualMachine linuxVM = azure.virtualMachines().define("myLinuxVM")
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName)
@@ -103,15 +99,19 @@ public class ReadmeSamples {
             .withSsh("<ssh-key>")
             .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
             .create();
+        // END: readme-sample-createVirtualMachine
 
+        // BEGIN: readme-sample-updateVirtualMachine
         linuxVM.update()
             .withNewDataDisk(10, 0, CachingTypes.READ_WRITE)
             .apply();
+        // END: readme-sample-updateVirtualMachine
     }
 
     public void createFunctionApp() {
         AzureResourceManager azure = newAzureResourceManager();
 
+        // BEGIN: readme-sample-createFunctionApp
         Creatable<StorageAccount> creatableStorageAccount = azure.storageAccounts()
             .define("<storage-account-name>")
             .withRegion(Region.US_EAST)
@@ -133,11 +133,13 @@ public class ReadmeSamples {
             .withHttpsOnly(true)
             .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", "<function-app-package-url>")
             .create();
+        // END: readme-sample-createFunctionApp
     }
 
     public void batchCreateAndDeleteDisk() {
         AzureResourceManager azure = newAzureResourceManager();
 
+        // BEGIN: readme-sample-batchCreateAndDeleteDisk
         List<String> diskNames = Arrays.asList("datadisk1", "datadisk2");
         List<Creatable<Disk>> creatableDisks = diskNames.stream()
             .map(diskName -> azure.disks()
@@ -150,6 +152,7 @@ public class ReadmeSamples {
             .collect(Collectors.toList());
         Collection<Disk> disks = azure.disks().create(creatableDisks).values();
         azure.disks().deleteByIds(disks.stream().map(Disk::id).collect(Collectors.toList()));
+        // END: readme-sample-batchCreateAndDeleteDisk
     }
 
     public void createRoleAssignment() {
@@ -157,6 +160,7 @@ public class ReadmeSamples {
         ResourceGroup resource = azure.resourceGroups().getByName(rgName);
         ServicePrincipal servicePrincipal = azure.accessManagement().servicePrincipals().getById("<service-principal-id>");
 
+        // BEGIN: readme-sample-createRoleAssignment
         String raName = UUID.randomUUID().toString();
         RoleAssignment roleAssignment = azure.accessManagement().roleAssignments()
             .define(raName)
@@ -164,11 +168,13 @@ public class ReadmeSamples {
             .withBuiltInRole(BuiltInRole.CONTRIBUTOR)
             .withScope(resource.id())
             .create();
+        // END: readme-sample-createRoleAssignment
     }
 
     public void createStorageAccountAndBlobContainerAsync() {
         AzureResourceManager azure = newAzureResourceManager();
 
+        // BEGIN: readme-sample-createStorageAccountAndBlobContainerAsync
         azure.storageAccounts().define("<storage-account-name>")
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName)
@@ -183,15 +189,18 @@ public class ReadmeSamples {
                 .createAsync()
             )
             //...
+        // END: readme-sample-createStorageAccountAndBlobContainerAsync
             .block();
     }
 
     public void restartVirtualMachineAsync() {
         AzureResourceManager azure = newAzureResourceManager();
 
+        // BEGIN: readme-sample-restartVirtualMachineAsync
         azure.virtualMachines().listByResourceGroupAsync(rgName)
             .flatMap(VirtualMachine::restartAsync)
             //...
+        // END: readme-sample-restartVirtualMachineAsync
             .blockLast();
     }
 
@@ -203,11 +212,13 @@ public class ReadmeSamples {
         TokenCredential credential = new DefaultAzureCredentialBuilder()
             .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
             .build();
+        // BEGIN: readme-sample-configureClientAndPipeline
         AzureResourceManager azure = AzureResourceManager
             .configure()
             .withHttpClient(customizedHttpClient)
             .withPolicy(additionalPolicy)
             //...
+        // END: readme-sample-configureClientAndPipeline
             .authenticate(credential, profile)
             .withDefaultSubscription();
     }

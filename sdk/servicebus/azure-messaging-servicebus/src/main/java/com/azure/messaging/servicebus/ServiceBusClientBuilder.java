@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.client.traits.AmqpTrait;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
@@ -19,6 +20,11 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.annotation.ServiceClientProtocol;
+import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
+import com.azure.core.client.traits.AzureSasCredentialTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.ConnectionStringTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
@@ -54,6 +60,8 @@ import java.util.ServiceLoader;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
+
+import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 
 /**
  * The builder to create Service Bus clients:
@@ -173,7 +181,13 @@ import java.util.regex.Pattern;
 @ServiceClientBuilder(serviceClients = {ServiceBusReceiverAsyncClient.class, ServiceBusSenderAsyncClient.class,
     ServiceBusSenderClient.class, ServiceBusReceiverClient.class, ServiceBusProcessorClient.class},
     protocol = ServiceClientProtocol.AMQP)
-public final class ServiceBusClientBuilder {
+public final class ServiceBusClientBuilder implements
+    TokenCredentialTrait<ServiceBusClientBuilder>,
+    AzureNamedKeyCredentialTrait<ServiceBusClientBuilder>,
+    ConnectionStringTrait<ServiceBusClientBuilder>,
+    AzureSasCredentialTrait<ServiceBusClientBuilder>,
+    AmqpTrait<ServiceBusClientBuilder>,
+    ConfigurationTrait<ServiceBusClientBuilder> {
     private static final AmqpRetryOptions DEFAULT_RETRY =
         new AmqpRetryOptions().setTryTimeout(ServiceBusConstants.OPERATION_TIMEOUT);
 
@@ -229,9 +243,35 @@ public final class ServiceBusClientBuilder {
      *
      * @return The updated {@link ServiceBusClientBuilder} object.
      */
+    @Override
     public ServiceBusClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
+    }
+
+    /**
+     * Sets the fully-qualified namespace for the Service Bus.
+     *
+     * @param fullyQualifiedNamespace The fully-qualified namespace for the Service Bus.
+     *
+     * @return The updated {@link ServiceBusClientBuilder} object.
+     */
+    public ServiceBusClientBuilder fullyQualifiedNamespace(String fullyQualifiedNamespace) {
+        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
+            "'fullyQualifiedNamespace' cannot be null.");
+        if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
+        }
+        return this;
+    }
+
+    private String getAndValidateFullyQualifiedNamespace() {
+        if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
+        }
+        return fullyQualifiedNamespace;
     }
 
     /**
@@ -253,9 +293,12 @@ public final class ServiceBusClientBuilder {
 
         this.fullyQualifiedNamespace = properties.getEndpoint().getHost();
 
-        if (properties.getEntityPath() != null && !properties.getEntityPath().isEmpty()) {
-            logger.info("Setting 'entityName' [{}] from connectionString.", properties.getEntityPath());
-            this.connectionStringEntityName = properties.getEntityPath();
+        String entityPath = properties.getEntityPath();
+        if (!CoreUtils.isNullOrEmpty(entityPath)) {
+            logger.atInfo()
+                .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                .log("Setting entity from connection string.");
+            this.connectionStringEntityName = entityPath;
         }
 
         return credential(properties.getEndpoint().getHost(), tokenCredential);
@@ -314,6 +357,7 @@ public final class ServiceBusClientBuilder {
      *
      * @return The updated {@link ServiceBusClientBuilder} object.
      */
+    @Override
     public ServiceBusClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
@@ -342,6 +386,22 @@ public final class ServiceBusClientBuilder {
                 new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
         }
 
+        return this;
+    }
+
+    /**
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
+     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
+     * documentation for more details on proper usage of the {@link TokenCredential} type.
+     *
+     * @param credential The token credential to use for authentication. Access controls may be specified by the
+     * ServiceBus namespace or the requested Service Bus entity, depending on Azure configuration.
+     *
+     * @return The updated {@link ServiceBusClientBuilder} object.
+     */
+    @Override
+    public ServiceBusClientBuilder credential(TokenCredential credential) {
+        this.credentials = Objects.requireNonNull(credential, "'credential' cannot be null.");
         return this;
     }
 
@@ -376,6 +436,27 @@ public final class ServiceBusClientBuilder {
     }
 
     /**
+     * Sets the credential with the shared access policies for the Service Bus resource.
+     * You can find the shared access policies on the azure portal or Azure CLI.
+     * For instance, on the portal, "Shared Access policies" has 'policy' and its 'Primary Key' and 'Secondary Key'.
+     * The 'name' attribute of the {@link AzureNamedKeyCredential} is the 'policy' on portal and the 'key' attribute
+     * can be either 'Primary Key' or 'Secondary Key'.
+     * This method and {@link #connectionString(String)} take the same information in different forms. But it allows
+     * you to update the name and key.
+     *
+     * @param credential {@link AzureNamedKeyCredential} to be used for authentication.
+     *
+     * @return The updated {@link ServiceBusClientBuilder} object.
+     */
+    @Override
+    public ServiceBusClientBuilder credential(AzureNamedKeyCredential credential) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.credentials = new ServiceBusSharedKeyCredential(credential.getAzureNamedKey().getName(),
+            credential.getAzureNamedKey().getKey(), ServiceBusConstants.TOKEN_VALIDITY);
+        return this;
+    }
+
+    /**
      * Sets the credential with Shared Access Signature for the Service Bus resource.
      * Refer to <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-sas">
      *     Service Bus access control with Shared Access Signatures</a>.
@@ -402,6 +483,22 @@ public final class ServiceBusClientBuilder {
     }
 
     /**
+     * Sets the credential with Shared Access Signature for the Service Bus resource.
+     * Refer to <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-sas">
+     *     Service Bus access control with Shared Access Signatures</a>.
+     *
+     * @param credential {@link AzureSasCredential} to be used for authentication.
+     *
+     * @return The updated {@link ServiceBusClientBuilder} object.
+     */
+    @Override
+    public ServiceBusClientBuilder credential(AzureSasCredential credential) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.credentials = new ServiceBusSharedKeyCredential(credential.getSignature());
+        return this;
+    }
+
+    /**
      * Sets the proxy configuration to use for {@link ServiceBusSenderAsyncClient}. When a proxy is configured, {@link
      * AmqpTransportType#AMQP_WEB_SOCKETS} must be used for the transport type.
      *
@@ -409,6 +506,7 @@ public final class ServiceBusClientBuilder {
      *
      * @return The updated {@link ServiceBusClientBuilder} object.
      */
+    @Override
     public ServiceBusClientBuilder proxyOptions(ProxyOptions proxyOptions) {
         this.proxyOptions = proxyOptions;
         return this;
@@ -432,6 +530,7 @@ public final class ServiceBusClientBuilder {
      *
      * @return The updated {@link ServiceBusClientBuilder} object.
      */
+    @Override
     public ServiceBusClientBuilder retryOptions(AmqpRetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
@@ -457,6 +556,7 @@ public final class ServiceBusClientBuilder {
      *
      * @return The updated {@link ServiceBusClientBuilder} object.
      */
+    @Override
     public ServiceBusClientBuilder transportType(AmqpTransportType transportType) {
         this.transport = transportType;
         return this;
@@ -515,17 +615,22 @@ public final class ServiceBusClientBuilder {
     void onClientClose() {
         synchronized (connectionLock) {
             final int numberOfOpenClients = openClients.decrementAndGet();
-            logger.info("Closing a dependent client. # of open clients: {}", numberOfOpenClients);
+            logger.atInfo()
+                .addKeyValue("numberOfOpenClients", numberOfOpenClients)
+                .log("Closing a dependent client.");
 
             if (numberOfOpenClients > 0) {
                 return;
             }
 
             if (numberOfOpenClients < 0) {
-                logger.warning("There should not be less than 0 clients. actual: {}", numberOfOpenClients);
+                logger.atWarning()
+                    .addKeyValue("numberOfOpenClients", numberOfOpenClients)
+                    .log("There should not be less than 0 clients.");
             }
 
-            logger.info("No more open clients, closing shared connection [{}].", sharedConnection);
+            logger.info("No more open clients, closing shared connection.");
+
             if (sharedConnection != null) {
                 sharedConnection.dispose();
                 sharedConnection = null;
@@ -606,7 +711,7 @@ public final class ServiceBusClientBuilder {
         final String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
         final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
 
-        return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType,
+        return new ConnectionOptions(getAndValidateFullyQualifiedNamespace(), credentials, authorizationType,
             ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
             options, verificationMode, product, clientVersion);
     }
@@ -1086,6 +1191,8 @@ public final class ServiceBusClientBuilder {
          */
         public ServiceBusProcessorClient buildProcessorClient() {
             return new ServiceBusProcessorClient(sessionReceiverClientBuilder,
+                sessionReceiverClientBuilder.queueName, sessionReceiverClientBuilder.topicName,
+                sessionReceiverClientBuilder.subscriptionName,
                 Objects.requireNonNull(processMessage, "'processMessage' cannot be null"),
                 Objects.requireNonNull(processError, "'processError' cannot be null"), processorClientOptions);
         }
@@ -1320,7 +1427,9 @@ public final class ServiceBusClientBuilder {
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusSessionReceiverClient buildClient() {
+            final boolean isPrefetchDisabled = prefetchCount == 0;
             return new ServiceBusSessionReceiverClient(buildAsyncClient(false),
+                isPrefetchDisabled,
                 MessageUtils.getTotalTimeout(retryOptions));
         }
 
@@ -1579,6 +1688,8 @@ public final class ServiceBusClientBuilder {
          */
         public ServiceBusProcessorClient buildProcessorClient() {
             return new ServiceBusProcessorClient(serviceBusReceiverClientBuilder,
+                    serviceBusReceiverClientBuilder.queueName, serviceBusReceiverClientBuilder.topicName,
+                    serviceBusReceiverClientBuilder.subscriptionName,
                 Objects.requireNonNull(processMessage, "'processMessage' cannot be null"),
                 Objects.requireNonNull(processError, "'processError' cannot be null"), processorClientOptions);
         }
@@ -1750,7 +1861,9 @@ public final class ServiceBusClientBuilder {
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusReceiverClient buildClient() {
+            final boolean isPrefetchDisabled = prefetchCount == 0;
             return new ServiceBusReceiverClient(buildAsyncClient(false),
+                isPrefetchDisabled,
                 MessageUtils.getTotalTimeout(retryOptions));
         }
 

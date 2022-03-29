@@ -9,12 +9,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
- * ARE USED TO EXTRACT APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING
- * LINE NUMBERS OF EXISTING CODE SAMPLES.
- * <p>
  * Code samples for the Key Vault in README.md
  */
+// BEGIN: readme-sample-KeyVaultSample
 @SpringBootApplication
 public class KeyVaultSample implements CommandLineRunner {
 
@@ -30,3 +27,4 @@ public class KeyVaultSample implements CommandLineRunner {
         System.out.println("property your-property-name value is: " + mySecretProperty);
     }
 }
+// END: readme-sample-KeyVaultSample

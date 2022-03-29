@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AzureBlobFSLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +18,6 @@ import java.util.Map;
 @JsonTypeName("AzureBlobFS")
 @Fluent
 public final class AzureBlobFSLinkedService extends LinkedService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBlobFSLinkedService.class);
-
     /*
      * Azure Data Lake Storage Gen2 linked service properties.
      */
@@ -265,6 +262,62 @@ public final class AzureBlobFSLinkedService extends LinkedService {
     }
 
     /**
+     * Get the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
+     * Expression with resultType string).
+     *
+     * @return the servicePrincipalCredentialType value.
+     */
+    public Object servicePrincipalCredentialType() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().servicePrincipalCredentialType();
+    }
+
+    /**
+     * Set the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
+     * Expression with resultType string).
+     *
+     * @param servicePrincipalCredentialType the servicePrincipalCredentialType value to set.
+     * @return the AzureBlobFSLinkedService object itself.
+     */
+    public AzureBlobFSLinkedService withServicePrincipalCredentialType(Object servicePrincipalCredentialType) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureBlobFSLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withServicePrincipalCredentialType(servicePrincipalCredentialType);
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipalCredential property: The credential of the service principal object in Azure Active
+     * Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey', servicePrincipalCredential can be
+     * SecureString or AzureKeyVaultSecretReference. If servicePrincipalCredentialType is 'ServicePrincipalCert',
+     * servicePrincipalCredential can only be AzureKeyVaultSecretReference.
+     *
+     * @return the servicePrincipalCredential value.
+     */
+    public SecretBase servicePrincipalCredential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().servicePrincipalCredential();
+    }
+
+    /**
+     * Set the servicePrincipalCredential property: The credential of the service principal object in Azure Active
+     * Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey', servicePrincipalCredential can be
+     * SecureString or AzureKeyVaultSecretReference. If servicePrincipalCredentialType is 'ServicePrincipalCert',
+     * servicePrincipalCredential can only be AzureKeyVaultSecretReference.
+     *
+     * @param servicePrincipalCredential the servicePrincipalCredential value to set.
+     * @return the AzureBlobFSLinkedService object itself.
+     */
+    public AzureBlobFSLinkedService withServicePrincipalCredential(SecretBase servicePrincipalCredential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureBlobFSLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withServicePrincipalCredential(servicePrincipalCredential);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -273,7 +326,7 @@ public final class AzureBlobFSLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model AzureBlobFSLinkedService"));
@@ -281,4 +334,6 @@ public final class AzureBlobFSLinkedService extends LinkedService {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureBlobFSLinkedService.class);
 }

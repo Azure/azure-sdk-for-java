@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Trigger reference type. */
 @Fluent
 public final class TriggerReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggerReference.class);
-
     /*
      * Trigger reference type.
      */
@@ -78,9 +75,11 @@ public final class TriggerReference {
      */
     public void validate() {
         if (referenceName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property referenceName in model TriggerReference"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TriggerReference.class);
 }

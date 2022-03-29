@@ -33,8 +33,23 @@ public final class ContainerRegistryChartPushedEventData extends ContainerRegist
 
     /** {@inheritDoc} */
     @Override
+    public ContainerRegistryChartPushedEventData setLocation(String location) {
+        super.setLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public ContainerRegistryChartPushedEventData setTarget(ContainerRegistryArtifactEventTarget target) {
         super.setTarget(target);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ContainerRegistryChartPushedEventData setConnectedRegistry(
+            ContainerRegistryEventConnectedRegistry connectedRegistry) {
+        super.setConnectedRegistry(connectedRegistry);
         return this;
     }
 }

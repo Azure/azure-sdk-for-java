@@ -166,7 +166,7 @@ public final class CollectionsImpl {
      * @param collectionName The collectionName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return a collection.
+     * @return a collection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getCollectionWithResponseAsync(
@@ -219,7 +219,7 @@ public final class CollectionsImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return a collection.
+     * @return a collection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getCollectionWithResponseAsync(
@@ -269,7 +269,7 @@ public final class CollectionsImpl {
      * @param collectionName The collectionName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return a collection.
+     * @return a collection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getCollectionWithResponse(String collectionName, RequestOptions requestOptions) {
@@ -337,7 +337,7 @@ public final class CollectionsImpl {
      * @param collection Collection resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return collection resource.
+     * @return collection resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateCollectionWithResponseAsync(
@@ -415,7 +415,7 @@ public final class CollectionsImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return collection resource.
+     * @return collection resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateCollectionWithResponseAsync(
@@ -490,7 +490,7 @@ public final class CollectionsImpl {
      * @param collection Collection resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return collection resource.
+     * @return collection resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateCollectionWithResponse(
@@ -512,7 +512,7 @@ public final class CollectionsImpl {
      * @param collectionName The collectionName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteCollectionWithResponseAsync(
@@ -542,7 +542,7 @@ public final class CollectionsImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteCollectionWithResponseAsync(
@@ -569,7 +569,7 @@ public final class CollectionsImpl {
      * @param collectionName The collectionName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteCollectionWithResponse(String collectionName, RequestOptions requestOptions) {
@@ -619,7 +619,7 @@ public final class CollectionsImpl {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return paged list of collections.
+     * @return paged list of collections along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listCollectionsSinglePageAsync(RequestOptions requestOptions) {
@@ -685,7 +685,7 @@ public final class CollectionsImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return paged list of collections.
+     * @return paged list of collections along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listCollectionsSinglePageAsync(
@@ -891,7 +891,7 @@ public final class CollectionsImpl {
      * @param collectionName The collectionName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return paged list of collections.
+     * @return paged list of collections along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listChildCollectionNamesSinglePageAsync(
@@ -946,7 +946,7 @@ public final class CollectionsImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return paged list of collections.
+     * @return paged list of collections along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listChildCollectionNamesSinglePageAsync(
@@ -1112,7 +1112,8 @@ public final class CollectionsImpl {
      * @param collectionName The collectionName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the parent name and parent friendly name chains that represent the collection path.
+     * @return the parent name and parent friendly name chains that represent the collection path along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getCollectionPathWithResponseAsync(
@@ -1155,7 +1156,8 @@ public final class CollectionsImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the parent name and parent friendly name chains that represent the collection path.
+     * @return the parent name and parent friendly name chains that represent the collection path along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getCollectionPathWithResponseAsync(
@@ -1195,7 +1197,8 @@ public final class CollectionsImpl {
      * @param collectionName The collectionName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the parent name and parent friendly name chains that represent the collection path.
+     * @return the parent name and parent friendly name chains that represent the collection path along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getCollectionPathWithResponse(String collectionName, RequestOptions requestOptions) {
@@ -1237,7 +1240,7 @@ public final class CollectionsImpl {
      * @param nextLink The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return paged list of collections.
+     * @return paged list of collections along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listCollectionsNextSinglePageAsync(
@@ -1293,7 +1296,7 @@ public final class CollectionsImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return paged list of collections.
+     * @return paged list of collections along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listCollectionsNextSinglePageAsync(
@@ -1331,7 +1334,7 @@ public final class CollectionsImpl {
      * @param nextLink The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return paged list of collections.
+     * @return paged list of collections along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listChildCollectionNamesNextSinglePageAsync(
@@ -1373,7 +1376,7 @@ public final class CollectionsImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return paged list of collections.
+     * @return paged list of collections along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listChildCollectionNamesNextSinglePageAsync(

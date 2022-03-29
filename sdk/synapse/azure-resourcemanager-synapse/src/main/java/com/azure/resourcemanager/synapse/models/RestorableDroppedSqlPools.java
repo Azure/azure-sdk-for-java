@@ -35,7 +35,7 @@ public interface RestorableDroppedSqlPools {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted sql pool that can be restored.
+     * @return a deleted sql pool that can be restored along with {@link Response}.
      */
     Response<RestorableDroppedSqlPool> getWithResponse(
         String resourceGroupName, String workspaceName, String restorableDroppedSqlPoolId, Context context);

@@ -7,40 +7,28 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.CreationData;
+import com.azure.resourcemanager.containerservice.models.OSSku;
 import com.azure.resourcemanager.containerservice.models.OSType;
-import com.azure.resourcemanager.containerservice.models.Ossku;
 import com.azure.resourcemanager.containerservice.models.SnapshotType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** A node pool snapshot resource. */
 @Fluent
 public final class SnapshotInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SnapshotInner.class);
-
-    /*
-     * The system metadata relating to this snapshot.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
-
     /*
      * Properties of a snapshot.
      */
     @JsonProperty(value = "properties")
     private SnapshotProperties innerProperties;
 
-    /**
-     * Get the systemData property: The system metadata relating to this snapshot.
-     *
-     * @return the systemData value.
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy
+     * information.
      */
-    public SystemData systemData() {
-        return this.systemData;
-    }
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /**
      * Get the innerProperties property: Properties of a snapshot.
@@ -49,6 +37,15 @@ public final class SnapshotInner extends Resource {
      */
     private SnapshotProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /** {@inheritDoc} */
@@ -145,7 +142,7 @@ public final class SnapshotInner extends Resource {
      *
      * @return the osSku value.
      */
-    public Ossku osSku() {
+    public OSSku osSku() {
         return this.innerProperties() == null ? null : this.innerProperties().osSku();
     }
 

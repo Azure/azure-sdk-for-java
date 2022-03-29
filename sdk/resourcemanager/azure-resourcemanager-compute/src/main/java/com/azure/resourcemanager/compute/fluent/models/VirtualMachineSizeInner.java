@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the properties of a VM size. */
 @Fluent
 public final class VirtualMachineSizeInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineSizeInner.class);
-
     /*
      * The name of the virtual machine size.
      */

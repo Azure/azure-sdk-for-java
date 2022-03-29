@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure Firewall FQDN Tag Properties. */
 @Immutable
 public final class AzureFirewallFqdnTagPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallFqdnTagPropertiesFormat.class);
-
     /*
      * The provisioning state of the Azure firewall FQDN tag resource.
      */

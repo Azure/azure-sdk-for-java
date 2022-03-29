@@ -44,6 +44,20 @@ public final class DirectLineChannel extends Channel {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public DirectLineChannel withEtag(String etag) {
+        super.withEtag(etag);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DirectLineChannel withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

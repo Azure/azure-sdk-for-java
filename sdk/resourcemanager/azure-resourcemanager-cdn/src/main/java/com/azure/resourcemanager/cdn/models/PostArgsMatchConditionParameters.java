@@ -16,10 +16,10 @@ public final class PostArgsMatchConditionParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PostArgsMatchConditionParameters.class);
 
     /*
-     * The @odata.type property.
+     * The typeName property.
      */
-    @JsonProperty(value = "@odata.type", required = true)
-    private String odataType;
+    @JsonProperty(value = "typeName", required = true)
+    private String typeName = "DeliveryRulePostArgsConditionParameters";
 
     /*
      * Name of PostArg to be matched
@@ -53,26 +53,26 @@ public final class PostArgsMatchConditionParameters {
 
     /** Creates an instance of PostArgsMatchConditionParameters class. */
     public PostArgsMatchConditionParameters() {
-        odataType = "#Microsoft.Azure.Cdn.Models.DeliveryRulePostArgsConditionParameters";
+        typeName = "DeliveryRulePostArgsConditionParameters";
     }
 
     /**
-     * Get the odataType property: The @odata.type property.
+     * Get the typeName property: The typeName property.
      *
-     * @return the odataType value.
+     * @return the typeName value.
      */
-    public String odataType() {
-        return this.odataType;
+    public String typeName() {
+        return this.typeName;
     }
 
     /**
-     * Set the odataType property: The @odata.type property.
+     * Set the typeName property: The typeName property.
      *
-     * @param odataType the odataType value to set.
+     * @param typeName the typeName value to set.
      * @return the PostArgsMatchConditionParameters object itself.
      */
-    public PostArgsMatchConditionParameters withOdataType(String odataType) {
-        this.odataType = odataType;
+    public PostArgsMatchConditionParameters withTypeName(String typeName) {
+        this.typeName = typeName;
         return this;
     }
 

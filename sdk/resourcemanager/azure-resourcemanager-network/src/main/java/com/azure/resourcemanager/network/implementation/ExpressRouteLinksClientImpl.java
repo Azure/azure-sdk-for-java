@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.ExpressRouteLinksClient;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteLinkInner;
 import com.azure.resourcemanager.network.models.ExpressRouteLinkListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ExpressRouteLinksClient. */
 public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClient {
-    private final ClientLogger logger = new ClientLogger(ExpressRouteLinksClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ExpressRouteLinksService service;
 
@@ -110,7 +107,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteLink.
+     * @return expressRouteLink along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExpressRouteLinkInner>> getWithResponseAsync(
@@ -166,7 +163,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteLink.
+     * @return expressRouteLink along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExpressRouteLinkInner>> getWithResponseAsync(
@@ -218,7 +215,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteLink.
+     * @return expressRouteLink on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteLinkInner> getAsync(
@@ -260,7 +257,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteLink.
+     * @return expressRouteLink along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExpressRouteLinkInner> getWithResponse(
@@ -276,7 +273,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteLink List Result.
+     * @return expressRouteLink List Result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExpressRouteLinkInner>> listSinglePageAsync(
@@ -336,7 +333,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteLink List Result.
+     * @return expressRouteLink List Result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExpressRouteLinkInner>> listSinglePageAsync(
@@ -392,7 +389,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteLink List Result.
+     * @return expressRouteLink List Result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ExpressRouteLinkInner> listAsync(String resourceGroupName, String expressRoutePortName) {
@@ -410,7 +407,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteLink List Result.
+     * @return expressRouteLink List Result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ExpressRouteLinkInner> listAsync(
@@ -428,7 +425,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteLink List Result.
+     * @return expressRouteLink List Result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRouteLinkInner> list(String resourceGroupName, String expressRoutePortName) {
@@ -444,7 +441,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteLink List Result.
+     * @return expressRouteLink List Result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRouteLinkInner> list(
@@ -459,7 +456,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteLink List Result.
+     * @return expressRouteLink List Result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExpressRouteLinkInner>> listNextSinglePageAsync(String nextLink) {
@@ -495,7 +492,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteLink List Result.
+     * @return expressRouteLink List Result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExpressRouteLinkInner>> listNextSinglePageAsync(String nextLink, Context context) {

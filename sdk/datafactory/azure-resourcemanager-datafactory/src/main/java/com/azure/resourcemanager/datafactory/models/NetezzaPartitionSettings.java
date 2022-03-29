@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The settings that will be leveraged for Netezza source partitioning. */
 @Fluent
 public final class NetezzaPartitionSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetezzaPartitionSettings.class);
-
     /*
      * The name of the column in integer type that will be used for proceeding
      * range partitioning. Type: string (or Expression with resultType string).

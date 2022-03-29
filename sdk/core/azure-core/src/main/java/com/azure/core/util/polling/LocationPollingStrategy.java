@@ -36,7 +36,7 @@ import java.util.Objects;
 public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
     private static final ObjectSerializer DEFAULT_SERIALIZER = new DefaultJsonSerializer();
 
-    private final ClientLogger logger = new ClientLogger(LocationPollingStrategy.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LocationPollingStrategy.class);
 
     private final HttpPipeline httpPipeline;
     private final ObjectSerializer serializer;
@@ -71,7 +71,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
                 new URL(locationHeader.getValue());
                 return Mono.just(true);
             } catch (MalformedURLException e) {
-                logger.info("Failed to parse Location header into a URL.", e);
+                LOGGER.info("Failed to parse Location header into a URL.", e);
                 return Mono.just(false);
             }
         }

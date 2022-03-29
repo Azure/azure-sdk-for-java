@@ -22,6 +22,7 @@ public class ResourceServerController {
     @Autowired
     private WebClient webClient;
 
+    // BEGIN: readme-sample-webApiASample
     /**
      * webApiA resource api for web app
      * @return test content
@@ -32,7 +33,9 @@ public class ResourceServerController {
         LOGGER.info("Call webApiASample()");
         return "Request '/webApiA/sample'(WebApi A) returned successfully.";
     }
+    // END: readme-sample-webApiASample
 
+    // BEGIN: readme-sample-webApiBSample
     /**
      * webApiB resource api for other web application
      * @return test content
@@ -43,7 +46,9 @@ public class ResourceServerController {
         LOGGER.info("Call webApiBSample()");
         return "Request '/webApiB/sample'(WebApi B) returned successfully.";
     }
+    // END: readme-sample-webApiBSample
 
+    // BEGIN: readme-sample-callWebApiB
     /**
      * Access to protected data from WebApiA to WebApiB through client credential flow. The access token is obtained by webclient, or
      * <p>@RegisteredOAuth2AuthorizedClient("webApiA")</p>. In the end, these two approaches will be executed to
@@ -64,4 +69,5 @@ public class ResourceServerController {
         LOGGER.info("Call callWebApiB(), request '/webApiB/sample' returned: {}", body);
         return "Request 'webApiA/webApiB/sample'(WebApi A) returned a " + (body != null ? "success." : "failure.");
     }
+    // END: readme-sample-callWebApiB
 }

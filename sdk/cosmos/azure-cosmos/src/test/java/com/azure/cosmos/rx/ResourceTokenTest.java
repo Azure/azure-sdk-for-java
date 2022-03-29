@@ -433,7 +433,8 @@ public class ResourceTokenTest extends TestSuiteBase {
                 asyncClientResourceToken.queryDocuments(
                     documentCollection.getAltLink(),
                     "select * from c",
-                    queryRequestOptions);
+                    queryRequestOptions,
+                    Document.class);
 
             FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
                 .totalSize(1)

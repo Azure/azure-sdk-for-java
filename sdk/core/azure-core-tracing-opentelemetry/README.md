@@ -22,7 +22,7 @@ documentation][OpenTelemetry] | [Samples][samples]
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-tracing-opentelemetry</artifactId>
-  <version>1.0.0-beta.19</version>
+  <version>1.0.0-beta.21</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

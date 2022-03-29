@@ -8,16 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFirewallRuleGroup;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of the web application firewall rule set. */
 @Fluent
 public final class ApplicationGatewayFirewallRuleSetPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApplicationGatewayFirewallRuleSetPropertiesFormat.class);
-
     /*
      * The provisioning state of the web application firewall rule set.
      */
@@ -119,21 +115,21 @@ public final class ApplicationGatewayFirewallRuleSetPropertiesFormat {
      */
     public void validate() {
         if (ruleSetType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property ruleSetType in model"
                             + " ApplicationGatewayFirewallRuleSetPropertiesFormat"));
         }
         if (ruleSetVersion() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property ruleSetVersion in model"
                             + " ApplicationGatewayFirewallRuleSetPropertiesFormat"));
         }
         if (ruleGroups() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property ruleGroups in model"
@@ -142,4 +138,7 @@ public final class ApplicationGatewayFirewallRuleSetPropertiesFormat {
             ruleGroups().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER =
+        new ClientLogger(ApplicationGatewayFirewallRuleSetPropertiesFormat.class);
 }

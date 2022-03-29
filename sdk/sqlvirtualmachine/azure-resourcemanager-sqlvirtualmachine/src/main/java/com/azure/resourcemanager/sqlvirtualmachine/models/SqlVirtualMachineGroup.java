@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.sqlvirtualmachine.fluent.models.SqlVirtualMachineGroupInner;
 import java.util.Map;
@@ -45,6 +46,13 @@ public interface SqlVirtualMachineGroup {
      * @return the tags value.
      */
     Map<String, String> tags();
+
+    /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the provisioningState property: Provisioning state to track the async operation status.

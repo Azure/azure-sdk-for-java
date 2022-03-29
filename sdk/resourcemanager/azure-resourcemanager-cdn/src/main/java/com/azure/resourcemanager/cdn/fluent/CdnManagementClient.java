@@ -9,8 +9,12 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.cdn.fluent.models.CheckEndpointNameAvailabilityOutputInner;
 import com.azure.resourcemanager.cdn.fluent.models.CheckNameAvailabilityOutputInner;
 import com.azure.resourcemanager.cdn.fluent.models.ValidateProbeOutputInner;
+import com.azure.resourcemanager.cdn.models.CheckEndpointNameAvailabilityInput;
+import com.azure.resourcemanager.cdn.models.CheckNameAvailabilityInput;
+import com.azure.resourcemanager.cdn.models.ValidateProbeInput;
 import java.time.Duration;
 import reactor.core.publisher.Mono;
 
@@ -50,62 +54,6 @@ public interface CdnManagementClient {
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
-
-    /**
-     * Gets the ProfilesClient object to access its operations.
-     *
-     * @return the ProfilesClient object.
-     */
-    ProfilesClient getProfiles();
-
-    /**
-     * Gets the EndpointsClient object to access its operations.
-     *
-     * @return the EndpointsClient object.
-     */
-    EndpointsClient getEndpoints();
-
-    /**
-     * Gets the OriginsClient object to access its operations.
-     *
-     * @return the OriginsClient object.
-     */
-    OriginsClient getOrigins();
-
-    /**
-     * Gets the OriginGroupsClient object to access its operations.
-     *
-     * @return the OriginGroupsClient object.
-     */
-    OriginGroupsClient getOriginGroups();
-
-    /**
-     * Gets the CustomDomainsClient object to access its operations.
-     *
-     * @return the CustomDomainsClient object.
-     */
-    CustomDomainsClient getCustomDomains();
-
-    /**
-     * Gets the ResourceUsagesClient object to access its operations.
-     *
-     * @return the ResourceUsagesClient object.
-     */
-    ResourceUsagesClient getResourceUsages();
-
-    /**
-     * Gets the OperationsClient object to access its operations.
-     *
-     * @return the OperationsClient object.
-     */
-    OperationsClient getOperations();
-
-    /**
-     * Gets the EdgeNodesClient object to access its operations.
-     *
-     * @return the EdgeNodesClient object.
-     */
-    EdgeNodesClient getEdgeNodes();
 
     /**
      * Gets the AfdProfilesClient object to access its operations.
@@ -192,6 +140,62 @@ public interface CdnManagementClient {
     LogAnalyticsClient getLogAnalytics();
 
     /**
+     * Gets the ProfilesClient object to access its operations.
+     *
+     * @return the ProfilesClient object.
+     */
+    ProfilesClient getProfiles();
+
+    /**
+     * Gets the EndpointsClient object to access its operations.
+     *
+     * @return the EndpointsClient object.
+     */
+    EndpointsClient getEndpoints();
+
+    /**
+     * Gets the OriginsClient object to access its operations.
+     *
+     * @return the OriginsClient object.
+     */
+    OriginsClient getOrigins();
+
+    /**
+     * Gets the OriginGroupsClient object to access its operations.
+     *
+     * @return the OriginGroupsClient object.
+     */
+    OriginGroupsClient getOriginGroups();
+
+    /**
+     * Gets the CustomDomainsClient object to access its operations.
+     *
+     * @return the CustomDomainsClient object.
+     */
+    CustomDomainsClient getCustomDomains();
+
+    /**
+     * Gets the ResourceUsagesClient object to access its operations.
+     *
+     * @return the ResourceUsagesClient object.
+     */
+    ResourceUsagesClient getResourceUsages();
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     *
+     * @return the OperationsClient object.
+     */
+    OperationsClient getOperations();
+
+    /**
+     * Gets the EdgeNodesClient object to access its operations.
+     *
+     * @return the EdgeNodesClient object.
+     */
+    EdgeNodesClient getEdgeNodes();
+
+    /**
      * Gets the PoliciesClient object to access its operations.
      *
      * @return the PoliciesClient object.
@@ -207,166 +211,238 @@ public interface CdnManagementClient {
 
     /**
      * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
-     * CDN endpoint.
+     * afdx endpoint.
      *
-     * @param name The resource name to validate.
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param checkEndpointNameAvailabilityInput Input to check.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return output of check name availability API along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<CheckEndpointNameAvailabilityOutputInner>> checkEndpointNameAvailabilityWithResponseAsync(
+        String resourceGroupName, CheckEndpointNameAvailabilityInput checkEndpointNameAvailabilityInput);
+
+    /**
+     * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
+     * afdx endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param checkEndpointNameAvailabilityInput Input to check.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return output of check name availability API on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<CheckEndpointNameAvailabilityOutputInner> checkEndpointNameAvailabilityAsync(
+        String resourceGroupName, CheckEndpointNameAvailabilityInput checkEndpointNameAvailabilityInput);
+
+    /**
+     * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
+     * afdx endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param checkEndpointNameAvailabilityInput Input to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return output of check name availability API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CheckNameAvailabilityOutputInner>> checkNameAvailabilityWithResponseAsync(String name);
+    CheckEndpointNameAvailabilityOutputInner checkEndpointNameAvailability(
+        String resourceGroupName, CheckEndpointNameAvailabilityInput checkEndpointNameAvailabilityInput);
 
     /**
      * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
-     * CDN endpoint.
+     * afdx endpoint.
      *
-     * @param name The resource name to validate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CheckNameAvailabilityOutputInner> checkNameAvailabilityAsync(String name);
-
-    /**
-     * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
-     * CDN endpoint.
-     *
-     * @param name The resource name to validate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameAvailabilityOutputInner checkNameAvailability(String name);
-
-    /**
-     * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
-     * CDN endpoint.
-     *
-     * @param name The resource name to validate.
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param checkEndpointNameAvailabilityInput Input to check.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API.
+     * @return output of check name availability API along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameAvailabilityOutputInner> checkNameAvailabilityWithResponse(String name, Context context);
+    Response<CheckEndpointNameAvailabilityOutputInner> checkEndpointNameAvailabilityWithResponse(
+        String resourceGroupName,
+        CheckEndpointNameAvailabilityInput checkEndpointNameAvailabilityInput,
+        Context context);
 
     /**
      * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
      * CDN endpoint.
      *
-     * @param name The resource name to validate.
+     * @param checkNameAvailabilityInput Input to check.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return output of check name availability API along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<CheckNameAvailabilityOutputInner>> checkNameAvailabilityWithResponseAsync(
+        CheckNameAvailabilityInput checkNameAvailabilityInput);
+
+    /**
+     * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
+     * CDN endpoint.
+     *
+     * @param checkNameAvailabilityInput Input to check.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return output of check name availability API on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<CheckNameAvailabilityOutputInner> checkNameAvailabilityAsync(
+        CheckNameAvailabilityInput checkNameAvailabilityInput);
+
+    /**
+     * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
+     * CDN endpoint.
+     *
+     * @param checkNameAvailabilityInput Input to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return output of check name availability API.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CheckNameAvailabilityOutputInner checkNameAvailability(CheckNameAvailabilityInput checkNameAvailabilityInput);
+
+    /**
+     * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
+     * CDN endpoint.
+     *
+     * @param checkNameAvailabilityInput Input to check.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return output of check name availability API along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<CheckNameAvailabilityOutputInner> checkNameAvailabilityWithResponse(
+        CheckNameAvailabilityInput checkNameAvailabilityInput, Context context);
+
+    /**
+     * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
+     * CDN endpoint.
+     *
+     * @param checkNameAvailabilityInput Input to check.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return output of check name availability API along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<CheckNameAvailabilityOutputInner>> checkNameAvailabilityWithSubscriptionWithResponseAsync(
-        String name);
+        CheckNameAvailabilityInput checkNameAvailabilityInput);
 
     /**
      * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
      * CDN endpoint.
      *
-     * @param name The resource name to validate.
+     * @param checkNameAvailabilityInput Input to check.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return output of check name availability API on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<CheckNameAvailabilityOutputInner> checkNameAvailabilityWithSubscriptionAsync(
+        CheckNameAvailabilityInput checkNameAvailabilityInput);
+
+    /**
+     * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
+     * CDN endpoint.
+     *
+     * @param checkNameAvailabilityInput Input to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return output of check name availability API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CheckNameAvailabilityOutputInner> checkNameAvailabilityWithSubscriptionAsync(String name);
+    CheckNameAvailabilityOutputInner checkNameAvailabilityWithSubscription(
+        CheckNameAvailabilityInput checkNameAvailabilityInput);
 
     /**
      * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
      * CDN endpoint.
      *
-     * @param name The resource name to validate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameAvailabilityOutputInner checkNameAvailabilityWithSubscription(String name);
-
-    /**
-     * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
-     * CDN endpoint.
-     *
-     * @param name The resource name to validate.
+     * @param checkNameAvailabilityInput Input to check.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API.
+     * @return output of check name availability API along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CheckNameAvailabilityOutputInner> checkNameAvailabilityWithSubscriptionWithResponse(
-        String name, Context context);
+        CheckNameAvailabilityInput checkNameAvailabilityInput, Context context);
 
     /**
      * Check if the probe path is a valid path and the file can be accessed. Probe path is the path to a file hosted on
      * the origin server to help accelerate the delivery of dynamic content via the CDN endpoint. This path is relative
      * to the origin path specified in the endpoint configuration.
      *
-     * @param probeUrl The probe URL to validate.
+     * @param validateProbeInput Input to check.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return output of the validate probe API along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<ValidateProbeOutputInner>> validateProbeWithResponseAsync(ValidateProbeInput validateProbeInput);
+
+    /**
+     * Check if the probe path is a valid path and the file can be accessed. Probe path is the path to a file hosted on
+     * the origin server to help accelerate the delivery of dynamic content via the CDN endpoint. This path is relative
+     * to the origin path specified in the endpoint configuration.
+     *
+     * @param validateProbeInput Input to check.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return output of the validate probe API on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ValidateProbeOutputInner> validateProbeAsync(ValidateProbeInput validateProbeInput);
+
+    /**
+     * Check if the probe path is a valid path and the file can be accessed. Probe path is the path to a file hosted on
+     * the origin server to help accelerate the delivery of dynamic content via the CDN endpoint. This path is relative
+     * to the origin path specified in the endpoint configuration.
+     *
+     * @param validateProbeInput Input to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return output of the validate probe API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ValidateProbeOutputInner>> validateProbeWithResponseAsync(String probeUrl);
+    ValidateProbeOutputInner validateProbe(ValidateProbeInput validateProbeInput);
 
     /**
      * Check if the probe path is a valid path and the file can be accessed. Probe path is the path to a file hosted on
      * the origin server to help accelerate the delivery of dynamic content via the CDN endpoint. This path is relative
      * to the origin path specified in the endpoint configuration.
      *
-     * @param probeUrl The probe URL to validate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of the validate probe API.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ValidateProbeOutputInner> validateProbeAsync(String probeUrl);
-
-    /**
-     * Check if the probe path is a valid path and the file can be accessed. Probe path is the path to a file hosted on
-     * the origin server to help accelerate the delivery of dynamic content via the CDN endpoint. This path is relative
-     * to the origin path specified in the endpoint configuration.
-     *
-     * @param probeUrl The probe URL to validate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of the validate probe API.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ValidateProbeOutputInner validateProbe(String probeUrl);
-
-    /**
-     * Check if the probe path is a valid path and the file can be accessed. Probe path is the path to a file hosted on
-     * the origin server to help accelerate the delivery of dynamic content via the CDN endpoint. This path is relative
-     * to the origin path specified in the endpoint configuration.
-     *
-     * @param probeUrl The probe URL to validate.
+     * @param validateProbeInput Input to check.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of the validate probe API.
+     * @return output of the validate probe API along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ValidateProbeOutputInner> validateProbeWithResponse(String probeUrl, Context context);
+    Response<ValidateProbeOutputInner> validateProbeWithResponse(
+        ValidateProbeInput validateProbeInput, Context context);
 }

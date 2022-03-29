@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Configuration needed to perform TLS termination &amp; initiation. */
 @Fluent
 public final class FirewallPolicyTransportSecurity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallPolicyTransportSecurity.class);
-
     /*
      * The CA used for intermediate CA generation.
      */

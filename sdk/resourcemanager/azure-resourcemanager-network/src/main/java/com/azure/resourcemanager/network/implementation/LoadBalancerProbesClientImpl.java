@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.LoadBalancerProbesClient;
 import com.azure.resourcemanager.network.fluent.models.ProbeInner;
 import com.azure.resourcemanager.network.models.LoadBalancerProbeListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LoadBalancerProbesClient. */
 public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesClient {
-    private final ClientLogger logger = new ClientLogger(LoadBalancerProbesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final LoadBalancerProbesService service;
 
@@ -109,7 +106,7 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the load balancer probes.
+     * @return all the load balancer probes along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProbeInner>> listSinglePageAsync(String resourceGroupName, String loadBalancerName) {
@@ -168,7 +165,7 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the load balancer probes.
+     * @return all the load balancer probes along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProbeInner>> listSinglePageAsync(
@@ -224,7 +221,7 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the load balancer probes.
+     * @return all the load balancer probes as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ProbeInner> listAsync(String resourceGroupName, String loadBalancerName) {
@@ -242,7 +239,7 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the load balancer probes.
+     * @return all the load balancer probes as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProbeInner> listAsync(String resourceGroupName, String loadBalancerName, Context context) {
@@ -259,7 +256,7 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the load balancer probes.
+     * @return all the load balancer probes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProbeInner> list(String resourceGroupName, String loadBalancerName) {
@@ -275,7 +272,7 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the load balancer probes.
+     * @return all the load balancer probes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProbeInner> list(String resourceGroupName, String loadBalancerName, Context context) {
@@ -291,7 +288,7 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return load balancer probe.
+     * @return load balancer probe along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ProbeInner>> getWithResponseAsync(
@@ -347,7 +344,7 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return load balancer probe.
+     * @return load balancer probe along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProbeInner>> getWithResponseAsync(
@@ -399,7 +396,7 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return load balancer probe.
+     * @return load balancer probe on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProbeInner> getAsync(String resourceGroupName, String loadBalancerName, String probeName) {
@@ -440,7 +437,7 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return load balancer probe.
+     * @return load balancer probe along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProbeInner> getWithResponse(
@@ -455,7 +452,8 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListProbe API service call.
+     * @return response for ListProbe API service call along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProbeInner>> listNextSinglePageAsync(String nextLink) {
@@ -491,7 +489,8 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListProbe API service call.
+     * @return response for ListProbe API service call along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProbeInner>> listNextSinglePageAsync(String nextLink, Context context) {

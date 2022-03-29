@@ -6,21 +6,25 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.management.SystemData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Managed cluster Access Profile. */
 @Fluent
 public final class ManagedClusterAccessProfileInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterAccessProfileInner.class);
-
     /*
      * AccessProfile of a managed cluster.
      */
     @JsonProperty(value = "properties")
     private AccessProfile innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy
+     * information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /**
      * Get the innerProperties property: AccessProfile of a managed cluster.
@@ -29,6 +33,15 @@ public final class ManagedClusterAccessProfileInner extends Resource {
      */
     private AccessProfile innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /** {@inheritDoc} */

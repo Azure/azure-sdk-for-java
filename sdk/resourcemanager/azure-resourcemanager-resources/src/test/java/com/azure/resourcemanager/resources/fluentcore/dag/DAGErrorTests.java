@@ -361,7 +361,7 @@ public class DAGErrorTests {
         Assertions.assertEquals(compositeException.getSuppressed().length, 2);
         for (Throwable throwable : compositeException.getSuppressed()) {
             String message = throwable.getMessage();
-            Assertions.assertTrue(message.equalsIgnoreCase("B") || message.equalsIgnoreCase("G"));
+            Assertions.assertTrue("B".equalsIgnoreCase(message) || "G".equalsIgnoreCase(message));
         }
     }
 

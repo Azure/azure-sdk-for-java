@@ -62,7 +62,7 @@ public final class AttestationTokenValidationOptions {
      * Returns if the returned attestation token should be validated at all.
      * @return a boolean indicating if the attestation token should be validated.
      */
-    public boolean getValidateToken() {
+    public boolean isValidateToken() {
         return validateToken;
     }
 
@@ -124,7 +124,7 @@ public final class AttestationTokenValidationOptions {
      * Returns whether expiration time should be validated.
      * @return the current state of the ExpiresOn validation.
      */
-    public boolean getValidateExpiresOn() {
+    public boolean isValidateExpiresOn() {
         return validateExpiresOn;
     }
 
@@ -141,7 +141,7 @@ public final class AttestationTokenValidationOptions {
      * Returns whether expiration time should be validated.
      * @return the current state of the ExpiresOn validation.
      */
-    public boolean getValidateNotBefore() {
+    public boolean isValidateNotBefore() {
         return validateNotBefore;
     }
 

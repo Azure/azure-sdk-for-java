@@ -30,17 +30,31 @@ public final class CosmosDiagnostics {
 
     private ClientSideRequestStatistics clientSideRequestStatistics;
     private FeedResponseDiagnostics feedResponseDiagnostics;
-    private AtomicBoolean diagnosticsCapturedInPagedFlux = new AtomicBoolean(false);
+    private final AtomicBoolean diagnosticsCapturedInPagedFlux;
 
     static final String USER_AGENT = Utils.getUserAgent();
     static final String USER_AGENT_KEY = "userAgent";
 
     CosmosDiagnostics(DiagnosticsClientContext diagnosticsClientContext, GlobalEndpointManager globalEndpointManager) {
+        this.diagnosticsCapturedInPagedFlux = new AtomicBoolean(false);
         this.clientSideRequestStatistics = new ClientSideRequestStatistics(diagnosticsClientContext, globalEndpointManager);
     }
 
     CosmosDiagnostics(FeedResponseDiagnostics feedResponseDiagnostics) {
+        this.diagnosticsCapturedInPagedFlux = new AtomicBoolean(false);
         this.feedResponseDiagnostics = feedResponseDiagnostics;
+    }
+
+    CosmosDiagnostics(CosmosDiagnostics toBeCloned) {
+        if (toBeCloned.feedResponseDiagnostics != null) {
+            this.feedResponseDiagnostics = new FeedResponseDiagnostics(toBeCloned.feedResponseDiagnostics);
+        }
+
+        if (toBeCloned.clientSideRequestStatistics != null) {
+            this.clientSideRequestStatistics = new ClientSideRequestStatistics(toBeCloned.clientSideRequestStatistics);
+        }
+
+        this.diagnosticsCapturedInPagedFlux = new AtomicBoolean(toBeCloned.diagnosticsCapturedInPagedFlux.get());
     }
 
     ClientSideRequestStatistics clientSideRequestStatistics() {
@@ -153,15 +167,19 @@ public final class CosmosDiagnostics {
             new ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor() {
                 @Override
                 public FeedResponseDiagnostics getFeedResponseDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
-                    if (cosmosDiagnostics != null) {
-                        return cosmosDiagnostics.getFeedResponseDiagnostics();
+                    if (cosmosDiagnostics == null) {
+                        return null;
                     }
 
-                    return null;
+                    return cosmosDiagnostics.getFeedResponseDiagnostics();
                 }
 
                 @Override
                 public AtomicBoolean isDiagnosticsCapturedInPagedFlux(CosmosDiagnostics cosmosDiagnostics) {
+                    if (cosmosDiagnostics == null) {
+                        return null;
+                    }
+
                     return cosmosDiagnostics.isDiagnosticsCapturedInPagedFlux();
                 }
             });

@@ -183,6 +183,30 @@ public final class ExtendedServerBlobAuditingPolicyProperties {
     @JsonProperty(value = "queueDelayMs")
     private Integer queueDelayMs;
 
+    /*
+     * Specifies the state of devops audit. If state is Enabled, devops logs
+     * will be sent to Azure Monitor.
+     * In order to send the events to Azure Monitor, specify 'State' as
+     * 'Enabled', 'IsAzureMonitorTargetEnabled' as true and
+     * 'IsDevopsAuditEnabled' as true
+     *
+     * When using REST API to configure auditing, Diagnostic Settings with
+     * 'DevOpsOperationsAudit' diagnostic logs category on the master database
+     * should also be created.
+     *
+     * Diagnostic Settings URI format:
+     * PUT
+     * https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/master/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
+     *
+     * For more information, see [Diagnostic Settings REST
+     * API](https://go.microsoft.com/fwlink/?linkid=2033207)
+     * or [Diagnostic Settings
+     * PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043)
+     *
+     */
+    @JsonProperty(value = "isDevopsAuditEnabled")
+    private Boolean isDevopsAuditEnabled;
+
     /**
      * Get the predicateExpression property: Specifies condition of where clause when creating an audit.
      *
@@ -507,6 +531,48 @@ public final class ExtendedServerBlobAuditingPolicyProperties {
      */
     public ExtendedServerBlobAuditingPolicyProperties withQueueDelayMs(Integer queueDelayMs) {
         this.queueDelayMs = queueDelayMs;
+        return this;
+    }
+
+    /**
+     * Get the isDevopsAuditEnabled property: Specifies the state of devops audit. If state is Enabled, devops logs will
+     * be sent to Azure Monitor. In order to send the events to Azure Monitor, specify 'State' as 'Enabled',
+     * 'IsAzureMonitorTargetEnabled' as true and 'IsDevopsAuditEnabled' as true
+     *
+     * <p>When using REST API to configure auditing, Diagnostic Settings with 'DevOpsOperationsAudit' diagnostic logs
+     * category on the master database should also be created.
+     *
+     * <p>Diagnostic Settings URI format: PUT
+     * https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/master/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
+     *
+     * <p>For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207) or
+     * [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043).
+     *
+     * @return the isDevopsAuditEnabled value.
+     */
+    public Boolean isDevopsAuditEnabled() {
+        return this.isDevopsAuditEnabled;
+    }
+
+    /**
+     * Set the isDevopsAuditEnabled property: Specifies the state of devops audit. If state is Enabled, devops logs will
+     * be sent to Azure Monitor. In order to send the events to Azure Monitor, specify 'State' as 'Enabled',
+     * 'IsAzureMonitorTargetEnabled' as true and 'IsDevopsAuditEnabled' as true
+     *
+     * <p>When using REST API to configure auditing, Diagnostic Settings with 'DevOpsOperationsAudit' diagnostic logs
+     * category on the master database should also be created.
+     *
+     * <p>Diagnostic Settings URI format: PUT
+     * https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/master/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
+     *
+     * <p>For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207) or
+     * [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043).
+     *
+     * @param isDevopsAuditEnabled the isDevopsAuditEnabled value to set.
+     * @return the ExtendedServerBlobAuditingPolicyProperties object itself.
+     */
+    public ExtendedServerBlobAuditingPolicyProperties withIsDevopsAuditEnabled(Boolean isDevopsAuditEnabled) {
+        this.isDevopsAuditEnabled = isDevopsAuditEnabled;
         return this;
     }
 

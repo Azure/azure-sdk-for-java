@@ -5,39 +5,26 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
 import com.azure.resourcemanager.cdn.models.DeploymentStatus;
-import com.azure.resourcemanager.cdn.models.SecurityPolicyParameters;
-import com.azure.resourcemanager.cdn.models.SystemData;
+import com.azure.resourcemanager.cdn.models.SecurityPolicyPropertiesParameters;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SecurityPolicy association for AzureFrontDoor profile. */
-@JsonFlatten
 @Fluent
-public class SecurityPolicyInner extends ProxyResource {
+public final class SecurityPolicyInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityPolicyInner.class);
 
     /*
-     * Provisioning status
+     * The json object that contains properties required to create a security
+     * policy
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private AfdProvisioningState provisioningState;
-
-    /*
-     * The deploymentStatus property.
-     */
-    @JsonProperty(value = "properties.deploymentStatus", access = JsonProperty.Access.WRITE_ONLY)
-    private DeploymentStatus deploymentStatus;
-
-    /*
-     * object which contains security policy parameters
-     */
-    @JsonProperty(value = "properties.parameters")
-    private SecurityPolicyParameters parameters;
+    @JsonProperty(value = "properties")
+    private SecurityPolicyProperties innerProperties;
 
     /*
      * Read only system data
@@ -46,41 +33,12 @@ public class SecurityPolicyInner extends ProxyResource {
     private SystemData systemData;
 
     /**
-     * Get the provisioningState property: Provisioning status.
+     * Get the innerProperties property: The json object that contains properties required to create a security policy.
      *
-     * @return the provisioningState value.
+     * @return the innerProperties value.
      */
-    public AfdProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the deploymentStatus property: The deploymentStatus property.
-     *
-     * @return the deploymentStatus value.
-     */
-    public DeploymentStatus deploymentStatus() {
-        return this.deploymentStatus;
-    }
-
-    /**
-     * Get the parameters property: object which contains security policy parameters.
-     *
-     * @return the parameters value.
-     */
-    public SecurityPolicyParameters parameters() {
-        return this.parameters;
-    }
-
-    /**
-     * Set the parameters property: object which contains security policy parameters.
-     *
-     * @param parameters the parameters value to set.
-     * @return the SecurityPolicyInner object itself.
-     */
-    public SecurityPolicyInner withParameters(SecurityPolicyParameters parameters) {
-        this.parameters = parameters;
-        return this;
+    private SecurityPolicyProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -93,16 +51,63 @@ public class SecurityPolicyInner extends ProxyResource {
     }
 
     /**
+     * Get the profileName property: The name of the profile which holds the security policy.
+     *
+     * @return the profileName value.
+     */
+    public String profileName() {
+        return this.innerProperties() == null ? null : this.innerProperties().profileName();
+    }
+
+    /**
+     * Get the parameters property: object which contains security policy parameters.
+     *
+     * @return the parameters value.
+     */
+    public SecurityPolicyPropertiesParameters parameters() {
+        return this.innerProperties() == null ? null : this.innerProperties().parameters();
+    }
+
+    /**
+     * Set the parameters property: object which contains security policy parameters.
+     *
+     * @param parameters the parameters value to set.
+     * @return the SecurityPolicyInner object itself.
+     */
+    public SecurityPolicyInner withParameters(SecurityPolicyPropertiesParameters parameters) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityPolicyProperties();
+        }
+        this.innerProperties().withParameters(parameters);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning status.
+     *
+     * @return the provisioningState value.
+     */
+    public AfdProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the deploymentStatus property: The deploymentStatus property.
+     *
+     * @return the deploymentStatus value.
+     */
+    public DeploymentStatus deploymentStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().deploymentStatus();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (parameters() != null) {
-            parameters().validate();
-        }
-        if (systemData() != null) {
-            systemData().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

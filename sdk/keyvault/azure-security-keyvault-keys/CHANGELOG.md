@@ -1,14 +1,70 @@
 # Release History
 
-## 4.4.0-beta.6 (Unreleased)
+## 4.4.0-beta.8 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+- Changed `getRandomBytes` operations in `KeyClient` and `KeyAsyncClient` to return `byte[]` instead of `RandomBytes`.
+- Removed the `RandomBytes` class.
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.3.8 (2022-03-17)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.26.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.8`
+
+## 4.4.0-beta.7 (2022-02-11)
+
+### Features added
+- Implemented new traits (micro-interfaces) in `KeyClientBuilder`, `CryptographyClientBuilder` and `KeyEncryptionKeyClientBuilder`. This makes the experience of using client builders more consistent across libraries in the Azure SDK for Java.
+- Added the `immutable` property to `KeyReleasePolicy`.
+
+### Breaking Changes
+- Removed the `exports` statement for `com.azure.security.keyvault.keys.implementation` in `module-info.java`.
+- `KeyReleasePolicy`
+    - Renamed `data` to `encodedPolicy` and changed its type from `byte[]` to `BinaryData`.
+    - Flattened `KeyRotationPolicyProperties` into `KeyRotationPolicy`.
+    - Renamed `expiryTime` to `expiresIn`.
+- Renamed `target` to `targetAttestationToken` in `releaseKey` APIs.
+- Removed `KeyExportRequestParameters` as the `export` operations will be pushed to a future release.
+- Renamed `KeyRotationLifetimeAction`'s `type` to `action`, to align with existing similar APIs in Key Vault Certificates.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.25.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.7`
+
+## 4.3.7 (2022-02-11)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.25.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.7`
+
+## 4.4.0-beta.6 (2022-01-13)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.24.1`
+- Upgraded `azure-core-http-netty` dependency to `1.11.6`
+
+## 4.3.6 (2022-01-12)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.24.1`
+- Upgraded `azure-core-http-netty` dependency to `1.11.6`
 
 ## 4.4.0-beta.5 (2021-11-12)
 

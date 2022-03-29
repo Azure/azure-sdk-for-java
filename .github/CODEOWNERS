@@ -1,6 +1,13 @@
 # Instructions for CODEOWNERS file format and automatic build failure notifications:
 # https://github.com/Azure/azure-sdk/blob/main/docs/policies/opensource.md#codeowners
 
+################
+# Automation
+################
+
+# Git Hub integration and bot rules
+/.github/                                       @AlexGhiondea @jsquire   
+
 ###########
 # SDK
 ###########
@@ -32,11 +39,32 @@
 # PRLabel: %Batch
 /sdk/batch/                                         @gingi @paterasMSFT @dpwatrous
 
+# PRLabel: %Communication - Calling Server
+/sdk/communication/sdk/communication/azure-communication-callingserver/ @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
+
+# PRLabel: %Communication - Chat
+/sdk/communication/sdk/communication/azure-communication-chat/ @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
+
+# PRLabel: %Communication - Identity
+/sdk/communication/azure-communication-identity/    @Azure/acs-identity-sdk @petrsvihlik @AikoBB @maximrytych-ms @martinbarnas-ms
+
+# PRLabel: %Communication - Common
+/sdk/communication/azure-communication-common/      @Azure/acs-identity-sdk @petrsvihlik @AikoBB @maximrytych-ms @martinbarnas-ms
+
+# PRLabel: %Communication - Network Traversal
+/sdk/communication/sdk/communication/azure-communication-networktraversal/ @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
+
+# PRLabel: %Communication - Phone Numbers
+/sdk/communication/azure-communication-phonenumbers/ @miguhern @whisper6284 @lucasrsant @RoyHerrod @danielav7
+
+# PRLabel: %Communication - SMS
+/sdk/communication/azure-communication-sms/         @RoyHerrod @arifibrahim4
+
+# PRLabel: %Communication - Resource Manager
+/sdk/communication/sdk/communication/azure-resourcemanager-communication/ 
+
 # PRLabel: %Communication
 /sdk/communication/                                 @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
-/sdk/communication/azure-communication-identity/    @Azure/acs-identity-sdk
-/sdk/communication/azure-communication-phonenumbers/ @RoyHerrod @danielav7 @whisper6284 @AlonsoMondal
-/sdk/communication/azure-communication-sms/         @RoyHerrod @arifibrahim4
 
 # PRLabel: %Container Registry
 /sdk/containerregistry/                             @pallavit @alzimmermsft
@@ -45,20 +73,23 @@
 /sdk/core/                                          @alzimmermsft @srnagar @anuchandy @lmolkova @pallavit @vcolin7 @mssfang @jonathangiles @billwert @kasobol-msft
 
 # PRLabel: %Azure.Core.AMQP
-/sdk/core/azure-core-amqp/                          @conniey @anuchandy @ki1729 @srnagar @jonathangiles
+/sdk/core/azure-core-amqp/                          @conniey @anuchandy @ki1729 @srnagar @jonathangiles @haolingdong-msft @liukun-msft @weidongxu-microsoft @ZejiaJiang
 
 # PRLabel: %Azure.Core
 /sdk/core/azure-core-tracing-opentelemetry/         @samvaity @alzimmermsft @trask @lmolkova
 
 # PRLabel: %Cosmos
-/sdk/cosmos/                                        @moderakh @kushagraThapar @FabianMeiswinkel @kirankumarkolli @mbhaskar @simplynaveen20 @xinlian12 @milismsft @aayush3011
+/sdk/cosmos/                                        @kushagraThapar @FabianMeiswinkel @kirankumarkolli @mbhaskar @simplynaveen20 @xinlian12 @milismsft @aayush3011
 # PRLabel: %azure-spring
 /sdk/cosmos/azure-spring-data-cosmos/               @kushagraThapar @mbhaskar @backwind1233 @chenrujun @hui1110 @jialigit @moarychan @saragluna @stliu @yiliuTo @xinlian12
 # PRLabel: %azure-spring
 /sdk/cosmos/azure-spring-data-cosmos-test/          @kushagraThapar @mbhaskar @backwind1233 @chenrujun @hui1110 @jialigit @moarychan @saragluna @stliu @yiliuTo @xinlian12
 
+# ServiceLabel: %Device Update for IoT Hub %Service Attention
+/sdk/deviceupdate/                                  @dpokluda
+
 # PRLabel: %Digital Twins
-/sdk/digitaltwins/                                  @johngallardo @efriesner @abhinav-ghai
+/sdk/digitaltwins/                                  @johngallardo @efriesner @abhinav-ghai @Aashish93-stack
 
 # PRLabel: %Models Repository
 /sdk/modelsrepository                               @drwill-ms @timtay-microsoft @abhipsaMisra @azabbasi @digimaun @andykwong-ms @brycewang-microsoft
@@ -67,7 +98,7 @@
 /sdk/eventgrid/                                     @srnagar @lmolkova @mssfang
 
 # PRLabel: %Event Hubs
-/sdk/eventhubs/                                     @conniey @anuchandy @ki1729 @srnagar
+/sdk/eventhubs/                                     @conniey @anuchandy @ki1729 @srnagar @haolingdong-msft @liukun-msft @weidongxu-microsoft @ZejiaJiang
 
 # PRLabel: %Event Hubs
 /sdk/eventhubs/microsoft-azure-eventhubs-eph/       @JamesBirdsall @sjkwak
@@ -83,6 +114,9 @@
 
 # PRLabel: %Cognitive - Metrics Advisor
 /sdk/metricsadvisor/                                @samvaity @anuchandy
+
+# PRLabel: %Cognitive - Anomaly Detector
+/sdk/anomalydetector/                               @conhua @mengaims @juaduan @moreOver0
 
 # PRLabel: %Azure.Identity
 /sdk/identity/                                      @g2vinay @schaabs @joshfree @billwert
@@ -113,7 +147,7 @@
 /sdk/search/                                        @alzimmermsft @pallavit @mssfang @samvaity
 
 # PRLabel: %Service Bus
-/sdk/servicebus/                                    @anuchandy @ki1729 @conniey
+/sdk/servicebus/                                    @anuchandy @ki1729 @conniey @haolingdong-msft @liukun-msft @weidongxu-microsoft @ZejiaJiang
 
 # PRLabel: %Service Bus
 /sdk/servicebus/microsoft-azure-servicebus/         @shankarsama @yvgopal
@@ -383,7 +417,7 @@
 #/<NotInRepo>/          @jfggdl
 
 # ServiceLabel: %Event Hubs %Service Attention
-#/<NotInRepo>/          @kasun04
+#/<NotInRepo>/          @kasun04 @saglodha
 
 # ServiceLabel: %Functions %Service Attention
 #/<NotInRepo>/          @ahmedelnably @fabiocav
@@ -569,7 +603,7 @@
 #/<NotInRepo>/          @chlahav
 
 # ServiceLabel: %Service Attention %Service Bus
-#/<NotInRepo>/          @jfggdl @axisc
+#/<NotInRepo>/          @EldertGrootenboer @saglodha
 
 # ServiceLabel: %Service Attention %Service Fabric
 #/<NotInRepo>/          @QingChenmsft @vaishnavk @juhacket

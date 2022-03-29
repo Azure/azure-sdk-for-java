@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.PolicySetDefinitionsClient;
 import com.azure.resourcemanager.resources.fluent.models.PolicySetDefinitionInner;
 import com.azure.resourcemanager.resources.models.PolicySetDefinitionListResult;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PolicySetDefinitionsClient. */
 public final class PolicySetDefinitionsClientImpl implements PolicySetDefinitionsClient {
-    private final ClientLogger logger = new ClientLogger(PolicySetDefinitionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PolicySetDefinitionsService service;
 
@@ -239,7 +236,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition.
+     * @return the policy set definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PolicySetDefinitionInner>> createOrUpdateWithResponseAsync(
@@ -292,7 +289,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition.
+     * @return the policy set definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PolicySetDefinitionInner>> createOrUpdateWithResponseAsync(
@@ -341,7 +338,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition.
+     * @return the policy set definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicySetDefinitionInner> createOrUpdateAsync(
@@ -382,7 +379,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition.
+     * @return the policy set definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicySetDefinitionInner> createOrUpdateWithResponse(
@@ -397,7 +394,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String policySetDefinitionName) {
@@ -442,7 +439,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String policySetDefinitionName, Context context) {
@@ -483,7 +480,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String policySetDefinitionName) {
@@ -511,7 +508,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String policySetDefinitionName, Context context) {
@@ -525,7 +522,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition.
+     * @return the policy set definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PolicySetDefinitionInner>> getWithResponseAsync(String policySetDefinitionName) {
@@ -570,7 +567,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition.
+     * @return the policy set definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PolicySetDefinitionInner>> getWithResponseAsync(
@@ -612,7 +609,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition.
+     * @return the policy set definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicySetDefinitionInner> getAsync(String policySetDefinitionName) {
@@ -649,7 +646,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition.
+     * @return the policy set definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicySetDefinitionInner> getWithResponse(String policySetDefinitionName, Context context) {
@@ -663,7 +660,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition.
+     * @return the policy set definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PolicySetDefinitionInner>> getBuiltInWithResponseAsync(String policySetDefinitionName) {
@@ -695,7 +692,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition.
+     * @return the policy set definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PolicySetDefinitionInner>> getBuiltInWithResponseAsync(
@@ -724,7 +721,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition.
+     * @return the policy set definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicySetDefinitionInner> getBuiltInAsync(String policySetDefinitionName) {
@@ -761,7 +758,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition.
+     * @return the policy set definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicySetDefinitionInner> getBuiltInWithResponse(String policySetDefinitionName, Context context) {
@@ -790,7 +787,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions.
+     * @return list of policy set definitions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicySetDefinitionInner>> listSinglePageAsync(String filter, Integer top) {
@@ -855,7 +852,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions.
+     * @return list of policy set definitions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicySetDefinitionInner>> listSinglePageAsync(
@@ -910,7 +907,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions.
+     * @return list of policy set definitions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PolicySetDefinitionInner> listAsync(String filter, Integer top) {
@@ -930,7 +927,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions.
+     * @return list of policy set definitions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PolicySetDefinitionInner> listAsync() {
@@ -962,7 +959,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions.
+     * @return list of policy set definitions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicySetDefinitionInner> listAsync(String filter, Integer top, Context context) {
@@ -983,7 +980,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions.
+     * @return list of policy set definitions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicySetDefinitionInner> list() {
@@ -1015,7 +1012,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions.
+     * @return list of policy set definitions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicySetDefinitionInner> list(String filter, Integer top, Context context) {
@@ -1038,7 +1035,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions.
+     * @return list of policy set definitions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicySetDefinitionInner>> listBuiltInSinglePageAsync(String filter, Integer top) {
@@ -1082,7 +1079,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions.
+     * @return list of policy set definitions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicySetDefinitionInner>> listBuiltInSinglePageAsync(
@@ -1125,7 +1122,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions.
+     * @return list of policy set definitions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PolicySetDefinitionInner> listBuiltInAsync(String filter, Integer top) {
@@ -1140,7 +1137,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions.
+     * @return list of policy set definitions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PolicySetDefinitionInner> listBuiltInAsync() {
@@ -1167,7 +1164,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions.
+     * @return list of policy set definitions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicySetDefinitionInner> listBuiltInAsync(String filter, Integer top, Context context) {
@@ -1183,7 +1180,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions.
+     * @return list of policy set definitions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicySetDefinitionInner> listBuiltIn() {
@@ -1209,7 +1206,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions.
+     * @return list of policy set definitions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicySetDefinitionInner> listBuiltIn(String filter, Integer top, Context context) {
@@ -1225,7 +1222,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition.
+     * @return the policy set definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PolicySetDefinitionInner>> createOrUpdateAtManagementGroupWithResponseAsync(
@@ -1277,7 +1274,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition.
+     * @return the policy set definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PolicySetDefinitionInner>> createOrUpdateAtManagementGroupWithResponseAsync(
@@ -1328,7 +1325,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition.
+     * @return the policy set definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicySetDefinitionInner> createOrUpdateAtManagementGroupAsync(
@@ -1371,7 +1368,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition.
+     * @return the policy set definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicySetDefinitionInner> createOrUpdateAtManagementGroupWithResponse(
@@ -1392,7 +1389,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteAtManagementGroupWithResponseAsync(
@@ -1437,7 +1434,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteAtManagementGroupWithResponseAsync(
@@ -1473,7 +1470,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAtManagementGroupAsync(String policySetDefinitionName, String managementGroupId) {
@@ -1504,7 +1501,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteAtManagementGroupWithResponse(
@@ -1520,7 +1517,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition.
+     * @return the policy set definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PolicySetDefinitionInner>> getAtManagementGroupWithResponseAsync(
@@ -1565,7 +1562,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition.
+     * @return the policy set definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PolicySetDefinitionInner>> getAtManagementGroupWithResponseAsync(
@@ -1601,7 +1598,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition.
+     * @return the policy set definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicySetDefinitionInner> getAtManagementGroupAsync(
@@ -1641,7 +1638,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy set definition.
+     * @return the policy set definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicySetDefinitionInner> getAtManagementGroupWithResponse(
@@ -1672,7 +1669,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions.
+     * @return list of policy set definitions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicySetDefinitionInner>> listByManagementGroupSinglePageAsync(
@@ -1731,7 +1728,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions.
+     * @return list of policy set definitions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicySetDefinitionInner>> listByManagementGroupSinglePageAsync(
@@ -1786,7 +1783,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions.
+     * @return list of policy set definitions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PolicySetDefinitionInner> listByManagementGroupAsync(
@@ -1811,7 +1808,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions.
+     * @return list of policy set definitions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PolicySetDefinitionInner> listByManagementGroupAsync(String managementGroupId) {
@@ -1846,7 +1843,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions.
+     * @return list of policy set definitions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicySetDefinitionInner> listByManagementGroupAsync(
@@ -1871,7 +1868,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions.
+     * @return list of policy set definitions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicySetDefinitionInner> listByManagementGroup(String managementGroupId) {
@@ -1904,7 +1901,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions.
+     * @return list of policy set definitions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicySetDefinitionInner> listByManagementGroup(
@@ -1919,7 +1916,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions.
+     * @return list of policy set definitions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicySetDefinitionInner>> listNextSinglePageAsync(String nextLink) {
@@ -1955,7 +1952,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions.
+     * @return list of policy set definitions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicySetDefinitionInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1990,7 +1987,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions.
+     * @return list of policy set definitions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicySetDefinitionInner>> listBuiltInNextSinglePageAsync(String nextLink) {
@@ -2026,7 +2023,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions.
+     * @return list of policy set definitions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicySetDefinitionInner>> listBuiltInNextSinglePageAsync(
@@ -2062,7 +2059,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions.
+     * @return list of policy set definitions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicySetDefinitionInner>> listByManagementGroupNextSinglePageAsync(String nextLink) {
@@ -2099,7 +2096,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of policy set definitions.
+     * @return list of policy set definitions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicySetDefinitionInner>> listByManagementGroupNextSinglePageAsync(

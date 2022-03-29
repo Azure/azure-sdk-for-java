@@ -24,7 +24,7 @@ public final class ScriptCheckNameRequest {
      * The type of resource, Microsoft.Kusto/clusters/databases/scripts.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "Microsoft.Kusto/clusters/databases/scripts";
 
     /** Creates an instance of ScriptCheckNameRequest class. */
     public ScriptCheckNameRequest() {

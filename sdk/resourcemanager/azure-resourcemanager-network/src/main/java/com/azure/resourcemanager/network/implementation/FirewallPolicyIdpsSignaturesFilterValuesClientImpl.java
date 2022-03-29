@@ -21,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.FirewallPolicyIdpsSignaturesFilterValuesClient;
 import com.azure.resourcemanager.network.fluent.models.SignatureOverridesFilterValuesResponseInner;
 import com.azure.resourcemanager.network.models.SignatureOverridesFilterValuesQuery;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
  */
 public final class FirewallPolicyIdpsSignaturesFilterValuesClientImpl
     implements FirewallPolicyIdpsSignaturesFilterValuesClient {
-    private final ClientLogger logger = new ClientLogger(FirewallPolicyIdpsSignaturesFilterValuesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final FirewallPolicyIdpsSignaturesFilterValuesService service;
 
@@ -88,7 +85,8 @@ public final class FirewallPolicyIdpsSignaturesFilterValuesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the list of all possible values for a specific filter value.
+     * @return describes the list of all possible values for a specific filter value along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SignatureOverridesFilterValuesResponseInner>> listWithResponseAsync(
@@ -144,7 +142,8 @@ public final class FirewallPolicyIdpsSignaturesFilterValuesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the list of all possible values for a specific filter value.
+     * @return describes the list of all possible values for a specific filter value along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SignatureOverridesFilterValuesResponseInner>> listWithResponseAsync(
@@ -199,7 +198,8 @@ public final class FirewallPolicyIdpsSignaturesFilterValuesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the list of all possible values for a specific filter value.
+     * @return describes the list of all possible values for a specific filter value on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SignatureOverridesFilterValuesResponseInner> listAsync(
@@ -242,7 +242,7 @@ public final class FirewallPolicyIdpsSignaturesFilterValuesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the list of all possible values for a specific filter value.
+     * @return describes the list of all possible values for a specific filter value along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SignatureOverridesFilterValuesResponseInner> listWithResponse(

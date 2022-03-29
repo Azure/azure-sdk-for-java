@@ -45,11 +45,15 @@ param (
     [ValidatePattern('^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$')]
     [string] $ProvisionerApplicationId,
 
+    [Parameter(ParameterSetName = 'Provisioner', Mandatory = $false)]
+    [ValidatePattern('^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$')]
+    [string] $ProvisionerApplicationOid,
+
     [Parameter(ParameterSetName = 'Provisioner', Mandatory = $true)]
     [string] $ProvisionerApplicationSecret,
 
     [Parameter()]
-    [ValidateRange(1, [int]::MaxValue)]
+    [ValidateRange(1, 7*24)]
     [int] $DeleteAfterHours = 120,
 
     [Parameter()]
@@ -79,7 +83,14 @@ param (
     [switch] $OutFile,
 
     [Parameter()]
-    [switch] $SuppressVsoCommands = ($null -eq $env:SYSTEM_TEAMPROJECTID)
+    [switch] $SuppressVsoCommands = ($null -eq $env:SYSTEM_TEAMPROJECTID),
+
+    # Captures any arguments not declared here (no parameter errors)
+    # This enables backwards compatibility with old script versions in
+    # hotfix branches if and when the dynamic subscription configuration
+    # secrets get updated to add new parameters.
+    [Parameter(ValueFromRemainingArguments = $true)]
+    $NewTestResourcesRemainingArguments
 )
 
 . $PSScriptRoot/SubConfig-Helpers.ps1
@@ -132,6 +143,14 @@ function Retry([scriptblock] $Action, [int] $Attempts = 5)
 # https://azure.microsoft.com/en-us/updates/update-your-apps-to-use-microsoft-graph-before-30-june-2022/
 function NewServicePrincipalWrapper([string]$subscription, [string]$resourceGroup, [string]$displayName)
 {
+    if ((Get-Module Az.Resources).Version -eq "5.3.0") {
+        # https://github.com/Azure/azure-powershell/issues/17040
+        # New-AzAdServicePrincipal calls will fail with:
+        # "You cannot call a method on a null-valued expression."
+        Write-Warning "Az.Resources version 5.3.0 is not supported. Please update to >= 5.3.1"
+        Write-Warning "Update-Module Az.Resources -RequiredVersion 5.3.1"
+        exit 1
+    }
     $servicePrincipal = Retry {
         New-AzADServicePrincipal -Role "Owner" -Scope "/subscriptions/$SubscriptionId/resourceGroups/$ResourceGroupName" -DisplayName $displayName
     }
@@ -143,14 +162,24 @@ function NewServicePrincipalWrapper([string]$subscription, [string]$resourceGrou
         $spPassword = $servicePrincipal.Secret
         $appId = $servicePrincipal.ApplicationId
     } else {
-        Write-Verbose "Creating password for service principal via MS Graph API"
-        # Microsoft graph objects (Az version >= 7.0.0) do not provision a secret # on creation so it must be added separately.
-        # Submitting a password credential object without specifying a password will result in one being generated on the server side.
-        $password = New-Object -TypeName "Microsoft.Azure.PowerShell.Cmdlets.Resources.MSGraph.Models.ApiV10.MicrosoftGraphPasswordCredential"
-        $password.DisplayName = "Password for $displayName"
-        $credential = Retry { New-AzADSpCredential -PasswordCredentials $password -ServicePrincipalObject $servicePrincipal }
-        $spPassword = ConvertTo-SecureString $credential.SecretText -AsPlainText -Force
-        $appId = $servicePrincipal.AppId
+        if ((Get-Module Az.Resources).Version -eq "5.1.0") {
+            Write-Verbose "Creating password and credential for service principal via MS Graph API"
+            Write-Warning "Please update Az.Resources to >= 5.2.0 by running 'Update-Module Az'"
+            # Microsoft graph objects (Az.Resources version == 5.1.0) do not provision a secret on creation so it must be added separately.
+            # Submitting a password credential object without specifying a password will result in one being generated on the server side.
+            $password = New-Object -TypeName "Microsoft.Azure.PowerShell.Cmdlets.Resources.MSGraph.Models.ApiV10.MicrosoftGraphPasswordCredential"
+            $password.DisplayName = "Password for $displayName"
+            $credential = Retry { New-AzADSpCredential -PasswordCredentials $password -ServicePrincipalObject $servicePrincipal }
+            $spPassword = ConvertTo-SecureString $credential.SecretText -AsPlainText -Force
+            $appId = $servicePrincipal.AppId
+        } else {
+            Write-Verbose "Creating service principal credential via MS Graph API"
+            # In 5.2.0 the password credential issue was fixed (see https://github.com/Azure/azure-powershell/pull/16690) but the
+            # parameter set was changed making the above call fail due to a missing ServicePrincipalId parameter.
+            $credential = Retry { $servicePrincipal | New-AzADSpCredential }
+            $spPassword = ConvertTo-SecureString $credential.SecretText -AsPlainText -Force
+            $appId = $servicePrincipal.AppId
+        }
     }
 
     return @{
@@ -207,7 +236,8 @@ function BuildBicepFile([System.IO.FileSystemInfo] $file)
     return $templateFilePath
 }
 
-function BuildDeploymentOutputs([string]$serviceDirectoryPrefix, [object]$azContext, [object]$deployment) {
+function BuildDeploymentOutputs([string]$serviceName, [object]$azContext, [object]$deployment) {
+    $serviceDirectoryPrefix = BuildServiceDirectoryPrefix $serviceName
     # Add default values
     $deploymentOutputs = [Ordered]@{
         "${serviceDirectoryPrefix}CLIENT_ID" = $TestApplicationId;
@@ -220,6 +250,7 @@ function BuildDeploymentOutputs([string]$serviceDirectoryPrefix, [object]$azCont
         "${serviceDirectoryPrefix}AZURE_AUTHORITY_HOST" = $azContext.Environment.ActiveDirectoryAuthority;
         "${serviceDirectoryPrefix}RESOURCE_MANAGER_URL" = $azContext.Environment.ResourceManagerUrl;
         "${serviceDirectoryPrefix}SERVICE_MANAGEMENT_URL" = $azContext.Environment.ServiceManagementUrl;
+        "AZURE_SERVICE_DIRECTORY" = $serviceName.ToUpperInvariant();
     }
 
     MergeHashes $EnvironmentVariables $(Get-Variable deploymentOutputs)
@@ -239,8 +270,7 @@ function BuildDeploymentOutputs([string]$serviceDirectoryPrefix, [object]$azCont
 }
 
 function SetDeploymentOutputs([string]$serviceName, [object]$azContext, [object]$deployment, [object]$templateFile) {
-    $serviceDirectoryPrefix = $serviceName.ToUpperInvariant() + "_"
-    $deploymentOutputs = BuildDeploymentOutputs $serviceDirectoryPrefix $azContext $deployment
+    $deploymentOutputs = BuildDeploymentOutputs $serviceName $azContext $deployment
 
     if ($OutFile) {
         if (!$IsWindows) {
@@ -271,7 +301,7 @@ function SetDeploymentOutputs([string]$serviceName, [object]$azContext, [object]
             $EnvironmentVariables[$key] = $value
 
             if ($CI) {
-                if (ShouldMarkValueAsSecret $serviceDirectoryPrefix $key $value $notSecretValues) {
+                if (ShouldMarkValueAsSecret $serviceName $key $value $notSecretValues) {
                     # Treat all ARM template output variables as secrets since "SecureString" variables do not set values.
                     # In order to mask secrets but set environment variables for any given ARM template, we set variables twice as shown below.
                     LogVsoCommand "##vso[task.setvariable variable=_$key;issecret=true;]$value"
@@ -377,8 +407,7 @@ try {
         Write-Verbose "Location was not set. Using default location for environment: '$Location'"
     }
 
-    if (!$CI) {
-
+    if (!$CI -and $PSCmdlet.ParameterSetName -ne "Provisioner") {
         # Make sure the user is logged in to create a service principal.
         $context = Get-AzContext;
         if (!$context) {
@@ -471,19 +500,19 @@ try {
     $context = Get-AzContext;
 
     # Make sure the provisioner OID is set so we can pass it through to the deployment.
-    $provisionerApplicationOid = if (!$ProvisionerApplicationId) {
+    if (!$ProvisionerApplicationId -and !$ProvisionerApplicationOid) {
         if ($context.Account.Type -eq 'User') {
             $user = Get-AzADUser -UserPrincipalName $context.Account.Id
-            $user.Id
+            $ProvisionerApplicationOid = $user.Id
         } elseif ($context.Account.Type -eq 'ServicePrincipal') {
             $sp = Get-AzADServicePrincipal -ApplicationId $context.Account.Id
-            $sp.Id
+            $ProvisionerApplicationOid = $sp.Id
         } else {
             Write-Warning "Getting the OID for provisioner type '$($context.Account.Type)' is not supported and will not be passed to deployments (seldom required)."
         }
-    } else {
+    } elseif (!$ProvisionerApplicationOid) {
         $sp = Get-AzADServicePrincipal -ApplicationId $ProvisionerApplicationId
-        $sp.Id
+        $ProvisionerApplicationOid = $sp.Id
     }
 
     # If the ServiceDirectory has multiple segments use the last directory name
@@ -504,7 +533,7 @@ try {
     }
 
     $tags = @{
-        Creator = $UserName
+        Owners = $UserName
         ServiceDirectory = $ServiceDirectory
     }
 
@@ -641,7 +670,9 @@ try {
         baseName = $BaseName
         testApplicationId = $TestApplicationId
         testApplicationOid = "$TestApplicationOid"
-        provisionerApplicationOid = "$provisionerApplicationOid"
+    }
+    if ($ProvisionerApplicationOid) {
+        $templateParameters["provisionerApplicationOid"] = "$ProvisionerApplicationOid"
     }
 
     if ($TenantId) {

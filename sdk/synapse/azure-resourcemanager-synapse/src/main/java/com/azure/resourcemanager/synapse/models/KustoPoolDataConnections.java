@@ -44,7 +44,7 @@ public interface KustoPoolDataConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result returned from a check name availability request.
+     * @return the result returned from a check name availability request along with {@link Response}.
      */
     Response<CheckNameResult> checkNameAvailabilityWithResponse(
         String resourceGroupName,
@@ -159,7 +159,7 @@ public interface KustoPoolDataConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a data connection.
+     * @return class representing a data connection along with {@link Response}.
      */
     Response<DataConnection> getWithResponse(
         String resourceGroupName,

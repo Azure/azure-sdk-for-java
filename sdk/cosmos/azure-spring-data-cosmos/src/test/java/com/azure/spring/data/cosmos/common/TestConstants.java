@@ -25,6 +25,9 @@ public final class TestConstants {
     public static final boolean INDEXING_POLICY_AUTOMATIC = false;
     public static final IndexingMode INDEXING_POLICY_MODE = IndexingMode.CONSISTENT;
 
+    public static final String DEFAULT_UNIQUE_KEY_NAME = "/name";
+    public static final String DEFAULT_UNIQUE_KEY_LEVEL = "/level";
+
     public static final String DB_NAME = "testdb";
     public static final String FIRST_NAME = "first_name_li";
     public static final String LAST_NAME = "last_name_p";

@@ -11,7 +11,7 @@ import java.util.Objects;
  * <p>
  * AttestationPolicySetOptions represent the parameters sent to the
  * {@link com.azure.security.attestation.AttestationAdministrationClient#addPolicyManagementCertificate(PolicyManagementCertificateOptions)}
- * or {@link com.azure.security.attestation.AttestationAdministrationClient#removePolicyManagementCertificate(PolicyManagementCertificateOptions)} API.
+ * or {@link com.azure.security.attestation.AttestationAdministrationClient#deletePolicyManagementCertificate(PolicyManagementCertificateOptions)} API.
  * </p><p>
  * Each {@link AttestationPolicySetOptions} object expresses the options to verify the response
  * from the attestation service.

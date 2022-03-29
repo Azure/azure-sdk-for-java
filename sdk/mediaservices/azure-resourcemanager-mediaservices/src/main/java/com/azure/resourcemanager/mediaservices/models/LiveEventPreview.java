@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Live event preview settings. */
 @Fluent
 public final class LiveEventPreview {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LiveEventPreview.class);
-
     /*
      * The endpoints for preview. Do not share the preview URL with the live
      * event audience.

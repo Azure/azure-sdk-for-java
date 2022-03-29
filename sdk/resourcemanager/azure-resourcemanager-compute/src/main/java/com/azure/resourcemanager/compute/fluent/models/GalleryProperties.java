@@ -5,19 +5,16 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.GalleryIdentifier;
 import com.azure.resourcemanager.compute.models.GalleryPropertiesProvisioningState;
 import com.azure.resourcemanager.compute.models.SharingProfile;
+import com.azure.resourcemanager.compute.models.SharingStatus;
 import com.azure.resourcemanager.compute.models.SoftDeletePolicy;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the properties of a Shared Image Gallery. */
 @Fluent
 public final class GalleryProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryProperties.class);
-
     /*
      * The description of this Shared Image Gallery resource. This property is
      * updatable.
@@ -49,6 +46,12 @@ public final class GalleryProperties {
      */
     @JsonProperty(value = "softDeletePolicy")
     private SoftDeletePolicy softDeletePolicy;
+
+    /*
+     * Sharing status of current gallery.
+     */
+    @JsonProperty(value = "sharingStatus", access = JsonProperty.Access.WRITE_ONLY)
+    private SharingStatus sharingStatus;
 
     /**
      * Get the description property: The description of this Shared Image Gallery resource. This property is updatable.
@@ -141,6 +144,15 @@ public final class GalleryProperties {
     }
 
     /**
+     * Get the sharingStatus property: Sharing status of current gallery.
+     *
+     * @return the sharingStatus value.
+     */
+    public SharingStatus sharingStatus() {
+        return this.sharingStatus;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -154,6 +166,9 @@ public final class GalleryProperties {
         }
         if (softDeletePolicy() != null) {
             softDeletePolicy().validate();
+        }
+        if (sharingStatus() != null) {
+            sharingStatus().validate();
         }
     }
 }

@@ -6,15 +6,11 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The request for a QueryInboundNatRulePortMapping API. Either IpConfiguration or IpAddress should be set. */
 @Fluent
 public final class QueryInboundNatRulePortMappingRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryInboundNatRulePortMappingRequest.class);
-
     /*
      * NetworkInterfaceIPConfiguration set in load balancer backend address.
      */

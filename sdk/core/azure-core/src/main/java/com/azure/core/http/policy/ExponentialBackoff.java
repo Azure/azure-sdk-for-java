@@ -3,6 +3,7 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.implementation.util.ObjectsUtil;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -23,6 +24,7 @@ public class ExponentialBackoff implements RetryStrategy {
     private static final int DEFAULT_MAX_RETRIES;
     private static final Duration DEFAULT_BASE_DELAY = Duration.ofMillis(800);
     private static final Duration DEFAULT_MAX_DELAY = Duration.ofSeconds(8);
+    private static final ClientLogger LOGGER = new ClientLogger(ExponentialBackoff.class);
 
     static {
         String envDefaultMaxRetries = Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_REQUEST_RETRY_COUNT);
@@ -35,8 +37,8 @@ public class ExponentialBackoff implements RetryStrategy {
                     defaultMaxRetries = 3;
                 }
             } catch (NumberFormatException ignored) {
-                new ClientLogger(ExponentialBackoff.class).verbose("{} was loaded but is an invalid number. "
-                    + "Using 3 retries as the maximum.", PROPERTY_AZURE_REQUEST_RETRY_COUNT);
+                LOGGER.verbose("{} was loaded but is an invalid number. Using 3 retries as the maximum.",
+                    PROPERTY_AZURE_REQUEST_RETRY_COUNT);
             }
         }
 
@@ -60,6 +62,26 @@ public class ExponentialBackoff implements RetryStrategy {
     /**
      * Creates an instance of {@link ExponentialBackoff}.
      *
+     * @param options The {@link ExponentialBackoffOptions}.
+     * @throws NullPointerException if {@code options} is {@code null}.
+     */
+    public ExponentialBackoff(ExponentialBackoffOptions options) {
+        this(
+            ObjectsUtil.requireNonNullElse(
+                Objects.requireNonNull(options, "'options' cannot be null.").getMaxRetries(),
+                DEFAULT_MAX_RETRIES),
+            ObjectsUtil.requireNonNullElse(
+                Objects.requireNonNull(options, "'options' cannot be null.").getBaseDelay(),
+                DEFAULT_BASE_DELAY),
+            ObjectsUtil.requireNonNullElse(
+                Objects.requireNonNull(options, "'options' cannot be null.").getMaxDelay(),
+                DEFAULT_MAX_DELAY)
+        );
+    }
+
+    /**
+     * Creates an instance of {@link ExponentialBackoff}.
+     *
      * @param maxRetries The max retry attempts that can be made.
      * @param baseDelay The base delay duration for retry.
      * @param maxDelay The max delay duration for retry.
@@ -67,19 +89,18 @@ public class ExponentialBackoff implements RetryStrategy {
      * to 0 or {@code maxDelay} is less than {@code baseDelay}.
      */
     public ExponentialBackoff(int maxRetries, Duration baseDelay, Duration maxDelay) {
-        ClientLogger logger = new ClientLogger(ExponentialBackoff.class);
         if (maxRetries < 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Max retries cannot be less than 0."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Max retries cannot be less than 0."));
         }
         Objects.requireNonNull(baseDelay, "'baseDelay' cannot be null.");
         Objects.requireNonNull(maxDelay, "'maxDelay' cannot be null.");
 
         if (baseDelay.isZero() || baseDelay.isNegative()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'baseDelay' cannot be negative or 0."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'baseDelay' cannot be negative or 0."));
         }
 
         if (baseDelay.compareTo(maxDelay) > 0) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("'baseDelay' cannot be greater than 'maxDelay'."));
         }
         this.maxRetries = maxRetries;

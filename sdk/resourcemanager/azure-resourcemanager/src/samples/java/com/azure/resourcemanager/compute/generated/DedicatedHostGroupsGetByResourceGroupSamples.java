@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DedicatedHostGroups GetByResourceGroup. */
 public final class DedicatedHostGroupsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/GetADedicatedHostGroup.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/GetADedicatedHostGroup.json
      */
     /**
      * Sample code: Create a dedicated host group.
