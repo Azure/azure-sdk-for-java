@@ -52,6 +52,7 @@ import reactor.test.StepVerifier;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyMap;
@@ -269,7 +270,7 @@ public class ServiceBusReactorSessionTest {
 
         // Act
         serviceBusReactorSession.createProducer(ENTITY_PATH, ENTITY_PATH, retryOptions.getTryTimeout(),
-            retryPolicy)
+            retryPolicy, (Map<Symbol, Object>) null)
             .subscribe();
 
         // Assert
