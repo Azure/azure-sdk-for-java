@@ -403,7 +403,7 @@ Describe "Platform Matrix Replace" -Tag "replace" {
         { $parsed = ParseReplacement $query } | Should -Throw
         { $parsed = ParseReplacement $query } | Should -Throw
     }
-
+    
     It "Should replace values in a matrix" {
         $matrixJson = @'
 {
