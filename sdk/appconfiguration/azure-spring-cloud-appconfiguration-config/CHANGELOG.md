@@ -1,5 +1,15 @@
 # Release History
 
+## 2.6.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 2.5.0 (2022-03-28)
 This release is compatible with Spring Boot 2.5.0-2.5.11, 2.6.0-2.6.5.
 
