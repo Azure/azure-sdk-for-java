@@ -58,6 +58,17 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
      *
      * @param httpPipeline an instance of {@link HttpPipeline} to send requests with
      * @param serializer a custom serializer for serializing and deserializing polling responses
+     * @throws NullPointerException If {@code httpPipeline} is null.
+     */
+    public LocationPollingStrategy(HttpPipeline httpPipeline, ObjectSerializer serializer) {
+        this(Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null"), (serializer == null) ? DEFAULT_SERIALIZER : serializer, Context.NONE);
+    }
+
+    /**
+     * Creates an instance of the location polling strategy.
+     *
+     * @param httpPipeline an instance of {@link HttpPipeline} to send requests with
+     * @param serializer a custom serializer for serializing and deserializing polling responses
      * @param context an instance of {@link Context}
      * @throws NullPointerException If {@code httpPipeline} is null.
      */
