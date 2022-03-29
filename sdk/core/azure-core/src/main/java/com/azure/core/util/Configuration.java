@@ -197,7 +197,7 @@ public class Configuration implements Cloneable {
     /**
      * Constructs a configuration containing the known Azure properties constants.
      *
-     * @deprecated Use {@link ConfigurationBuilder} and {@link ConfigurationSource}  that allow to
+     * @deprecated Use {@link ConfigurationBuilder} and {@link ConfigurationSource} that allow to
      * provide all properties before creating configuration and keep it immutable.
      */
     @Deprecated
@@ -308,6 +308,7 @@ public class Configuration implements Cloneable {
      * @return The converted configuration if found, otherwise null.
      */
     public <T> T get(String name, Function<String, T> converter) {
+        Objects.requireNonNull(converter, "'converter' can't be null");
         String value = getLocalProperty(name, EMPTY_ARRAY, REDACT_VALUE_SANITIZER);
         if (value != null) {
             return converter.apply(value);
@@ -373,7 +374,7 @@ public class Configuration implements Cloneable {
     @SuppressWarnings("CloneDoesntCallSuperClone")
     @Deprecated
     public Configuration clone() {
-        return new Configuration(configurations, environmentConfiguration.clone(), path, sharedConfiguration);
+        return new Configuration(configurations, new EnvironmentConfiguration(environmentConfiguration), path, sharedConfiguration);
     }
 
     /**
@@ -386,6 +387,7 @@ public class Configuration implements Cloneable {
      * @return true if property is available, false otherwise.
      */
     public boolean contains(ConfigurationProperty<?> property) {
+        Objects.requireNonNull(property, "'property' can't be null");
         return getWithFallback(property) != null;
     }
 

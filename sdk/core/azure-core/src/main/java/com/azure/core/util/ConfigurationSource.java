@@ -12,6 +12,7 @@ import java.util.Map;
  * Note that environment configuration (environment variables and system properties) are supported by default and
  * don't need a source implementation.
  */
+@FunctionalInterface
 public interface ConfigurationSource {
     /**
      * Returns all properties (name and value) which names start with given path.

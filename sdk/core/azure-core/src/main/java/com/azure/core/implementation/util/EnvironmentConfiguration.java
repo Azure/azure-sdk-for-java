@@ -19,7 +19,7 @@ import java.util.function.Function;
  * Contains environment (system properties and environment variables) configuration information that is
  * used during construction of client libraries.
  */
-public class EnvironmentConfiguration implements Cloneable {
+public class EnvironmentConfiguration {
     /*
      * Configurations that are loaded into the global configuration store when the application starts.
      */
@@ -62,8 +62,15 @@ public class EnvironmentConfiguration implements Cloneable {
     /**
      * Constructs a configuration containing the known Azure properties constants.
      */
-    private EnvironmentConfiguration() {
+    public EnvironmentConfiguration() {
         this.configurations = loadBaseConfiguration();
+    }
+
+    /**
+     * Clones original configuration.
+     */
+    public EnvironmentConfiguration(EnvironmentConfiguration original) {
+        this.configurations = new ConcurrentHashMap<>(original.configurations);
     }
 
     /**
@@ -75,10 +82,6 @@ public class EnvironmentConfiguration implements Cloneable {
         for (Map.Entry<String, String> config : configurations.entrySet()) {
             this.configurations.put(config.getKey(), Optional.ofNullable(config.getValue()));
         }
-    }
-
-    private EnvironmentConfiguration(EnvironmentConfiguration original) {
-        this.configurations = new ConcurrentHashMap<>(original.configurations);
     }
 
     public static EnvironmentConfiguration getGlobalConfiguration() {
@@ -129,6 +132,7 @@ public class EnvironmentConfiguration implements Cloneable {
      * @return The converted configuration if found, otherwise null.
      */
     public <T> T get(String name, Function<String, T> converter) {
+        Objects.requireNonNull(converter, "'converter' can't be null");
         String value = getOrLoad(name);
         if (value == null) {
             return null;
@@ -197,16 +201,6 @@ public class EnvironmentConfiguration implements Cloneable {
     public boolean contains(String name) {
         Optional<String> value = configurations.get(name);
         return value != null && value.isPresent();
-    }
-
-    /**
-     * Clones this Configuration object.
-     *
-     * @return A clone of the Configuration object.
-     */
-    @SuppressWarnings("CloneDoesntCallSuperClone")
-    public EnvironmentConfiguration clone() {
-        return new EnvironmentConfiguration(this);
     }
 
     private String load(String propertyName) {

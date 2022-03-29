@@ -82,13 +82,15 @@ public class ProxyOptions implements AutoCloseable {
     }
 
     /**
-     * Attempts to load a proxy from the configuration or {@code null} if no proxy was found in the configuration.
+     * Attempts to load a proxy from the configuration.
      *
      * @param configuration The {@link Configuration} that is used to load proxy configurations from the environment. If
-     * {@code null} is passed then {@link Configuration#getGlobalConfiguration()} will be used. If {@link
-     * Configuration#NONE} is passed {@link IllegalArgumentException} will be thrown.
+     * {@code null} is passed then {@link Configuration#getGlobalConfiguration()} will be used.
      * @return A {@link ProxyOptions} reflecting a proxy loaded from the environment, if no proxy is found {@code null}
      * will be returned.
+     *
+     * @throws RuntimeException If passed {@link Configuration} contains invalid configuration options,
+     *                          {@link RuntimeException} is thrown.
      */
     public static ProxyOptions fromConfiguration(Configuration configuration) {
         if (configuration == Configuration.NONE) {

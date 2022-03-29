@@ -11,8 +11,8 @@ import java.util.function.Function;
 
 public class ConfigurationUtils {
 
-    private static final Function<String, Boolean> BOOLEAN_CONVERTER = (value) -> Boolean.parseBoolean(value);
-    private static final Function<String, Duration> DURATION_CONVERTER = (value) -> {
+    public static final Function<String, Boolean> CONFIGURATION_PROPERTY_BOOLEAN_CONVERTER = (value) -> Boolean.valueOf(value);
+    public static final Function<String, Duration> CONFIGURATION_PROPERTY_DURATION_CONVERTER = (value) -> {
         long timeoutMillis = Long.parseLong(value);
         if (timeoutMillis < 0) {
             throw new IllegalArgumentException("Duration can't be negative");
@@ -21,8 +21,8 @@ public class ConfigurationUtils {
         return Duration.ofMillis(timeoutMillis);
     };
 
-    private static final Function<String, Integer> INTEGER_CONVERTER = (value) -> Integer.valueOf(value);
-    private static final Function<String, String> STRING_CONVERTER = (value) -> value;
+    public static final Function<String, Integer> CONFIGURATION_PROPERTY_INTEGER_CONVERTER = (value) -> Integer.valueOf(value);
+    public static final Function<String, String> CONFIGURATION_PROPERTY_STRING_CONVERTER =  Function.identity();
 
     /**
      * Creates default {@link ConfigurationPropertyBuilder} configured to redact property value.
@@ -31,7 +31,7 @@ public class ConfigurationUtils {
      * @return instance of {@link ConfigurationPropertyBuilder}.
      */
     public static ConfigurationPropertyBuilder<String> stringSharedPropertyBuilder(String name) {
-        return new ConfigurationPropertyBuilder<>(name, STRING_CONVERTER).shared(true);
+        return new ConfigurationPropertyBuilder<>(name, CONFIGURATION_PROPERTY_STRING_CONVERTER).shared(true);
     }
 
     /**
@@ -42,7 +42,7 @@ public class ConfigurationUtils {
      * @return instance of {@link ConfigurationPropertyBuilder}.
      */
     public static ConfigurationPropertyBuilder<Integer> integerSharedPropertyBuilder(String name) {
-        return new ConfigurationPropertyBuilder<>(name, INTEGER_CONVERTER).canLogValue(true).shared(true);
+        return new ConfigurationPropertyBuilder<>(name, CONFIGURATION_PROPERTY_INTEGER_CONVERTER).canLogValue(true).shared(true);
     }
 
     /**
@@ -53,18 +53,18 @@ public class ConfigurationUtils {
      * @return instance of {@link ConfigurationPropertyBuilder}.
      */
     public static ConfigurationPropertyBuilder<Duration> durationSharedPropertyBuilder(String name) {
-        return new ConfigurationPropertyBuilder<>(name, DURATION_CONVERTER).canLogValue(true).shared(true);
+        return new ConfigurationPropertyBuilder<>(name, CONFIGURATION_PROPERTY_DURATION_CONVERTER).canLogValue(true).shared(true);
     }
 
     /**
      * Creates {@link ConfigurationPropertyBuilder} configured to log property value and
-     * parse value using {@link Boolean#parseBoolean(String)}.
+     * parse value using {@link Boolean#valueOf(String)}.
      *
      * @param name property name.
      * @return instance of {@link ConfigurationPropertyBuilder}.
      */
     public static ConfigurationPropertyBuilder<Boolean> booleanSharedPropertyBuilder(String name) {
-        return new ConfigurationPropertyBuilder<>(name, BOOLEAN_CONVERTER).canLogValue(true).shared(true);
+        return new ConfigurationPropertyBuilder<>(name, CONFIGURATION_PROPERTY_BOOLEAN_CONVERTER).canLogValue(true).shared(true);
     }
 
     /**

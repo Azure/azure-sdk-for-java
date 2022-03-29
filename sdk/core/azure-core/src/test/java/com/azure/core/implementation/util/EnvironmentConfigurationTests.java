@@ -118,7 +118,7 @@ public class EnvironmentConfigurationTests {
             .put("variable1", "value1")
             .put("variable2", "value2");
 
-        EnvironmentConfiguration configurationClone = configuration.clone();
+        EnvironmentConfiguration configurationClone = new EnvironmentConfiguration(configuration);
 
         // Verify that the clone has the expected values.
         assertEquals(configuration.get("variable1"), configurationClone.get("variable1"));

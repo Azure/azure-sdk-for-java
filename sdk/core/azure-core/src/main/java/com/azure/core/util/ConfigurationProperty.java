@@ -7,24 +7,17 @@ import java.time.Duration;
 import java.util.Objects;
 import java.util.function.Function;
 
+import static com.azure.core.implementation.util.ConfigurationUtils.CONFIGURATION_PROPERTY_BOOLEAN_CONVERTER;
+import static com.azure.core.implementation.util.ConfigurationUtils.CONFIGURATION_PROPERTY_DURATION_CONVERTER;
+import static com.azure.core.implementation.util.ConfigurationUtils.CONFIGURATION_PROPERTY_INTEGER_CONVERTER;
+import static com.azure.core.implementation.util.ConfigurationUtils.CONFIGURATION_PROPERTY_STRING_CONVERTER;
+
 /**
  * Represents configuration property.
  *
  * @param <T> Type of property value.
  */
 public final class ConfigurationProperty<T> {
-    private static final Function<String, Boolean> BOOLEAN_CONVERTER = (value) -> Boolean.parseBoolean(value);
-    private static final Function<String, Duration> DURATION_CONVERTER = (value) -> {
-        long timeoutMillis = Long.parseLong(value);
-        if (timeoutMillis < 0) {
-            throw new IllegalArgumentException("Duration can't be negative");
-        }
-
-        return Duration.ofMillis(timeoutMillis);
-    };
-
-    private static final Function<String, Integer> INTEGER_CONVERTER = (value) -> Integer.valueOf(value);
-    private static final Function<String, String> STRING_CONVERTER = (value) -> value;
     private static final String[] EMPTY_ARRAY = new String[0];
     private static final Function<String, String> REDACT_VALUE_SANITIZER = (value) -> "redacted";
 
@@ -139,7 +132,7 @@ public final class ConfigurationProperty<T> {
      * @return instance of {@link ConfigurationPropertyBuilder}.
      */
     public static ConfigurationPropertyBuilder<String> stringPropertyBuilder(String name) {
-        return new ConfigurationPropertyBuilder<>(name, STRING_CONVERTER);
+        return new ConfigurationPropertyBuilder<>(name, CONFIGURATION_PROPERTY_STRING_CONVERTER);
     }
 
     /**
@@ -158,7 +151,7 @@ public final class ConfigurationProperty<T> {
      * @return instance of {@link ConfigurationPropertyBuilder}.
      */
     public static ConfigurationPropertyBuilder<Integer> integerPropertyBuilder(String name) {
-        return new ConfigurationPropertyBuilder<>(name, INTEGER_CONVERTER).canLogValue(true);
+        return new ConfigurationPropertyBuilder<>(name, CONFIGURATION_PROPERTY_INTEGER_CONVERTER).canLogValue(true);
     }
 
     /**
@@ -177,7 +170,7 @@ public final class ConfigurationProperty<T> {
      * @return instance of {@link ConfigurationPropertyBuilder}.
      */
     public static ConfigurationPropertyBuilder<Duration> durationPropertyBuilder(String name) {
-        return new ConfigurationPropertyBuilder<>(name, DURATION_CONVERTER).canLogValue(true);
+        return new ConfigurationPropertyBuilder<>(name, CONFIGURATION_PROPERTY_DURATION_CONVERTER).canLogValue(true);
     }
 
     /**
@@ -196,6 +189,6 @@ public final class ConfigurationProperty<T> {
      * @return instance of {@link ConfigurationPropertyBuilder}.
      */
     public static ConfigurationPropertyBuilder<Boolean> booleanPropertyBuilder(String name) {
-        return new ConfigurationPropertyBuilder<>(name, BOOLEAN_CONVERTER).canLogValue(true);
+        return new ConfigurationPropertyBuilder<>(name, CONFIGURATION_PROPERTY_BOOLEAN_CONVERTER).canLogValue(true);
     }
 }

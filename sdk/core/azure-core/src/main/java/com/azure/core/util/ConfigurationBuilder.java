@@ -3,12 +3,14 @@
 
 package com.azure.core.util;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.implementation.util.EnvironmentConfiguration;
 import java.util.Objects;
 
 /**
  * Builds {@link Configuration} with external source.
  */
+@Fluent
 public class ConfigurationBuilder {
     private final ConfigurationSource source;
     private final EnvironmentConfiguration environmentConfiguration;
