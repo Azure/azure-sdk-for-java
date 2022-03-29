@@ -13,6 +13,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.serializer.DefaultJsonSerializer;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.implementation.PollingConstants;
 import com.azure.core.util.polling.implementation.PollingUtils;
@@ -40,6 +41,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
 
     private final HttpPipeline httpPipeline;
     private final ObjectSerializer serializer;
+    private final Context context;
 
     /**
      * Creates an instance of the location polling strategy using a JSON serializer.
@@ -48,7 +50,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
      * @throws NullPointerException If {@code httpPipeline} is null.
      */
     public LocationPollingStrategy(HttpPipeline httpPipeline) {
-        this(httpPipeline, DEFAULT_SERIALIZER);
+        this(httpPipeline, DEFAULT_SERIALIZER, Context.NONE);
     }
 
     /**
@@ -56,11 +58,13 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
      *
      * @param httpPipeline an instance of {@link HttpPipeline} to send requests with
      * @param serializer a custom serializer for serializing and deserializing polling responses
+     * @param context an instance of {@link Context}
      * @throws NullPointerException If {@code httpPipeline} is null.
      */
-    public LocationPollingStrategy(HttpPipeline httpPipeline, ObjectSerializer serializer) {
+    public LocationPollingStrategy(HttpPipeline httpPipeline, ObjectSerializer serializer, Context context) {
         this.httpPipeline = Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null");
         this.serializer = (serializer == null) ? DEFAULT_SERIALIZER : serializer;
+        this.context = context;
     }
 
     @Override
@@ -108,7 +112,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
     @Override
     public Mono<PollResponse<T>> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, pollingContext.getData(PollingConstants.LOCATION));
-        return httpPipeline.send(request).flatMap(response -> {
+        return httpPipeline.send(request, this.context).flatMap(response -> {
             HttpHeader locationHeader = response.getHeaders().get(PollingConstants.LOCATION);
             if (locationHeader != null) {
                 pollingContext.setData(PollingConstants.LOCATION, locationHeader.getValue());
@@ -157,7 +161,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
             return PollingUtils.deserializeResponse(BinaryData.fromString(latestResponseBody), serializer, resultType);
         } else {
             HttpRequest request = new HttpRequest(HttpMethod.GET, finalGetUrl);
-            return httpPipeline.send(request)
+            return httpPipeline.send(request, this.context)
                 .flatMap(HttpResponse::getBodyAsByteArray)
                 .map(BinaryData::fromBytes)
                 .flatMap(binaryData -> PollingUtils.deserializeResponse(binaryData, serializer, resultType));

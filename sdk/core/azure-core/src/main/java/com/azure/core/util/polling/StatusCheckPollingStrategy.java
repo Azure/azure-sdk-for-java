@@ -7,6 +7,7 @@ import com.azure.core.exception.AzureException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.serializer.DefaultJsonSerializer;
+import com.azure.core.util.Context;
 import com.azure.core.util.polling.implementation.PollingUtils;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
@@ -27,20 +28,23 @@ public class StatusCheckPollingStrategy<T, U> implements PollingStrategy<T, U> {
     private static final ObjectSerializer DEFAULT_SERIALIZER = new DefaultJsonSerializer();
 
     private final ObjectSerializer serializer;
+    private final Context context;
 
     /**
      * Creates a status check polling strategy with a JSON serializer.
      */
     public StatusCheckPollingStrategy() {
-        this(DEFAULT_SERIALIZER);
+        this(DEFAULT_SERIALIZER, Context.NONE);
     }
 
     /**
      * Creates a status check polling strategy with a custom object serializer.
      * @param serializer a custom serializer for serializing and deserializing polling responses
+     * @param context an instance of {@link Context}
      */
-    public StatusCheckPollingStrategy(ObjectSerializer serializer) {
+    public StatusCheckPollingStrategy(ObjectSerializer serializer, Context context) {
         this.serializer = (serializer == null) ? DEFAULT_SERIALIZER : serializer;
+        this.context = context;
     }
 
     @Override
