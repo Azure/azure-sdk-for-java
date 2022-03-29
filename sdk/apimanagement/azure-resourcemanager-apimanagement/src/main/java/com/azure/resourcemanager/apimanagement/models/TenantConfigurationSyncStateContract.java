@@ -10,6 +10,27 @@ import java.time.OffsetDateTime;
 /** An immutable client-side representation of TenantConfigurationSyncStateContract. */
 public interface TenantConfigurationSyncStateContract {
     /**
+     * Gets the id property: Fully qualified resource Id for the resource.
+     *
+     * @return the id value.
+     */
+    String id();
+
+    /**
+     * Gets the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    String name();
+
+    /**
+     * Gets the type property: The type of the resource.
+     *
+     * @return the type value.
+     */
+    String type();
+
+    /**
      * Gets the branch property: The name of Git branch.
      *
      * @return the branch value.

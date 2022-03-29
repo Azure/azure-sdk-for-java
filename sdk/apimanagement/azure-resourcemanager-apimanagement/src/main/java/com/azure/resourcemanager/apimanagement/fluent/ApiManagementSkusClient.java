@@ -17,7 +17,8 @@ public interface ApiManagementSkusClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Microsoft.ApiManagement SKUs available for your Subscription.
+     * @return the list of Microsoft.ApiManagement SKUs available for your Subscription as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ApiManagementSkuInner> list();
@@ -29,7 +30,8 @@ public interface ApiManagementSkusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Microsoft.ApiManagement SKUs available for your Subscription.
+     * @return the list of Microsoft.ApiManagement SKUs available for your Subscription as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ApiManagementSkuInner> list(Context context);
