@@ -532,11 +532,12 @@ public class ReactorSession implements AmqpSession {
 
         final Source source = new Source();
         if (linkProperties != null && linkProperties.size() > 0) {
-            sender.setProperties(linkProperties);
             String clientId = (String) linkProperties.get(CLIENT_ID);
             if (CoreUtils.isNullOrEmpty(clientId)) {
                 source.setAddress(clientId);
+                linkProperties.remove(CLIENT_ID);
             }
+            sender.setProperties(linkProperties);
         }
         sender.setSource(source);
 
