@@ -43,8 +43,9 @@ jobs:
           filePath: eng/common/scripts/Update-DocsMsToc.ps1
           arguments: >-
             -DocRepoLocation $(DocRepoLocation)
-            -OutputLocation $(DailyDocRepoLocation)/docs-ref-mapping/reference-unified.yml
+            -OutputLocation $(DocRepoLocation)/docs-ref-mapping/reference-unified.yml
         displayName: Generate ToC for main branch
+        condition: and(succeeded(), or(eq(variables['Build.Reason'], 'Schedule'), eq(variables['Force.MainUpdate'], 'true')))
       # Push changes to docs repo
       - template: /eng/common/pipelines/templates/steps/set-default-branch.yml
         parameters:
