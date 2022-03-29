@@ -26,7 +26,6 @@ import java.util.regex.PatternSyntaxException;
  */
 public class ProxyOptions {
     private static final ClientLogger LOGGER = new ClientLogger(ProxyOptions.class);
-    private static final String INVALID_CONFIGURATION_MESSAGE = "'configuration' cannot be 'Configuration.NONE'.";
     private static final String INVALID_AZURE_PROXY_URL = "Configuration {} is an invalid URL and is being ignored.";
 
     /*
@@ -146,22 +145,12 @@ public class ProxyOptions {
      * {@code null} will be returned if no proxy was found in the environment.
      *
      * @param configuration The {@link Configuration} that is used to load proxy configurations from the environment. If
-     * {@code null} is passed then {@link Configuration#getGlobalConfiguration()} will be used. If {@link
-     * Configuration#NONE} is passed {@link IllegalArgumentException} will be thrown.
+     * {@code null} is passed then {@link Configuration#getGlobalConfiguration()} will be used.
      * @return A {@link ProxyOptions} reflecting a proxy loaded from the environment, if no proxy is found {@code null}
      * will be returned.
-     * @throws IllegalArgumentException If {@code configuration} is {@link Configuration#NONE}.
      */
     public static ProxyOptions fromConfiguration(Configuration configuration) {
-        if (configuration == Configuration.NONE) {
-            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(INVALID_CONFIGURATION_MESSAGE));
-        }
-
-        Configuration proxyConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
-
-        return attemptToLoadProxy(proxyConfiguration, false);
+        return fromConfiguration(configuration, false);
     }
 
     /**
@@ -190,13 +179,8 @@ public class ProxyOptions {
      * @param createUnresolved Flag determining whether the returned {@link ProxyOptions} is unresolved.
      * @return A {@link ProxyOptions} reflecting a proxy loaded from the environment, if no proxy is found {@code null}
      * will be returned.
-     * @throws IllegalArgumentException If {@code configuration} is {@link Configuration#NONE}.
      */
     public static ProxyOptions fromConfiguration(Configuration configuration, boolean createUnresolved) {
-        if (configuration == Configuration.NONE) {
-            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(INVALID_CONFIGURATION_MESSAGE));
-        }
-
         Configuration proxyConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration()
             : configuration;
@@ -205,6 +189,10 @@ public class ProxyOptions {
     }
 
     private static ProxyOptions attemptToLoadProxy(Configuration configuration, boolean createUnresolved) {
+        if (configuration == Configuration.NONE) {
+            return null;
+        }
+
         ProxyOptions proxyOptions;
 
         // System proxy configuration is only possible through system properties.

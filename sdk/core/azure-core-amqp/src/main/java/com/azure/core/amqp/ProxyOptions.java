@@ -89,11 +89,10 @@ public class ProxyOptions implements AutoCloseable {
      * Configuration#NONE} is passed {@link IllegalArgumentException} will be thrown.
      * @return A {@link ProxyOptions} reflecting a proxy loaded from the environment, if no proxy is found {@code null}
      * will be returned.
-     * @throws IllegalArgumentException If {@code configuration} is {@link Configuration#NONE} or configuration is invalid.
      */
     public static ProxyOptions fromConfiguration(Configuration configuration) {
         if (configuration == Configuration.NONE) {
-            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'configuration' cannot be 'Configuration.NONE'."));
+            return null;
         }
 
         Configuration proxyConfiguration = (configuration == null)

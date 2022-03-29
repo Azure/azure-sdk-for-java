@@ -347,12 +347,12 @@ public class ProxyOptionsTests {
 
     /**
      * Tests that passing {@link Configuration#NONE} into {@link ProxyOptions#fromConfiguration(Configuration)} will
-     * throw an {@link IllegalArgumentException}.
+     * return null/
      */
     @Test
     public void loadFromEnvironmentThrowsWhenPassedConfigurationNone() {
-        assertThrows(IllegalArgumentException.class, () -> fromConfiguration(Configuration.NONE));
-        assertThrows(IllegalArgumentException.class, () -> fromConfiguration(Configuration.NONE, true));
+        assertNull(fromConfiguration(Configuration.NONE));
+        assertNull(fromConfiguration(Configuration.NONE, true));
     }
 
     /**

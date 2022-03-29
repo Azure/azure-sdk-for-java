@@ -26,8 +26,8 @@ public class ProxyOptionsTests {
     }
 
     @Test
-    public void noneConfigurationThrows() {
-        assertThrows(IllegalArgumentException.class, () -> ProxyOptions.fromConfiguration(Configuration.NONE));
+    public void noneConfigurationREturnsNull() {
+        assertNull(ProxyOptions.fromConfiguration(Configuration.NONE));
     }
 
     @Test
