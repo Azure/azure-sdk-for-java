@@ -79,11 +79,14 @@ stages:
             - ${{ replacement }}
 
           - AZURE_TEST.*=.*/
+          - ${{ if eq(parameters.SDKType, 'data') }}:
+            - JavaTestVersion=(.*)1.17(.*)/$11.11$2
         PreBuildSteps: ${{ parameters.PreBuildSteps }}
         AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
         ${{ if eq(parameters.SDKType, 'data') }}:
           TestGoals: 'verify'
           TestOptions: '-am'
+          JavaBuildVersion: '1.11'
 
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
