@@ -543,7 +543,7 @@
       "type": "string",
       "value": "[variables('blobContainerName')]"
     },
-    "AZURE_KEYVAULT_ATTESTATION_URI": {
+    "AZURE_KEYVAULT_ATTESTATION_URL": {
       "type": "string",
       "value": "[format('https://{0}/', reference(variables('attestationSite')).defaultHostName)]"
     },
