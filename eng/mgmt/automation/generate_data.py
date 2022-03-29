@@ -22,10 +22,8 @@ LLC_ARGUMENTS = '--low-level-client --sdk-integration --generate-samples --gener
 
 
 def sdk_automation(config: dict) -> List[dict]:
-    # 1. README.java.md in spec repo, and it contains 'packages' block. Match json to 'input-file'.
-    # 2. If 'tag' is available, use spec README with tag. If package not in SDK repo, also run integration task.
-    # 3. If 'tag' is not available, try using README_SPEC in SDK repo.
-    # 4. Use default options, run integration task.
+    # 1. README.java.md in spec repo, and it contains 'output-folder' option.
+    # 2. Use default options, run integration task.
 
     base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
     sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
@@ -57,13 +55,12 @@ def sdk_automation(config: dict) -> List[dict]:
             file_path = os.path.join(spec_root, file_path)
             readme_file_path = os.path.join(spec_root, readme_file_path) if readme_file_path else None
 
-            input_file, service, module, module_tag = get_generate_parameters(
-                service, file_name, file_path, readme_file_path)
+            input_file, service, module = get_generate_parameters(service, file_name, file_path, readme_file_path)
 
             succeeded = generate(sdk_root, input_file,
                                  service, module, '', '', '',
                                  AUTOREST_CORE_VERSION, AUTOREST_JAVA,
-                                 '', readme_file_path, module_tag)
+                                 '', readme_file_path)
 
             generated_folder = 'sdk/{0}/{1}'.format(service, module)
 
@@ -74,8 +71,7 @@ def sdk_automation(config: dict) -> List[dict]:
                 '{0}/pom.xml'.format(generated_folder)
             ]
             artifacts += [
-                jar for jar in glob.glob('{0}/target/*.jar'.format(
-                    generated_folder))
+                jar for jar in glob.glob('{0}/target/*.jar'.format(generated_folder))
             ]
             result = 'succeeded' if succeeded else 'failed'
 
@@ -109,10 +105,9 @@ def generate(
     use: str,
     autorest_options: str = '',
     readme_file: str = None,
-    module_tag: str = None,
     **kwargs,
 ) -> bool:
-    # param readme_file and module_tag is for sdkautomation
+    # param readme_file and module_tag is for sdk automation
 
     namespace = 'com.{0}'.format(module.replace('-', '.'))
     output_dir = os.path.join(
@@ -125,7 +120,7 @@ def generate(
     shutil.rmtree(os.path.join(output_dir, 'src/tests/java', namespace.replace('.', '/'), 'generated'),
                   ignore_errors=True)
 
-    if module_tag:
+    if readme_file:
         # use readme from spec repo
         readme_file_path = readme_file
 
@@ -133,13 +128,14 @@ def generate(
 
         logging.info('[GENERATE] Autorest from README {}'.format(readme_file_path))
 
-        command = 'autorest --version={0} --use={1} --java --java.output-folder={2} --tag={3} {4}'.format(
-            autorest,
-            use,
-            output_dir,
-            module_tag,
-            readme_file_path
-        )
+        command = 'autorest --version={0} --use={1} --java --java.java-sdks-folder={2} --java.output-folder={3} {4}'\
+            .format(
+                autorest,
+                use,
+                os.path.abspath(sdk_root),
+                os.path.abspath(output_dir),
+                readme_file_path
+            )
         if require_sdk_integration:
             command += LLC_ARGUMENTS
         logging.info(command)
@@ -160,12 +156,14 @@ def generate(
 
             logging.info('[GENERATE] Autorest from README {}'.format(readme_file_path))
 
-            command = 'autorest --version={0} --use={1} --java --java.output-folder={2} {3}'.format(
-                autorest,
-                use,
-                output_dir,
-                readme_file_path
-            )
+            command = 'autorest --version={0} --use={1} --java --java.java-sdks-folder={2} --java.output-folder={2} {3}'\
+                .format(
+                    autorest,
+                    use,
+                    os.path.abspath(sdk_root),
+                    os.path.abspath(output_dir),
+                    readme_file_path
+                )
             logging.info(command)
             try:
                 subprocess.run(command, shell=True, cwd=output_dir, check=True)
@@ -190,7 +188,7 @@ def generate(
                 artifact_arguments += ' --title={0}'.format(title)
 
             command = 'autorest --version={0} --use={1} --java ' \
-                      '--java.azure-libraries-for-java-folder={2} --java.output-folder={3} ' \
+                      '--java.java-sdks-folder={2} --java.output-folder={3} ' \
                       '--java.namespace={4} {5}'\
                 .format(
                     autorest,
@@ -225,14 +223,14 @@ def compile_package(sdk_root: str, group_id: str, module: str) -> bool:
 
 def get_generate_parameters(
     service, file_name, json_file_path, readme_file_path: str
-) -> Tuple[str, str, str, str]:
+) -> Tuple[str, str, str]:
     # get parameters from README.java.md from spec repo, or fallback to parameters deduced from json file path
 
     input_file = json_file_path
     module = None
-    module_tag = None
     if readme_file_path:
-        # try readme, it must contain 'batch' and match the json file by name
+        # try readme.java.md, it must contain 'output-folder' and
+        # match pattern $(java-sdks-folder)/sdk/<service>/<module>
         java_readme_file_path = readme_file_path.replace('.md', '.java.md')
         if os.path.exists(java_readme_file_path):
             with open(java_readme_file_path, 'r', encoding='utf-8') as f_in:
@@ -241,26 +239,20 @@ def get_generate_parameters(
                 yaml_blocks = re.findall(r'```\s?(?:yaml|YAML).*?\n(.*?)```', content, re.DOTALL)
                 for yaml_str in yaml_blocks:
                     yaml_json = yaml.safe_load(yaml_str)
-                    if 'packages' in yaml_json:
-                        for item in yaml_json['packages']:
-                            input_files = item['input-file']
-                            for file in input_files:
-                                if os.path.basename(file) == os.path.basename(input_file):
-                                    # found in README
-                                    module = item['name']
-                                    if 'service' in item:
-                                        service = item['service']
-                                    logging.info('[GENERATE] service {0} and module {1} found for {2}'.format(
-                                        service, module, json_file_path))
-                                    if 'tag' in item:
-                                        module_tag = item['tag']
-                                    break
+                    if 'output-folder' in yaml_json:
+                        output_folder = yaml_json['output-folder']
+                        output_folder_segments = output_folder.split('/')
+                        if len(output_folder_segments) == 4 and output_folder_segments[0] == '$(java-sdks-folder)' \
+                                and output_folder_segments[1] == 'sdk':
+                            service = output_folder_segments[2]
+                            module = output_folder_segments[3]
 
     if not module:
         # deduce from json file path
         file_name_sans = ''.join(c for c in file_name if c.isalnum())
         module = 'azure-{0}-{1}'.format(service, file_name_sans).lower()
-    return input_file, service, module, module_tag
+
+    return input_file, service, module
 
 
 def update_readme(
@@ -344,8 +336,13 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '--input-file',
-        required=True,
+        required=False,
         help='URL to OpenAPI 2.0 specification JSON as input file.',
+    )
+    parser.add_argument(
+        '--readme-file',
+        required=False,
+        help='URL to readme.java.md as input file.',
     )
     parser.add_argument(
         '--service',
