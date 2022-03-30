@@ -39,7 +39,7 @@ steps:
 - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
   parameters:
     PRBranchName: fluent-lite-generation-$(Build.BuildId)
-    CommitMsg: '[Automation] Generate Data-plane SDK for $(MODULE)'
-    PRTitle: '[Automation] Generate Data-plane SDK for $(MODULE)'
+    CommitMsg: '[Automation] Generate Data-plane SDK for $(MODULE)#$(README)'
+    PRTitle: '[Automation] Generate Data-plane SDK for $(MODULE)#$(README)'
     PRLabels: 'LLC'
     OpenAsDraft: 'true'
