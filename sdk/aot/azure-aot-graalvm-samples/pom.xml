@@ -43,8 +43,14 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <legal>
-            <![CDATA[[INFO] Any downloads listed may be third party software. Microsoft grants you no rights for third party software.]]></legal>
+        <legal><![CDATA[[INFO] Any downloads listed may be third party software. Microsoft grants you no rights for third party software.]]></legal>
+
+        <!-- Sample project, skip all linting. -->
+        <checkstyle.skip>true</checkstyle.skip>
+        <codesnippet.skip>true</codesnippet.skip>
+        <maven.javadoc.skip>true</maven.javadoc.skip>
+        <revapi.skip>true</revapi.skip>
+        <spotbugs.skip>true</spotbugs.skip>
     </properties>
 
     <developers>
@@ -55,7 +61,7 @@
     </developers>
 
     <dependencies>
-        
+
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-data-appconfiguration</artifactId>

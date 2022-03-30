@@ -24,15 +24,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -71,7 +68,7 @@ public class AppConfigurationPropertySourceLocatorTest {
     private static final String PROFILE_NAME_1 = "dev";
 
     private static final String PROFILE_NAME_2 = "prod";
-    
+
     private static final String KEY_FILTER = "/foo/";
 
     private static final ConfigurationSetting FEATURE_ITEM = createItem(".appconfig.featureflag/", "Alpha",
@@ -167,7 +164,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(emptyEnvironment.getPropertySources()).thenReturn(sources);
         when(devEnvironment.getPropertySources()).thenReturn(sources);
         when(multiEnvironment.getPropertySources()).thenReturn(sources);
-        
+
         when(properties.getStores()).thenReturn(configStoresMock);
         when(properties.isEnabled()).thenReturn(true);
         when(configStoresMock.iterator()).thenReturn(configStoreIterator);
@@ -210,12 +207,7 @@ public class AppConfigurationPropertySourceLocatorTest {
     @AfterEach
     public void cleanup() throws Exception {
         MockitoAnnotations.openMocks(this).close();
-        Field field = AppConfigurationPropertySourceLocator.class.getDeclaredField("startup");
-        Field modifiersField = Field.class.getDeclaredField("modifiers");
-        modifiersField.setAccessible(true);
-        modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-        field.setAccessible(true);
-        field.set(null, new AtomicBoolean(true));
+        AppConfigurationPropertySourceLocator.startup.set(true);
         StateHolder.setLoadState(TEST_STORE_NAME, false);
     }
 
@@ -356,14 +348,8 @@ public class AppConfigurationPropertySourceLocatorTest {
     }
 
     @Test
-    public void refreshThrowException() throws IOException, NoSuchFieldException, SecurityException,
-        IllegalArgumentException, IllegalAccessException {
-        Field field = AppConfigurationPropertySourceLocator.class.getDeclaredField("startup");
-        Field modifiersField = Field.class.getDeclaredField("modifiers");
-        modifiersField.setAccessible(true);
-        modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-        field.setAccessible(true);
-        field.set(null, new AtomicBoolean(false));
+    public void refreshThrowException() throws IOException, IllegalArgumentException {
+        AppConfigurationPropertySourceLocator.startup.set(false);
         StateHolder.setLoadState(TEST_STORE_NAME, true);
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties,
@@ -371,7 +357,6 @@ public class AppConfigurationPropertySourceLocatorTest {
 
         when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString(), Mockito.anyString())).thenThrow(new RuntimeException());
         RuntimeException e = assertThrows(RuntimeException.class, () -> locator.locate(emptyEnvironment));
-        assertNull(e.getMessage());
         assertNull(e.getMessage());
     }
 

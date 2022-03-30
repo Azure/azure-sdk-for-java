@@ -9,3 +9,5 @@ stages:
         - name: azure-identity
           groupId: com.azure
           safeName: azureidentity
+      MatrixReplace:
+        - JavaTestVersion=(.*1)\.17(.*)/$1.11$2

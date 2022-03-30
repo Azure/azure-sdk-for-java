@@ -57,7 +57,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
     private static final AtomicBoolean configloaded = new AtomicBoolean(false);
 
-    private static final AtomicBoolean startup = new AtomicBoolean(true);
+    static final AtomicBoolean startup = new AtomicBoolean(true);
 
     /**
      * Loads all Azure App Configuration Property Sources configured.
