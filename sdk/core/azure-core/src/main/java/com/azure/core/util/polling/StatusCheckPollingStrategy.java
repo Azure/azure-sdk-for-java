@@ -41,7 +41,7 @@ public class StatusCheckPollingStrategy<T, U> implements PollingStrategy<T, U> {
      * @param serializer a custom serializer for serializing and deserializing polling responses
      */
     public StatusCheckPollingStrategy(ObjectSerializer serializer) {
-        this.serializer = serializer;
+        this.serializer = (serializer == null) ? DEFAULT_SERIALIZER : serializer;
     }
 
     @Override
