@@ -69,7 +69,7 @@ The operation and inner `code` may vary, but the rest of the text will indicate 
     * [Role-Based Access Control (RBAC)](https://docs.microsoft.com/azure/key-vault/general/rbac-guide) (Key Vault and Managed HSM)
 2. If the appropriate permissions are assigned to your application or user, make sure you are authenticating as that user.
    If using the [DefaultAzureCredential] a different credential might've been used than one you expected.
-   [Enable logging](https://docs.microsoft.com/en-us/azure/developer/java/sdk/logging-overview) and you will see which credential the [DefaultAzureCredential] used as shown below, and why previously-attempted credentials were rejected.
+   [Enable logging](https://docs.microsoft.com/azure/developer/java/sdk/logging-overview) and you will see which credential the [DefaultAzureCredential] used as shown below, and why previously-attempted credentials were rejected.
 
    ```text
    [ERROR] c.azure.identity.EnvironmentCredential   : Azure Identity => ERROR in EnvironmentCredential: Missing required environment variable AZURE_CLIENT_ID
@@ -109,7 +109,7 @@ Possible solutions include:
 1. Use a singleton for any `CertificateClient`, `KeyClient`, `CryptographyClient`, or `SecretClient` and their async counterparts in your application for a single Key Vault.
 2. Use a single instance of [DefaultAzureCredential] or other credential you use to authenticate your clients for each Key Vault or Managed HSM endpoint you need to access.
 3. You could cache a certificate, key, or secret in memory for a time to reduce calls to retrieve them.
-4. Use [Azure App Configuration](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/REAMDE.md) for storing non-secrets and references to Key Vault secrets. Storing all app configuration in Key Vault will increase the likelihood of requests being throttled as more application instances are started.
+4. Use [Azure App Configuration](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/README.md) for storing non-secrets and references to Key Vault secrets. Storing all app configuration in Key Vault will increase the likelihood of requests being throttled as more application instances are started.
 5. If you are performing encryption or decryption operations, consider using wrap and unwrap operations
    for a symmetric key which may also improve application throughput.
 
