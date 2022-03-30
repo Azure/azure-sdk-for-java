@@ -37,6 +37,7 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
+        <module>azure-cognitiveservices-face</module>
         <module>azure-resourcemanager-cognitiveservices</module>
         <module>ms-azure-cs-autosuggest</module>
         <module>ms-azure-cs-computervision</module>
