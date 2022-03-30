@@ -1,13 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.implementation.changefeed.implementation.leaseManagement;
+package com.azure.cosmos.implementation.changefeed;
 
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.changefeed.Lease;
+import com.azure.cosmos.implementation.changefeed.implementation.leaseManagement.LeaseConstants;
+import com.azure.cosmos.implementation.changefeed.implementation.leaseManagement.ServiceItemLeaseCore;
+import com.azure.cosmos.implementation.changefeed.implementation.leaseManagement.ServiceItemLeaseEpk;
+import com.azure.cosmos.implementation.changefeed.implementation.leaseManagement.ServiceItemLeaseVersion;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -36,7 +39,7 @@ public class LeaseBuilder {
     private String _ts;
     private FeedRangeInternal feedRangeInternal;
 
-    public LeaseBuilder() {
+    LeaseBuilder() {
         ZonedDateTime currentTime = ZonedDateTime.now(ZoneId.of("UTC"));
         this.timestamp = currentTime.toString();
         this._ts = String.valueOf(currentTime.getSecond());
@@ -133,8 +136,7 @@ public class LeaseBuilder {
         if (feedRangeNode != null) {
             try {
                 this.feedRange(
-                    Utils.getSimpleObjectMapper().convertValue(
-                            feedRangeNode, FeedRangeInternal.class));
+                    Utils.getSimpleObjectMapper().convertValue(feedRangeNode, FeedRangeInternal.class));
             } catch (Exception e) {
                 logger.warn("Failed to parse feed range ", e);
             }

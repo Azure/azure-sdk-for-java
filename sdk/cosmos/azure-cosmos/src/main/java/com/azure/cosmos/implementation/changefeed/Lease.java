@@ -4,7 +4,6 @@ package com.azure.cosmos.implementation.changefeed;
 
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
-import com.azure.cosmos.implementation.changefeed.implementation.leaseManagement.LeaseBuilder;
 import com.azure.cosmos.implementation.changefeed.implementation.leaseManagement.ServiceItemLeaseVersion;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 
@@ -15,15 +14,23 @@ import java.util.Map;
  * Represents a lease that is persisted as a document in the lease collection.
  * <p>
  * Leases are used to:
- * Keep track of the {@link ChangeFeedProcessor} progress for a particular Partition Key RANGE.
+ * Keep track of the {@link ChangeFeedProcessor} progress for a particular feed range.
  * Distribute load between different instances of {@link ChangeFeedProcessor}.
  * Ensure reliable recovery for cases when an instance of {@link ChangeFeedProcessor} gets disconnected, hangs or crashes.
  */
 public interface Lease {
+
     /**
-     * Gets the partition associated with the lease.
+     * Gets the lease ID.
      *
-     * @return the partition associated with the lease.
+     * @return the lease ID.
+     */
+    String getId();
+
+    /**
+     * Gets the feed range associated with the lease.
+     *
+     * @return the feed range associated with the lease.
      */
     String getLeaseToken();
 
@@ -31,11 +38,21 @@ public interface Lease {
      * Gets the host name owner of the lease.
      *
      * <p>
-     * The Owner keeps track which {@link ChangeFeedProcessor} is currently processing that Partition Key RANGE.
+     * The Owner keeps track which {@link ChangeFeedProcessor} is currently processing that feed range.
      *
      * @return the host name owner of the lease.
      */
     String getOwner();
+
+    /**
+     * Sets the host name owner of the lease.
+     *
+     * <p>
+     * The Owner keeps track which {@link ChangeFeedProcessor} is currently processing that feed range.
+     *
+     * @param owner the host name owner of the lease.
+     */
+    void setOwner(String owner);
 
     /**
      * Gets the timestamp of the lease.
@@ -44,9 +61,23 @@ public interface Lease {
      */
     String getTimestamp();
 
-    ChangeFeedState getContinuationState(
-        String containerRid,
-        FeedRangeInternal feedRange);
+    /**
+     * Sets the timestamp of the lease.
+     *
+     * <p>
+     * The timestamp is used to determine lease expiration.
+     *
+     * @param timestamp the timestamp of the lease.
+     */
+    void setTimestamp(Instant timestamp);
+
+    /***
+     * Get the change feed continuation state.
+     * @param containerRid the monitored container resource id.
+     *
+     * @return the {@link ChangeFeedState}.
+     */
+    ChangeFeedState getContinuationState(String containerRid);
 
     /**
      * Gets the continuation token used to determine the last processed point of the Change Feed.
@@ -64,13 +95,6 @@ public interface Lease {
     void setContinuationToken(String continuationToken);
 
     /**
-     * Gets the lease ID.
-     *
-     * @return the lease ID.
-     */
-    String getId();
-
-    /**
      * Gets the concurrency token.
      *
      * @return the concurrency token.
@@ -78,47 +102,18 @@ public interface Lease {
     String getConcurrencyToken();
 
     /**
+     * Sets the concurrency token.
+     *
+     * @param concurrencyToken the concurrency token.
+     */
+    void setConcurrencyToken(String concurrencyToken);
+
+    /**
      * Gets the custom lease item which can be managed from {@link PartitionLoadBalancingStrategy}.
      *
      * @return the custom lease item.
      */
     Map<String, String> getProperties();
-
-    /**
-     * Sets the host name owner of the lease.
-     *
-     * <p>
-     * The Owner keeps track which {@link ChangeFeedProcessor} is currently processing that Partition Key RANGE.
-     *
-     * @param owner the host name owner of the lease.
-     */
-    void setOwner(String owner);
-
-    /**
-     * Sets the timestamp of the lease.
-     *
-     * <p>
-     * The timestamp is used to determine lease expiration.
-     *
-     * @param timestamp the timestamp of the lease.
-     */
-    void setTimestamp(Instant timestamp);
-
-    /**
-     * Sets the lease ID.
-     *
-     *
-     * @param id the lease ID.
-     */
-    void setId(String id);
-
-    /**
-     * Sets the concurrency token.
-     *
-     *
-     * @param concurrencyToken the concurrency token.
-     */
-    void setConcurrencyToken(String concurrencyToken);
 
     /**
      * Sets the custom lease item which can be managed from {@link PartitionLoadBalancingStrategy}.

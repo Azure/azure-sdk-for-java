@@ -5,10 +5,7 @@ package com.azure.cosmos.implementation.changefeed.implementation.leaseManagemen
 
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.changefeed.Lease;
-import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedMode;
-import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStartFromInternal;
-import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
-import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStateV1;
+import com.azure.cosmos.implementation.changefeed.LeaseBuilder;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -25,10 +22,7 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.Map;
-
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Document service lease base.
@@ -36,16 +30,16 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 @JsonSerialize(using = ServiceItemLease.ServiceItemLeaseJsonSerializer.class)
 @JsonDeserialize(using = ServiceItemLease.ServiceItemLeaseJsonDeserializer.class)
 public abstract class ServiceItemLease implements Lease {
-    private String id;
-    private String _etag;
-    private String leaseToken;
-    private String owner;
-    private String continuationToken;
+    private final String id;
+    private final String leaseToken;
 
+    private String continuationToken;
+    private String _etag;
+    private FeedRangeInternal feedRangeInternal;
+    private String owner;
     private Map<String, String> properties;
     private String timestamp;  // ExplicitTimestamp
     private String _ts;
-    private FeedRangeInternal feedRangeInternal;
 
     public ServiceItemLease(
             String id,
@@ -72,24 +66,10 @@ public abstract class ServiceItemLease implements Lease {
     public String getId() {
         return this.id;
     }
-
-    @Override
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getETag() {
-        return this._etag;
-    }
-
-    public void setEtag(String etag) { this._etag = etag; }
-
     @Override
     public String getLeaseToken() {
         return this.leaseToken;
     }
-
-    public void setLeaseToken(String leaseToken) { this.leaseToken = leaseToken; }
 
     @Override
     public String getOwner() {
@@ -112,22 +92,6 @@ public abstract class ServiceItemLease implements Lease {
     }
 
     @Override
-    public ChangeFeedState getContinuationState(
-        String containerRid,
-        FeedRangeInternal feedRange) {
-
-        checkNotNull(containerRid, "Argument 'containerRid' must not be null.");
-        checkNotNull(feedRange, "Argument 'feedRange' must not be null.");
-
-        return new ChangeFeedStateV1(
-            containerRid,
-            feedRange,
-            ChangeFeedMode.INCREMENTAL,
-            ChangeFeedStartFromInternal.createFromETagAndFeedRange(this.continuationToken, feedRange),
-            null);
-    }
-
-    @Override
     public Map<String, String> getProperties() {
         return this.properties;
     }
@@ -139,16 +103,7 @@ public abstract class ServiceItemLease implements Lease {
 
     @Override
     public void setTimestamp(Instant timestamp) {
-
-        this.setTimestamp(timestamp.toString());
-    }
-
-    public void setTimestamp(Date date) {
-        this.setTimestamp(date.toInstant());
-    }
-
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
+        this.timestamp = timestamp.toString();
     }
 
     @Override
@@ -186,33 +141,31 @@ public abstract class ServiceItemLease implements Lease {
 
     @Override
     public String getConcurrencyToken() {
-        return this.getETag();
+        return this._etag;
     }
 
     public void setServiceItemLease(Lease lease) {
-        this.setId(lease.getId());
         this.setConcurrencyToken(lease.getConcurrencyToken());
         this.setOwner(lease.getOwner());
-        this.setLeaseToken(lease.getLeaseToken());
         this.setContinuationToken(getContinuationToken());
 
         String leaseTimestamp = lease.getTimestamp();
         if (leaseTimestamp != null) {
-           this.setTimestamp(ZonedDateTime.parse(leaseTimestamp).toInstant());
+            this.setTimestamp(ZonedDateTime.parse(leaseTimestamp).toInstant());
         } else {
-            this.setTimestamp(lease.getTimestamp());
+            this.timestamp = lease.getTimestamp();
         }
     }
 
     @Override
     public String toString() {
         return String.format(
-            "%s Owner='%s' Continuation=%s Timestamp(local)=%s Timestamp(server)=%s",
-            this.getId(),
-            this.getOwner(),
-            this.getContinuationToken(),
-            this.getTimestamp(),
-            LeaseConstants.UNIX_START_TIME.plusSeconds(Long.parseLong(this.getTs())));
+                "%s Owner='%s' Continuation=%s Timestamp(local)=%s Timestamp(server)=%s",
+                this.id,
+                this.owner,
+                this.continuationToken,
+                this.timestamp,
+                LeaseConstants.UNIX_START_TIME.plusSeconds(Long.parseLong(this._ts)));
     }
 
     @SuppressWarnings("serial")
@@ -230,14 +183,14 @@ public abstract class ServiceItemLease implements Lease {
         public void serialize(ServiceItemLease lease, JsonGenerator writer, SerializerProvider serializerProvider) {
             try {
                 writer.writeStartObject();
-                writer.writeStringField(Constants.Properties.ID, lease.getId());
-                writer.writeStringField(Constants.Properties.E_TAG, lease.getETag());
-                writer.writeStringField(LeaseConstants.PROPERTY_NAME_LEASE_TOKEN, lease.getLeaseToken());
-                writer.writeStringField(LeaseConstants.PROPERTY_NAME_CONTINUATION_TOKEN, lease.getContinuationToken());
-                writer.writeStringField(LeaseConstants.PROPERTY_NAME_TIMESTAMP, lease.getTimestamp());
-                writer.writeStringField(LeaseConstants.PROPERTY_NAME_OWNER, lease.getOwner());
-                writer.writeNumberField(LeaseConstants.PROPERTY_VERSION, lease.getVersion().getVersion());
-                writer.writeObjectField(LeaseConstants.PROPERTY_FEED_RANGE, lease.getFeedRange());
+                writer.writeStringField(Constants.Properties.ID, lease.id);
+                writer.writeStringField(Constants.Properties.E_TAG, lease._etag);
+                writer.writeStringField(LeaseConstants.PROPERTY_NAME_LEASE_TOKEN, lease.leaseToken);
+                writer.writeStringField(LeaseConstants.PROPERTY_NAME_CONTINUATION_TOKEN, lease.continuationToken);
+                writer.writeStringField(LeaseConstants.PROPERTY_NAME_TIMESTAMP, lease.timestamp);
+                writer.writeStringField(LeaseConstants.PROPERTY_NAME_OWNER, lease.owner);
+                writer.writeNumberField(LeaseConstants.PROPERTY_VERSION, lease.getVersion().getVersionId());
+                writer.writeObjectField(LeaseConstants.PROPERTY_FEED_RANGE, lease.feedRangeInternal);
                 writer.writeEndObject();
             } catch (IOException e) {
                 throw new IllegalStateException(e);

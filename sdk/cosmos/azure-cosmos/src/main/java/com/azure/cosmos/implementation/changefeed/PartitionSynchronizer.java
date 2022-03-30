@@ -17,7 +17,7 @@ public interface PartitionSynchronizer {
      */
     Mono<Void> createMissingLeases();
 
-    /***
+    /**
      * Get the feed range gone handler.
      *
      * @param lease the lease.

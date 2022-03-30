@@ -66,10 +66,10 @@ public class LeaseStoreManagerSettings {
     }
 
     public void validate() {
-        checkNotNull(this.containerNamePrefix, "Settings.containerNamePrefix can not be null");
-        checkNotNull(this.leaseContainer, "Settings.leaseContainer can not be null");
-        checkNotNull(this.hostName, "Settings.hostName can not be null");
-        checkNotNull(this.monitoredContainer, "Settings.monitored container can not be null");
-        checkArgument(!StringUtils.isEmpty(this.monitoredContainerRid), "Settings.monitoredContainerRid can not be null nor empty");
+        checkNotNull(this.containerNamePrefix, "containerNamePrefix can not be null");
+        checkNotNull(this.leaseContainer, "leaseContainer can not be null");
+        checkNotNull(this.hostName, "hostName can not be null");
+        checkNotNull(this.monitoredContainer, "monitored container can not be null");
+        checkArgument(!StringUtils.isEmpty(this.monitoredContainerRid), "monitoredContainerRid can not be null nor empty");
     }
 }

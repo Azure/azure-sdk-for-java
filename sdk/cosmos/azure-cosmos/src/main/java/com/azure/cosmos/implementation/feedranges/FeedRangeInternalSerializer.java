@@ -10,8 +10,8 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import java.io.IOException;
 
 public class FeedRangeInternalSerializer extends StdSerializer<FeedRangeInternal> {
-    // this value should be incremented if changes are made to the ServiceItemLease class members
     private static final long serialVersionUID = 1L;
+
     private static final String PROPERTY_NAME_RANGE = "Range";
     private static final String PROPERTY_NAME_PARTITION_KEY = "PK";
     private static final String PROPERTY_NAME_PARTITION_KEY_RANGE_ID = "PKRangeId";
@@ -33,9 +33,10 @@ public class FeedRangeInternalSerializer extends StdSerializer<FeedRangeInternal
                         ((FeedRangeEpkImpl) feedRange).getRange());
 
             } else if (feedRange instanceof FeedRangePartitionKeyImpl) {
-                writer.writeObjectField(
+                //TODO: Annie: Confirm format
+                writer.writeStringField(
                         PROPERTY_NAME_PARTITION_KEY,
-                        ((FeedRangePartitionKeyImpl) feedRange).getPartitionKeyInternal());
+                        ((FeedRangePartitionKeyImpl) feedRange).getPartitionKeyInternal().toString());
 
             } else if (feedRange instanceof FeedRangePartitionKeyRangeImpl) {
                 writer.writeStringField(
