@@ -58,9 +58,9 @@ def sdk_automation(config: dict) -> List[dict]:
             input_file, service, module = get_generate_parameters(service, file_name, file_path, readme_file_path)
 
             succeeded = generate(sdk_root, input_file,
-                                 service, module, '', '', '',
-                                 AUTOREST_CORE_VERSION, AUTOREST_JAVA,
-                                 '', readme_file_path)
+                                 service=service, module=module, security='', security_scopes='', title='',
+                                 autorest=AUTOREST_CORE_VERSION, use=AUTOREST_JAVA,
+                                 autorest_options='', readme_file=readme_file_path)
 
             generated_folder = 'sdk/{0}/{1}'.format(service, module)
 
@@ -85,6 +85,7 @@ def sdk_automation(config: dict) -> List[dict]:
                     'pom.xml'
                 ],
                 'artifacts': artifacts,
+                'apiViewArtifact': next(iter(glob.glob('{0}/target/*-sources.jar'.format(generated_folder))), None),
                 'result': result,
             })
         else:
