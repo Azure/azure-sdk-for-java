@@ -50,7 +50,7 @@ public final class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U>
         this.chainedPollingStrategy = new ChainedPollingStrategy<>(Arrays.asList(
             new OperationResourcePollingStrategy<>(httpPipeline, serializer, null, Context.NONE),
             new LocationPollingStrategy<>(httpPipeline, serializer, Context.NONE),
-            new StatusCheckPollingStrategy<>(serializer, Context.NONE)));
+            new StatusCheckPollingStrategy<>(serializer)));
     }
 
     /**
@@ -67,7 +67,7 @@ public final class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U>
         this.chainedPollingStrategy = new ChainedPollingStrategy<>(Arrays.asList(
             new OperationResourcePollingStrategy<>(httpPipeline, serializer, null, context),
             new LocationPollingStrategy<>(httpPipeline, serializer, context),
-            new StatusCheckPollingStrategy<>(serializer, context)));
+            new StatusCheckPollingStrategy<>(serializer)));
     }
 
     @Override

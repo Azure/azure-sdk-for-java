@@ -28,13 +28,12 @@ public class StatusCheckPollingStrategy<T, U> implements PollingStrategy<T, U> {
     private static final ObjectSerializer DEFAULT_SERIALIZER = new DefaultJsonSerializer();
 
     private final ObjectSerializer serializer;
-    private final Context context;
 
     /**
      * Creates a status check polling strategy with a JSON serializer.
      */
     public StatusCheckPollingStrategy() {
-        this(DEFAULT_SERIALIZER, Context.NONE);
+        this(DEFAULT_SERIALIZER);
     }
 
     /**
@@ -42,17 +41,7 @@ public class StatusCheckPollingStrategy<T, U> implements PollingStrategy<T, U> {
      * @param serializer a custom serializer for serializing and deserializing polling responses
      */
     public StatusCheckPollingStrategy(ObjectSerializer serializer) {
-        this((serializer == null) ? DEFAULT_SERIALIZER : serializer, Context.NONE);
-    }
-
-    /**
-     * Creates a status check polling strategy with a custom object serializer.
-     * @param serializer a custom serializer for serializing and deserializing polling responses
-     * @param context an instance of {@link Context}
-     */
-    public StatusCheckPollingStrategy(ObjectSerializer serializer, Context context) {
-        this.serializer = (serializer == null) ? DEFAULT_SERIALIZER : serializer;
-        this.context = context;
+        this.serializer = serializer;
     }
 
     @Override
