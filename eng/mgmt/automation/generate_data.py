@@ -98,7 +98,7 @@ def sdk_automation_readme(readme_file_abspath: str,
         succeeded = generate(sdk_root, input_file,
                              service=service, module=module, security='', security_scopes='', title='',
                              autorest=AUTOREST_CORE_VERSION, use=AUTOREST_JAVA,
-                             autorest_options='', readme_file=readme_file_abspath)
+                             autorest_options='', readme=readme_file_abspath)
 
         generated_folder = 'sdk/{0}/{1}'.format(service, module)
 
@@ -139,11 +139,9 @@ def generate(
     autorest: str,
     use: str,
     autorest_options: str = '',
-    readme_file: str = None,
+    readme: str = None,
     **kwargs,
 ) -> bool:
-    # param readme_file and module_tag is for sdk automation
-
     namespace = 'com.{0}'.format(module.replace('-', '.'))
     output_dir = os.path.join(
         sdk_root,
@@ -155,9 +153,9 @@ def generate(
     shutil.rmtree(os.path.join(output_dir, 'src/tests/java', namespace.replace('.', '/'), 'generated'),
                   ignore_errors=True)
 
-    if readme_file:
+    if readme:
         # use readme from spec repo
-        readme_file_path = readme_file
+        readme_file_path = readme
 
         require_sdk_integration = not os.path.exists(output_dir)
 
@@ -409,9 +407,11 @@ def parse_args() -> argparse.Namespace:
         help='URL to OpenAPI 2.0 specification JSON as input file. "service" and "module" is required.',
     )
     parser.add_argument(
-        '--readme-file',
+        '-r',
+        '--readme',
         required=False,
-        help='URL to "readme.md" as input file. A "readme.java.md" configuration is required at same folder.',
+        help='URL to "readme.md" as configuration file. '
+             'A "readme.java.md" configuration file is required at the same folder.',
     )
     parser.add_argument(
         '--service',
@@ -490,8 +490,8 @@ def main():
     if not args['security_scopes'] and args['credential_scopes']:
         args['security_scopes'] = args['credential_scopes']
 
-    if args['readme_file']:
-        input_file, service, module = get_generate_parameters(None, None, None, args['readme_file'])
+    if args['readme']:
+        input_file, service, module = get_generate_parameters(None, None, None, args['readme'])
         if not module:
             raise ValueError('readme.java.md not found or not well-formed')
         args['service'] = service
