@@ -41,6 +41,7 @@ import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
@@ -719,7 +720,8 @@ public class DataLakeFileSystemAsyncClient {
             requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
 
-        return createFileWithResponse(fileName, null, null, null, null, requestConditions).flatMap(FluxUtil::toMono);
+        return createFileWithResponse(fileName, new DataLakePathCreateOptions().setRequestConditions(requestConditions)
+            .setPathResourceType(PathResourceType.FILE)).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -758,15 +760,55 @@ public class DataLakeFileSystemAsyncClient {
     public Mono<Response<DataLakeFileAsyncClient>> createFileWithResponse(String fileName,
         String permissions, String umask, PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions requestConditions) {
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
+            .setPathHttpHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions)
+            .setPathResourceType(PathResourceType.FILE);
         DataLakeFileAsyncClient dataLakeFileAsyncClient;
         try {
             dataLakeFileAsyncClient = getFileAsyncClient(fileName);
+            return dataLakeFileAsyncClient.createWithResponse(options).map(response ->
+                new SimpleResponse<>(response, dataLakeFileAsyncClient));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
+    }
 
-        return dataLakeFileAsyncClient.createWithResponse(permissions, umask, headers, metadata, requestConditions)
-            .map(response -> new SimpleResponse<>(response, dataLakeFileAsyncClient));
+    /**
+     * Creates a new file within a file system. If a file with the same name already exists, the file will be
+     * overwritten. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions -->
+     * <pre>
+     * PathHttpHeaders httpHeaders = new PathHttpHeaders&#40;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;;
+     * String permissions = &quot;permissions&quot;;
+     * String umask = &quot;umask&quot;;
+     * Mono&lt;Response&lt;DataLakeFileAsyncClient&gt;&gt; newFileClient = client.createFileWithResponse&#40;fileName, permissions,
+     *     umask, httpHeaders, Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;, requestConditions&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions -->
+     *
+     * @param fileName Name of the file to create. If the path name contains special characters, pass in the url encoded
+     * version of the path name.
+     * @param options {@link DataLakePathCreateOptions}
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
+     * DataLakeFileAsyncClient} used to interact with the file created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DataLakeFileAsyncClient>> createFileWithResponse(String fileName, DataLakePathCreateOptions options) {
+        DataLakeFileAsyncClient dataLakeFileAsyncClient;
+        try {
+            dataLakeFileAsyncClient = getFileAsyncClient(fileName);
+            return dataLakeFileAsyncClient.createWithResponse(options).map(response -> new SimpleResponse<>(response, dataLakeFileAsyncClient));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -873,8 +915,8 @@ public class DataLakeFileSystemAsyncClient {
         if (!overwrite) {
             requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
-
-        return createDirectoryWithResponse(directoryName, null, null, null, null, requestConditions)
+        return createDirectoryWithResponse(directoryName, new DataLakePathCreateOptions()
+            .setRequestConditions(requestConditions).setPathResourceType(PathResourceType.DIRECTORY))
             .flatMap(FluxUtil::toMono);
     }
 
@@ -915,15 +957,54 @@ public class DataLakeFileSystemAsyncClient {
     public Mono<Response<DataLakeDirectoryAsyncClient>> createDirectoryWithResponse(String directoryName,
         String permissions, String umask, PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions requestConditions) {
-        DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient;
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
+            .setPathHttpHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions)
+            .setPathResourceType(PathResourceType.DIRECTORY);
         try {
-            dataLakeDirectoryAsyncClient = getDirectoryAsyncClient(directoryName);
+            return createDirectoryWithResponse(directoryName, options);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
+    }
 
-        return dataLakeDirectoryAsyncClient.createWithResponse(permissions, umask, headers, metadata, requestConditions)
-            .map(response -> new SimpleResponse<>(response, dataLakeDirectoryAsyncClient));
+    /**
+     * Creates a new directory within a file system. If a directory with the same name already exists, the directory
+     * will be overwritten. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions -->
+     * <pre>
+     * PathHttpHeaders httpHeaders = new PathHttpHeaders&#40;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;;
+     * String permissions = &quot;permissions&quot;;
+     * String umask = &quot;umask&quot;;
+     * Mono&lt;Response&lt;DataLakeDirectoryAsyncClient&gt;&gt; newDirectoryClient = client.createDirectoryWithResponse&#40;
+     *     directoryName, permissions, umask, httpHeaders, Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;,
+     *     requestConditions&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions -->
+     *
+     * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
+     * url encoded version of the path name.
+     * @param options {@link DataLakePathCreateOptions}
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
+     * DataLakeDirectoryAsyncClient} used to interact with the directory created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DataLakeDirectoryAsyncClient>> createDirectoryWithResponse(String directoryName, DataLakePathCreateOptions options) {
+        DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient;
+        try {
+            dataLakeDirectoryAsyncClient = getDirectoryAsyncClient(directoryName);
+            return dataLakeDirectoryAsyncClient.createWithResponse(options).map(response ->
+                new SimpleResponse<>(response, dataLakeDirectoryAsyncClient));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**

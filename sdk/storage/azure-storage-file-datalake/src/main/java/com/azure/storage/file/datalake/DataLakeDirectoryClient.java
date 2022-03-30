@@ -14,10 +14,12 @@ import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathItem;
+import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -208,7 +210,8 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
         if (!overwrite) {
             requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
-        return createFileWithResponse(fileName, null, null, null, null, requestConditions, null, null).getValue();
+        return createFileWithResponse(fileName, new DataLakePathCreateOptions().setRequestConditions(requestConditions)
+            .setPathResourceType(PathResourceType.FILE), null, null).getValue();
     }
 
     /**
@@ -251,8 +254,49 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
         PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions requestConditions,
         Duration timeout, Context context) {
         DataLakeFileClient dataLakeFileClient = getFileClient(fileName);
-        Response<PathInfo> response = dataLakeFileClient.createWithResponse(permissions, umask, headers, metadata,
-            requestConditions, timeout, context);
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
+            .setPathHttpHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions)
+            .setPathResourceType(dataLakeDirectoryAsyncClient.pathResourceType);
+
+        Response<PathInfo> response = dataLakeFileClient.createWithResponse(options, timeout, context);
+        return new SimpleResponse<>(response, dataLakeFileClient);
+    }
+
+    /**
+     * Creates a new file within a directory. If a file with the same name already exists, the file will be
+     * overwritten. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context -->
+     * <pre>
+     * PathHttpHeaders httpHeaders = new PathHttpHeaders&#40;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;;
+     * String permissions = &quot;permissions&quot;;
+     * String umask = &quot;umask&quot;;
+     * Response&lt;DataLakeFileClient&gt; newFileClient = client.createFileWithResponse&#40;fileName, permissions, umask, httpHeaders,
+     *     Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;, requestConditions,
+     *     timeout, new Context&#40;key1, value1&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context -->
+     *
+     * @param fileName Name of the file to create.
+     * @param options {@link DataLakePathCreateOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link DataLakeFileClient} used
+     * to interact with the file created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DataLakeFileClient> createFileWithResponse(String fileName, DataLakePathCreateOptions options,
+        Duration timeout, Context context) {
+        DataLakeFileClient dataLakeFileClient = getFileClient(fileName);
+        Response<PathInfo> response = dataLakeFileClient.createWithResponse(options, timeout, context);
         return new SimpleResponse<>(response, dataLakeFileClient);
     }
 
@@ -375,7 +419,8 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
         if (!overwrite) {
             requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
-        return createSubdirectoryWithResponse(subdirectoryName, null, null, null, null, requestConditions, null, null)
+        return createSubdirectoryWithResponse(subdirectoryName, new DataLakePathCreateOptions()
+            .setRequestConditions(requestConditions).setPathResourceType(PathResourceType.DIRECTORY), null, null)
             .getValue();
     }
 
@@ -420,8 +465,48 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
         String permissions, String umask, PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
         DataLakeDirectoryClient dataLakeDirectoryClient = getSubdirectoryClient(subdirectoryName);
-        Response<PathInfo> response = dataLakeDirectoryClient.createWithResponse(permissions, umask, headers, metadata,
-            requestConditions, timeout, context);
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
+            .setPathHttpHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions)
+            .setPathResourceType(PathResourceType.DIRECTORY);
+        Response<PathInfo> response = dataLakeDirectoryClient.createWithResponse(options, timeout, context);
+        return new SimpleResponse<>(response, dataLakeDirectoryClient);
+    }
+
+    /**
+     * Creates a new sub-directory within a directory. If a sub-directory with the same name already exists, the
+     * sub-directory will be overwritten. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubdirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context -->
+     * <pre>
+     * PathHttpHeaders httpHeaders = new PathHttpHeaders&#40;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;;
+     * String permissions = &quot;permissions&quot;;
+     * String umask = &quot;umask&quot;;
+     * Response&lt;DataLakeDirectoryClient&gt; newDirectoryClient = client.createSubdirectoryWithResponse&#40;directoryName,
+     *     permissions, umask, httpHeaders, Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;, requestConditions, timeout,
+     *     new Context&#40;key1, value1&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubdirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context -->
+     *
+     * @param subdirectoryName Name of the sub-directory to create.
+     * @param options {@link DataLakePathCreateOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A {@link Response} whose {@link Response#getValue() value} contains a {@link DataLakeDirectoryClient}
+     * used to interact with the sub-directory created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DataLakeDirectoryClient> createSubdirectoryWithResponse(String subdirectoryName,
+        DataLakePathCreateOptions options, Duration timeout, Context context) {
+        DataLakeDirectoryClient dataLakeDirectoryClient = getSubdirectoryClient(subdirectoryName);
+        Response<PathInfo> response = dataLakeDirectoryClient.createWithResponse(options, timeout, context);
         return new SimpleResponse<>(response, dataLakeDirectoryClient);
     }
 

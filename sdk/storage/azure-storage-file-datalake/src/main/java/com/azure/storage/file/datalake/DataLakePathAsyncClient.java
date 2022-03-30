@@ -54,6 +54,7 @@ import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions;
@@ -311,7 +312,7 @@ public class DataLakePathAsyncClient {
         if (!overwrite) {
             requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
-        return createWithResponse(null, null, null, null, requestConditions).flatMap(FluxUtil::toMono);
+        return createWithResponse(new DataLakePathCreateOptions().setRequestConditions(requestConditions)).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -352,29 +353,77 @@ public class DataLakePathAsyncClient {
     public Mono<Response<PathInfo>> createWithResponse(String permissions, String umask, PathHttpHeaders headers,
         Map<String, String> metadata, DataLakeRequestConditions requestConditions) {
         try {
-            return withContext(context -> createWithResponse(permissions, umask, pathResourceType,
-                headers, metadata, requestConditions, context));
+            DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions(permissions)
+                .setUmask(umask).setPathHttpHeaders(headers).setMetadata(metadata).setPathResourceType(pathResourceType)
+                .setRequestConditions(requestConditions);
+            return withContext(context -> createWithResponse(options));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<PathInfo>> createWithResponse(String permissions, String umask, PathResourceType resourceType,
-        PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions requestConditions,
-        Context context) {
-        requestConditions = requestConditions == null ? new DataLakeRequestConditions() : requestConditions;
+    /**
+     * Creates a resource.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.createWithResponse#String-String-PathHttpHeaders-Map-DataLakeRequestConditions -->
+     * <pre>
+     * PathHttpHeaders httpHeaders = new PathHttpHeaders&#40;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;;
+     * String permissions = &quot;permissions&quot;;
+     * String umask = &quot;umask&quot;;
+     *
+     * client.createWithResponse&#40;permissions, umask, httpHeaders, Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;,
+     *     requestConditions&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Last Modified Time:%s&quot;, response.getValue&#40;&#41;.getLastModified&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.createWithResponse#String-String-PathHttpHeaders-Map-DataLakeRequestConditions -->
+     *
+     * <p>For more information see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * Docs</a></p>
+     *
+     * @param options {@link DataLakePathCreateOptions}
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
+     * PathItem}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PathInfo>> createWithResponse(DataLakePathCreateOptions options) {
+        if (options == null) {
+            options = new DataLakePathCreateOptions().setPathResourceType(pathResourceType)
+                .setRequestConditions(new DataLakeRequestConditions()).setPathHttpHeaders(new PathHttpHeaders());
+        }
+        try {
+            DataLakePathCreateOptions finalOptions = options;
+            return withContext(context -> createWithResponse(finalOptions, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
 
-        LeaseAccessConditions lac = new LeaseAccessConditions().setLeaseId(requestConditions.getLeaseId());
+    Mono<Response<PathInfo>> createWithResponse(DataLakePathCreateOptions options, Context context) {
+        options = options == null ? new DataLakePathCreateOptions() : options;
+
+        LeaseAccessConditions lac = new LeaseAccessConditions().setLeaseId(options.getRequestConditions().getLeaseId());
         ModifiedAccessConditions mac = new ModifiedAccessConditions()
-            .setIfMatch(requestConditions.getIfMatch())
-            .setIfNoneMatch(requestConditions.getIfNoneMatch())
-            .setIfModifiedSince(requestConditions.getIfModifiedSince())
-            .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
+            .setIfMatch(options.getRequestConditions().getIfMatch())
+            .setIfNoneMatch(options.getRequestConditions().getIfNoneMatch())
+            .setIfModifiedSince(options.getRequestConditions().getIfModifiedSince())
+            .setIfUnmodifiedSince(options.getRequestConditions().getIfUnmodifiedSince());
+
+        String acl = options.getAccessControlList() != null ? PathAccessControlEntry.serializeList(options.getAccessControlList()) : null;
 
         context = context == null ? Context.NONE : context;
-        return this.dataLakeStorage.getPaths().createWithResponseAsync(null, null, resourceType, null, null, null, null,
-            buildMetadataString(metadata), permissions, umask, headers, lac, mac, null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+        return this.dataLakeStorage.getPaths().createWithResponseAsync(null, null, options.getPathResourceType(),
+                options.getContinuation(), null, null, options.getSourceLeaseId(),
+                buildMetadataString(options.getMetadata()), options.getPermissions(), options.getUmask(),
+                options.getOwner(), options.getGroup(), acl, options.getProposedLeaseId(), options.getLeaseDuration(),
+                options.getExpiryOptions(), options.getExpiresOn(), options.getPathHttpHeaders(), lac, mac, null,
+                options.getCpkInfo(), context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
                 response.getDeserializedHeaders().getLastModified())));
     }
@@ -1322,12 +1371,21 @@ public class DataLakePathAsyncClient {
         String renameSource = "/" + this.fileSystemName + "/" + Utility.urlEncode(pathName);
         renameSource = this.sasToken != null ? renameSource + "?" + this.sasToken.getSignature() : renameSource;
 
+//        return dataLakePathAsyncClient.dataLakeStorage.getPaths().createWithResponseAsync(
+//            null /* request id */, null /* timeout */, null /* pathResourceType */,
+//            null /* continuation */, PathRenameMode.LEGACY, renameSource, sourceRequestConditions.getLeaseId(),
+//            null /* metadata */, null /* permissions */, null /* umask */,
+//            null /* pathHttpHeaders */, destLac, destMac, sourceConditions,
+//            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+//            .map(response -> new SimpleResponse<>(response, dataLakePathAsyncClient));
+
         return dataLakePathAsyncClient.dataLakeStorage.getPaths().createWithResponseAsync(
-            null /* request id */, null /* timeout */, null /* pathResourceType */,
-            null /* continuation */, PathRenameMode.LEGACY, renameSource, sourceRequestConditions.getLeaseId(),
-            null /* metadata */, null /* permissions */, null /* umask */,
-            null /* pathHttpHeaders */, destLac, destMac, sourceConditions,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                null /* request id */, null /* timeout */, null /* pathResourceType */,
+                null /* continuation */, PathRenameMode.LEGACY, renameSource, sourceRequestConditions.getLeaseId(),
+                null /* metadata */, null /* permissions */, null /* umask */,
+                null /* pathHttpHeaders */, null, null, null, null, null, null,
+                null, destLac, destMac, sourceConditions, null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, dataLakePathAsyncClient));
     }
 

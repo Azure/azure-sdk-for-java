@@ -30,6 +30,7 @@ import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions;
@@ -176,7 +177,7 @@ public class DataLakePathClient {
         if (!overwrite) {
             requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
-        return createWithResponse(null, null, null, null, requestConditions, null, Context.NONE).getValue();
+        return createWithResponse(new DataLakePathCreateOptions().setRequestConditions(requestConditions), null, Context.NONE).getValue();
     }
 
     /**
@@ -219,10 +220,48 @@ public class DataLakePathClient {
     public Response<PathInfo> createWithResponse(String permissions, String umask, PathHttpHeaders headers,
         Map<String, String> metadata, DataLakeRequestConditions requestConditions, Duration timeout,
         Context context) {
-        Mono<Response<PathInfo>> response = dataLakePathAsyncClient.createWithResponse(
-            permissions, umask, dataLakePathAsyncClient.pathResourceType, headers, metadata, requestConditions,
-            context);
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
+            .setPathHttpHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions)
+            .setPathResourceType(dataLakePathAsyncClient.pathResourceType);
+        Mono<Response<PathInfo>> response = dataLakePathAsyncClient.createWithResponse(options, context);
 
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
+     * Creates a resource.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClient.createWithResponse#String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context -->
+     * <pre>
+     * PathHttpHeaders httpHeaders = new PathHttpHeaders&#40;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;;
+     * String permissions = &quot;permissions&quot;;
+     * String umask = &quot;umask&quot;;
+     *
+     * Response&lt;PathInfo&gt; response = client.createWithResponse&#40;permissions, umask, httpHeaders,
+     *     Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;, requestConditions, timeout,
+     *     new Context&#40;key1, value1&#41;&#41;;
+     * System.out.printf&#40;&quot;Last Modified Time:%s&quot;, response.getValue&#40;&#41;.getLastModified&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathClient.createWithResponse#String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context -->
+     *
+     * <p>For more information see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * Docs</a></p>
+     *
+     * @param options {@link DataLakePathCreateOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing information about the created resource
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PathInfo> createWithResponse(DataLakePathCreateOptions options, Duration timeout, Context context) {
+        Mono<Response<PathInfo>> response = dataLakePathAsyncClient.createWithResponse(options, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
