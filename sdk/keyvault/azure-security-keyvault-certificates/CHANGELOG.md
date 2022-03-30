@@ -3,6 +3,7 @@
 ## 4.3.0-beta.6 (Unreleased)
 
 ### Features Added
+- Added support for service version `7.3`
 
 ### Breaking Changes
 
