@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +12,6 @@ import java.util.Map;
 /** The identity information for the resource. */
 @Fluent
 public final class IdentityInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IdentityInfo.class);
-
     /*
      * The type of managed identity used. The type 'SystemAssigned,
      * UserAssigned' includes both an implicitly created identity and a set of

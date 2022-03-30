@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Fail activity properties. */
 @Fluent
 public final class FailActivityTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FailActivityTypeProperties.class);
-
     /*
      * The error message that surfaced in the Fail activity. It can be dynamic
      * content that's evaluated to a non empty/blank string at runtime. Type:
@@ -83,16 +80,18 @@ public final class FailActivityTypeProperties {
      */
     public void validate() {
         if (message() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property message in model FailActivityTypeProperties"));
         }
         if (errorCode() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property errorCode in model FailActivityTypeProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FailActivityTypeProperties.class);
 }

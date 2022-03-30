@@ -234,8 +234,7 @@ public class IdentityClient {
             ConfidentialClientApplication.Builder applicationBuilder =
                 ConfidentialClientApplication.builder(clientId, credential);
             try {
-                applicationBuilder = applicationBuilder.authority(authorityUrl)
-                    .validateAuthority(options.getAuthorityValidationSafetyCheck());
+                applicationBuilder = applicationBuilder.authority(authorityUrl);
             } catch (MalformedURLException e) {
                 return Mono.error(LOGGER.logExceptionAsWarning(new IllegalStateException(e)));
             }
@@ -303,8 +302,7 @@ public class IdentityClient {
                 + tenantId;
             PublicClientApplication.Builder publicClientApplicationBuilder = PublicClientApplication.builder(clientId);
             try {
-                publicClientApplicationBuilder = publicClientApplicationBuilder.authority(authorityUrl)
-                    .validateAuthority(options.getAuthorityValidationSafetyCheck());
+                publicClientApplicationBuilder = publicClientApplicationBuilder.authority(authorityUrl);
             } catch (MalformedURLException e) {
                 throw LOGGER.logExceptionAsWarning(new IllegalStateException(e));
             }
@@ -370,7 +368,7 @@ public class IdentityClient {
                     ConfidentialClientApplication.Builder applicationBuilder =
                         ConfidentialClientApplication.builder(spDetails.get("client"),
                             ClientCredentialFactory.createFromSecret(spDetails.get("key")))
-                            .authority(authorityUrl).validateAuthority(options.getAuthorityValidationSafetyCheck());
+                            .authority(authorityUrl);
 
                     // If http pipeline is available, then it should override the proxy options if any configured.
                     if (httpPipelineAdapter != null) {
@@ -725,7 +723,7 @@ public class IdentityClient {
                }
                )).onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with username and "
                 + "password. To mitigate this issue, please refer to the troubleshooting guidelines "
-                + "here at https://aka.ms/azsdk/net/identity/usernamepasswordcredential/troubleshoot",
+                + "here at https://aka.ms/azsdk/java/identity/usernamepasswordcredential/troubleshoot",
                 null, t)).map(MsalToken::new);
     }
 
@@ -850,7 +848,7 @@ public class IdentityClient {
                 new CredentialUnavailableException("VsCodeCredential  "
                 + "authentication unavailable. ADFS tenant/authorities are not supported. "
                 + "To mitigate this issue, please refer to the troubleshooting guidelines here at "
-                + "https://aka.ms/azsdk/net/identity/vscodecredential/troubleshoot")));
+                + "https://aka.ms/azsdk/java/identity/vscodecredential/troubleshoot")));
         }
         VisualStudioCacheAccessor accessor = new VisualStudioCacheAccessor();
 
@@ -877,7 +875,7 @@ public class IdentityClient {
                             new CredentialUnavailableException("Failed to acquire token with"
                             + " VS code credential."
                             + " To mitigate this issue, please refer to the troubleshooting guidelines here at "
-                            + "https://aka.ms/azsdk/net/identity/vscodecredential/troubleshoot", t)));
+                            + "https://aka.ms/azsdk/java/identity/vscodecredential/troubleshoot", t)));
                     }
                     return Mono.error(new ClientAuthenticationException("Failed to acquire token with"
                         + " VS code credential", null, t));

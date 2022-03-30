@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.models.LoggerUpdateParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Logger update contract. */
 @Fluent
 public final class LoggerUpdateContract {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoggerUpdateContract.class);
-
     /*
      * Logger entity update contract properties.
      */

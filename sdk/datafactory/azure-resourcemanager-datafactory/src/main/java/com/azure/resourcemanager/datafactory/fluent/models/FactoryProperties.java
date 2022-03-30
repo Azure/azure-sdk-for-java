@@ -5,12 +5,10 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.EncryptionConfiguration;
 import com.azure.resourcemanager.datafactory.models.FactoryRepoConfiguration;
 import com.azure.resourcemanager.datafactory.models.GlobalParameterSpecification;
 import com.azure.resourcemanager.datafactory.models.PublicNetworkAccess;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -19,8 +17,6 @@ import java.util.Map;
 /** Factory resource properties. */
 @Fluent
 public final class FactoryProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FactoryProperties.class);
-
     /*
      * Factory provisioning state, example Succeeded.
      */

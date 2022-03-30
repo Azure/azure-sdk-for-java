@@ -11,7 +11,7 @@ import com.azure.resourcemanager.resources.models.LockLevel;
 /** Samples for ManagementLocks CreateOrUpdateByScope. */
 public final class ManagementLocksCreateOrUpdateByScopeSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2016-09-01/examples/ManagementLocks_CreateOrUpdateAtScope.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2017-04-01/examples/ManagementLocks_CreateOrUpdateAtScope.json
      */
     /**
      * Sample code: Create management lock at scope.

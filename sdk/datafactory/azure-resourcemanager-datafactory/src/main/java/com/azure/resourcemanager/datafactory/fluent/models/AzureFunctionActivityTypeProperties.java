@@ -7,14 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.AzureFunctionActivityMethod;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure Function activity type properties. */
 @Fluent
 public final class AzureFunctionActivityTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFunctionActivityTypeProperties.class);
-
     /*
      * Rest API method for target endpoint.
      */
@@ -140,16 +137,18 @@ public final class AzureFunctionActivityTypeProperties {
      */
     public void validate() {
         if (method() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property method in model AzureFunctionActivityTypeProperties"));
         }
         if (functionName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property functionName in model AzureFunctionActivityTypeProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureFunctionActivityTypeProperties.class);
 }

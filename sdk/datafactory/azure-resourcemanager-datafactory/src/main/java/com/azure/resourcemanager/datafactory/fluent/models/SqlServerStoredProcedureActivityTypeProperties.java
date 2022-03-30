@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.StoredProcedureParameter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -15,9 +14,6 @@ import java.util.Map;
 /** SQL stored procedure activity properties. */
 @Fluent
 public final class SqlServerStoredProcedureActivityTypeProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(SqlServerStoredProcedureActivityTypeProperties.class);
-
     /*
      * Stored procedure name. Type: string (or Expression with resultType
      * string).
@@ -83,7 +79,7 @@ public final class SqlServerStoredProcedureActivityTypeProperties {
      */
     public void validate() {
         if (storedProcedureName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property storedProcedureName in model"
@@ -100,4 +96,6 @@ public final class SqlServerStoredProcedureActivityTypeProperties {
                     });
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SqlServerStoredProcedureActivityTypeProperties.class);
 }

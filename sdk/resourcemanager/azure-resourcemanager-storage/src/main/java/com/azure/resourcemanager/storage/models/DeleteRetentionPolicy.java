@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The service properties for soft delete. */
 @Fluent
 public final class DeleteRetentionPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeleteRetentionPolicy.class);
-
     /*
      * Indicates whether DeleteRetentionPolicy is enabled.
      */

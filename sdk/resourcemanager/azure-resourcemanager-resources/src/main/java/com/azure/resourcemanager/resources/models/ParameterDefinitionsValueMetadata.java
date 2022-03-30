@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** General metadata for the parameter. */
 @Fluent
 public final class ParameterDefinitionsValueMetadata {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ParameterDefinitionsValueMetadata.class);
-
     /*
      * The display name for the parameter.
      */

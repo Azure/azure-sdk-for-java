@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -16,8 +14,6 @@ import java.time.OffsetDateTime;
  */
 @Immutable
 public final class GeoReplicationStats {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GeoReplicationStats.class);
-
     /*
      * The status of the secondary location. Possible values are: - Live:
      * Indicates that the secondary location is active and operational. -

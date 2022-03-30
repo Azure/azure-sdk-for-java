@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schema Document Properties. */
+/** Api Schema Document Properties. */
 @Fluent
 public final class SchemaDocumentProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SchemaDocumentProperties.class);
-
     /*
      * Json escaped string defining the document representing the Schema. Used
      * for schemas other than Swagger/OpenAPI.
@@ -22,11 +18,18 @@ public final class SchemaDocumentProperties {
     private String value;
 
     /*
-     * Types definitions. Used for Swagger/OpenAPI schemas only, null
+     * Types definitions. Used for Swagger/OpenAPI v1 schemas only, null
      * otherwise.
      */
     @JsonProperty(value = "definitions")
     private Object definitions;
+
+    /*
+     * Types definitions. Used for Swagger/OpenAPI v2/v3 schemas only, null
+     * otherwise.
+     */
+    @JsonProperty(value = "components")
+    private Object components;
 
     /**
      * Get the value property: Json escaped string defining the document representing the Schema. Used for schemas other
@@ -51,7 +54,7 @@ public final class SchemaDocumentProperties {
     }
 
     /**
-     * Get the definitions property: Types definitions. Used for Swagger/OpenAPI schemas only, null otherwise.
+     * Get the definitions property: Types definitions. Used for Swagger/OpenAPI v1 schemas only, null otherwise.
      *
      * @return the definitions value.
      */
@@ -60,13 +63,33 @@ public final class SchemaDocumentProperties {
     }
 
     /**
-     * Set the definitions property: Types definitions. Used for Swagger/OpenAPI schemas only, null otherwise.
+     * Set the definitions property: Types definitions. Used for Swagger/OpenAPI v1 schemas only, null otherwise.
      *
      * @param definitions the definitions value to set.
      * @return the SchemaDocumentProperties object itself.
      */
     public SchemaDocumentProperties withDefinitions(Object definitions) {
         this.definitions = definitions;
+        return this;
+    }
+
+    /**
+     * Get the components property: Types definitions. Used for Swagger/OpenAPI v2/v3 schemas only, null otherwise.
+     *
+     * @return the components value.
+     */
+    public Object components() {
+        return this.components;
+    }
+
+    /**
+     * Set the components property: Types definitions. Used for Swagger/OpenAPI v2/v3 schemas only, null otherwise.
+     *
+     * @param components the components value to set.
+     * @return the SchemaDocumentProperties object itself.
+     */
+    public SchemaDocumentProperties withComponents(Object components) {
+        this.components = components;
         return this;
     }
 

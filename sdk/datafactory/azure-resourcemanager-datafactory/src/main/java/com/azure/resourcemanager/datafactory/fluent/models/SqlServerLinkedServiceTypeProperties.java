@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.azure.resourcemanager.datafactory.models.SqlAlwaysEncryptedProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SQL Server linked service properties. */
 @Fluent
 public final class SqlServerLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlServerLinkedServiceTypeProperties.class);
-
     /*
      * The connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
@@ -164,7 +161,7 @@ public final class SqlServerLinkedServiceTypeProperties {
      */
     public void validate() {
         if (connectionString() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property connectionString in model SqlServerLinkedServiceTypeProperties"));
@@ -176,4 +173,6 @@ public final class SqlServerLinkedServiceTypeProperties {
             alwaysEncryptedSettings().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SqlServerLinkedServiceTypeProperties.class);
 }

@@ -14,11 +14,10 @@ import com.azure.resourcemanager.applicationinsights.fluent.models.WorkbookInner
 import com.azure.resourcemanager.applicationinsights.models.CategoryType;
 import com.azure.resourcemanager.applicationinsights.models.Workbook;
 import com.azure.resourcemanager.applicationinsights.models.Workbooks;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 
 public final class WorkbooksImpl implements Workbooks {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkbooksImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WorkbooksImpl.class);
 
     private final WorkbooksClient innerClient;
 
@@ -71,9 +70,11 @@ public final class WorkbooksImpl implements Workbooks {
     }
 
     public Response<Workbook> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
+        String resourceGroupName, String resourceName, Boolean canFetchContent, Context context) {
         Response<WorkbookInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
+            this
+                .serviceClient()
+                .getByResourceGroupWithResponse(resourceGroupName, resourceName, canFetchContent, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
@@ -131,7 +132,7 @@ public final class WorkbooksImpl implements Workbooks {
     public Workbook getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -139,18 +140,21 @@ public final class WorkbooksImpl implements Workbooks {
         }
         String resourceName = Utils.getValueFromIdByName(id, "workbooks");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workbooks'.", id)));
         }
-        return this.getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
+        Boolean localCanFetchContent = null;
+        return this
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, localCanFetchContent, Context.NONE)
+            .getValue();
     }
 
-    public Response<Workbook> getByIdWithResponse(String id, Context context) {
+    public Response<Workbook> getByIdWithResponse(String id, Boolean canFetchContent, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -158,18 +162,18 @@ public final class WorkbooksImpl implements Workbooks {
         }
         String resourceName = Utils.getValueFromIdByName(id, "workbooks");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workbooks'.", id)));
         }
-        return this.getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
+        return this.getByResourceGroupWithResponse(resourceGroupName, resourceName, canFetchContent, context);
     }
 
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -177,7 +181,7 @@ public final class WorkbooksImpl implements Workbooks {
         }
         String resourceName = Utils.getValueFromIdByName(id, "workbooks");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workbooks'.", id)));
@@ -188,7 +192,7 @@ public final class WorkbooksImpl implements Workbooks {
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -196,7 +200,7 @@ public final class WorkbooksImpl implements Workbooks {
         }
         String resourceName = Utils.getValueFromIdByName(id, "workbooks");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workbooks'.", id)));

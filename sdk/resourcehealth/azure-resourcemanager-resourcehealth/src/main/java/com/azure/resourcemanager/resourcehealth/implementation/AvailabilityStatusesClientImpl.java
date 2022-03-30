@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resourcehealth.fluent.AvailabilityStatusesClient;
 import com.azure.resourcemanager.resourcehealth.fluent.models.AvailabilityStatusInner;
 import com.azure.resourcemanager.resourcehealth.models.AvailabilityStatusListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AvailabilityStatusesClient. */
 public final class AvailabilityStatusesClientImpl implements AvailabilityStatusesClient {
-    private final ClientLogger logger = new ClientLogger(AvailabilityStatusesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AvailabilityStatusesService service;
 
@@ -155,7 +152,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response.
+     * @return the List availabilityStatus operation response along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailabilityStatusInner>> listBySubscriptionIdSinglePageAsync(
@@ -207,7 +205,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response.
+     * @return the List availabilityStatus operation response along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailabilityStatusInner>> listBySubscriptionIdSinglePageAsync(
@@ -255,7 +254,7 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response.
+     * @return the List availabilityStatus operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AvailabilityStatusInner> listBySubscriptionIdAsync(String filter, String expand) {
@@ -269,7 +268,7 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response.
+     * @return the List availabilityStatus operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AvailabilityStatusInner> listBySubscriptionIdAsync() {
@@ -290,7 +289,7 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response.
+     * @return the List availabilityStatus operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AvailabilityStatusInner> listBySubscriptionIdAsync(
@@ -305,7 +304,7 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response.
+     * @return the List availabilityStatus operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailabilityStatusInner> listBySubscriptionId() {
@@ -324,7 +323,7 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response.
+     * @return the List availabilityStatus operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailabilityStatusInner> listBySubscriptionId(String filter, String expand, Context context) {
@@ -341,7 +340,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response.
+     * @return the List availabilityStatus operation response along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailabilityStatusInner>> listByResourceGroupSinglePageAsync(
@@ -399,7 +399,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response.
+     * @return the List availabilityStatus operation response along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailabilityStatusInner>> listByResourceGroupSinglePageAsync(
@@ -453,7 +454,7 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response.
+     * @return the List availabilityStatus operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AvailabilityStatusInner> listByResourceGroupAsync(
@@ -470,7 +471,7 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response.
+     * @return the List availabilityStatus operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AvailabilityStatusInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -492,7 +493,7 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response.
+     * @return the List availabilityStatus operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AvailabilityStatusInner> listByResourceGroupAsync(
@@ -509,7 +510,7 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response.
+     * @return the List availabilityStatus operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailabilityStatusInner> listByResourceGroup(String resourceGroupName) {
@@ -529,7 +530,7 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response.
+     * @return the List availabilityStatus operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailabilityStatusInner> listByResourceGroup(
@@ -551,7 +552,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return current availability status for a single resource.
+     * @return current availability status for a single resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AvailabilityStatusInner>> getByResourceWithResponseAsync(
@@ -596,7 +598,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return current availability status for a single resource.
+     * @return current availability status for a single resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AvailabilityStatusInner>> getByResourceWithResponseAsync(
@@ -631,7 +634,7 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return current availability status for a single resource.
+     * @return current availability status for a single resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AvailabilityStatusInner> getByResourceAsync(String resourceUri, String filter, String expand) {
@@ -657,7 +660,7 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return current availability status for a single resource.
+     * @return current availability status for a single resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AvailabilityStatusInner> getByResourceAsync(String resourceUri) {
@@ -709,7 +712,7 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return current availability status for a single resource.
+     * @return current availability status for a single resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AvailabilityStatusInner> getByResourceWithResponse(
@@ -731,7 +734,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response.
+     * @return the List availabilityStatus operation response along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailabilityStatusInner>> listSinglePageAsync(
@@ -785,7 +789,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response.
+     * @return the List availabilityStatus operation response along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailabilityStatusInner>> listSinglePageAsync(
@@ -828,7 +833,7 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response.
+     * @return the List availabilityStatus operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AvailabilityStatusInner> listAsync(String resourceUri, String filter, String expand) {
@@ -847,7 +852,7 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response.
+     * @return the List availabilityStatus operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AvailabilityStatusInner> listAsync(String resourceUri) {
@@ -872,7 +877,7 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response.
+     * @return the List availabilityStatus operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AvailabilityStatusInner> listAsync(
@@ -893,7 +898,7 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response.
+     * @return the List availabilityStatus operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailabilityStatusInner> list(String resourceUri) {
@@ -917,7 +922,7 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response.
+     * @return the List availabilityStatus operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailabilityStatusInner> list(
@@ -932,7 +937,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response.
+     * @return the List availabilityStatus operation response along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailabilityStatusInner>> listBySubscriptionIdNextSinglePageAsync(String nextLink) {
@@ -969,7 +975,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response.
+     * @return the List availabilityStatus operation response along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailabilityStatusInner>> listBySubscriptionIdNextSinglePageAsync(
@@ -1005,7 +1012,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response.
+     * @return the List availabilityStatus operation response along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailabilityStatusInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1042,7 +1050,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response.
+     * @return the List availabilityStatus operation response along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailabilityStatusInner>> listByResourceGroupNextSinglePageAsync(
@@ -1078,7 +1087,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response.
+     * @return the List availabilityStatus operation response along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailabilityStatusInner>> listNextSinglePageAsync(String nextLink) {
@@ -1114,7 +1124,8 @@ public final class AvailabilityStatusesClientImpl implements AvailabilityStatuse
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List availabilityStatus operation response.
+     * @return the List availabilityStatus operation response along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailabilityStatusInner>> listNextSinglePageAsync(String nextLink, Context context) {

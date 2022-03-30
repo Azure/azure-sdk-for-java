@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,8 +15,6 @@ import java.util.List;
  */
 @Fluent
 public final class BlobInventoryPolicyFilter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobInventoryPolicyFilter.class);
-
     /*
      * An array of strings for blob prefixes to be matched.
      */
