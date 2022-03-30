@@ -18,7 +18,7 @@ For any package-specific troubleshooting guides, see any of the following:
         * [Operation Not Permitted](#operation-not-permitted)
         * [Access Denied to First Party Service](#access-denied-to-first-party-service)
 * [Other Service Errors](#other-service-errors)
-    * [HTTP 429: Too Many Request](#http-429-too-many-requests)
+    * [HTTP 429: Too Many Requests](#http-429-too-many-requests)
 
 ## Troubleshooting Authentication Issues
 ### HTTP 401 Errors
