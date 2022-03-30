@@ -7,7 +7,6 @@ import com.azure.core.exception.AzureException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.serializer.DefaultJsonSerializer;
-import com.azure.core.util.Context;
 import com.azure.core.util.polling.implementation.PollingUtils;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
