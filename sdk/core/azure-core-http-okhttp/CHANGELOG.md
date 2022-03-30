@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Updated OkHttpClientBuilder to disallow OkHttpClient to follow redirects by default. This gives more control to the pipeline to add redirect policies as needed.
+
 ### Breaking Changes
 
 ### Bugs Fixed
