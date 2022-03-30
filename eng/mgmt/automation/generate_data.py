@@ -55,15 +55,15 @@ def sdk_automation(config: dict) -> List[dict]:
             file_name = match.group(2)
 
             readme_file_path = find_readme(file_path, readme_file_paths, spec_root)
-            file_path = os.path.join(spec_root, file_path)
-            readme_file_path = os.path.join(spec_root, readme_file_path) if readme_file_path else None
 
-            if readme_file_paths and readme_file_path in processed_readme_file_paths:
+            if readme_file_path and readme_file_path in processed_readme_file_paths:
                 continue
             else:
                 if readme_file_path:
                     processed_readme_file_paths.append(readme_file_path)
 
+                file_path = os.path.join(spec_root, file_path)
+                readme_file_path = os.path.join(spec_root, readme_file_path) if readme_file_path else None
                 sdk_automation_readme(readme_file_path, file_name, file_path, packages, service, sdk_root)
         else:
             logging.info('[Skip] changed file {0}'.format(file_path))
@@ -81,22 +81,24 @@ def sdk_automation(config: dict) -> List[dict]:
                 service = match.group(1)
 
                 processed_readme_file_paths.append(readme_file_path)
+
+                readme_file_path = os.path.join(spec_root, readme_file_path)
                 sdk_automation_readme(readme_file_path, None, None, packages, service, sdk_root)
 
     return packages
 
 
-def sdk_automation_readme(readme_file_path: str,
-                          file_name: str, file_path: str,
+def sdk_automation_readme(readme_file_abspath: str,
+                          file_name: str, file_abspath: str,
                           packages: List[dict],
                           service: str, sdk_root: str):
-    input_file, service, module = get_generate_parameters(service, file_name, file_path, readme_file_path)
+    input_file, service, module = get_generate_parameters(service, file_name, file_abspath, readme_file_abspath)
 
     if module:
         succeeded = generate(sdk_root, input_file,
                              service=service, module=module, security='', security_scopes='', title='',
                              autorest=AUTOREST_CORE_VERSION, use=AUTOREST_JAVA,
-                             autorest_options='', readme_file=readme_file_path)
+                             autorest_options='', readme_file=readme_file_abspath)
 
         generated_folder = 'sdk/{0}/{1}'.format(service, module)
 
