@@ -161,7 +161,7 @@ def generate(
 
         logging.info('[GENERATE] Autorest from README {}'.format(readme_file_path))
 
-        command = 'autorest --version={0} --use={1} --java --java.java-sdks-folder={2} --java.output-folder={3} {4}'\
+        command = 'autorest --version={0} --use={1} --java --java.java-sdks-folder={2} --java.output-folder={3} {4} '\
             .format(
                 autorest,
                 use,
