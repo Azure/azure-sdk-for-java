@@ -8,6 +8,7 @@ import re
 import glob
 import subprocess
 import yaml
+import requests
 from typing import Dict, List, Tuple
 
 from parameters import *
@@ -261,14 +262,12 @@ def get_generate_parameters(
 
     input_file = json_file_path
     module = None
-    print(readme_file_path)
     if readme_file_path:
         # try readme.java.md, it must contain 'output-folder' and
         # match pattern $(java-sdks-folder)/sdk/<service>/<module>
         java_readme_file_path = readme_file_path.replace('.md', '.java.md')
-        if os.path.exists(java_readme_file_path):
-            with open(java_readme_file_path, 'r', encoding='utf-8') as f_in:
-                content = f_in.read()
+        if uri_file_exists(java_readme_file_path):
+            content = uri_file_read(java_readme_file_path)
             if content:
                 yaml_blocks = re.findall(r'```\s?(?:yaml|YAML).*?\n(.*?)```', content, re.DOTALL)
                 for yaml_str in yaml_blocks:
@@ -287,6 +286,21 @@ def get_generate_parameters(
         module = 'azure-{0}-{1}'.format(service, file_name_sans).lower()
 
     return input_file, service, module
+
+
+def uri_file_exists(file_path: str) -> bool:
+    if file_path.startswith('http://') or file_path.startswith('https://'):
+        return requests.head(file_path).status_code / 100 == 2
+    else:
+        return os.path.exists(file_path)
+
+
+def uri_file_read(file_path: str) -> str:
+    if file_path.startswith('http://') or file_path.startswith('https://'):
+        return requests.get(file_path).text
+    else:
+        with open(file_path, 'r', encoding='utf-8') as f_in:
+            return f_in.read()
 
 
 def find_readme(json_file_path: str, readme_file_paths: List[str],
@@ -476,6 +490,8 @@ def main():
 
     if args['readme_file']:
         input_file, service, module = get_generate_parameters(None, None, None, args['readme_file'])
+        if not module:
+            raise ValueError('readme.java.md not found or not well-formed')
         args['service'] = service
         args['module'] = module
 
