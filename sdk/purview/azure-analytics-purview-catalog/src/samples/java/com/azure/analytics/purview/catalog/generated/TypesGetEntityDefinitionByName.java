@@ -13,16 +13,14 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class TypesGetEntityDefinitionByName {
     public static void main(String[] args) {
-        // BEGIN:
-        // com.azure.analytics.purview.catalog.generated.typesgetentitydefinitionbyname.typesgetentitydefinitionbyname
         TypesClient typesClient =
                 new TypesClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.typesgetentitydefinitionbyname.typesgetentitydefinitionbyname
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = typesClient.getEntityDefinitionByNameWithResponse("DataSet", requestOptions);
-        // END:
-        // com.azure.analytics.purview.catalog.generated.typesgetentitydefinitionbyname.typesgetentitydefinitionbyname
+        // END:com.azure.analytics.purview.catalog.generated.typesgetentitydefinitionbyname.typesgetentitydefinitionbyname
     }
 }

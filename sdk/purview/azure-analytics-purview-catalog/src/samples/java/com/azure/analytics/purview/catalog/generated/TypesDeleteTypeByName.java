@@ -12,14 +12,14 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class TypesDeleteTypeByName {
     public static void main(String[] args) {
-        // BEGIN: com.azure.analytics.purview.catalog.generated.typesdeletetypebyname.typesdeletetypebyname
         TypesClient typesClient =
                 new TypesClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.typesdeletetypebyname.typesdeletetypebyname
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response = typesClient.deleteTypeByNameWithResponse("hive_order", requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.typesdeletetypebyname.typesdeletetypebyname
+        // END:com.azure.analytics.purview.catalog.generated.typesdeletetypebyname.typesdeletetypebyname
     }
 }

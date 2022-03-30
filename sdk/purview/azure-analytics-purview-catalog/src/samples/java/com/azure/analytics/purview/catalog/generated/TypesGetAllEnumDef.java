@@ -13,15 +13,15 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class TypesGetAllEnumDef {
     public static void main(String[] args) {
-        // BEGIN: com.azure.analytics.purview.catalog.generated.typesgetalltypedefinitions.typesgetallenumdef
         TypesClient typesClient =
                 new TypesClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.typesgetalltypedefinitions.typesgetallenumdef
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.addQueryParam("type", "enum");
         Response<BinaryData> response = typesClient.getAllTypeDefinitionsWithResponse(requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.typesgetalltypedefinitions.typesgetallenumdef
+        // END:com.azure.analytics.purview.catalog.generated.typesgetalltypedefinitions.typesgetallenumdef
     }
 }

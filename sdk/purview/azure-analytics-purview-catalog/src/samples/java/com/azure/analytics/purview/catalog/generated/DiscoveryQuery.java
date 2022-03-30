@@ -13,17 +13,17 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class DiscoveryQuery {
     public static void main(String[] args) {
-        // BEGIN: com.azure.analytics.purview.catalog.generated.discoveryquery.discoveryquery
         DiscoveryClient discoveryClient =
                 new DiscoveryClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.discoveryquery.discoveryquery
         BinaryData searchRequest =
                 BinaryData.fromString(
                         "{\"facets\":[{\"count\":0,\"facet\":\"assetType\",\"sort\":{\"count\":\"desc\"}},{\"count\":10,\"facet\":\"classification\",\"sort\":{\"count\":\"desc\"}},{\"count\":10,\"facet\":\"contactId\",\"sort\":{\"count\":\"desc\"}},{\"count\":10,\"facet\":\"label\",\"sort\":{\"count\":\"desc\"}},{\"count\":10,\"facet\":\"term\",\"sort\":{\"count\":\"desc\"}}],\"filter\":{\"and\":[{\"not\":{\"or\":[{\"attributeName\":\"size\",\"attributeValue\":0,\"operator\":\"eq\"},{\"attributeName\":\"fileSize\",\"attributeValue\":0,\"operator\":\"eq\"}]}},{\"not\":{\"classification\":\"MICROSOFT.SYSTEM.TEMP_FILE\"}},{\"not\":{\"or\":[{\"entityType\":\"AtlasGlossaryTerm\"},{\"entityType\":\"AtlasGlossary\"}]}}]},\"keywords\":\"examplefile.csv\",\"limit\":10,\"offset\":0}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = discoveryClient.queryWithResponse(searchRequest, requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.discoveryquery.discoveryquery
+        // END:com.azure.analytics.purview.catalog.generated.discoveryquery.discoveryquery
     }
 }

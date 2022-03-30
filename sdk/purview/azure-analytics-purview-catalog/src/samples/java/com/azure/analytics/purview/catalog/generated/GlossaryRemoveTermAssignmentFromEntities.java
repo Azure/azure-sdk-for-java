@@ -13,13 +13,12 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class GlossaryRemoveTermAssignmentFromEntities {
     public static void main(String[] args) {
-        // BEGIN:
-        // com.azure.analytics.purview.catalog.generated.glossaryremovetermassignmentfromentities.glossaryremovetermassignmentfromentities
         GlossaryClient glossaryClient =
                 new GlossaryClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.glossaryremovetermassignmentfromentities.glossaryremovetermassignmentfromentities
         BinaryData relatedObjectIds =
                 BinaryData.fromString(
                         "[{\"guid\":\"16feb2a1-2c79-ade1-338d-fb24fcb8b8bd\",\"relationshipGuid\":\"624f08bb-3c93-4f03-9ce1-ed2ce2c7c8d5\"}]");
@@ -27,7 +26,6 @@ public class GlossaryRemoveTermAssignmentFromEntities {
         Response<Void> response =
                 glossaryClient.removeTermAssignmentFromEntitiesWithResponse(
                         "8a7f65ec-6429-0b9b-3734-ec57bf1e34c2", relatedObjectIds, requestOptions);
-        // END:
-        // com.azure.analytics.purview.catalog.generated.glossaryremovetermassignmentfromentities.glossaryremovetermassignmentfromentities
+        // END:com.azure.analytics.purview.catalog.generated.glossaryremovetermassignmentfromentities.glossaryremovetermassignmentfromentities
     }
 }

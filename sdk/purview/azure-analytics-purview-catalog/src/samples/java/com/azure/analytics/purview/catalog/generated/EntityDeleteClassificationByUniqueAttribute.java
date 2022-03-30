@@ -12,20 +12,18 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class EntityDeleteClassificationByUniqueAttribute {
     public static void main(String[] args) {
-        // BEGIN:
-        // com.azure.analytics.purview.catalog.generated.entitydeleteclassificationbyuniqueattribute.entitydeleteclassificationbyuniqueattribute
         EntityClient entityClient =
                 new EntityClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.entitydeleteclassificationbyuniqueattribute.entitydeleteclassificationbyuniqueattribute
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.addQueryParam(
                 "attr:qualifiedName", "https://exampleaccount.blob.core.windows.net/examplecontainer/exampledata.csv");
         Response<Void> response =
                 entityClient.deleteClassificationByUniqueAttributeWithResponse(
                         "column", "MICROSOFT.FINANCIAL.US.ABA_ROUTING_NUMBER", requestOptions);
-        // END:
-        // com.azure.analytics.purview.catalog.generated.entitydeleteclassificationbyuniqueattribute.entitydeleteclassificationbyuniqueattribute
+        // END:com.azure.analytics.purview.catalog.generated.entitydeleteclassificationbyuniqueattribute.entitydeleteclassificationbyuniqueattribute
     }
 }

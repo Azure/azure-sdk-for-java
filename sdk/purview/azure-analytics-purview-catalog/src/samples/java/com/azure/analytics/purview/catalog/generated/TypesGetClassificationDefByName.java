@@ -13,18 +13,16 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class TypesGetClassificationDefByName {
     public static void main(String[] args) {
-        // BEGIN:
-        // com.azure.analytics.purview.catalog.generated.typesgetclassificationdefbyname.typesgetclassificationdefbyname
         TypesClient typesClient =
                 new TypesClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.typesgetclassificationdefbyname.typesgetclassificationdefbyname
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
                 typesClient.getClassificationDefByNameWithResponse(
                         "MICROSOFT.GOVERNMENT.CANADA.SOCIAL_INSURANCE_NUMBER", requestOptions);
-        // END:
-        // com.azure.analytics.purview.catalog.generated.typesgetclassificationdefbyname.typesgetclassificationdefbyname
+        // END:com.azure.analytics.purview.catalog.generated.typesgetclassificationdefbyname.typesgetclassificationdefbyname
     }
 }

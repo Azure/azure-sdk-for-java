@@ -13,17 +13,17 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class DiscoveryQueryAndOrNested {
     public static void main(String[] args) {
-        // BEGIN: com.azure.analytics.purview.catalog.generated.discoveryquery.discoveryqueryandornested
         DiscoveryClient discoveryClient =
                 new DiscoveryClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.discoveryquery.discoveryqueryandornested
         BinaryData searchRequest =
                 BinaryData.fromString(
                         "{\"filter\":{\"and\":[{\"entityType\":\"azure_blob_path\"},{\"attributeName\":\"qualifiedName\",\"attributeValue\":\".csv\",\"operator\":\"contains\"},{\"or\":[{\"attributeName\":\"name\",\"attributeValue\":\"exampledata.csv\",\"operator\":\"eq\"},{\"attributeName\":\"name\",\"attributeValue\":\"AllTypes\",\"operator\":\"startswith\"}]}]},\"keywords\":null,\"limit\":10}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = discoveryClient.queryWithResponse(searchRequest, requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.discoveryquery.discoveryqueryandornested
+        // END:com.azure.analytics.purview.catalog.generated.discoveryquery.discoveryqueryandornested
     }
 }

@@ -12,18 +12,18 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class EntityDeleteClassification {
     public static void main(String[] args) {
-        // BEGIN: com.azure.analytics.purview.catalog.generated.entitydeleteclassification.entitydeleteclassification
         EntityClient entityClient =
                 new EntityClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.entitydeleteclassification.entitydeleteclassification
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response =
                 entityClient.deleteClassificationWithResponse(
                         "cc0730ba-9b30-41f0-6953-559d17626d2b",
                         "MICROSOFT.FINANCIAL.US.ABA_ROUTING_NUMBER",
                         requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.entitydeleteclassification.entitydeleteclassification
+        // END:com.azure.analytics.purview.catalog.generated.entitydeleteclassification.entitydeleteclassification
     }
 }
