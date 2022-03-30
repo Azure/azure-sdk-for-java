@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.OperationEntityBaseContract;
 import com.azure.resourcemanager.apimanagement.models.ParameterContract;
 import com.azure.resourcemanager.apimanagement.models.RequestContract;
 import com.azure.resourcemanager.apimanagement.models.ResponseContract;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Operation Update Contract Properties. */
 @Fluent
 public final class OperationUpdateContractProperties extends OperationEntityBaseContract {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationUpdateContractProperties.class);
-
     /*
      * Operation Name.
      */

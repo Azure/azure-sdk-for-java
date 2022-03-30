@@ -20,6 +20,18 @@ public final class TenantConfigurationSyncStateContractImpl implements TenantCon
         this.serviceManager = serviceManager;
     }
 
+    public String id() {
+        return this.innerModel().id();
+    }
+
+    public String name() {
+        return this.innerModel().name();
+    }
+
+    public String type() {
+        return this.innerModel().type();
+    }
+
     public String branch() {
         return this.innerModel().branch();
     }

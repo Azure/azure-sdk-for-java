@@ -6,15 +6,11 @@ package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Operation status message object. */
 @Fluent
 public final class StatusMessage {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StatusMessage.class);
-
     /*
      * Status of the deployment operation.
      */

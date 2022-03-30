@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.UserAccessPolicy;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Get Data Plane read only token response definition. */
 @Fluent
 public final class AccessPolicyResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccessPolicyResponseInner.class);
-
     /*
      * The user access policy.
      */

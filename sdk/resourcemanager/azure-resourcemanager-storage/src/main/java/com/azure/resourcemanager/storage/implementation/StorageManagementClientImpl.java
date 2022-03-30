@@ -7,7 +7,6 @@ package com.azure.resourcemanager.storage.implementation;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import com.azure.resourcemanager.storage.fluent.BlobContainersClient;
@@ -36,8 +35,6 @@ import java.time.Duration;
 /** Initializes a new instance of the StorageManagementClientImpl type. */
 @ServiceClient(builder = StorageManagementClientBuilder.class)
 public final class StorageManagementClientImpl extends AzureServiceClient implements StorageManagementClient {
-    private final ClientLogger logger = new ClientLogger(StorageManagementClientImpl.class);
-
     /** The ID of the target subscription. */
     private final String subscriptionId;
 

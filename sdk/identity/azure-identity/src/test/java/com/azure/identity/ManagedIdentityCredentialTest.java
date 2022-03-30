@@ -21,6 +21,8 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.mockito.Mockito.when;
 
 @RunWith(PowerMockRunner.class)
@@ -121,5 +123,86 @@ public class ManagedIdentityCredentialTest {
         new ManagedIdentityCredentialBuilder().clientId(CLIENT_ID).resourceId(resourceId).build();
     }
 
+    @Test
+    public void testArcIdentityCredentialCreated() {
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+
+        configuration.put("IDENTITY_ENDPOINT", "http://localhost");
+        configuration.put("IMDS_ENDPOINT", "http://localhost");
+
+        ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
+        assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
+            cred.managedIdentityServiceCredential, instanceOf(ArcIdentityCredential.class));
+    }
+
+    @Test
+    public void testServiceFabricMsiCredentialCreated() {
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+
+        configuration.put("IDENTITY_ENDPOINT", "http://localhost");
+        configuration.put("IDENTITY_SERVER_THUMBPRINT", "thumbprint");
+        configuration.put("IDENTITY_HEADER", "header");
+
+        ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
+        assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
+            cred.managedIdentityServiceCredential, instanceOf(ServiceFabricMsiCredential.class));
+    }
+
+    @Test
+    public void testAppServiceMsi2019CredentialCreated() {
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+
+        configuration.put("IDENTITY_ENDPOINT", "http://localhost");
+        configuration.put("IDENTITY_HEADER", "header");
+
+        ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
+        assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
+            cred.managedIdentityServiceCredential, instanceOf(AppServiceMsiCredential.class));
+    }
+
+    @Test
+    public void testAppServiceMsi2017CredentialCreated() {
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+
+        configuration.put("MSI_ENDPOINT", "http://localhost");
+        configuration.put("MSI_SECRET", "secret");
+
+        ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
+        assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
+            cred.managedIdentityServiceCredential, instanceOf(AppServiceMsiCredential.class));
+    }
+
+    @Test
+    public void testCloudShellCredentialCreated() {
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+
+        configuration.put("MSI_ENDPOINT", "http://localhost");
+
+        ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
+        assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
+            cred.managedIdentityServiceCredential, instanceOf(AppServiceMsiCredential.class));
+    }
+
+    @Test
+    public void testAksExchangeTokenCredentialCreated() {
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+
+        configuration.put("AZURE_TENANT_ID", "tenantId");
+        configuration.put("AZURE_CLIENT_ID", "clientId");
+        configuration.put("AZURE_FEDERATED_TOKEN_FILE", "tokenFile");
+
+        ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
+        assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
+            cred.managedIdentityServiceCredential, instanceOf(AksExchangeTokenCredential.class));
+    }
+
+    @Test
+    public void testIMDSPodIdentityV1Credential() {
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+
+        ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
+        assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
+            cred.managedIdentityServiceCredential,  instanceOf(VirtualMachineMsiCredential.class));
+    }
 }
 

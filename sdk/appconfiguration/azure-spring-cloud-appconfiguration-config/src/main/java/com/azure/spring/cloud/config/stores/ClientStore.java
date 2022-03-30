@@ -149,7 +149,7 @@ public final class ClientStore {
 
     /**
      * Gets the Configuration Setting for the given config store that match the Setting Selector criteria. Follows
-     * retry-after-ms heards.
+     * retry-after-ms header.
      *
      * @param key String value of the watch key
      * @param label String value of the watch key, use \0 for null.

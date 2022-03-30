@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AzureFileStorageLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +18,6 @@ import java.util.Map;
 @JsonTypeName("AzureFileStorage")
 @Fluent
 public final class AzureFileStorageLinkedService extends LinkedService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFileStorageLinkedService.class);
-
     /*
      * Azure File Storage linked service properties.
      */
@@ -314,7 +311,7 @@ public final class AzureFileStorageLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model AzureFileStorageLinkedService"));
@@ -322,4 +319,6 @@ public final class AzureFileStorageLinkedService extends LinkedService {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureFileStorageLinkedService.class);
 }

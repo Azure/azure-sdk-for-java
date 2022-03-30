@@ -14,13 +14,12 @@ import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsC
 import com.azure.resourcemanager.applicationinsights.models.FavoriteSourceType;
 import com.azure.resourcemanager.applicationinsights.models.FavoriteType;
 import com.azure.resourcemanager.applicationinsights.models.Favorites;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public final class FavoritesImpl implements Favorites {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FavoritesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(FavoritesImpl.class);
 
     private final FavoritesClient innerClient;
 

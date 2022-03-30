@@ -57,7 +57,7 @@ public interface Workbook {
     WorkbookResourceIdentity identity();
 
     /**
-     * Gets the kind property: The kind of workbook. Choices are user and shared.
+     * Gets the kind property: The kind of workbook. Only valid value is shared.
      *
      * @return the kind value.
      */
@@ -274,9 +274,9 @@ public interface Workbook {
         /** The stage of the Workbook definition allowing to specify kind. */
         interface WithKind {
             /**
-             * Specifies the kind property: The kind of workbook. Choices are user and shared..
+             * Specifies the kind property: The kind of workbook. Only valid value is shared..
              *
-             * @param kind The kind of workbook. Choices are user and shared.
+             * @param kind The kind of workbook. Only valid value is shared.
              * @return the next definition stage.
              */
             WithCreate withKind(Kind kind);
@@ -435,9 +435,9 @@ public interface Workbook {
         /** The stage of the Workbook update allowing to specify kind. */
         interface WithKind {
             /**
-             * Specifies the kind property: The kind of workbook. Choices are user and shared..
+             * Specifies the kind property: The kind of workbook. Only valid value is shared..
              *
-             * @param kind The kind of workbook. Choices are user and shared.
+             * @param kind The kind of workbook. Only valid value is shared.
              * @return the next definition stage.
              */
             Update withKind(SharedTypeKind kind);

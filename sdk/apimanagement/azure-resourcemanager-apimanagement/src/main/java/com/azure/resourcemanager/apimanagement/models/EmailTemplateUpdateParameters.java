@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.models.EmailTemplateUpdateParameterProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Email Template update Parameters. */
 @Fluent
 public final class EmailTemplateUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EmailTemplateUpdateParameters.class);
-
     /*
      * Email Template Update contract properties.
      */

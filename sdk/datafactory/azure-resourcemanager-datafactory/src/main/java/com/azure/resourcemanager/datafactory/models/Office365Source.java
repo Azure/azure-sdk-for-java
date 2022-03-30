@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Office365Source")
 @Fluent
 public final class Office365Source extends CopySource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Office365Source.class);
-
     /*
      * The groups containing all the users. Type: array of strings (or
      * Expression with resultType array of strings).

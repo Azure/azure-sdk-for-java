@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Information about shared availability zone. */
 @Immutable
 public final class Peers {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Peers.class);
-
     /*
      * The subscription ID.
      */

@@ -7,14 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Smartsheet linked service type properties. */
 @Fluent
 public final class SmartsheetLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SmartsheetLinkedServiceTypeProperties.class);
-
     /*
      * The api token for the Smartsheet source.
      */
@@ -78,7 +75,7 @@ public final class SmartsheetLinkedServiceTypeProperties {
      */
     public void validate() {
         if (apiToken() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property apiToken in model SmartsheetLinkedServiceTypeProperties"));
@@ -86,4 +83,6 @@ public final class SmartsheetLinkedServiceTypeProperties {
             apiToken().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SmartsheetLinkedServiceTypeProperties.class);
 }

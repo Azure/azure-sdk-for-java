@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.ChangeFeed;
 import com.azure.resourcemanager.storage.models.CorsRules;
 import com.azure.resourcemanager.storage.models.DeleteRetentionPolicy;
 import com.azure.resourcemanager.storage.models.LastAccessTimeTrackingPolicy;
 import com.azure.resourcemanager.storage.models.RestorePolicyProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of a storage account’s Blob service. */
 @Fluent
 public final class BlobServicePropertiesProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobServicePropertiesProperties.class);
-
     /*
      * Specifies CORS rules for the Blob service. You can include up to five
      * CorsRule elements in the request. If no CorsRule elements are included

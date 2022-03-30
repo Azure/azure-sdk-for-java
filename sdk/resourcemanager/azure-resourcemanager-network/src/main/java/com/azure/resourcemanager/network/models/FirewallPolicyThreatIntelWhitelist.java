@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** ThreatIntel Whitelist for Firewall Policy. */
 @Fluent
 public final class FirewallPolicyThreatIntelWhitelist {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallPolicyThreatIntelWhitelist.class);
-
     /*
      * List of IP addresses for the ThreatIntel Whitelist.
      */

@@ -7,6 +7,8 @@
 ### Breaking Changes
 - Renamed `modelIDs` in method `beginCreateComposedModel` to `componentModelIds`
 - Renamed method `beginCopyModel` to `beginCopyModelTo`
+- Removed `modelId` as a required parameter from `beginBuildModel`, `beginCreateComposedModel` and `getCopyAuthorization`
+and moved to `BuildModelOptions`, `CreateComposedModelOptions` and `CopyAuthorizationOptions` respectively
 
 ### Bugs Fixed
 

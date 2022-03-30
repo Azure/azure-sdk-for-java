@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.EncryptionScopesClient;
 import com.azure.resourcemanager.storage.fluent.models.EncryptionScopeInner;
 import com.azure.resourcemanager.storage.models.EncryptionScopeListResult;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in EncryptionScopesClient. */
 public final class EncryptionScopesClientImpl implements EncryptionScopesClient {
-    private final ClientLogger logger = new ClientLogger(EncryptionScopesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final EncryptionScopesService service;
 

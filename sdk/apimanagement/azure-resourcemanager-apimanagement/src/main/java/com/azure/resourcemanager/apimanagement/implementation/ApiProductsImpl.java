@@ -11,10 +11,9 @@ import com.azure.resourcemanager.apimanagement.fluent.ApiProductsClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.ProductContractInner;
 import com.azure.resourcemanager.apimanagement.models.ApiProducts;
 import com.azure.resourcemanager.apimanagement.models.ProductContract;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ApiProductsImpl implements ApiProducts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiProductsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ApiProductsImpl.class);
 
     private final ApiProductsClient innerClient;
 

@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.MongoDbAuthenticationType;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** MongoDB linked service properties. */
 @Fluent
 public final class MongoDbLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MongoDbLinkedServiceTypeProperties.class);
-
     /*
      * The IP address or server name of the MongoDB server. Type: string (or
      * Expression with resultType string).
@@ -309,13 +306,13 @@ public final class MongoDbLinkedServiceTypeProperties {
      */
     public void validate() {
         if (server() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property server in model MongoDbLinkedServiceTypeProperties"));
         }
         if (databaseName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property databaseName in model MongoDbLinkedServiceTypeProperties"));
@@ -324,4 +321,6 @@ public final class MongoDbLinkedServiceTypeProperties {
             password().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MongoDbLinkedServiceTypeProperties.class);
 }

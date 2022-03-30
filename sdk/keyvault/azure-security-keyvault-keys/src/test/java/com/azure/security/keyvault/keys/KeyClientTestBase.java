@@ -436,17 +436,16 @@ public abstract class KeyClientTestBase extends TestBase {
             "{"
                 + "\"anyOf\": ["
                     + "{"
-                        + "\"anyOf\": ["
+                        + "\"allOf\": ["
                             + "{"
                                 + "\"claim\": \"sdk-test\","
-                                + "\"condition\": \"equals\","
-                                + "\"value\": \"true\""
+                                + "\"equals\": \"true\""
                             + "}"
                         + "],"
                         + "\"authority\": \"" + attestationUrl + "\""
                     + "}"
                 + "],"
-                + "\"version\": \"1.0\""
+                + "\"version\": \"1.0.0\""
             + "}";
 
         final CreateRsaKeyOptions keyToRelease =

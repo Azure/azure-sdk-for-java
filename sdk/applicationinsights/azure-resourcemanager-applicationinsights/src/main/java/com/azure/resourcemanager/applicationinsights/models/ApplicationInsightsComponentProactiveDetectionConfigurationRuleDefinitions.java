@@ -5,17 +5,11 @@
 package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Static definitions of the ProactiveDetection configuration rule (same values for all components). */
 @Fluent
 public final class ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions.class);
-
     /*
      * The rule name
      */

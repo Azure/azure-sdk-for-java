@@ -6,7 +6,6 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -25,8 +24,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class FactoryRepoConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FactoryRepoConfiguration.class);
-
     /*
      * Account name.
      */
@@ -164,28 +161,30 @@ public class FactoryRepoConfiguration {
      */
     public void validate() {
         if (accountName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property accountName in model FactoryRepoConfiguration"));
         }
         if (repositoryName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property repositoryName in model FactoryRepoConfiguration"));
         }
         if (collaborationBranch() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property collaborationBranch in model FactoryRepoConfiguration"));
         }
         if (rootFolder() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property rootFolder in model FactoryRepoConfiguration"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FactoryRepoConfiguration.class);
 }

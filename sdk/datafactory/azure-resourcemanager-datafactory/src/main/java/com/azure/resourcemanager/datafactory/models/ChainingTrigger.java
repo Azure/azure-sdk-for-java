@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.ChainingTriggerTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -23,8 +22,6 @@ import java.util.List;
 @JsonTypeName("ChainingTrigger")
 @Fluent
 public final class ChainingTrigger extends Trigger {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ChainingTrigger.class);
-
     /*
      * Pipeline for which runs are created when all upstream pipelines complete
      * successfully.
@@ -136,14 +133,14 @@ public final class ChainingTrigger extends Trigger {
     public void validate() {
         super.validate();
         if (pipeline() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property pipeline in model ChainingTrigger"));
         } else {
             pipeline().validate();
         }
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model ChainingTrigger"));
@@ -151,4 +148,6 @@ public final class ChainingTrigger extends Trigger {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ChainingTrigger.class);
 }

@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Corrected the Portal URL in `AzureEnvironment`.
+
 ### Other Changes
 
 ## 1.5.3 (2022-03-04)
