@@ -6,7 +6,10 @@ package com.azure.cosmos.implementation.changefeed.implementation.FeedRangeGoneH
 import com.azure.cosmos.implementation.changefeed.Lease;
 import reactor.core.publisher.Flux;
 
+/***
+ * Handler to handle partition split or partition merge.
+ */
 public interface FeedRangeGoneHandler {
     Flux<Lease> handlePartitionGone();
-    boolean shouldRemoveGoneLease();
+    boolean shouldRemoveCurrentLease();
 }

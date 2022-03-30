@@ -13,6 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class FeedRangeGoneMergeHandler implements FeedRangeGoneHandler {
@@ -20,7 +22,7 @@ public class FeedRangeGoneMergeHandler implements FeedRangeGoneHandler {
     private final Lease lease;
     private final PartitionKeyRange overlappingRange;
     private final LeaseManager leaseManager;
-    private final boolean removeCurrentLease;
+    private final AtomicBoolean removeCurrentLease;
 
     public FeedRangeGoneMergeHandler(Lease lease, PartitionKeyRange overlappingRange, LeaseManager leaseManager) {
         checkNotNull(lease, "Argument 'lease' can not be null");
@@ -31,19 +33,16 @@ public class FeedRangeGoneMergeHandler implements FeedRangeGoneHandler {
         this.overlappingRange = overlappingRange;
         this.leaseManager = leaseManager;
 
-        if (lease instanceof ServiceItemLeaseCore) {
-            this.removeCurrentLease = true;
-        } else if (lease instanceof ServiceItemLeaseEpk) {
-            this.removeCurrentLease = false;
-        } else {
-            throw new IllegalArgumentException("Lease type " + lease.getClass() + " is not supported");
-        }
+        // A flag to indicate to upstream whether the current lease which we get FeedRangeGoneException should be removed.
+        this.removeCurrentLease = new AtomicBoolean();
     }
 
     @Override
     public Flux<Lease> handlePartitionGone() {
         if (this.lease instanceof ServiceItemLeaseCore) {
             // Switch from partition based lease to epk based lease.
+            // So need to remove the old partition based lease in the end.
+            this.removeCurrentLease.set(true);
             return this.leaseManager.createLeaseIfNotExist((FeedRangeEpkImpl)this.lease.getFeedRange(), this.lease.getContinuationToken())
                     .doOnSuccess(
                             lease -> this.logger.info(
@@ -55,6 +54,8 @@ public class FeedRangeGoneMergeHandler implements FeedRangeGoneHandler {
 
         if (lease instanceof ServiceItemLeaseEpk) {
             // The epk range just remapped to another partition
+            // Will reuse the same lease, and keep draining by using the epk.
+            this.removeCurrentLease.set(false);
             this.logger.info(
                     "Lease {} redirected to {}",
                     this.lease.getLeaseToken(),
@@ -66,7 +67,7 @@ public class FeedRangeGoneMergeHandler implements FeedRangeGoneHandler {
     }
 
     @Override
-    public boolean shouldRemoveGoneLease() {
-        return this.removeCurrentLease;
+    public boolean shouldRemoveCurrentLease() {
+        return this.removeCurrentLease.get();
     }
 }

@@ -21,9 +21,6 @@ import com.azure.cosmos.implementation.changefeed.PartitionLoadBalancingStrategy
 import com.azure.cosmos.implementation.changefeed.PartitionManager;
 import com.azure.cosmos.implementation.changefeed.PartitionSupervisorFactory;
 import com.azure.cosmos.implementation.changefeed.RequestOptionsFactory;
-import com.azure.cosmos.implementation.changefeed.implementation.leaseManagement.ServiceItemLeaseEpk;
-import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
-import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.ChangeFeedProcessorState;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -157,12 +154,9 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
 
         return this.leaseStoreManager.getAllLeases()
             .flatMap(lease -> {
-                final FeedRangeInternal feedRange = lease.getFeedRange();
                 final CosmosChangeFeedRequestOptions options =
                     ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(
-                        lease.getContinuationState(
-                            this.collectionResourceId,
-                            feedRange));
+                        lease.getContinuationState(this.collectionResourceId));
                 options.setMaxItemCount(1);
 
                 return this.feedContextClient.createDocumentChangeFeedQuery(
@@ -234,15 +228,9 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
 
         return this.leaseStoreManager.getAllLeases()
             .flatMap(lease -> {
-                // If the lease represents a full partition (old schema) then use a FeedRangePartitionKeyRange
-                // If the lease represents an EPK range (new schema) the use the FeedRange in the lease
-                FeedRangeInternal feedRange =
-                        lease instanceof ServiceItemLeaseEpk ? lease.getFeedRange() : new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
                 final CosmosChangeFeedRequestOptions options =
                     ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(
-                        lease.getContinuationState(
-                            this.collectionResourceId,
-                            feedRange));
+                        lease.getContinuationState(this.collectionResourceId));
                 options.setMaxItemCount(1);
 
                 return this.feedContextClient.createDocumentChangeFeedQuery(

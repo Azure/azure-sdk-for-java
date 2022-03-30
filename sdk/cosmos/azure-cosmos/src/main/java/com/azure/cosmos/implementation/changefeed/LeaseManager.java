@@ -24,7 +24,7 @@ public interface LeaseManager {
     /***
      * Checks whether the lease exists and creates it if it does not exist.
      *
-     * @param feedRange the feed range for the lease.
+     * @param feedRange the epk range for the lease.
      * @param continuationToken the continuation token if it exists.
      *
      * @return the lease.

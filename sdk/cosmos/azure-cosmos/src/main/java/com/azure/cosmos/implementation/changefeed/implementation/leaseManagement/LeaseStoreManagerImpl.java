@@ -133,10 +133,10 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
         }
 
         this.leaseStore = new LeaseStoreImpl(
-            this.leaseDocumentClient,
-            this.settings.getContainerNamePrefix(),
-            this.settings.getLeaseContainer(),
-            this.requestOptionsFactory);
+                this.leaseDocumentClient,
+                this.settings.getContainerNamePrefix(),
+                this.settings.getLeaseContainer(),
+                this.requestOptionsFactory);
 
         return Mono.just(this);
     }
@@ -144,13 +144,13 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
     @Override
     public Flux<Lease> getAllLeases() {
         return this.listDocuments(this.getPartitionLeasePrefix())
-            .flatMap(lease -> this.tryToPopulateLeaseWithFeedRange(lease));
+                .flatMap(lease -> this.tryToPopulateLeaseWithFeedRange(lease));
     }
 
     @Override
     public Flux<Lease> getOwnedLeases() {
         return this.getAllLeases()
-            .filter(lease -> lease.getOwner() != null && lease.getOwner().equalsIgnoreCase(this.settings.getHostName()));
+                .filter(lease -> lease.getOwner() != null && lease.getOwner().equalsIgnoreCase(this.settings.getHostName()));
     }
 
     @Override
@@ -222,23 +222,23 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
         checkArgument(!StringUtils.isEmpty(lease.getId()), "Lease.id can not be null nor empty");
 
         return this.leaseDocumentClient
-            .deleteItem(lease.getId(), new PartitionKey(lease.getId()),
+                .deleteItem(lease.getId(), new PartitionKey(lease.getId()),
                         this.requestOptionsFactory.createItemRequestOptions(lease))
-            .onErrorResume( ex -> {
-                Exception unwrappedException = Utils.as(Exceptions.unwrap(ex), Exception.class);
-                if (unwrappedException instanceof CosmosException) {
-                    CosmosException e = (CosmosException) unwrappedException;
-                    if (e.getStatusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_NOT_FOUND) {
-                        // Ignore - document was already deleted.
-                        return Mono.empty();
+                .onErrorResume( ex -> {
+                    Exception unwrappedException = Utils.as(Exceptions.unwrap(ex), Exception.class);
+                    if (unwrappedException instanceof CosmosException) {
+                        CosmosException e = (CosmosException) unwrappedException;
+                        if (e.getStatusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_NOT_FOUND) {
+                            // Ignore - document was already deleted.
+                            return Mono.empty();
+                        }
                     }
-                }
 
-                return Mono.error(ex);
-            })
-            // return some add-hoc value since we don't actually care about the result.
-            .map( documentResourceResponse -> true)
-            .then();
+                    return Mono.error(ex);
+                })
+                // return some add-hoc value since we don't actually care about the result.
+                .map( documentResourceResponse -> true)
+                .then();
     }
 
     /***
@@ -318,41 +318,41 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
         checkNotNull(lease, "Argument 'lease' can not be null");
 
         return this.leaseDocumentClient.readItem(
-                    lease.getId(),
-                    new PartitionKey(lease.getId()),
-                    this.requestOptionsFactory.createItemRequestOptions(lease),
-                    InternalObjectNode.class)
-            .onErrorResume( ex -> {
-                Exception unwrappedException = Utils.as(Exceptions.unwrap(ex), Exception.class);
-                if (unwrappedException instanceof CosmosException) {
-                    CosmosException e = (CosmosException) unwrappedException;
-                    if (e.getStatusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_NOT_FOUND) {
-                        logger.info("Lease with token {}: Failed to release. The lease is gone already.", lease.getLeaseToken());
-                        throw new LeaseLostException(lease);
+                        lease.getId(),
+                        new PartitionKey(lease.getId()),
+                        this.requestOptionsFactory.createItemRequestOptions(lease),
+                        InternalObjectNode.class)
+                .onErrorResume( ex -> {
+                    Exception unwrappedException = Utils.as(Exceptions.unwrap(ex), Exception.class);
+                    if (unwrappedException instanceof CosmosException) {
+                        CosmosException e = (CosmosException) unwrappedException;
+                        if (e.getStatusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_NOT_FOUND) {
+                            logger.info("Lease with token {}: Failed to release. The lease is gone already.", lease.getLeaseToken());
+                            throw new LeaseLostException(lease);
+                        }
                     }
-                }
 
-                return Mono.error(ex);
-            })
-            .map(documentResourceResponse -> Lease.builder().buildFromDocument(BridgeInternal.getProperties(documentResourceResponse)))
-            .flatMap(refreshedLease -> this.leaseUpdater.updateLease(
-                refreshedLease,
-                lease.getId(),
-                new PartitionKey(lease.getId()),
-                this.requestOptionsFactory.createItemRequestOptions(lease),
-                serverLease ->
-                {
-                    if (serverLease.getOwner() != null && !serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
-                        logger.info(
-                                "Lease with token {}: No need to release lease. The lease was already taken by another host '{}'.",
-                                lease.getLeaseToken(),
-                                serverLease.getOwner());
-                        throw new LeaseLostException(lease);
-                    }
-                    serverLease.setOwner(null);
-                    return serverLease;
+                    return Mono.error(ex);
                 })
-            ).then();
+                .map(documentResourceResponse -> Lease.builder().buildFromDocument(BridgeInternal.getProperties(documentResourceResponse)))
+                .flatMap(refreshedLease -> this.leaseUpdater.updateLease(
+                        refreshedLease,
+                        lease.getId(),
+                        new PartitionKey(lease.getId()),
+                        this.requestOptionsFactory.createItemRequestOptions(lease),
+                        serverLease ->
+                        {
+                            if (serverLease.getOwner() != null && !serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
+                                logger.info(
+                                        "Lease with token {}: No need to release lease. The lease was already taken by another host '{}'.",
+                                        lease.getLeaseToken(),
+                                        serverLease.getOwner());
+                                throw new LeaseLostException(lease);
+                            }
+                            serverLease.setOwner(null);
+                            return serverLease;
+                        })
+                ).then();
     }
 
     @Override
@@ -363,49 +363,49 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
         // certainly the lease was updated in between.
 
         return this.leaseDocumentClient.readItem(lease.getId(),
-                                                 new PartitionKey(lease.getId()),
-                                                 this.requestOptionsFactory.createItemRequestOptions(lease),
-                                                 InternalObjectNode.class)
-            .onErrorResume(ex -> {
-                Exception unwrappedException = Utils.as(Exceptions.unwrap(ex), Exception.class);
+                        new PartitionKey(lease.getId()),
+                        this.requestOptionsFactory.createItemRequestOptions(lease),
+                        InternalObjectNode.class)
+                .onErrorResume(ex -> {
+                    Exception unwrappedException = Utils.as(Exceptions.unwrap(ex), Exception.class);
 
-                if (unwrappedException instanceof CosmosException) {
-                    CosmosException e = (CosmosException) unwrappedException;
-                    if (e.getStatusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_NOT_FOUND) {
-                        logger.info(
-                                "Lease with token {}: Failed to renew. The lease is gone already.",
-                                lease.getLeaseToken());
-                        throw new LeaseLostException(lease);
-                    }
-                }
-
-                return Mono.error(ex);
-            })
-            .map(documentResourceResponse -> Lease.builder().buildFromDocument(BridgeInternal.getProperties(documentResourceResponse)))
-            .flatMap(refreshedLease -> this.leaseUpdater.updateLease(
-                refreshedLease,
-                lease.getId(),
-                new PartitionKey(lease.getId()),
-                this.requestOptionsFactory.createItemRequestOptions(lease),
-                serverLease ->
-                {
-                    if (serverLease.getOwner() == null) {
-                        logger.info(
-                                "Lease with token {}: Failed to renew. Lease was taken over and released by a different owner",
-                                lease.getLeaseToken());
-                        throw new LeaseLostException(lease);
-                    }
-                    else if (!serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
-                        logger.info(
-                                "Lease with token {}: Failed to renew. Lease was taken over by owner '{}'",
-                                lease.getLeaseToken(),
-                                serverLease.getOwner());
-                        throw new LeaseLostException(lease);
+                    if (unwrappedException instanceof CosmosException) {
+                        CosmosException e = (CosmosException) unwrappedException;
+                        if (e.getStatusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_NOT_FOUND) {
+                            logger.info(
+                                    "Lease with token {}: Failed to renew. The lease is gone already.",
+                                    lease.getLeaseToken());
+                            throw new LeaseLostException(lease);
+                        }
                     }
 
-                    return serverLease;
+                    return Mono.error(ex);
                 })
-            );
+                .map(documentResourceResponse -> Lease.builder().buildFromDocument(BridgeInternal.getProperties(documentResourceResponse)))
+                .flatMap(refreshedLease -> this.leaseUpdater.updateLease(
+                        refreshedLease,
+                        lease.getId(),
+                        new PartitionKey(lease.getId()),
+                        this.requestOptionsFactory.createItemRequestOptions(lease),
+                        serverLease ->
+                        {
+                            if (serverLease.getOwner() == null) {
+                                logger.info(
+                                        "Lease with token {}: Failed to renew. Lease was taken over and released by a different owner",
+                                        lease.getLeaseToken());
+                                throw new LeaseLostException(lease);
+                            }
+                            else if (!serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
+                                logger.info(
+                                        "Lease with token {}: Failed to renew. Lease was taken over by owner '{}'",
+                                        lease.getLeaseToken(),
+                                        serverLease.getOwner());
+                                throw new LeaseLostException(lease);
+                            }
+
+                            return serverLease;
+                        })
+                );
     }
 
     @Override
@@ -421,21 +421,21 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
         }
 
         return this.leaseUpdater.updateLease(
-            lease,
-            lease.getId(),
-            new PartitionKey(lease.getId()),
-            this.requestOptionsFactory.createItemRequestOptions(lease),
-            serverLease -> {
-                if (serverLease.getOwner() != null && !serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
-                    logger.info(
-                            "Lease with token {}: Failed to update properties. Lease was taken over by owner '{}'",
-                            lease.getLeaseToken(),
-                            serverLease.getOwner());
-                    throw new LeaseLostException(lease);
-                }
-                serverLease.setProperties(lease.getProperties());
-                return serverLease;
-            });
+                lease,
+                lease.getId(),
+                new PartitionKey(lease.getId()),
+                this.requestOptionsFactory.createItemRequestOptions(lease),
+                serverLease -> {
+                    if (serverLease.getOwner() != null && !serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
+                        logger.info(
+                                "Lease with token {}: Failed to update properties. Lease was taken over by owner '{}'",
+                                lease.getLeaseToken(),
+                                serverLease.getOwner());
+                        throw new LeaseLostException(lease);
+                    }
+                    serverLease.setProperties(lease.getProperties());
+                    return serverLease;
+                });
     }
 
     @Override
@@ -446,44 +446,44 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
         if (cancellationToken.isCancellationRequested()) return Mono.error(new TaskCancelledException());
 
         return this.leaseDocumentClient.readItem(lease.getId(),
-                                                 new PartitionKey(lease.getId()),
-                                                 this.requestOptionsFactory.createItemRequestOptions(lease),
-                                                 InternalObjectNode.class)
-            .map(documentResourceResponse -> Lease.builder().buildFromDocument(BridgeInternal.getProperties(documentResourceResponse)))
-            .flatMap(refreshedLease -> {
-                if (cancellationToken.isCancellationRequested()) return Mono.error(new TaskCancelledException());
+                        new PartitionKey(lease.getId()),
+                        this.requestOptionsFactory.createItemRequestOptions(lease),
+                        InternalObjectNode.class)
+                .map(documentResourceResponse -> Lease.builder().buildFromDocument(BridgeInternal.getProperties(documentResourceResponse)))
+                .flatMap(refreshedLease -> {
+                    if (cancellationToken.isCancellationRequested()) return Mono.error(new TaskCancelledException());
 
-                return this.leaseUpdater.updateLease(
-                    refreshedLease,
-                    lease.getId(),
-                    new PartitionKey(lease.getId()),
-                    this.requestOptionsFactory.createItemRequestOptions(lease),
-                    serverLease -> {
-                        if (serverLease.getOwner() == null) {
-                            logger.info(
-                                    "Lease with token {}: Failed to checkpoint. Lease was taken over and released by a different owner",
-                                    lease.getLeaseToken());
-                            throw new LeaseLostException(lease);
-                        } else if (!serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
-                            logger.info(
-                                    "Lease with token {}: Failed to checkpoint. Lease was taken over by owner '{}'",
-                                    lease.getLeaseToken(),
-                                    serverLease.getOwner());
-                            throw new LeaseLostException(lease);
-                        }
-                        serverLease.setContinuationToken(continuationToken);
+                    return this.leaseUpdater.updateLease(
+                            refreshedLease,
+                            lease.getId(),
+                            new PartitionKey(lease.getId()),
+                            this.requestOptionsFactory.createItemRequestOptions(lease),
+                            serverLease -> {
+                                if (serverLease.getOwner() == null) {
+                                    logger.info(
+                                            "Lease with token {}: Failed to checkpoint. Lease was taken over and released by a different owner",
+                                            lease.getLeaseToken());
+                                    throw new LeaseLostException(lease);
+                                } else if (!serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
+                                    logger.info(
+                                            "Lease with token {}: Failed to checkpoint. Lease was taken over by owner '{}'",
+                                            lease.getLeaseToken(),
+                                            serverLease.getOwner());
+                                    throw new LeaseLostException(lease);
+                                }
+                                serverLease.setContinuationToken(continuationToken);
 
-                        return serverLease;
-                    });
-            })
-            .doOnError(throwable -> {
-                logger.info(
-                        "Lease with token {}: Failed to checkpoint with lease concurrency token '{}', owner '{}', continuationToken '{}'",
-                        lease.getLeaseToken(),
-                        lease.getConcurrencyToken(),
-                        lease.getOwner(),
-                        lease.getContinuationToken());
-            });
+                                return serverLease;
+                            });
+                })
+                .doOnError(throwable -> {
+                    logger.info(
+                            "Lease with token {}: Failed to checkpoint with lease concurrency token '{}', owner '{}', continuationToken '{}'",
+                            lease.getLeaseToken(),
+                            lease.getConcurrencyToken(),
+                            lease.getOwner(),
+                            lease.getContinuationToken());
+                });
     }
 
     @Override
@@ -515,17 +515,17 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
         param.setName("@PartitionLeasePrefix");
         param.setValue(prefix);
         SqlQuerySpec querySpec = new SqlQuerySpec(
-            "SELECT * FROM c WHERE STARTSWITH(c.id, @PartitionLeasePrefix)",
-            Collections.singletonList(param));
+                "SELECT * FROM c WHERE STARTSWITH(c.id, @PartitionLeasePrefix)",
+                Collections.singletonList(param));
 
         Flux<FeedResponse<InternalObjectNode>> query = this.leaseDocumentClient.queryItems(
-            this.settings.getLeaseContainer(),
-            querySpec,
-            this.requestOptionsFactory.createQueryRequestOptions(),
-            InternalObjectNode.class);
+                this.settings.getLeaseContainer(),
+                querySpec,
+                this.requestOptionsFactory.createQueryRequestOptions(),
+                InternalObjectNode.class);
 
         return query.flatMap( documentFeedResponse -> Flux.fromIterable(documentFeedResponse.getResults()))
-            .map(document -> Lease.builder().buildFromDocument(document));
+                .map(document -> Lease.builder().buildFromDocument(document));
     }
 
     private String getDocumentId(String leaseToken)

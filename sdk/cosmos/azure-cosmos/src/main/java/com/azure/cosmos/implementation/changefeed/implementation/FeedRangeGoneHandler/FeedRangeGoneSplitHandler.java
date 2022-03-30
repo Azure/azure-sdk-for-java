@@ -36,6 +36,10 @@ public class FeedRangeGoneSplitHandler implements FeedRangeGoneHandler {
         this.lease = lease;
         this.overlappingRanges = overlappingRanges;
         this.leaseManager = leaseManager;
+
+        // A flag to indicate to upstream whether the current lease which we get FeedRangeGoneException should be removed.
+        // For split scenario, no matter whether it is partition based lease or epk based lease, it will be replaced by the child leases
+        // so we need to remove the current lease in the end.
         this.removeCurrentLease = true;
     }
 
@@ -80,7 +84,7 @@ public class FeedRangeGoneSplitHandler implements FeedRangeGoneHandler {
         // Create new leases starting from the current min and ending in the current max and across the ordered list of partitions
         // Example:
         // Current lease epk range: AA-DD
-        // It split into 3 ranges: []-BB, BB-CC, CC-[]
+        // It split into 3 partition ranges: []-BB, BB-CC, CC-[]
         // So we will create EPKRange lease for AA-BB, BB-CC, CC-DD
         return Flux.fromIterable(overlappingRanges)
                 .map(pkRange -> {
@@ -108,7 +112,7 @@ public class FeedRangeGoneSplitHandler implements FeedRangeGoneHandler {
     }
 
     @Override
-    public boolean shouldRemoveGoneLease() {
+    public boolean shouldRemoveCurrentLease() {
         return this.removeCurrentLease;
     }
 }

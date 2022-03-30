@@ -14,25 +14,25 @@ public enum ServiceItemLeaseVersion {
     PartitionKeyRangeBasedLease(0),
     EPKRangeBasedLease(1);
 
-    private final int version;
+    private final int versionId;
 
     private static final Map<Integer, ServiceItemLeaseVersion> versionMap;
 
     static {
         versionMap = new ConcurrentHashMap<>();
-        Arrays.stream(values()).forEach(value -> versionMap.put(value.version, value));
+        Arrays.stream(values()).forEach(value -> versionMap.put(value.versionId, value));
     }
 
     public static Optional<ServiceItemLeaseVersion> valueOf(final int version) {
         return Optional.ofNullable(versionMap.get(version));
     }
 
-    ServiceItemLeaseVersion(int version) {
-        this.version = version;
+    ServiceItemLeaseVersion(int versionId) {
+        this.versionId = versionId;
     }
 
     @JsonValue
-    public int getVersion() {
-        return this.version;
+    public int getVersionId() {
+        return this.versionId;
     }
 }

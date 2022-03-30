@@ -112,8 +112,11 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
                 .flatMap(valueHolder -> {
                     if (valueHolder == null || valueHolder.v == null || valueHolder.v.size() == 0) {
                         logger.error("Lease with token {} is gone but we failed to find at least one child range", leaseToken);
-                        // TODO: Annie: should this be runtime exception or Mono.error
-                        throw new RuntimeException(String.format("Lease %s is gone but we failed to find at least one child partition", leaseToken));
+                        return Mono.error(
+                                new RuntimeException(
+                                        String.format(
+                                                "Lease %s is gone but we failed to find at least one child partition",
+                                                leaseToken)));
                     }
 
                     return Mono.just(valueHolder.v);
@@ -141,15 +144,13 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
      */
     private Flux<Lease> createLeases(List<PartitionKeyRange> partitionKeyRanges)
     {
-        // TODO: Annie: confirm: getAllLeases() may not get all leases, we are not exhausting all results
         return this.leaseContainer.getAllLeases()
                 .collectList()
                 .flatMapMany(leaseList -> {
-
                     // There will be two kinds of lease
                     // One is pkRange based -> ServiceItemLeaseCore
                     // One is epk based -> ServiceItemLeaseEpk
-                    // If for a certain partitionKeyRange, either above types exists, then there is no need to create a new lease file.
+                    // If for a certain partitionKeyRange, either above types lease exists, then there is no need to create a new lease file.
                     Set<String> pkRangeBasedLeases = leaseList
                             .stream().filter(lease -> lease instanceof ServiceItemLeaseCore).map(Lease::getLeaseToken).collect(Collectors.toSet());
                     return Flux.fromIterable(partitionKeyRanges)
@@ -162,6 +163,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
                                 // check if there are epk based leases for the partitionKeyRange
                                 // If there is at least one, then we assume there are others that cover the rest the full partition range
                                 // based on the fact that the lease store was always initialized for the full collection
+                                // TODO: Annie: what if some epkRange did not create successfully?
                                 if (leaseList.stream().anyMatch(lease -> {
                                     if (lease instanceof ServiceItemLeaseEpk && lease.getFeedRange() instanceof FeedRangeEpkImpl) {
                                         Range<String> epkRange = ((FeedRangeEpkImpl) lease.getFeedRange()).getRange();
@@ -175,9 +177,8 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
                                 return Mono.just(pkRange);
                             });
                 })
-                .flatMap(pkRangeNeedToAddLease -> this.leaseManager.createLeaseIfNotExist(pkRangeNeedToAddLease, null), this.degreeOfParallelism)
-                .doOnNext(lease -> {
-                    // TODO: log the lease info that was added
-                });
+                .flatMap(
+                        pkRangeNeedToAddLease ->
+                                this.leaseManager.createLeaseIfNotExist(pkRangeNeedToAddLease, null), this.degreeOfParallelism);
     }
 }
