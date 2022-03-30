@@ -267,6 +267,9 @@ public class OkHttpAsyncHttpClientBuilder {
             }
         }
 
+        // Do not follow redirects by default. We should let the pipeline have more control of this.
+        httpClientBuilder.followRedirects(false);
+
         return new OkHttpAsyncHttpClient(httpClientBuilder.build());
     }
 
