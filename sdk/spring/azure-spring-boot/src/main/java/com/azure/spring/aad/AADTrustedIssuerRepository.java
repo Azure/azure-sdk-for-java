@@ -175,7 +175,7 @@ public class AADTrustedIssuerRepository {
             URI uri = new URI(baseUri);
             return uri.getScheme() + "://" + uri.getHost();
         } catch (URISyntaxException e) {
-            LOGGER.error("Resolve the base uri exception.");
+            LOGGER.error("Resolve the base uri exception.", e);
             throw new RuntimeException("Resolve the base uri:'" + baseUri + "' exception.");
         }
     }
