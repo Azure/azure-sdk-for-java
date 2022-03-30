@@ -13,15 +13,15 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class EntityGetByGuid {
     public static void main(String[] args) {
-        // BEGIN: com.azure.analytics.purview.catalog.generated.entitygetbyguid.entitygetbyguid
         EntityClient entityClient =
                 new EntityClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.entitygetbyguid.entitygetbyguid
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
                 entityClient.getByGuidWithResponse("5cf8a9e5-c9fd-abe0-2e8c-d40024263dcb", requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.entitygetbyguid.entitygetbyguid
+        // END:com.azure.analytics.purview.catalog.generated.entitygetbyguid.entitygetbyguid
     }
 }

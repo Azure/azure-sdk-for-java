@@ -13,12 +13,12 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class NextPageLineage {
     public static void main(String[] args) {
-        // BEGIN: com.azure.analytics.purview.catalog.generated.lineagenextpagelineage.nextpagelineage
         LineageClient lineageClient =
                 new LineageClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.lineagenextpagelineage.nextpagelineage
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.addQueryParam("direction", "INPUT");
         requestOptions.addQueryParam("getDerivedLineage", "true");
@@ -26,6 +26,6 @@ public class NextPageLineage {
         requestOptions.addQueryParam("offset", "0");
         Response<BinaryData> response =
                 lineageClient.nextPageLineageWithResponse("a6894eb3-81f3-829b-2adc-52f3e603411a", requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.lineagenextpagelineage.nextpagelineage
+        // END:com.azure.analytics.purview.catalog.generated.lineagenextpagelineage.nextpagelineage
     }
 }

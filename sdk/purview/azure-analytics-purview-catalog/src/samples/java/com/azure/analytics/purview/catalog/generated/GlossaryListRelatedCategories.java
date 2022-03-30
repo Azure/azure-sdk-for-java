@@ -13,13 +13,12 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class GlossaryListRelatedCategories {
     public static void main(String[] args) {
-        // BEGIN:
-        // com.azure.analytics.purview.catalog.generated.glossarylistrelatedcategories.glossarylistrelatedcategories
         GlossaryClient glossaryClient =
                 new GlossaryClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.glossarylistrelatedcategories.glossarylistrelatedcategories
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.addQueryParam("limit", "-1");
         requestOptions.addQueryParam("offset", "0");
@@ -27,7 +26,6 @@ public class GlossaryListRelatedCategories {
         Response<BinaryData> response =
                 glossaryClient.listRelatedCategoriesWithResponse(
                         "ed7458f0-9463-48a5-b5c6-4f785fb34e12", requestOptions);
-        // END:
-        // com.azure.analytics.purview.catalog.generated.glossarylistrelatedcategories.glossarylistrelatedcategories
+        // END:com.azure.analytics.purview.catalog.generated.glossarylistrelatedcategories.glossarylistrelatedcategories
     }
 }

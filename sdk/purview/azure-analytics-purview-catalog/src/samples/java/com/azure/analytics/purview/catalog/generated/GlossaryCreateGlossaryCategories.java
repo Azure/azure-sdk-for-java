@@ -13,20 +13,18 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class GlossaryCreateGlossaryCategories {
     public static void main(String[] args) {
-        // BEGIN:
-        // com.azure.analytics.purview.catalog.generated.glossarycreateglossarycategories.glossarycreateglossarycategories
         GlossaryClient glossaryClient =
                 new GlossaryClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.glossarycreateglossarycategories.glossarycreateglossarycategories
         BinaryData glossaryCategory =
                 BinaryData.fromString(
                         "[{\"name\":\"ExampleCategory2\",\"anchor\":{\"glossaryGuid\":\"c018ddaf-7c21-4b37-a838-dae5f110c3d8\"}},{\"name\":\"ExampleCategory3\",\"anchor\":{\"glossaryGuid\":\"c018ddaf-7c21-4b37-a838-dae5f110c3d8\"}}]");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
                 glossaryClient.createGlossaryCategoriesWithResponse(glossaryCategory, requestOptions);
-        // END:
-        // com.azure.analytics.purview.catalog.generated.glossarycreateglossarycategories.glossarycreateglossarycategories
+        // END:com.azure.analytics.purview.catalog.generated.glossarycreateglossarycategories.glossarycreateglossarycategories
     }
 }

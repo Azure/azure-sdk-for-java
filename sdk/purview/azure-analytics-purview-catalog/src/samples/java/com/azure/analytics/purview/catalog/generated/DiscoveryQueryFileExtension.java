@@ -13,17 +13,17 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class DiscoveryQueryFileExtension {
     public static void main(String[] args) {
-        // BEGIN: com.azure.analytics.purview.catalog.generated.discoveryquery.discoveryqueryfileextension
         DiscoveryClient discoveryClient =
                 new DiscoveryClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.discoveryquery.discoveryqueryfileextension
         BinaryData searchRequest =
                 BinaryData.fromString(
                         "{\"filter\":{\"and\":[{\"fileExtension\":\"txt\"}]},\"keywords\":null,\"limit\":10}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = discoveryClient.queryWithResponse(searchRequest, requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.discoveryquery.discoveryqueryfileextension
+        // END:com.azure.analytics.purview.catalog.generated.discoveryquery.discoveryqueryfileextension
     }
 }

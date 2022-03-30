@@ -13,17 +13,17 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class DiscoveryQueryClassification {
     public static void main(String[] args) {
-        // BEGIN: com.azure.analytics.purview.catalog.generated.discoveryquery.discoveryqueryclassification
         DiscoveryClient discoveryClient =
                 new DiscoveryClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.discoveryquery.discoveryqueryclassification
         BinaryData searchRequest =
                 BinaryData.fromString(
                         "{\"filter\":{\"classification\":\"MICROSOFT.PERSONAL.EMAIL\",\"includeSubClassifications\":true},\"keywords\":null,\"limit\":10}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = discoveryClient.queryWithResponse(searchRequest, requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.discoveryquery.discoveryqueryclassification
+        // END:com.azure.analytics.purview.catalog.generated.discoveryquery.discoveryqueryclassification
     }
 }
