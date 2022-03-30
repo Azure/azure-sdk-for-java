@@ -409,7 +409,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         '--readme-file',
         required=False,
-        help='URL to readme.java.md as input file.',
+        help='URL to "readme.md" as input file. A "readme.java.md" configuration is required at same folder.',
     )
     parser.add_argument(
         '--service',
