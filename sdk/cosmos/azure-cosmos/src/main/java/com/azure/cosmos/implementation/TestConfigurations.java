@@ -38,11 +38,7 @@ public final class TestConfigurations {
     // REPLACE MASTER_KEY and HOST with values from your Azure Cosmos DB account.
     // The default values are credentials of the local emulator, which are not used in any production environment.
     // <!--[SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine")]-->
-    public final static String MASTER_KEY =
-        properties.getProperty("ACCOUNT_KEY",
-                    StringUtils.defaultString(Strings.emptyToNull(
-                            System.getenv().get("ACCOUNT_KEY")),
-                            COSMOS_EMULATOR_KEY));
+    public final static String MASTER_KEY = "NRQ4deyjaTthmgq39aaC2T8XemqV7vRU4bva0YdxjQwI7ev7tkYluYig3i7K59eqrU2RAvutVXkaykKA6yUtAQ==";
 
     public final static String SECONDARY_MASTER_KEY =
         properties.getProperty("SECONDARY_ACCOUNT_KEY",
@@ -50,11 +46,7 @@ public final class TestConfigurations {
                 System.getenv().get("SECONDARY_ACCOUNT_KEY")),
                 COSMOS_EMULATOR_KEY));
 
-    public final static String HOST =
-        properties.getProperty("ACCOUNT_HOST",
-                    StringUtils.defaultString(Strings.emptyToNull(
-                            System.getenv().get("ACCOUNT_HOST")),
-                            COSMOS_EMULATOR_HOST));
+    public final static String HOST = "https://sdk-generic-test-lx.documents.azure.com:443/";
 
     public final static String CONSISTENCY =
         properties.getProperty("ACCOUNT_CONSISTENCY",
