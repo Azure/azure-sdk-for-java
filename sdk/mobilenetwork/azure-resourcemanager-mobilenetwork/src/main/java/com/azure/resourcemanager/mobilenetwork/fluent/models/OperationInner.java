@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.mobilenetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mobilenetwork.models.OperationDisplay;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Object that describes a single Microsoft.MobileNetwork operation. */
 @Fluent
 public final class OperationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInner.class);
-
     /*
      * Indicates whether the operation applies to data-plane.
      */

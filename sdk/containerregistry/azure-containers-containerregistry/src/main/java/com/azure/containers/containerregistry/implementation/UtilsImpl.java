@@ -32,7 +32,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -66,8 +66,10 @@ public final class UtilsImpl {
     public static final String OCI_MANIFEST_MEDIA_TYPE;
     public static final String DOCKER_DIGEST_HEADER_NAME;
     public static final String CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE;
+    private static final ClientLogger LOGGER;
 
     static {
+        LOGGER = new ClientLogger(UtilsImpl.class);
         Map<String, String> properties = CoreUtils.getProperties("azure-containers-containerregistry.properties");
         CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
         CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
@@ -191,18 +193,20 @@ public final class UtilsImpl {
             return "sha256:" + byteArrayToHex(digest);
 
         } catch (NoSuchAlgorithmException e) {
-            // We need to do something better here.
+            LOGGER.error("SHA-256 conversion failed with" + e);
+            throw new RuntimeException(e);
         }
-        return null;
     }
 
-    // TODO: Make this performant. We do not need String.format here and can potentially do simple bit manipulation.
-    public static String byteArrayToHex(byte[] a) {
-        StringBuilder sb = new StringBuilder(a.length * 2);
-        for (byte b: a) {
-            sb.append(String.format("%02x", b));
+    private static final char[] HEX_ARRAY = "0123456789abcdef".toCharArray();
+    private static String byteArrayToHex(byte[] bytes) {
+        char[] hexChars = new char[bytes.length * 2];
+        for (int j = 0; j < bytes.length; j++) {
+            int v = bytes[j] & 0xFF;
+            hexChars[j * 2] = HEX_ARRAY[v >>> 4];
+            hexChars[j * 2 + 1] = HEX_ARRAY[v & 0x0F];
         }
-        return sb.toString();
+        return new String(hexChars);
     }
 
     /**
@@ -223,11 +227,10 @@ public final class UtilsImpl {
     }
 
     static <T> Mono<Response<Void>> getAcceptedDeleteResponse(Response<T> responseT, int statusCode) {
-        return Mono.just(new ResponseBase<String, Void>(
+        return Mono.just(new SimpleResponse<Void>(
             responseT.getRequest(),
             statusCode,
             responseT.getHeaders(),
-            null,
             null));
     }
 

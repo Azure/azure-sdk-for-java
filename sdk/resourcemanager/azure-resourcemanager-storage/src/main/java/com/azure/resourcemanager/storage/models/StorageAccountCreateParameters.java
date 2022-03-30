@@ -7,7 +7,6 @@ package com.azure.resourcemanager.storage.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.models.StorageAccountPropertiesCreateParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -15,8 +14,6 @@ import java.util.Map;
 /** The parameters used when creating a storage account. */
 @Fluent
 public final class StorageAccountCreateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountCreateParameters.class);
-
     /*
      * Required. Gets or sets the SKU name.
      */
@@ -762,7 +759,7 @@ public final class StorageAccountCreateParameters {
      */
     public void validate() {
         if (sku() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sku in model StorageAccountCreateParameters"));
@@ -770,13 +767,13 @@ public final class StorageAccountCreateParameters {
             sku().validate();
         }
         if (kind() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property kind in model StorageAccountCreateParameters"));
         }
         if (location() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property location in model StorageAccountCreateParameters"));
@@ -791,4 +788,6 @@ public final class StorageAccountCreateParameters {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(StorageAccountCreateParameters.class);
 }

@@ -17,10 +17,9 @@ import com.azure.resourcemanager.eventgrid.models.DeliveryAttributeListResult;
 import com.azure.resourcemanager.eventgrid.models.EventSubscription;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionFullUrl;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class EventSubscriptionsImpl implements EventSubscriptions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventSubscriptionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EventSubscriptionsImpl.class);
 
     private final EventSubscriptionsClient innerClient;
 
@@ -262,7 +261,7 @@ public final class EventSubscriptionsImpl implements EventSubscriptions {
                 .getValueFromIdByParameterName(
                     id, "/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}", "scope");
         if (scope == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
@@ -274,7 +273,7 @@ public final class EventSubscriptionsImpl implements EventSubscriptions {
                     "/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}",
                     "eventSubscriptionName");
         if (eventSubscriptionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -290,7 +289,7 @@ public final class EventSubscriptionsImpl implements EventSubscriptions {
                 .getValueFromIdByParameterName(
                     id, "/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}", "scope");
         if (scope == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
@@ -302,7 +301,7 @@ public final class EventSubscriptionsImpl implements EventSubscriptions {
                     "/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}",
                     "eventSubscriptionName");
         if (eventSubscriptionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -318,7 +317,7 @@ public final class EventSubscriptionsImpl implements EventSubscriptions {
                 .getValueFromIdByParameterName(
                     id, "/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}", "scope");
         if (scope == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
@@ -330,7 +329,7 @@ public final class EventSubscriptionsImpl implements EventSubscriptions {
                     "/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}",
                     "eventSubscriptionName");
         if (eventSubscriptionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -346,7 +345,7 @@ public final class EventSubscriptionsImpl implements EventSubscriptions {
                 .getValueFromIdByParameterName(
                     id, "/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}", "scope");
         if (scope == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
@@ -358,7 +357,7 @@ public final class EventSubscriptionsImpl implements EventSubscriptions {
                     "/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}",
                     "eventSubscriptionName");
         if (eventSubscriptionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

@@ -23,6 +23,9 @@ public class RuntimeStack {
     /** JAVA JAVA 11. */
     public static final RuntimeStack JAVA_11_JAVA11 = COLLECTION.addValue(new RuntimeStack("JAVA", "11-java11"));
 
+    /** JAVA JAVA 17. */
+    public static final RuntimeStack JAVA_17_JAVA17 = COLLECTION.addValue(new RuntimeStack("JAVA", "17-java17"));
+
     /** Node.JS 10.1. */
     public static final RuntimeStack NODEJS_10_1 = COLLECTION.addValue(new RuntimeStack("NODE", "10.1"));
 

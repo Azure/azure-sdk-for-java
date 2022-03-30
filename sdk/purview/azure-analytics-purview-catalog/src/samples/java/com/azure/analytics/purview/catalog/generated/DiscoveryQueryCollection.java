@@ -5,7 +5,7 @@
 package com.azure.analytics.purview.catalog.generated;
 
 import com.azure.analytics.purview.catalog.DiscoveryClient;
-import com.azure.analytics.purview.catalog.PurviewCatalogClientBuilder;
+import com.azure.analytics.purview.catalog.DiscoveryClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -13,15 +13,17 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class DiscoveryQueryCollection {
     public static void main(String[] args) {
-        DiscoveryClient client =
-                new PurviewCatalogClientBuilder()
+        // BEGIN: com.azure.analytics.purview.catalog.generated.discoveryquery.discoveryquerycollection
+        DiscoveryClient discoveryClient =
+                new DiscoveryClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
-                        .buildDiscoveryClient();
+                        .buildClient();
         BinaryData searchRequest =
                 BinaryData.fromString(
                         "{\"filter\":{\"collectionId\":\"collectionName\"},\"keywords\":null,\"limit\":10}");
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = client.queryWithResponse(searchRequest, requestOptions);
+        Response<BinaryData> response = discoveryClient.queryWithResponse(searchRequest, requestOptions);
+        // END: com.azure.analytics.purview.catalog.generated.discoveryquery.discoveryquerycollection
     }
 }

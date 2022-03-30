@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.applicationinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The response to a live token query. */
 @Immutable
 public final class LiveTokenResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LiveTokenResponseInner.class);
-
     /*
      * JWT token for accessing live metrics stream data.
      */

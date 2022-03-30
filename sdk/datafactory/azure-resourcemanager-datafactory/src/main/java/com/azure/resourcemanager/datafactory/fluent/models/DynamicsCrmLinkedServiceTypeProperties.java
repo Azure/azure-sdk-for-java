@@ -7,14 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Dynamics CRM linked service properties. */
 @Fluent
 public final class DynamicsCrmLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DynamicsCrmLinkedServiceTypeProperties.class);
-
     /*
      * The deployment type of the Dynamics CRM instance. 'Online' for Dynamics
      * CRM Online and 'OnPremisesWithIfd' for Dynamics CRM on-premises with
@@ -397,13 +394,13 @@ public final class DynamicsCrmLinkedServiceTypeProperties {
      */
     public void validate() {
         if (deploymentType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property deploymentType in model DynamicsCrmLinkedServiceTypeProperties"));
         }
         if (authenticationType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property authenticationType in model"
@@ -416,4 +413,6 @@ public final class DynamicsCrmLinkedServiceTypeProperties {
             servicePrincipalCredential().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DynamicsCrmLinkedServiceTypeProperties.class);
 }

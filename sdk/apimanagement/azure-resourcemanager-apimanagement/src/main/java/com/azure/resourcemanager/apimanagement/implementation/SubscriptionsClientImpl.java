@@ -31,7 +31,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.SubscriptionsClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.SubscriptionContractInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.SubscriptionKeysContractInner;
@@ -48,8 +47,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SubscriptionsClient. */
 public final class SubscriptionsClientImpl implements SubscriptionsClient {
-    private final ClientLogger logger = new ClientLogger(SubscriptionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SubscriptionsService service;
 
@@ -260,7 +257,8 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Subscriptions list representation.
+     * @return paged Subscriptions list representation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SubscriptionContractInner>> listSinglePageAsync(
@@ -333,7 +331,8 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Subscriptions list representation.
+     * @return paged Subscriptions list representation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SubscriptionContractInner>> listSinglePageAsync(
@@ -402,7 +401,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Subscriptions list representation.
+     * @return paged Subscriptions list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SubscriptionContractInner> listAsync(
@@ -420,7 +419,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Subscriptions list representation.
+     * @return paged Subscriptions list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SubscriptionContractInner> listAsync(String resourceGroupName, String serviceName) {
@@ -453,7 +452,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Subscriptions list representation.
+     * @return paged Subscriptions list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SubscriptionContractInner> listAsync(
@@ -471,7 +470,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Subscriptions list representation.
+     * @return paged Subscriptions list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SubscriptionContractInner> list(String resourceGroupName, String serviceName) {
@@ -502,7 +501,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Subscriptions list representation.
+     * @return paged Subscriptions list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SubscriptionContractInner> list(
@@ -520,7 +519,8 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the apimanagement subscription specified by its identifier.
+     * @return the entity state (Etag) version of the apimanagement subscription specified by its identifier on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SubscriptionsGetEntityTagResponse> getEntityTagWithResponseAsync(
@@ -575,7 +575,8 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the apimanagement subscription specified by its identifier.
+     * @return the entity state (Etag) version of the apimanagement subscription specified by its identifier on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SubscriptionsGetEntityTagResponse> getEntityTagWithResponseAsync(
@@ -626,7 +627,8 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the apimanagement subscription specified by its identifier.
+     * @return the entity state (Etag) version of the apimanagement subscription specified by its identifier on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getEntityTagAsync(String resourceGroupName, String serviceName, String sid) {
@@ -679,7 +681,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Subscription entity.
+     * @return the specified Subscription entity on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SubscriptionsGetResponse> getWithResponseAsync(
@@ -734,7 +736,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Subscription entity.
+     * @return the specified Subscription entity on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SubscriptionsGetResponse> getWithResponseAsync(
@@ -785,7 +787,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Subscription entity.
+     * @return the specified Subscription entity on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SubscriptionContractInner> getAsync(String resourceGroupName, String serviceName, String sid) {
@@ -852,7 +854,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription details.
+     * @return subscription details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SubscriptionsCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
@@ -928,7 +930,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription details.
+     * @return subscription details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SubscriptionsCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
@@ -1001,7 +1003,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription details.
+     * @return subscription details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SubscriptionContractInner> createOrUpdateAsync(
@@ -1035,7 +1037,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription details.
+     * @return subscription details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SubscriptionContractInner> createOrUpdateAsync(
@@ -1128,7 +1130,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription details.
+     * @return subscription details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SubscriptionsUpdateResponse> updateWithResponseAsync(
@@ -1208,7 +1210,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription details.
+     * @return subscription details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SubscriptionsUpdateResponse> updateWithResponseAsync(
@@ -1285,7 +1287,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription details.
+     * @return subscription details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SubscriptionContractInner> updateAsync(
@@ -1320,7 +1322,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription details.
+     * @return subscription details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SubscriptionContractInner> updateAsync(
@@ -1416,7 +1418,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1477,7 +1479,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1534,7 +1536,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String sid, String ifMatch) {
@@ -1573,7 +1575,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -1591,7 +1593,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> regeneratePrimaryKeyWithResponseAsync(
@@ -1646,7 +1648,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> regeneratePrimaryKeyWithResponseAsync(
@@ -1697,7 +1699,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> regeneratePrimaryKeyAsync(String resourceGroupName, String serviceName, String sid) {
@@ -1732,7 +1734,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> regeneratePrimaryKeyWithResponse(
@@ -1750,7 +1752,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> regenerateSecondaryKeyWithResponseAsync(
@@ -1805,7 +1807,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> regenerateSecondaryKeyWithResponseAsync(
@@ -1856,7 +1858,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> regenerateSecondaryKeyAsync(String resourceGroupName, String serviceName, String sid) {
@@ -1891,7 +1893,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> regenerateSecondaryKeyWithResponse(
@@ -1909,7 +1911,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Subscription keys.
+     * @return the specified Subscription keys on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SubscriptionsListSecretsResponse> listSecretsWithResponseAsync(
@@ -1964,7 +1966,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Subscription keys.
+     * @return the specified Subscription keys on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SubscriptionsListSecretsResponse> listSecretsWithResponseAsync(
@@ -2015,7 +2017,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Subscription keys.
+     * @return the specified Subscription keys on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SubscriptionKeysContractInner> listSecretsAsync(
@@ -2074,7 +2076,8 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Subscriptions list representation.
+     * @return paged Subscriptions list representation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SubscriptionContractInner>> listNextSinglePageAsync(String nextLink) {
@@ -2110,7 +2113,8 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Subscriptions list representation.
+     * @return paged Subscriptions list representation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SubscriptionContractInner>> listNextSinglePageAsync(String nextLink, Context context) {

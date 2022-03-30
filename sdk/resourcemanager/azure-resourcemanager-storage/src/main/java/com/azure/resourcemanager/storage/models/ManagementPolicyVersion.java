@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Management policy action for blob version. */
 @Fluent
 public final class ManagementPolicyVersion {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementPolicyVersion.class);
-
     /*
      * The function to tier blob version to cool storage. Support blob version
      * currently at Hot tier

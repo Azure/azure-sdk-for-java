@@ -411,31 +411,13 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
         String apName = "ap" + clusterName;
         String dnsPrefix = "dns" + clusterName;
 
-        String clientId = "clientId";
-        String clientSecret = "secret";
-        String envSecondaryServicePrincipal = System.getenv("AZURE_AUTH_LOCATION_2");
-        if (envSecondaryServicePrincipal == null
-            || envSecondaryServicePrincipal.isEmpty()
-            || !(new File(envSecondaryServicePrincipal).exists())) {
-            envSecondaryServicePrincipal = System.getenv("AZURE_AUTH_LOCATION");
-        }
-        try {
-            HashMap<String, String> credentialsMap = parseAuthFile(envSecondaryServicePrincipal);
-            clientId = credentialsMap.get("clientId");
-            clientSecret = credentialsMap.get("clientSecret");
-        } catch (Exception e) {
-        }
-
         PrivateLinkSubResourceName subResourceName = PrivateLinkSubResourceName.KUBERNETES_MANAGEMENT;
 
         KubernetesCluster cluster = azureResourceManager.kubernetesClusters().define(clusterName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .withDefaultVersion()
-            .withRootUsername("aksadmin")
-            .withSshKey(sshPublicKey())
-            .withServicePrincipalClientId(clientId)
-            .withServicePrincipalSecret(clientSecret)
+            .withSystemAssignedManagedServiceIdentity()
             .defineAgentPool(apName)
                 .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
                 .withAgentPoolVirtualMachineCount(1)

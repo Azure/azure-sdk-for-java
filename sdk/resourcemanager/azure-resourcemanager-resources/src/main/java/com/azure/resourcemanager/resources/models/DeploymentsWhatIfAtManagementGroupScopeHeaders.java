@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DeploymentsWhatIfAtManagementGroupScopeHeaders model. */
 @Fluent
 public final class DeploymentsWhatIfAtManagementGroupScopeHeaders {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(DeploymentsWhatIfAtManagementGroupScopeHeaders.class);
-
     /*
      * The Retry-After property.
      */

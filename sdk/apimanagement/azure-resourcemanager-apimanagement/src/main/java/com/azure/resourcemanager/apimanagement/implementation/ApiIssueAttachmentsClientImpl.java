@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.ApiIssueAttachmentsClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.IssueAttachmentContractInner;
 import com.azure.resourcemanager.apimanagement.models.ApiIssueAttachmentsCreateOrUpdateResponse;
@@ -40,8 +39,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ApiIssueAttachmentsClient. */
 public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsClient {
-    private final ClientLogger logger = new ClientLogger(ApiIssueAttachmentsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ApiIssueAttachmentsService service;
 
@@ -188,7 +185,8 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Issue Attachment list representation.
+     * @return paged Issue Attachment list representation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IssueAttachmentContractInner>> listByServiceSinglePageAsync(
@@ -271,7 +269,8 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Issue Attachment list representation.
+     * @return paged Issue Attachment list representation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IssueAttachmentContractInner>> listByServiceSinglePageAsync(
@@ -351,7 +350,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Issue Attachment list representation.
+     * @return paged Issue Attachment list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IssueAttachmentContractInner> listByServiceAsync(
@@ -377,7 +376,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Issue Attachment list representation.
+     * @return paged Issue Attachment list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IssueAttachmentContractInner> listByServiceAsync(
@@ -407,7 +406,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Issue Attachment list representation.
+     * @return paged Issue Attachment list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IssueAttachmentContractInner> listByServiceAsync(
@@ -436,7 +435,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Issue Attachment list representation.
+     * @return paged Issue Attachment list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IssueAttachmentContractInner> listByService(
@@ -465,7 +464,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Issue Attachment list representation.
+     * @return paged Issue Attachment list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IssueAttachmentContractInner> listByService(
@@ -492,7 +491,8 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the issue Attachment for an API specified by its identifier.
+     * @return the entity state (Etag) version of the issue Attachment for an API specified by its identifier on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiIssueAttachmentsGetEntityTagResponse> getEntityTagWithResponseAsync(
@@ -556,7 +556,8 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the issue Attachment for an API specified by its identifier.
+     * @return the entity state (Etag) version of the issue Attachment for an API specified by its identifier on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiIssueAttachmentsGetEntityTagResponse> getEntityTagWithResponseAsync(
@@ -621,7 +622,8 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the issue Attachment for an API specified by its identifier.
+     * @return the entity state (Etag) version of the issue Attachment for an API specified by its identifier on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getEntityTagAsync(
@@ -685,7 +687,8 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the issue Attachment for an API specified by its identifier.
+     * @return the details of the issue Attachment for an API specified by its identifier on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiIssueAttachmentsGetResponse> getWithResponseAsync(
@@ -749,7 +752,8 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the issue Attachment for an API specified by its identifier.
+     * @return the details of the issue Attachment for an API specified by its identifier on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiIssueAttachmentsGetResponse> getWithResponseAsync(
@@ -814,7 +818,8 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the issue Attachment for an API specified by its identifier.
+     * @return the details of the issue Attachment for an API specified by its identifier on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IssueAttachmentContractInner> getAsync(
@@ -887,7 +892,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return issue Attachment Contract details.
+     * @return issue Attachment Contract details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiIssueAttachmentsCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
@@ -966,7 +971,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return issue Attachment Contract details.
+     * @return issue Attachment Contract details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiIssueAttachmentsCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
@@ -1042,7 +1047,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return issue Attachment Contract details.
+     * @return issue Attachment Contract details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IssueAttachmentContractInner> createOrUpdateAsync(
@@ -1077,7 +1082,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return issue Attachment Contract details.
+     * @return issue Attachment Contract details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IssueAttachmentContractInner> createOrUpdateAsync(
@@ -1171,7 +1176,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1246,7 +1251,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1318,7 +1323,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1371,7 +1376,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -1393,7 +1398,8 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Issue Attachment list representation.
+     * @return paged Issue Attachment list representation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IssueAttachmentContractInner>> listByServiceNextSinglePageAsync(String nextLink) {
@@ -1429,7 +1435,8 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Issue Attachment list representation.
+     * @return paged Issue Attachment list representation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IssueAttachmentContractInner>> listByServiceNextSinglePageAsync(

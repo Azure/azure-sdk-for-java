@@ -198,7 +198,7 @@ public final class SnapshotsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -241,7 +241,7 @@ public final class SnapshotsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -313,7 +313,7 @@ public final class SnapshotsClientImpl
     /**
      * Lists snapshots in the specified subscription and resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -338,7 +338,7 @@ public final class SnapshotsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -366,7 +366,7 @@ public final class SnapshotsClientImpl
     /**
      * Lists snapshots in the specified subscription and resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -393,7 +393,7 @@ public final class SnapshotsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -418,7 +418,7 @@ public final class SnapshotsClientImpl
     /**
      * Lists snapshots in the specified subscription and resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -434,7 +434,7 @@ public final class SnapshotsClientImpl
     /**
      * Lists snapshots in the specified subscription and resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -451,7 +451,7 @@ public final class SnapshotsClientImpl
     /**
      * Lists snapshots in the specified subscription and resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -465,7 +465,7 @@ public final class SnapshotsClientImpl
     /**
      * Lists snapshots in the specified subscription and resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -480,7 +480,7 @@ public final class SnapshotsClientImpl
     /**
      * Gets a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -509,7 +509,7 @@ public final class SnapshotsClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -529,7 +529,7 @@ public final class SnapshotsClientImpl
     /**
      * Gets a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -559,7 +559,7 @@ public final class SnapshotsClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -576,7 +576,7 @@ public final class SnapshotsClientImpl
     /**
      * Gets a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -599,7 +599,7 @@ public final class SnapshotsClientImpl
     /**
      * Gets a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -614,7 +614,7 @@ public final class SnapshotsClientImpl
     /**
      * Gets a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -631,7 +631,7 @@ public final class SnapshotsClientImpl
     /**
      * Creates or updates a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The snapshot to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -666,7 +666,7 @@ public final class SnapshotsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -687,7 +687,7 @@ public final class SnapshotsClientImpl
     /**
      * Creates or updates a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The snapshot to create or update.
      * @param context The context to associate with this operation.
@@ -723,7 +723,7 @@ public final class SnapshotsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -741,7 +741,7 @@ public final class SnapshotsClientImpl
     /**
      * Creates or updates a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The snapshot to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -766,7 +766,7 @@ public final class SnapshotsClientImpl
     /**
      * Creates or updates a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The snapshot to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -782,7 +782,7 @@ public final class SnapshotsClientImpl
     /**
      * Creates or updates a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The snapshot to create or update.
      * @param context The context to associate with this operation.
@@ -800,7 +800,7 @@ public final class SnapshotsClientImpl
     /**
      * Updates tags on a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update snapshot Tags operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -835,7 +835,7 @@ public final class SnapshotsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -856,7 +856,7 @@ public final class SnapshotsClientImpl
     /**
      * Updates tags on a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update snapshot Tags operation.
      * @param context The context to associate with this operation.
@@ -892,7 +892,7 @@ public final class SnapshotsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -910,7 +910,7 @@ public final class SnapshotsClientImpl
     /**
      * Updates tags on a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update snapshot Tags operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -934,7 +934,7 @@ public final class SnapshotsClientImpl
     /**
      * Updates tags on a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update snapshot Tags operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -950,7 +950,7 @@ public final class SnapshotsClientImpl
     /**
      * Updates tags on a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update snapshot Tags operation.
      * @param context The context to associate with this operation.
@@ -968,7 +968,7 @@ public final class SnapshotsClientImpl
     /**
      * Deletes a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -996,7 +996,7 @@ public final class SnapshotsClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1016,7 +1016,7 @@ public final class SnapshotsClientImpl
     /**
      * Deletes a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1046,7 +1046,7 @@ public final class SnapshotsClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-01";
+        final String apiVersion = "2022-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1063,7 +1063,7 @@ public final class SnapshotsClientImpl
     /**
      * Deletes a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1078,7 +1078,7 @@ public final class SnapshotsClientImpl
     /**
      * Deletes a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1092,7 +1092,7 @@ public final class SnapshotsClientImpl
     /**
      * Deletes a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

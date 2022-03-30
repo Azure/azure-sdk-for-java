@@ -4,7 +4,7 @@ package com.azure.cosmos.spark
 
 import java.util.UUID
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
-import com.azure.cosmos.models.{CosmosItemResponse, PartitionKey}
+import com.azure.cosmos.models.PartitionKey
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 
@@ -32,6 +32,10 @@ class SparkE2EQueryITest
   // "spark.cosmos.read.partitioning.strategy" -> "Restrictive" is added to the query tests
   // to ensure we don't do sub-range feed-range
   // once emulator fixed switch back to default partitioning.
+
+  "spark items DataSource version" can "be determined" in {
+    CosmosItemsDataSource.version shouldEqual CosmosConstants.currentVersion
+  }
 
   "spark query" can "basic nested query" in {
     val cosmosEndpoint = TestConfigurations.HOST
@@ -1083,6 +1087,124 @@ class SparkE2EQueryITest
       correlationActivityIds.size == 1,
       "Logs should only contain one correlationActivityId - " + messages.mkString("\r\n"))
     correlationActivityIds.size shouldEqual 1
+  }
+
+  "spark query" can "execute query with VALUE function" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+    val id = UUID.randomUUID().toString
+
+    val rawItem = s"""
+                     | {
+                     |   "id" : "${id}",
+                     |   "nestedObject" : {
+                     |     "prop1" : 5,
+                     |     "prop2" : "6"
+                     |   }
+                     | }
+                     |""".stripMargin
+
+    val objectNode = objectMapper.readValue(rawItem, classOf[ObjectNode])
+
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+    container.createItem(objectNode).block()
+
+    val id2 = UUID.randomUUID().toString
+
+    val rawItem2 = s"""
+                     | {
+                     |   "id" : "${id2}",
+                     |   "nestedObject" : {
+                     |     "prop1" : 5,
+                     |     "prop2" : "7"
+                     |   }
+                     | }
+                     |""".stripMargin
+
+    val objectNode2 = objectMapper.readValue(rawItem2, classOf[ObjectNode])
+
+    container.createItem(objectNode2).block()
+
+    val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
+      "spark.cosmos.read.customQuery" -> "SELECT VALUE c.nestedObject.prop1 FROM c"
+    )
+
+    val df = spark.read.format("cosmos.oltp").options(cfg).load()
+    val rowsArray = df.collect()
+    rowsArray should have size 2
+
+    val item = rowsArray(0)
+    item.getAs[Int]("_value") shouldEqual 5
+
+    val item2 = rowsArray(1)
+    item2.getAs[Int]("_value") shouldEqual 5
+  }
+
+  "spark query" can "execute query with VALUE function ad ORDER BY" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+    val id = UUID.randomUUID().toString
+
+    val rawItem = s"""
+                     | {
+                     |   "id" : "${id}",
+                     |   "nestedObject" : {
+                     |     "prop1" : 5,
+                     |     "prop2" : "6"
+                     |   }
+                     | }
+                     |""".stripMargin
+
+    val objectNode = objectMapper.readValue(rawItem, classOf[ObjectNode])
+
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+    container.createItem(objectNode).block()
+
+    val id2 = UUID.randomUUID().toString
+
+    val rawItem2 = s"""
+                      | {
+                      |   "id" : "${id2}",
+                      |   "nestedObject" : {
+                      |     "prop1" : 8,
+                      |     "prop2" : "7"
+                      |   }
+                      | }
+                      |""".stripMargin
+
+    val objectNode2 = objectMapper.readValue(rawItem2, classOf[ObjectNode])
+
+    container.createItem(objectNode2).block()
+
+    val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
+      "spark.cosmos.read.customQuery" -> "SELECT VALUE c.nestedObject.prop1 FROM c ORDER BY c.nestedObject.prop2"
+    )
+
+    val df = spark.read.format("cosmos.oltp").options(cfg).load()
+
+    // sorting on the Spark level is is done here to simplify result validation. The custom
+    // query is ordered by prop2 - but this ordering is happening scoped to each physical partition
+    // because in Spark we run the custom query isolated (as non-cross-partition query) against an EPK
+    // So to simplify the content validation the spark-level ordering (which is global - across
+    // results from all cosmos partitions) is added
+    val rowsArray = df.orderBy("_value").collect()
+    rowsArray should have size 2
+
+    val item = rowsArray(0)
+    item.getAs[Int]("_value") shouldEqual 5
+
+    val item2 = rowsArray(1)
+    item2.getAs[Int]("_value") shouldEqual 8
   }
 
   //scalastyle:on magic.number

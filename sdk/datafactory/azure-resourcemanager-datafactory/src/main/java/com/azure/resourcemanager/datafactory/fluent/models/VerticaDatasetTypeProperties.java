@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Vertica Properties. */
 @Fluent
 public final class VerticaDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VerticaDatasetTypeProperties.class);
-
     /*
      * This property will be retired. Please consider using schema + table
      * properties instead.

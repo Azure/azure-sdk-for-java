@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.applicationinsights.fluent.models.WorkbookTemplateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** The parameters that can be provided when updating workbook template. */
 @Fluent
 public final class WorkbookTemplateUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkbookTemplateUpdateParameters.class);
-
     /*
      * Resource tags
      */

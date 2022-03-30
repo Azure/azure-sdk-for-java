@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for the ListVirtualNetworks API service call. */
 @Fluent
 public final class VirtualNetworkListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkListResult.class);
-
     /*
      * A list of VirtualNetwork resources in a resource group.
      */

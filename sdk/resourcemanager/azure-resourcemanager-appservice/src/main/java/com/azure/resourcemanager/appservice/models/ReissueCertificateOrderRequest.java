@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.models.ReissueCertificateOrderRequestProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class representing certificate reissue request. */
 @Fluent
 public final class ReissueCertificateOrderRequest extends ProxyOnlyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReissueCertificateOrderRequest.class);
-
     /*
      * ReissueCertificateOrderRequest resource specific properties
      */

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -15,8 +14,6 @@ import java.util.UUID;
 /** The parameters required to execute insights operation on the given entity. */
 @Fluent
 public final class EntityGetInsightsParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EntityGetInsightsParameters.class);
-
     /*
      * The start timeline date, so the results returned are after this date.
      */
@@ -134,16 +131,18 @@ public final class EntityGetInsightsParameters {
      */
     public void validate() {
         if (startTime() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property startTime in model EntityGetInsightsParameters"));
         }
         if (endTime() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property endTime in model EntityGetInsightsParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EntityGetInsightsParameters.class);
 }

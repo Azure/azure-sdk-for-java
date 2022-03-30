@@ -6,14 +6,11 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Aggregate Maximum Bit Rate. */
 @Fluent
 public final class Ambr {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Ambr.class);
-
     /*
      * Uplink bit rate.
      */
@@ -73,12 +70,14 @@ public final class Ambr {
      */
     public void validate() {
         if (uplink() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property uplink in model Ambr"));
         }
         if (downlink() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property downlink in model Ambr"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Ambr.class);
 }

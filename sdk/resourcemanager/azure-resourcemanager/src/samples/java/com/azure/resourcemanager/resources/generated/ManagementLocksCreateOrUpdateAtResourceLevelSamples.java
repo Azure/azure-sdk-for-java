@@ -11,7 +11,7 @@ import com.azure.resourcemanager.resources.models.LockLevel;
 /** Samples for ManagementLocks CreateOrUpdateAtResourceLevel. */
 public final class ManagementLocksCreateOrUpdateAtResourceLevelSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2016-09-01/examples/ManagementLocks_CreateOrUpdateAtResourceLevel.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2017-04-01/examples/ManagementLocks_CreateOrUpdateAtResourceLevel.json
      */
     /**
      * Sample code: Create management lock at resource level.

@@ -21,6 +21,9 @@ import com.azure.resourcemanager.compute.models.BillingProfile;
 import com.azure.resourcemanager.compute.models.BootDiagnostics;
 import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.DiagnosticsProfile;
+import com.azure.resourcemanager.compute.models.DiffDiskOptions;
+import com.azure.resourcemanager.compute.models.DiffDiskPlacement;
+import com.azure.resourcemanager.compute.models.DiffDiskSettings;
 import com.azure.resourcemanager.compute.models.DiskCreateOptionTypes;
 import com.azure.resourcemanager.compute.models.ImageReference;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
@@ -380,6 +383,16 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
+    public boolean isEphemeralOSDisk() {
+        return this.innerModel() != null
+            && this.innerModel().virtualMachineProfile() != null
+            && this.innerModel().virtualMachineProfile().storageProfile() != null
+            && this.innerModel().virtualMachineProfile().storageProfile().osDisk() != null
+            && this.innerModel().virtualMachineProfile().storageProfile().osDisk().diffDiskSettings() != null
+            && this.innerModel().virtualMachineProfile().storageProfile().osDisk().diffDiskSettings().placement() != null;
+    }
+
+    @Override
     public UpgradeMode upgradeModel() {
         // flexible vmss won't have an upgrade mode
         return this.innerModel().upgradePolicy() == null ? null : this.innerModel().upgradePolicy().mode();
@@ -397,7 +410,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public int capacity() {
-        if (this.innerModel().sku() == null) {
+        if (isVMProfileNotSet()) {
             return 0;
         }
         return ResourceManagerUtils.toPrimitiveInt(this.innerModel().sku().capacity());
@@ -1154,6 +1167,19 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
+    public VirtualMachineScaleSetImpl withEphemeralOSDisk() {
+        if (isVMProfileNotSet()) {
+            return this;
+        }
+        initVMProfileIfNecessary();
+        VirtualMachineScaleSetOSDisk disk = this.innerModel().virtualMachineProfile().storageProfile().osDisk();
+        disk.withCaching(CachingTypes.READ_ONLY);
+        disk.withDiffDiskSettings(new DiffDiskSettings());
+        disk.diffDiskSettings().withOption(DiffDiskOptions.LOCAL);
+        return this;
+    }
+
+    @Override
     public VirtualMachineScaleSetImpl withComputerNamePrefix(String namePrefix) {
         initVMProfileIfNecessary();
         this.innerModel().virtualMachineProfile().osProfile().withComputerNamePrefix(namePrefix);
@@ -1610,7 +1636,7 @@ public class VirtualMachineScaleSetImpl
         // support flexible vmss with no profile
         if (this.orchestrationMode() == OrchestrationMode.FLEXIBLE
             // presence of sku indicates that the vm profile is not null, otherwise, vm profile is null.
-            && this.innerModel().sku() == null) {
+            && isVMProfileNotSet()) {
             return createInnerNoProfile();
         }
         if (this.shouldSetProfileDefaults()) {
@@ -1725,8 +1751,13 @@ public class VirtualMachineScaleSetImpl
     }
 
 
+
     // Helpers
     //
+
+    private boolean isVMProfileNotSet() {
+        return this.innerModel().sku() == null;
+    }
 
     private void adjustProfileForFlexibleMode() {
         if (this.orchestrationMode() == OrchestrationMode.FLEXIBLE) {
@@ -1748,6 +1779,7 @@ public class VirtualMachineScaleSetImpl
                 .withNetworkApiVersion(NetworkApiVersion.TWO_ZERO_TWO_ZERO_ONE_ONE_ZERO_ONE);
         }
     }
+
     private Mono<VirtualMachineScaleSetInner> createInnerNoProfile() {
         this.innerModel().withVirtualMachineProfile(null);
         return manager()
@@ -2952,6 +2984,12 @@ public class VirtualMachineScaleSetImpl
     public VirtualMachineScaleSetImpl withPlan(PurchasePlan plan) {
         this.innerModel().withPlan(new Plan());
         this.innerModel().plan().withPublisher(plan.publisher()).withProduct(plan.product()).withName(plan.name());
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withPlacement(DiffDiskPlacement placement) {
+        this.innerModel().virtualMachineProfile().storageProfile().osDisk().diffDiskSettings().withPlacement(placement);
         return this;
     }
 

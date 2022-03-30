@@ -427,7 +427,7 @@ public interface UserContract {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return generate SSO Url operations response details.
+     * @return generate SSO Url operations response details along with {@link Response}.
      */
     Response<GenerateSsoUrlResult> generateSsoUrlWithResponse(Context context);
 
@@ -450,7 +450,7 @@ public interface UserContract {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Shared Access Authorization Token for the User.
+     * @return the Shared Access Authorization Token for the User along with {@link Response}.
      */
     Response<UserTokenResult> getSharedAccessTokenWithResponse(UserTokenParameters parameters, Context context);
 }

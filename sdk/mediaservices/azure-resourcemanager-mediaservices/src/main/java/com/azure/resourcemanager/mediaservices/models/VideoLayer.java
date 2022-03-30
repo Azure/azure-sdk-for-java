@@ -5,27 +5,11 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Describes the settings to be used when encoding the input video into a desired output bitrate layer. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "@odata\\.type",
-    defaultImpl = VideoLayer.class)
-@JsonTypeName("#Microsoft.Media.VideoLayer")
-@JsonSubTypes({@JsonSubTypes.Type(name = "#Microsoft.Media.H264Layer", value = H264Layer.class)})
-@JsonFlatten
 @Fluent
 public class VideoLayer extends Layer {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VideoLayer.class);
-
     /*
      * The average bitrate in bits per second at which to encode the input
      * video when generating this layer. This is a required field.

@@ -6,15 +6,12 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Script block of scripts. */
 @Fluent
 public final class ScriptActivityScriptBlock {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScriptActivityScriptBlock.class);
-
     /*
      * The query text. Type: string (or Expression with resultType string).
      */
@@ -100,12 +97,12 @@ public final class ScriptActivityScriptBlock {
      */
     public void validate() {
         if (text() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property text in model ScriptActivityScriptBlock"));
         }
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property type in model ScriptActivityScriptBlock"));
         }
@@ -113,4 +110,6 @@ public final class ScriptActivityScriptBlock {
             parameters().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ScriptActivityScriptBlock.class);
 }

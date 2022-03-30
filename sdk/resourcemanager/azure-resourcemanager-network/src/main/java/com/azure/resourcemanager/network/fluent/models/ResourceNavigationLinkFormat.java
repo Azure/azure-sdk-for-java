@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of ResourceNavigationLink. */
 @Fluent
 public final class ResourceNavigationLinkFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceNavigationLinkFormat.class);
-
     /*
      * Resource type of the linked resource.
      */

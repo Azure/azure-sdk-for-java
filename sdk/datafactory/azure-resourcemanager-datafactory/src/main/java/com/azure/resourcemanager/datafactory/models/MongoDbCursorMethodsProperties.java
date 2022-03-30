@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** Cursor methods for Mongodb query. */
 @Fluent
 public final class MongoDbCursorMethodsProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MongoDbCursorMethodsProperties.class);
-
     /*
      * Specifies the fields to return in the documents that match the query
      * filter. To return all fields in the matching documents, omit this

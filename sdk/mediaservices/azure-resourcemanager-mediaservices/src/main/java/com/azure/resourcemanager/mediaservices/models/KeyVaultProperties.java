@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The KeyVaultProperties model. */
 @Fluent
 public final class KeyVaultProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultProperties.class);
-
     /*
      * The URL of the Key Vault key used to encrypt the account. The key may
      * either be versioned (for example https://vault/keys/mykey/version1) or

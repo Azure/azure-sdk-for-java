@@ -59,7 +59,9 @@ final class ObjectMapperFactory {
                 .invoke();
             useReflectionToSetCoercion = true;
         } catch (Throwable ex) {
-            if (ex instanceof Error) {
+            // Throw the Error only if it isn't a LinkageError.
+            // This initialization is attempting to use classes that may not exist.
+            if (ex instanceof Error && !(ex instanceof LinkageError)) {
                 throw (Error) ex;
             }
 

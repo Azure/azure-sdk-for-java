@@ -16,10 +16,9 @@ import com.azure.resourcemanager.batch.models.Pools;
 import com.azure.resourcemanager.batch.models.PoolsDisableAutoScaleResponse;
 import com.azure.resourcemanager.batch.models.PoolsGetResponse;
 import com.azure.resourcemanager.batch.models.PoolsStopResizeResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PoolsImpl implements Pools {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PoolsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PoolsImpl.class);
 
     private final PoolsClient innerClient;
 
@@ -132,7 +131,7 @@ public final class PoolsImpl implements Pools {
     public Pool getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -140,14 +139,14 @@ public final class PoolsImpl implements Pools {
         }
         String accountName = Utils.getValueFromIdByName(id, "batchAccounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'batchAccounts'.", id)));
         }
         String poolName = Utils.getValueFromIdByName(id, "pools");
         if (poolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'pools'.", id)));
@@ -158,7 +157,7 @@ public final class PoolsImpl implements Pools {
     public Response<Pool> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -166,14 +165,14 @@ public final class PoolsImpl implements Pools {
         }
         String accountName = Utils.getValueFromIdByName(id, "batchAccounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'batchAccounts'.", id)));
         }
         String poolName = Utils.getValueFromIdByName(id, "pools");
         if (poolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'pools'.", id)));
@@ -184,7 +183,7 @@ public final class PoolsImpl implements Pools {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -192,14 +191,14 @@ public final class PoolsImpl implements Pools {
         }
         String accountName = Utils.getValueFromIdByName(id, "batchAccounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'batchAccounts'.", id)));
         }
         String poolName = Utils.getValueFromIdByName(id, "pools");
         if (poolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'pools'.", id)));
@@ -210,7 +209,7 @@ public final class PoolsImpl implements Pools {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -218,14 +217,14 @@ public final class PoolsImpl implements Pools {
         }
         String accountName = Utils.getValueFromIdByName(id, "batchAccounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'batchAccounts'.", id)));
         }
         String poolName = Utils.getValueFromIdByName(id, "pools");
         if (poolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'pools'.", id)));

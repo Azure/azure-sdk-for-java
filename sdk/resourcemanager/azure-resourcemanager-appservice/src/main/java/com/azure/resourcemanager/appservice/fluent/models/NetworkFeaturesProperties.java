@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** NetworkFeatures resource specific properties. */
 @Immutable
 public final class NetworkFeaturesProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkFeaturesProperties.class);
-
     /*
      * The Virtual Network name.
      */
