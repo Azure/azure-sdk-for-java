@@ -165,14 +165,16 @@ class NettyAsyncHttpClient implements HttpClient {
 
             BinaryDataContent binaryDataContent = BinaryDataHelper.getContent(restRequest.getContent());
             if (binaryDataContent instanceof ByteArrayContent) {
-                return reactorNettyOutbound.sendByteArray(Mono.defer(() -> Mono.just(binaryDataContent.toBytes())));
+                return reactorNettyOutbound.sendByteArray(Mono.just(binaryDataContent.toBytes()));
             } else if (binaryDataContent instanceof FileContent) {
                 FileContent fileContent = (FileContent) binaryDataContent;
-                // This won't be right all the time as we may be sending only a partial view of the file.
-                // TODO (alzimmer): support ranges in FileContent
-                return reactorNettyOutbound.sendFile(fileContent.getFile());
+                // fileContent.getLength() is always not null in FileContent.
+                // Using NettyOutbound.sendFile(Path, long, long) instead of NettyOutbound.sendFile(Path)
+                // the latter involves unnecessary file length lookup which is redundant with FileContent.
+                return reactorNettyOutbound.sendFile(
+                    fileContent.getFile(), fileContent.getPosition(), fileContent.getLength());
             } else if (binaryDataContent instanceof StringContent) {
-                return reactorNettyOutbound.sendString(Mono.defer(() -> Mono.just(binaryDataContent.toString())));
+                return reactorNettyOutbound.sendString(Mono.just(binaryDataContent.toString()));
             } else {
                 Flux<ByteBuf> nettyByteBufFlux = restRequest.getBody().map(Unpooled::wrappedBuffer);
                 return reactorNettyOutbound.send(nettyByteBufFlux);

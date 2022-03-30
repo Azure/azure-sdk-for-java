@@ -98,6 +98,10 @@ public final class FileContent extends BinaryDataContent {
         return this.length;
     }
 
+    public long getPosition() {
+        return this.position;
+    }
+
     @Override
     public String toString() {
         return new String(toBytes(), StandardCharsets.UTF_8);
