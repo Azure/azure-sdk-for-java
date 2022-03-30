@@ -591,11 +591,6 @@
       <artifactId>azure-spring-data-cosmos</artifactId>
       <version>3.20.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
     </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>spring-cloud-starter-azure-appconfiguration-config</artifactId>
-      <version>1.4.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-starter-azure-appconfiguration-config;current} -->
-    </dependency>
 	  <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-digitaltwins-core</artifactId>
@@ -624,7 +619,6 @@
               <includes>
                 <!-- Track 2 library with a non-standard groupId -->
                 <include>com.azure:azure-monitor-opentelemetry-exporter:[1.0.0-beta.6]</include> <!-- {x-include-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
-                <include>com.microsoft.azure:spring-cloud-starter-azure-appconfiguration-config:[1.4.0-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-starter-azure-appconfiguration-config;current} -->
               </includes>
             </bannedDependencies>
           </rules>
