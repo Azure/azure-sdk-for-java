@@ -20,6 +20,7 @@ jobs:
           Paths:
             - package.json
             - metadata/
+            - docs-ref-mapping/reference-unified.yml
           Repositories:
             - Name: $(DocRepoOwner)/$(DocRepoName)
               WorkingDirectory: $(DocRepoLocation)
