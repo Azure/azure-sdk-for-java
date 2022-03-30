@@ -31,20 +31,21 @@ def sdk_automation(config: dict) -> List[dict]:
 
     packages = []
 
-    readme_file_path = None
+    readme_file_paths = []
     for file_path in config['relatedReadmeMdFiles']:
         match = re.search(
-            'specification/([^/]+)/data-plane/([^/]+)/readme.md',
+            r'specification/([^/]+)/data-plane(/.*)*/readme.md',
             file_path,
             re.IGNORECASE,
         )
         if match:
-            readme_file_path = file_path
-            break
+            readme_file_paths.append(file_path)
+
+    processed_readme_file_paths = []
 
     for file_path in config['changedFiles']:
         match = re.search(
-            'specification/([^/]+)/data-plane/.*/([^/]+).json',
+            r'specification/([^/]+)/data-plane/.*/([^/]+).json',
             file_path,
             re.IGNORECASE,
         )
@@ -52,42 +53,49 @@ def sdk_automation(config: dict) -> List[dict]:
             service = match.group(1)
             file_name = match.group(2)
 
+            readme_file_path = find_readme(file_path, readme_file_paths)
             file_path = os.path.join(spec_root, file_path)
             readme_file_path = os.path.join(spec_root, readme_file_path) if readme_file_path else None
 
-            input_file, service, module = get_generate_parameters(service, file_name, file_path, readme_file_path)
+            if readme_file_paths and readme_file_path in processed_readme_file_paths:
+                continue
+            else:
+                if readme_file_path:
+                    processed_readme_file_paths.append(readme_file_path)
 
-            succeeded = generate(sdk_root, input_file,
-                                 service=service, module=module, security='', security_scopes='', title='',
-                                 autorest=AUTOREST_CORE_VERSION, use=AUTOREST_JAVA,
-                                 autorest_options='', readme_file=readme_file_path)
+                input_file, service, module = get_generate_parameters(service, file_name, file_path, readme_file_path)
 
-            generated_folder = 'sdk/{0}/{1}'.format(service, module)
+                succeeded = generate(sdk_root, input_file,
+                                     service=service, module=module, security='', security_scopes='', title='',
+                                     autorest=AUTOREST_CORE_VERSION, use=AUTOREST_JAVA,
+                                     autorest_options='', readme_file=readme_file_path)
 
-            if succeeded:
-                compile_package(sdk_root, GROUP_ID, module)
+                generated_folder = 'sdk/{0}/{1}'.format(service, module)
 
-            artifacts = [
-                '{0}/pom.xml'.format(generated_folder)
-            ]
-            artifacts += [
-                jar for jar in glob.glob('{0}/target/*.jar'.format(generated_folder))
-            ]
-            result = 'succeeded' if succeeded else 'failed'
+                if succeeded:
+                    compile_package(sdk_root, GROUP_ID, module)
 
-            packages.append({
-                'packageName': module,
-                'path': [
-                    generated_folder,
-                    CI_FILE_FORMAT.format(service),
-                    POM_FILE_FORMAT.format(service),
-                    'eng/versioning',
-                    'pom.xml'
-                ],
-                'artifacts': artifacts,
-                'apiViewArtifact': next(iter(glob.glob('{0}/target/*-sources.jar'.format(generated_folder))), None),
-                'result': result,
-            })
+                artifacts = [
+                    '{0}/pom.xml'.format(generated_folder)
+                ]
+                artifacts += [
+                    jar for jar in glob.glob('{0}/target/*.jar'.format(generated_folder))
+                ]
+                result = 'succeeded' if succeeded else 'failed'
+
+                packages.append({
+                    'packageName': module,
+                    'path': [
+                        generated_folder,
+                        CI_FILE_FORMAT.format(service),
+                        POM_FILE_FORMAT.format(service),
+                        'eng/versioning',
+                        'pom.xml'
+                    ],
+                    'artifacts': artifacts,
+                    'apiViewArtifact': next(iter(glob.glob('{0}/target/*-sources.jar'.format(generated_folder))), None),
+                    'result': result,
+                })
         else:
             logging.info('[Skip] changed file {0}'.format(file_path))
 
@@ -157,7 +165,8 @@ def generate(
 
             logging.info('[GENERATE] Autorest from README {}'.format(readme_file_path))
 
-            command = 'autorest --version={0} --use={1} --java --java.java-sdks-folder={2} --java.output-folder={2} {3}'\
+            command = 'autorest --version={0} --use={1} --java --java.java-sdks-folder={2} ' \
+                      '--java.output-folder={2} {3}'\
                 .format(
                     autorest,
                     use,
@@ -255,6 +264,20 @@ def get_generate_parameters(
         module = 'azure-{0}-{1}'.format(service, file_name_sans).lower()
 
     return input_file, service, module
+
+
+def find_readme(json_file_path: str, readme_file_paths: List[str]) -> str:
+    if not readme_file_paths:
+        return None
+
+    # ideally we'd like to match readme in more specific path
+    readme_file_paths = sorted(readme_file_paths, key=len, reverse=True)
+
+    json_dir_name = os.path.dirname(json_file_path)
+    for readme_file_path in readme_file_paths:
+        readme_dir_name = os.path.dirname(readme_file_path)
+        if json_dir_name.startswith(readme_dir_name):
+            return readme_file_path
 
 
 def update_readme(
