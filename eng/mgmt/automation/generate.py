@@ -47,8 +47,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         '-r',
         '--readme',
-        help=
-        'Readme path, Sample: "storage" or "specification/storage/resource-manager/readme.md"',
+        help='Readme path, Sample: "storage" or "specification/storage/resource-manager/readme.md"',
     )
     parser.add_argument('-t', '--tag', help='Specific tag')
     parser.add_argument('-v', '--version', help='Specific sdk version')

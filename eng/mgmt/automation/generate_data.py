@@ -34,7 +34,7 @@ def sdk_automation(config: dict) -> List[dict]:
     readme_file_path = None
     for file_path in config['relatedReadmeMdFiles']:
         match = re.search(
-            'specification/([^/]+)/data-plane/readme.md',
+            'specification/([^/]+)/data-plane/([^/]+)/readme.md',
             file_path,
             re.IGNORECASE,
         )
@@ -229,6 +229,7 @@ def get_generate_parameters(
 
     input_file = json_file_path
     module = None
+    print(readme_file_path)
     if readme_file_path:
         # try readme.java.md, it must contain 'output-folder' and
         # match pattern $(java-sdks-folder)/sdk/<service>/<module>
@@ -338,7 +339,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         '--input-file',
         required=False,
-        help='URL to OpenAPI 2.0 specification JSON as input file.',
+        help='URL to OpenAPI 2.0 specification JSON as input file. "service" and "module" is required.',
     )
     parser.add_argument(
         '--readme-file',
@@ -347,12 +348,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         '--service',
-        required=True,
+        required=False,
         help='Service name under sdk/. Sample: storage',
     )
     parser.add_argument(
         '--module',
-        required=True,
+        required=False,
         help='Module name under sdk/<service>/. Sample: azure-storage-blob',
     )
     parser.add_argument(
@@ -421,6 +422,11 @@ def main():
             args['security'] = 'AzureKey'
     if not args['security_scopes'] and args['credential_scopes']:
         args['security_scopes'] = args['credential_scopes']
+
+    if args['readme_file']:
+        input_file, service, module = get_generate_parameters(None, None, None, args['readme_file'])
+        args['service'] = service
+        args['module'] = module
 
     succeeded = generate(sdk_root, **args)
     if succeeded:
