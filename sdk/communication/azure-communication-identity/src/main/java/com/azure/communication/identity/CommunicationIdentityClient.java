@@ -10,14 +10,11 @@ import java.util.stream.StreamSupport;
 
 import com.azure.communication.identity.implementation.CommunicationIdentitiesImpl;
 import com.azure.communication.identity.implementation.CommunicationIdentityClientImpl;
-import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenRequest;
-import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenResult;
-import com.azure.communication.identity.implementation.models.CommunicationIdentityCreateRequest;
-import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessToken;
-import com.azure.communication.identity.implementation.models.TeamsUserAccessTokenRequest;
+import com.azure.communication.identity.implementation.models.*;
 import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
 import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.identity.util.RequestModelCreator;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -231,13 +228,14 @@ public final class CommunicationIdentityClient {
      * Exchanges an AAD access token of a Teams User for a new Communication Identity access token.
      *
      * @param teamsUserAadToken AAD access token of a Teams User to acquire Communication Identity access token.
+     * @param appId Client ID of an Azure AD application to be verified against the appId claim in the Azure AD access token.
+     * @param userId Object ID of an Azure AD user (Teams User) to be verified against the OID claim in the Azure AD access token.
      * @return Communication Identity access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccessToken getTokenForTeamsUser(String teamsUserAadToken) {
-        TeamsUserAccessTokenRequest requestBody = new TeamsUserAccessTokenRequest();
-        requestBody.setToken(teamsUserAadToken);
-        CommunicationIdentityAccessToken rawToken = client.getTeamsUserAccessToken(requestBody);
+    public AccessToken getTokenForTeamsUser(String teamsUserAadToken, String appId, String userId) {
+        TeamsUserExchangeTokenRequest requestBody = RequestModelCreator.createTeamsUserExchangeTokenRequest(teamsUserAadToken, appId, userId);
+        CommunicationIdentityAccessToken rawToken = client.exchangeTeamsUserAccessToken(requestBody);
         return new AccessToken(rawToken.getToken(), rawToken.getExpiresOn());
     }
 
@@ -245,16 +243,17 @@ public final class CommunicationIdentityClient {
      * Exchanges an AAD access token of a Teams User for a new Communication Identity access token.
      *
      * @param teamsUserAadToken AAD access token of a Teams User to acquire Communication Identity access token.
+     * @param appId Client ID of an Azure AD application to be verified against the appId claim in the Azure AD access token.
+     * @param userId Object ID of an Azure AD user (Teams User) to be verified against the OID claim in the Azure AD access token.
      * @param context the context of the request. Can also be null or
      *                          Context.NONE.
      * @return Communication Identity access token with response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccessToken> getTokenForTeamsUserWithResponse(String teamsUserAadToken, Context context) {
+    public Response<AccessToken> getTokenForTeamsUserWithResponse(String teamsUserAadToken, String appId, String userId, Context context) {
         context = context == null ? Context.NONE : context;
-        TeamsUserAccessTokenRequest requestBody = new TeamsUserAccessTokenRequest();
-        requestBody.setToken(teamsUserAadToken);
-        Response<CommunicationIdentityAccessToken> response =  client.getTeamsUserAccessTokenWithResponseAsync(requestBody, context)
+        TeamsUserExchangeTokenRequest requestBody = RequestModelCreator.createTeamsUserExchangeTokenRequest(teamsUserAadToken, appId, userId);
+        Response<CommunicationIdentityAccessToken> response =  client.exchangeTeamsUserAccessTokenWithResponseAsync(requestBody, context)
             .block();
         if (response == null || response.getValue() == null) {
             throw logger.logExceptionAsError(new IllegalStateException("Service failed to return a response or expected value."));

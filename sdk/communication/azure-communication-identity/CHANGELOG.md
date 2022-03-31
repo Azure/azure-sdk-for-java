@@ -3,16 +3,9 @@
 ## 1.2.0 (Unreleased)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-## 1.2.0-beta.2 (Unreleased)
-
-### Features Added
+- Added support to build custom Teams endpoint using M365 Teams identities:
+    - Added `getTokenForTeamsUser(String teamsUserAadToken, String appId, String userId)` method that provides the ability to exchange an AAD access token of a Teams user for a Communication Identity access token to `CommunicationIdentityClient`.
+- Removed `ServiceVersion.V2021_10_31_PREVIEW`
 - Added interfaces from `com.azure.core.client.traits` to `CommunicationIdentityClientBuilder`.
 - Added `retryOptions` to `CommunicationIdentityClientBuilder`.
 

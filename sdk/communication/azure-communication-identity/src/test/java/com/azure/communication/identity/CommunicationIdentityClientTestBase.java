@@ -64,6 +64,18 @@ public class CommunicationIdentityClientTestBase extends TestBase {
     private static final String COMMUNICATION_MSAL_PASSWORD = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_MSAL_PASSWORD", "Sanitized");
 
+    protected static final String COMMUNICATION_CLIENT_ID = Configuration.getGlobalConfiguration()
+            .get("COMMUNICATION_CLIENT_ID", "Sanitized");
+
+    protected static final String COMMUNICATION_OBJECT_ID = Configuration.getGlobalConfiguration()
+            .get("COMMUNICATION_OBJECT_ID", "Sanitized");
+
+    protected static final String COMMUNICATION_WRONG_CLIENT_ID = Configuration.getGlobalConfiguration()
+            .get("COMMUNICATION_WRONG_CLIENT_ID", "Sanitized");
+
+    protected static final String COMMUNICATION_WRONG_OBJECT_ID = Configuration.getGlobalConfiguration()
+            .get("COMMUNICATION_WRONG_OBJECT_ID", "Sanitized");
+
     private static final String COMMUNICATION_SKIP_INT_IDENTITY_EXCHANGE_TOKEN_TEST = Configuration.getGlobalConfiguration()
         .get("SKIP_INT_IDENTITY_EXCHANGE_TOKEN_TEST", "false");
 

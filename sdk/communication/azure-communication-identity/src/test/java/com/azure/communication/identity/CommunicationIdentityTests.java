@@ -10,10 +10,13 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -364,7 +367,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = setupClient(builder, "getTokenForTeamsUserWithEmptyTokenSync");
         // Action & Assert
         try {
-            AccessToken issuedToken = client.getTokenForTeamsUser("");
+            AccessToken issuedToken = client.getTokenForTeamsUser("", COMMUNICATION_CLIENT_ID, COMMUNICATION_OBJECT_ID);
         } catch (Exception exception) {
             assertNotNull(exception.getMessage());
             assertTrue(exception.getMessage().contains("401"));
@@ -373,21 +376,44 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         fail("An exception should have been thrown.");
     }
 
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getTokenForTeamsUserWithNull(HttpClient httpClient) {
+    @ParameterizedTest(name = "when {4} is null")
+    @MethodSource("getNullParamsForGetTokenForTeamsUser")
+    public void getTokenForTeamsUserWithNullParams(HttpClient httpClient, String teamsUserAadToken, String appId, String userId, String exceptionMessage) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         client = setupClient(builder, "getTokenForTeamsUserWithNullSync");
         // Action & Assert
         try {
-            AccessToken issuedToken = client.getTokenForTeamsUser(null);
+            AccessToken issuedToken = client.getTokenForTeamsUser(teamsUserAadToken, appId, userId);
         } catch (Exception exception) {
             assertNotNull(exception.getMessage());
-            assertTrue(exception.getMessage().contains("token"));
+            assertTrue(exception.getMessage().contains(exceptionMessage));
             return;
         }
         fail("An exception should have been thrown.");
+    }
+
+    /**
+     * Generates various option types for testing getTokenForTeamsUserWithNullParams() method.
+     *
+     * @return A stream of options to parameterized test.
+     */
+    private static Stream<Arguments> getNullParamsForGetTokenForTeamsUser() {
+        List<Arguments> argumentsList = new ArrayList<>();
+        List<String[]> params = new ArrayList<String[]>() {{
+            add(new String[]{null, null, null, "token"});
+            add(new String[]{null, COMMUNICATION_CLIENT_ID, COMMUNICATION_OBJECT_ID, "token"});
+        }};
+        try {
+            String teamsUserAadToken = generateTeamsUserAadToken();
+            params.add(new String[]{teamsUserAadToken, null, COMMUNICATION_OBJECT_ID, "appId"});
+            params.add(new String[]{teamsUserAadToken, COMMUNICATION_CLIENT_ID, null, "userId"});
+        } catch (Exception e) {
+        }
+        getHttpClients()
+                .forEach(httpClient -> params.stream()
+                        .forEach(param -> argumentsList.add(Arguments.of(httpClient, param[0], param[1], param[2], param[3]))));
+        return argumentsList.stream();
     }
 
     @ParameterizedTest
@@ -398,7 +424,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = setupClient(builder, "getTokenForTeamsUserWithInvalidTokenSync");
         // Action & Assert
         try {
-            AccessToken issuedToken = client.getTokenForTeamsUser("invalid");
+            AccessToken issuedToken = client.getTokenForTeamsUser("invalid", COMMUNICATION_CLIENT_ID, COMMUNICATION_OBJECT_ID);
         } catch (Exception exception) {
             assertNotNull(exception.getMessage());
             assertTrue(exception.getMessage().contains("401"));
@@ -415,7 +441,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = setupClient(builder, "getTokenForTeamsUserWithExpiredTokenSync");
         // Action & Assert
         try {
-            AccessToken issuedToken = client.getTokenForTeamsUser(COMMUNICATION_EXPIRED_TEAMS_TOKEN);
+            AccessToken issuedToken = client.getTokenForTeamsUser(COMMUNICATION_EXPIRED_TEAMS_TOKEN, COMMUNICATION_CLIENT_ID, COMMUNICATION_OBJECT_ID);
         } catch (Exception exception) {
             assertNotNull(exception.getMessage());
             assertTrue(exception.getMessage().contains("401"));
@@ -437,7 +463,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         // Action & Assert
         try {
             String teamsUserAadToken = generateTeamsUserAadToken();
-            AccessToken issuedToken = client.getTokenForTeamsUser(teamsUserAadToken);
+            AccessToken issuedToken = client.getTokenForTeamsUser(teamsUserAadToken, COMMUNICATION_CLIENT_ID, COMMUNICATION_OBJECT_ID);
             verifyTokenNotEmpty(issuedToken);
         } catch (Exception exception) {
             fail("Could not generate teams token");
@@ -458,7 +484,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         // Action & Assert
         try {
             String teamsUserAadToken = generateTeamsUserAadToken();
-            Response<AccessToken> response = client.getTokenForTeamsUserWithResponse(teamsUserAadToken, Context.NONE);
+            Response<AccessToken> response = client.getTokenForTeamsUserWithResponse(teamsUserAadToken, COMMUNICATION_CLIENT_ID, COMMUNICATION_OBJECT_ID, Context.NONE);
             assertEquals(200, response.getStatusCode(), "Expect status code to be 200");
             verifyTokenNotEmpty(response.getValue());
         } catch (Exception exception) {
@@ -479,7 +505,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         // Action & Assert
         try {
             String teamsUserAadToken = generateTeamsUserAadToken();
-            AccessToken issuedToken = client.getTokenForTeamsUser(teamsUserAadToken);
+            AccessToken issuedToken = client.getTokenForTeamsUser(teamsUserAadToken, COMMUNICATION_CLIENT_ID, COMMUNICATION_OBJECT_ID);
             verifyTokenNotEmpty(issuedToken);
         } catch (Exception e) {
             fail("Could not generate teams token");
@@ -499,7 +525,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         // Action & Assert
         try {
             String teamsUserAadToken = generateTeamsUserAadToken();
-            Response<AccessToken> response = client.getTokenForTeamsUserWithResponse(teamsUserAadToken, Context.NONE);
+            Response<AccessToken> response = client.getTokenForTeamsUserWithResponse(teamsUserAadToken, COMMUNICATION_CLIENT_ID, COMMUNICATION_OBJECT_ID, Context.NONE);
             assertEquals(200, response.getStatusCode(), "Expect status code to be 200");
             verifyTokenNotEmpty(response.getValue());
         } catch (Exception e) {

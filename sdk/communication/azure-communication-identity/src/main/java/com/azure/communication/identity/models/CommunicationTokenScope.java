@@ -16,9 +16,6 @@ public final class CommunicationTokenScope extends ExpandableStringEnum<Communic
     /** Static value voip for CommunicationTokenScope. */
     public static final CommunicationTokenScope VOIP = fromString("voip");
 
-    /** Static value email for CommunicationTokenScope. */
-    public static final CommunicationTokenScope EMAIL = fromString("email");
-
     /**
      * Creates or finds a CommunicationTokenScope from its string representation.
      *

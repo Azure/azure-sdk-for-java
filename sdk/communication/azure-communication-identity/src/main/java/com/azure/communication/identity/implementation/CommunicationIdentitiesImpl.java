@@ -9,7 +9,7 @@ import com.azure.communication.identity.implementation.models.CommunicationIdent
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenRequest;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenResult;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityCreateRequest;
-import com.azure.communication.identity.implementation.models.TeamsUserAccessTokenRequest;
+import com.azure.communication.identity.implementation.models.TeamsUserExchangeTokenRequest;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -86,13 +86,13 @@ public final class CommunicationIdentitiesImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/teamsUser/:getToken")
+        @Post("/teamsUser/:exchangeAccessToken")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<CommunicationIdentityAccessToken>> getTeamsUserAccessToken(
+        Mono<Response<CommunicationIdentityAccessToken>> exchangeTeamsUserAccessToken(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") TeamsUserAccessTokenRequest body,
+                @BodyParam("application/json") TeamsUserExchangeTokenRequest body,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -406,30 +406,30 @@ public final class CommunicationIdentitiesImpl {
     }
 
     /**
-     * Exchange an AAD access token of a Teams user for a new Communication Identity access token with a matching
-     * expiration time.
+     * Exchange an Azure Active Directory (Azure AD) access token of a Teams user for a new Communication Identity
+     * access token with a matching expiration time.
      *
-     * @param body AAD access token of a Teams user.
+     * @param body Request payload for the token exchange.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CommunicationIdentityAccessToken>> getTeamsUserAccessTokenWithResponseAsync(
-            TeamsUserAccessTokenRequest body) {
+    public Mono<Response<CommunicationIdentityAccessToken>> exchangeTeamsUserAccessTokenWithResponseAsync(
+            TeamsUserExchangeTokenRequest body) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.getTeamsUserAccessToken(
+                        service.exchangeTeamsUserAccessToken(
                                 this.client.getEndpoint(), this.client.getApiVersion(), body, accept, context));
     }
 
     /**
-     * Exchange an AAD access token of a Teams user for a new Communication Identity access token with a matching
-     * expiration time.
+     * Exchange an Azure Active Directory (Azure AD) access token of a Teams user for a new Communication Identity
+     * access token with a matching expiration time.
      *
-     * @param body AAD access token of a Teams user.
+     * @param body Request payload for the token exchange.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -437,26 +437,27 @@ public final class CommunicationIdentitiesImpl {
      * @return an access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CommunicationIdentityAccessToken>> getTeamsUserAccessTokenWithResponseAsync(
-            TeamsUserAccessTokenRequest body, Context context) {
+    public Mono<Response<CommunicationIdentityAccessToken>> exchangeTeamsUserAccessTokenWithResponseAsync(
+            TeamsUserExchangeTokenRequest body, Context context) {
         final String accept = "application/json";
-        return service.getTeamsUserAccessToken(
+        return service.exchangeTeamsUserAccessToken(
                 this.client.getEndpoint(), this.client.getApiVersion(), body, accept, context);
     }
 
     /**
-     * Exchange an AAD access token of a Teams user for a new Communication Identity access token with a matching
-     * expiration time.
+     * Exchange an Azure Active Directory (Azure AD) access token of a Teams user for a new Communication Identity
+     * access token with a matching expiration time.
      *
-     * @param body AAD access token of a Teams user.
+     * @param body Request payload for the token exchange.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CommunicationIdentityAccessToken> getTeamsUserAccessTokenAsync(TeamsUserAccessTokenRequest body) {
-        return getTeamsUserAccessTokenWithResponseAsync(body)
+    public Mono<CommunicationIdentityAccessToken> exchangeTeamsUserAccessTokenAsync(
+            TeamsUserExchangeTokenRequest body) {
+        return exchangeTeamsUserAccessTokenWithResponseAsync(body)
                 .flatMap(
                         (Response<CommunicationIdentityAccessToken> res) -> {
                             if (res.getValue() != null) {
@@ -468,10 +469,10 @@ public final class CommunicationIdentitiesImpl {
     }
 
     /**
-     * Exchange an AAD access token of a Teams user for a new Communication Identity access token with a matching
-     * expiration time.
+     * Exchange an Azure Active Directory (Azure AD) access token of a Teams user for a new Communication Identity
+     * access token with a matching expiration time.
      *
-     * @param body AAD access token of a Teams user.
+     * @param body Request payload for the token exchange.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -479,9 +480,9 @@ public final class CommunicationIdentitiesImpl {
      * @return an access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CommunicationIdentityAccessToken> getTeamsUserAccessTokenAsync(
-            TeamsUserAccessTokenRequest body, Context context) {
-        return getTeamsUserAccessTokenWithResponseAsync(body, context)
+    public Mono<CommunicationIdentityAccessToken> exchangeTeamsUserAccessTokenAsync(
+            TeamsUserExchangeTokenRequest body, Context context) {
+        return exchangeTeamsUserAccessTokenWithResponseAsync(body, context)
                 .flatMap(
                         (Response<CommunicationIdentityAccessToken> res) -> {
                             if (res.getValue() != null) {
@@ -493,25 +494,25 @@ public final class CommunicationIdentitiesImpl {
     }
 
     /**
-     * Exchange an AAD access token of a Teams user for a new Communication Identity access token with a matching
-     * expiration time.
+     * Exchange an Azure Active Directory (Azure AD) access token of a Teams user for a new Communication Identity
+     * access token with a matching expiration time.
      *
-     * @param body AAD access token of a Teams user.
+     * @param body Request payload for the token exchange.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationIdentityAccessToken getTeamsUserAccessToken(TeamsUserAccessTokenRequest body) {
-        return getTeamsUserAccessTokenAsync(body).block();
+    public CommunicationIdentityAccessToken exchangeTeamsUserAccessToken(TeamsUserExchangeTokenRequest body) {
+        return exchangeTeamsUserAccessTokenAsync(body).block();
     }
 
     /**
-     * Exchange an AAD access token of a Teams user for a new Communication Identity access token with a matching
-     * expiration time.
+     * Exchange an Azure Active Directory (Azure AD) access token of a Teams user for a new Communication Identity
+     * access token with a matching expiration time.
      *
-     * @param body AAD access token of a Teams user.
+     * @param body Request payload for the token exchange.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -519,9 +520,9 @@ public final class CommunicationIdentitiesImpl {
      * @return an access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CommunicationIdentityAccessToken> getTeamsUserAccessTokenWithResponse(
-            TeamsUserAccessTokenRequest body, Context context) {
-        return getTeamsUserAccessTokenWithResponseAsync(body, context).block();
+    public Response<CommunicationIdentityAccessToken> exchangeTeamsUserAccessTokenWithResponse(
+            TeamsUserExchangeTokenRequest body, Context context) {
+        return exchangeTeamsUserAccessTokenWithResponseAsync(body, context).block();
     }
 
     /**

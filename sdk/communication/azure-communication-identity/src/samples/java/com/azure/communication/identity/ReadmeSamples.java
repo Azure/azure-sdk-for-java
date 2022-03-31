@@ -171,9 +171,10 @@ public class ReadmeSamples {
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
         try {
             String teamsUserAadToken = generateTeamsUserAadToken();
-
+            String appId = "<Client ID of an Azure AD application>";
+            String userId = "<Object ID of an Azure AD user (Teams User)>";
             // BEGIN: readme-sample-getTokenForTeamsUser
-            AccessToken accessToken = communicationIdentityClient.getTokenForTeamsUser(teamsUserAadToken);
+            AccessToken accessToken = communicationIdentityClient.getTokenForTeamsUser(teamsUserAadToken, appId, userId);
             System.out.println("User token value: " + accessToken.getToken());
             System.out.println("Expires at: " + accessToken.getExpiresAt());
             // END: readme-sample-getTokenForTeamsUser

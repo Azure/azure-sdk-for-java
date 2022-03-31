@@ -380,7 +380,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         try {
             String teamsUserAadToken = generateTeamsUserAadToken();
             // Action & Assert
-            Mono<AccessToken> response = asyncClient.getTokenForTeamsUser(teamsUserAadToken);
+            Mono<AccessToken> response = asyncClient.getTokenForTeamsUser(teamsUserAadToken, COMMUNICATION_CLIENT_ID, COMMUNICATION_OBJECT_ID);
             StepVerifier.create(response)
                 .assertNext(issuedToken -> verifyTokenNotEmpty(issuedToken))
                 .verifyComplete();
@@ -400,7 +400,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         asyncClient = setupAsyncClient(builder, "getTokenForTeamsUserWithEmptyToken");
         // Action & Assert
-        Mono<AccessToken> response = asyncClient.getTokenForTeamsUser("");
+        Mono<AccessToken> response = asyncClient.getTokenForTeamsUser("", COMMUNICATION_CLIENT_ID, COMMUNICATION_OBJECT_ID);
         StepVerifier.create(response)
             .verifyErrorSatisfies(throwable -> {
                 assertNotNull(throwable.getMessage());
@@ -419,7 +419,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         asyncClient = setupAsyncClient(builder, "getTokenForTeamsUserWithNull");
         // Action & Assert
-        Mono<AccessToken> response = asyncClient.getTokenForTeamsUser(null);
+        Mono<AccessToken> response = asyncClient.getTokenForTeamsUser(null, COMMUNICATION_CLIENT_ID, COMMUNICATION_OBJECT_ID);
         StepVerifier.create(response)
             .verifyErrorSatisfies(throwable -> {
                 assertNotNull(throwable.getMessage());
@@ -438,7 +438,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         asyncClient = setupAsyncClient(builder, "getTokenForTeamsUserWithInvalidToken");
         // Action & Assert
-        Mono<AccessToken> response = asyncClient.getTokenForTeamsUser("invalid");
+        Mono<AccessToken> response = asyncClient.getTokenForTeamsUser("invalid", COMMUNICATION_CLIENT_ID, COMMUNICATION_OBJECT_ID);
         StepVerifier.create(response)
             .verifyErrorSatisfies(throwable -> {
                 assertNotNull(throwable.getMessage());
@@ -459,7 +459,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         try {
             String teamsUserAadToken = generateTeamsUserAadToken();
             // Action & Assert
-            Mono<Response<AccessToken>> response = asyncClient.getTokenForTeamsUserWithResponse(teamsUserAadToken);
+            Mono<Response<AccessToken>> response = asyncClient.getTokenForTeamsUserWithResponse(teamsUserAadToken, COMMUNICATION_CLIENT_ID, COMMUNICATION_OBJECT_ID);
             StepVerifier.create(response)
                 .assertNext(issuedTokenResponse -> {
                     verifyTokenNotEmpty(issuedTokenResponse.getValue());
@@ -633,7 +633,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         try {
             String teamsUserAadToken = generateTeamsUserAadToken();
             // Action & Assert
-            Mono<AccessToken> response = asyncClient.getTokenForTeamsUser(teamsUserAadToken);
+            Mono<AccessToken> response = asyncClient.getTokenForTeamsUser(teamsUserAadToken, COMMUNICATION_CLIENT_ID, COMMUNICATION_OBJECT_ID);
             StepVerifier.create(response)
                 .assertNext(issuedToken -> verifyTokenNotEmpty(issuedToken))
                 .verifyComplete();
@@ -655,7 +655,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         try {
             String teamsUserAadToken = generateTeamsUserAadToken();
             // Action & Assert
-            Mono<Response<AccessToken>> response = asyncClient.getTokenForTeamsUserWithResponse(teamsUserAadToken);
+            Mono<Response<AccessToken>> response = asyncClient.getTokenForTeamsUserWithResponse(teamsUserAadToken, COMMUNICATION_CLIENT_ID, COMMUNICATION_OBJECT_ID);
             StepVerifier.create(response)
                 .assertNext(issuedTokenResponse -> {
                     verifyTokenNotEmpty(issuedTokenResponse.getValue());
