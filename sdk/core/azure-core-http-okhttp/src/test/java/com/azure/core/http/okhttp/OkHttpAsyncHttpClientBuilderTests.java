@@ -206,11 +206,8 @@ public class OkHttpAsyncHttpClientBuilderTests {
     }
 
 
-    /**
-     * Tests building a client with a given {@code connectionTimeout}.
-     */
     @Test
-    public void buildWithFollowRedirect() {
+    public void buildWithFollowRedirectSetToTrue() {
         HttpClient okClient = new OkHttpAsyncHttpClientBuilder()
             .followRedirects(true)
             .build();
@@ -218,16 +215,22 @@ public class OkHttpAsyncHttpClientBuilderTests {
         StepVerifier.create(okClient.send(new HttpRequest(HttpMethod.GET, redirectUrl)))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
+    }
 
-        okClient = new OkHttpAsyncHttpClientBuilder()
+    @Test
+    public void buildWithFollowRedirectSetToFalse() {
+        HttpClient okClient = new OkHttpAsyncHttpClientBuilder()
             .followRedirects(false)
             .build();
 
         StepVerifier.create(okClient.send(new HttpRequest(HttpMethod.GET, redirectUrl)))
             .assertNext(response -> assertEquals(307, response.getStatusCode()))
             .verifyComplete();
+    }
 
-        okClient = new OkHttpAsyncHttpClientBuilder().build();
+    @Test
+    public void buildWithFollowRedirectDefault() {
+        HttpClient okClient = new OkHttpAsyncHttpClientBuilder().build();
 
         StepVerifier.create(okClient.send(new HttpRequest(HttpMethod.GET, redirectUrl)))
             .assertNext(response -> assertEquals(307, response.getStatusCode()))

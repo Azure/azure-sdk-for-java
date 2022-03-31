@@ -214,12 +214,12 @@ public class OkHttpAsyncHttpClientBuilder {
     }
 
     /**
-     * Sets the followRedirect flag on the underlying OkHttp-backed {@link com.azure.core.http.HttpClient}.
+     * <p>Sets the followRedirect flag on the underlying OkHttp-backed {@link com.azure.core.http.HttpClient}.</p>
      *
-     * If this policy is set to 'true' OkHttp-backed {@link com.azure.core.http.HttpClient} will follow redirects automatically
-     * If your HTTP pipeline is configured to call redirect policy it will not be called if this value is true.
+     * <p>If this is set to 'true' redirects will be followed automatically, and
+     * if your HTTP pipeline is configured with a redirect policy it will not be called.</p>
      *
-     * @param followRedirect Whether OKHttpClient should follow redirects by default.
+     * @param followRedirect The followRedirects value to use.
      * @return The updated OkHttpAsyncHttpClientBuilder object.
      */
     public OkHttpAsyncHttpClientBuilder followRedirects(boolean followRedirect) {
@@ -282,10 +282,8 @@ public class OkHttpAsyncHttpClientBuilder {
             }
         }
 
-        // Do not follow redirects by default. We should let the pipeline have more control of this.
-        if (!this.followRedirects) {
-            httpClientBuilder.followRedirects(false);
-        }
+        // Set the followRedirects property.
+        httpClientBuilder.followRedirects(this.followRedirects);
 
         return new OkHttpAsyncHttpClient(httpClientBuilder.build());
     }
