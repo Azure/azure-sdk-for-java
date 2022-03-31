@@ -1,9 +1,9 @@
 # Release History
 
-## 4.3.0 (2022-04-05)
+## 4.3.0 (2022-03-31)
 
 ### Features Added
-- Added support for service version `7.3`
+- Added support for service version `7.3`.
 
 ## 4.2.8 (2022-03-17)
 
