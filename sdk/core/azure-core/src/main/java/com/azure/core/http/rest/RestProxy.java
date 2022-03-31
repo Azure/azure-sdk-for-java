@@ -448,21 +448,9 @@ public final class RestProxy implements InvocationHandler {
                     methodParser.getUnexpectedException(responseStatusCode), decodedResponse.getSourceResponse(),
                     null, null));
             }))
-            .flatMap(responseBytes -> decodedResponse.getDecodedBody(responseBytes)
-                .switchIfEmpty(Mono.defer(() -> {
-                    // decodedBody() emits empty, indicate unable to decode 'responseContent',
-                    // create exception with un-decodable content string and without exception body object.
-                    return Mono.error(instantiateUnexpectedException(
-                        methodParser.getUnexpectedException(responseStatusCode),
-                        decodedResponse.getSourceResponse(), responseBytes, null));
-                }))
-                .flatMap(decodedBody -> {
-                    // decodedBody() emits empty, indicate unable to decode 'responseContent',
-                    // create exception with un-decodable content string and without exception body object.
-                    return Mono.error(instantiateUnexpectedException(
-                        methodParser.getUnexpectedException(responseStatusCode),
-                        decodedResponse.getSourceResponse(), responseBytes, decodedBody));
-                }));
+            .flatMap(responseBytes -> Mono.error(instantiateUnexpectedException(
+                methodParser.getUnexpectedException(responseStatusCode), decodedResponse.getSourceResponse(),
+                responseBytes, decodedResponse.getDecodedBody(responseBytes))));
     }
 
     private Mono<?> handleRestResponseReturnType(final HttpDecodedResponse response,
@@ -568,7 +556,7 @@ public final class RestProxy implements InvocationHandler {
             asyncResult = BinaryData.fromFlux(response.getSourceResponse().getBody());
         } else {
             // Mono<Object> or Mono<Page<T>>
-            asyncResult = response.getDecodedBody((byte[]) null);
+            asyncResult = response.getSourceResponse().getBodyAsByteArray().map(response::getDecodedBody);
         }
         return asyncResult;
     }
