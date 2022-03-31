@@ -148,18 +148,20 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteIfExists -->
      * <pre>
-     * client.deleteIfExists&#40;&#41;;
-     * System.out.println&#40;&quot;Delete request completed&quot;&#41;;
+     * boolean result = client.deleteIfExists&#40;&#41;;
+     * System.out.println&#40;&quot;Delete request completed: &quot; + result&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteIfExists -->
      *
      * <p>For more information see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
      * Docs</a></p>
+     * @return {@code true} if directory is successfully deleted, {@code false} if directory does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteIfExists() {
-        deleteIfExistsWithResponse(false, null, null, Context.NONE);
+    public boolean deleteIfExists() {
+        Response<Void> response = deleteIfExistsWithResponse(false, null, null, Context.NONE);
+        return response != null && response.getStatusCode() == 200;
     }
 
     /**
@@ -198,8 +200,8 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteIfExistsWithResponse(boolean recursive, DataLakeRequestConditions requestConditions,
         Duration timeout, Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(dataLakePathAsyncClient.deleteIfExistsWithResponse(recursive, requestConditions,
-            context), timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(dataLakePathAsyncClient.deleteIfExistsWithResponse(recursive,
+            requestConditions, context), timeout);
     }
 
     /**
@@ -337,7 +339,8 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataLakeFileClient createFileIfNotExists(String fileName) {
-        Response<DataLakeFileClient> response = createFileIfNotExistsWithResponse(fileName, new DataLakePathCreateOptions(), null, null);
+        Response<DataLakeFileClient> response = createFileIfNotExistsWithResponse(fileName,
+            new DataLakePathCreateOptions(), null, null);
         return response == null ? null : response.getValue();
     }
 
@@ -375,11 +378,11 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * to interact with the file created, or null if specified file already exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataLakeFileClient> createFileIfNotExistsWithResponse(String fileName, DataLakePathCreateOptions options,
-        Duration timeout, Context context) {
+    public Response<DataLakeFileClient> createFileIfNotExistsWithResponse(String fileName, DataLakePathCreateOptions
+        options, Duration timeout, Context context) {
         DataLakeFileClient dataLakeFileClient = getFileClient(fileName);
-        Response<PathInfo> response = StorageImplUtils.blockWithOptionalTimeout(dataLakeFileClient.dataLakePathAsyncClient
-            .createIfNotExistsWithResponse(options, context), timeout);
+        Response<PathInfo> response = StorageImplUtils.blockWithOptionalTimeout(
+            dataLakeFileClient.dataLakePathAsyncClient.createIfNotExistsWithResponse(options, context), timeout);
         return response != null ? new SimpleResponse<>(response, dataLakeFileClient) : null;
     }
 
@@ -442,16 +445,18 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteFileIfExists#String -->
      * <pre>
-     * client.deleteFileIfExists&#40;fileName&#41;;
-     * System.out.println&#40;&quot;Delete request completed&quot;&#41;;
+     * boolean result = client.deleteFileIfExists&#40;fileName&#41;;
+     * System.out.println&#40;&quot;Delete request completed: &quot; + result&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteFileIfExists#String -->
      *
      * @param fileName Name of the file to delete.
+     * @return {@code true} if the file is successfully deleted, {@code false} if the file does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteFileIfExists(String fileName) {
-        deleteFileIfExistsWithResponse(fileName, null, null, Context.NONE);
+    public boolean deleteFileIfExists(String fileName) {
+        Response<Void> response = deleteFileIfExistsWithResponse(fileName, null, null, Context.NONE);
+        return response != null && response.getStatusCode() == 200;
     }
 
     /**
@@ -739,16 +744,18 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteSubdirectoryIfExists#String -->
      * <pre>
-     * client.deleteSubdirectoryIfExists&#40;directoryName&#41;;
-     * System.out.println&#40;&quot;Delete request completed&quot;&#41;;
+     * boolean result = client.deleteSubdirectoryIfExists&#40;directoryName&#41;;
+     * System.out.println&#40;&quot;Delete request completed: &quot; + result&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteSubdirectoryIfExists#String -->
      *
      * @param subdirectoryName Name of the subdirectory to delete.
+     * @return {@code true} if subdirectory is successfully deleted, {@code false} if subdirectory does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteSubdirectoryIfExists(String subdirectoryName) {
-        deleteSubdirectoryIfExistsWithResponse(subdirectoryName, false, null, null, Context.NONE);
+    public boolean deleteSubdirectoryIfExists(String subdirectoryName) {
+        Response<Void> res = deleteSubdirectoryIfExistsWithResponse(subdirectoryName, false, null, null, Context.NONE);
+        return res != null && res.getStatusCode() == 200;
     }
 
     /**
@@ -785,7 +792,8 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteSubdirectoryIfExistsWithResponse(String subdirectoryName, boolean recursive,
         DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
-        DataLakeDirectoryAsyncClient dataLakeDirectoryClient = dataLakeDirectoryAsyncClient.getSubdirectoryAsyncClient(subdirectoryName);
+        DataLakeDirectoryAsyncClient dataLakeDirectoryClient = dataLakeDirectoryAsyncClient
+            .getSubdirectoryAsyncClient(subdirectoryName);
         return StorageImplUtils.blockWithOptionalTimeout(dataLakeDirectoryClient.deleteIfExistsWithResponse(recursive,
             requestConditions, context), timeout);
     }

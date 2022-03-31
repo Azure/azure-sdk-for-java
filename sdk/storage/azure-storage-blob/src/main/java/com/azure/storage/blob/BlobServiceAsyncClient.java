@@ -394,12 +394,12 @@ public final class BlobServiceAsyncClient {
      * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExists#String -->
      *
      * @param containerName Name of the container to delete
-     * @return A reactive {@link Mono} signaling completion. {@code True} indicates that the container was deleted.
-     * {@code False} indicates the container does not exist at this location.
+     * @return A reactive {@link Mono} signaling completion. {@code true} indicates that the container was deleted.
+     * {@code false} indicates the container does not exist at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteBlobContainerIfExists(String containerName) {
-        return deleteBlobContainerIfExistsWithResponse(containerName).flatMap(response -> Mono.just(true))
+        return deleteBlobContainerIfExistsWithResponse(containerName).map(response -> true)
             .switchIfEmpty(Mono.just(false));
     }
 
@@ -436,8 +436,8 @@ public final class BlobServiceAsyncClient {
     Mono<Response<Void>> deleteBlobContainerIfExistsWithResponse(String containerName, Context context) {
         try {
             return deleteBlobContainerWithResponse(containerName, context)
-                .onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException)t).getStatusCode() == 404,
-                    t -> Mono.empty());
+                .onErrorResume(t -> t instanceof BlobStorageException
+                    && ((BlobStorageException)t).getStatusCode() == 404, t -> Mono.empty());
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

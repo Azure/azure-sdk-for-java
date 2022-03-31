@@ -1,0 +1,69 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.blob.core.windows.net/a814327e0a814327efbf521091e034c2e578642f99b7?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.16.0-beta.1 azsdk-java-azure-storage-file-datalake/12.9.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7175694d-36af-4bb9-b38b-9146b4655836"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA1343E3138589",
+      "Last-Modified" : "Thu, 31 Mar 2022 18:25:51 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "e6ed1c50-d01e-006d-502c-45b21e000000",
+      "x-ms-client-request-id" : "7175694d-36af-4bb9-b38b-9146b4655836",
+      "Date" : "Thu, 31 Mar 2022 18:25:51 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://REDACTED.blob.core.windows.net/a814327e1a814327efbf7655986c72d87dd4a423ebaf?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.16.0-beta.1 azsdk-java-azure-storage-file-datalake/12.9.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2c7a33e6-955d-4fea-9695-1a82ca821ddc"
+    },
+    "Response" : {
+      "content-length" : "225",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ContainerNotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "5e09d9c7-e01e-004c-512c-45df2f000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerNotFound</Code><Message>The specified container does not exist.\nRequestId:5e09d9c7-e01e-004c-512c-45df2f000000\nTime:2022-03-31T18:25:52.2223863Z</Message></Error>",
+      "x-ms-client-request-id" : "2c7a33e6-955d-4fea-9695-1a82ca821ddc",
+      "Date" : "Thu, 31 Mar 2022 18:25:51 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://REDACTED.blob.core.windows.net/a814327e1a814327efbf7655986c72d87dd4a423ebaf?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.16.0-beta.1 azsdk-java-azure-storage-file-datalake/12.9.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "cb8a98f6-7ef0-41f3-bafd-d6e772a418d8"
+    },
+    "Response" : {
+      "content-length" : "225",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ContainerNotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "1a5f78e4-901e-002e-202c-4598f7000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerNotFound</Code><Message>The specified container does not exist.\nRequestId:1a5f78e4-901e-002e-202c-4598f7000000\nTime:2022-03-31T18:25:52.4587219Z</Message></Error>",
+      "x-ms-client-request-id" : "cb8a98f6-7ef0-41f3-bafd-d6e772a418d8",
+      "Date" : "Thu, 31 Mar 2022 18:25:52 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "a814327e0a814327efbf521091e034c2e578642f99b7", "a814327e1a814327efbf7655986c72d87dd4a423ebaf" ]
+}

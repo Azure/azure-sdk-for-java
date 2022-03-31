@@ -1183,17 +1183,19 @@ public class BlobClientBase {
      *
      * <!-- src_embed com.azure.storage.blob.specialized.BlobClientBase.deleteIfExists -->
      * <pre>
-     * client.deleteIfExists&#40;&#41;;
-     * System.out.println&#40;&quot;Delete completed.&quot;&#41;;
+     * boolean result = client.deleteIfExists&#40;&#41;;
+     * System.out.println&#40;&quot;Delete completed: &quot; + result&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.BlobClientBase.deleteIfExists -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-blob">Azure Docs</a></p>
+     * @return {@code true} if delete succeeds, or {@code false} if blob does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteIfExists() {
-        deleteIfExistsWithResponse(null, null, null, Context.NONE);
+    public boolean deleteIfExists() {
+        Response<Void> response = deleteIfExistsWithResponse(null, null, null, Context.NONE);
+        return response != null && response.getStatusCode() == 202;
     }
 
     /**

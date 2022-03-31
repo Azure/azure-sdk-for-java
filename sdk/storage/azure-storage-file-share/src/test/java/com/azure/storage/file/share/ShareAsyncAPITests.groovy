@@ -249,7 +249,7 @@ class ShareAsyncAPITests extends APISpec {
 
         then:
         response == null
-        client.exists().block() == false
+        !client.exists().block()
     }
 
 

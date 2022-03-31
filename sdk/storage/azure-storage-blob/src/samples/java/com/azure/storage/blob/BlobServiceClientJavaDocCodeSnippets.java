@@ -372,8 +372,8 @@ public class BlobServiceClientJavaDocCodeSnippets {
      */
     public void deleteContainerIfExistsCodeSnippets() {
         // BEGIN: com.azure.storage.blob.BlobServiceClient.deleteBlobContainerIfExists#String
-        client.deleteBlobContainerIfExists("container Name");
-        System.out.printf("Delete container completed with status %n");
+        boolean result = client.deleteBlobContainerIfExists("container Name");
+        System.out.println("Delete container completed: " + result);
         // END: com.azure.storage.blob.BlobServiceClient.deleteBlobContainerIfExists#String
 
         // BEGIN: com.azure.storage.blob.BlobServiceClient.deleteBlobContainerIfExistsWithResponse#String-Context

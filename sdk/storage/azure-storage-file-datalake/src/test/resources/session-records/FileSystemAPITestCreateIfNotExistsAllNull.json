@@ -1,0 +1,46 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.blob.core.windows.net/ba6546390ba65463909d484474ab2178753f043bc9ae?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.16.0-beta.1 azsdk-java-azure-storage-file-datalake/12.9.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "afe72f7c-c098-41cd-b5c2-9031b5c4ad44"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA1343A9A4E9D4",
+      "Last-Modified" : "Thu, 31 Mar 2022 18:24:15 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "d758f064-601e-0030-212c-45421a000000",
+      "x-ms-client-request-id" : "afe72f7c-c098-41cd-b5c2-9031b5c4ad44",
+      "Date" : "Thu, 31 Mar 2022 18:24:15 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.blob.core.windows.net/ba6546391ba65463909d205934eb83894aa1145e18cf?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.16.0-beta.1 azsdk-java-azure-storage-file-datalake/12.9.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "90dc990c-5977-4b91-b030-10df62755845"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA1343A9C4BEB7",
+      "Last-Modified" : "Thu, 31 Mar 2022 18:24:15 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "6feeb3a8-101e-0052-562c-4505c2000000",
+      "x-ms-client-request-id" : "90dc990c-5977-4b91-b030-10df62755845",
+      "Date" : "Thu, 31 Mar 2022 18:24:15 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "ba6546390ba65463909d484474ab2178753f043bc9ae", "ba6546391ba65463909d205934eb83894aa1145e18cf" ]
+}

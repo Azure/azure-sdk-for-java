@@ -263,16 +263,18 @@ public final class BlobServiceClient {
      *
      * <!-- src_embed com.azure.storage.blob.BlobServiceClient.deleteBlobContainerIfExists#String -->
      * <pre>
-     * client.deleteBlobContainerIfExists&#40;&quot;container Name&quot;&#41;;
-     * System.out.printf&#40;&quot;Delete container completed with status %n&quot;&#41;;
+     * boolean result = client.deleteBlobContainerIfExists&#40;&quot;container Name&quot;&#41;;
+     * System.out.println&#40;&quot;Delete container completed: &quot; + result&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobServiceClient.deleteBlobContainerIfExists#String -->
      *
      * @param containerName Name of the container to delete
+     * @return {@code true} if the container is successfully deleted, {@code false} if the container does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteBlobContainerIfExists(String containerName) {
-        deleteBlobContainerIfExistsWithResponse(containerName, Context.NONE);
+    public boolean deleteBlobContainerIfExists(String containerName) {
+        Response<Void> response = deleteBlobContainerIfExistsWithResponse(containerName, Context.NONE);
+        return response != null && response.getStatusCode() == 202;
     }
 
     /**

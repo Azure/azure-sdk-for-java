@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.blob.core.windows.net/e1c50f730e1c50f73b870084503382742a8504a08a0d?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.16.0-beta.1 azsdk-java-azure-storage-file-datalake/12.9.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d112b027-c676-4b6b-bbdd-2480ba3d4e69"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA1344D1210CA2",
+      "Last-Modified" : "Thu, 31 Mar 2022 18:32:31 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "10d8e436-201e-0015-762d-45daa9000000",
+      "x-ms-client-request-id" : "d112b027-c676-4b6b-bbdd-2480ba3d4e69",
+      "Date" : "Thu, 31 Mar 2022 18:32:31 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.dfs.core.windows.net/e1c50f730e1c50f73b870084503382742a8504a08a0d/e1c50f731e1c50f73b87979072f367a800bc14746992?resource=directory",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.9.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "66ee8974-a0d3-42ab-be1d-ad9081d2697a"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA1344D160DFF0",
+      "Last-Modified" : "Thu, 31 Mar 2022 18:32:31 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-request-id" : "f48738c4-301f-000a-222d-4501b9000000",
+      "x-ms-client-request-id" : "66ee8974-a0d3-42ab-be1d-ad9081d2697a",
+      "Date" : "Thu, 31 Mar 2022 18:32:30 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "e1c50f730e1c50f73b870084503382742a8504a08a0d", "e1c50f731e1c50f73b87979072f367a800bc14746992" ]
+}

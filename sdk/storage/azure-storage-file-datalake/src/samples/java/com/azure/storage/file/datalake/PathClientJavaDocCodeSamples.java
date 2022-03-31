@@ -523,8 +523,8 @@ public class PathClientJavaDocCodeSamples {
     public void deleteIfExistsCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.deleteIfExists
         client.create();
-        client.deleteIfExists();
-        System.out.println("Delete complete.");
+        boolean result = client.deleteIfExists();
+        System.out.println("Delete complete: " + result);
         // END: com.azure.storage.file.datalake.DataLakePathClient.deleteIfExists
 
         // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.deleteIfExistsWithResponse#boolean-DataLakeRequestConditions-Duration-Context

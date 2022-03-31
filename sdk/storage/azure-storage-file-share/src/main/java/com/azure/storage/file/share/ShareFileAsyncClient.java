@@ -1248,12 +1248,12 @@ public class ShareFileAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
      *
-     * @return a reactive response signaling completion. {@code True} indicates that the file was successfully
-     * deleted, {@code False} indicates that the file did not exist.
+     * @return a reactive response signaling completion. {@code true} indicates that the file was successfully
+     * deleted, {@code false} indicates that the file did not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse().flatMap(response -> Mono.just(true)).switchIfEmpty(Mono.just(false));
+        return deleteIfExistsWithResponse().map(response -> true).switchIfEmpty(Mono.just(false));
     }
 
     /**

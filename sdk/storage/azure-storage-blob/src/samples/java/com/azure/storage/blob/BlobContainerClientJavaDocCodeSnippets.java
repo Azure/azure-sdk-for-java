@@ -465,8 +465,8 @@ public class BlobContainerClientJavaDocCodeSnippets {
      */
     public void createIfNotExistsCodeSnippets() {
         // BEGIN: com.azure.storage.blob.BlobContainerClient.createIfNotExists
-        client.createIfNotExists();
-        System.out.printf("Create completed%n");
+        boolean result = client.createIfNotExists();
+        System.out.println("Create completed: " + result);
         // END: com.azure.storage.blob.BlobContainerClient.createIfNotExists
 
         // BEGIN: com.azure.storage.blob.BlobContainerClient.createIfNotExistsWithResponse#Map-PublicAccessType-Duration-Context
@@ -488,8 +488,8 @@ public class BlobContainerClientJavaDocCodeSnippets {
      */
     public void deleteIfExistsCodeSnippets() {
         // BEGIN: com.azure.storage.blob.BlobContainerClient.deleteIfExists
-        client.deleteIfExists();
-        System.out.printf("Delete completed%n");
+        boolean result = client.deleteIfExists();
+        System.out.println("Delete completed: " + result);
         // END: com.azure.storage.blob.BlobContainerClient.deleteIfExists
 
         // BEGIN: com.azure.storage.blob.BlobContainerClient.deleteIfExistsWithResponse#BlobRequestConditions-Duration-Context

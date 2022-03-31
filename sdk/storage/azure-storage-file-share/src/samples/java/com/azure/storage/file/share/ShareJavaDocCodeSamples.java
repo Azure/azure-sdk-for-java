@@ -784,8 +784,8 @@ public class ShareJavaDocCodeSamples {
     public void deleteIfExistsCodeSnippets() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareClient.deleteIfExists
-        shareClient.deleteIfExists();
-        System.out.println("Completed deleting the share.");
+        boolean result = shareClient.deleteIfExists();
+        System.out.println("Share deleted: " + result);
         // END: com.azure.storage.file.share.ShareClient.deleteIfExists
 
         // BEGIN: com.azure.storage.file.share.ShareClient.deleteIfExistsWithResponse#Duration-Context
@@ -844,8 +844,8 @@ public class ShareJavaDocCodeSamples {
     public void deleteDirectoryIfExistsCodeSnippets() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareClient.deleteDirectoryIfExists#string
-        shareClient.deleteDirectoryIfExists("mydirectory");
-        System.out.println("Completed deleting the directory.");
+        boolean result = shareClient.deleteDirectoryIfExists("mydirectory");
+        System.out.println("Directory deleted: " + result);
         // END: com.azure.storage.file.share.ShareClient.deleteDirectoryIfExists#string
 
         // BEGIN: com.azure.storage.file.share.ShareClient.deleteDirectoryIfExistsWithResponse#string-duration-context
@@ -867,8 +867,8 @@ public class ShareJavaDocCodeSamples {
     public void deleteFileIfExistsCodeSnippets() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareClient.deleteFileIfExists#string
-        shareClient.deleteFileIfExists("myfile");
-        System.out.println("Complete deleting the file.");
+        boolean result = shareClient.deleteFileIfExists("myfile");
+        System.out.println("File deleted: " + result);
         // END: com.azure.storage.file.share.ShareClient.deleteFileIfExists#string
 
         // BEGIN: com.azure.storage.file.share.ShareClient.deleteFileIfExistsWithResponse#string-duration-context

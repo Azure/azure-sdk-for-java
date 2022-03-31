@@ -189,18 +189,20 @@ public class DataLakeFileClient extends DataLakePathClient {
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileClient.deleteIfExists -->
      * <pre>
-     * client.deleteIfExists&#40;&#41;;
-     * System.out.println&#40;&quot;Delete request completed&quot;&#41;;
+     * boolean result = client.deleteIfExists&#40;&#41;;
+     * System.out.println&#40;&quot;Delete request completed: &quot; + result&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileClient.deleteIfExists -->
      *
      * <p>For more information see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
      * Docs</a></p>
+     * @return {@code true} if file is successfully deleted, {@code false} if the file does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteIfExists() {
-        deleteIfExistsWithResponse(false,null, null, Context.NONE);
+    public boolean deleteIfExists() {
+        Response<Void> response = deleteIfExistsWithResponse(false,null, null, Context.NONE);
+        return response != null && response.getStatusCode() == 200;
     }
 
     /**

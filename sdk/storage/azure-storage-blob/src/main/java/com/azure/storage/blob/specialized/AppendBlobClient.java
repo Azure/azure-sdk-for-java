@@ -294,7 +294,8 @@ public final class AppendBlobClient extends BlobClientBase {
      * contains the {@link AppendBlobItem}. If append blob already exists, {@link Response} will be {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AppendBlobItem> createIfNotExistsWithResponse(AppendBlobCreateOptions options, Duration timeout, Context context) {
+    public Response<AppendBlobItem> createIfNotExistsWithResponse(AppendBlobCreateOptions options, Duration timeout,
+        Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(appendBlobAsyncClient.
             createIfNotExistsWithResponse(options, context), timeout);
     }

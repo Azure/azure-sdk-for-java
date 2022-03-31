@@ -893,18 +893,19 @@ public class ShareFileClient {
      *
      * <!-- src_embed com.azure.storage.file.share.ShareFileClient.deleteIfExists -->
      * <pre>
-     * fileClient.deleteIfExists&#40;&#41;;
-     * System.out.println&#40;&quot;Complete deleting the file.&quot;&#41;;
+     * boolean result = fileClient.deleteIfExists&#40;&#41;;
+     * System.out.println&#40;&quot;File deleted: &quot; + result&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareFileClient.deleteIfExists -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
-     *
+     * @return {@code true} if the file is successfully deleted, {@code false} if the file does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteIfExists() {
-        deleteIfExistsWithResponse(null, Context.NONE);
+    public boolean deleteIfExists() {
+        Response<Void> response = deleteIfExistsWithResponse(null, Context.NONE);
+        return response != null && response.getStatusCode() == 202;
     }
 
     /**

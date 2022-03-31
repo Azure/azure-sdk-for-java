@@ -498,7 +498,8 @@ public class FileSystemClientJavaDocCodeSamples {
      */
     public void createIfNotExistsCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.createIfNotExists
-        client.createIfNotExists();
+        boolean result = client.createIfNotExists();
+        System.out.println("file system created: " + result);
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.createIfNotExists
 
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.createIfNotExistsWithResponse#Map-PublicAccessType-Duration-Context
@@ -571,8 +572,8 @@ public class FileSystemClientJavaDocCodeSamples {
      */
     public void deleteFileIfExistsCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteFileIfExists#String
-        client.deleteFile(fileName);
-        System.out.println("Delete request completed");
+        boolean result = client.deleteFileIfExists(fileName);
+        System.out.println("Delete request completed: " + result);
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteFileIfExists#String
 
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteFileIfExistsWithResponse#String-DataLakeRequestConditions-Duration-Context
@@ -618,8 +619,8 @@ public class FileSystemClientJavaDocCodeSamples {
      */
     public void deleteDirectoryIfExistsCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectoryIfExists#String
-        client.deleteDirectoryIfExists(directoryName);
-        System.out.println("Delete request completed");
+        boolean result = client.deleteDirectoryIfExists(directoryName);
+        System.out.println("Delete request completed: " + result);
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectoryIfExists#String
 
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectoryIfExistsWithResponse#String-boolean-DataLakeRequestConditions-Duration-Context

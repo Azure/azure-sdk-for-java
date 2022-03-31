@@ -771,8 +771,8 @@ public class BlobClientBaseJavaDocCodeSnippets {
      */
     public void deleteIfExistsCodeSnippets() {
         // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.deleteIfExists
-        client.deleteIfExists();
-        System.out.println("Delete completed.");
+        boolean result = client.deleteIfExists();
+        System.out.println("Delete completed: " + result);
         // END: com.azure.storage.blob.specialized.BlobClientBase.deleteIfExists
 
         // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.deleteIfExistsWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions-Duration-Context

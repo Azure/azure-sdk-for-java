@@ -1708,13 +1708,13 @@ public class BlobAsyncClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-blob">Azure Docs</a></p>
      *
-     * @return A reactive response signaling completion. {@code True} indicates that the blob was deleted.
-     * {@code False} indicates the blob does not exist at this location.
+     * @return A reactive response signaling completion. {@code true} indicates that the blob was deleted.
+     * {@code false} indicates the blob does not exist at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse(null, null).flatMap(response ->
-            Mono.just(true)).switchIfEmpty(Mono.just(false));
+        return deleteIfExistsWithResponse(null, null).map(response -> true)
+            .switchIfEmpty(Mono.just(false));
     }
 
     /**

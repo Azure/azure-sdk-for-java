@@ -1143,8 +1143,8 @@ public class ShareFileJavaDocCodeSamples {
     public void deleteFileIfExistsCodeSnippets() {
         ShareFileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareFileClient.deleteIfExists
-        fileClient.deleteIfExists();
-        System.out.println("Complete deleting the file.");
+        boolean result = fileClient.deleteIfExists();
+        System.out.println("File deleted: " + result);
         // END: com.azure.storage.file.share.ShareFileClient.deleteIfExists
 
         // BEGIN: com.azure.storage.file.share.ShareFileClient.deleteIfExistsWithResponse#duration-context

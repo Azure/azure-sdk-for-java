@@ -286,13 +286,16 @@ public class DataLakeFileSystemClient {
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.createIfNotExists -->
      * <pre>
-     * client.createIfNotExists&#40;&#41;;
+     * boolean result = client.createIfNotExists&#40;&#41;;
+     * System.out.println&#40;&quot;file system created: &quot; + result&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createIfNotExists -->
+     * @return {@code true} if file system is successfully created, {@code false} if file system already exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createIfNotExists() {
-        createIfNotExistsWithResponse(null, null, null, Context.NONE);
+    public boolean createIfNotExists() {
+        Response<Void> response = createIfNotExistsWithResponse(null, null, null, Context.NONE);
+        return response != null && response.getStatusCode() == 201;
     }
 
     /**
@@ -328,9 +331,8 @@ public class DataLakeFileSystemClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createIfNotExistsWithResponse(Map<String, String> metadata, PublicAccessType accessType,
         Duration timeout, Context context) {
-        return DataLakeImplUtils.returnOrConvertException(() ->
-            blobContainerClient.createIfNotExistsWithResponse(metadata, Transforms.toBlobPublicAccessType(accessType), timeout,
-                context), LOGGER);
+        return DataLakeImplUtils.returnOrConvertException(() -> blobContainerClient.createIfNotExistsWithResponse(
+            metadata, Transforms.toBlobPublicAccessType(accessType), timeout, context), LOGGER);
     }
 
     /**
@@ -402,10 +404,12 @@ public class DataLakeFileSystemClient {
      * client.deleteIfExists&#40;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteIfExists -->
+     * @return {@code true} if file system is successfully deleted, {@code false} if the file system does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteIfExists() {
-        deleteIfExistsWithResponse(null, null, Context.NONE);
+    public boolean deleteIfExists() {
+        Response<Void> response = deleteIfExistsWithResponse(null, null, Context.NONE);
+        return response != null && response.getStatusCode() == 202;
     }
 
     /**
@@ -440,9 +444,8 @@ public class DataLakeFileSystemClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteIfExistsWithResponse(DataLakeRequestConditions requestConditions, Duration timeout,
         Context context) {
-        return DataLakeImplUtils.returnOrConvertException(() ->
-            blobContainerClient.deleteIfExistsWithResponse(Transforms.toBlobRequestConditions(requestConditions), timeout,
-                context), LOGGER);
+        return DataLakeImplUtils.returnOrConvertException(() -> blobContainerClient.deleteIfExistsWithResponse(
+            Transforms.toBlobRequestConditions(requestConditions), timeout, context), LOGGER);
     }
 
     /**
@@ -815,8 +818,8 @@ public class DataLakeFileSystemClient {
      * to interact with the file created, or null if specified file already exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataLakeFileClient> createFileIfNotExistsWithResponse(String fileName, DataLakePathCreateOptions options,
-        Duration timeout, Context context) {
+    public Response<DataLakeFileClient> createFileIfNotExistsWithResponse(String fileName,
+        DataLakePathCreateOptions options, Duration timeout, Context context) {
         DataLakeFileClient dataLakeFileClient = getFileClient(fileName);
         Response<PathInfo> response = dataLakeFileClient.createIfNotExistsWithResponse(options, timeout, context);
         return response == null ? null : new SimpleResponse<>(response, dataLakeFileClient);
@@ -883,17 +886,19 @@ public class DataLakeFileSystemClient {
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteFileIfExists#String -->
      * <pre>
-     * client.deleteFileIfExists&#40;fileName&#41;;
-     * System.out.println&#40;&quot;Delete request completed&quot;&#41;;
+     * boolean result = client.deleteFileIfExists&#40;fileName&#41;;
+     * System.out.println&#40;&quot;Delete request completed: &quot; + result&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteFileIfExists#String -->
      *
      * @param fileName Name of the file to delete. If the path name contains special characters, pass in the url encoded
      * version of the path name.
+     * @return {@code true} if the file is successfully deleted, {@code false} if the file does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteFileIfExists(String fileName) {
-        deleteFileIfExistsWithResponse(fileName, null, null, Context.NONE).getValue();
+    public boolean deleteFileIfExists(String fileName) {
+        Response<Void> response = deleteFileIfExistsWithResponse(fileName, null, null, Context.NONE);
+        return response != null && response.getStatusCode() == 200;
     }
 
     /**
@@ -1155,17 +1160,19 @@ public class DataLakeFileSystemClient {
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectoryIfExists#String -->
      * <pre>
-     * client.deleteDirectoryIfExists&#40;directoryName&#41;;
-     * System.out.println&#40;&quot;Delete request completed&quot;&#41;;
+     * boolean result = client.deleteDirectoryIfExists&#40;directoryName&#41;;
+     * System.out.println&#40;&quot;Delete request completed: &quot; + result&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectoryIfExists#String -->
      *
      * @param directoryName Name of the directory to delete.  If the path name contains special characters, pass in the
      * url encoded version of the path name.
+     * @return {@code true} if the directory is successfully deleted, {@code false} if the directory does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteDirectoryIfExists(String directoryName) {
-        deleteDirectoryWithResponse(directoryName, false, null, null, Context.NONE);
+    public boolean deleteDirectoryIfExists(String directoryName) {
+        Response<Void> response = deleteDirectoryWithResponse(directoryName, false, null, null, Context.NONE);
+        return response != null && response.getStatusCode() == 200;
     }
 
     /**
@@ -1202,8 +1209,9 @@ public class DataLakeFileSystemClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDirectoryIfExistsWithResponse(String directoryName, boolean recursive,
-            DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
-        return getDirectoryClient(directoryName).deleteIfExistsWithResponse(recursive, requestConditions, timeout, context);
+        DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
+        return getDirectoryClient(directoryName).deleteIfExistsWithResponse(recursive, requestConditions,
+            timeout, context);
     }
 
     /**

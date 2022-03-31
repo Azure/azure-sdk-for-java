@@ -362,11 +362,11 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobServiceAsyncClient#deleteBlobContainer(String)} and
+     * Code snippet for {@link BlobServiceAsyncClient#deleteBlobContainerIfExists(String)} and
      * {@link BlobServiceAsyncClient#deleteBlobContainerIfExistsWithResponse(String)}
      */
     public void deleteContainerIfExistsCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainer#String
+        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExists#String
         client.deleteBlobContainerIfExists("containerName").subscribe(deleted -> {
             if (deleted) {
                 System.out.println("Successfully deleted.");
@@ -374,7 +374,7 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
                 System.out.println("Does not exist.");
             }
         });
-        // END: com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainer#String
+        // END: com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExists#String
 
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExistsWithResponse#String
         Context context = new Context("Key", "Value");

@@ -4,16 +4,9 @@
 package com.azure.storage.file.datalake.options;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
-import com.azure.storage.file.datalake.models.FileQueryError;
-import com.azure.storage.file.datalake.models.FileQueryProgress;
-import com.azure.storage.file.datalake.models.FileQuerySerialization;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
-
-import java.io.OutputStream;
 import java.util.Map;
-import java.util.function.Consumer;
 
 /**
  * Extended options that may be passed when creating a datalake resource.

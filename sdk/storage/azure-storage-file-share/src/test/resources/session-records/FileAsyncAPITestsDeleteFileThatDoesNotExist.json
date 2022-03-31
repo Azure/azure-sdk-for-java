@@ -1,0 +1,67 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.file.core.windows.net/76b37d7576b37d758f163934f5b2646089c3455495?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1d90ac4b-fac1-495b-a6f3-d7e7878a0cf5"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA1359CA4C8563",
+      "Last-Modified" : "Thu, 31 Mar 2022 21:02:39 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "abe94bbf-f01a-0061-6342-4531bb000000",
+      "x-ms-client-request-id" : "1d90ac4b-fac1-495b-a6f3-d7e7878a0cf5",
+      "Date" : "Thu, 31 Mar 2022 21:02:38 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://REDACTED.file.core.windows.net/76b37d7576b37d758f163934f5b2646089c3455495/76b37d75076b37d758f173177a733295f25c343c69e8",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "113567ac-b980-4c70-af8b-858eae1a0a40"
+    },
+    "Response" : {
+      "content-length" : "223",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ResourceNotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "7f152351-e01a-006d-6042-45a6b3000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:7f152351-e01a-006d-6042-45a6b3000000\nTime:2022-03-31T21:02:39.6331470Z</Message></Error>",
+      "x-ms-client-request-id" : "113567ac-b980-4c70-af8b-858eae1a0a40",
+      "Date" : "Thu, 31 Mar 2022 21:02:39 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "HEAD",
+    "Uri" : "http://REDACTED.file.core.windows.net/76b37d7576b37d758f163934f5b2646089c3455495/76b37d75076b37d758f173177a733295f25c343c69e8",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4bb041ad-b474-49b8-9db9-fd375836ba7f"
+    },
+    "Response" : {
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "Vary" : "Origin",
+      "x-ms-error-code" : "ResourceNotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "7f152354-e01a-006d-6242-45a6b3000000",
+      "x-ms-client-request-id" : "4bb041ad-b474-49b8-9db9-fd375836ba7f",
+      "Date" : "Thu, 31 Mar 2022 21:02:39 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "76b37d7576b37d758f163934f5b2646089c3455495", "76b37d7576b37d758f130094caaa3df0120f47d7b1", "76b37d75076b37d758f173177a733295f25c343c69e8" ]
+}

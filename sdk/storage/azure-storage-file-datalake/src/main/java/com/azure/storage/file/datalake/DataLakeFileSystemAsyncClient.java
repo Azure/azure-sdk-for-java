@@ -345,14 +345,13 @@ public class DataLakeFileSystemAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createIfNotExists -->
      *
-     * @return A reactive response signalling completion. {@code True} indicates that a new file system was created.
-     * {@code False} indicates that a file system already existed at this location.
+     * @return A reactive response signalling completion. {@code true} indicates that a new file system was created.
+     * {@code false} indicates that a file system already existed at this location.
      *
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> createIfNotExists() {
-        return createIfNotExistsWithResponse(null, null).flatMap(response ->
-            Mono.just(true)).switchIfEmpty(Mono.just(false));
+        return createIfNotExistsWithResponse(null, null).map(response -> true).switchIfEmpty(Mono.just(false));
     }
 
     /**
@@ -378,9 +377,11 @@ public class DataLakeFileSystemAsyncClient {
      * system was created. An empty {@code Mono} indicates a file system already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createIfNotExistsWithResponse(Map<String, String> metadata, PublicAccessType accessType) {
+    public Mono<Response<Void>> createIfNotExistsWithResponse(Map<String, String> metadata,
+        PublicAccessType accessType) {
         try {
-            return blobContainerAsyncClient.createIfNotExistsWithResponse(metadata, Transforms.toBlobPublicAccessType(accessType))
+            return blobContainerAsyncClient.createIfNotExistsWithResponse(metadata,
+                    Transforms.toBlobPublicAccessType(accessType))
                 .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -457,13 +458,12 @@ public class DataLakeFileSystemAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteIfExists -->
      *
-     * @return a reactive response signaling completion. {@code True} indicates that the file system was successfully
-     * deleted, {@code False} indicates that the file system did not exist.
+     * @return a reactive response signaling completion. {@code true} indicates that the file system was successfully
+     * deleted, {@code false} indicates that the file system did not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse(null).flatMap(response -> Mono.just(true))
-            .switchIfEmpty(Mono.just(false));
+        return deleteIfExistsWithResponse(null).map(response -> true).switchIfEmpty(Mono.just(false));
     }
 
     /**
@@ -917,8 +917,7 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataLakeFileAsyncClient> createFileIfNotExists(String fileName) {
-        return createFileIfNotExistsWithResponse(fileName, new DataLakePathCreateOptions())
-                .flatMap(FluxUtil::toMono);
+        return createFileIfNotExistsWithResponse(fileName, new DataLakePathCreateOptions()).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -959,7 +958,7 @@ public class DataLakeFileSystemAsyncClient {
         try {
             return createFileWithResponse(fileName, options.getPermissions(), options.getUmask(),
                 options.getPathHttpHeaders(), options.getMetadata(), requestConditions)
-                .onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException)t)
+                .onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException) t)
                     .getStatusCode() == 409, t -> Mono.empty());
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -1044,13 +1043,12 @@ public class DataLakeFileSystemAsyncClient {
      *
      * @param fileName Name of the file to delete. If the path name contains special characters, pass in the url encoded
      * version of the path name.
-     * @return a reactive response signaling completion. {@code True} indicates that the specified file was successfully
-     * deleted, {@code False} indicates that the specified file did not exist.
+     * @return a reactive response signaling completion. {@code true} indicates that the specified file was successfully
+     * deleted, {@code false} indicates that the specified file did not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteFileIfExists(String fileName) {
-        return deleteFileIfExistsWithResponse(fileName, null).flatMap(response -> Mono.just(true))
-            .switchIfEmpty(Mono.just(false));
+        return deleteFileIfExistsWithResponse(fileName, null).map(response -> true).switchIfEmpty(Mono.just(false));
     }
 
     /**
@@ -1079,7 +1077,8 @@ public class DataLakeFileSystemAsyncClient {
      * that the file did not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName, DataLakeRequestConditions requestConditions) {
+    public Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName,
+        DataLakeRequestConditions requestConditions) {
         try {
             return getFileAsyncClient(fileName).deleteIfExistsWithResponse(requestConditions);
         } catch (RuntimeException ex) {
@@ -1208,7 +1207,8 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataLakeDirectoryAsyncClient> createDirectoryIfNotExists(String directoryName) {
-            return createDirectoryIfNotExistsWithResponse(directoryName, new DataLakePathCreateOptions()).flatMap(FluxUtil::toMono);
+        return createDirectoryIfNotExistsWithResponse(directoryName, new DataLakePathCreateOptions())
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1249,7 +1249,7 @@ public class DataLakeFileSystemAsyncClient {
             return createDirectoryWithResponse(directoryName, options.getPermissions(), options.getUmask(),
                 options.getPathHttpHeaders(), options.getMetadata(),
                 new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD))
-                .onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException)t)
+                .onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException) t)
                     .getStatusCode() == 409, t -> Mono.empty());
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -1337,13 +1337,13 @@ public class DataLakeFileSystemAsyncClient {
      *
      * @param directoryName Name of the directory to delete. If the path name contains special characters, pass in the
      * url encoded version of the path name.
-     * @return a reactive response signaling completion. {@code True} indicates that the specified directory was
-     * successfully deleted, {@code False} indicates that the specified directory did not exist.
+     * @return a reactive response signaling completion. {@code true} indicates that the specified directory was
+     * successfully deleted, {@code false} indicates that the specified directory did not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteDirectoryIfExists(String directoryName) {
-        return deleteDirectoryIfExistsWithResponse(directoryName, false, null)
-            .flatMap(response -> Mono.just(true)).switchIfEmpty(Mono.just(false));
+        return deleteDirectoryIfExistsWithResponse(directoryName, false, null).map(response -> true)
+            .switchIfEmpty(Mono.just(false));
     }
 
     /**

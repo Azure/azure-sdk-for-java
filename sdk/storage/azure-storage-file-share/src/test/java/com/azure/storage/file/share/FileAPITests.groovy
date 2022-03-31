@@ -999,6 +999,14 @@ class FileAPITests extends APISpec {
         assertResponseStatusCode(primaryFileClient.deleteIfExistsWithResponse(null, null), 202)
     }
 
+    def "Delete if exists file min"() {
+        given:
+        primaryFileClient.createWithResponse(1024, null, null, null, null, null, null)
+
+        expect:
+        primaryFileClient.deleteIfExists()
+    }
+
     def "Delete if exists file that does not exist"() {
         def client = shareClient.getFileClient(generateShareName())
 

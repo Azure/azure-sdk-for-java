@@ -1,0 +1,91 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.blob.core.windows.net/34e95575034e95575ada765289ffa8ad2a0d74cd7ae5?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.16.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e8541340-6b4b-4fbf-834b-d60efab0c856"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA12A3D37D1C61",
+      "Last-Modified" : "Wed, 30 Mar 2022 23:20:06 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "ff809d25-701e-0022-658c-44d7e7000000",
+      "x-ms-client-request-id" : "e8541340-6b4b-4fbf-834b-d60efab0c856",
+      "Date" : "Wed, 30 Mar 2022 23:20:06 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.blob.core.windows.net/34e95575034e95575ada765289ffa8ad2a0d74cd7ae5/34e95575134e95575ada4348266fc934d50f84735bbf",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.16.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "265eb8d2-8595-4c48-b5b3-8238e66ed754"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA12A3D3AFDD97",
+      "Last-Modified" : "Wed, 30 Mar 2022 23:20:06 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "cf3d8a48-b01e-0002-748c-44ac40000000",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-client-request-id" : "265eb8d2-8595-4c48-b5b3-8238e66ed754",
+      "Date" : "Wed, 30 Mar 2022 23:20:06 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.blob.core.windows.net/34e95575034e95575ada765289ffa8ad2a0d74cd7ae5/34e95575234e95575ada72328541e783412984d29adb",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.16.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3de97dc1-d59d-46ce-9d94-0f5dfa1ab2c9"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA12A3D3BE0C58",
+      "Last-Modified" : "Wed, 30 Mar 2022 23:20:06 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "21c64674-e01e-0030-618c-44ac37000000",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-client-request-id" : "3de97dc1-d59d-46ce-9d94-0f5dfa1ab2c9",
+      "Date" : "Wed, 30 Mar 2022 23:20:06 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.blob.core.windows.net/34e95575034e95575ada765289ffa8ad2a0d74cd7ae5/34e95575234e95575ada72328541e783412984d29adb",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.16.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8ab68cf2-6310-4a0c-9f8f-854f229f6c7e"
+    },
+    "Response" : {
+      "content-length" : "220",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "BlobAlreadyExists",
+      "retry-after" : "0",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "cf3d8a53-b01e-0002-7e8c-44ac40000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>BlobAlreadyExists</Code><Message>The specified blob already exists.\nRequestId:cf3d8a53-b01e-0002-7e8c-44ac40000000\nTime:2022-03-30T23:20:06.8223167Z</Message></Error>",
+      "x-ms-client-request-id" : "8ab68cf2-6310-4a0c-9f8f-854f229f6c7e",
+      "Date" : "Wed, 30 Mar 2022 23:20:06 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "34e95575034e95575ada765289ffa8ad2a0d74cd7ae5", "34e95575134e95575ada4348266fc934d50f84735bbf", "34e95575234e95575ada72328541e783412984d29adb" ]
+}

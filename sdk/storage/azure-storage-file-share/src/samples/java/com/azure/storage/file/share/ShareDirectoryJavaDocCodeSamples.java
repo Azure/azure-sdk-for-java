@@ -658,8 +658,8 @@ public class ShareDirectoryJavaDocCodeSamples {
     public void deleteDirectoryIfExistsCodeSnippets() {
         // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.deleteIfExists
         ShareDirectoryClient shareDirectoryClient = createClientWithSASToken();
-        shareDirectoryClient.deleteIfExists();
-        System.out.println("Completed deleting the file.");
+        boolean result = shareDirectoryClient.deleteIfExists();
+        System.out.println("Directory deleted: " + result);
         // END: com.azure.storage.file.share.ShareDirectoryClient.deleteIfExists
 
         // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.deleteIfExistsWithResponse#duration-context
@@ -707,8 +707,8 @@ public class ShareDirectoryJavaDocCodeSamples {
     public void deleteSubdirectoryIfExistsCodeSnippets() {
         ShareDirectoryClient shareDirectoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.deleteSubdirectoryIfExists#string
-        shareDirectoryClient.deleteSubdirectoryIfExists("mysubdirectory");
-        System.out.println("Complete deleting the subdirectory.");
+        boolean result = shareDirectoryClient.deleteSubdirectoryIfExists("mysubdirectory");
+        System.out.println("Subdirectory deleted: " + result);
         // END: com.azure.storage.file.share.ShareDirectoryClient.deleteSubdirectoryIfExists#string
 
         // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.deleteSubdirectoryIfExistsWithResponse#string-duration-context
@@ -730,8 +730,8 @@ public class ShareDirectoryJavaDocCodeSamples {
     public void deleteFileIfExistsCodeSnippets() {
         ShareDirectoryClient shareDirectoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExists#string
-        shareDirectoryClient.deleteFileIfExists("myfile");
-        System.out.println("Completed deleting the file.");
+        boolean result = shareDirectoryClient.deleteFileIfExists("myfile");
+        System.out.println("File deleted: " + result);
         // END: com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExists#string
 
         // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExistsWithResponse#String-Duration-Context

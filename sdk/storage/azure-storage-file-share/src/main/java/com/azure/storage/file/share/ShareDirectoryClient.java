@@ -354,18 +354,19 @@ public class ShareDirectoryClient {
      * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.deleteIfExists -->
      * <pre>
      * ShareDirectoryClient shareDirectoryClient = createClientWithSASToken&#40;&#41;;
-     * shareDirectoryClient.deleteIfExists&#40;&#41;;
-     * System.out.println&#40;&quot;Completed deleting the file.&quot;&#41;;
+     * boolean result = shareDirectoryClient.deleteIfExists&#40;&#41;;
+     * System.out.println&#40;&quot;Directory deleted: &quot; + result&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryClient.deleteIfExists -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
-     *
+     * @return {@code true} if the directory is successfully deleted, {@code false} if the directory does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteIfExists() {
-        deleteIfExistsWithResponse(null, Context.NONE);
+    public boolean deleteIfExists() {
+        Response<Void> response = deleteIfExistsWithResponse(null, Context.NONE);
+        return response != null && response.getStatusCode() == 202;
     }
 
     /**
@@ -1002,7 +1003,8 @@ public class ShareDirectoryClient {
      * */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareDirectoryClient createSubdirectoryIfNotExists(String subdirectoryName) {
-        return createSubdirectoryIfNotExistsWithResponse(subdirectoryName, new ShareDirectoryCreateOptions(), null, Context.NONE).getValue();
+        return createSubdirectoryIfNotExistsWithResponse(subdirectoryName, new ShareDirectoryCreateOptions(), null,
+            Context.NONE).getValue();
     }
 
     /**
@@ -1044,7 +1046,8 @@ public class ShareDirectoryClient {
     public Response<ShareDirectoryClient> createSubdirectoryIfNotExistsWithResponse(String subdirectoryName,
         ShareDirectoryCreateOptions options, Duration timeout, Context context) {
         ShareDirectoryClient shareDirectoryClient = getSubdirectoryClient(subdirectoryName);
-        Response<ShareDirectoryInfo> response = shareDirectoryClient.createIfNotExistsWithResponse(options, timeout, context);
+        Response<ShareDirectoryInfo> response = shareDirectoryClient.createIfNotExistsWithResponse(options,
+            timeout, context);
         return response == null ? null : new SimpleResponse<>(response, shareDirectoryClient);
     }
 
@@ -1120,8 +1123,8 @@ public class ShareDirectoryClient {
      *
      * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.deleteSubdirectoryIfExists#string -->
      * <pre>
-     * shareDirectoryClient.deleteSubdirectoryIfExists&#40;&quot;mysubdirectory&quot;&#41;;
-     * System.out.println&#40;&quot;Complete deleting the subdirectory.&quot;&#41;;
+     * boolean result = shareDirectoryClient.deleteSubdirectoryIfExists&#40;&quot;mysubdirectory&quot;&#41;;
+     * System.out.println&#40;&quot;Subdirectory deleted: &quot; + result&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryClient.deleteSubdirectoryIfExists#string -->
      *
@@ -1129,10 +1132,12 @@ public class ShareDirectoryClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
      *
      * @param subdirectoryName Name of the subdirectory
+     * @return {@code true} if subdirectory is successfully deleted, {@code false} if subdirectory does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteSubdirectoryIfExists(String subdirectoryName) {
-        deleteSubdirectoryIfExistsWithResponse(subdirectoryName, null, Context.NONE);
+    public boolean deleteSubdirectoryIfExists(String subdirectoryName) {
+        Response<Void> response = deleteSubdirectoryIfExistsWithResponse(subdirectoryName, null, Context.NONE);
+        return response != null && response.getStatusCode() == 202;
     }
 
     /**
@@ -1429,10 +1434,12 @@ public class ShareDirectoryClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
      *
      * @param fileName Name of the file
+     * @return {@code true} if the file is successfully deleted, {@code false} if the file does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteFileIfExists(String fileName) {
-        deleteFileIfExistsWithResponse(fileName, null, Context.NONE);
+    public boolean deleteFileIfExists(String fileName) {
+        Response<Void> response = deleteFileIfExistsWithResponse(fileName, null, Context.NONE);
+        return response != null && response.getStatusCode() == 202;
     }
 
     /**

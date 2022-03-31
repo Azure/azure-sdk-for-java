@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.file.core.windows.net/d13b3eced13b3ecea0d35467c96dc5c8449445f5be?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "15d3841b-4795-4832-b12d-7aebfca9b8cd"
+    },
+    "Response" : {
+      "content-length" : "260",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "InvalidMetadata",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "ee89e21c-401a-004b-2c51-45eeab000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:ee89e21c-401a-004b-2c51-45eeab000000\nTime:2022-03-31T22:52:27.9358729Z</Message></Error>",
+      "x-ms-client-request-id" : "15d3841b-4795-4832-b12d-7aebfca9b8cd",
+      "Date" : "Thu, 31 Mar 2022 22:52:27 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "d13b3eced13b3ecea0d35467c96dc5c8449445f5be" ]
+}

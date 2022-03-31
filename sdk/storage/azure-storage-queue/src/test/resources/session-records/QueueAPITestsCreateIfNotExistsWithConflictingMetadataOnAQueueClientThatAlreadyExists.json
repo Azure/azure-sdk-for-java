@@ -1,0 +1,45 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.queue.core.windows.net/e97d47ade97d47adb3f6313868e3798503be40a2a5",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3514691a-9aa0-403f-96dd-a03232e1fc7d"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "ab4fb70d-1003-0046-0f8b-44267f000000",
+      "x-ms-client-request-id" : "3514691a-9aa0-403f-96dd-a03232e1fc7d",
+      "Date" : "Wed, 30 Mar 2022 23:09:35 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.queue.core.windows.net/e97d47ade97d47adb3f6313868e3798503be40a2a5",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "621bc2f0-dd94-404c-97e4-1a68c16d7ce0"
+    },
+    "Response" : {
+      "content-length" : "222",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "QueueAlreadyExists",
+      "retry-after" : "0",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "585b35a5-4003-0016-758b-44e42f000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueAlreadyExists</Code><Message>The specified queue already exists.\nRequestId:585b35a5-4003-0016-758b-44e42f000000\nTime:2022-03-30T23:09:36.5497782Z</Message></Error>",
+      "x-ms-client-request-id" : "621bc2f0-dd94-404c-97e4-1a68c16d7ce0",
+      "Date" : "Wed, 30 Mar 2022 23:09:36 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "e97d47ade97d47adb3f607531b57444e503d4d1abc", "e97d47ade97d47adb3f6313868e3798503be40a2a5" ]
+}

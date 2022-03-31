@@ -439,8 +439,8 @@ public class ShareAsyncClient {
 
     Mono<Response<ShareInfo>> createIfNotExistsWithResponse(ShareCreateOptions options, Context context) {
         try {
-            return createWithResponse(options, context).onErrorResume(t -> t instanceof ShareStorageException &&
-                ((ShareStorageException)t).getStatusCode() == 409, t -> Mono.empty());
+            return createWithResponse(options, context).onErrorResume(t -> t instanceof ShareStorageException
+                && ((ShareStorageException) t).getStatusCode() == 409, t -> Mono.empty());
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -645,12 +645,12 @@ public class ShareAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
      *
-     * @return a reactive response signaling completion. {@code True} indicates that the share was successfully
-     * deleted, {@code False} indicates that the share did not exist.
+     * @return a reactive response signaling completion. {@code true} indicates that the share was successfully
+     * deleted, {@code false} indicates that the share did not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse().flatMap(response -> Mono.just(true)).switchIfEmpty(Mono.just(false));
+        return deleteIfExistsWithResponse().map(response -> true).switchIfEmpty(Mono.just(false));
     }
 
     /**
@@ -1809,13 +1809,12 @@ public class ShareAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
      *
      * @param directoryName Name of the directory
-     * @return a reactive response signaling completion. {@code True} indicates that the directory was successfully
-     * deleted, {@code False} indicates that the directory did not exist.
+     * @return a reactive response signaling completion. {@code true} indicates that the directory was successfully
+     * deleted, {@code false} indicates that the directory did not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteDirectoryIfExists(String directoryName) {
-        return deleteDirectoryIfExistsWithResponse(directoryName).flatMap(response ->
-            Mono.just(true)).switchIfEmpty(Mono.just(false));
+        return deleteDirectoryIfExistsWithResponse(directoryName).map(response -> true).switchIfEmpty(Mono.just(false));
     }
 
     /**
@@ -1853,7 +1852,7 @@ public class ShareAsyncClient {
     Mono<Response<Void>> deleteDirectoryIfExistsWithResponse(String directoryName, Context context) {
         try {
             return deleteDirectoryWithResponse(directoryName, context).onErrorResume(t -> t instanceof
-                ShareStorageException && ((ShareStorageException)t).getStatusCode() == 404, t -> Mono.empty());
+                ShareStorageException && ((ShareStorageException) t).getStatusCode() == 404, t -> Mono.empty());
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1983,13 +1982,12 @@ public class ShareAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
      *
      * @param fileName Name of the file.
-     * @return a reactive response signaling completion. {@code True} indicates that the file was successfully
-     * deleted, {@code False} indicates that the file did not exist.
+     * @return a reactive response signaling completion. {@code true} indicates that the file was successfully
+     * deleted, {@code false} indicates that the file did not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteFileIfExists(String fileName) {
-        return deleteFileIfExistsWithResponse(fileName).flatMap(response -> Mono.just(true))
-            .switchIfEmpty(Mono.just(false));
+        return deleteFileIfExistsWithResponse(fileName).map(response -> true).switchIfEmpty(Mono.just(false));
     }
 
     /**
@@ -2051,7 +2049,8 @@ public class ShareAsyncClient {
      * indicates that the file did not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName, ShareRequestConditions requestConditions) {
+    public Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName,
+        ShareRequestConditions requestConditions) {
         try {
             return withContext(context -> deleteFileIfExistsWithResponse(fileName, requestConditions, context));
         } catch (RuntimeException ex) {

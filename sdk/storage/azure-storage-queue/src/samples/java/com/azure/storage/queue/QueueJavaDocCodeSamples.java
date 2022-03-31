@@ -591,8 +591,8 @@ public class QueueJavaDocCodeSamples {
      */
     public void createQueueIfNotExistsCodeSnippets() {
         // BEGIN: com.azure.storage.queue.queueClient.createIfNotExists
-        client.createIfNotExists();
-        System.out.println("Complete creating queue.");
+        boolean result = client.createIfNotExists();
+        System.out.println("Queue created: " + result);
         // END: com.azure.storage.queue.queueClient.createIfNotExists
 
         // BEGIN: com.azure.storage.queue.queueClient.createIfNotExistsWithResponse#map-duration-context

@@ -75,11 +75,12 @@ class QueueAPITests extends APISpec {
         def client = primaryQueueServiceClient.getQueueClient(queueName)
 
         when:
-        client.createIfNotExists()
+        def result = client.createIfNotExists()
 
         then:
         client.getQueueName() == queueName
         client.getProperties() != null
+        result
     }
 
     def "Create if not exists with conflicting metadata on a queue client that already exists"() {
@@ -113,6 +114,17 @@ class QueueAPITests extends APISpec {
         then:
         def e = thrown(QueueStorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, QueueErrorCode.QUEUE_NOT_FOUND)
+    }
+
+    def "Delete if exists min"() {
+        setup:
+        queueClient.create()
+
+        when:
+        def result = queueClient.deleteIfExists()
+
+        then:
+        result == true
     }
 
     def "Delete if exists queue"() {

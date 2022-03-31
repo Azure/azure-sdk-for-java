@@ -198,13 +198,12 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
      * Docs</a></p>
      *
-     * @return a reactive response signaling completion. {@code True} indicates that the directory was successfully
-     * deleted, {@code False} indicates that the directory did not exist.
+     * @return a reactive response signaling completion. {@code true} indicates that the directory was successfully
+     * deleted, {@code true} indicates that the directory did not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse(false, null).flatMap(response -> Mono.just(true))
-            .switchIfEmpty(Mono.just(false));
+        return deleteIfExistsWithResponse(false, null).map(response -> true).switchIfEmpty(Mono.just(false));
     }
 
     /**
@@ -237,8 +236,9 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteIfExistsWithResponse(boolean recursive, DataLakeRequestConditions requestConditions) {
         try {
-            return deleteWithResponse(recursive, requestConditions).onErrorResume(t -> t instanceof DataLakeStorageException
-                && ((DataLakeStorageException)t).getStatusCode() == 409, t -> Mono.empty());
+            return deleteWithResponse(recursive, requestConditions).onErrorResume(t -> t
+                instanceof DataLakeStorageException && ((DataLakeStorageException) t).getStatusCode() == 409,
+                t -> Mono.empty());
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -426,7 +426,8 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * {@code Mono} indicates a file already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DataLakeFileAsyncClient>> createFileIfNotExistsWithResponse(String fileName, DataLakePathCreateOptions options) {
+    public Mono<Response<DataLakeFileAsyncClient>> createFileIfNotExistsWithResponse(String fileName,
+        DataLakePathCreateOptions options) {
             DataLakeFileAsyncClient dataLakeFileAsyncClient = getFileAsyncClient(fileName);
         try {
             return dataLakeFileAsyncClient.createIfNotExistsWithResponse(options)
@@ -511,13 +512,12 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteFileIfExists#String -->
      *
      * @param fileName Name of the file to delete.
-     * @return a reactive response signaling completion. {@code True} indicates that the specified file was successfully
-     * deleted, {@code False} indicates that the specified file did not exist.
+     * @return a reactive response signaling completion. {@code true} indicates that the specified file was successfully
+     * deleted, {@code false} indicates that the specified file did not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteFileIfExists(String fileName) {
-        return deleteFileIfExistsWithResponse(fileName, null).flatMap(response -> Mono.just(true))
-            .switchIfEmpty(Mono.just(false));
+        return deleteFileIfExistsWithResponse(fileName, null).map(response -> true).switchIfEmpty(Mono.just(false));
     }
 
     /**
@@ -544,7 +544,8 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * the file was successfully deleted. An empty {@code Mono} indicates that the file did not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName, DataLakeRequestConditions requestConditions) {
+    public Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName, DataLakeRequestConditions
+        requestConditions) {
         try {
             return deleteFileIfExistsWithResponse(fileName, requestConditions, null);
         } catch (RuntimeException ex) {
@@ -552,7 +553,8 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         }
     }
 
-    Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName, DataLakeRequestConditions requestConditions, Context context) {
+    Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName, DataLakeRequestConditions requestConditions,
+        Context context) {
         try {
             return getFileAsyncClient(fileName).deleteIfExistsWithResponse(false, requestConditions, context);
         } catch (RuntimeException ex) {
@@ -746,14 +748,15 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * An empty {@code Mono} indicates a directory already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DataLakeDirectoryAsyncClient>> createSubdirectoryIfNotExistsWithResponse(String subdirectoryName,
-        DataLakePathCreateOptions options) {
-        options.setRequestConditions(new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
+    public Mono<Response<DataLakeDirectoryAsyncClient>> createSubdirectoryIfNotExistsWithResponse(
+        String subdirectoryName, DataLakePathCreateOptions options) {
+        options.setRequestConditions(new DataLakeRequestConditions()
+            .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
         try {
             return createSubdirectoryWithResponse(subdirectoryName, options.getPermissions(), options.getUmask(),
                 options.getPathHttpHeaders(), options.getMetadata(), options.getRequestConditions())
-                .onErrorResume(t -> t instanceof DataLakeStorageException
-                    && ((DataLakeStorageException)t).getStatusCode() == 409, t -> Mono.empty());
+                .onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException) t)
+                    .getStatusCode() == 409, t -> Mono.empty());
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -839,13 +842,13 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteSubdirectoryIfExists#String -->
      *
      * @param subdirectoryName Name of the subdirectory to delete.
-     * @return A reactive response signaling completion. {@code True} indicates that the subdirectory was deleted.
-     * {@code False} indicates the specified subdirectory does not exist.
+     * @return A reactive response signaling completion. {@code true} indicates that the subdirectory was deleted.
+     * {@code false} indicates the specified subdirectory does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteSubdirectoryIfExists(String subdirectoryName) {
-        return deleteSubdirectoryIfExistsWithResponse(subdirectoryName, false, null)
-            .flatMap(response -> Mono.just(true)).switchIfEmpty(Mono.just(false));
+        return deleteSubdirectoryIfExistsWithResponse(subdirectoryName, false, null).map(response -> true)
+            .switchIfEmpty(Mono.just(false));
     }
 
     /**
@@ -879,8 +882,8 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         DataLakeRequestConditions requestConditions) {
         try {
             return deleteSubdirectoryWithResponse(directoryName, recursive, requestConditions)
-                .onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException)t)
-                    .getStatusCode() == 404, t -> Mono.empty());
+                .onErrorResume(t -> t instanceof DataLakeStorageException
+                    && ((DataLakeStorageException) t).getStatusCode() == 404, t -> Mono.empty());
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

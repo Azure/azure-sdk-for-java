@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.blob.core.windows.net/c43c25990c43c259981560578342de10020ad4c94a4a?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.16.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "345ad96d-1991-455a-a2be-25fb23b715ea"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA12A050DF7686",
+      "Last-Modified" : "Wed, 30 Mar 2022 22:54:58 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "7eb19ae6-401e-0064-0a89-44e360000000",
+      "x-ms-client-request-id" : "345ad96d-1991-455a-a2be-25fb23b715ea",
+      "Date" : "Wed, 30 Mar 2022 22:54:58 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.blob.core.windows.net/c43c25990c43c259981560578342de10020ad4c94a4a?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.16.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b11f80ef-9954-44a6-a507-edf9d42a6a5c"
+    },
+    "Response" : {
+      "content-length" : "230",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ContainerAlreadyExists",
+      "retry-after" : "0",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "7eb19b0d-401e-0064-2c89-44e360000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerAlreadyExists</Code><Message>The specified container already exists.\nRequestId:7eb19b0d-401e-0064-2c89-44e360000000\nTime:2022-03-30T22:54:58.9314789Z</Message></Error>",
+      "x-ms-client-request-id" : "b11f80ef-9954-44a6-a507-edf9d42a6a5c",
+      "Date" : "Wed, 30 Mar 2022 22:54:58 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "c43c25990c43c259981560578342de10020ad4c94a4a", "c43c259989181933", "c43c259970656ffc" ]
+}

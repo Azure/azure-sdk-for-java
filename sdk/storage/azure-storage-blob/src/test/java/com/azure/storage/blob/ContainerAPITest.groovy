@@ -153,6 +153,15 @@ class ContainerAPITest extends APISpec {
         cc.exists()
     }
 
+    def "Create if not exists min container"() {
+        when:
+        def cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+        def result = cc.createIfNotExists()
+
+        then:
+        result
+    }
+
     def "Create if not exists with response"() {
         when:
         def response = primaryBlobServiceClient.createBlobContainerIfNotExistsWithResponse(generateContainerName(), null, null, null)
@@ -218,15 +227,12 @@ class ContainerAPITest extends APISpec {
         null                       | _
     }
 
-    def "Create if not exists error"() {
+    def "Create if not exists on container that already exists"() {
         when:
-        cc.create()
+        boolean result = cc.createIfNotExists()
 
         then:
-        def e = thrown(BlobStorageException)
-        e.getResponse().getStatusCode() == 409
-        e.getErrorCode() == BlobErrorCode.CONTAINER_ALREADY_EXISTS
-        e.getServiceMessage().contains("The specified container already exists.")
+        result == false
     }
 
     def "Create if not exists on a container that already exists 2"() {
@@ -702,9 +708,10 @@ class ContainerAPITest extends APISpec {
 
     def "Delete if exists min"() {
         when:
-        cc.deleteIfExists()
+        boolean result = cc.deleteIfExists()
 
         then:
+        result == true
         !cc.exists()
     }
 
@@ -783,10 +790,11 @@ class ContainerAPITest extends APISpec {
         primaryBlobServiceClient.createBlobContainer(containerName)
 
         when:
-        premiumBlobServiceClient.deleteBlobContainerIfExists(containerName)
+        def result = premiumBlobServiceClient.deleteBlobContainerIfExists(containerName)
 
         then:
-        premiumBlobServiceClient.getBlobContainerClient(containerName).exists() == false
+        !premiumBlobServiceClient.getBlobContainerClient(containerName).exists()
+        result
     }
 
     def "Delete if exists service container that does not exist"() {

@@ -343,6 +343,14 @@ class ShareAPITests extends APISpec {
         FileTestHelper.assertResponseStatusCode(primaryShareClient.deleteIfExistsWithResponse(null, null), 202)
     }
 
+    def "Delete if exists share min"() {
+        given:
+        primaryShareClient.create()
+
+        expect:
+        primaryShareClient.deleteIfExists()
+    }
+
     def "Delete if exists share delete snapshot options"() {
         setup:
         primaryShareClient.create()
@@ -1087,6 +1095,16 @@ class ShareAPITests extends APISpec {
         assert FileTestHelper.assertResponseStatusCode(primaryShareClient.deleteDirectoryIfExistsWithResponse(directoryName, null, null), 202)
     }
 
+    def "Delete if exists directory min"() {
+        given:
+        def directoryName = "testCreateDirectory"
+        primaryShareClient.create()
+        primaryShareClient.createDirectory(directoryName)
+
+        expect:
+        assert primaryShareClient.deleteDirectoryIfExists(directoryName)
+    }
+
     def "Delete if exists directory that does not exist"() {
         given:
         def directoryName = "testCreateDirectory"
@@ -1131,6 +1149,16 @@ class ShareAPITests extends APISpec {
         expect:
         FileTestHelper.assertResponseStatusCode(
             primaryShareClient.deleteFileIfExistsWithResponse(fileName, null, null), 202)
+    }
+
+    def "Delete if exists file min"() {
+        given:
+        def fileName = "testCreateFile"
+        primaryShareClient.create()
+        primaryShareClient.createFile(fileName, 1024)
+
+        expect:
+        primaryShareClient.deleteFileIfExists(fileName)
     }
 
     def "Delete if exists file that does not exist"() {

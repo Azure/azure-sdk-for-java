@@ -230,13 +230,12 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
      * Docs</a></p>
      *
-     * @return a reactive response signaling completion. {@code True} indicates that the file was successfully
-     * deleted, {@code False} indicates that the file did not exist.
+     * @return a reactive response signaling completion. {@code true} indicates that the file was successfully
+     * deleted, {@code false} indicates that the file did not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse(null).flatMap(response -> Mono.just(true))
-            .switchIfEmpty(Mono.just(false));
+        return deleteIfExistsWithResponse(null).map(response -> true).switchIfEmpty(Mono.just(false));
     }
 
     /**

@@ -452,11 +452,12 @@ public class DataLakePathAsyncClient {
 
     Mono<Response<PathInfo>> createIfNotExistsWithResponse(DataLakePathCreateOptions options, Context context) {
         try {
-            options.setRequestConditions(new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
-            return createWithResponse(options.getPermissions(), options.getUmask(), pathResourceType, options.getPathHttpHeaders(),
-                options.getMetadata(), options.getRequestConditions(), context)
-                .onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException) t).getStatusCode() == 409,
-                    t -> Mono.empty());
+            options.setRequestConditions(new DataLakeRequestConditions()
+                .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
+            return createWithResponse(options.getPermissions(), options.getUmask(), pathResourceType,
+                options.getPathHttpHeaders(), options.getMetadata(), options.getRequestConditions(), context)
+                .onErrorResume(t -> t instanceof DataLakeStorageException
+                        && ((DataLakeStorageException) t).getStatusCode() == 409, t -> Mono.empty());
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -504,13 +505,12 @@ public class DataLakePathAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
      * Docs</a></p>
      *
-     * @return a reactive response signaling completion. {@code True} indicates that the resource under the path was
-     * successfully deleted, {@code False} indicates the resource did not exist.
+     * @return a reactive response signaling completion. {@code true} indicates that the resource under the path was
+     * successfully deleted, {@code false} indicates the resource did not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse(false, null, null).flatMap(response ->
-            Mono.just(true)).switchIfEmpty(Mono.just(false));
+        return deleteIfExistsWithResponse(false, null, null).map(response -> true).switchIfEmpty(Mono.just(false));
     }
 
     /**
@@ -542,11 +542,12 @@ public class DataLakePathAsyncClient {
      * resource did not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteIfExistsWithResponse(boolean recursive, DataLakeRequestConditions requestConditions,
-        Context context) {
+    public Mono<Response<Void>> deleteIfExistsWithResponse(boolean recursive,
+        DataLakeRequestConditions requestConditions, Context context) {
         try {
-            return deleteWithResponse(recursive, requestConditions, context).onErrorResume(t -> t instanceof
-                    DataLakeStorageException && ((DataLakeStorageException) t).getStatusCode() == 404, t -> Mono.empty());
+            return deleteWithResponse(recursive, requestConditions, context).onErrorResume(t -> t
+                instanceof DataLakeStorageException && ((DataLakeStorageException) t).getStatusCode() == 404,
+                t -> Mono.empty());
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.file.core.windows.net/f3b446c4f3b446c4e5c32441fbfd0f4e784646bbb0?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c5c6c6e2-b96d-4774-bdda-bb8ba4e98bb3"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA136992751DF8",
+      "Last-Modified" : "Thu, 31 Mar 2022 22:55:37 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "c39a9e97-001a-0028-6652-457350000000",
+      "x-ms-client-request-id" : "c5c6c6e2-b96d-4774-bdda-bb8ba4e98bb3",
+      "Date" : "Thu, 31 Mar 2022 22:55:37 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.file.core.windows.net/f3b446c4f3b446c4e5c32441fbfd0f4e784646bbb0/testdirectory?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6666ec63-936a-4df1-9dd2-54d1014a2f91"
+    },
+    "Response" : {
+      "content-length" : "278",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "EmptyMetadataKey",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "3dcccf59-601a-003e-6052-458587000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:3dcccf59-601a-003e-6052-458587000000\nTime:2022-03-31T22:55:37.7991353Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "x-ms-client-request-id" : "6666ec63-936a-4df1-9dd2-54d1014a2f91",
+      "Date" : "Thu, 31 Mar 2022 22:55:37 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "f3b446c4f3b446c4e5c32441fbfd0f4e784646bbb0" ]
+}

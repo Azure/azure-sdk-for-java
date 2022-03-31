@@ -339,9 +339,10 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     Mono<Response<AppendBlobItem>> createIfNotExistsWithResponse(AppendBlobCreateOptions options, Context context) {
         try {
             options = options == null ? new AppendBlobCreateOptions() : options;
-            options.setRequestConditions(new AppendBlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
-            return createWithResponse(options, context).onErrorResume(t -> t instanceof BlobStorageException &&
-                    ((BlobStorageException) t).getStatusCode() == 409, t -> Mono.empty());
+            options.setRequestConditions(new AppendBlobRequestConditions()
+                .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
+            return createWithResponse(options, context).onErrorResume(t -> t instanceof BlobStorageException
+                && ((BlobStorageException) t).getStatusCode() == 409, t -> Mono.empty());
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

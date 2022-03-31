@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.file.core.windows.net/42b0512042b0512071e94446259f9a74e1944415a2?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "23bba0ed-b401-4672-b2e0-5e51b0ef999f"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA13536E57918E",
+      "Last-Modified" : "Thu, 31 Mar 2022 20:17:08 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "da54925c-f01a-0071-173c-45f4d3000000",
+      "x-ms-client-request-id" : "23bba0ed-b401-4672-b2e0-5e51b0ef999f",
+      "Date" : "Thu, 31 Mar 2022 20:17:07 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.file.core.windows.net/42b0512042b0512071e03733769d759e6dc4430394/42b0512042b0512071e09128dc8fa9ae51ca4642a8?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1002c589-1e2b-48ec-a37d-a15cdc2df449"
+    },
+    "Response" : {
+      "content-length" : "217",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareNotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "0589ba73-a01a-007c-503c-453c07000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:0589ba73-a01a-007c-503c-453c07000000\nTime:2022-03-31T20:17:08.4362921Z</Message></Error>",
+      "x-ms-client-request-id" : "1002c589-1e2b-48ec-a37d-a15cdc2df449",
+      "Date" : "Thu, 31 Mar 2022 20:17:08 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "42b0512042b0512071e94446259f9a74e1944415a2", "42b0512042b0512071e09128dc8fa9ae51ca4642a8", "42b0512042b0512071e03733769d759e6dc4430394" ]
+}

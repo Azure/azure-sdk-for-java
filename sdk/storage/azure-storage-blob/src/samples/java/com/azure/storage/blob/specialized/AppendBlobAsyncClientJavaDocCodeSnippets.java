@@ -202,7 +202,7 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
             System.out.printf("Created AppendBlob at %s%n", response.getLastModified()));
         // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExists
 
-        // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#AppendBlobCreateOptions
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExistsWithResponse#AppendBlobCreateOptions
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setContentType("binary")
             .setContentLanguage("en-US");
@@ -212,6 +212,6 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
         client.createIfNotExistsWithResponse(new AppendBlobCreateOptions().setHeaders(headers).setMetadata(metadata)
             .setTags(tags)).switchIfEmpty(Mono.<Response<AppendBlobItem>>empty().doOnSuccess(x -> System.out.println("Already exists.")))
             .subscribe(response -> System.out.printf("Created AppendBlob at %s%n", response.getValue().getLastModified()));
-        // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#AppendBlobCreateOptions
+        // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExistsWithResponse#AppendBlobCreateOptions
     }
 }

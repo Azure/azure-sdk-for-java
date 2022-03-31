@@ -245,12 +245,12 @@ public final class QueueAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-queue4">Azure Docs</a>.</p>
      *
-     * @return A reactive response signaling completion. {@code True} indicates a new queue was created,
-     * {@code False} indicates the specified queue already existed.
+     * @return A reactive response signaling completion. {@code true} indicates a new queue was created,
+     * {@code false} indicates the specified queue already existed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> createIfNotExists() {
-        return createIfNotExistsWithResponse(null).flatMap(response -> Mono.just(true))
+        return createIfNotExistsWithResponse(null).map(response -> true)
             .switchIfEmpty(Mono.just(false));
     }
 
@@ -289,7 +289,8 @@ public final class QueueAsyncClient {
     Mono<Response<Void>> createIfNotExistsWithResponse(Map<String, String> metadata, Context context) {
         try {
             return createWithResponse(metadata, context)
-                .onErrorResume(t -> t instanceof QueueStorageException && ((QueueStorageException)t).getStatusCode() == 409,
+                .onErrorResume(t -> t instanceof QueueStorageException
+                        && ((QueueStorageException) t).getStatusCode() == 409,
                     t -> Mono.empty()).filter(res -> res.getStatusCode() != 204);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -381,12 +382,12 @@ public final class QueueAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-queue3">Azure Docs</a>.</p>
      *
-     * @return a reactive response signaling completion. {@code True} indicates that the queue was successfully
-     * deleted, {@code False} indicates that the queue did not exist.
+     * @return a reactive response signaling completion. {@code true} indicates that the queue was successfully
+     * deleted, {@code false} indicates that the queue did not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse().flatMap(response -> Mono.just(true)).switchIfEmpty(Mono.just(false));
+        return deleteIfExistsWithResponse().map(response -> true).switchIfEmpty(Mono.just(false));
     }
 
     /**
@@ -423,7 +424,7 @@ public final class QueueAsyncClient {
     Mono<Response<Void>> deleteIfExistsWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
         return deleteWithResponse(context).onErrorResume(t -> t instanceof QueueStorageException
-            && ((QueueStorageException)t).getStatusCode() == 404,
+            && ((QueueStorageException) t).getStatusCode() == 404,
             t -> Mono.empty()).map(response -> new SimpleResponse<>(response, null));
     }
 

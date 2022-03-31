@@ -207,8 +207,8 @@ public class DataLakeDirectoryClientJavaDocSamples {
      */
     public void deleteIfExistsCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteIfExists
-        client.deleteIfExists();
-        System.out.println("Delete request completed");
+        boolean result = client.deleteIfExists();
+        System.out.println("Delete request completed: " + result);
         // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteIfExists
 
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteIfExistsWithResponse#boolean-DataLakeRequestConditions-Duration-Context
@@ -258,8 +258,8 @@ public class DataLakeDirectoryClientJavaDocSamples {
      */
     public void deleteFileIfExistsCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteFileIfExists#String
-        client.deleteFileIfExists(fileName);
-        System.out.println("Delete request completed");
+        boolean result = client.deleteFileIfExists(fileName);
+        System.out.println("Delete request completed: " + result);
         // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteFileIfExists#String
 
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteFileIfExistsWithResponse#String-DataLakeRequestConditions-Duration-Context
@@ -310,8 +310,8 @@ public class DataLakeDirectoryClientJavaDocSamples {
      */
     public void deleteSubdirectoryIfExistsCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteSubdirectoryIfExists#String
-        client.deleteSubdirectoryIfExists(directoryName);
-        System.out.println("Delete request completed");
+        boolean result = client.deleteSubdirectoryIfExists(directoryName);
+        System.out.println("Delete request completed: " + result);
         // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteSubdirectoryIfExists#String
 
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteSubdirectoryIfExistsWithResponse#String-boolean-DataLakeRequestConditions-Duration-Context

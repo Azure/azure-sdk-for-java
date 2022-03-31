@@ -502,18 +502,19 @@ public class ShareClient {
      *
      * <!-- src_embed com.azure.storage.file.share.ShareClient.deleteIfExists -->
      * <pre>
-     * shareClient.deleteIfExists&#40;&#41;;
-     * System.out.println&#40;&quot;Completed deleting the share.&quot;&#41;;
+     * boolean result = shareClient.deleteIfExists&#40;&#41;;
+     * System.out.println&#40;&quot;Share deleted: &quot; + result&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareClient.deleteIfExists -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
-     *
+     * @return {@code true} if the share is successfully deleted, {@code false} if the share does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteIfExists() {
-        deleteIfExistsWithResponse(null, Context.NONE);
+    public boolean deleteIfExists() {
+        Response<Void> response = deleteIfExistsWithResponse(null, Context.NONE);
+        return response != null && response.getStatusCode() == 202;
     }
 
     /**
@@ -1530,8 +1531,8 @@ public class ShareClient {
      *
      * <!-- src_embed com.azure.storage.file.share.ShareClient.deleteDirectoryIfExists#string -->
      * <pre>
-     * shareClient.deleteDirectoryIfExists&#40;&quot;mydirectory&quot;&#41;;
-     * System.out.println&#40;&quot;Completed deleting the directory.&quot;&#41;;
+     * boolean result = shareClient.deleteDirectoryIfExists&#40;&quot;mydirectory&quot;&#41;;
+     * System.out.println&#40;&quot;Directory deleted: &quot; + result&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareClient.deleteDirectoryIfExists#string -->
      *
@@ -1540,10 +1541,12 @@ public class ShareClient {
      *
      * @param directoryName Name of the directory
      * @throws ShareStorageException If the directory isn't empty
+     * @return {@code true} if the directory is successfully deleted, {@code false} if the directory does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteDirectoryIfExists(String directoryName) {
-        deleteDirectoryIfExistsWithResponse(directoryName, null, Context.NONE);
+    public boolean deleteDirectoryIfExists(String directoryName) {
+        Response<Void> response = deleteDirectoryIfExistsWithResponse(directoryName, null, Context.NONE);
+        return response != null && response.getStatusCode() == 202;
     }
 
     /**
@@ -1682,8 +1685,8 @@ public class ShareClient {
      *
      * <!-- src_embed com.azure.storage.file.share.ShareClient.deleteFileIfExists#string -->
      * <pre>
-     * shareClient.deleteFile&#40;&quot;myfile&quot;&#41;;
-     * System.out.println&#40;&quot;Complete deleting the file.&quot;&#41;;
+     * boolean result = shareClient.deleteFile&#40;&quot;myfile&quot;&#41;;
+     * System.out.println&#40;&quot;File deleted: &quot; + result&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareClient.deleteFileIfExists#string -->
      *
@@ -1691,10 +1694,12 @@ public class ShareClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
      *
      * @param fileName Name of the file
+     * @return {@code true} if the file is successfully deleted, {@code false} if the file does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteFileIfExists(String fileName) {
-        deleteFileIfExistsWithResponse(fileName, null, Context.NONE);
+    public boolean deleteFileIfExists(String fileName) {
+        Response<Void> response = deleteFileIfExistsWithResponse(fileName, null, Context.NONE);
+        return response != null && response.getStatusCode() == 202;
     }
 
     /**

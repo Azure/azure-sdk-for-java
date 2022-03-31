@@ -214,7 +214,7 @@ class AppendBlobAPITest extends APISpec {
         bc = cc.getBlobClient(blobName).getAppendBlobClient()
 
         expect:
-        bc.createIfNotExistsWithResponse(null, null, null, null).getStatusCode() == 201
+        bc.createIfNotExistsWithResponse(null, null, null).getStatusCode() == 201
     }
 
     def "Create if not exists on a blob that already exists"() {

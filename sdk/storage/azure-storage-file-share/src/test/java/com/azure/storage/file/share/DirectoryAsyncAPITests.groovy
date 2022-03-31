@@ -157,7 +157,7 @@ class DirectoryAsyncAPITests extends APISpec {
         FileTestHelper.assertResponseStatusCode(initialResponse, 201)
         initialResponse.getValue() != null
         secondResponse == null
-        client.exists().block() == true
+        client.exists().block()
     }
 
     def "Create if not exists directory with metadata"() {
@@ -224,6 +224,13 @@ class DirectoryAsyncAPITests extends APISpec {
         }
     }
 
+    def "Delete if exists directory min"() {
+        given:
+        primaryDirectoryAsyncClient.create().block()
+        expect:
+        primaryDirectoryAsyncClient.deleteIfExists().block()
+    }
+
     def "Delete if exists directory"() {
         given:
         primaryDirectoryAsyncClient.create().block()
@@ -243,7 +250,7 @@ class DirectoryAsyncAPITests extends APISpec {
 
         then:
         response == null
-        client.exists().block() == false
+        !client.exists().block()
     }
 
     def "Get properties"() {
@@ -691,6 +698,15 @@ class DirectoryAsyncAPITests extends APISpec {
             }.verifyComplete()
     }
 
+    def "Delete if exists sub directory min"() {
+        given:
+        def subDirectoryName = "testSubCreateDirectory"
+        primaryDirectoryAsyncClient.create().block()
+        primaryDirectoryAsyncClient.createSubdirectory(subDirectoryName).block()
+        expect:
+        primaryDirectoryAsyncClient.deleteSubdirectoryIfExistsWithResponse(subDirectoryName)
+    }
+
     def "Delete if exists subdirectory that does not exist"() {
         setup:
         def subdirectoryName = generatePathName()
@@ -839,6 +855,15 @@ class DirectoryAsyncAPITests extends APISpec {
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 202)
             }.verifyComplete()
+    }
+
+    def "Delete if exists file min"() {
+        given:
+        def fileName = "testCreateFile"
+        primaryDirectoryAsyncClient.create().block()
+        primaryDirectoryAsyncClient.createFile(fileName, 1024).block()
+        expect:
+        primaryDirectoryAsyncClient.deleteFileIfExists(fileName).block()
     }
 
     def "Delete if exists file lease"() {

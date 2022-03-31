@@ -327,14 +327,17 @@ public final class BlobContainerClient {
      *
      * <!-- src_embed com.azure.storage.blob.BlobContainerClient.createIfNotExists -->
      * <pre>
-     * client.createIfNotExists&#40;&#41;;
-     * System.out.printf&#40;&quot;Create completed%n&quot;&#41;;
+     * boolean result = client.createIfNotExists&#40;&#41;;
+     * System.out.println&#40;&quot;Create completed: &quot; + result&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerClient.createIfNotExists -->
+     *
+     * @return {@code true} if container is successfully created, {@code false} if container already exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createIfNotExists() {
-        createIfNotExistsWithResponse(null, null, null, null);
+    public boolean createIfNotExists() {
+        Response<Void> response = createIfNotExistsWithResponse(null, null, null, null);
+        return response != null && response.getStatusCode() == 201;
     }
 
     /**
@@ -439,14 +442,16 @@ public final class BlobContainerClient {
      *
      * <!-- src_embed com.azure.storage.blob.BlobContainerClient.deleteIfExists -->
      * <pre>
-     * client.deleteIfExists&#40;&#41;;
-     * System.out.printf&#40;&quot;Delete completed%n&quot;&#41;;
+     * boolean result = client.deleteIfExists&#40;&#41;;
+     * System.out.printf&#40;&quot;Delete completed: &quot; + result&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerClient.deleteIfExists -->
+     * @return {@code true} if container is successfully deleted, {@code false} if container does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteIfExists() {
-        deleteIfExistsWithResponse(null, null, Context.NONE);
+    public boolean deleteIfExists() {
+        Response<Void> response = deleteIfExistsWithResponse(null, null, Context.NONE);
+        return response != null && response.getStatusCode() == 202;
     }
 
     /**

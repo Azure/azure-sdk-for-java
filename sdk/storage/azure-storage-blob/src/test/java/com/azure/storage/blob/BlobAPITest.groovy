@@ -2785,6 +2785,11 @@ class BlobAPITest extends APISpec {
         thrown(BlobStorageException)
     }
 
+    def "Delete if exists container"() {
+        expect:
+        bc.deleteIfExists()
+    }
+
     def "Delete if exists"() {
         when:
         def response = bc.deleteIfExistsWithResponse(null, null, null, null)

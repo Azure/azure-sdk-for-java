@@ -518,12 +518,12 @@ public class ShareDirectoryAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
      *
-     * @return a reactive response signaling completion. {@code True} indicates that the directory was successfully
-     * deleted, {@code False} indicates that the directory did not exist.
+     * @return a reactive response signaling completion. {@code true} indicates that the directory was successfully
+     * deleted, {@code false} indicates that the directory did not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse().flatMap(response -> Mono.just(true)).switchIfEmpty(Mono.just(false));
+        return deleteIfExistsWithResponse().map(response -> true).switchIfEmpty(Mono.just(false));
     }
 
     /**
@@ -1495,12 +1495,12 @@ public class ShareDirectoryAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
      *
      * @param subdirectoryName Name of the subdirectory
-     * @return a reactive response signaling completion. {@code True} indicates that the subdirectory was successfully
-     * deleted, {@code False} indicates that the subdirectory did not exist.
+     * @return a reactive response signaling completion. {@code true} indicates that the subdirectory was successfully
+     * deleted, {@code false} indicates that the subdirectory did not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteSubdirectoryIfExists(String subdirectoryName) {
-        return deleteSubdirectoryIfExistsWithResponse(subdirectoryName).flatMap(response -> Mono.just(true))
+        return deleteSubdirectoryIfExistsWithResponse(subdirectoryName).map(response -> true)
             .switchIfEmpty(Mono.just(false));
     }
 
@@ -1539,7 +1539,11 @@ public class ShareDirectoryAsyncClient {
     }
 
     Mono<Response<Void>> deleteSubdirectoryIfExistsWithResponse(String subdirectoryName, Context context) {
-        return getSubdirectoryClient(subdirectoryName).deleteIfExistsWithResponse(context);
+        try {
+            return getSubdirectoryClient(subdirectoryName).deleteIfExistsWithResponse(context);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -1822,13 +1826,12 @@ public class ShareDirectoryAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
      *
      * @param fileName Name of the file
-     * @return a reactive response signaling completion. {@code True} indicates that the file was successfully
-     * deleted, {@code False} indicates that the file did not exist.
+     * @return a reactive response signaling completion. {@code true} indicates that the file was successfully
+     * deleted, {@code false} indicates that the file did not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteFileIfExists(String fileName) {
-        return deleteFileIfExistsWithResponse(fileName).flatMap(response -> Mono.just(true))
-            .switchIfEmpty(Mono.just(false));
+        return deleteFileIfExistsWithResponse(fileName).map(response -> true).switchIfEmpty(Mono.just(false));
     }
 
     /**

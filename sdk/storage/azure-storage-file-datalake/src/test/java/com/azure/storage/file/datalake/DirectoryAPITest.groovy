@@ -416,6 +416,11 @@ class DirectoryAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
+    def "Delete if exists"() {
+        expect:
+        dc.deleteIfExists()
+    }
+
     def "Delete if exists min"() {
         expect:
         dc.deleteIfExistsWithResponse(false, null, null, null).getStatusCode() == 200
@@ -2844,6 +2849,13 @@ class DirectoryAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
+    def "Delete if exists file"() {
+        expect:
+        def pathName = generatePathName()
+        dc.createFile(pathName)
+        dc.deleteFileIfExists(pathName)
+    }
+
     def "Delete if exists file min"() {
         expect:
         def pathName = generatePathName()
@@ -3285,6 +3297,13 @@ class DirectoryAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null
         null     | null       | null        | receivedEtag | null
         null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Delete if exists sub dir"() {
+        expect:
+        def pathName = generatePathName()
+        dc.createSubdirectoryIfNotExists(pathName)
+        dc.deleteSubdirectoryIfExists(pathName)
     }
 
     def "Delete if exists sub dir min"() {

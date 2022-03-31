@@ -1,0 +1,69 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.blob.core.windows.net/e2cdd5c00e2cdd5c05e61285468e1b10a8feb4e3caea?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.16.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "cefaa089-bb79-424b-878f-f1388e9dc297"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA12A4185C0A41",
+      "Last-Modified" : "Wed, 30 Mar 2022 23:22:01 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "a5411466-401e-0080-6f8c-44edfe000000",
+      "x-ms-client-request-id" : "cefaa089-bb79-424b-878f-f1388e9dc297",
+      "Date" : "Wed, 30 Mar 2022 23:22:01 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.blob.core.windows.net/e2cdd5c00e2cdd5c05e61285468e1b10a8feb4e3caea/e2cdd5c01e2cdd5c05e66103912d63ad7e8584d29a00",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.16.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a761bfbc-c5e5-4f52-80cf-fcfe4ded2c0e"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA12A41889740C",
+      "Last-Modified" : "Wed, 30 Mar 2022 23:22:02 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "c75fa189-d01e-003b-5b8c-44575c000000",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-client-request-id" : "a761bfbc-c5e5-4f52-80cf-fcfe4ded2c0e",
+      "Date" : "Wed, 30 Mar 2022 23:22:01 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.blob.core.windows.net/e2cdd5c00e2cdd5c05e61285468e1b10a8feb4e3caea/e2cdd5c02e2cdd5c05e6047684fe4e47b7eec4df79d3",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.16.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "260bb79d-c465-4a95-9bd5-de2af7d98a1b"
+    },
+    "Response" : {
+      "content-length" : "271",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "BlobTagsNotSupportedForAccountType",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "668426a1-901e-0005-588c-44c023000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>BlobTagsNotSupportedForAccountType</Code><Message>Blob tags are only supported on General Purpose v2 storage accounts.\nRequestId:668426a1-901e-0005-588c-44c023000000\nTime:2022-03-30T23:22:02.3089891Z</Message></Error>",
+      "x-ms-client-request-id" : "260bb79d-c465-4a95-9bd5-de2af7d98a1b",
+      "Date" : "Wed, 30 Mar 2022 23:22:01 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "e2cdd5c00e2cdd5c05e61285468e1b10a8feb4e3caea", "e2cdd5c01e2cdd5c05e66103912d63ad7e8584d29a00", "e2cdd5c02e2cdd5c05e6047684fe4e47b7eec4df79d3" ]
+}

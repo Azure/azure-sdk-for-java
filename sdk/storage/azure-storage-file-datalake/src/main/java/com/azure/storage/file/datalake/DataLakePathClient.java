@@ -292,7 +292,8 @@ public class DataLakePathClient {
      * the created resource. If resource already exists, {@link Response} will be {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PathInfo> createIfNotExistsWithResponse(DataLakePathCreateOptions options, Duration timeout, Context context) {
+    public Response<PathInfo> createIfNotExistsWithResponse(DataLakePathCreateOptions options, Duration timeout,
+        Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(dataLakePathAsyncClient
             .createIfNotExistsWithResponse(options, context), timeout);
     }
@@ -313,11 +314,12 @@ public class DataLakePathClient {
      * <p>For more information see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
      * Docs</a></p>
-     *
+     * @return {@code true} if the resource is successfully deleted, {@code false} if resource does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteIfExists() {
-        deleteIfExistsWithResponse(false, null, null, null);
+    public boolean deleteIfExists() {
+        Response<Void> response = deleteIfExistsWithResponse(false, null, null, null);
+        return response != null && response.getStatusCode() == 200;
     }
 
     /**

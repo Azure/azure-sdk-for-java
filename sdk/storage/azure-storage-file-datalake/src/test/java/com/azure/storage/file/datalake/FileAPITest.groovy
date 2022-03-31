@@ -442,6 +442,11 @@ class FileAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
+    def "Delete if exists"() {
+        expect:
+        fc.deleteIfExists()
+    }
+
     def "Delete if exists min"() {
         expect:
         fc.deleteIfExistsWithResponse(null, null, null).getStatusCode() == 200

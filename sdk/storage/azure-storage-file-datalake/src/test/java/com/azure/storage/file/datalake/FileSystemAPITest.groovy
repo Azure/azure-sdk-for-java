@@ -118,6 +118,18 @@ class FileSystemAPITest extends APISpec {
         validateBasicHeaders(response.getHeaders())
     }
 
+    def "Create if not exists min"() {
+        setup:
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+
+        when:
+        def result = fsc.createIfNotExists()
+
+        then:
+        fsc.getBlobContainerClient().exists()
+        result
+    }
+
     @Unroll
     def "Create if not exists metadata"() {
         setup:
@@ -459,14 +471,15 @@ class FileSystemAPITest extends APISpec {
         fsc.getBlobContainerClient().exists()
 
         when:
-        fsc.deleteIfExists()
+        def result = fsc.deleteIfExists()
 
         and:
         fsc.getProperties()
 
         then:
         thrown(DataLakeStorageException)
-        fsc.getBlobContainerClient().exists() == false
+        !fsc.getBlobContainerClient().exists()
+        result
     }
 
     def "Delete if exists on file system that does not exist"() {
@@ -880,6 +893,13 @@ class FileSystemAPITest extends APISpec {
     }
 
     def "Delete if exists file min"() {
+        expect:
+        def pathName = generatePathName()
+        fsc.createFile(pathName)
+        fsc.deleteFileIfExists(pathName)
+    }
+
+    def "Delete if exists file null args"() {
         expect:
         def pathName = generatePathName()
         fsc.createFile(pathName)
@@ -1305,6 +1325,13 @@ class FileSystemAPITest extends APISpec {
     }
 
     def "Delete if exists dir min"() {
+        expect:
+        def pathName = generatePathName()
+        fsc.createDirectory(pathName)
+        fsc.deleteDirectoryIfExists(pathName)
+    }
+
+    def "Delete if exists dir null args"() {
         expect:
         def pathName = generatePathName()
         fsc.createDirectory(pathName)

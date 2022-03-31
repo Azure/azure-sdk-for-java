@@ -446,13 +446,13 @@ public final class BlobContainerAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExists -->
      *
-     * @return A reactive response signaling completion. {@code True} indicates a new container was created,
-     * {@code False} indicates a container already existed at this location.
+     * @return A reactive response signaling completion. {@code true} indicates a new container was created,
+     * {@code true} indicates a container already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> createIfNotExists() {
-        return createIfNotExistsWithResponse(null, null, null).flatMap(response ->
-            Mono.just(true)).switchIfEmpty(Mono.just(false));
+        return createIfNotExistsWithResponse(null, null, null).map(response -> true)
+            .switchIfEmpty(Mono.just(false));
     }
 
     /**
@@ -587,13 +587,12 @@ public final class BlobContainerAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExists -->
      *
-     * @return A reactive response signaling completion. {@code True} indicates the container was deleted,
-     * {@code False} indicates the container does not exist.
+     * @return A reactive response signaling completion. {@code true} indicates the container was deleted,
+     * {@code false} indicates the container does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse(null).flatMap(response -> Mono.just(true))
-            .switchIfEmpty(Mono.just(false));
+        return deleteIfExistsWithResponse(null).map(response -> true).switchIfEmpty(Mono.just(false));
     }
 
     /**

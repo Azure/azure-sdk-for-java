@@ -162,18 +162,20 @@ public final class QueueClient {
      *
      * <!-- src_embed com.azure.storage.queue.queueClient.createIfNotExists -->
      * <pre>
-     * client.createIfNotExists&#40;&#41;;
-     * System.out.println&#40;&quot;Complete creating queue.&quot;&#41;;
+     * boolean result = client.createIfNotExists&#40;&#41;;
+     * System.out.println&#40;&quot;Queue created: &quot; + result&#41;;
      * </pre>
      * <!-- end com.azure.storage.queue.queueClient.createIfNotExists -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-queue4">Azure Docs</a>.</p>
      *
+     * @return {@code true} if queue is successfully created, {@code false} if queue already exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createIfNotExists() {
-        createIfNotExistsWithResponse(null, null, null);
+    public boolean createIfNotExists() {
+        Response<Void> response = createIfNotExistsWithResponse(null, null, null);
+        return response != null && response.getStatusCode() == 201;
     }
 
     /**
@@ -282,10 +284,12 @@ public final class QueueClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-queue3">Azure Docs</a>.</p>
      *
+     * @return {@code true} if queue is successfully deleted, {@code false} if queue does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteIfExists() {
-        deleteIfExistsWithResponse(null, Context.NONE);
+    public boolean deleteIfExists() {
+        Response<Void> response = deleteIfExistsWithResponse(null, Context.NONE);
+        return response != null && response.getStatusCode() == 204;
     }
 
     /**
