@@ -9,20 +9,19 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The audio routing group request. */
+/** The audio group result. */
 @Fluent
-public final class AudioRoutingGroupRequest {
+public final class AudioGroupResultInternal {
     /*
      * The audio routing mode.
      */
-    @JsonProperty(value = "audioRoutingMode", required = true)
+    @JsonProperty(value = "audioRoutingMode")
     private AudioRoutingMode audioRoutingMode;
 
     /*
-     * The target identities that would be receivers in the audio routing
-     * group.
+     * The target identities that would be receivers in the audio group.
      */
-    @JsonProperty(value = "targets", required = true)
+    @JsonProperty(value = "targets")
     private List<CommunicationIdentifierModel> targets;
 
     /**
@@ -38,15 +37,15 @@ public final class AudioRoutingGroupRequest {
      * Set the audioRoutingMode property: The audio routing mode.
      *
      * @param audioRoutingMode the audioRoutingMode value to set.
-     * @return the AudioRoutingGroupRequest object itself.
+     * @return the AudioGroupResultInternal object itself.
      */
-    public AudioRoutingGroupRequest setAudioRoutingMode(AudioRoutingMode audioRoutingMode) {
+    public AudioGroupResultInternal setAudioRoutingMode(AudioRoutingMode audioRoutingMode) {
         this.audioRoutingMode = audioRoutingMode;
         return this;
     }
 
     /**
-     * Get the targets property: The target identities that would be receivers in the audio routing group.
+     * Get the targets property: The target identities that would be receivers in the audio group.
      *
      * @return the targets value.
      */
@@ -55,12 +54,12 @@ public final class AudioRoutingGroupRequest {
     }
 
     /**
-     * Set the targets property: The target identities that would be receivers in the audio routing group.
+     * Set the targets property: The target identities that would be receivers in the audio group.
      *
      * @param targets the targets value to set.
-     * @return the AudioRoutingGroupRequest object itself.
+     * @return the AudioGroupResultInternal object itself.
      */
-    public AudioRoutingGroupRequest setTargets(List<CommunicationIdentifierModel> targets) {
+    public AudioGroupResultInternal setTargets(List<CommunicationIdentifierModel> targets) {
         this.targets = targets;
         return this;
     }

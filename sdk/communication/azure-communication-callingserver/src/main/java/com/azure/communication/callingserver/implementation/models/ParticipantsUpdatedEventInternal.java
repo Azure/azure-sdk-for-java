@@ -18,6 +18,12 @@ public final class ParticipantsUpdatedEventInternal {
     private String callConnectionId;
 
     /*
+     * The server call locator.
+     */
+    @JsonProperty(value = "callLocator")
+    private CallLocatorModel callLocator;
+
+    /*
      * The list of participants.
      */
     @JsonProperty(value = "participants")
@@ -40,6 +46,26 @@ public final class ParticipantsUpdatedEventInternal {
      */
     public ParticipantsUpdatedEventInternal setCallConnectionId(String callConnectionId) {
         this.callConnectionId = callConnectionId;
+        return this;
+    }
+
+    /**
+     * Get the callLocator property: The server call locator.
+     *
+     * @return the callLocator value.
+     */
+    public CallLocatorModel getCallLocator() {
+        return this.callLocator;
+    }
+
+    /**
+     * Set the callLocator property: The server call locator.
+     *
+     * @param callLocator the callLocator value to set.
+     * @return the ParticipantsUpdatedEventInternal object itself.
+     */
+    public ParticipantsUpdatedEventInternal setCallLocator(CallLocatorModel callLocator) {
+        this.callLocator = callLocator;
         return this;
     }
 

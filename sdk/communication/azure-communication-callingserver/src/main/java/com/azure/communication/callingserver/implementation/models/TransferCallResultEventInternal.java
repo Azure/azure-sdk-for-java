@@ -18,6 +18,12 @@ public final class TransferCallResultEventInternal {
     private CallingOperationResultDetailsInternal resultDetails;
 
     /*
+     * The operation id.
+     */
+    @JsonProperty(value = "operationId")
+    private String operationId;
+
+    /*
      * The operation context.
      */
     @JsonProperty(value = "operationContext")
@@ -28,6 +34,12 @@ public final class TransferCallResultEventInternal {
      */
     @JsonProperty(value = "status", required = true)
     private CallingOperationStatus status;
+
+    /*
+     * The server call locator.
+     */
+    @JsonProperty(value = "callLocator")
+    private CallLocatorModel callLocator;
 
     /**
      * Get the resultDetails property: The result details.
@@ -46,6 +58,26 @@ public final class TransferCallResultEventInternal {
      */
     public TransferCallResultEventInternal setResultDetails(CallingOperationResultDetailsInternal resultDetails) {
         this.resultDetails = resultDetails;
+        return this;
+    }
+
+    /**
+     * Get the operationId property: The operation id.
+     *
+     * @return the operationId value.
+     */
+    public String getOperationId() {
+        return this.operationId;
+    }
+
+    /**
+     * Set the operationId property: The operation id.
+     *
+     * @param operationId the operationId value to set.
+     * @return the TransferCallResultEventInternal object itself.
+     */
+    public TransferCallResultEventInternal setOperationId(String operationId) {
+        this.operationId = operationId;
         return this;
     }
 
@@ -86,6 +118,26 @@ public final class TransferCallResultEventInternal {
      */
     public TransferCallResultEventInternal setStatus(CallingOperationStatus status) {
         this.status = status;
+        return this;
+    }
+
+    /**
+     * Get the callLocator property: The server call locator.
+     *
+     * @return the callLocator value.
+     */
+    public CallLocatorModel getCallLocator() {
+        return this.callLocator;
+    }
+
+    /**
+     * Set the callLocator property: The server call locator.
+     *
+     * @param callLocator the callLocator value to set.
+     * @return the TransferCallResultEventInternal object itself.
+     */
+    public TransferCallResultEventInternal setCallLocator(CallLocatorModel callLocator) {
+        this.callLocator = callLocator;
         return this;
     }
 }

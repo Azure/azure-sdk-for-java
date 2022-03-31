@@ -7,9 +7,9 @@ package com.azure.communication.callingserver.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The request payload for resuming meeting audio for a participant. */
+/** The request payload for adding a participant to default audio group. */
 @Fluent
-public final class ResumeMeetingAudioRequest {
+public final class AddToDefaultAudioGroupRequest {
     /*
      * The identifier of the participant.
      */
@@ -29,9 +29,9 @@ public final class ResumeMeetingAudioRequest {
      * Set the identifier property: The identifier of the participant.
      *
      * @param identifier the identifier value to set.
-     * @return the ResumeMeetingAudioRequest object itself.
+     * @return the AddToDefaultAudioGroupRequest object itself.
      */
-    public ResumeMeetingAudioRequest setIdentifier(CommunicationIdentifierModel identifier) {
+    public AddToDefaultAudioGroupRequest setIdentifier(CommunicationIdentifierModel identifier) {
         this.identifier = identifier;
         return this;
     }
