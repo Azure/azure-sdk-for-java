@@ -244,7 +244,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
                 try {
                     testAuthFile = AuthFile.parse(credFile);
                 } catch (IOException e) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException("Cannot parse auth file. Please check file format."));
+                    throw LOGGER.logExceptionAsError(new RuntimeException("Cannot parse auth file. Please check file format.", e));
                 }
                 credential = testAuthFile.getCredential();
                 testProfile = new AzureProfile(testAuthFile.getTenantId(), testAuthFile.getSubscriptionId(), testAuthFile.getEnvironment());

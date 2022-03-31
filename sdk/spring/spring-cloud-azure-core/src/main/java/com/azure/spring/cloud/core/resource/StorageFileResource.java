@@ -192,7 +192,7 @@ public final class StorageFileResource extends AzureStorageResource {
             return this.shareFileClient.openInputStream();
         } catch (ShareStorageException e) {
             LOGGER.error("Failed to open input stream of cloud file", e);
-            throw new IOException("Failed to open input stream of cloud file");
+            throw new IOException("Failed to open input stream of cloud file", e);
         }
     }
 

@@ -276,6 +276,8 @@ secretAsyncClient.listPropertiesOfSecrets()
 ```
 
 ## Troubleshooting
+See our [troubleshooting guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/TROUBLESHOOTING.md) for details on how to diagnose various failure scenarios.
+
 ### General
 Azure Key Vault Secret clients raise exceptions. For example, if you try to retrieve a secret after it is deleted a `404` error is returned, indicating the resource was not found. In the following snippet, the error is handled gracefully by catching the exception and displaying additional information about the error.
 

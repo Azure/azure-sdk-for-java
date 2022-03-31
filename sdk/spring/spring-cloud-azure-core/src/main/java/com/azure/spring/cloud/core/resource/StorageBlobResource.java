@@ -232,7 +232,7 @@ public final class StorageBlobResource extends AzureStorageResource {
             return this.blockBlobClient.openInputStream();
         } catch (BlobStorageException e) {
             LOGGER.error(MSG_FAIL_OPEN_INPUT, e);
-            throw new IOException(MSG_FAIL_OPEN_INPUT);
+            throw new IOException(MSG_FAIL_OPEN_INPUT, e);
         }
     }
 
