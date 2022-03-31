@@ -98,7 +98,7 @@ public class ReactorSession implements AmqpSession {
     private final AtomicReference<TransactionCoordinator> transactionCoordinator = new AtomicReference<>();
     private final Flux<AmqpShutdownSignal> shutdownSignals;
 
-    public static final Symbol CLIENT_ID = Symbol.getSymbol(AmqpConstants.VENDOR + ":receiver-name");
+    public static final Symbol CLIENT_IDENTIFIER = Symbol.getSymbol(AmqpConstants.VENDOR + ":receiver-name");
 
     /**
      * Creates a new AMQP session using proton-j.
@@ -532,10 +532,10 @@ public class ReactorSession implements AmqpSession {
 
         final Source source = new Source();
         if (linkProperties != null && linkProperties.size() > 0) {
-            String clientId = (String) linkProperties.get(CLIENT_ID);
-            if (CoreUtils.isNullOrEmpty(clientId)) {
-                source.setAddress(clientId);
-                linkProperties.remove(CLIENT_ID);
+            String clientIdentifier = (String) linkProperties.get(CLIENT_IDENTIFIER);
+            if (CoreUtils.isNullOrEmpty(clientIdentifier)) {
+                source.setAddress(clientIdentifier);
+                linkProperties.remove(CLIENT_IDENTIFIER);
             }
             sender.setProperties(linkProperties);
         }
@@ -597,9 +597,9 @@ public class ReactorSession implements AmqpSession {
         final Target target = new Target();
         if (receiverProperties != null && !receiverProperties.isEmpty()) {
             receiver.setProperties(receiverProperties);
-            String clientId = (String) receiverProperties.get(CLIENT_ID);
-            if (CoreUtils.isNullOrEmpty(clientId)) {
-                target.setAddress(clientId);
+            String clientIdentifier = (String) receiverProperties.get(CLIENT_IDENTIFIER);
+            if (CoreUtils.isNullOrEmpty(clientIdentifier)) {
+                target.setAddress(clientIdentifier);
             }
         }
         receiver.setTarget(target);

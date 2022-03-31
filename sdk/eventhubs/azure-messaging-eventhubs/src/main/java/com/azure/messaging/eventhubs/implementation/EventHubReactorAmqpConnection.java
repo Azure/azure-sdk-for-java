@@ -102,19 +102,19 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
      * @param linkName The name of the link.
      * @param entityPath The remote address to connect to for the message broker.
      * @param retryOptions Options to use when creating the link.
-     * @param clientId The identifier of client.
+     * @param clientIdentifier The identifier of client.
      * @return A new or existing send link that is connected to the given {@code entityPath}.
      */
     @Override
-    public Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, AmqpRetryOptions retryOptions, String clientId) {
+    public Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, AmqpRetryOptions retryOptions, String clientIdentifier) {
         return createSession(entityPath).cast(EventHubSession.class)
             .flatMap(session -> {
                 logger.atVerbose()
                     .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                    .addKeyValue(CLIENT_ID_KEY, clientId)
+                    .addKeyValue(CLIENT_ID_KEY, clientIdentifier)
                     .log("Get or create producer.");
                 final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
-                return session.createProducer(linkName, entityPath, retryOptions.getTryTimeout(), retryPolicy, clientId);
+                return session.createProducer(linkName, entityPath, retryOptions.getTryTimeout(), retryPolicy, clientIdentifier);
             });
     }
 
@@ -126,22 +126,22 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
      * @param entityPath The remote address to connect to for the message broker.
      * @param eventPosition Position to set the receive link to.
      * @param options Consumer options to use when creating the link.
-     * @param clientId
+     * @param clientIdentifier The identifier of client.
      * @return A new or existing receive link that is connected to the given {@code entityPath}.
      */
     @Override
     public Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, EventPosition eventPosition,
-        ReceiveOptions options, String clientId) {
+        ReceiveOptions options, String clientIdentifier) {
         return createSession(entityPath).cast(EventHubSession.class)
             .flatMap(session -> {
                 logger.atVerbose()
                     .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                    .addKeyValue(CLIENT_ID_KEY, clientId)
+                    .addKeyValue(CLIENT_ID_KEY, clientIdentifier)
                     .log("Get or create consumer.");
                 final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
                 return session.createConsumer(linkName, entityPath, retryOptions.getTryTimeout(), retryPolicy,
-                    eventPosition, options, clientId);
+                    eventPosition, options, clientIdentifier);
             });
     }
 
