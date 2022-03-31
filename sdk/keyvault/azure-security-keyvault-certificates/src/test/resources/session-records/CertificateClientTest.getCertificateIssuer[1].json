@@ -1,60 +1,56 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.vault.azure.net/certificates/issuers/d6e796b3-e104-4980-a19a-1fe066b54e9d-testIssuer02?api-version=7.3",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/issuers/testissuer41372d055a?api-version=7.3",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "385",
-      "x-ms-keyvault-rbac-assignment-id" : "f4e2dde1-5ff5-56c6-8923-012f34e01597",
+      "content-length" : "360",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Tue, 29 Mar 2022 01:47:35 GMT",
-      "x-ms-keyvault-rbac-cache" : "ra_age=0;da_age=0;rd_age=0;brd_age=5076;ra_notif_age=2782;dec_lev=3;",
+      "Date" : "Thu, 31 Mar 2022 00:15:15 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus2",
+      "x-ms-keyvault-region" : "westus",
       "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "3ede2965-c7f0-44bd-9b33-0fbaf62099c4",
+      "x-ms-request-id" : "942d027f-660e-45a4-85ef-94e28175c334",
       "x-ms-keyvault-service-version" : "1.9.331.5",
-      "Body" : "{\"id\":\"https://azsdktests.vault.azure.net/certificates/issuers/d6e796b3-e104-4980-a19a-1fe066b54e9d-testIssuer02\",\"provider\":\"Test\",\"credentials\":{\"account_id\":\"issuerAccountId\"},\"org_details\":{\"zip\":0,\"admin_details\":[{\"first_name\":\"first\",\"last_name\":\"last\",\"email\":\"first.last@hotmail.com\",\"phone\":\"12345\"}]},\"attributes\":{\"enabled\":true,\"created\":1648518456,\"updated\":1648518456}}",
+      "Body" : "{\"id\":\"https://azsdktests.vault.azure.net/certificates/issuers/testissuer41372d055a\",\"provider\":\"Test\",\"credentials\":{\"account_id\":\"issuerAccountId\"},\"org_details\":{\"zip\":0,\"admin_details\":[{\"first_name\":\"first\",\"last_name\":\"last\",\"email\":\"first.last@hotmail.com\",\"phone\":\"12345\"}]},\"attributes\":{\"enabled\":true,\"created\":1648685715,\"updated\":1648685715}}",
       "Content-Type" : "application/json; charset=utf-8",
       "X-Powered-By" : "ASP.NET"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/certificates/issuers/d6e796b3-e104-4980-a19a-1fe066b54e9d-testIssuer02?api-version=7.3",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/issuers/testissuer41372d055a?api-version=7.3",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "385",
-      "x-ms-keyvault-rbac-assignment-id" : "f4e2dde1-5ff5-56c6-8923-012f34e01597",
+      "content-length" : "360",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Tue, 29 Mar 2022 01:47:36 GMT",
-      "x-ms-keyvault-rbac-cache" : "ra_age=0;da_age=0;rd_age=0;brd_age=5076;ra_notif_age=2782;dec_lev=1;",
+      "Date" : "Thu, 31 Mar 2022 00:15:15 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus2",
+      "x-ms-keyvault-region" : "westus",
       "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "f5193d0e-ff15-4dc7-a7be-8886698b817c",
+      "x-ms-request-id" : "135659ed-6de2-46c5-9ac8-56cf047d59e4",
       "x-ms-keyvault-service-version" : "1.9.331.5",
-      "Body" : "{\"id\":\"https://azsdktests.vault.azure.net/certificates/issuers/d6e796b3-e104-4980-a19a-1fe066b54e9d-testIssuer02\",\"provider\":\"Test\",\"credentials\":{\"account_id\":\"issuerAccountId\"},\"org_details\":{\"zip\":0,\"admin_details\":[{\"first_name\":\"first\",\"last_name\":\"last\",\"email\":\"first.last@hotmail.com\",\"phone\":\"12345\"}]},\"attributes\":{\"enabled\":true,\"created\":1648518456,\"updated\":1648518456}}",
+      "Body" : "{\"id\":\"https://azsdktests.vault.azure.net/certificates/issuers/testissuer41372d055a\",\"provider\":\"Test\",\"credentials\":{\"account_id\":\"issuerAccountId\"},\"org_details\":{\"zip\":0,\"admin_details\":[{\"first_name\":\"first\",\"last_name\":\"last\",\"email\":\"first.last@hotmail.com\",\"phone\":\"12345\"}]},\"attributes\":{\"enabled\":true,\"created\":1648685715,\"updated\":1648685715}}",
       "Content-Type" : "application/json; charset=utf-8",
       "X-Powered-By" : "ASP.NET"
     },
     "Exception" : null
   } ],
-  "variables" : [ ]
+  "variables" : [ "testissuer41372d055a" ]
 }
