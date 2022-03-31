@@ -222,8 +222,8 @@ public class OkHttpAsyncHttpClientBuilder {
      * @param followRedirect The followRedirects value to use.
      * @return The updated OkHttpAsyncHttpClientBuilder object.
      */
-    public OkHttpAsyncHttpClientBuilder followRedirects(boolean followRedirect) {
-        this.followRedirects = followRedirect;
+    public OkHttpAsyncHttpClientBuilder followRedirects(boolean followRedirects) {
+        this.followRedirects = followRedirects;
         return this;
     }
 
