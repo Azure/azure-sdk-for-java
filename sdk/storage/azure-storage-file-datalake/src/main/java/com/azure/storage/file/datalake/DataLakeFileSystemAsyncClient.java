@@ -159,7 +159,8 @@ public class DataLakeFileSystemAsyncClient {
             null).getBlockBlobAsyncClient();
 
         return new DataLakeFileAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
-            getFileSystemName(), fileName, blockBlobAsyncClient);
+            getFileSystemName(), fileName, blockBlobAsyncClient,
+            Transforms.fromBlobCpkInfo(blobContainerAsyncClient.getCustomerProvidedKey()));
     }
 
     /**
@@ -186,7 +187,8 @@ public class DataLakeFileSystemAsyncClient {
         BlockBlobAsyncClient blockBlobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(directoryName,
             null).getBlockBlobAsyncClient();
         return new DataLakeDirectoryAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
-            getAccountName(), getFileSystemName(), directoryName, blockBlobAsyncClient);
+            getAccountName(), getFileSystemName(), directoryName, blockBlobAsyncClient,
+            Transforms.fromBlobCpkInfo(blobContainerAsyncClient.getCustomerProvidedKey()));
     }
 
     /**
@@ -1065,7 +1067,8 @@ public class DataLakeFileSystemAsyncClient {
                         serviceVersion, accountName, fileSystemName, deletedPath,
                         PathResourceType.fromString(response.getDeserializedHeaders().getXMsResourceType()),
                         blobContainerAsyncClient.getBlobAsyncClient(deletedPath, null)
-                            .getBlockBlobAsyncClient());
+                            .getBlockBlobAsyncClient(),
+                        Transforms.fromBlobCpkInfo(blobContainerAsyncClient.getCustomerProvidedKey()));
                     if (PathResourceType.DIRECTORY.equals(client.pathResourceType)) {
                         return new SimpleResponse<>(response, new DataLakeDirectoryAsyncClient(client));
                     } else if (PathResourceType.FILE.equals(client.pathResourceType)) {
