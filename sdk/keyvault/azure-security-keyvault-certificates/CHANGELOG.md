@@ -4,6 +4,7 @@
 
 ### Features Added
 - Added support for service version `7.3`.
+- Implemented new traits (micro-interfaces) in `CertificateClientBuilder`. This makes the experience of using client builders more consistent across libraries in the Azure SDK for Java.
 
 ## 4.2.8 (2022-03-17)
 
