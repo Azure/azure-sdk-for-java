@@ -47,10 +47,7 @@ public final class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U>
      * @throws NullPointerException If {@code httpPipeline} is null.
      */
     public DefaultPollingStrategy(HttpPipeline httpPipeline, JsonSerializer serializer) {
-        this.chainedPollingStrategy = new ChainedPollingStrategy<>(Arrays.asList(
-            new OperationResourcePollingStrategy<>(httpPipeline, serializer, null, Context.NONE),
-            new LocationPollingStrategy<>(httpPipeline, serializer, Context.NONE),
-            new StatusCheckPollingStrategy<>(serializer)));
+        this(httpPipeline, serializer, Context.NONE);
     }
 
     /**

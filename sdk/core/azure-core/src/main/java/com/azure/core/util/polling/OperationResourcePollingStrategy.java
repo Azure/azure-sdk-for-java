@@ -58,8 +58,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
      */
     public OperationResourcePollingStrategy(HttpPipeline httpPipeline, ObjectSerializer serializer,
                                             String operationLocationHeaderName) {
-        this(Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null"), serializer != null ? serializer : new DefaultJsonSerializer(), operationLocationHeaderName != null ? operationLocationHeaderName
-            : DEFAULT_OPERATION_LOCATION_HEADER, Context.NONE);
+        this(httpPipeline, serializer, operationLocationHeaderName, Context.NONE);
     }
 
     /**

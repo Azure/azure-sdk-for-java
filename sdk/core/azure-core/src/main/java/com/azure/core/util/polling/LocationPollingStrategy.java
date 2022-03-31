@@ -61,7 +61,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
      * @throws NullPointerException If {@code httpPipeline} is null.
      */
     public LocationPollingStrategy(HttpPipeline httpPipeline, ObjectSerializer serializer) {
-        this(Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null"), (serializer == null) ? DEFAULT_SERIALIZER : serializer, Context.NONE);
+        this(httpPipeline, serializer, Context.NONE);
     }
 
     /**
