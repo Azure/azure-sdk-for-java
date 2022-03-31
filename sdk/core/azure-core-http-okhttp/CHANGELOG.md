@@ -3,10 +3,18 @@
 ## 1.8.0-beta.1 (Unreleased)
 
 ### Features Added
-
-- Updated OkHttpClientBuilder to disallow OkHttpClient to follow redirects by default. This gives more control to the pipeline to add redirect policies as needed.
+ - Added `followRedirects` property to the `OkHttpClientBuilder` to configure followRedirects on the backing okHttpClient.
 
 ### Breaking Changes
+
+- FollowRedirect is set to false in the default `OkHttpClient` client created through `OkHttpClientBuilder`. This is done to provide more control to the pipeline to add redirect policies as needed. ([#27960](https://github.com/Azure/azure-sdk-for-java/pull/27960)).
+  <br><br>To get the older behavior please create an instance of `HttpClient` as follows
+
+    ```java
+    HttpClient client = new OkHttpAsyncHttpClientBuilder()
+        .followRedirects(true)
+        .build();
+    ```
 
 ### Bugs Fixed
 
