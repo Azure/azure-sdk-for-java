@@ -33,6 +33,7 @@ import java.net.HttpURLConnection;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -709,10 +710,11 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
+    @SuppressWarnings("ArraysAsListWithZeroOrOneArgument")
     public void setContacts(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateClient(httpClient, serviceVersion);
 
-        List<CertificateContact> contacts = List.of(setupContact());
+        List<CertificateContact> contacts = Arrays.asList(setupContact());
 
         certificateClient.setContacts(contacts)
             .forEach((retrievedContact) -> validateContact(setupContact(), retrievedContact));
@@ -721,10 +723,11 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
+    @SuppressWarnings("ArraysAsListWithZeroOrOneArgument")
     public void listContacts(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateClient(httpClient, serviceVersion);
 
-        List<CertificateContact> contacts = List.of(setupContact());
+        List<CertificateContact> contacts = Arrays.asList(setupContact());
 
         certificateClient.setContacts(contacts)
             .forEach((retrievedContact) -> validateContact(setupContact(), retrievedContact));
@@ -737,10 +740,11 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
+    @SuppressWarnings("ArraysAsListWithZeroOrOneArgument")
     public void deleteContacts(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateClient(httpClient, serviceVersion);
 
-        List<CertificateContact> contacts = List.of(setupContact());
+        List<CertificateContact> contacts = Arrays.asList(setupContact());
 
         certificateClient.setContacts(contacts)
             .forEach((retrievedContact) -> validateContact(setupContact(), retrievedContact));
@@ -877,13 +881,14 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
+    @SuppressWarnings("ArraysAsListWithZeroOrOneArgument")
     public void mergeCertificateNotFound(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateClient(httpClient, serviceVersion);
 
         assertRestException(() ->
                 certificateClient.mergeCertificate(
                     new MergeCertificateOptions(testResourceNamer.randomName("testCert", 20),
-                        List.of("test".getBytes()))),
+                        Arrays.asList("test".getBytes()))),
             HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 

@@ -492,9 +492,10 @@ public abstract class CertificateClientTestBase extends TestBase {
         return pemCert.toString().getBytes();
     }
 
+    @SuppressWarnings("ArraysAsListWithZeroOrOneArgument")
     CertificateIssuer setupIssuer(String issuerName) {
         return new CertificateIssuer(issuerName, "Test")
-            .setAdministratorContacts(List.of(new AdministratorContact()
+            .setAdministratorContacts(Arrays.asList(new AdministratorContact()
                 .setFirstName("first")
                 .setLastName("last")
                 .setEmail("first.last@hotmail.com")
