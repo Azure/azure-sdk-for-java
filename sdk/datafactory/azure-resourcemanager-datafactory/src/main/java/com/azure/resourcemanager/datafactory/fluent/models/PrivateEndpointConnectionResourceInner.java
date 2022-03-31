@@ -6,16 +6,12 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.RemotePrivateEndpointConnection;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Private Endpoint Connection ARM resource. */
 @Fluent
 public final class PrivateEndpointConnectionResourceInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionResourceInner.class);
-
     /*
      * Core resource properties
      */

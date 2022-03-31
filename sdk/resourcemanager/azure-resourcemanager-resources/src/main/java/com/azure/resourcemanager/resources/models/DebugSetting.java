@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The debug setting. */
 @Fluent
 public final class DebugSetting {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DebugSetting.class);
-
     /*
      * Specifies the type of information to log for debugging. The permitted
      * values are none, requestContent, responseContent, or both requestContent

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.PrivateEndpointIpConfigurationProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An IP Configuration of the private endpoint. */
 @Fluent
 public final class PrivateEndpointIpConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointIpConfiguration.class);
-
     /*
      * Properties of private endpoint IP configurations.
      */

@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.CosmosDbConnectionMode;
 import com.azure.resourcemanager.datafactory.models.CosmosDbServicePrincipalCredentialType;
 import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** CosmosDB linked service properties. */
 @Fluent
 public final class CosmosDbLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CosmosDbLinkedServiceTypeProperties.class);
-
     /*
      * The connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.

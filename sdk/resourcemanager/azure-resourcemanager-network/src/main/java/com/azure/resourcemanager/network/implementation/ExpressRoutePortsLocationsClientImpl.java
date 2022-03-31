@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.ExpressRoutePortsLocationsClient;
 import com.azure.resourcemanager.network.fluent.models.ExpressRoutePortsLocationInner;
 import com.azure.resourcemanager.network.models.ExpressRoutePortsLocationListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ExpressRoutePortsLocationsClient. */
 public final class ExpressRoutePortsLocationsClientImpl implements ExpressRoutePortsLocationsClient {
-    private final ClientLogger logger = new ClientLogger(ExpressRoutePortsLocationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ExpressRoutePortsLocationsService service;
 

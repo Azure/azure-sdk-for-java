@@ -9,15 +9,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mobilenetwork.models.PccRuleConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.QosPolicy;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Service properties. */
 @Fluent
 public final class ServicePropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServicePropertiesFormat.class);
-
     /*
      * The provisioning state of the service resource.
      */
@@ -135,7 +132,7 @@ public final class ServicePropertiesFormat {
             serviceQosPolicy().validate();
         }
         if (pccRules() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property pccRules in model ServicePropertiesFormat"));
@@ -143,4 +140,6 @@ public final class ServicePropertiesFormat {
             pccRules().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServicePropertiesFormat.class);
 }

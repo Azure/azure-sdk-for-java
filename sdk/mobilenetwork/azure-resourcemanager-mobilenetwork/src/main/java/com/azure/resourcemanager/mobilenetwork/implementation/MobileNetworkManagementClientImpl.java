@@ -46,8 +46,6 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the MobileNetworkManagementClientImpl type. */
 @ServiceClient(builder = MobileNetworkManagementClientBuilder.class)
 public final class MobileNetworkManagementClientImpl implements MobileNetworkManagementClient {
-    private final ClientLogger logger = new ClientLogger(MobileNetworkManagementClientImpl.class);
-
     /** The ID of the target subscription. */
     private final String subscriptionId;
 
@@ -274,7 +272,7 @@ public final class MobileNetworkManagementClientImpl implements MobileNetworkMan
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-01-01-preview";
+        this.apiVersion = "2022-03-01-preview";
         this.attachedDataNetworks = new AttachedDataNetworksClientImpl(this);
         this.dataNetworks = new DataNetworksClientImpl(this);
         this.mobileNetworks = new MobileNetworksClientImpl(this);
@@ -371,7 +369,7 @@ public final class MobileNetworkManagementClientImpl implements MobileNetworkMan
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -430,4 +428,6 @@ public final class MobileNetworkManagementClientImpl implements MobileNetworkMan
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MobileNetworkManagementClientImpl.class);
 }

@@ -73,7 +73,7 @@
 * Updated `azure-cosmos` to version 4.19.0.
 
 #### Key Bug Fixes
-* Fixed spring data cosmos query plan caching.
+* Fixed spring data cosmos `query plan` caching.
 * Fixed query parameter name generation for nested properties containing space.
 
 ### 3.11.0-beta.1 (2021-09-02)
@@ -81,7 +81,7 @@
 * Updated `azure-cosmos` to version 4.19.0-beta.1.
 
 #### Key Bug Fixes
-* Fixed spring data cosmos query plan caching.
+* Fixed spring data cosmos `query plan` caching.
 
 ### 3.10.0 (2021-08-16)
 > [!IMPORTANT]

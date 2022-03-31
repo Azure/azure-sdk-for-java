@@ -6,7 +6,6 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,8 +17,6 @@ import java.util.Map;
 @JsonTypeName("Web")
 @Fluent
 public final class WebLinkedService extends LinkedService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebLinkedService.class);
-
     /*
      * Web linked service properties.
      */
@@ -83,11 +80,13 @@ public final class WebLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (typeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property typeProperties in model WebLinkedService"));
         } else {
             typeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WebLinkedService.class);
 }

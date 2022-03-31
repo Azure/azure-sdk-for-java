@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Resource extended location. */
 @Fluent
 public final class ExtendedLocation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExtendedLocation.class);
-
     /*
      * The extended location type.
      */

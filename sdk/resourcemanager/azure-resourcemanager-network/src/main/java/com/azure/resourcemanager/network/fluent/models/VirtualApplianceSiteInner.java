@@ -6,17 +6,13 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.Office365PolicyProperties;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Virtual Appliance Site resource. */
 @Fluent
 public final class VirtualApplianceSiteInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualApplianceSiteInner.class);
-
     /*
      * The properties of the Virtual Appliance Sites.
      */

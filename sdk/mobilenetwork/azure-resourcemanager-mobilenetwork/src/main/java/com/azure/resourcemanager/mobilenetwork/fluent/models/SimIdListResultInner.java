@@ -6,16 +6,12 @@ package com.azure.resourcemanager.mobilenetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for list sim ids API service call. */
 @Fluent
 public final class SimIdListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SimIdListResultInner.class);
-
     /*
      * A list of sim profile ids in a resource group.
      */

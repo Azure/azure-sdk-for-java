@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHealthServerHealth;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Application gateway backendhealth http settings. */
 @Fluent
 public final class ApplicationGatewayBackendHealthServerInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayBackendHealthServerInner.class);
-
     /*
      * IP address or FQDN of backend server.
      */

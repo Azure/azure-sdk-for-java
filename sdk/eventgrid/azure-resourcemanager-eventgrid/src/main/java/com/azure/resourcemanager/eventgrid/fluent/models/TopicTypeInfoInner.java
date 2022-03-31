@@ -6,19 +6,15 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.models.ResourceRegionType;
 import com.azure.resourcemanager.eventgrid.models.TopicTypePropertiesSupportedScopesForSourceItem;
 import com.azure.resourcemanager.eventgrid.models.TopicTypeProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of a topic type info. */
 @Fluent
 public final class TopicTypeInfoInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TopicTypeInfoInner.class);
-
     /*
      * Properties of the topic type info
      */
