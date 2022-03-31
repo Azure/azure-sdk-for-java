@@ -101,7 +101,7 @@
       "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=Ipv4;",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "7807fc22-af00-11ec-99c9-002248787e69",
-      "Body" : "{\"azureStorageBlobContainerUri\":\"https://azsdktestsprim.blob.core.windows.net/hsmbackups/mhsm-azsdktestshsm-2022032901350328\",\"endTime\":1648517710,\"error\":null,\"jobId\":\"7d423fcd68e24803a7a443e6f13d6456\",\"startTime\":1648517703,\"status\":\"Succeeded\",\"statusDetails\":null}"
+      "Body" : "{\"azureStorageBlobContainerUri\":\"https://azsdktests.blob.core.windows.net/backup/mhsm-azsdktestshsm-2022032901350328\",\"endTime\":1648517710,\"error\":null,\"jobId\":\"7d423fcd68e24803a7a443e6f13d6456\",\"startTime\":1648517703,\"status\":\"Succeeded\",\"statusDetails\":null}"
     },
     "Exception" : null
   }, {
