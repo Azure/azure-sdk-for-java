@@ -72,15 +72,15 @@ The operation and inner `code` may vary, but the rest of the text will indicate 
    [Enable logging](https://docs.microsoft.com/azure/developer/java/sdk/logging-overview) and you will see which credential the [DefaultAzureCredential] used as shown below, and why previously-attempted credentials were rejected.
 
    ```text
-   [ERROR] c.azure.identity.EnvironmentCredential   : Azure Identity => ERROR in EnvironmentCredential: Missing required environment variable AZURE_CLIENT_ID
-   [ERROR] c.azure.identity.EnvironmentCredential   : EnvironmentCredential authentication unavailable. Environment variables are not fully configured.
-   [INFO] c.azure.identity.DefaultAzureCredential  : Azure Identity => Attempted credential EnvironmentCredential is unavailable.
-   [ERROR] c.a.i.implementation.IdentityClient      : ManagedIdentityCredential authentication unavailable. Connection to IMDS endpoint cannot be established, connect timed out.
-   [ERROR] c.a.identity.ManagedIdentityCredential   : Azure Identity => ERROR in getToken() call for scopes [https://management.core.windows.net//.default]: ManagedIdentityCredential authentication unavailable. Connection to IMDS endpoint cannot be established, connect timed out.
-   [INFO] c.azure.identity.DefaultAzureCredential  : Azure Identity => Attempted credential ManagedIdentityCredential is unavailable.
-   [ERROR] c.a.identity.SharedTokenCacheCredential  : Azure Identity => ERROR in getToken() call for scopes [https://management.core.windows.net//.default]: SharedTokenCacheCredential authentication unavailable. No accounts were found in the cache.
-   [INFO] c.azure.identity.DefaultAzureCredential  : Azure Identity => Attempted credential SharedTokenCacheCredential is unavailable.
-   [ERROR] com.azure.identity.IntelliJCredential    : Azure Identity => ERROR in getToken() call for scopes [https://management.core.windows.net//.default]: Unrecognized field "tenantId" (class com.azure.identity.implementation.IntelliJAuthMethodDetails), not marked as ignorable (4 known properties: "authMethod", "azureEnv", "accountEmail", "credFilePath"])
+   [ERROR] com.azure.identity.EnvironmentCredential: Azure Identity => ERROR in EnvironmentCredential: Missing required environment variable AZURE_CLIENT_ID
+   [ERROR] com.azure.identity.EnvironmentCredential: EnvironmentCredential authentication unavailable. Environment variables are not fully configured.
+   [INFO] com.azure.identity.DefaultAzureCredential: Azure Identity => Attempted credential EnvironmentCredential is unavailable.
+   [ERROR] com.azure.identity.implementation.IdentityClient: ManagedIdentityCredential authentication unavailable. Connection to IMDS endpoint cannot be established, connect timed out.
+   [ERROR] com.azure.identity.ManagedIdentityCredential: Azure Identity => ERROR in getToken() call for scopes [https://management.core.windows.net//.default]: ManagedIdentityCredential authentication unavailable. Connection to IMDS endpoint cannot be established, connect timed out.
+   [INFO] com.azure.identity.DefaultAzureCredential: Azure Identity => Attempted credential ManagedIdentityCredential is unavailable.
+   [ERROR] com.azure.identity.SharedTokenCacheCredential: Azure Identity => ERROR in getToken() call for scopes [https://management.core.windows.net//.default]: SharedTokenCacheCredential authentication unavailable. No accounts were found in the cache.
+   [INFO] com.azure.identity.DefaultAzureCredential: Azure Identity => Attempted credential SharedTokenCacheCredential is unavailable.
+   [ERROR] com.azure.identity.IntelliJCredential: Azure Identity => ERROR in getToken() call for scopes [https://management.core.windows.net//.default]: Unrecognized field "tenantId" (class com.azure.identity.implementation.IntelliJAuthMethodDetails), not marked as ignorable (4 known properties: "authMethod", "azureEnv", "accountEmail", "credFilePath"])
    ```
 
 #### Access Denied to First Party Service
