@@ -219,7 +219,7 @@ public class OkHttpAsyncHttpClientBuilder {
      * <p>If this is set to 'true' redirects will be followed automatically, and
      * if your HTTP pipeline is configured with a redirect policy it will not be called.</p>
      *
-     * @param followRedirect The followRedirects value to use.
+     * @param followRedirects The followRedirects value to use.
      * @return The updated OkHttpAsyncHttpClientBuilder object.
      */
     public OkHttpAsyncHttpClientBuilder followRedirects(boolean followRedirects) {
