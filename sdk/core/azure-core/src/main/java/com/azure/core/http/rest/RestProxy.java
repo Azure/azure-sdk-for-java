@@ -403,7 +403,7 @@ public final class RestProxy implements InvocationHandler {
             try {
                 MethodHandle handle = RESPONSE_EXCEPTION_CONSTRUCTOR_CACHE.get(exceptionType,
                     exception.getExceptionBodyType());
-                return RESPONSE_EXCEPTION_CONSTRUCTOR_CACHE.invoke(handle, exceptionMessage.toString(), httpResponse,
+                return ResponseExceptionConstructorCache.invoke(handle, exceptionMessage.toString(), httpResponse,
                     responseDecodedContent);
             } catch (RuntimeException e) {
                 // And if reflection fails, return an IOException.
@@ -532,7 +532,7 @@ public final class RestProxy implements InvocationHandler {
         return Mono.just(RESPONSE_CONSTRUCTORS_CACHE.get(cls))
             .switchIfEmpty(Mono.defer(() ->
                 Mono.error(new RuntimeException("Cannot find suitable constructor for class " + cls))))
-            .flatMap(ctr -> RESPONSE_CONSTRUCTORS_CACHE.invoke(ctr, response, bodyAsObject));
+            .map(ctr -> RESPONSE_CONSTRUCTORS_CACHE.invoke(ctr, response, bodyAsObject));
     }
 
     private Mono<?> handleBodyReturnType(final HttpDecodedResponse response,
