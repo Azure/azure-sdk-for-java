@@ -1,6 +1,6 @@
 # Release History
 
-## 4.4.0-beta.8 (Unreleased)
+## 4.4.0 (2022-04-05)
 
 ### Features Added
 - Added support for service version `7.3`
@@ -8,10 +8,6 @@
 ### Breaking Changes
 - Changed `getRandomBytes` operations in `KeyClient` and `KeyAsyncClient` to return `byte[]` instead of `RandomBytes`.
 - Removed the `RandomBytes` class.
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 4.3.8 (2022-03-17)
 
