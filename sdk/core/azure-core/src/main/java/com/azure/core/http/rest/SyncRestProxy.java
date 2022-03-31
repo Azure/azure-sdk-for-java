@@ -15,6 +15,7 @@ import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.implementation.serializer.HttpResponseDecoder.HttpDecodedResponse;
+import com.azure.core.implementation.util.*;
 import com.azure.core.util.*;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -28,10 +29,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
 import reactor.util.context.ContextView;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.lang.invoke.MethodHandle;
 import java.lang.reflect.*;
 import java.net.URL;
@@ -137,7 +135,7 @@ public final class SyncRestProxy implements InvocationHandler {
             return handleRestReturnType(decodedResponse, methodParser,
                 methodParser.getReturnType(), context, options);
         } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }
     }
 
@@ -146,7 +144,7 @@ public final class SyncRestProxy implements InvocationHandler {
         // Use the fully-qualified class name as javac will throw deprecation warnings on imports when the class is
         // marked as deprecated.
         if (method.isAnnotationPresent(com.azure.core.annotation.ResumeOperation.class)) {
-            throw LOGGER.logExceptionAsError(Exceptions.propagate(new Exception("'ResumeOperation' isn't supported.")));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("'ResumeOperation' isn't supported."));
         }
     }
 
@@ -208,11 +206,27 @@ public final class SyncRestProxy implements InvocationHandler {
 
         final long expectedLength = Long.parseLong(request.getHeaders().getValue("Content-Length"));
 
-        long length = binaryData.getLength();
+        Long length = binaryData.getLength();
 
-        if (length > expectedLength) {
-            throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
-                binaryData.getLength(), expectedLength), binaryData.getLength(), expectedLength);
+        BinaryDataContent bdc = BinaryDataHelper.getContent(binaryData);
+        if (length == null) {
+            if (bdc instanceof FluxByteBufferContent) {
+                throw new IllegalStateException("Flux Byte Buffer is not supported in Synchronous Rest Proxy.");
+            } else if (bdc instanceof InputStreamContent) {
+                LengthValidatingInputStream lengthValidatingInputStream =
+                    new LengthValidatingInputStream(((InputStreamContent) bdc).toStream(), expectedLength);
+                try {
+                    lengthValidatingInputStream.readAllBytes();
+                } catch (IOException e) {
+                    throw new UncheckedIOException(e);
+                }
+            } else  {
+                long len = (bdc).toBytes().length;
+                if (len > expectedLength) {
+                    throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
+                        len, expectedLength), len, expectedLength);
+                }
+            }
         }
         return binaryData;
     }
@@ -541,7 +555,7 @@ public final class SyncRestProxy implements InvocationHandler {
             result = response.getSourceResponse().getContent();
         } else {
             // Mono<Object> or Mono<Page<T>>
-            result = response.getDecodedBody((byte[]) null);
+            result = response.getDecodedBodySync((byte[]) null);
         }
         return result;
     }
