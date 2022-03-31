@@ -178,15 +178,15 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     public void updateKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyAsyncClient(httpClient, serviceVersion);
 
-        updateKeyRunner((originalKey, updatedKey) ->
-            StepVerifier.create(keyAsyncClient.createKey(originalKey).flatMap(response -> {
+        updateKeyRunner((originalKey, updatedKey) -> StepVerifier.create(keyAsyncClient.createKey(originalKey)
+                .flatMap(response -> {
                     assertKeyEquals(originalKey, response);
 
                     return keyAsyncClient.updateKeyProperties(response.getProperties()
                         .setExpiresOn(updatedKey.getExpiresOn()));
                 }))
-                .assertNext(response -> assertKeyEquals(updatedKey, response))
-                .verifyComplete());
+            .assertNext(response -> assertKeyEquals(updatedKey, response))
+            .verifyComplete());
     }
 
     /**
@@ -197,16 +197,15 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     public void updateDisabledKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyAsyncClient(httpClient, serviceVersion);
 
-        updateDisabledKeyRunner((originalKey, updatedKey) -> {
-            StepVerifier.create(keyAsyncClient.createKey(originalKey).flatMap(response -> {
+        updateDisabledKeyRunner((originalKey, updatedKey) -> StepVerifier.create(keyAsyncClient.createKey(originalKey)
+                .flatMap(response -> {
                     assertKeyEquals(originalKey, response);
 
                     return keyAsyncClient.updateKeyProperties(response.getProperties()
                         .setExpiresOn(updatedKey.getExpiresOn()));
                 }))
-                .assertNext(response -> assertKeyEquals(updatedKey, response))
-                .verifyComplete();
-        });
+            .assertNext(response -> assertKeyEquals(updatedKey, response))
+            .verifyComplete());
     }
 
 
