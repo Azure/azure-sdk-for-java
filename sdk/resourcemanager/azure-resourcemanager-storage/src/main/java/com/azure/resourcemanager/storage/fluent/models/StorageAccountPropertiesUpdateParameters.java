@@ -9,6 +9,7 @@ import com.azure.resourcemanager.storage.models.AccessTier;
 import com.azure.resourcemanager.storage.models.AllowedCopyScope;
 import com.azure.resourcemanager.storage.models.AzureFilesIdentityBasedAuthentication;
 import com.azure.resourcemanager.storage.models.CustomDomain;
+import com.azure.resourcemanager.storage.models.DnsEndpointType;
 import com.azure.resourcemanager.storage.models.Encryption;
 import com.azure.resourcemanager.storage.models.ImmutableStorageAccount;
 import com.azure.resourcemanager.storage.models.KeyPolicy;
@@ -53,7 +54,9 @@ public final class StorageAccountPropertiesUpdateParameters {
 
     /*
      * Required for storage accounts where kind = BlobStorage. The access tier
-     * used for billing.
+     * is used for billing. The 'Premium' access tier is the default value for
+     * premium block blobs storage account type and it cannot be changed for
+     * the premium block blobs storage account type.
      */
     @JsonProperty(value = "accessTier")
     private AccessTier accessTier;
@@ -162,6 +165,15 @@ public final class StorageAccountPropertiesUpdateParameters {
     @JsonProperty(value = "allowedCopyScope")
     private AllowedCopyScope allowedCopyScope;
 
+    /*
+     * Allows you to specify the type of endpoint. Set this to AzureDNSZone to
+     * create a large number of accounts in a single subscription, which
+     * creates accounts in an Azure DNS Zone and the endpoint URL will have an
+     * alphanumeric DNS Zone identifier.
+     */
+    @JsonProperty(value = "dnsEndpointType")
+    private DnsEndpointType dnsEndpointType;
+
     /**
      * Get the customDomain property: Custom domain assigned to the storage account by the user. Name is the CNAME
      * source. Only one custom domain is supported per storage account at this time. To clear the existing custom
@@ -249,8 +261,9 @@ public final class StorageAccountPropertiesUpdateParameters {
     }
 
     /**
-     * Get the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier used for
-     * billing.
+     * Get the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier is used for
+     * billing. The 'Premium' access tier is the default value for premium block blobs storage account type and it
+     * cannot be changed for the premium block blobs storage account type.
      *
      * @return the accessTier value.
      */
@@ -259,8 +272,9 @@ public final class StorageAccountPropertiesUpdateParameters {
     }
 
     /**
-     * Set the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier used for
-     * billing.
+     * Set the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier is used for
+     * billing. The 'Premium' access tier is the default value for premium block blobs storage account type and it
+     * cannot be changed for the premium block blobs storage account type.
      *
      * @param accessTier the accessTier value to set.
      * @return the StorageAccountPropertiesUpdateParameters object itself.
@@ -598,6 +612,30 @@ public final class StorageAccountPropertiesUpdateParameters {
      */
     public StorageAccountPropertiesUpdateParameters withAllowedCopyScope(AllowedCopyScope allowedCopyScope) {
         this.allowedCopyScope = allowedCopyScope;
+        return this;
+    }
+
+    /**
+     * Get the dnsEndpointType property: Allows you to specify the type of endpoint. Set this to AzureDNSZone to create
+     * a large number of accounts in a single subscription, which creates accounts in an Azure DNS Zone and the endpoint
+     * URL will have an alphanumeric DNS Zone identifier.
+     *
+     * @return the dnsEndpointType value.
+     */
+    public DnsEndpointType dnsEndpointType() {
+        return this.dnsEndpointType;
+    }
+
+    /**
+     * Set the dnsEndpointType property: Allows you to specify the type of endpoint. Set this to AzureDNSZone to create
+     * a large number of accounts in a single subscription, which creates accounts in an Azure DNS Zone and the endpoint
+     * URL will have an alphanumeric DNS Zone identifier.
+     *
+     * @param dnsEndpointType the dnsEndpointType value to set.
+     * @return the StorageAccountPropertiesUpdateParameters object itself.
+     */
+    public StorageAccountPropertiesUpdateParameters withDnsEndpointType(DnsEndpointType dnsEndpointType) {
+        this.dnsEndpointType = dnsEndpointType;
         return this;
     }
 
