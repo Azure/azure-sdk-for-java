@@ -13,6 +13,7 @@ import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
+import com.azure.core.client.traits.IdentifierTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
@@ -108,7 +109,8 @@ public class EventProcessorClientBuilder implements
     ConnectionStringTrait<EventProcessorClientBuilder>,
     AzureSasCredentialTrait<EventProcessorClientBuilder>,
     AmqpTrait<EventProcessorClientBuilder>,
-    ConfigurationTrait<EventProcessorClientBuilder> {
+    ConfigurationTrait<EventProcessorClientBuilder>,
+    IdentifierTrait<EventProcessorClientBuilder> {
     /**
      * Default load balancing update interval. Balancing interval should account for latency between the client
      * and the storage account.
@@ -234,6 +236,18 @@ public class EventProcessorClientBuilder implements
     @Override
     public EventProcessorClientBuilder configuration(Configuration configuration) {
         eventHubClientBuilder.configuration(configuration);
+        return this;
+    }
+
+    /**
+     * Sets the client identifier.
+     *
+     * @param identifier Identifier for the client.
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
+    @Override
+    public EventProcessorClientBuilder identifier(String identifier) {
+        this.eventHubClientBuilder.identifier(identifier);
         return this;
     }
 

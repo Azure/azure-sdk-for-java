@@ -7,10 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.time.Instant;
 import java.util.Collections;
-import java.util.Locale;
-import java.util.UUID;
 
 /**
  * General configuration options for clients.
@@ -27,8 +24,6 @@ public class ClientOptions {
     private Iterable<Header> headers;
 
     private String applicationId;
-
-    private String clientId;
 
     /**
      * Gets the application ID.
@@ -115,30 +110,5 @@ public class ClientOptions {
             return Collections.emptyList();
         }
         return headers;
-    }
-
-
-    /**
-     * Sets the client ID.
-     *
-     * @param clientId The client ID.
-     *
-     * @return The updated ClientOptions object.
-     */
-    public ClientOptions setClientId(String clientId) {
-        this.clientId = clientId;
-        return this;
-    }
-
-    /**
-     * Gets the client ID.
-     *
-     * @return The client ID.
-     */
-    public String getClientId() {
-        if (clientId == null) {
-            clientId = String.format(Locale.US, "%s_%s_%s", "client", UUID.randomUUID().toString().substring(0, 6), Instant.now().toEpochMilli());
-        }
-        return clientId;
     }
 }

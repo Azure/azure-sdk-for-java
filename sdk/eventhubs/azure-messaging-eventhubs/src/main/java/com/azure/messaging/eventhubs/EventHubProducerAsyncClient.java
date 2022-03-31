@@ -196,7 +196,7 @@ public class EventHubProducerAsyncClient implements Closeable {
     private final Scheduler scheduler;
     private final boolean isSharedConnection;
     private final Runnable onClientClose;
-    private final String clientId;
+    private final String identifier;
 
     /**
      * Creates a new instance of this {@link EventHubProducerAsyncClient} that can send messages to a single partition
@@ -206,7 +206,7 @@ public class EventHubProducerAsyncClient implements Closeable {
     EventHubProducerAsyncClient(String fullyQualifiedNamespace, String eventHubName,
         EventHubConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions, TracerProvider tracerProvider,
         MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose,
-        String clientId) {
+        String identifier) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
@@ -220,7 +220,7 @@ public class EventHubProducerAsyncClient implements Closeable {
         this.retryPolicy = getRetryPolicy(retryOptions);
         this.scheduler = scheduler;
         this.isSharedConnection = isSharedConnection;
-        this.clientId = clientId;
+        this.identifier = identifier;
     }
 
     /**
@@ -633,7 +633,7 @@ public class EventHubProducerAsyncClient implements Closeable {
         final String linkName = getEntityPath(partitionId);
 
         return connectionProcessor
-            .flatMap(connection -> connection.createSendLink(linkName, entityPath, retryOptions, clientId));
+            .flatMap(connection -> connection.createSendLink(linkName, entityPath, retryOptions, identifier));
     }
 
     /**
@@ -658,8 +658,8 @@ public class EventHubProducerAsyncClient implements Closeable {
      *
      * @return The unique identifier string for current client.
      */
-    public String getClientId() {
-        return clientId;
+    public String getIdentifier() {
+        return identifier;
     }
 
     /**

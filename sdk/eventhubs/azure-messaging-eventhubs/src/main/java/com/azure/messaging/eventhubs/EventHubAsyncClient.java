@@ -32,10 +32,11 @@ class EventHubAsyncClient implements Closeable {
     private final boolean isSharedConnection;
     private final Runnable onClientClose;
     private final TracerProvider tracerProvider;
-    private final String clientId;
+    private final String identifier;
 
     EventHubAsyncClient(EventHubConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose, String clientId) {
+        MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose,
+        String identifier) {
         this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
@@ -44,7 +45,7 @@ class EventHubAsyncClient implements Closeable {
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
 
         this.isSharedConnection = isSharedConnection;
-        this.clientId = clientId;
+        this.identifier = identifier;
     }
 
     /**
@@ -107,7 +108,7 @@ class EventHubAsyncClient implements Closeable {
     EventHubProducerAsyncClient createProducer() {
         return new EventHubProducerAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), getEventHubName(),
             connectionProcessor, connectionProcessor.getRetryOptions(), tracerProvider, messageSerializer, scheduler,
-            isSharedConnection, onClientClose, clientId);
+            isSharedConnection, onClientClose, identifier);
     }
 
     /**
@@ -132,7 +133,7 @@ class EventHubAsyncClient implements Closeable {
 
         return new EventHubConsumerAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), getEventHubName(),
             connectionProcessor, messageSerializer, consumerGroup, prefetchCount, isSharedConnection,
-            onClientClose, clientId);
+            onClientClose, identifier);
     }
 
     /**
@@ -150,7 +151,7 @@ class EventHubAsyncClient implements Closeable {
      *
      * @return The unique identifier string for current client.
      */
-    public String getClientId() {
-        return clientId;
+    public String getIdentifier() {
+        return identifier;
     }
 }

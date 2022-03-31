@@ -24,6 +24,7 @@ import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
+import com.azure.core.client.traits.IdentifierTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
@@ -52,6 +53,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ServiceLoader;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
@@ -147,7 +149,8 @@ public class EventHubClientBuilder implements
     ConnectionStringTrait<EventHubClientBuilder>,
     AzureSasCredentialTrait<EventHubClientBuilder>,
     AmqpTrait<EventHubClientBuilder>,
-    ConfigurationTrait<EventHubClientBuilder> {
+    ConfigurationTrait<EventHubClientBuilder>,
+    IdentifierTrait<EventHubClientBuilder> {
 
     // Default number of events to fetch when creating the consumer.
     static final int DEFAULT_PREFETCH_COUNT = 500;
@@ -196,6 +199,7 @@ public class EventHubClientBuilder implements
     private ClientOptions clientOptions;
     private SslDomain.VerifyMode verifyMode;
     private URL customEndpointAddress;
+    private String identifier;
 
     /**
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
@@ -209,6 +213,7 @@ public class EventHubClientBuilder implements
      */
     public EventHubClientBuilder() {
         transport = AmqpTransportType.AMQP;
+        identifier = UUID.randomUUID().toString();
     }
 
     /**
@@ -261,6 +266,18 @@ public class EventHubClientBuilder implements
     @Override
     public EventHubClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+        return this;
+    }
+
+    /**
+     * Sets the client identifier.
+     *
+     * @param identifier Identifier for the client.
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
+    @Override
+    public EventHubClientBuilder identifier(String identifier) {
+        this.identifier = identifier;
         return this;
     }
 
@@ -792,10 +809,6 @@ public class EventHubClientBuilder implements
             prefetchCount = DEFAULT_PREFETCH_COUNT;
         }
 
-        if (clientOptions == null) {
-            clientOptions = new ClientOptions();
-        }
-
         final MessageSerializer messageSerializer = new EventHubMessageSerializer();
 
         final EventHubConnectionProcessor processor;
@@ -817,7 +830,7 @@ public class EventHubClientBuilder implements
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
         return new EventHubAsyncClient(processor, tracerProvider, messageSerializer, scheduler,
-            isSharedConnection.get(), this::onClientClose, clientOptions.getClientId());
+            isSharedConnection.get(), this::onClientClose, this.identifier);
     }
 
     /**

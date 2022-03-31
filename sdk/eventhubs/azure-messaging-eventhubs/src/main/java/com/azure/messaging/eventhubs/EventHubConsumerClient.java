@@ -301,7 +301,7 @@ public class EventHubConsumerClient implements Closeable {
      *
      * @return The unique identifier string for current client.
      */
-    public String getClientId() {
-        return this.consumer.getClientId();
+    public String getIdentifier() {
+        return this.consumer.getIdentifier();
     }
 }
