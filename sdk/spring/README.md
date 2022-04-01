@@ -35,8 +35,21 @@ mvn clean install \
 ```
 
 If you are using PowerShell, please use the following command instead:
-```shell
-mvn clean install "-Dcheckstyle.skip" "-Dcodesnippet.skip" "-Denforcer.skip" "-Djacoco.skip" "-Dmaven.javadoc.skip" "-Drevapi.skip" "-DskipTests" "-Dspotbugs.skip" -Pdev -T 4 -ntp -o -f sdk/spring/pom.xml
+```powershell
+mvn clean install `
+ "-Dcheckstyle.skip" `
+ "-Dcodesnippet.skip" `
+ "-Denforcer.skip" `
+ "-Djacoco.skip" `
+ "-Dmaven.javadoc.skip" `
+ "-Drevapi.skip" `
+ "-DskipTests" `
+ "-Dspotbugs.skip" `
+ -Pdev `
+ -T 4 `
+ -ntp `
+ -o `
+ -f sdk/spring/pom.xml
 ```
 
 
