@@ -3,18 +3,12 @@
 
 package com.azure.storage.blob.perf;
 
-import com.azure.core.util.Configuration;
 import com.azure.perf.test.core.NullOutputStream;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
-import com.azure.storage.blob.BlobContainerClient;
-import com.azure.storage.blob.BlobContainerClientBuilder;
-import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.perf.core.ContainerTest;
-import com.azure.storage.blob.perf.core.HttpClientTest;
-import com.azure.storage.blob.perf.core.ServiceTest;
 import reactor.core.publisher.Mono;
 
 import java.io.OutputStream;
