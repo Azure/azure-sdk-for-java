@@ -3,12 +3,31 @@
 
 package com.azure.core.implementation;
 
+import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
+import java.lang.reflect.Constructor;
 
 /**
  * Utility methods that aid in performing reflective operations.
  */
+@SuppressWarnings("deprecation")
 final class ReflectionUtils implements ReflectionUtilsApi {
+    private static final MethodHandle PRIVATE_LOOKUP_IN;
+
+    static {
+        try {
+            Constructor<MethodHandles.Lookup> privateLookupInConstructor =
+                MethodHandles.Lookup.class.getDeclaredConstructor(Class.class);
+
+            if (!privateLookupInConstructor.isAccessible()) {
+                privateLookupInConstructor.setAccessible(true);
+            }
+
+            PRIVATE_LOOKUP_IN = MethodHandles.lookup().unreflectConstructor(privateLookupInConstructor);
+        } catch (ReflectiveOperationException ex) {
+            throw new RuntimeException("Unable to use private lookup in constructor.", ex);
+        }
+    }
 
     /**
      * Gets the {@link MethodHandles.Lookup} to use when performing reflective operations.
@@ -27,7 +46,19 @@ final class ReflectionUtils implements ReflectionUtilsApi {
      * @throws Exception If the underlying reflective calls throw an exception.
      */
     public MethodHandles.Lookup getLookupToUse(Class<?> targetClass) throws Exception {
-        return MethodHandles.publicLookup();
+        try {
+            return (MethodHandles.Lookup) PRIVATE_LOOKUP_IN.invoke(targetClass);
+        } catch (Throwable throwable) {
+            if (throwable instanceof Error) {
+                throw (Error) throwable;
+            }
+
+            if (throwable instanceof Exception) {
+                throw (Exception) throwable;
+            }
+
+            throw new Exception(throwable);
+        }
     }
 
     public int getJavaImplementationMajorVersion() {
