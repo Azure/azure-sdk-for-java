@@ -40,7 +40,7 @@
     <azure.spring.boot.version>3.15.0-beta.1</azure.spring.boot.version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-bom;current} -->
     <azure.core.version>1.26.0</azure.core.version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     <azure.identity.version>1.4.6</azure.identity.version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
-    <azure.keyvault.secret.version>4.3.8</azure.keyvault.secret.version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+    <azure.keyvault.secret.version>4.4.0</azure.keyvault.secret.version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
     <azure.keyvault.jca.version>2.7.0-beta.1</azure.keyvault.jca.version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
     <azure.msal.version>1.11.0</azure.msal.version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
     <azure.servicebus.jms.version>0.0.9</azure.servicebus.jms.version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
