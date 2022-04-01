@@ -89,7 +89,7 @@
 /sdk/deviceupdate/                                  @dpokluda
 
 # PRLabel: %Digital Twins
-/sdk/digitaltwins/                                  @johngallardo @efriesner @abhinav-ghai @Aashish93-stack
+/sdk/digitaltwins/                                  @johngallardo @efriesner @abhinav-ghai @Aashish93-stack @sjiherzig @Satya-Kolluri
 
 # PRLabel: %Models Repository
 /sdk/modelsrepository                               @drwill-ms @timtay-microsoft @abhipsaMisra @azabbasi @digimaun @andykwong-ms @brycewang-microsoft

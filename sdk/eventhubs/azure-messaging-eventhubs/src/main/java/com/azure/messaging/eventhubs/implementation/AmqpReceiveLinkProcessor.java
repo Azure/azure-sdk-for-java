@@ -283,10 +283,20 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                     }),
                 next.receive()
                     .onBackpressureBuffer(maxQueueSize, BufferOverflowStrategy.ERROR)
-                    .subscribe(message -> {
-                        messageQueue.add(message);
-                        drain();
-                    }));
+                    .subscribe(
+                        message -> {
+                            messageQueue.add(message);
+                            drain();
+                        },
+                        error -> {
+                            // When the receive on AmqpReceiveLink (e.g., ReactorReceiver) terminates
+                            // with an error, we expect the recovery to happen in response to the terminal events
+                            // in link EndpointState Flux.
+                            logger.atVerbose()
+                                .addKeyValue(LINK_NAME_KEY, linkName)
+                                .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                                .log("Receiver is terminated.", error);
+                        }));
         }
 
         disposeReceiver(oldChannel);
