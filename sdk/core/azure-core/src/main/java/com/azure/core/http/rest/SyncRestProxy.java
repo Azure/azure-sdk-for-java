@@ -116,24 +116,35 @@ public final class SyncRestProxy implements InvocationHandler {
 
             context = context.addData("caller-method", methodParser.getFullyQualifiedMethodName())
                 .addData("azure-eagerly-read-response", shouldEagerlyReadResponse(methodParser.getReturnType()));
-            context = startTracingSpan(method, context);
 
-            // If there is 'RequestOptions' apply its request callback operations before validating the body.
-            // This is because the callbacks may mutate the request body.
-            if (options != null) {
-                options.getRequestCallback().accept(request);
+            HttpDecodedResponse decodedResponse = null;
+            try {
+                context = startTracingSpan(method, context);
+
+                // If there is 'RequestOptions' apply its request callback operations before validating the body.
+                // This is because the callbacks may mutate the request body.
+                if (options != null) {
+                    options.getRequestCallback().accept(request);
+                }
+
+                if (request.getBody() != null) {
+                    request.setContent(validateLengthSync(request));
+                }
+
+                final HttpResponse response = send(request, context);
+
+                decodedResponse = this.decoder.decodeSync(response, methodParser);
+
+                return handleRestReturnType(decodedResponse, methodParser,
+                    methodParser.getReturnType(), context, options);
+            } catch (Exception e) {
+                endTracingSpan(decodedResponse, e, context);
+                throw new RuntimeException(e);
+            } finally {
+                if (decodedResponse != null) {
+                    endTracingSpan(decodedResponse, null, context);
+                }
             }
-
-            if (request.getBody() != null) {
-                request.setBody(validateLength(request));
-            }
-
-            final HttpResponse response = send(request, context);
-
-            HttpDecodedResponse decodedResponse = this.decoder.decodeSync(response, methodParser);
-
-            return handleRestReturnType(decodedResponse, methodParser,
-                methodParser.getReturnType(), context, options);
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }
@@ -161,43 +172,6 @@ public final class SyncRestProxy implements InvocationHandler {
         return context;
     }
 
-    static Flux<ByteBuffer> validateLength(final HttpRequest request) {
-        final Flux<ByteBuffer> bbFlux = request.getBody();
-        if (bbFlux == null) {
-            return Flux.empty();
-        }
-
-        final long expectedLength = Long.parseLong(request.getHeaders().getValue("Content-Length"));
-
-        return Flux.defer(() -> {
-            final long[] currentTotalLength = new long[1];
-            return Flux.concat(bbFlux, Flux.just(VALIDATION_BUFFER)).handle((buffer, sink) -> {
-                if (buffer == null) {
-                    return;
-                }
-
-                if (buffer == VALIDATION_BUFFER) {
-                    if (expectedLength != currentTotalLength[0]) {
-                        sink.error(new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
-                            currentTotalLength[0], expectedLength), currentTotalLength[0], expectedLength));
-                    } else {
-                        sink.complete();
-                    }
-                    return;
-                }
-
-                currentTotalLength[0] += buffer.remaining();
-                if (currentTotalLength[0] > expectedLength) {
-                    sink.error(new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
-                        currentTotalLength[0], expectedLength), currentTotalLength[0], expectedLength));
-                    return;
-                }
-
-                sink.next(buffer);
-            });
-        });
-    }
-
     static BinaryData validateLengthSync(final HttpRequest request) {
         final BinaryData binaryData = request.getContent();
         if (binaryData == null) {
@@ -206,29 +180,37 @@ public final class SyncRestProxy implements InvocationHandler {
 
         final long expectedLength = Long.parseLong(request.getHeaders().getValue("Content-Length"));
 
-        Long length = binaryData.getLength();
+        byte[] content = binaryData.toBytes();
 
-        BinaryDataContent bdc = BinaryDataHelper.getContent(binaryData);
-        if (length == null) {
-            if (bdc instanceof FluxByteBufferContent) {
-                throw new IllegalStateException("Flux Byte Buffer is not supported in Synchronous Rest Proxy.");
-            } else if (bdc instanceof InputStreamContent) {
-                LengthValidatingInputStream lengthValidatingInputStream =
-                    new LengthValidatingInputStream(((InputStreamContent) bdc).toStream(), expectedLength);
-                try {
-                    lengthValidatingInputStream.readAllBytes();
-                } catch (IOException e) {
-                    throw new UncheckedIOException(e);
-                }
-            } else  {
-                long len = (bdc).toBytes().length;
-                if (len > expectedLength) {
-                    throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
-                        len, expectedLength), len, expectedLength);
-                }
-            }
+        if (content.length > expectedLength) {
+            throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
+                content.length, expectedLength), content.length, expectedLength);
         }
-        return binaryData;
+
+        return BinaryData.fromBytes(content);
+// TODO: Fix The LengthValidating Input Stream flow, it fails to read the stream content
+
+//        BinaryDataContent bdc = BinaryDataHelper.getContent(binaryData);
+//       if (length == null) {
+//            if (bdc instanceof FluxByteBufferContent) {
+//                throw new IllegalStateException("Flux Byte Buffer is not supported in Synchronous Rest Proxy.");
+//            } else if (bdc instanceof InputStreamContent) {
+//                InputStreamContent inputStreamContent = ((InputStreamContent) bdc);
+//                InputStream inputStream = inputStreamContent.toStream();
+//                LengthValidatingInputStream lengthValidatingInputStream =
+//                    new LengthValidatingInputStream(inputStream, expectedLength);
+//
+//                return BinaryData.fromStream(lengthValidatingInputStream);
+//            } else  {
+//                byte[] b = (bdc).toBytes();
+//                long len = b.length;
+//                if (len > expectedLength) {
+//                    throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
+//                        len, expectedLength), len, expectedLength);
+//                }
+//                return BinaryData.fromBytes(b);
+//            }
+////        }
     }
 
     /**
@@ -438,7 +420,7 @@ public final class SyncRestProxy implements InvocationHandler {
         }
 
         // Otherwise, the response wasn't successful and the error object needs to be parsed.
-        byte[] responseBytes = decodedResponse.getSourceResponse().getBodyAsByteArray().block();
+        byte[] responseBytes = decodedResponse.getSourceResponse().getContent().toBytes();
         if (responseBytes == null || responseBytes.length == 0) {
             //  No body, create exception empty content string no exception body object.
             throw new RuntimeException(instantiateUnexpectedException(
@@ -460,7 +442,7 @@ public final class SyncRestProxy implements InvocationHandler {
             final Type bodyType = TypeUtil.getRestResponseBodyType(entityType);
 
             if (TypeUtil.isTypeOrSubTypeOf(bodyType, Void.class)) {
-                response.getSourceResponse().getBody().ignoreElements().block();
+                response.getSourceResponse().getContent().toBytes();
                 return createResponseSync(response, entityType, null);
             } else {
                 Object bodyAsObject =  handleBodyReturnTypeSync(response, methodParser, bodyType);
@@ -597,46 +579,32 @@ public final class SyncRestProxy implements InvocationHandler {
 
     // This handles each onX for the response mono.
     // The signal indicates the status and contains the metadata we need to end the tracing span.
-    private static void endTracingSpan(Signal<HttpDecodedResponse> signal) {
-        if (!TracerProxy.isTracingEnabled()) {
-            return;
-        }
+    private static void endTracingSpan(HttpDecodedResponse httpDecodedResponse, Throwable throwable, Context tracingContext) {
 
-        // Ignore the on complete and on subscribe events, they don't contain the information needed to end the span.
-        if (signal.isOnComplete() || signal.isOnSubscribe()) {
-            return;
-        }
 
         // Get the context that was added to the mono, this will contain the information needed to end the span.
-        ContextView context = signal.getContextView();
-        Optional<Context> tracingContext = context.getOrEmpty("TRACING_CONTEXT");
-        boolean disableTracing = Boolean.TRUE.equals(context.getOrDefault(Tracer.DISABLE_TRACING_KEY, false));
+        Object disableTracingValue = tracingContext.getData(Tracer.DISABLE_TRACING_KEY).get();
+        boolean disableTracing = Boolean.TRUE.equals(disableTracingValue != null ? disableTracingValue : false);
 
-        if (!tracingContext.isPresent() || disableTracing) {
+        if (tracingContext == null || disableTracing) {
             return;
         }
 
         int statusCode = 0;
-        HttpDecodedResponse httpDecodedResponse;
-        Throwable throwable = null;
 
         // On next contains the response information.
-        if (signal.hasValue()) {
-            httpDecodedResponse = signal.get();
+        if (httpDecodedResponse != null) {
             //noinspection ConstantConditions
             statusCode = httpDecodedResponse.getSourceResponse().getStatusCode();
-        } else if (signal.hasError()) {
+        } else if (throwable != null) {
             // The last status available is on error, this contains the error thrown by the REST response.
-            throwable = signal.getThrowable();
-
             // Only HttpResponseException contain a status code, this is the base REST response.
             if (throwable instanceof HttpResponseException) {
                 HttpResponseException exception = (HttpResponseException) throwable;
                 statusCode = exception.getResponse().getStatusCode();
             }
         }
-
-        TracerProxy.end(statusCode, throwable, tracingContext.get());
+        TracerProxy.end(statusCode, throwable, tracingContext);
     }
 
     /**

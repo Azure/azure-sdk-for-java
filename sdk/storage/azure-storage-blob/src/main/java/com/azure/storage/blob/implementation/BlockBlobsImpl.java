@@ -18,7 +18,9 @@ import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.http.rest.SyncRestProxy;
 import com.azure.core.util.Base64Util;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.blob.implementation.models.BlockBlobsCommitBlockListResponse;
@@ -47,6 +49,8 @@ public final class BlockBlobsImpl {
     /** The proxy service used to perform REST calls. */
     private final BlockBlobsService service;
 
+    private final BlockBlobsSyncService syncService;
+
     /** The service client containing this operation class. */
     private final AzureBlobStorageImpl client;
 
@@ -59,6 +63,9 @@ public final class BlockBlobsImpl {
         this.service =
                 RestProxy.create(BlockBlobsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
+
+        this.syncService =
+            SyncRestProxy.create(BlockBlobsSyncService.class, client.getHttpPipeline(), client.getSerializerAdapter());
     }
 
     /**
@@ -263,6 +270,54 @@ public final class BlockBlobsImpl {
                 Context context);
     }
 
+
+    /**
+     * The interface defining all the services for AzureBlobStorageBlockBlobs to be used by the proxy service to perform
+     * REST calls.
+     */
+    @Host("{url}")
+    @ServiceInterface(name = "AzureBlobStorageBlocSync")
+    public interface BlockBlobsSyncService {
+        @Put("/{containerName}/{blob}")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        BlockBlobsUploadResponse upload(
+            @HostParam("url") String url,
+            @PathParam("containerName") String containerName,
+            @PathParam("blob") String blob,
+            @HeaderParam("x-ms-blob-type") String blobType,
+            @QueryParam("timeout") Integer timeout,
+            @HeaderParam("Content-MD5") String transactionalContentMD5,
+            @HeaderParam("Content-Length") long contentLength,
+            @HeaderParam("x-ms-blob-content-type") String contentType,
+            @HeaderParam("x-ms-blob-content-encoding") String contentEncoding,
+            @HeaderParam("x-ms-blob-content-language") String contentLanguage,
+            @HeaderParam("x-ms-blob-content-md5") String contentMd5,
+            @HeaderParam("x-ms-blob-cache-control") String cacheControl,
+            @HeaderParam("x-ms-meta-") Map<String, String> metadata,
+            @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-blob-content-disposition") String contentDisposition,
+            @HeaderParam("x-ms-encryption-key") String encryptionKey,
+            @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
+            @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
+            @HeaderParam("x-ms-encryption-scope") String encryptionScope,
+            @HeaderParam("x-ms-access-tier") AccessTier tier,
+            @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+            @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+            @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("x-ms-if-tags") String ifTags,
+            @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-tags") String blobTagsString,
+            @HeaderParam("x-ms-immutability-policy-until-date") DateTimeRfc1123 immutabilityPolicyExpiry,
+            @HeaderParam("x-ms-immutability-policy-mode") BlobImmutabilityPolicyMode immutabilityPolicyMode,
+            @HeaderParam("x-ms-legal-hold") Boolean legalHold,
+            @BodyParam("application/octet-stream") BinaryData body,
+            @HeaderParam("Accept") String accept,
+            Context context);
+    }
+
     /**
      * The Upload Block Blob operation updates the content of an existing block blob. Updating an existing block blob
      * overwrites any existing metadata on the blob. Partial updates are not supported with Put Blob; the content of the
@@ -428,6 +483,128 @@ public final class BlockBlobsImpl {
                 accept,
                 context);
     }
+
+    public BlockBlobsUploadResponse uploadWithResponseSync(
+        String containerName,
+        String blob,
+        long contentLength,
+        BinaryData body,
+        Integer timeout,
+        byte[] transactionalContentMD5,
+        Map<String, String> metadata,
+        String leaseId,
+        AccessTier tier,
+        OffsetDateTime ifModifiedSince,
+        OffsetDateTime ifUnmodifiedSince,
+        String ifMatch,
+        String ifNoneMatch,
+        String ifTags,
+        String requestId,
+        String blobTagsString,
+        OffsetDateTime immutabilityPolicyExpiry,
+        BlobImmutabilityPolicyMode immutabilityPolicyMode,
+        Boolean legalHold,
+        BlobHttpHeaders blobHttpHeaders,
+        CpkInfo cpkInfo,
+        EncryptionScope encryptionScopeParam,
+        Context context) {
+        final String blobType = "BlockBlob";
+        final String accept = "application/xml";
+        String contentTypeInternal = null;
+        if (blobHttpHeaders != null) {
+            contentTypeInternal = blobHttpHeaders.getContentType();
+        }
+        String contentType = contentTypeInternal;
+        String contentEncodingInternal = null;
+        if (blobHttpHeaders != null) {
+            contentEncodingInternal = blobHttpHeaders.getContentEncoding();
+        }
+        String contentEncoding = contentEncodingInternal;
+        String contentLanguageInternal = null;
+        if (blobHttpHeaders != null) {
+            contentLanguageInternal = blobHttpHeaders.getContentLanguage();
+        }
+        String contentLanguage = contentLanguageInternal;
+        byte[] contentMd5Internal = null;
+        if (blobHttpHeaders != null) {
+            contentMd5Internal = blobHttpHeaders.getContentMd5();
+        }
+        byte[] contentMd5 = contentMd5Internal;
+        String cacheControlInternal = null;
+        if (blobHttpHeaders != null) {
+            cacheControlInternal = blobHttpHeaders.getCacheControl();
+        }
+        String cacheControl = cacheControlInternal;
+        String contentDispositionInternal = null;
+        if (blobHttpHeaders != null) {
+            contentDispositionInternal = blobHttpHeaders.getContentDisposition();
+        }
+        String contentDisposition = contentDispositionInternal;
+        String encryptionKeyInternal = null;
+        if (cpkInfo != null) {
+            encryptionKeyInternal = cpkInfo.getEncryptionKey();
+        }
+        String encryptionKey = encryptionKeyInternal;
+        String encryptionKeySha256Internal = null;
+        if (cpkInfo != null) {
+            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+        }
+        String encryptionKeySha256 = encryptionKeySha256Internal;
+        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+        if (cpkInfo != null) {
+            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+        }
+        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+        String encryptionScopeInternal = null;
+        if (encryptionScopeParam != null) {
+            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+        }
+        String encryptionScope = encryptionScopeInternal;
+        String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
+        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
+        DateTimeRfc1123 ifModifiedSinceConverted =
+            ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted =
+            ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 immutabilityPolicyExpiryConverted =
+            immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
+        return syncService.upload(
+            this.client.getUrl(),
+            containerName,
+            blob,
+            blobType,
+            timeout,
+            transactionalContentMD5Converted,
+            contentLength,
+            contentType,
+            contentEncoding,
+            contentLanguage,
+            contentMd5Converted,
+            cacheControl,
+            metadata,
+            leaseId,
+            contentDisposition,
+            encryptionKey,
+            encryptionKeySha256,
+            encryptionAlgorithm,
+            encryptionScope,
+            tier,
+            ifModifiedSinceConverted,
+            ifUnmodifiedSinceConverted,
+            ifMatch,
+            ifNoneMatch,
+            ifTags,
+            this.client.getVersion(),
+            requestId,
+            blobTagsString,
+            immutabilityPolicyExpiryConverted,
+            immutabilityPolicyMode,
+            legalHold,
+            body,
+            accept,
+            context);
+    }
+
 
     /**
      * The Put Blob from URL operation creates a new Block Blob where the contents of the blob are read from a given
