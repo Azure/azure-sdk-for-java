@@ -13,9 +13,9 @@ import reactor.netty.resources.ConnectionProvider;
  * An {@link HttpClientProvider} that provides an implementation of HttpClient based on Netty.
  */
 public final class NettyAsyncHttpClientProvider implements HttpClientProvider {
-    private static final boolean AZURE_DISABLE_HTTP_CLIENT_SHARING =
-        Configuration.getGlobalConfiguration().get("AZURE_DISABLE_HTTP_CLIENT_SHARING", Boolean.TRUE);
-    private final boolean disableHttpClientSharing;
+    private static final boolean AZURE_ENABLE_HTTP_CLIENT_SHARING =
+        Configuration.getGlobalConfiguration().get("AZURE_ENABLE_HTTP_CLIENT_SHARING", Boolean.FALSE);
+    private final boolean enableHttpClientSharing;
     private static final int DEFAULT_MAX_CONNECTIONS = 500;
     // Enum Singleton Pattern
     private enum GlobalNettyHttpClient {
@@ -33,23 +33,23 @@ public final class NettyAsyncHttpClientProvider implements HttpClientProvider {
     }
 
     /**
-     * For testing purpose only, assigning 'AZURE_DISABLE_HTTP_CLIENT_SHARING' to 'disableHttpClientSharing' for
+     * For testing purpose only, assigning 'AZURE_ENABLE_HTTP_CLIENT_SHARING' to 'enableHttpClientSharing' for
      * 'final' modifier.
      */
     public NettyAsyncHttpClientProvider() {
-        disableHttpClientSharing = AZURE_DISABLE_HTTP_CLIENT_SHARING;
+        enableHttpClientSharing = AZURE_ENABLE_HTTP_CLIENT_SHARING;
     }
 
     NettyAsyncHttpClientProvider(Configuration configuration) {
-        disableHttpClientSharing = configuration.get("AZURE_DISABLE_HTTP_CLIENT_SHARING", Boolean.TRUE);
+        enableHttpClientSharing = configuration.get("AZURE_ENABLE_HTTP_CLIENT_SHARING", Boolean.FALSE);
     }
 
     @Override
     public HttpClient createInstance() {
-        if (disableHttpClientSharing) {
-            return new NettyAsyncHttpClientBuilder().build();
+        if (enableHttpClientSharing) {
+            return GlobalNettyHttpClient.HTTP_CLIENT.getHttpClient();
         }
-        return GlobalNettyHttpClient.HTTP_CLIENT.getHttpClient();
+        return new NettyAsyncHttpClientBuilder().build();
     }
 
     @Override

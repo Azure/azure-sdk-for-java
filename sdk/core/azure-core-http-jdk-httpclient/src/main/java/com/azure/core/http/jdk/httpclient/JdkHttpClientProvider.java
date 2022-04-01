@@ -14,9 +14,9 @@ import com.azure.core.util.Configuration;
  * introduced.
  */
 public final class JdkHttpClientProvider implements HttpClientProvider {
-    private static final boolean AZURE_DISABLE_HTTP_CLIENT_SHARING =
-        Configuration.getGlobalConfiguration().get("AZURE_DISABLE_HTTP_CLIENT_SHARING", Boolean.TRUE);
-    private final boolean disableHttpClientSharing;
+    private static final boolean AZURE_ENABLE_HTTP_CLIENT_SHARING =
+        Configuration.getGlobalConfiguration().get("AZURE_ENABLE_HTTP_CLIENT_SHARING", Boolean.FALSE);
+    private final boolean enableHttpClientSharing;
 
     // Enum Singleton Pattern
     private enum GlobalJdkAsyncHttpClient {
@@ -34,22 +34,22 @@ public final class JdkHttpClientProvider implements HttpClientProvider {
     }
 
     /**
-     * For testing purpose only, assigning 'AZURE_DISABLE_HTTP_CLIENT_SHARING' to 'disableHttpClientSharing' for
+     * For testing purpose only, assigning 'AZURE_ENABLE_HTTP_CLIENT_SHARING' to 'enableHttpClientSharing' for
      * 'final' modifier.
      */
     public JdkHttpClientProvider() {
-        disableHttpClientSharing = AZURE_DISABLE_HTTP_CLIENT_SHARING;
+        enableHttpClientSharing = AZURE_ENABLE_HTTP_CLIENT_SHARING;
     }
 
     JdkHttpClientProvider(Configuration configuration) {
-        disableHttpClientSharing = configuration.get("AZURE_DISABLE_HTTP_CLIENT_SHARING", Boolean.TRUE);
+        enableHttpClientSharing = configuration.get("AZURE_ENABLE_HTTP_CLIENT_SHARING", Boolean.FALSE);
     }
 
     @Override
     public HttpClient createInstance() {
-        if (disableHttpClientSharing) {
-            return new JdkAsyncHttpClientBuilder().build();
+        if (enableHttpClientSharing) {
+            return GlobalJdkAsyncHttpClient.HTTP_CLIENT.getHttpClient();
         }
-        return GlobalJdkAsyncHttpClient.HTTP_CLIENT.getHttpClient();
+        return new JdkAsyncHttpClientBuilder().build();
     }
 }

@@ -44,13 +44,16 @@ public class NonSharedHttpClientDownloadBlobTest extends ContainerTest<PerfStres
     // Perform the API call to be tested here
     @Override
     public void run() {
-        BlobClient blobClient = new BlobClientBuilder().buildClient();
+        BlobClient blobClient = new BlobClientBuilder()
+                                    .containerName(CONTAINER_NAME)
+                                    .connectionString(connectionString)
+                                    .blobName(blobName)
+                                    .buildClient();
         blobClient.download(DEV_NULL);
     }
 
     @Override
     public Mono<Void> runAsync() {
-//        System.out.println("----->>><<<______" + Configuration.getGlobalConfiguration().get("AZURE_DISABLE_HTTP_CLIENT_SHARING"));
         BlobAsyncClient blobAsyncClient = new BlobClientBuilder()
                                               .containerName(CONTAINER_NAME)
                                               .connectionString(connectionString)

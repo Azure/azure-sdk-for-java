@@ -3,12 +3,11 @@
 ## 1.12.0-beta.1 (Unreleased)
 
 ### Features Added
+- The `NettyAsyncHttpClientProvider.createInstance()` now have option to share one single shared `HttpClient`.
+  A new configuration environment variable `AZURE_ENABLE_HTTP_CLIENT_SHARING` has been added for backwards
+  compatibility. Setting it to `true` before starting the process to use single shared `HttpClient`.
   
 ### Breaking Changes
-- The `NettyAsyncHttpClientProvider.createInstance()` now returns shared instance of `HttpClient`. Azure libraries that 
-  don't configure custom `HttpClientOptions` or `HttpClient` instance are now using single shared instance as well. 
-  A new configuration environment variable `AZURE_DISABLE_HTTP_CLIENT_SHARING` has been added for backwards 
-  compatibility setting it to `true` before starting the process brings back previous behavior.
 
 ### Bugs Fixed
 
