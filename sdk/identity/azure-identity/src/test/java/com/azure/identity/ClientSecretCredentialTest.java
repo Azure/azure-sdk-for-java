@@ -70,7 +70,6 @@ public class ClientSecretCredentialTest {
         String badSecret = "badsecret";
         String token1 = "token1";
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
-        OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
         try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
