@@ -6,6 +6,7 @@
 
 - Added support for strongly-typed HTTP header objects to be deserialized lazily on a per-field basis rather than all
   at once during construction.
+- Added `Context` support for `PollingStrategy`.  
 
 ### Breaking Changes
 
