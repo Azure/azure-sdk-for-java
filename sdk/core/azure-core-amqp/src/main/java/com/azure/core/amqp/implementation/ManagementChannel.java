@@ -80,7 +80,7 @@ public class ManagementChannel implements AmqpManagementNode {
 
     @Override
     public Mono<Void> closeAsync() {
-        return createChannel.flatMap(channel -> channel.closeAsync()).cache();
+        return Mono.fromRunnable(() -> createChannel.dispose());
     }
 
     private void handleResponse(Message response, SynchronousSink<AmqpAnnotatedMessage> sink,
