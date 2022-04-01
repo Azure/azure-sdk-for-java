@@ -38,7 +38,7 @@
     <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <azure.spring.boot.version>3.15.0-beta.1</azure.spring.boot.version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-bom;current} -->
-    <azure.core.version>1.26.0</azure.core.version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+    <azure.core.version>1.27.0</azure.core.version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     <azure.identity.version>1.4.6</azure.identity.version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
     <azure.keyvault.secret.version>4.4.0</azure.keyvault.secret.version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
     <azure.keyvault.jca.version>2.7.0-beta.1</azure.keyvault.jca.version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
