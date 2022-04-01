@@ -19,23 +19,37 @@ You can use the following command to install jars into your local repository qui
 
 ```shell
 mvn clean install \
-  -f sdk/spring/ \
-  -Pdev \
-  -T 4 \
-  -o \
-  -Dcheckstyle.skip \
+  -Dcheckstyle.skip=true \
   -Dcodesnippet.skip \
   -Denforcer.skip \
-  -Djacoco.skip \
-  -Dmaven.javadoc.skip \
-  -Dmaven.test.skip \
-  -Drevapi.skip \
-  -Dspotbugs.skip
+  -Djacoco.skip=true \
+  -Dmaven.javadoc.skip=true \
+  -Drevapi.skip=true \
+  -DskipTests \
+  -Dspotbugs.skip=true \
+  -Pdev \
+  -T 4 \
+  -ntp \
+  -o \
+  -f sdk/spring/pom.xml
 ```
 
 If you are using PowerShell, please use the following command instead:
-```shell
-mvn clean install -f sdk/spring/ -Pdev -T 4 -o "-Dcheckstyle.skip" "-Dcodesnippet.skip" "-Denforcer.skip" "-Djacoco.skip" "-Dmaven.javadoc.skip" "-Dmaven.test.skip" "-Drevapi.skip" "-Dspotbugs.skip"
+```powershell
+mvn clean install `
+ "-Dcheckstyle.skip" `
+ "-Dcodesnippet.skip" `
+ "-Denforcer.skip" `
+ "-Djacoco.skip" `
+ "-Dmaven.javadoc.skip" `
+ "-Drevapi.skip" `
+ "-DskipTests" `
+ "-Dspotbugs.skip" `
+ -Pdev `
+ -T 4 `
+ -ntp `
+ -o `
+ -f sdk/spring/pom.xml
 ```
 
 
