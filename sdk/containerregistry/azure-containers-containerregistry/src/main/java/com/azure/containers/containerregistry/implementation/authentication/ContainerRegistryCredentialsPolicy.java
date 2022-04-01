@@ -5,6 +5,7 @@ package com.azure.containers.containerregistry.implementation.authentication;
 
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.util.logging.ClientLogger;
@@ -82,6 +83,16 @@ public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthent
                 context.getHttpRequest().getHeaders().set(AUTHORIZATION, BEARER + " " + token.getToken());
                 return Mono.empty();
             });
+    }
+
+    @Override
+    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        // Since we will need to replay this call, adding duplicate to make this replayable.
+        if (context.getHttpRequest().getBody() != null) {
+            context.getHttpRequest().setBody(context.getHttpRequest().getBody().map(buffer -> buffer.duplicate()));
+        }
+
+        return super.process(context, next);
     }
 
     /**
