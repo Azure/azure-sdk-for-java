@@ -70,7 +70,6 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
     private final Logger logger = LoggerFactory.getLogger(ChangeFeedProcessorBuilderImpl.class);
     private final Duration sleepTime = Duration.ofSeconds(15);
     private final Duration lockTime = Duration.ofSeconds(30);
-    private static final int DEFAULT_QUERY_PARTITIONS_MAX_BATCH_SIZE = 100;
 
     private final static int DEFAULT_DEGREE_OF_PARALLELISM = 25; // default
 
@@ -440,8 +439,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
                         .leasePrefix(leasePrefix)
                         .leaseContainer(this.leaseContextClient.getContainerClient())
                         .leaseContextClient(this.leaseContextClient)
-                        .monitoredContainer(this.feedContextClient.getContainerClient())
-                        .monitoredContainerRid(this.collectionResourceId)
+                        .feedContextClient(this.feedContextClient)
                         .requestOptionsFactory(requestOptionsFactory)
                         .hostName(this.hostName)
                         .build()
@@ -477,13 +475,9 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
 
         PartitionSynchronizerImpl synchronizer = new PartitionSynchronizerImpl(
             this.feedContextClient,
-            this.feedContextClient.getContainerClient(),
             leaseStoreManager,
             leaseStoreManager,
-            DEFAULT_DEGREE_OF_PARALLELISM,
-            DEFAULT_QUERY_PARTITIONS_MAX_BATCH_SIZE,
-            this.collectionResourceId
-        );
+            DEFAULT_DEGREE_OF_PARALLELISM);
 
         Bootstrapper bootstrapper = new BootstrapperImpl(synchronizer, leaseStoreManager, this.lockTime, this.sleepTime);
         PartitionSupervisorFactory partitionSupervisorFactory = new PartitionSupervisorFactoryImpl(

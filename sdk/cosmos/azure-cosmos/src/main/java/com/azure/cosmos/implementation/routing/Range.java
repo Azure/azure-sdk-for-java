@@ -18,6 +18,7 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
     private static final String MAX_PROPERTY = "max";
     private static final String IS_MIN_INCLUSIVE_PROPERTY = "isMinInclusive";
     private static final String IS_MAX_INCLUSIVE_PROPERTY = "isMaxInclusive";
+    private static final boolean DEFAULT_IS_MIN_INCLUSIVE = true;
 
     private T minValue;
     private T maxValue;
@@ -101,13 +102,17 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
 
     @JsonProperty("isMinInclusive")
     public boolean isMinInclusive() {
-        // isMinInclusive == true is the default - so if the property hasn't been serialized TRUE is the default
-        return !Boolean.FALSE.equals(super.getBoolean(Range.IS_MIN_INCLUSIVE_PROPERTY));
+        Boolean isMinInclusive = super.getBoolean(Range.IS_MIN_INCLUSIVE_PROPERTY);
+        if (isMinInclusive == null) {
+            isMinInclusive = DEFAULT_IS_MIN_INCLUSIVE;
+        }
+
+        return isMinInclusive;
     }
 
     public void setMinInclusive(boolean isMinInclusive) {
         if (isMinInclusive) {
-            BridgeInternal.remove(this, Range.IS_MIN_INCLUSIVE_PROPERTY);
+            BridgeInternal.setProperty(this, Range.IS_MIN_INCLUSIVE_PROPERTY, true);
         } else {
             BridgeInternal.setProperty(this, Range.IS_MIN_INCLUSIVE_PROPERTY, false);
         }

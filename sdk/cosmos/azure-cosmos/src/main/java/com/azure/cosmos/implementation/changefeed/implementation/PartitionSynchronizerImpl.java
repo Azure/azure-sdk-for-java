@@ -2,10 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.implementation;
 
-import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.PartitionKeyRange;
-import com.azure.cosmos.implementation.caches.IPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseContainer;
@@ -33,51 +30,28 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Implementation for the partition synchronizer.
  */
-class PartitionSynchronizerImpl implements PartitionSynchronizer {
+public class PartitionSynchronizerImpl implements PartitionSynchronizer {
     private final Logger logger = LoggerFactory.getLogger(PartitionSynchronizerImpl.class);
     private final ChangeFeedContextClient documentClient;
-    private final CosmosAsyncContainer monitoredContainer;
     private final LeaseContainer leaseContainer;
     private final LeaseManager leaseManager;
     private final int degreeOfParallelism;
-    private final int maxBatchSize;
-    private final String collectionResourceId;
-    private final IPartitionKeyRangeCache partitionKeyRangeCache;
 
     public PartitionSynchronizerImpl(
             ChangeFeedContextClient documentClient,
-            CosmosAsyncContainer monitoredContainer,
             LeaseContainer leaseContainer,
             LeaseManager leaseManager,
-            int degreeOfParallelism,
-            int maxBatchSize,
-            String collectionResourceId) {
+            int degreeOfParallelism) {
 
         this.documentClient = documentClient;
-        this.monitoredContainer = monitoredContainer;
         this.leaseContainer = leaseContainer;
         this.leaseManager = leaseManager;
         this.degreeOfParallelism = degreeOfParallelism;
-        this.maxBatchSize = maxBatchSize;
-        this.collectionResourceId = collectionResourceId;
-        this.partitionKeyRangeCache =
-                ImplementationBridgeHelpers
-                        .CosmosAsyncContainerHelper
-                        .getCosmosAsyncContainerAccessor()
-                        .getPartitionKeyRangeCache(this.monitoredContainer);
     }
 
     @Override
     public Mono<Void> createMissingLeases() {
-        return this.partitionKeyRangeCache.tryGetOverlappingRangesAsync(
-                null, this.collectionResourceId, PartitionKeyInternalHelper.FullRange, true, null)
-                .flatMap(valueHolder -> {
-                    if (valueHolder == null || valueHolder.v == null) {
-                        return Mono.empty();
-                    }
-
-                    return Mono.just(valueHolder.v);
-                })
+        return this.documentClient.getOverlappingRanges(PartitionKeyInternalHelper.FullRange)
                 .flatMap(pkRangeList -> this.createLeases(pkRangeList).then())
                 .onErrorResume(throwable -> {
                     logger.error("Create lease failed", throwable);
@@ -104,13 +78,9 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
                 leaseToken,
                 lastContinuationToken);
 
-        return this.partitionKeyRangeCache.tryGetOverlappingRangesAsync(
-                    null,
-                    this.collectionResourceId, ((FeedRangeEpkImpl)lease.getFeedRange()).getRange(),
-                    true,
-                    null)
-                .flatMap(valueHolder -> {
-                    if (valueHolder == null || valueHolder.v == null || valueHolder.v.size() == 0) {
+        return this.documentClient.getOverlappingRanges(((FeedRangeEpkImpl)lease.getFeedRange()).getRange())
+                .flatMap(pkRangeList -> {
+                    if (pkRangeList.size() == 0) {
                         logger.error("Lease with token {} is gone but we failed to find at least one child range", leaseToken);
                         return Mono.error(
                                 new RuntimeException(
@@ -119,14 +89,12 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
                                                 leaseToken)));
                     }
 
-                    return Mono.just(valueHolder.v);
-                })
-                .flatMap(pkRangeList -> {
                     if (pkRangeList.size() > 1) {
                         // Split: More than two children spanning the pkRange
                         return Mono.just(new FeedRangeGoneSplitHandler(lease, pkRangeList, this.leaseManager));
                     }
 
+                    // Merge
                     return Mono.just(new FeedRangeGoneMergeHandler(lease, pkRangeList.get(0), this.leaseManager));
                 });
     }

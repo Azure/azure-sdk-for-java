@@ -27,7 +27,7 @@ public class ServiceItemLeaseEpk extends ServiceItemLease {
             String etag,
             Map<String, String> properties,
             String timestamp,
-            String ts) {
+            long ts) {
 
         super(id, leaseToken, owner, feedRangeInternal, continuationToken, etag, properties, timestamp, ts);
     }

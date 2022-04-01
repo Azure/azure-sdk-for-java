@@ -5,6 +5,8 @@ package com.azure.cosmos.implementation.changefeed;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
@@ -23,19 +25,30 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
 import java.net.URI;
+import java.util.List;
 
 /**
  * The interface that captures the APIs required to handle change feed processing logic.
  */
 public interface ChangeFeedContextClient {
+
     /**
-     * Reads the feed (sequence) of {@link PartitionKeyRange} for a database account from the Azure Cosmos DB service as an asynchronous operation.
+     * Get the overlapping partition key ranges.
      *
-     * @param partitionKeyRangesOrCollectionLink the link of the resources to be read, or owner collection link, SelfLink or AltLink. E.g. /dbs/db_rid/colls/coll_rid/pkranges.
-     * @param cosmosQueryRequestOptions the options for the request; it can be set as null.
-     * @return an a {@link Flux} containing one or several feed response pages of the obtained items or an error.
+     * @param range the range.
+     *
+     * @return The list of partition key ranges.
      */
-    Flux<FeedResponse<PartitionKeyRange>> readPartitionKeyRangeFeed(String partitionKeyRangesOrCollectionLink, CosmosQueryRequestOptions cosmosQueryRequestOptions);
+    Mono<List<PartitionKeyRange>> getOverlappingRanges(Range<String> range);
+
+    /***
+     * Get the partition key range by partition key range id.
+     *
+     * @param partitionKeyRangeId the partition key range id.
+     *
+     * @return a value holder of partition key range.
+     */
+    Mono<Utils.ValueHolder<PartitionKeyRange>> getPartitionKeyRangeById(String partitionKeyRangeId);
 
     /**
      * Method to create a change feed query for documents.

@@ -39,7 +39,7 @@ public abstract class ServiceItemLease implements Lease {
     private String owner;
     private Map<String, String> properties;
     private String timestamp;  // ExplicitTimestamp
-    private String _ts;
+    private long _ts;
 
     public ServiceItemLease(
             String id,
@@ -50,7 +50,7 @@ public abstract class ServiceItemLease implements Lease {
             String etag,
             Map<String, String> properties,
             String timestamp,
-            String ts) {
+            long ts) {
         this.id = id;
         this.leaseToken = leaseToken;
         this.owner = owner;
@@ -112,11 +112,11 @@ public abstract class ServiceItemLease implements Lease {
         this._etag = concurrencyToken;
     }
 
-    public String getTs() {
+    public long getTs() {
         return this._ts;
     }
 
-    public ServiceItemLease setTs(String ts) {
+    public ServiceItemLease setTs(long ts) {
         this._ts = ts;
         return this;
     }
@@ -124,7 +124,7 @@ public abstract class ServiceItemLease implements Lease {
     @Override
     public String getTimestamp() {
         if (this.timestamp == null) {
-            return LeaseConstants.UNIX_START_TIME.plusSeconds(Long.parseLong(this.getTs())).toString();
+            return LeaseConstants.UNIX_START_TIME.plusSeconds(this._ts).toString();
         }
         return this.timestamp;
     }
@@ -165,7 +165,7 @@ public abstract class ServiceItemLease implements Lease {
                 this.owner,
                 this.continuationToken,
                 this.timestamp,
-                LeaseConstants.UNIX_START_TIME.plusSeconds(Long.parseLong(this._ts)));
+                LeaseConstants.UNIX_START_TIME.plusSeconds(this._ts));
     }
 
     @SuppressWarnings("serial")
@@ -218,6 +218,7 @@ public abstract class ServiceItemLease implements Lease {
             String continuationToken = rootNode.get(LeaseConstants.PROPERTY_NAME_CONTINUATION_TOKEN).asText();
             String timeStamp = rootNode.get(LeaseConstants.PROPERTY_NAME_TIMESTAMP).asText();
             String owner = rootNode.get(LeaseConstants.PROPERTY_NAME_OWNER).asText();
+            long ts = rootNode.get(LeaseConstants.PROPERTY_TS).asLong();
 
             JsonNode feedRangeNode = rootNode.get(LeaseConstants.PROPERTY_FEED_RANGE);
             FeedRangeInternal feedRange = jsonParser.getCodec().treeToValue(feedRangeNode, FeedRangeInternal.class);
@@ -229,6 +230,7 @@ public abstract class ServiceItemLease implements Lease {
                     .leaseToken(leaseToken)
                     .continuationToken(continuationToken)
                     .timestamp(timeStamp)
+                    .ts(ts)
                     .feedRange(feedRange);
 
             ServiceItemLeaseVersion version = ServiceItemLeaseVersion.valueOf(rootNode.get(LeaseConstants.PROPERTY_VERSION).intValue()).get();

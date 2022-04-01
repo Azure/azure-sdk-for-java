@@ -81,25 +81,30 @@ public class FeedRangeGoneSplitHandler implements FeedRangeGoneHandler {
 
         List<String> leaseTokens = new ArrayList<>();
 
-        // Create new leases starting from the current min and ending in the current max and across the ordered list of partitions
-        // Example:
-        // Current lease epk range: AA-DD
-        // It split into 3 partition ranges: []-BB, BB-CC, CC-[]
-        // So we will create EPKRange lease for AA-BB, BB-CC, CC-DD
-        return Flux.fromIterable(overlappingRanges)
-                .map(pkRange -> {
-                    Range<String> range = pkRange.toRange();
-                    // TODO: Annie: what happens if only one of the lease is created successfully
-                    Range<String> mergedRange = new Range<>(min.get(), range.getMax(), true, false);
-                    FeedRangeEpkImpl newFeedRangeEpkImpl = new FeedRangeEpkImpl(mergedRange);
-                    min.set(pkRange.getMaxExclusive());
+        return Flux.just(overlappingRanges)
+                .flatMapIterable(pkRanges -> {
 
-                    return newFeedRangeEpkImpl;
+                    // Create new leases starting from the current min and ending in the current max and across the ordered list of partitions
+                    // Example:
+                    // Current lease epk range: AA-DD
+                    // It split into 3 partition ranges: []-BB, BB-CC, CC-[]
+                    // So we will create EPKRange lease for AA-BB, BB-CC, CC-DD
+
+                    List<FeedRangeEpkImpl> epkRanges = new ArrayList<>();
+                    for (int i = 0; i < pkRanges.size() - 1; i++) {
+                        Range<String> range = pkRanges.get(i).toRange();
+                        epkRanges.add(new FeedRangeEpkImpl(new Range<>(min.get(), range.getMax(), true, false)));
+                        min.set(pkRanges.get(i).getMaxExclusive());
+                    }
+
+                    // add the last range with the original max and the last min
+                    epkRanges.add(new FeedRangeEpkImpl(new Range<>(min.get(), max.get(), true, false)));
+                    return epkRanges;
                 })
-                // add the last range with the original max and the last min
-                .concatWithValues(new FeedRangeEpkImpl(new Range<>(min.get(), max.get(), true, false)))
-                .flatMap(feedRangeEpkImpl -> {
-                    return this.leaseManager.createLeaseIfNotExist(feedRangeEpkImpl, this.lease.getContinuationToken())
+                .flatMap(newEpkRange -> {
+                    // TODO: Annie: what if not all child leases are created
+                    // Should we change to use batch transaction?
+                    return this.leaseManager.createLeaseIfNotExist(newEpkRange, this.lease.getContinuationToken())
                             .doOnSuccess(newLease -> leaseTokens.add(newLease.getLeaseToken()));
                 })
                 .doOnComplete(() -> {
@@ -108,11 +113,10 @@ public class FeedRangeGoneSplitHandler implements FeedRangeGoneHandler {
                             this.lease.getLeaseToken(),
                             StringUtils.join(leaseTokens, ","));
                 });
-
     }
 
     @Override
-    public boolean shouldRemoveCurrentLease() {
+    public boolean shouldDeleteCurrentLease() {
         return this.removeCurrentLease;
     }
 }

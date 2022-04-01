@@ -25,9 +25,7 @@ public interface LeaseStoreManager extends LeaseContainer, LeaseManager, LeaseSt
 
         LeaseStoreManagerBuilderDefinition leaseContainer(CosmosAsyncContainer leaseContainer);
 
-        LeaseStoreManagerBuilderDefinition monitoredContainer(CosmosAsyncContainer monitoredContainer);
-
-        LeaseStoreManagerBuilderDefinition monitoredContainerRid(String monitoredContainerRid);
+        LeaseStoreManagerBuilderDefinition feedContextClient(ChangeFeedContextClient monitoredContextClient);
 
         LeaseStoreManagerBuilderDefinition requestOptionsFactory(RequestOptionsFactory requestOptionsFactory);
 

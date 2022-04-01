@@ -13,4 +13,5 @@ public class LeaseConstants {
     public static final String PROPERTY_NAME_OWNER = "Owner";
     public static final String PROPERTY_FEED_RANGE = "feedRange";
     public static final String PROPERTY_VERSION = "version";
+    public static final String PROPERTY_TS ="_ts";
 }

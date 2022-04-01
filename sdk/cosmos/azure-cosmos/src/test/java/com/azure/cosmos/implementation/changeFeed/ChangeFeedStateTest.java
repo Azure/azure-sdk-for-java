@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.implementation;
+package com.azure.cosmos.implementation.changeFeed;
 
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStartFromInternal;

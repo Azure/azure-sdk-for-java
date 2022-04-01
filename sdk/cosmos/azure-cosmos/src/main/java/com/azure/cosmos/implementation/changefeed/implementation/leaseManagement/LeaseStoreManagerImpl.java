@@ -6,12 +6,10 @@ package com.azure.cosmos.implementation.changefeed.implementation.leaseManagemen
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.caches.IPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.Lease;
@@ -53,6 +51,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
     private RequestOptionsFactory requestOptionsFactory;
     private ServiceItemLeaseUpdater leaseUpdater;
     private LeaseStore leaseStore;
+    private ChangeFeedContextClient feedDocumentClient;
 
     public static LeaseStoreManagerBuilderDefinition builder() {
         return new LeaseStoreManagerImpl();
@@ -87,6 +86,14 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
     }
 
     @Override
+    public LeaseStoreManagerBuilderDefinition feedContextClient(ChangeFeedContextClient feedContextClient) {
+        checkNotNull(feedContextClient, "Argument 'feedContextClient' can not be null");
+
+        this.feedDocumentClient = feedContextClient;
+        return this;
+    }
+
+    @Override
     public LeaseStoreManagerBuilderDefinition requestOptionsFactory(RequestOptionsFactory requestOptionsFactory) {
         checkNotNull(requestOptionsFactory, "Argument 'requestOptionsFactory' can not be null");
 
@@ -101,23 +108,6 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
         this.settings.withHostName(hostName);
         return this;
     }
-
-    @Override
-    public LeaseStoreManagerBuilderDefinition monitoredContainer(CosmosAsyncContainer monitoredContainer) {
-        checkNotNull(monitoredContainer, "Argument 'monitoredContainer' can not be null");
-
-        this.settings.withMonitoredContainer(monitoredContainer);
-        return this;
-    }
-
-    @Override
-    public LeaseStoreManagerBuilderDefinition monitoredContainerRid(String monitoredContainerRid) {
-        checkArgument(!StringUtils.isEmpty(monitoredContainerRid), "Argument 'monitoredContainerRid' can not be null nor empty");
-
-        this.settings.withMonitoredContainerRid(monitoredContainerRid);
-        return this;
-    }
-
 
     @Override
     public Mono<LeaseStoreManager> build() {
@@ -252,26 +242,13 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
      * @return the {@link Lease} with feedRange.
      */
     public Mono<Lease> tryToPopulateLeaseWithFeedRange(Lease lease) {
+        // For epk based lease and newly created partition based lease, feedRange should have already been populated
         if (lease.getFeedRange() != null) {
             return Mono.just(lease);
         }
 
         if (lease instanceof ServiceItemLeaseCore) {
-            IPartitionKeyRangeCache partitionKeyRangeCache =
-                    ImplementationBridgeHelpers
-                            .CosmosAsyncContainerHelper
-                            .getCosmosAsyncContainerAccessor()
-                            .getPartitionKeyRangeCache(this.settings.getMonitoredContainer());
-            return Mono.just(partitionKeyRangeCache)
-                    .flatMap(pkRangeCache -> {
-                        return pkRangeCache.tryGetPartitionKeyRangeByIdAsync(
-                                null,
-                                this.settings.getMonitoredContainerRid(),
-                                lease.getLeaseToken(),
-                                false,
-                                null
-                        );
-                    })
+            return this.feedDocumentClient.getPartitionKeyRangeById(lease.getLeaseToken())
                     .flatMap(pkRangeValueHolder -> {
                         if (pkRangeValueHolder != null && pkRangeValueHolder.v != null) {
                             lease.setFeedRange(new FeedRangeEpkImpl(pkRangeValueHolder.v.toRange()));

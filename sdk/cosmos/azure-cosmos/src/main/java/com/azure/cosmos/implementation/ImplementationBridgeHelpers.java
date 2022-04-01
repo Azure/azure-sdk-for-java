@@ -15,7 +15,6 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
-import com.azure.cosmos.implementation.caches.IPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
@@ -591,8 +590,6 @@ public class ImplementationBridgeHelpers {
                 CosmosAsyncContainer cosmosAsyncContainer,
                 CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions,
                 Class<T> classType);
-
-            IPartitionKeyRangeCache getPartitionKeyRangeCache(CosmosAsyncContainer cosmosAsyncContainer);
         }
     }
 

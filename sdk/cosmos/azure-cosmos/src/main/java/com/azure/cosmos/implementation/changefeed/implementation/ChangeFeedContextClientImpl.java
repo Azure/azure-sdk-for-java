@@ -4,25 +4,28 @@ package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
-import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.models.CosmosDatabaseResponse;
-import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.CosmosBridgeInternal;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
+import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
+import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.PartitionKeyRange;
-import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -30,6 +33,7 @@ import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,13 +52,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
      * @param cosmosContainer existing client.
      */
     public ChangeFeedContextClientImpl(CosmosAsyncContainer cosmosContainer) {
-        if (cosmosContainer == null) {
-            throw new IllegalArgumentException("cosmosContainer");
-        }
-
-        this.cosmosContainer = cosmosContainer;
-        this.documentClient = getContextClient(cosmosContainer);
-        this.scheduler = Schedulers.boundedElastic();
+        this(cosmosContainer, Schedulers.boundedElastic());
     }
 
     /**
@@ -70,7 +68,6 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
         this.cosmosContainer = cosmosContainer;
         this.documentClient = getContextClient(cosmosContainer);
         this.scheduler = scheduler;
-
     }
 
     @Override
@@ -84,9 +81,52 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     }
 
     @Override
-    public Flux<FeedResponse<PartitionKeyRange>> readPartitionKeyRangeFeed(String partitionKeyRangesOrCollectionLink, CosmosQueryRequestOptions cosmosQueryRequestOptions) {
-        return this.documentClient.readPartitionKeyRanges(partitionKeyRangesOrCollectionLink, cosmosQueryRequestOptions)
-            .publishOn(this.scheduler);
+    public Mono<List<PartitionKeyRange>> getOverlappingRanges(Range<String> range) {
+        AsyncDocumentClient clientWrapper =
+                CosmosBridgeInternal.getAsyncDocumentClient(this.cosmosContainer.getDatabase());
+
+        return clientWrapper.getCollectionCache()
+                .resolveByNameAsync(
+                        null,
+                        BridgeInternal.extractContainerSelfLink(this.cosmosContainer),
+                        null)
+                .flatMap(collection -> {
+                    return clientWrapper.getPartitionKeyRangeCache().tryGetOverlappingRangesAsync(
+                            null,
+                            collection.getResourceId(),
+                            range,
+                            true,
+                            null);
+                })
+                .flatMap(pkRangesValueHolder -> {
+                    if (pkRangesValueHolder == null || pkRangesValueHolder.v == null) {
+                        return Mono.just(new ArrayList<PartitionKeyRange>());
+                    }
+
+                    return Mono.just(pkRangesValueHolder.v);
+                })
+                .publishOn(this.scheduler);
+    }
+
+    @Override
+    public Mono<Utils.ValueHolder<PartitionKeyRange>> getPartitionKeyRangeById(String partitionKeyRangeId) {
+        AsyncDocumentClient clientWrapper =
+                CosmosBridgeInternal.getAsyncDocumentClient(this.cosmosContainer.getDatabase());
+
+        return clientWrapper.getCollectionCache()
+                .resolveByNameAsync(
+                        null,
+                        BridgeInternal.extractContainerSelfLink(this.cosmosContainer),
+                        null)
+                .flatMap(collection -> {
+                    return clientWrapper.getPartitionKeyRangeCache().tryGetPartitionKeyRangeByIdAsync(
+                            null,
+                            collection.getResourceId(),
+                            partitionKeyRangeId,
+                            false,
+                            null);
+                })
+                .publishOn(this.scheduler);
     }
 
     @Override

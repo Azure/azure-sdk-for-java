@@ -25,7 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Implementation for {@link PartitionController}.
  */
-class PartitionControllerImpl implements PartitionController {
+public class PartitionControllerImpl implements PartitionController {
     private static final Logger logger = LoggerFactory.getLogger(PartitionControllerImpl.class);
     private final Map<String, WorkerTask> currentlyOwnedPartitions = new ConcurrentHashMap<>();
 
@@ -70,6 +70,7 @@ class PartitionControllerImpl implements PartitionController {
 
         return this.leaseManager.acquire(lease)
             .map(updatedLease -> {
+                logger.info("Lease with Id {} acquired", lease.getId());
                 WorkerTask checkTask = this.currentlyOwnedPartitions.get(lease.getLeaseToken());
                 if (checkTask == null) {
                     logger.info("Lease with token {}: acquired.", updatedLease.getLeaseToken());
@@ -169,9 +170,17 @@ class PartitionControllerImpl implements PartitionController {
                     return partitionGoneHandler.handlePartitionGone()
                             .flatMap(l -> {
                                 l.setProperties(lease.getProperties());
+
+                                // There is small caveat here:
+                                // In the handling of merge for epkBased lease scenario, we are going to reuse the same lease.
+                                // But if we have ever reached here, then usually it means the processor task and renewer task
+                                // monitored by the partition supervisor have been cancelled.
+                                // addOrUpdateLease(l) will not create new tasks in this case, which means there will be a short
+                                // period there is no processing for the lease epk. But eventually the epk processing will be picked up
+                                // again in the load balancing stage.
                                 return this.addOrUpdateLease(l);
                             })
-                            .then(this.tryRemoveGoneLease(lease, partitionGoneHandler.shouldRemoveCurrentLease()));
+                            .then(this.tryDeleteGoneLease(lease, partitionGoneHandler.shouldDeleteCurrentLease()));
                 })
                 .onErrorResume(throwable -> {
                     logger.warn("Lease with token {}: failed to handle partition gone", lease.getLeaseToken(), throwable);
@@ -179,7 +188,7 @@ class PartitionControllerImpl implements PartitionController {
                 });
     }
 
-    private Mono tryRemoveGoneLease(Lease lease, boolean shouldRemoveLease) {
+    private Mono tryDeleteGoneLease(Lease lease, boolean shouldRemoveLease) {
         if (shouldRemoveLease) {
             return this.leaseManager.delete(lease);
         }

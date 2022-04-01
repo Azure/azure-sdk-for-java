@@ -36,13 +36,13 @@ public class LeaseBuilder {
 
     private Map<String, String> properties;
     private String timestamp;
-    private String _ts;
+    private long _ts;
     private FeedRangeInternal feedRangeInternal;
 
     LeaseBuilder() {
         ZonedDateTime currentTime = ZonedDateTime.now(ZoneId.of("UTC"));
         this.timestamp = currentTime.toString();
-        this._ts = String.valueOf(currentTime.getSecond());
+        this._ts = currentTime.getSecond();
         this.properties = new HashMap<>();
     }
 
@@ -80,11 +80,13 @@ public class LeaseBuilder {
         return this;
     }
     public LeaseBuilder timestamp(String timestamp) {
+        checkArgument(StringUtils.isNotEmpty(timestamp), "Argument 'timestamp' cannot be null nor empty");
+
         this.timestamp = timestamp;
         return this;
     }
 
-    public LeaseBuilder ts(String ts) {
+    public LeaseBuilder ts(long ts) {
         this._ts = ts;
         return this;
     }
@@ -126,11 +128,11 @@ public class LeaseBuilder {
         this
             .id(document.getId())
             .etag(document.getETag())
-            .ts(ModelBridgeInternal.getStringFromJsonSerializable(document, Constants.Properties.LAST_MODIFIED))
+            .ts(Long.parseLong(ModelBridgeInternal.getStringFromJsonSerializable(document, Constants.Properties.LAST_MODIFIED)))
             .owner(ModelBridgeInternal.getStringFromJsonSerializable(document, LeaseConstants.PROPERTY_NAME_OWNER))
             .leaseToken(ModelBridgeInternal.getStringFromJsonSerializable(document, LeaseConstants.PROPERTY_NAME_LEASE_TOKEN))
             .continuationToken(ModelBridgeInternal.getStringFromJsonSerializable(document, LeaseConstants.PROPERTY_NAME_CONTINUATION_TOKEN))
-            .timestamp(ModelBridgeInternal.getStringFromJsonSerializable(document, LeaseConstants.PROPERTY_NAME_TIMESTAMP));
+                .timestamp(ModelBridgeInternal.getStringFromJsonSerializable(document, LeaseConstants.PROPERTY_NAME_TIMESTAMP));
 
         JsonNode feedRangeNode = (JsonNode) document.get(LeaseConstants.PROPERTY_FEED_RANGE);
         if (feedRangeNode != null) {
