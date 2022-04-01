@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.FirewallPolicyRuleCollectionGroupInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for ListFirewallPolicyRuleCollectionGroups API service call. */
 @Fluent
 public final class FirewallPolicyRuleCollectionGroupListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallPolicyRuleCollectionGroupListResult.class);
-
     /*
      * List of FirewallPolicyRuleCollectionGroups in a FirewallPolicy.
      */

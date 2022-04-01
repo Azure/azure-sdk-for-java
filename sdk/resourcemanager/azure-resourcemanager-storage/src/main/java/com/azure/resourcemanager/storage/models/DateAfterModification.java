@@ -5,18 +5,17 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Object to define the number of days after object last modification Or last access. Properties
- * daysAfterModificationGreaterThan and daysAfterLastAccessTimeGreaterThan are mutually exclusive.
+ * Object to define the base blob action conditions. Properties daysAfterModificationGreaterThan,
+ * daysAfterLastAccessTimeGreaterThan and daysAfterCreationGreaterThan are mutually exclusive. The
+ * daysAfterLastTierChangeGreaterThan property is only applicable for tierToArchive actions which requires
+ * daysAfterModificationGreaterThan to be set, also it cannot be used in conjunction with
+ * daysAfterLastAccessTimeGreaterThan or daysAfterCreationGreaterThan.
  */
 @Fluent
 public final class DateAfterModification {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DateAfterModification.class);
-
     /*
      * Value indicating the age in days after last modification
      */
@@ -29,6 +28,21 @@ public final class DateAfterModification {
      */
     @JsonProperty(value = "daysAfterLastAccessTimeGreaterThan")
     private Float daysAfterLastAccessTimeGreaterThan;
+
+    /*
+     * Value indicating the age in days after last blob tier change time. This
+     * property is only applicable for tierToArchive actions and requires
+     * daysAfterModificationGreaterThan to be set for baseBlobs based actions.
+     * The blob will be archived if both the conditions are satisfied.
+     */
+    @JsonProperty(value = "daysAfterLastTierChangeGreaterThan")
+    private Float daysAfterLastTierChangeGreaterThan;
+
+    /*
+     * Value indicating the age in days after blob creation.
+     */
+    @JsonProperty(value = "daysAfterCreationGreaterThan")
+    private Float daysAfterCreationGreaterThan;
 
     /**
      * Get the daysAfterModificationGreaterThan property: Value indicating the age in days after last modification.
@@ -69,6 +83,50 @@ public final class DateAfterModification {
      */
     public DateAfterModification withDaysAfterLastAccessTimeGreaterThan(Float daysAfterLastAccessTimeGreaterThan) {
         this.daysAfterLastAccessTimeGreaterThan = daysAfterLastAccessTimeGreaterThan;
+        return this;
+    }
+
+    /**
+     * Get the daysAfterLastTierChangeGreaterThan property: Value indicating the age in days after last blob tier change
+     * time. This property is only applicable for tierToArchive actions and requires daysAfterModificationGreaterThan to
+     * be set for baseBlobs based actions. The blob will be archived if both the conditions are satisfied.
+     *
+     * @return the daysAfterLastTierChangeGreaterThan value.
+     */
+    public Float daysAfterLastTierChangeGreaterThan() {
+        return this.daysAfterLastTierChangeGreaterThan;
+    }
+
+    /**
+     * Set the daysAfterLastTierChangeGreaterThan property: Value indicating the age in days after last blob tier change
+     * time. This property is only applicable for tierToArchive actions and requires daysAfterModificationGreaterThan to
+     * be set for baseBlobs based actions. The blob will be archived if both the conditions are satisfied.
+     *
+     * @param daysAfterLastTierChangeGreaterThan the daysAfterLastTierChangeGreaterThan value to set.
+     * @return the DateAfterModification object itself.
+     */
+    public DateAfterModification withDaysAfterLastTierChangeGreaterThan(Float daysAfterLastTierChangeGreaterThan) {
+        this.daysAfterLastTierChangeGreaterThan = daysAfterLastTierChangeGreaterThan;
+        return this;
+    }
+
+    /**
+     * Get the daysAfterCreationGreaterThan property: Value indicating the age in days after blob creation.
+     *
+     * @return the daysAfterCreationGreaterThan value.
+     */
+    public Float daysAfterCreationGreaterThan() {
+        return this.daysAfterCreationGreaterThan;
+    }
+
+    /**
+     * Set the daysAfterCreationGreaterThan property: Value indicating the age in days after blob creation.
+     *
+     * @param daysAfterCreationGreaterThan the daysAfterCreationGreaterThan value to set.
+     * @return the DateAfterModification object itself.
+     */
+    public DateAfterModification withDaysAfterCreationGreaterThan(Float daysAfterCreationGreaterThan) {
+        this.daysAfterCreationGreaterThan = daysAfterCreationGreaterThan;
         return this;
     }
 

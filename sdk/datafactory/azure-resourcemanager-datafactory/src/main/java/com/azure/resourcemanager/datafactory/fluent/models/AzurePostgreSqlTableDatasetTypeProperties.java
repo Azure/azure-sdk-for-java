@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure PostgreSQL dataset properties. */
 @Fluent
 public final class AzurePostgreSqlTableDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzurePostgreSqlTableDatasetTypeProperties.class);
-
     /*
      * The table name of the Azure PostgreSQL database which includes both
      * schema and table. Type: string (or Expression with resultType string).

@@ -5,21 +5,17 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The configuration for container-enabled pools. */
 @Fluent
 public final class ContainerConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerConfiguration.class);
-
     /*
      * The container technology to be used.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "DockerCompatible";
 
     /*
      * The collection of container image names. This is the full image

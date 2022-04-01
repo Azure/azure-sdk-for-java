@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.DatasetCompression;
 import com.azure.resourcemanager.datafactory.models.DatasetStorageFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure Data Lake Storage Gen2 dataset properties. */
 @Fluent
 public final class AzureBlobFSDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBlobFSDatasetTypeProperties.class);
-
     /*
      * The path of the Azure Data Lake Storage Gen2 storage. Type: string (or
      * Expression with resultType string).

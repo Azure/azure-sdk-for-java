@@ -6,15 +6,12 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Api input base class for LogAnalytics Api. */
 @Fluent
 public class LogAnalyticsInputBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogAnalyticsInputBase.class);
-
     /*
      * SAS Uri of the logging blob container to which LogAnalytics Api writes
      * output logs to.
@@ -233,20 +230,22 @@ public class LogAnalyticsInputBase {
      */
     public void validate() {
         if (blobContainerSasUri() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property blobContainerSasUri in model LogAnalyticsInputBase"));
         }
         if (fromTime() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property fromTime in model LogAnalyticsInputBase"));
         }
         if (toTime() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property toTime in model LogAnalyticsInputBase"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LogAnalyticsInputBase.class);
 }

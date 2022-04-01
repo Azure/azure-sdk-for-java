@@ -6,7 +6,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-identity</artifactId>
-  <version>1.5.0-beta.2</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
+  <version>1.5.0-beta.3</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
 
   <name>Microsoft Azure client library for Identity</name>
   <description>This module contains client library for Microsoft Azure Identity.</description>
@@ -31,12 +31,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.25.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.26.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.11.7</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.11.8</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
@@ -91,6 +91,12 @@
       <groupId>net.minidev</groupId>
       <artifactId>json-smart</artifactId>
       <version>2.4.7</version> <!-- {x-version-update;net.minidev:json-smart;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest</artifactId>
+      <version>2.2</version> <!-- {x-version-update;org.hamcrest:hamcrest;external_dependency} -->
+      <scope>test</scope>
     </dependency>
   </dependencies>
 

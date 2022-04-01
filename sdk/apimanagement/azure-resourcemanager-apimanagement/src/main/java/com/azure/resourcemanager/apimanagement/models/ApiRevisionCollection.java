@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.models.ApiRevisionContractInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Paged Api Revision list representation. */
+/** Paged API Revision list representation. */
 @Fluent
 public final class ApiRevisionCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiRevisionCollection.class);
-
     /*
      * Page values.
      */

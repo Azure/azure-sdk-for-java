@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.models.EntityInner;
 import com.azure.resourcemanager.securityinsights.fluent.models.SecurityGroupEntityProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -20,8 +18,6 @@ import java.util.UUID;
 @JsonTypeName("SecurityGroup")
 @Fluent
 public final class SecurityGroupEntity extends EntityInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityGroupEntity.class);
-
     /*
      * SecurityGroup entity properties
      */

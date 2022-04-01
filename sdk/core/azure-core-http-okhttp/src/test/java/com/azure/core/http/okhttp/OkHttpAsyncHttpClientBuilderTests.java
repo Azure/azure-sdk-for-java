@@ -49,6 +49,8 @@ public class OkHttpAsyncHttpClientBuilderTests {
     private static final String COOKIE_VALIDATOR_PATH = "/cookieValidator";
     private static final String DEFAULT_PATH = "/default";
     private static final String DISPATCHER_PATH = "/dispatcher";
+    private static final String REDIRECT_PATH = "/redirect";
+    private static final String LOCATION_PATH = "/location";
 
     private static final String JAVA_SYSTEM_PROXY_PREREQUISITE = "java.net.useSystemProxies";
     private static final String JAVA_NON_PROXY_HOSTS = "http.nonProxyHosts";
@@ -63,6 +65,8 @@ public class OkHttpAsyncHttpClientBuilderTests {
     private static String cookieValidatorUrl;
     private static String defaultUrl;
     private static String dispatcherUrl;
+    private static String locationUrl;
+    private static String redirectUrl;
 
     @BeforeAll
     public static void setupWireMock() {
@@ -84,6 +88,12 @@ public class OkHttpAsyncHttpClientBuilderTests {
         cookieValidatorUrl = "http://localhost:" + server.port() + COOKIE_VALIDATOR_PATH;
         defaultUrl = "http://localhost:" + server.port() + DEFAULT_PATH;
         dispatcherUrl = "http://localhost:" + server.port() + DISPATCHER_PATH;
+        redirectUrl = "http://localhost:" + server.port() + REDIRECT_PATH;
+        locationUrl = "http://localhost:" + server.port() + LOCATION_PATH;
+
+        // Mocked endpoint to test the redirect behavior.
+        server.stubFor(WireMock.get(REDIRECT_PATH).willReturn(WireMock.aResponse().withStatus(307).withHeader("Location", locationUrl)));
+        server.stubFor(WireMock.get(LOCATION_PATH).willReturn(WireMock.aResponse().withStatus(200)));
     }
 
     @AfterAll
@@ -192,6 +202,38 @@ public class OkHttpAsyncHttpClientBuilderTests {
 
         StepVerifier.create(okClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+
+    @Test
+    public void buildWithFollowRedirectSetToTrue() {
+        HttpClient okClient = new OkHttpAsyncHttpClientBuilder()
+            .followRedirects(true)
+            .build();
+
+        StepVerifier.create(okClient.send(new HttpRequest(HttpMethod.GET, redirectUrl)))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void buildWithFollowRedirectSetToFalse() {
+        HttpClient okClient = new OkHttpAsyncHttpClientBuilder()
+            .followRedirects(false)
+            .build();
+
+        StepVerifier.create(okClient.send(new HttpRequest(HttpMethod.GET, redirectUrl)))
+            .assertNext(response -> assertEquals(307, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void buildWithFollowRedirectDefault() {
+        HttpClient okClient = new OkHttpAsyncHttpClientBuilder().build();
+
+        StepVerifier.create(okClient.send(new HttpRequest(HttpMethod.GET, redirectUrl)))
+            .assertNext(response -> assertEquals(307, response.getStatusCode()))
             .verifyComplete();
     }
 

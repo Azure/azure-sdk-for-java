@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.AttachedDataNetworkInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for attached data network API service call. */
 @Fluent
 public final class AttachedDataNetworkListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AttachedDataNetworkListResult.class);
-
     /*
      * A list of data networks in a resource group.
      */

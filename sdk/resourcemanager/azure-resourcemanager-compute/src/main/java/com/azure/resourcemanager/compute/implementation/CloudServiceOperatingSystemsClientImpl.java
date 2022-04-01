@@ -24,7 +24,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.CloudServiceOperatingSystemsClient;
 import com.azure.resourcemanager.compute.fluent.models.OSFamilyInner;
 import com.azure.resourcemanager.compute.fluent.models.OSVersionInner;
@@ -35,8 +34,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in CloudServiceOperatingSystemsClient. */
 public final class CloudServiceOperatingSystemsClientImpl implements CloudServiceOperatingSystemsClient {
-    private final ClientLogger logger = new ClientLogger(CloudServiceOperatingSystemsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final CloudServiceOperatingSystemsService service;
 

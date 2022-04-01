@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.models.OperationUpdateContractProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Api Operation Update Contract details. */
+/** API Operation Update Contract details. */
 @Fluent
 public final class OperationUpdateContract {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationUpdateContract.class);
-
     /*
      * Properties of the API Operation entity that can be updated.
      */

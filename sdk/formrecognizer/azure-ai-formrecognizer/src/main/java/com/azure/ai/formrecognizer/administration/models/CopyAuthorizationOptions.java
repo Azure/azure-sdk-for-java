@@ -14,6 +14,7 @@ import java.util.Map;
 public final class CopyAuthorizationOptions {
     private String description;
     private Map<String, String> tags;
+    private String modelId;
 
     /**
      * Get the model description.
@@ -52,6 +53,26 @@ public final class CopyAuthorizationOptions {
      */
     public CopyAuthorizationOptions setTags(Map<String, String> tags) {
         this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the unique model identifier for the model.
+     *
+     * @return the modelId
+     */
+    public String getModelId() {
+        return modelId;
+    }
+
+    /**
+     * Set the unique model identifier for the model. If not specified, a model ID will be created for you.
+     *
+     * @param modelId a unique model identifier
+     * @return the CopyAuthorizationOptions object itself.
+     */
+    public CopyAuthorizationOptions setModelId(String modelId) {
+        this.modelId = modelId;
         return this;
     }
 }

@@ -7,6 +7,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.AuthenticationRecord;
 import com.azure.identity.TokenCachePersistenceOptions;
@@ -23,6 +24,7 @@ import java.util.function.Function;
  * Options to configure the IdentityClient.
  */
 public final class IdentityClientOptions {
+    private static final ClientLogger LOGGER = new ClientLogger(IdentityClientOptions.class);
     private static final int MAX_RETRY_DEFAULT_LIMIT = 3;
     public static final String AZURE_IDENTITY_DISABLE_MULTI_TENANT_AUTH = "AZURE_IDENTITY_DISABLE_MULTITENANTAUTH";
     public static final String AZURE_POD_IDENTITY_AUTHORITY_HOST = "AZURE_POD_IDENTITY_AUTHORITY_HOST";
@@ -46,19 +48,18 @@ public final class IdentityClientOptions {
     private UserAssertion userAssertion;
     private boolean multiTenantAuthDisabled;
     private Configuration configuration;
-    private IdentityLogOptions identityLogOptions;
-    private boolean validateAuthority;
+    private IdentityLogOptionsImpl identityLogOptionsImpl;
+    private boolean accountIdentifierLogging;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
      */
     public IdentityClientOptions() {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
-        loadFromConfiugration(configuration);
-        identityLogOptions = new IdentityLogOptions();
+        loadFromConfiguration(configuration);
+        identityLogOptionsImpl = new IdentityLogOptionsImpl();
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
         retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
-        validateAuthority = true;
     }
 
     /**
@@ -82,17 +83,6 @@ public final class IdentityClientOptions {
      * Disables authority validation when required for Azure Active Directory token endpoint.
      * @return IdentityClientOptions
      */
-    public IdentityClientOptions disableAuthorityValidation() {
-        validateAuthority = false;
-        return this;
-    }
-
-    /**
-     * @return The authority validation policy for Azure Active Directory token endpoint.
-     */
-    public boolean getAuthorityValidation() { 
-        return validateAuthority;
-    }
 
     /**
      * @return the AKS Pod Authority endpoint to acquire tokens.
@@ -404,7 +394,7 @@ public final class IdentityClientOptions {
      */
     public IdentityClientOptions setConfiguration(Configuration configuration) {
         this.configuration = configuration;
-        loadFromConfiugration(configuration);
+        loadFromConfiguration(configuration);
         return this;
     }
 
@@ -421,33 +411,30 @@ public final class IdentityClientOptions {
      * Get the configured Identity Log options.
      * @return the identity log options.
      */
-    public IdentityLogOptions getIdentityLogOptions() {
-        return identityLogOptions;
+    public IdentityLogOptionsImpl getIdentityLogOptionsImpl() {
+        return identityLogOptionsImpl;
     }
 
     /**
      * Set the Identity Log options.
      * @return the identity log options.
      */
-    public IdentityClientOptions setIdentityLogOptions(IdentityLogOptions identityLogOptions) {
-        this.identityLogOptions = identityLogOptions;
+    public IdentityClientOptions setIdentityLogOptionsImpl(IdentityLogOptionsImpl identityLogOptionsImpl) {
+        this.identityLogOptionsImpl = identityLogOptionsImpl;
         return this;
     }
 
     /**
      * Loads the details from the specified Configuration Store.
-     *
-     * @return the updated identity client options
      */
-    private IdentityClientOptions loadFromConfiugration(Configuration configuration) {
+    private void loadFromConfiguration(Configuration configuration) {
         authorityHost = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST,
             AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
         imdsAuthorityHost = configuration.get(AZURE_POD_IDENTITY_AUTHORITY_HOST,
             IdentityConstants.DEFAULT_IMDS_ENDPOINT);
-        ValidationUtil.validateAuthHost(getClass().getSimpleName(), authorityHost);
+        ValidationUtil.validateAuthHost(authorityHost, LOGGER);
         cp1Disabled = configuration.get(Configuration.PROPERTY_AZURE_IDENTITY_DISABLE_CP1, false);
         multiTenantAuthDisabled = configuration
             .get(AZURE_IDENTITY_DISABLE_MULTI_TENANT_AUTH, false);
-        return  this;
     }
 }

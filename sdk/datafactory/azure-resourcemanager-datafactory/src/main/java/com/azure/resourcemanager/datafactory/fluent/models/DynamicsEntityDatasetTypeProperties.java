@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Dynamics entity dataset properties. */
 @Fluent
 public final class DynamicsEntityDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DynamicsEntityDatasetTypeProperties.class);
-
     /*
      * The logical name of the entity. Type: string (or Expression with
      * resultType string).

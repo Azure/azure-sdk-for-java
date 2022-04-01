@@ -6,14 +6,11 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The encryption settings on the storage account. */
 @Fluent
 public final class Encryption {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Encryption.class);
-
     /*
      * List of services which support encryption.
      */
@@ -160,7 +157,7 @@ public final class Encryption {
             services().validate();
         }
         if (keySource() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property keySource in model Encryption"));
         }
@@ -171,4 +168,6 @@ public final class Encryption {
             encryptionIdentity().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Encryption.class);
 }

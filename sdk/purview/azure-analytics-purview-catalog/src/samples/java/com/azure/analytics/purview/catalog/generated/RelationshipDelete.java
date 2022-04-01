@@ -4,20 +4,23 @@
 
 package com.azure.analytics.purview.catalog.generated;
 
-import com.azure.analytics.purview.catalog.PurviewCatalogClientBuilder;
 import com.azure.analytics.purview.catalog.RelationshipClient;
+import com.azure.analytics.purview.catalog.RelationshipClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class RelationshipDelete {
     public static void main(String[] args) {
-        RelationshipClient client =
-                new PurviewCatalogClientBuilder()
+        // BEGIN: com.azure.analytics.purview.catalog.generated.relationshipdelete.relationshipdelete
+        RelationshipClient relationshipClient =
+                new RelationshipClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
-                        .buildRelationshipClient();
+                        .buildClient();
         RequestOptions requestOptions = new RequestOptions();
-        Response<Void> response = client.deleteWithResponse("5cf8a9e5-c9fd-abe0-2e8c-d40024263dcb", requestOptions);
+        Response<Void> response =
+                relationshipClient.deleteWithResponse("5cf8a9e5-c9fd-abe0-2e8c-d40024263dcb", requestOptions);
+        // END: com.azure.analytics.purview.catalog.generated.relationshipdelete.relationshipdelete
     }
 }

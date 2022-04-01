@@ -1,9 +1,9 @@
 # Release History
 
-## 1.8.0-beta.1 (Unreleased)
+## 1.9.0-beta.1 (Unreleased)
 
 ### Features Added
-- The `OkHttpAsyncClientProvider.createInstance()` now have option to share one single shared `HttpClient`. 
+- The `OkHttpAsyncClientProvider.createInstance()` now have option to share one single shared `HttpClient`.
   A new configuration environment variable `AZURE_ENABLE_HTTP_CLIENT_SHARING` has been added for backwards
   compatibility. Setting it to `true` before starting the process to use single shared `HttpClient`.
 
@@ -12,6 +12,40 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.8.0 (2022-04-01)
+
+### Features Added
+ - Added `followRedirects` property on the `OkHttpClientBuilder`.
+
+### Breaking Changes
+
+- Okhttp-backed `HttpClient` client will no longer follow redirects automatically. ([#27960](https://github.com/Azure/azure-sdk-for-java/pull/27960)).
+  <br>To get the older behavior please create an instance of `HttpClient` as follows
+
+    ```java
+    HttpClient client = new OkHttpAsyncHttpClientBuilder()
+        .followRedirects(true)
+        .build();
+    ```
+
+### Bugs Fixed
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.26.0` to `1.27.0`.
+
+## 1.7.10 (2022-03-04)
+
+### Other Changes
+
+- Updated all `ClientLogger`s to be static constants instead of instance variables. ([#27339](https://github.com/Azure/azure-sdk-for-java/pull/27339))
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.25.0` to `1.26.0`.
 
 ## 1.7.9 (2022-02-04)
 

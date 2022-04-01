@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.StaticSiteBuildProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** StaticSitesWorkflowPreviewRequest resource specific properties. */
 @Fluent
 public final class StaticSitesWorkflowPreviewRequestProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StaticSitesWorkflowPreviewRequestProperties.class);
-
     /*
      * URL for the repository of the static site.
      */

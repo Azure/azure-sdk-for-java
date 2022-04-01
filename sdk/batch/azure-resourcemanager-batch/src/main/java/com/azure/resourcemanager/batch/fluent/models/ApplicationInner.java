@@ -6,15 +6,11 @@ package com.azure.resourcemanager.batch.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Contains information about an application in a Batch account. */
 @Fluent
 public final class ApplicationInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationInner.class);
-
     /*
      * The properties associated with the Application.
      */

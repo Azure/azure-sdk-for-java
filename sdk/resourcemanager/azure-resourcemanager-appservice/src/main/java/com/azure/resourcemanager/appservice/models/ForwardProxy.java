@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The configuration settings of a forward proxy used to make the requests. */
 @Fluent
 public final class ForwardProxy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ForwardProxy.class);
-
     /*
      * The convention used to determine the url of the request made.
      */

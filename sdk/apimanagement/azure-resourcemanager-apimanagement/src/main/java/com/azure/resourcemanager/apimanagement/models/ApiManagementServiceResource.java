@@ -6,6 +6,7 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.ApiManagementServiceResourceInner;
 import java.time.OffsetDateTime;
@@ -55,6 +56,13 @@ public interface ApiManagementServiceResource {
      * @return the identity value.
      */
     ApiManagementServiceIdentity identity();
+
+    /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the location property: Resource location.
@@ -189,6 +197,24 @@ public interface ApiManagementServiceResource {
     List<String> privateIpAddresses();
 
     /**
+     * Gets the publicIpAddressId property: Public Standard SKU IP V4 based IP address to be associated with Virtual
+     * Network deployed service in the region. Supported only for Developer and Premium SKU being deployed in Virtual
+     * Network.
+     *
+     * @return the publicIpAddressId value.
+     */
+    String publicIpAddressId();
+
+    /**
+     * Gets the publicNetworkAccess property: Whether or not public endpoint access is allowed for this API Management
+     * service. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints
+     * are the exclusive access method. Default value is 'Enabled'.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    PublicNetworkAccess publicNetworkAccess();
+
+    /**
      * Gets the virtualNetworkConfiguration property: Virtual network configuration of the API Management service.
      *
      * @return the virtualNetworkConfiguration value.
@@ -280,6 +306,20 @@ public interface ApiManagementServiceResource {
      * @return the restore value.
      */
     Boolean restore();
+
+    /**
+     * Gets the privateEndpointConnections property: List of Private Endpoint Connections of this service.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections();
+
+    /**
+     * Gets the platformVersion property: Compute Platform Version running the service in this location.
+     *
+     * @return the platformVersion value.
+     */
+    PlatformVersion platformVersion();
 
     /**
      * Gets the region of the resource.
@@ -385,6 +425,8 @@ public interface ApiManagementServiceResource {
                 DefinitionStages.WithZones,
                 DefinitionStages.WithNotificationSenderEmail,
                 DefinitionStages.WithHostnameConfigurations,
+                DefinitionStages.WithPublicIpAddressId,
+                DefinitionStages.WithPublicNetworkAccess,
                 DefinitionStages.WithVirtualNetworkConfiguration,
                 DefinitionStages.WithAdditionalLocations,
                 DefinitionStages.WithCustomProperties,
@@ -393,7 +435,8 @@ public interface ApiManagementServiceResource {
                 DefinitionStages.WithDisableGateway,
                 DefinitionStages.WithVirtualNetworkType,
                 DefinitionStages.WithApiVersionConstraint,
-                DefinitionStages.WithRestore {
+                DefinitionStages.WithRestore,
+                DefinitionStages.WithPrivateEndpointConnections {
             /**
              * Executes the create request.
              *
@@ -460,6 +503,34 @@ public interface ApiManagementServiceResource {
              * @return the next definition stage.
              */
             WithCreate withHostnameConfigurations(List<HostnameConfiguration> hostnameConfigurations);
+        }
+        /** The stage of the ApiManagementServiceResource definition allowing to specify publicIpAddressId. */
+        interface WithPublicIpAddressId {
+            /**
+             * Specifies the publicIpAddressId property: Public Standard SKU IP V4 based IP address to be associated
+             * with Virtual Network deployed service in the region. Supported only for Developer and Premium SKU being
+             * deployed in Virtual Network..
+             *
+             * @param publicIpAddressId Public Standard SKU IP V4 based IP address to be associated with Virtual Network
+             *     deployed service in the region. Supported only for Developer and Premium SKU being deployed in
+             *     Virtual Network.
+             * @return the next definition stage.
+             */
+            WithCreate withPublicIpAddressId(String publicIpAddressId);
+        }
+        /** The stage of the ApiManagementServiceResource definition allowing to specify publicNetworkAccess. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Whether or not public endpoint access is allowed for this API
+             * Management service. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled',
+             * private endpoints are the exclusive access method. Default value is 'Enabled'.
+             *
+             * @param publicNetworkAccess Whether or not public endpoint access is allowed for this API Management
+             *     service. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private
+             *     endpoints are the exclusive access method. Default value is 'Enabled'.
+             * @return the next definition stage.
+             */
+            WithCreate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
         }
         /** The stage of the ApiManagementServiceResource definition allowing to specify virtualNetworkConfiguration. */
         interface WithVirtualNetworkConfiguration {
@@ -619,6 +690,17 @@ public interface ApiManagementServiceResource {
              */
             WithCreate withRestore(Boolean restore);
         }
+        /** The stage of the ApiManagementServiceResource definition allowing to specify privateEndpointConnections. */
+        interface WithPrivateEndpointConnections {
+            /**
+             * Specifies the privateEndpointConnections property: List of Private Endpoint Connections of this service..
+             *
+             * @param privateEndpointConnections List of Private Endpoint Connections of this service.
+             * @return the next definition stage.
+             */
+            WithCreate withPrivateEndpointConnections(
+                List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections);
+        }
     }
     /**
      * Begins update for the ApiManagementServiceResource resource.
@@ -632,10 +714,13 @@ public interface ApiManagementServiceResource {
         extends UpdateStages.WithTags,
             UpdateStages.WithSku,
             UpdateStages.WithIdentity,
+            UpdateStages.WithZones,
             UpdateStages.WithPublisherEmail,
             UpdateStages.WithPublisherName,
             UpdateStages.WithNotificationSenderEmail,
             UpdateStages.WithHostnameConfigurations,
+            UpdateStages.WithPublicIpAddressId,
+            UpdateStages.WithPublicNetworkAccess,
             UpdateStages.WithVirtualNetworkConfiguration,
             UpdateStages.WithAdditionalLocations,
             UpdateStages.WithCustomProperties,
@@ -644,7 +729,8 @@ public interface ApiManagementServiceResource {
             UpdateStages.WithDisableGateway,
             UpdateStages.WithVirtualNetworkType,
             UpdateStages.WithApiVersionConstraint,
-            UpdateStages.WithRestore {
+            UpdateStages.WithRestore,
+            UpdateStages.WithPrivateEndpointConnections {
         /**
          * Executes the update request.
          *
@@ -692,6 +778,17 @@ public interface ApiManagementServiceResource {
              */
             Update withIdentity(ApiManagementServiceIdentity identity);
         }
+        /** The stage of the ApiManagementServiceResource update allowing to specify zones. */
+        interface WithZones {
+            /**
+             * Specifies the zones property: A list of availability zones denoting where the resource needs to come
+             * from..
+             *
+             * @param zones A list of availability zones denoting where the resource needs to come from.
+             * @return the next definition stage.
+             */
+            Update withZones(List<String> zones);
+        }
         /** The stage of the ApiManagementServiceResource update allowing to specify publisherEmail. */
         interface WithPublisherEmail {
             /**
@@ -732,6 +829,34 @@ public interface ApiManagementServiceResource {
              * @return the next definition stage.
              */
             Update withHostnameConfigurations(List<HostnameConfiguration> hostnameConfigurations);
+        }
+        /** The stage of the ApiManagementServiceResource update allowing to specify publicIpAddressId. */
+        interface WithPublicIpAddressId {
+            /**
+             * Specifies the publicIpAddressId property: Public Standard SKU IP V4 based IP address to be associated
+             * with Virtual Network deployed service in the region. Supported only for Developer and Premium SKU being
+             * deployed in Virtual Network..
+             *
+             * @param publicIpAddressId Public Standard SKU IP V4 based IP address to be associated with Virtual Network
+             *     deployed service in the region. Supported only for Developer and Premium SKU being deployed in
+             *     Virtual Network.
+             * @return the next definition stage.
+             */
+            Update withPublicIpAddressId(String publicIpAddressId);
+        }
+        /** The stage of the ApiManagementServiceResource update allowing to specify publicNetworkAccess. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Whether or not public endpoint access is allowed for this API
+             * Management service. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled',
+             * private endpoints are the exclusive access method. Default value is 'Enabled'.
+             *
+             * @param publicNetworkAccess Whether or not public endpoint access is allowed for this API Management
+             *     service. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private
+             *     endpoints are the exclusive access method. Default value is 'Enabled'.
+             * @return the next definition stage.
+             */
+            Update withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
         }
         /** The stage of the ApiManagementServiceResource update allowing to specify virtualNetworkConfiguration. */
         interface WithVirtualNetworkConfiguration {
@@ -891,6 +1016,17 @@ public interface ApiManagementServiceResource {
              */
             Update withRestore(Boolean restore);
         }
+        /** The stage of the ApiManagementServiceResource update allowing to specify privateEndpointConnections. */
+        interface WithPrivateEndpointConnections {
+            /**
+             * Specifies the privateEndpointConnections property: List of Private Endpoint Connections of this service..
+             *
+             * @param privateEndpointConnections List of Private Endpoint Connections of this service.
+             * @return the next definition stage.
+             */
+            Update withPrivateEndpointConnections(
+                List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections);
+        }
     }
     /**
      * Refreshes the resource to sync with Azure.
@@ -948,7 +1084,8 @@ public interface ApiManagementServiceResource {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Single-Sign-On token for the API Management Service which is valid for 5 Minutes.
+     * @return the Single-Sign-On token for the API Management Service which is valid for 5 Minutes along with {@link
+     *     Response}.
      */
     Response<ApiManagementServiceGetSsoTokenResult> getSsoTokenWithResponse(Context context);
 

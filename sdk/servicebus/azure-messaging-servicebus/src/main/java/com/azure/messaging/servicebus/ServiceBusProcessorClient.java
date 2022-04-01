@@ -135,17 +135,24 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     private final AtomicReference<ServiceBusReceiverAsyncClient> asyncClient = new AtomicReference<>();
     private final AtomicBoolean isRunning = new AtomicBoolean();
     private final TracerProvider tracerProvider;
+    private final String queueName;
+    private final String topicName;
+    private final String subscriptionName;
     private ScheduledExecutorService scheduledExecutor;
 
     /**
      * Constructor to create a sessions-enabled processor.
      *
      * @param sessionReceiverBuilder The session processor builder to create new instances of async clients.
+     * @param queueName The name of the queue this processor is associated with.
+     * @param topicName The name of the topic this processor is associated with.
+     * @param subscriptionName The name of the subscription this processor is associated with.
      * @param processMessage The message processing callback.
      * @param processError The error handler.
      * @param processorOptions Options to configure this instance of the processor.
      */
     ServiceBusProcessorClient(ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder sessionReceiverBuilder,
+        String queueName, String topicName, String subscriptionName,
         Consumer<ServiceBusReceivedMessageContext> processMessage,
         Consumer<ServiceBusErrorContext> processError,
         ServiceBusProcessorClientOptions processorOptions) {
@@ -157,17 +164,24 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         this.asyncClient.set(sessionReceiverBuilder.buildAsyncClientForProcessor());
         this.receiverBuilder = null;
         this.tracerProvider = processorOptions.getTracerProvider();
+        this.queueName = queueName;
+        this.topicName = topicName;
+        this.subscriptionName = subscriptionName;
     }
 
     /**
      * Constructor to create a processor.
      *
      * @param receiverBuilder The processor builder to create new instances of async clients.
+     * @param queueName The name of the queue this processor is associated with.
+     * @param topicName The name of the topic this processor is associated with.
+     * @param subscriptionName The name of the subscription this processor is associated with.
      * @param processMessage The message processing callback.
      * @param processError The error handler.
      * @param processorOptions Options to configure this instance of the processor.
      */
     ServiceBusProcessorClient(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder,
+        String queueName, String topicName, String subscriptionName,
         Consumer<ServiceBusReceivedMessageContext> processMessage,
         Consumer<ServiceBusErrorContext> processError, ServiceBusProcessorClientOptions processorOptions) {
         this.receiverBuilder = Objects.requireNonNull(receiverBuilder, "'receiverBuilder' cannot be null");
@@ -177,6 +191,9 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         this.asyncClient.set(receiverBuilder.buildAsyncClient());
         this.sessionReceiverBuilder = null;
         this.tracerProvider = processorOptions.getTracerProvider();
+        this.queueName = queueName;
+        this.topicName = topicName;
+        this.subscriptionName = subscriptionName;
     }
 
     /**
@@ -252,6 +269,36 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      */
     public synchronized boolean isRunning() {
         return isRunning.get();
+    }
+
+    /**
+     * Returns the queue name associated with this instance of {@link ServiceBusProcessorClient}.
+     *
+     * @return the queue name associated with this instance of {@link ServiceBusProcessorClient} or {@code null} if
+     * the processor instance is for a topic and subscription.
+     */
+    public String getQueueName() {
+        return this.queueName;
+    }
+
+    /**
+     * Returns the topic name associated with this instance of {@link ServiceBusProcessorClient}.
+     *
+     * @return the topic name associated with this instance of {@link ServiceBusProcessorClient} or {@code null} if
+     * the processor instance is for a queue.
+     */
+    public String getTopicName() {
+        return this.topicName;
+    }
+
+    /**
+     * Returns the subscription name associated with this instance of {@link ServiceBusProcessorClient}.
+     *
+     * @return the subscription name associated with this instance of {@link ServiceBusProcessorClient} or {@code null}
+     * if the processor instance is for a queue.
+     */
+    public String getSubscriptionName() {
+        return this.subscriptionName;
     }
 
     private synchronized void receiveMessages() {

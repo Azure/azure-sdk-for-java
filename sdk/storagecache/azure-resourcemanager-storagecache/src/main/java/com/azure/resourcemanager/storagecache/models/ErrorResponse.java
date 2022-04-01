@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the format of Error response. */
 @Fluent
 public final class ErrorResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ErrorResponse.class);
-
     /*
      * Error code
      */

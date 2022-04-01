@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Log settings of script activity. */
 @Fluent
 public final class ScriptActivityTypePropertiesLogSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScriptActivityTypePropertiesLogSettings.class);
-
     /*
      * The destination of logs. Type: string.
      */
@@ -73,7 +70,7 @@ public final class ScriptActivityTypePropertiesLogSettings {
      */
     public void validate() {
         if (logDestination() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property logDestination in model ScriptActivityTypePropertiesLogSettings"));
@@ -82,4 +79,6 @@ public final class ScriptActivityTypePropertiesLogSettings {
             logLocationSettings().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ScriptActivityTypePropertiesLogSettings.class);
 }

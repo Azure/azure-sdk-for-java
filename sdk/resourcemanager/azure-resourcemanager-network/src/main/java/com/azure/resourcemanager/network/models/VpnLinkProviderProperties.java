@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** List of properties of a link provider. */
 @Fluent
 public final class VpnLinkProviderProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnLinkProviderProperties.class);
-
     /*
      * Name of the link provider.
      */

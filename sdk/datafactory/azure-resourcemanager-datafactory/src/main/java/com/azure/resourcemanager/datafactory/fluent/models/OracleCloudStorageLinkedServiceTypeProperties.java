@@ -5,17 +5,12 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Oracle Cloud Storage linked service properties. */
 @Fluent
 public final class OracleCloudStorageLinkedServiceTypeProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(OracleCloudStorageLinkedServiceTypeProperties.class);
-
     /*
      * The access key identifier of the Oracle Cloud Storage Identity and
      * Access Management (IAM) user. Type: string (or Expression with

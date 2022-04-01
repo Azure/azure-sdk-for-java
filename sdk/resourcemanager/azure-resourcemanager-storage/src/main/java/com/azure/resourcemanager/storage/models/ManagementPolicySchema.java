@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,8 +15,6 @@ import java.util.List;
  */
 @Fluent
 public final class ManagementPolicySchema {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementPolicySchema.class);
-
     /*
      * The Storage Account ManagementPolicies Rules. See more details in:
      * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
@@ -54,11 +51,13 @@ public final class ManagementPolicySchema {
      */
     public void validate() {
         if (rules() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property rules in model ManagementPolicySchema"));
         } else {
             rules().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagementPolicySchema.class);
 }

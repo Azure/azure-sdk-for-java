@@ -5,21 +5,17 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.ResourceSkuCapabilities;
 import com.azure.resourcemanager.compute.models.ResourceSkuCapacity;
 import com.azure.resourcemanager.compute.models.ResourceSkuCosts;
 import com.azure.resourcemanager.compute.models.ResourceSkuLocationInfo;
 import com.azure.resourcemanager.compute.models.ResourceSkuRestrictions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes an available Compute SKU. */
 @Immutable
 public final class ResourceSkuInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuInner.class);
-
     /*
      * The type of resource the SKU applies to.
      */

@@ -86,8 +86,6 @@ public final class CosmosPatchOperations {
      * @return same instance of {@link CosmosPatchOperations}
      */
     public <T> CosmosPatchOperations add(String path, T value) {
-
-        checkNotNull(value, "expected non-null value");
         checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);
 
         this.patchOperations.add(
@@ -182,7 +180,6 @@ public final class CosmosPatchOperations {
      */
     public <T> CosmosPatchOperations set(String path, T value) {
 
-        checkNotNull(value, "expected non-null value");
         checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);
 
         this.patchOperations.add(

@@ -3,6 +3,8 @@
 package com.azure.cosmos.encryption;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.cryptography.KeyEncryptionKey;
+import com.azure.core.cryptography.KeyEncryptionKeyResolver;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
@@ -17,6 +19,8 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
+import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
+import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.InternalObjectNode;
@@ -48,9 +52,6 @@ import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.util.CosmosPagedFlux;
-import com.azure.cosmos.encryption.keyprovider.EncryptionKeyWrapProvider;
-import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
-import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -71,9 +72,7 @@ import reactor.core.scheduler.Schedulers;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -230,12 +229,11 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
             SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES = createCollection(SHARED_DATABASE, getCollectionDefinitionMultiPartitionWithCompositeAndSpatialIndexes(), options);
             SHARED_SINGLE_PARTITION_COLLECTION = createCollection(SHARED_DATABASE, getCollectionDefinitionWithRangeRangeIndex(), options, 6000);
 
-            TestEncryptionKeyStoreProvider encryptionKeyStoreProvider = new TestEncryptionKeyStoreProvider();
-            CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = new CosmosEncryptionClientBuilder().cosmosAsyncClient(houseKeepingClient).encryptionKeyWrapProvider(
-                encryptionKeyStoreProvider).buildAsyncClient();
+            CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = new CosmosEncryptionClientBuilder().cosmosAsyncClient(houseKeepingClient).keyEncryptionKeyResolver(
+                new TestKeyEncryptionKeyResolver()).keyEncryptionKeyResolverName("TEST_KEY_RESOLVER").buildAsyncClient();
 
-            EncryptionKeyWrapMetadata metadata1 = new EncryptionKeyWrapMetadata(encryptionKeyStoreProvider.getProviderName(), "key1", "tempmetadata1");
-            EncryptionKeyWrapMetadata metadata2 = new EncryptionKeyWrapMetadata(encryptionKeyStoreProvider.getProviderName(), "key2", "tempmetadata2");
+            EncryptionKeyWrapMetadata metadata1 = new EncryptionKeyWrapMetadata(cosmosEncryptionAsyncClient.getKeyEncryptionKeyResolverName(), "key1", "tempmetadata1", "RSA-OAEP");
+            EncryptionKeyWrapMetadata metadata2 = new EncryptionKeyWrapMetadata(cosmosEncryptionAsyncClient.getKeyEncryptionKeyResolverName(), "key2", "tempmetadata2", "RSA-OAEP");
             SHARED_ENCRYPTION_DATABASE = cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(SHARED_DATABASE.getId());
             SHARED_ENCRYPTION_DATABASE.createClientEncryptionKey("key1",
                 CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), metadata1).block();
@@ -523,8 +521,9 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
 
         return Flux.merge(Flux.fromIterable(result), concurrencyLevel);
     }
+
     public <T> List<T> bulkInsertBlocking(CosmosAsyncContainer cosmosContainer,
-                                                         List<T> documentDefinitionList) {
+                                          List<T> documentDefinitionList) {
         return bulkInsert(cosmosContainer, documentDefinitionList, DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL)
             .publishOn(Schedulers.parallel())
             .map(itemResponse -> itemResponse.getItem())
@@ -725,7 +724,7 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
                 .collectList()
                 .block();
 
-            for(CosmosContainerProperties collection: collections) {
+            for (CosmosContainerProperties collection : collections) {
                 database.getContainer(collection.getId()).delete().block();
             }
         }
@@ -931,7 +930,7 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
         try {
             List<String> protocolStrings = objectMapper.readValue(protocols, new TypeReference<List<String>>() {
             });
-            for(String protocol : protocolStrings) {
+            for (String protocol : protocolStrings) {
                 protocolList.add(Protocol.valueOf(CaseFormat.UPPER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, protocol)));
             }
             return protocolList;
@@ -1039,8 +1038,9 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
         }
         List<ConsistencyLevel> consistencyLevels = new ArrayList<>();
         try {
-            List<String> consistencyStrings = objectMapper.readValue(consistencies, new TypeReference<List<String>>() {});
-            for(String consistency : consistencyStrings) {
+            List<String> consistencyStrings = objectMapper.readValue(consistencies, new TypeReference<List<String>>() {
+            });
+            for (String consistency : consistencyStrings) {
                 consistencyLevels.add(ConsistencyLevel.valueOf(CaseFormat.UPPER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, consistency)));
             }
             return consistencyLevels;
@@ -1105,23 +1105,23 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
         options.setMaxRetryWaitTime(Duration.ofSeconds(SUITE_SETUP_TIMEOUT));
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
         return new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
-                                        .credential(credential)
-                                        .gatewayMode(gatewayConnectionConfig)
-                                        .throttlingRetryOptions(options)
-                                        .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
-                                        .consistencyLevel(ConsistencyLevel.SESSION);
+            .credential(credential)
+            .gatewayMode(gatewayConnectionConfig)
+            .throttlingRetryOptions(options)
+            .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
+            .consistencyLevel(ConsistencyLevel.SESSION);
     }
 
     static protected CosmosClientBuilder createGatewayRxDocumentClient(ConsistencyLevel consistencyLevel, boolean multiMasterEnabled,
                                                                        List<String> preferredRegions, boolean contentResponseOnWriteEnabled) {
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
         return new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
-                                        .credential(credential)
-                                        .gatewayMode(gatewayConnectionConfig)
-                                        .multipleWriteRegionsEnabled(multiMasterEnabled)
-                                        .preferredRegions(preferredRegions)
-                                        .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
-                                        .consistencyLevel(consistencyLevel);
+            .credential(credential)
+            .gatewayMode(gatewayConnectionConfig)
+            .multipleWriteRegionsEnabled(multiMasterEnabled)
+            .preferredRegions(preferredRegions)
+            .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
+            .consistencyLevel(consistencyLevel);
     }
 
     static protected CosmosClientBuilder createGatewayRxDocumentClient() {
@@ -1134,10 +1134,10 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
                                                                       List<String> preferredRegions,
                                                                       boolean contentResponseOnWriteEnabled) {
         CosmosClientBuilder builder = new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
-                                                               .credential(credential)
-                                                               .directMode(DirectConnectionConfig.getDefaultConfig())
-                                                               .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
-                                                               .consistencyLevel(consistencyLevel);
+            .credential(credential)
+            .directMode(DirectConnectionConfig.getDefaultConfig())
+            .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
+            .consistencyLevel(consistencyLevel);
         if (preferredRegions != null) {
             builder.preferredRegions(preferredRegions);
         }
@@ -1147,13 +1147,13 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
         }
 
         Configs configs = spy(new Configs());
-        doAnswer((Answer<Protocol>)invocation -> protocol).when(configs).getProtocol();
+        doAnswer((Answer<Protocol>) invocation -> protocol).when(configs).getProtocol();
 
         return injectConfigs(builder, configs);
     }
 
     protected int expectedNumberOfPages(int totalExpectedResult, int maxPageSize) {
-        return Math.max((totalExpectedResult + maxPageSize - 1 ) / maxPageSize, 1);
+        return Math.max((totalExpectedResult + maxPageSize - 1) / maxPageSize, 1);
     }
 
     @DataProvider(name = "queryMetricsArgProvider")
@@ -1169,240 +1169,249 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
         return CosmosBridgeInternal.cloneCosmosClientBuilder(builder);
     }
 
-    public static class TestEncryptionKeyStoreProvider extends EncryptionKeyWrapProvider {
-        Map<String, Integer> keyInfo = new HashMap<>();
-        String providerName = "TEST_KEY_STORE_PROVIDER";
+    public static class TestKeyEncryptionKey implements KeyEncryptionKey {
+        String keyId;
+        int moveBy;
 
-        @Override
-        public String getProviderName() {
-            return providerName;
+        public TestKeyEncryptionKey(String keyId, int moveBy) {
+            this.keyId = keyId;
+            this.moveBy = moveBy;
         }
 
         @Override
-        public byte[] unwrapKey(String encryptionKeyId, String keyEncryptionKeyAlgorithm, byte[] encryptedKey) {
-            int moveBy = this.keyInfo.get(encryptionKeyId);
-            byte[] plainkey = new byte[encryptedKey.length];
-            for (int i = 0; i < encryptedKey.length; i++) {
-                plainkey[i] = (byte) (encryptedKey[i] - moveBy);
-            }
-            return plainkey;
+        public String getKeyId() {
+            return keyId;
         }
 
         @Override
-        public byte[] wrapKey(String encryptionKeyId, String keyEncryptionKeyAlgorithm, byte[] key) {
-            int moveBy = this.keyInfo.get(encryptionKeyId);
-            byte[] encryptedBytes = new byte[key.length];
-            for (int i = 0; i < key.length; i++) {
-                encryptedBytes[i] = (byte) (key[i] + moveBy);
+        public byte[] wrapKey(String s, byte[] bytes) {
+            byte[] encryptedBytes = new byte[bytes.length];
+            for (int i = 0; i < bytes.length; i++) {
+                encryptedBytes[i] = (byte) (bytes[i] + moveBy);
             }
             return encryptedBytes;
         }
 
-        public TestEncryptionKeyStoreProvider() {
-            keyInfo.put("tempmetadata1", 1);
-            keyInfo.put("tempmetadata2", 2);
+        @Override
+        public byte[] unwrapKey(String s, byte[] bytes) {
+            byte[] plainkey = new byte[bytes.length];
+            for (int i = 0; i < bytes.length; i++) {
+                plainkey[i] = (byte) (bytes[i] - moveBy);
+            }
+            return plainkey;
         }
     }
 
-    protected static List<ClientEncryptionIncludedPath> getPaths() {
-        ClientEncryptionIncludedPath includedPath1 = new ClientEncryptionIncludedPath();
-        includedPath1.setClientEncryptionKeyId("key1");
-        includedPath1.setPath("/sensitiveString");
-        includedPath1.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
-        includedPath1.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
-
-        ClientEncryptionIncludedPath includedPath2 = new ClientEncryptionIncludedPath();
-        includedPath2.setClientEncryptionKeyId("key2");
-        includedPath2.setPath("/nonValidPath");
-        includedPath2.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
-        includedPath2.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
-
-        ClientEncryptionIncludedPath includedPath3 = new ClientEncryptionIncludedPath();
-        includedPath3.setClientEncryptionKeyId("key1");
-        includedPath3.setPath("/sensitiveInt");
-        includedPath3.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
-        includedPath3.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
-
-        ClientEncryptionIncludedPath includedPath4 = new ClientEncryptionIncludedPath();
-        includedPath4.setClientEncryptionKeyId("key2");
-        includedPath4.setPath("/sensitiveFloat");
-        includedPath4.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
-        includedPath4.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
-
-        ClientEncryptionIncludedPath includedPath5 = new ClientEncryptionIncludedPath();
-        includedPath5.setClientEncryptionKeyId("key1");
-        includedPath5.setPath("/sensitiveLong");
-        includedPath5.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
-        includedPath5.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
-
-        ClientEncryptionIncludedPath includedPath6 = new ClientEncryptionIncludedPath();
-        includedPath6.setClientEncryptionKeyId("key2");
-        includedPath6.setPath("/sensitiveDouble");
-        includedPath6.setEncryptionType(CosmosEncryptionType.RANDOMIZED.getName());
-        includedPath6.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
-
-        ClientEncryptionIncludedPath includedPath7 = new ClientEncryptionIncludedPath();
-        includedPath7.setClientEncryptionKeyId("key1");
-        includedPath7.setPath("/sensitiveBoolean");
-        includedPath7.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
-        includedPath7.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
-
-        ClientEncryptionIncludedPath includedPath8 = new ClientEncryptionIncludedPath();
-        includedPath8.setClientEncryptionKeyId("key1");
-        includedPath8.setPath("/sensitiveNestedPojo");
-        includedPath8.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
-        includedPath8.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
-
-        ClientEncryptionIncludedPath includedPath9 = new ClientEncryptionIncludedPath();
-        includedPath9.setClientEncryptionKeyId("key1");
-        includedPath9.setPath("/sensitiveIntArray");
-        includedPath9.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
-        includedPath9.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
-
-        ClientEncryptionIncludedPath includedPath10 = new ClientEncryptionIncludedPath();
-        includedPath10.setClientEncryptionKeyId("key2");
-        includedPath10.setPath("/sensitiveString3DArray");
-        includedPath10.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
-        includedPath10.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
-
-        ClientEncryptionIncludedPath includedPath11 = new ClientEncryptionIncludedPath();
-        includedPath11.setClientEncryptionKeyId("key1");
-        includedPath11.setPath("/sensitiveStringArray");
-        includedPath11.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
-        includedPath11.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
-
-        ClientEncryptionIncludedPath includedPath12 = new ClientEncryptionIncludedPath();
-        includedPath12.setClientEncryptionKeyId("key1");
-        includedPath12.setPath("/sensitiveChildPojoList");
-        includedPath12.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
-        includedPath12.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
-
-        ClientEncryptionIncludedPath includedPath13 = new ClientEncryptionIncludedPath();
-        includedPath13.setClientEncryptionKeyId("key1");
-        includedPath13.setPath("/sensitiveChildPojo2DArray");
-        includedPath13.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
-        includedPath13.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
-
-        List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
-        paths.add(includedPath1);
-        paths.add(includedPath2);
-        paths.add(includedPath3);
-        paths.add(includedPath4);
-        paths.add(includedPath5);
-        paths.add(includedPath6);
-        paths.add(includedPath7);
-        paths.add(includedPath8);
-        paths.add(includedPath9);
-        paths.add(includedPath10);
-        paths.add(includedPath11);
-        paths.add(includedPath12);
-        paths.add(includedPath13);
-
-        return paths;
+    public static class TestKeyEncryptionKeyResolver implements KeyEncryptionKeyResolver {
+        @Override
+        public KeyEncryptionKey buildKeyEncryptionKey(String keyId) {
+            if (keyId.equals("tempmetadata1")) {
+                return new TestKeyEncryptionKey(keyId, 1);
+            } else {
+                return new TestKeyEncryptionKey(keyId, 2);
+            }
+        }
     }
 
-    protected static EncryptionPojo getItem(String documentId) {
-        EncryptionPojo pojo = new EncryptionPojo();
-        pojo.setId(documentId);
-        pojo.setMypk(documentId);
-        pojo.setNonSensitive(UUID.randomUUID().toString());
-        pojo.setSensitiveString("testingString");
-        pojo.setSensitiveDouble(10.123);
-        pojo.setSensitiveFloat(20.0f);
-        pojo.setSensitiveInt(30);
-        pojo.setSensitiveLong(1234);
-        pojo.setSensitiveBoolean(true);
+        protected static List<ClientEncryptionIncludedPath> getPaths() {
+            ClientEncryptionIncludedPath includedPath1 = new ClientEncryptionIncludedPath();
+            includedPath1.setClientEncryptionKeyId("key1");
+            includedPath1.setPath("/sensitiveString");
+            includedPath1.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+            includedPath1.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
-        EncryptionPojo nestedPojo = new EncryptionPojo();
-        nestedPojo.setId("nestedPojo");
-        nestedPojo.setMypk("nestedPojo");
-        nestedPojo.setSensitiveString("nestedPojo");
-        nestedPojo.setSensitiveDouble(10.123);
-        nestedPojo.setSensitiveInt(123);
-        nestedPojo.setSensitiveLong(1234);
-        nestedPojo.setSensitiveStringArray(new String[]{"str1", "str1"});
-        nestedPojo.setSensitiveString3DArray(new String[][][]{{{"str1", "str2"}, {"str3", "str4"}}, {{"str5", "str6"}, {
-            "str7", "str8"}}});
-        nestedPojo.setSensitiveBoolean(true);
+            ClientEncryptionIncludedPath includedPath2 = new ClientEncryptionIncludedPath();
+            includedPath2.setClientEncryptionKeyId("key2");
+            includedPath2.setPath("/nonValidPath");
+            includedPath2.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+            includedPath2.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
-        pojo.setSensitiveNestedPojo(nestedPojo);
+            ClientEncryptionIncludedPath includedPath3 = new ClientEncryptionIncludedPath();
+            includedPath3.setClientEncryptionKeyId("key1");
+            includedPath3.setPath("/sensitiveInt");
+            includedPath3.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+            includedPath3.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
-        pojo.setSensitiveIntArray(new int[]{1, 2});
-        pojo.setSensitiveStringArray(new String[]{"str1", "str1"});
-        pojo.setSensitiveString3DArray(new String[][][]{{{"str1", "str2"}, {"str3", "str4"}}, {{"str5", "str6"}, {
-            "str7", "str8"}}});
+            ClientEncryptionIncludedPath includedPath4 = new ClientEncryptionIncludedPath();
+            includedPath4.setClientEncryptionKeyId("key2");
+            includedPath4.setPath("/sensitiveFloat");
+            includedPath4.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+            includedPath4.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
-        EncryptionPojo childPojo1 = new EncryptionPojo();
-        childPojo1.setId("childPojo1");
-        childPojo1.setSensitiveString("child1TestingString");
-        childPojo1.setSensitiveDouble(10.123);
-        childPojo1.setSensitiveInt(123);
-        childPojo1.setSensitiveLong(1234);
-        childPojo1.setSensitiveBoolean(true);
-        childPojo1.setSensitiveStringArray(new String[]{"str1", "str1"});
-        childPojo1.setSensitiveString3DArray(new String[][][]{{{"str1", "str2"}, {"str3", "str4"}}, {{"str5", "str6"}, {
-            "str7", "str8"}}});
-        EncryptionPojo childPojo2 = new EncryptionPojo();
-        childPojo2.setId("childPojo2");
-        childPojo2.setSensitiveString("child2TestingString");
-        childPojo2.setSensitiveDouble(10.123);
-        childPojo2.setSensitiveInt(123);
-        childPojo2.setSensitiveLong(1234);
-        childPojo2.setSensitiveBoolean(true);
+            ClientEncryptionIncludedPath includedPath5 = new ClientEncryptionIncludedPath();
+            includedPath5.setClientEncryptionKeyId("key1");
+            includedPath5.setPath("/sensitiveLong");
+            includedPath5.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+            includedPath5.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
-        pojo.setSensitiveChildPojoList(new ArrayList<>());
-        pojo.getSensitiveChildPojoList().add(childPojo1);
-        pojo.getSensitiveChildPojoList().add(childPojo2);
+            ClientEncryptionIncludedPath includedPath6 = new ClientEncryptionIncludedPath();
+            includedPath6.setClientEncryptionKeyId("key2");
+            includedPath6.setPath("/sensitiveDouble");
+            includedPath6.setEncryptionType(CosmosEncryptionType.RANDOMIZED.getName());
+            includedPath6.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
-        pojo.setSensitiveChildPojo2DArray(new EncryptionPojo[][]{{childPojo1, childPojo2}, {childPojo1, childPojo2}});
+            ClientEncryptionIncludedPath includedPath7 = new ClientEncryptionIncludedPath();
+            includedPath7.setClientEncryptionKeyId("key1");
+            includedPath7.setPath("/sensitiveBoolean");
+            includedPath7.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+            includedPath7.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
-        return pojo;
+            ClientEncryptionIncludedPath includedPath8 = new ClientEncryptionIncludedPath();
+            includedPath8.setClientEncryptionKeyId("key1");
+            includedPath8.setPath("/sensitiveNestedPojo");
+            includedPath8.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+            includedPath8.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
+
+            ClientEncryptionIncludedPath includedPath9 = new ClientEncryptionIncludedPath();
+            includedPath9.setClientEncryptionKeyId("key1");
+            includedPath9.setPath("/sensitiveIntArray");
+            includedPath9.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+            includedPath9.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
+
+            ClientEncryptionIncludedPath includedPath10 = new ClientEncryptionIncludedPath();
+            includedPath10.setClientEncryptionKeyId("key2");
+            includedPath10.setPath("/sensitiveString3DArray");
+            includedPath10.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+            includedPath10.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
+
+            ClientEncryptionIncludedPath includedPath11 = new ClientEncryptionIncludedPath();
+            includedPath11.setClientEncryptionKeyId("key1");
+            includedPath11.setPath("/sensitiveStringArray");
+            includedPath11.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+            includedPath11.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
+
+            ClientEncryptionIncludedPath includedPath12 = new ClientEncryptionIncludedPath();
+            includedPath12.setClientEncryptionKeyId("key1");
+            includedPath12.setPath("/sensitiveChildPojoList");
+            includedPath12.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+            includedPath12.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
+
+            ClientEncryptionIncludedPath includedPath13 = new ClientEncryptionIncludedPath();
+            includedPath13.setClientEncryptionKeyId("key1");
+            includedPath13.setPath("/sensitiveChildPojo2DArray");
+            includedPath13.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+            includedPath13.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
+
+            List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
+            paths.add(includedPath1);
+            paths.add(includedPath2);
+            paths.add(includedPath3);
+            paths.add(includedPath4);
+            paths.add(includedPath5);
+            paths.add(includedPath6);
+            paths.add(includedPath7);
+            paths.add(includedPath8);
+            paths.add(includedPath9);
+            paths.add(includedPath10);
+            paths.add(includedPath11);
+            paths.add(includedPath12);
+            paths.add(includedPath13);
+
+            return paths;
+        }
+
+        protected static EncryptionPojo getItem(String documentId) {
+            EncryptionPojo pojo = new EncryptionPojo();
+            pojo.setId(documentId);
+            pojo.setMypk(documentId);
+            pojo.setNonSensitive(UUID.randomUUID().toString());
+            pojo.setSensitiveString("testingString");
+            pojo.setSensitiveDouble(10.123);
+            pojo.setSensitiveFloat(20.0f);
+            pojo.setSensitiveInt(30);
+            pojo.setSensitiveLong(1234);
+            pojo.setSensitiveBoolean(true);
+
+            EncryptionPojo nestedPojo = new EncryptionPojo();
+            nestedPojo.setId("nestedPojo");
+            nestedPojo.setMypk("nestedPojo");
+            nestedPojo.setSensitiveString("nestedPojo");
+            nestedPojo.setSensitiveDouble(10.123);
+            nestedPojo.setSensitiveInt(123);
+            nestedPojo.setSensitiveLong(1234);
+            nestedPojo.setSensitiveStringArray(new String[]{"str1", "str1"});
+            nestedPojo.setSensitiveString3DArray(new String[][][]{{{"str1", "str2"}, {"str3", "str4"}}, {{"str5", "str6"}, {
+                "str7", "str8"}}});
+            nestedPojo.setSensitiveBoolean(true);
+
+            pojo.setSensitiveNestedPojo(nestedPojo);
+
+            pojo.setSensitiveIntArray(new int[]{1, 2});
+            pojo.setSensitiveStringArray(new String[]{"str1", "str1"});
+            pojo.setSensitiveString3DArray(new String[][][]{{{"str1", "str2"}, {"str3", "str4"}}, {{"str5", "str6"}, {
+                "str7", "str8"}}});
+
+            EncryptionPojo childPojo1 = new EncryptionPojo();
+            childPojo1.setId("childPojo1");
+            childPojo1.setSensitiveString("child1TestingString");
+            childPojo1.setSensitiveDouble(10.123);
+            childPojo1.setSensitiveInt(123);
+            childPojo1.setSensitiveLong(1234);
+            childPojo1.setSensitiveBoolean(true);
+            childPojo1.setSensitiveStringArray(new String[]{"str1", "str1"});
+            childPojo1.setSensitiveString3DArray(new String[][][]{{{"str1", "str2"}, {"str3", "str4"}}, {{"str5", "str6"}, {
+                "str7", "str8"}}});
+            EncryptionPojo childPojo2 = new EncryptionPojo();
+            childPojo2.setId("childPojo2");
+            childPojo2.setSensitiveString("child2TestingString");
+            childPojo2.setSensitiveDouble(10.123);
+            childPojo2.setSensitiveInt(123);
+            childPojo2.setSensitiveLong(1234);
+            childPojo2.setSensitiveBoolean(true);
+
+            pojo.setSensitiveChildPojoList(new ArrayList<>());
+            pojo.getSensitiveChildPojoList().add(childPojo1);
+            pojo.getSensitiveChildPojoList().add(childPojo2);
+
+            pojo.setSensitiveChildPojo2DArray(new EncryptionPojo[][]{{childPojo1, childPojo2}, {childPojo1, childPojo2}});
+
+            return pojo;
+        }
+
+        protected static void validateResponse(EncryptionPojo originalItem, EncryptionPojo result) {
+            assertThat(result.getId()).isEqualTo(originalItem.getId());
+            assertThat(result.getNonSensitive()).isEqualTo(originalItem.getNonSensitive());
+            assertThat(result.getSensitiveString()).isEqualTo(originalItem.getSensitiveString());
+            assertThat(result.getSensitiveInt()).isEqualTo(originalItem.getSensitiveInt());
+            assertThat(result.getSensitiveFloat()).isEqualTo(originalItem.getSensitiveFloat());
+            assertThat(result.getSensitiveLong()).isEqualTo(originalItem.getSensitiveLong());
+            assertThat(result.getSensitiveDouble()).isEqualTo(originalItem.getSensitiveDouble());
+            assertThat(result.isSensitiveBoolean()).isEqualTo(originalItem.isSensitiveBoolean());
+            assertThat(result.getSensitiveIntArray()).isEqualTo(originalItem.getSensitiveIntArray());
+            assertThat(result.getSensitiveStringArray()).isEqualTo(originalItem.getSensitiveStringArray());
+            assertThat(result.getSensitiveString3DArray()).isEqualTo(originalItem.getSensitiveString3DArray());
+
+            assertThat(result.getSensitiveNestedPojo().getId()).isEqualTo(originalItem.getSensitiveNestedPojo().getId());
+            assertThat(result.getSensitiveNestedPojo().getMypk()).isEqualTo(originalItem.getSensitiveNestedPojo().getMypk());
+            assertThat(result.getSensitiveNestedPojo().getNonSensitive()).isEqualTo(originalItem.getSensitiveNestedPojo().getNonSensitive());
+            assertThat(result.getSensitiveNestedPojo().getSensitiveString()).isEqualTo(originalItem.getSensitiveNestedPojo().getSensitiveString());
+            assertThat(result.getSensitiveNestedPojo().getSensitiveInt()).isEqualTo(originalItem.getSensitiveNestedPojo().getSensitiveInt());
+            assertThat(result.getSensitiveNestedPojo().getSensitiveFloat()).isEqualTo(originalItem.getSensitiveNestedPojo().getSensitiveFloat());
+            assertThat(result.getSensitiveNestedPojo().getSensitiveLong()).isEqualTo(originalItem.getSensitiveNestedPojo().getSensitiveLong());
+            assertThat(result.getSensitiveNestedPojo().getSensitiveDouble()).isEqualTo(originalItem.getSensitiveNestedPojo().getSensitiveDouble());
+            assertThat(result.getSensitiveNestedPojo().isSensitiveBoolean()).isEqualTo(originalItem.getSensitiveNestedPojo().isSensitiveBoolean());
+            assertThat(result.getSensitiveNestedPojo().getSensitiveIntArray()).isEqualTo(originalItem.getSensitiveNestedPojo().getSensitiveIntArray());
+            assertThat(result.getSensitiveNestedPojo().getSensitiveStringArray()).isEqualTo(originalItem.getSensitiveNestedPojo().getSensitiveStringArray());
+            assertThat(result.getSensitiveNestedPojo().getSensitiveString3DArray()).isEqualTo(originalItem.getSensitiveNestedPojo().getSensitiveString3DArray());
+
+            assertThat(result.getSensitiveChildPojoList().size()).isEqualTo(originalItem.getSensitiveChildPojoList().size());
+            assertThat(result.getSensitiveChildPojoList().get(0).getSensitiveString()).isEqualTo(originalItem.getSensitiveChildPojoList().get(0).getSensitiveString());
+            assertThat(result.getSensitiveChildPojoList().get(0).getSensitiveInt()).isEqualTo(originalItem.getSensitiveChildPojoList().get(0).getSensitiveInt());
+            assertThat(result.getSensitiveChildPojoList().get(0).getSensitiveFloat()).isEqualTo(originalItem.getSensitiveChildPojoList().get(0).getSensitiveFloat());
+            assertThat(result.getSensitiveChildPojoList().get(0).getSensitiveLong()).isEqualTo(originalItem.getSensitiveChildPojoList().get(0).getSensitiveLong());
+            assertThat(result.getSensitiveChildPojoList().get(0).getSensitiveDouble()).isEqualTo(originalItem.getSensitiveChildPojoList().get(0).getSensitiveDouble());
+            assertThat(result.getSensitiveChildPojoList().get(0).getSensitiveIntArray()).isEqualTo(originalItem.getSensitiveChildPojoList().get(0).getSensitiveIntArray());
+            assertThat(result.getSensitiveChildPojoList().get(0).getSensitiveStringArray()).isEqualTo(originalItem.getSensitiveChildPojoList().get(0).getSensitiveStringArray());
+            assertThat(result.getSensitiveChildPojoList().get(0).getSensitiveString3DArray()).isEqualTo(originalItem.getSensitiveChildPojoList().get(0).getSensitiveString3DArray());
+
+            assertThat(result.getSensitiveChildPojo2DArray().length).isEqualTo(originalItem.getSensitiveChildPojo2DArray().length);
+            assertThat(result.getSensitiveChildPojo2DArray()[0][0].getSensitiveString()).isEqualTo(originalItem.getSensitiveChildPojo2DArray()[0][0].getSensitiveString());
+            assertThat(result.getSensitiveChildPojo2DArray()[0][0].getSensitiveInt()).isEqualTo(originalItem.getSensitiveChildPojo2DArray()[0][0].getSensitiveInt());
+            assertThat(result.getSensitiveChildPojo2DArray()[0][0].getSensitiveFloat()).isEqualTo(originalItem.getSensitiveChildPojo2DArray()[0][0].getSensitiveFloat());
+            assertThat(result.getSensitiveChildPojo2DArray()[0][0].getSensitiveLong()).isEqualTo(originalItem.getSensitiveChildPojo2DArray()[0][0].getSensitiveLong());
+            assertThat(result.getSensitiveChildPojo2DArray()[0][0].getSensitiveDouble()).isEqualTo(originalItem.getSensitiveChildPojo2DArray()[0][0].getSensitiveDouble());
+            assertThat(result.getSensitiveChildPojo2DArray()[0][0].getSensitiveIntArray()).isEqualTo(originalItem.getSensitiveChildPojo2DArray()[0][0].getSensitiveIntArray());
+            assertThat(result.getSensitiveChildPojo2DArray()[0][0].getSensitiveStringArray()).isEqualTo(originalItem.getSensitiveChildPojo2DArray()[0][0].getSensitiveStringArray());
+            assertThat(result.getSensitiveChildPojo2DArray()[0][0].getSensitiveString3DArray()).isEqualTo(originalItem.getSensitiveChildPojo2DArray()[0][0].getSensitiveString3DArray());
+        }
     }
-
-    protected static void validateResponse(EncryptionPojo originalItem, EncryptionPojo result) {
-        assertThat(result.getId()).isEqualTo(originalItem.getId());
-        assertThat(result.getNonSensitive()).isEqualTo(originalItem.getNonSensitive());
-        assertThat(result.getSensitiveString()).isEqualTo(originalItem.getSensitiveString());
-        assertThat(result.getSensitiveInt()).isEqualTo(originalItem.getSensitiveInt());
-        assertThat(result.getSensitiveFloat()).isEqualTo(originalItem.getSensitiveFloat());
-        assertThat(result.getSensitiveLong()).isEqualTo(originalItem.getSensitiveLong());
-        assertThat(result.getSensitiveDouble()).isEqualTo(originalItem.getSensitiveDouble());
-        assertThat(result.isSensitiveBoolean()).isEqualTo(originalItem.isSensitiveBoolean());
-        assertThat(result.getSensitiveIntArray()).isEqualTo(originalItem.getSensitiveIntArray());
-        assertThat(result.getSensitiveStringArray()).isEqualTo(originalItem.getSensitiveStringArray());
-        assertThat(result.getSensitiveString3DArray()).isEqualTo(originalItem.getSensitiveString3DArray());
-
-        assertThat(result.getSensitiveNestedPojo().getId()).isEqualTo(originalItem.getSensitiveNestedPojo().getId());
-        assertThat(result.getSensitiveNestedPojo().getMypk()).isEqualTo(originalItem.getSensitiveNestedPojo().getMypk());
-        assertThat(result.getSensitiveNestedPojo().getNonSensitive()).isEqualTo(originalItem.getSensitiveNestedPojo().getNonSensitive());
-        assertThat(result.getSensitiveNestedPojo().getSensitiveString()).isEqualTo(originalItem.getSensitiveNestedPojo().getSensitiveString());
-        assertThat(result.getSensitiveNestedPojo().getSensitiveInt()).isEqualTo(originalItem.getSensitiveNestedPojo().getSensitiveInt());
-        assertThat(result.getSensitiveNestedPojo().getSensitiveFloat()).isEqualTo(originalItem.getSensitiveNestedPojo().getSensitiveFloat());
-        assertThat(result.getSensitiveNestedPojo().getSensitiveLong()).isEqualTo(originalItem.getSensitiveNestedPojo().getSensitiveLong());
-        assertThat(result.getSensitiveNestedPojo().getSensitiveDouble()).isEqualTo(originalItem.getSensitiveNestedPojo().getSensitiveDouble());
-        assertThat(result.getSensitiveNestedPojo().isSensitiveBoolean()).isEqualTo(originalItem.getSensitiveNestedPojo().isSensitiveBoolean());
-        assertThat(result.getSensitiveNestedPojo().getSensitiveIntArray()).isEqualTo(originalItem.getSensitiveNestedPojo().getSensitiveIntArray());
-        assertThat(result.getSensitiveNestedPojo().getSensitiveStringArray()).isEqualTo(originalItem.getSensitiveNestedPojo().getSensitiveStringArray());
-        assertThat(result.getSensitiveNestedPojo().getSensitiveString3DArray()).isEqualTo(originalItem.getSensitiveNestedPojo().getSensitiveString3DArray());
-
-        assertThat(result.getSensitiveChildPojoList().size()).isEqualTo(originalItem.getSensitiveChildPojoList().size());
-        assertThat(result.getSensitiveChildPojoList().get(0).getSensitiveString()).isEqualTo(originalItem.getSensitiveChildPojoList().get(0).getSensitiveString());
-        assertThat(result.getSensitiveChildPojoList().get(0).getSensitiveInt()).isEqualTo(originalItem.getSensitiveChildPojoList().get(0).getSensitiveInt());
-        assertThat(result.getSensitiveChildPojoList().get(0).getSensitiveFloat()).isEqualTo(originalItem.getSensitiveChildPojoList().get(0).getSensitiveFloat());
-        assertThat(result.getSensitiveChildPojoList().get(0).getSensitiveLong()).isEqualTo(originalItem.getSensitiveChildPojoList().get(0).getSensitiveLong());
-        assertThat(result.getSensitiveChildPojoList().get(0).getSensitiveDouble()).isEqualTo(originalItem.getSensitiveChildPojoList().get(0).getSensitiveDouble());
-        assertThat(result.getSensitiveChildPojoList().get(0).getSensitiveIntArray()).isEqualTo(originalItem.getSensitiveChildPojoList().get(0).getSensitiveIntArray());
-        assertThat(result.getSensitiveChildPojoList().get(0).getSensitiveStringArray()).isEqualTo(originalItem.getSensitiveChildPojoList().get(0).getSensitiveStringArray());
-        assertThat(result.getSensitiveChildPojoList().get(0).getSensitiveString3DArray()).isEqualTo(originalItem.getSensitiveChildPojoList().get(0).getSensitiveString3DArray());
-
-        assertThat(result.getSensitiveChildPojo2DArray().length).isEqualTo(originalItem.getSensitiveChildPojo2DArray().length);
-        assertThat(result.getSensitiveChildPojo2DArray()[0][0].getSensitiveString()).isEqualTo(originalItem.getSensitiveChildPojo2DArray()[0][0].getSensitiveString());
-        assertThat(result.getSensitiveChildPojo2DArray()[0][0].getSensitiveInt()).isEqualTo(originalItem.getSensitiveChildPojo2DArray()[0][0].getSensitiveInt());
-        assertThat(result.getSensitiveChildPojo2DArray()[0][0].getSensitiveFloat()).isEqualTo(originalItem.getSensitiveChildPojo2DArray()[0][0].getSensitiveFloat());
-        assertThat(result.getSensitiveChildPojo2DArray()[0][0].getSensitiveLong()).isEqualTo(originalItem.getSensitiveChildPojo2DArray()[0][0].getSensitiveLong());
-        assertThat(result.getSensitiveChildPojo2DArray()[0][0].getSensitiveDouble()).isEqualTo(originalItem.getSensitiveChildPojo2DArray()[0][0].getSensitiveDouble());
-        assertThat(result.getSensitiveChildPojo2DArray()[0][0].getSensitiveIntArray()).isEqualTo(originalItem.getSensitiveChildPojo2DArray()[0][0].getSensitiveIntArray());
-        assertThat(result.getSensitiveChildPojo2DArray()[0][0].getSensitiveStringArray()).isEqualTo(originalItem.getSensitiveChildPojo2DArray()[0][0].getSensitiveStringArray());
-        assertThat(result.getSensitiveChildPojo2DArray()[0][0].getSensitiveString3DArray()).isEqualTo(originalItem.getSensitiveChildPojo2DArray()[0][0].getSensitiveString3DArray());
-    }
-}

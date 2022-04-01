@@ -84,6 +84,12 @@
             "matcher": "java-package",
             "match": "/com\\.azure\\.data\\.cosmos(\\..*)?/"
           },
+          "class com\\.azure\\.spring\\.cloud\\.config\\.State",
+          "class com\\.azure\\.spring\\.cloud\\.config\\.AppConfigurationRefresh",
+          "class com\\.azure\\.spring\\.cloud\\.config\\.properties\\.AppConfigurationProviderProperties",
+          "class com\\.azure\\.spring\\.cloud\\.config\\.State",
+          "class com\\.azure\\.spring\\.cloud\\.config\\.web\\.pushrefresh\\.AppConfigurationRefreshEvent",
+          "class com\\.azure\\.spring\\.cloud\\.config\\.web\\.AppConfigurationEndpoint",
           {
             "matcher": "java-package",
             "match": "/org\\.apache\\.avro(\\..*)?/"
@@ -214,6 +220,18 @@
           "code": "java\\.annotation\\.(added|attributeValueChanged|attributeAdded)",
           "new": "(class|method void|parameter void) com\\.azure\\.search\\.documents\\.indexes\\.models\\..*",
           "justification": "Generated classes were moved into public API, these annotations were already being used in implementation used during serialization and deserialization."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.added",
+          "new": "(class|interface|method|parameter) org\\.springframework\\.data\\.repository\\.query\\..*",
+          "justification": "Spring Data Commons framework 2.6.1 added Nullable annotations to its interfaces."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.added",
+          "new": "(class|interface|method|parameter) com\\.azure\\.spring\\.data\\.cosmos\\.repository\\.query\\..*",
+          "justification": "Spring Data Commons framework 2.6.1 added Nullable annotations to its interfaces which are implemented by Cosmos Spring Data SDK for internal usage."
         },
         {
           "code": "java.method.added",
