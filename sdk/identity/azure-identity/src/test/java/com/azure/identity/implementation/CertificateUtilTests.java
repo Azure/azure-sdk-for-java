@@ -6,8 +6,6 @@ package com.azure.identity.implementation;
 import com.azure.identity.implementation.util.CertificateUtil;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -18,7 +16,6 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
-@RunWith(PowerMockRunner.class)
 public class CertificateUtilTests {
 
     @Test(expected = CertificateExpiredException.class)
