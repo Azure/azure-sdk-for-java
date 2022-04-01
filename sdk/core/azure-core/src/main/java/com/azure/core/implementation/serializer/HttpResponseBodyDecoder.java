@@ -59,24 +59,6 @@ public final class HttpResponseBodyDecoder {
      * @return The decoded response body, or null if the body wasn't able to be decoded.
      * @throws HttpResponseException If the body fails to decode.
      */
-    static Object decode(String body, HttpResponse httpResponse, SerializerAdapter serializer,
-        HttpResponseDecodeData decodeData) {
-        return decodeByteArray(body == null ? null : body.getBytes(StandardCharsets.UTF_8), httpResponse, serializer,
-            decodeData);
-    }
-
-    /**
-     * Decodes the body of an {@link HttpResponse} into the type returned by the called API.
-     * <p>
-     * If the response body isn't able to be decoded null will be returned.
-     *
-     * @param body The response body retrieved from the {@code httpResponse} to decode.
-     * @param httpResponse The {@link HttpResponse}.
-     * @param serializer The {@link SerializerAdapter} that performs decoding.
-     * @param decodeData The API method metadata used during decoding of the response.
-     * @return The decoded response body, or null if the body wasn't able to be decoded.
-     * @throws HttpResponseException If the body fails to decode.
-     */
     static Object decodeByteArray(byte[] body, HttpResponse httpResponse, SerializerAdapter serializer,
         HttpResponseDecodeData decodeData) {
         ensureRequestSet(httpResponse);

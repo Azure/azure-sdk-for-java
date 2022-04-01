@@ -556,7 +556,7 @@ public final class RestProxy implements InvocationHandler {
             asyncResult = BinaryData.fromFlux(response.getSourceResponse().getBody());
         } else {
             // Mono<Object> or Mono<Page<T>>
-            asyncResult = response.getSourceResponse().getBodyAsByteArray().map(response::getDecodedBody);
+            asyncResult = response.getSourceResponse().getBodyAsByteArray().mapNotNull(response::getDecodedBody);
         }
         return asyncResult;
     }

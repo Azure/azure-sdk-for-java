@@ -74,18 +74,6 @@ public final class HttpResponseDecoder {
         }
 
         /**
-         * Gets the publisher when subscribed the http content gets read, decoded and emitted. {@code Mono.empty()} gets
-         * emitted if the content is not decodable.
-         *
-         * @param body The response body to decode as a string. The body should be retrieved from the {@link
-         * HttpResponse} that is going to be decoded.
-         * @return The {@link HttpResponse} body decoded to the type that will be returned by the API/
-         */
-        public Object getDecodedBody(String body) {
-            return getDecodedBody(body.getBytes(StandardCharsets.UTF_8));
-        }
-
-        /**
          * Decodes either the retrieved {@code body} or the bytes returned by the {@link HttpResponse}.
          *
          * @param body The retrieve body.
