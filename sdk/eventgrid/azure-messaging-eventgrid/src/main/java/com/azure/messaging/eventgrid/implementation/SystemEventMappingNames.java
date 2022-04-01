@@ -74,6 +74,31 @@ import com.azure.messaging.eventgrid.systemevents.MachineLearningServicesRunStat
 import com.azure.messaging.eventgrid.systemevents.MapsGeofenceEnteredEventData;
 import com.azure.messaging.eventgrid.systemevents.MapsGeofenceExitedEventData;
 import com.azure.messaging.eventgrid.systemevents.MapsGeofenceResultEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobCanceledEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobCancelingEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobErroredEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobFinishedEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobOutputCanceledEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobOutputCancelingEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobOutputErroredEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobOutputFinishedEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobOutputProcessingEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobOutputProgressEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobOutputScheduledEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobOutputStateChangeEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobProcessingEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobScheduledEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobStateChangeEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaLiveEventChannelArchiveHeartbeatEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaLiveEventConnectionRejectedEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaLiveEventEncoderConnectedEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaLiveEventEncoderDisconnectedEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIncomingDataChunkDroppedEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIncomingStreamReceivedEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIncomingStreamsOutOfSyncEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIncomingVideoStreamsOutOfSyncEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIngestHeartbeatEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaLiveEventTrackDiscontinuityDetectedEventData;
 import com.azure.messaging.eventgrid.systemevents.PolicyInsightsPolicyStateChangedEventData;
 import com.azure.messaging.eventgrid.systemevents.PolicyInsightsPolicyStateCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.PolicyInsightsPolicyStateDeletedEventData;
@@ -231,23 +256,23 @@ public final class SystemEventMappingNames {
     /** Schema of the Data property of an EventGridEvent for an Microsoft.Communication.UserDisconnected event. */
     public static final String ACS_USER_DISCONNECTED = "Microsoft.Communication.UserDisconnected";
 
-    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.APICreated event. */
-    public static final String API_MANAGEMENT_API_CREATED = "Microsoft.ApiManagement.APICreated";
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ApiCreated event. */
+    public static final String API_MANAGEMENT_API_CREATED = "Microsoft.ApiManagement.ApiCreated";
 
-    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.APIDeleted event. */
-    public static final String API_MANAGEMENT_API_DELETED = "Microsoft.ApiManagement.APIDeleted";
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ApiDeleted event. */
+    public static final String API_MANAGEMENT_API_DELETED = "Microsoft.ApiManagement.ApiDeleted";
 
-    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.APIReleaseCreated event. */
-    public static final String API_MANAGEMENT_API_RELEASE_CREATED = "Microsoft.ApiManagement.APIReleaseCreated";
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ApiReleaseCreated event. */
+    public static final String API_MANAGEMENT_API_RELEASE_CREATED = "Microsoft.ApiManagement.ApiReleaseCreated";
 
-    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.APIReleaseDeleted event. */
-    public static final String API_MANAGEMENT_API_RELEASE_DELETED = "Microsoft.ApiManagement.APIReleaseDeleted";
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ApiReleaseDeleted event. */
+    public static final String API_MANAGEMENT_API_RELEASE_DELETED = "Microsoft.ApiManagement.ApiReleaseDeleted";
 
-    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.APIReleaseUpdated event. */
-    public static final String API_MANAGEMENT_API_RELEASE_UPDATED = "Microsoft.ApiManagement.APIReleaseUpdated";
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ApiReleaseUpdated event. */
+    public static final String API_MANAGEMENT_API_RELEASE_UPDATED = "Microsoft.ApiManagement.ApiReleaseUpdated";
 
-    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.APIUpdated event. */
-    public static final String API_MANAGEMENT_API_UPDATED = "Microsoft.ApiManagement.APIUpdated";
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ApiUpdated event. */
+    public static final String API_MANAGEMENT_API_UPDATED = "Microsoft.ApiManagement.ApiUpdated";
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ProductCreated event. */
     public static final String API_MANAGEMENT_PRODUCT_CREATED = "Microsoft.ApiManagement.ProductCreated";
@@ -394,6 +419,156 @@ public final class SystemEventMappingNames {
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.Maps.GeofenceResult event. */
     public static final String MAPS_GEOFENCE_RESULT = "Microsoft.Maps.GeofenceResult";
+
+    /**
+     * Job canceled event data. Schema of the data property of an EventGridEvent for a Microsoft.Media.JobCanceled
+     * event.
+     */
+    public static final String MEDIA_JOB_CANCELED = "Microsoft.Media.JobCanceled";
+
+    /**
+     * Job canceling event data. Schema of the data property of an EventGridEvent for a Microsoft.Media.JobCanceling
+     * event.
+     */
+    public static final String MEDIA_JOB_CANCELING = "Microsoft.Media.JobCanceling";
+
+    /**
+     * Job error state event data. Schema of the data property of an EventGridEvent for a Microsoft.Media.JobErrored
+     * event.
+     */
+    public static final String MEDIA_JOB_ERRORED = "Microsoft.Media.JobErrored";
+
+    /**
+     * Job finished event data. Schema of the data property of an EventGridEvent for a Microsoft.Media.JobFinished
+     * event.
+     */
+    public static final String MEDIA_JOB_FINISHED = "Microsoft.Media.JobFinished";
+
+    /**
+     * Job output canceled event data. Schema of the data property of an EventGridEvent for a
+     * Microsoft.Media.JobOutputCanceled event.
+     */
+    public static final String MEDIA_JOB_OUTPUT_CANCELED = "Microsoft.Media.JobOutputCanceled";
+
+    /**
+     * Job output canceling event data. Schema of the data property of an EventGridEvent for a
+     * Microsoft.Media.JobOutputCanceling event.
+     */
+    public static final String MEDIA_JOB_OUTPUT_CANCELING = "Microsoft.Media.JobOutputCanceling";
+
+    /**
+     * Job output error event data. Schema of the data property of an EventGridEvent for a
+     * Microsoft.Media.JobOutputErrored event.
+     */
+    public static final String MEDIA_JOB_OUTPUT_ERRORED = "Microsoft.Media.JobOutputErrored";
+
+    /**
+     * Job output finished event data. Schema of the data property of an EventGridEvent for a
+     * Microsoft.Media.JobOutputFinished event.
+     */
+    public static final String MEDIA_JOB_OUTPUT_FINISHED = "Microsoft.Media.JobOutputFinished";
+
+    /**
+     * Job output processing event data. Schema of the data property of an EventGridEvent for a
+     * Microsoft.Media.JobOutputProcessing event.
+     */
+    public static final String MEDIA_JOB_OUTPUT_PROCESSING = "Microsoft.Media.JobOutputProcessing";
+
+    /**
+     * Job Output Progress Event Data. Schema of the Data property of an EventGridEvent for a
+     * Microsoft.Media.JobOutputProgress event.
+     */
+    public static final String MEDIA_JOB_OUTPUT_PROGRESS = "Microsoft.Media.JobOutputProgress";
+
+    /**
+     * Job output scheduled event data. Schema of the data property of an EventGridEvent for a
+     * Microsoft.Media.JobOutputScheduled event.
+     */
+    public static final String MEDIA_JOB_OUTPUT_SCHEDULED = "Microsoft.Media.JobOutputScheduled";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Media.JobOutputStateChange event. */
+    public static final String MEDIA_JOB_OUTPUT_STATE_CHANGE = "Microsoft.Media.JobOutputStateChange";
+
+    /**
+     * Job processing event data. Schema of the data property of an EventGridEvent for a Microsoft.Media.JobProcessing
+     * event.
+     */
+    public static final String MEDIA_JOB_PROCESSING = "Microsoft.Media.JobProcessing";
+
+    /**
+     * Job scheduled event data. Schema of the data property of an EventGridEvent for a Microsoft.Media.JobScheduled
+     * event.
+     */
+    public static final String MEDIA_JOB_SCHEDULED = "Microsoft.Media.JobScheduled";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.Media.JobStateChange event. */
+    public static final String MEDIA_JOB_STATE_CHANGE = "Microsoft.Media.JobStateChange";
+
+    /**
+     * Channel Archive heartbeat event data. Schema of the data property of an EventGridEvent for a
+     * Microsoft.Media.LiveEventChannelArchiveHeartbeat event.
+     */
+    public static final String MEDIA_LIVE_EVENT_CHANNEL_ARCHIVE_HEARTBEAT =
+        "Microsoft.Media.LiveEventChannelArchiveHeartbeat";
+
+    /**
+     * Encoder connection rejected event data. Schema of the data property of an EventGridEvent for a
+     * Microsoft.Media.LiveEventConnectionRejected event.
+     */
+    public static final String MEDIA_LIVE_EVENT_CONNECTION_REJECTED = "Microsoft.Media.LiveEventConnectionRejected";
+
+    /**
+     * Encoder connect event data. Schema of the data property of an EventGridEvent for a
+     * Microsoft.Media.LiveEventEncoderConnected event.
+     */
+    public static final String MEDIA_LIVE_EVENT_ENCODER_CONNECTED = "Microsoft.Media.LiveEventEncoderConnected";
+
+    /**
+     * Encoder disconnected event data. Schema of the Data property of an EventGridEvent for a
+     * Microsoft.Media.LiveEventEncoderDisconnected event.
+     */
+    public static final String MEDIA_LIVE_EVENT_ENCODER_DISCONNECTED = "Microsoft.Media.LiveEventEncoderDisconnected";
+
+    /**
+     * Ingest fragment dropped event data. Schema of the data property of an EventGridEvent for a
+     * Microsoft.Media.LiveEventIncomingDataChunkDropped event.
+     */
+    public static final String MEDIA_LIVE_EVENT_INCOMING_DATA_CHUNK_DROPPED =
+        "Microsoft.Media.LiveEventIncomingDataChunkDropped";
+
+    /**
+     * Encoder connect event data. Schema of the data property of an EventGridEvent for a
+     * Microsoft.Media.LiveEventIncomingStreamReceived event.
+     */
+    public static final String MEDIA_LIVE_EVENT_INCOMING_STREAM_RECEIVED =
+        "Microsoft.Media.LiveEventIncomingStreamReceived";
+
+    /**
+     * Incoming streams out of sync event data. Schema of the data property of an EventGridEvent for a
+     * Microsoft.Media.LiveEventIncomingStreamsOutOfSync event.
+     */
+    public static final String MEDIA_LIVE_EVENT_INCOMING_STREAMS_OUT_OF_SYNC =
+        "Microsoft.Media.LiveEventIncomingStreamsOutOfSync";
+
+    /**
+     * Incoming video stream out of sync event data. Schema of the data property of an EventGridEvent for a
+     * Microsoft.Media.LiveEventIncomingVideoStreamsOutOfSync event.
+     */
+    public static final String MEDIA_LIVE_EVENT_INCOMING_VIDEO_STREAMS_OUT_OF_SYNC =
+        "Microsoft.Media.LiveEventIncomingVideoStreamsOutOfSync";
+
+    /**
+     * Ingest heartbeat event data. Schema of the data property of an EventGridEvent for a
+     * Microsoft.Media.LiveEventIngestHeartbeat event.
+     */
+    public static final String MEDIA_LIVE_EVENT_INGEST_HEARTBEAT = "Microsoft.Media.LiveEventIngestHeartbeat";
+
+    /**
+     * Ingest track discontinuity detected event data. Schema of the data property of an EventGridEvent for a
+     * Microsoft.Media.LiveEventTrackDiscontinuityDetected event.
+     */
+    public static final String MEDIA_LIVE_EVENT_TRACK_DISCONTINUITY_DETECTED =
+        "Microsoft.Media.LiveEventTrackDiscontinuityDetected";
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.PolicyInsights.PolicyStateChanged event. */
     public static final String POLICY_INSIGHTS_POLICY_STATE_CHANGED = "Microsoft.PolicyInsights.PolicyStateChanged";
@@ -673,6 +848,41 @@ public final class SystemEventMappingNames {
                     put(MAPS_GEOFENCE_ENTERED, MapsGeofenceEnteredEventData.class);
                     put(MAPS_GEOFENCE_EXITED, MapsGeofenceExitedEventData.class);
                     put(MAPS_GEOFENCE_RESULT, MapsGeofenceResultEventData.class);
+                    put(MEDIA_JOB_CANCELED, MediaJobCanceledEventData.class);
+                    put(MEDIA_JOB_CANCELING, MediaJobCancelingEventData.class);
+                    put(MEDIA_JOB_ERRORED, MediaJobErroredEventData.class);
+                    put(MEDIA_JOB_FINISHED, MediaJobFinishedEventData.class);
+                    put(MEDIA_JOB_OUTPUT_CANCELED, MediaJobOutputCanceledEventData.class);
+                    put(MEDIA_JOB_OUTPUT_CANCELING, MediaJobOutputCancelingEventData.class);
+                    put(MEDIA_JOB_OUTPUT_ERRORED, MediaJobOutputErroredEventData.class);
+                    put(MEDIA_JOB_OUTPUT_FINISHED, MediaJobOutputFinishedEventData.class);
+                    put(MEDIA_JOB_OUTPUT_PROCESSING, MediaJobOutputProcessingEventData.class);
+                    put(MEDIA_JOB_OUTPUT_PROGRESS, MediaJobOutputProgressEventData.class);
+                    put(MEDIA_JOB_OUTPUT_SCHEDULED, MediaJobOutputScheduledEventData.class);
+                    put(MEDIA_JOB_OUTPUT_STATE_CHANGE, MediaJobOutputStateChangeEventData.class);
+                    put(MEDIA_JOB_PROCESSING, MediaJobProcessingEventData.class);
+                    put(MEDIA_JOB_SCHEDULED, MediaJobScheduledEventData.class);
+                    put(MEDIA_JOB_STATE_CHANGE, MediaJobStateChangeEventData.class);
+                    put(
+                        MEDIA_LIVE_EVENT_CHANNEL_ARCHIVE_HEARTBEAT,
+                        MediaLiveEventChannelArchiveHeartbeatEventData.class);
+                    put(MEDIA_LIVE_EVENT_CONNECTION_REJECTED, MediaLiveEventConnectionRejectedEventData.class);
+                    put(MEDIA_LIVE_EVENT_ENCODER_CONNECTED, MediaLiveEventEncoderConnectedEventData.class);
+                    put(MEDIA_LIVE_EVENT_ENCODER_DISCONNECTED, MediaLiveEventEncoderDisconnectedEventData.class);
+                    put(
+                        MEDIA_LIVE_EVENT_INCOMING_DATA_CHUNK_DROPPED,
+                        MediaLiveEventIncomingDataChunkDroppedEventData.class);
+                    put(MEDIA_LIVE_EVENT_INCOMING_STREAM_RECEIVED, MediaLiveEventIncomingStreamReceivedEventData.class);
+                    put(
+                        MEDIA_LIVE_EVENT_INCOMING_STREAMS_OUT_OF_SYNC,
+                        MediaLiveEventIncomingStreamsOutOfSyncEventData.class);
+                    put(
+                        MEDIA_LIVE_EVENT_INCOMING_VIDEO_STREAMS_OUT_OF_SYNC,
+                        MediaLiveEventIncomingVideoStreamsOutOfSyncEventData.class);
+                    put(MEDIA_LIVE_EVENT_INGEST_HEARTBEAT, MediaLiveEventIngestHeartbeatEventData.class);
+                    put(
+                        MEDIA_LIVE_EVENT_TRACK_DISCONTINUITY_DETECTED,
+                        MediaLiveEventTrackDiscontinuityDetectedEventData.class);
                     put(POLICY_INSIGHTS_POLICY_STATE_CHANGED, PolicyInsightsPolicyStateChangedEventData.class);
                     put(POLICY_INSIGHTS_POLICY_STATE_CREATED, PolicyInsightsPolicyStateCreatedEventData.class);
                     put(POLICY_INSIGHTS_POLICY_STATE_DELETED, PolicyInsightsPolicyStateDeletedEventData.class);
@@ -744,5 +954,7 @@ public final class SystemEventMappingNames {
         return Collections.unmodifiableMap(SYSTEM_EVENT_MAPPINGS);
     }
 
-    private SystemEventMappingNames() {}
+    private SystemEventMappingNames() {
+
+    }
 }
