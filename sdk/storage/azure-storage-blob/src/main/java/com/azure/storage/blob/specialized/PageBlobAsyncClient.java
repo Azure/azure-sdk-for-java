@@ -345,7 +345,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <!-- src_embed com.azure.storage.blob.PageBlobAsyncClient.createIfNotExists#long -->
      * <pre>
-     * client.createIfNotExists&#40;size&#41;.switchIfEmpty&#40;Mono.&lt;PageBlobItem&gt;empty&#40;&#41;.doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
+     * client.createIfNotExists&#40;size&#41;.switchIfEmpty&#40;Mono.&lt;PageBlobItem&gt;empty&#40;&#41;
+     *          .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
      *      .subscribe&#40;response -&gt; System.out.printf&#40;
      *     &quot;Created page blob with sequence number %s%n&quot;, response.getBlobSequenceNumber&#40;&#41;&#41;&#41;;
      * </pre>
