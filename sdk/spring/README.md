@@ -2,8 +2,8 @@
 
 Spring Cloud Azure offers a convenient way to interact with **Azure** provided services using well-known Spring idioms and APIs for Spring developers. 
 
- - [Reference doc](https://microsoft.github.io/spring-cloud-azure/4.0.0-beta.3/4.0.0-beta.3/reference/html/index.html).
- - [Migration guide for 4.0](https://microsoft.github.io/spring-cloud-azure/4.0.0-beta.3/4.0.0-beta.3/reference/html/appendix.html#migration-guide-for-4-0).
+ - [Reference doc](https://aka.ms/spring/docs).
+ - [Migration guide for 4.0](https://microsoft.github.io/spring-cloud-azure/4.0.0/reference/html/index.html#migration-guide-for-4-0).
 
 ## Build from Source
 
