@@ -205,7 +205,7 @@ public class DefaultAzureCredentialTest {
             Assert.assertNotNull(intelliJCredentialMock);
             Assert.assertNotNull(vsCodeCredentialMock);
             Assert.assertNotNull(powerShellCredentialMock);
-//            Assert.assertNotNull(azureCliCredentialMock);
+            Assert.assertNotNull(azureCliCredentialMock);
         }
 
     }
