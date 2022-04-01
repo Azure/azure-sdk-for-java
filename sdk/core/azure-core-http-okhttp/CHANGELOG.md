@@ -1,6 +1,6 @@
 # Release History
 
-## 1.8.0 (2022-03-31)
+## 1.8.0 (2022-04-01)
 
 ### Features Added
  - Added `followRedirects` property on the `OkHttpClientBuilder`.
