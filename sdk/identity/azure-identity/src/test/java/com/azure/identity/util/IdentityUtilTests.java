@@ -10,11 +10,9 @@ import com.azure.identity.implementation.util.IdentityUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.Arrays;
 
-@RunWith(PowerMockRunner.class)
 public class IdentityUtilTests {
 
     public void testMultiTenantAuthenticationEnabled() throws Exception {
