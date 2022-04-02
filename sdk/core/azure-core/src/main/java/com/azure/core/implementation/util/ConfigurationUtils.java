@@ -10,7 +10,6 @@ import java.time.Duration;
 import java.util.function.Function;
 
 public class ConfigurationUtils {
-
     public static final Function<String, Boolean> CONFIGURATION_PROPERTY_BOOLEAN_CONVERTER = (value) -> Boolean.valueOf(value);
     public static final Function<String, Duration> CONFIGURATION_PROPERTY_DURATION_CONVERTER = (value) -> {
         long timeoutMillis = Long.parseLong(value);
@@ -42,7 +41,7 @@ public class ConfigurationUtils {
      * @return instance of {@link ConfigurationPropertyBuilder}.
      */
     public static ConfigurationPropertyBuilder<Integer> integerSharedPropertyBuilder(String name) {
-        return new ConfigurationPropertyBuilder<>(name, CONFIGURATION_PROPERTY_INTEGER_CONVERTER).canLogValue(true).shared(true);
+        return new ConfigurationPropertyBuilder<>(name, CONFIGURATION_PROPERTY_INTEGER_CONVERTER).logValue(true).shared(true);
     }
 
     /**
@@ -53,7 +52,7 @@ public class ConfigurationUtils {
      * @return instance of {@link ConfigurationPropertyBuilder}.
      */
     public static ConfigurationPropertyBuilder<Duration> durationSharedPropertyBuilder(String name) {
-        return new ConfigurationPropertyBuilder<>(name, CONFIGURATION_PROPERTY_DURATION_CONVERTER).canLogValue(true).shared(true);
+        return new ConfigurationPropertyBuilder<>(name, CONFIGURATION_PROPERTY_DURATION_CONVERTER).logValue(true).shared(true);
     }
 
     /**
@@ -64,7 +63,7 @@ public class ConfigurationUtils {
      * @return instance of {@link ConfigurationPropertyBuilder}.
      */
     public static ConfigurationPropertyBuilder<Boolean> booleanSharedPropertyBuilder(String name) {
-        return new ConfigurationPropertyBuilder<>(name, CONFIGURATION_PROPERTY_BOOLEAN_CONVERTER).canLogValue(true).shared(true);
+        return new ConfigurationPropertyBuilder<>(name, CONFIGURATION_PROPERTY_BOOLEAN_CONVERTER).logValue(true).shared(true);
     }
 
     /**

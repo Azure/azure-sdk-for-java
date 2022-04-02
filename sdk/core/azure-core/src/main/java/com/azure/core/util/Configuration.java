@@ -5,6 +5,7 @@ package com.azure.core.util;
 
 import com.azure.core.implementation.util.ConfigurationUtils;
 import com.azure.core.implementation.util.EnvironmentConfiguration;
+import com.azure.core.implementation.util.EnvironmentConfigurationProvider;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Collections;
@@ -16,7 +17,7 @@ import java.util.function.Function;
 /**
  * Contains configuration information that is used during construction of client libraries.
  */
-public class Configuration implements Cloneable {
+public class Configuration extends EnvironmentConfigurationProvider implements Cloneable {
 
     // Default properties - these are what we read from the environment
     /**
@@ -226,6 +227,7 @@ public class Configuration implements Cloneable {
      * @param sharedConfiguration Instance of shared {@link Configuration} section to retrieve shared properties.
      */
     private Configuration(Map<String, String> configurations, EnvironmentConfiguration environmentConfiguration, String path, Configuration sharedConfiguration) {
+        super(environmentConfiguration);
         this.configurations = configurations;
         this.isEmpty = configurations.isEmpty();
         this.environmentConfiguration = Objects.requireNonNull(environmentConfiguration, "'environmentConfiguration' cannot be null");
@@ -257,7 +259,7 @@ public class Configuration implements Cloneable {
             return value;
         }
 
-        return environmentConfiguration.get(name);
+        return environmentConfiguration.getAny(name);
     }
 
     /**
@@ -287,11 +289,11 @@ public class Configuration implements Cloneable {
      */
     public <T> T get(String name, T defaultValue) {
         String value = getLocalProperty(name, EMPTY_ARRAY, REDACT_VALUE_SANITIZER);
-        if (value != null) {
-            return ConfigurationUtils.convertToPrimitiveOrDefault(value, defaultValue);
+        if (value == null) {
+            value = environmentConfiguration.getAny(name);
         }
 
-        return environmentConfiguration.get(name, defaultValue);
+        return ConfigurationUtils.convertToPrimitiveOrDefault(value, defaultValue);
     }
 
     /**
@@ -310,11 +312,11 @@ public class Configuration implements Cloneable {
     public <T> T get(String name, Function<String, T> converter) {
         Objects.requireNonNull(converter, "'converter' can't be null");
         String value = getLocalProperty(name, EMPTY_ARRAY, REDACT_VALUE_SANITIZER);
-        if (value != null) {
-            return converter.apply(value);
+        if (value == null) {
+            value = environmentConfiguration.getAny(name);
         }
 
-        return environmentConfiguration.get(name, converter);
+        return converter.apply(value);
     }
 
     /**
@@ -362,7 +364,7 @@ public class Configuration implements Cloneable {
      */
     public boolean contains(String name) {
         String value = getLocalProperty(name, EMPTY_ARRAY, REDACT_VALUE_SANITIZER);
-        return value != null ? true : environmentConfiguration.contains(name);
+        return value != null ? true : (environmentConfiguration.getAny(name) != null);
     }
 
     /**
@@ -399,10 +401,10 @@ public class Configuration implements Cloneable {
      *
      * <!-- src_embed com.azure.core.util.Configuration.get#ConfigurationProperty -->
      * <pre>
-     * ConfigurationProperty&lt;String&gt; property = ConfigurationProperty.stringPropertyBuilder&#40;&quot;http.proxy.hostname&quot;&#41;
+     * ConfigurationProperty&lt;String&gt; property = ConfigurationPropertyBuilder.ofString&#40;&quot;http.proxy.hostname&quot;&#41;
      *     .shared&#40;true&#41;
-     *     .canLogValue&#40;true&#41;
-     *     .environmentAliases&#40;&quot;http.proxyHost&quot;&#41;
+     *     .logValue&#40;true&#41;
+     *     .systemPropertyName&#40;&quot;http.proxyHost&quot;&#41;
      *     .build&#40;&#41;;
      *
      * &#47;&#47; attempts to get local `azure.sdk.&lt;client-name&gt;.http.proxy.host` property and falls back to
@@ -486,14 +488,28 @@ public class Configuration implements Cloneable {
             }
         }
 
-        for (String name : property.getEnvironmentVariables()) {
-            value = environmentConfiguration.get(name);
+        String systemProperty = property.getSystemPropertyName();
+        if (systemProperty != null) {
+            value = environmentConfiguration.getSystemProperty(systemProperty);
             if (value != null) {
                 LOGGER.atVerbose()
                     .addKeyValue("name", property.getName())
-                    .addKeyValue("envVar", name)
+                    .addKeyValue("systemProperty", systemProperty)
                     .addKeyValue("value", property.getValueSanitizer().apply(value))
-                    .log("Got property from environment.");
+                    .log("Got property from system property.");
+                return value;
+            }
+        }
+
+        String envVar = property.getEnvironmentVariableName();
+        if (envVar != null) {
+            value = environmentConfiguration.getEnvironmentVariable(envVar);
+            if (value != null) {
+                LOGGER.atVerbose()
+                    .addKeyValue("name", property.getName())
+                    .addKeyValue("envVar", envVar)
+                    .addKeyValue("value", property.getValueSanitizer().apply(value))
+                    .log("Got property from environment variable.");
                 return value;
             }
         }

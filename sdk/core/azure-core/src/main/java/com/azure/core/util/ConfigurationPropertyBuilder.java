@@ -3,8 +3,14 @@
 
 package com.azure.core.util;
 
+import java.time.Duration;
 import java.util.Objects;
 import java.util.function.Function;
+
+import static com.azure.core.implementation.util.ConfigurationUtils.CONFIGURATION_PROPERTY_BOOLEAN_CONVERTER;
+import static com.azure.core.implementation.util.ConfigurationUtils.CONFIGURATION_PROPERTY_DURATION_CONVERTER;
+import static com.azure.core.implementation.util.ConfigurationUtils.CONFIGURATION_PROPERTY_INTEGER_CONVERTER;
+import static com.azure.core.implementation.util.ConfigurationUtils.CONFIGURATION_PROPERTY_STRING_CONVERTER;
 
 /**
  * Builds configuration property.
@@ -18,11 +24,94 @@ public final class ConfigurationPropertyBuilder<T> {
     private final Function<String, T> converter;
 
     private String[] aliases = EMPTY_ARRAY;
-    private String[] environmentAliases = EMPTY_ARRAY;
+
+    private String environmentVariableName;
+    private String systemPropertyName;
     private T defaultValue;
     private boolean shared;
     private Function<String, String> valueSanitizer;
     private boolean required;
+
+    /**
+     * Creates default {@link ConfigurationPropertyBuilder} configured to redact property value.
+     *
+     * <!-- src_embed com.azure.core.util.Configuration.get#ConfigurationProperty -->
+     * <pre>
+     * ConfigurationProperty&lt;String&gt; property = ConfigurationPropertyBuilder.ofString&#40;&quot;http.proxy.hostname&quot;&#41;
+     *     .shared&#40;true&#41;
+     *     .logValue&#40;true&#41;
+     *     .systemPropertyName&#40;&quot;http.proxyHost&quot;&#41;
+     *     .build&#40;&#41;;
+     *
+     * &#47;&#47; attempts to get local `azure.sdk.&lt;client-name&gt;.http.proxy.host` property and falls back to
+     * &#47;&#47; shared azure.sdk.http.proxy.port
+     * System.out.println&#40;configuration.get&#40;property&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.Configuration.get#ConfigurationProperty -->
+     *
+     * @param name property name.
+     * @return instance of {@link ConfigurationPropertyBuilder}.
+     */
+    public static ConfigurationPropertyBuilder<String> ofString(String name) {
+        return new ConfigurationPropertyBuilder<>(name, CONFIGURATION_PROPERTY_STRING_CONVERTER);
+    }
+
+    /**
+     * Creates {@link ConfigurationPropertyBuilder} configured to log property value and
+     * parse value using {@link Integer#valueOf(String)}, proxying {@link NumberFormatException} exception.
+     *
+     * <!-- src_embed com.azure.core.util.ConfigurationPropertyBuilder.ofInteger -->
+     * <pre>
+     * ConfigurationProperty&lt;Integer&gt; integerProperty = ConfigurationPropertyBuilder.ofInteger&#40;&quot;retry-count&quot;&#41;
+     *     .build&#40;&#41;;
+     * System.out.println&#40;configuration.get&#40;integerProperty&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.ConfigurationPropertyBuilder.ofInteger -->
+     *
+     * @param name property name.
+     * @return instance of {@link ConfigurationPropertyBuilder}.
+     */
+    public static ConfigurationPropertyBuilder<Integer> ofInteger(String name) {
+        return new ConfigurationPropertyBuilder<>(name, CONFIGURATION_PROPERTY_INTEGER_CONVERTER).logValue(true);
+    }
+
+    /**
+     * Creates {@link ConfigurationPropertyBuilder} configured to log property value and
+     * parses value as long number of milliseconds, proxying  {@link NumberFormatException} exception.
+     *
+     * <!-- src_embed com.azure.core.util.ConfigurationPropertyBuilder.ofDuration -->
+     * <pre>
+     * ConfigurationProperty&lt;Duration&gt; timeoutProperty = ConfigurationPropertyBuilder.ofDuration&#40;&quot;timeout&quot;&#41;
+     *     .build&#40;&#41;;
+     * System.out.println&#40;configuration.get&#40;timeoutProperty&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.ConfigurationPropertyBuilder.ofDuration -->
+     *
+     * @param name property name.
+     * @return instance of {@link ConfigurationPropertyBuilder}.
+     */
+    public static ConfigurationPropertyBuilder<Duration> ofDuration(String name) {
+        return new ConfigurationPropertyBuilder<>(name, CONFIGURATION_PROPERTY_DURATION_CONVERTER).logValue(true);
+    }
+
+    /**
+     * Creates {@link ConfigurationPropertyBuilder} configured to log property value and
+     * parse value using {@link Boolean#parseBoolean(String)}.
+     *
+     * <!-- src_embed com.azure.core.util.ConfigurationPropertyBuilder.ofBoolean -->
+     * <pre>
+     * ConfigurationProperty&lt;Boolean&gt; booleanProperty = ConfigurationPropertyBuilder.ofBoolean&#40;&quot;is-enabled&quot;&#41;
+     *     .build&#40;&#41;;
+     * System.out.println&#40;configuration.get&#40;booleanProperty&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.ConfigurationPropertyBuilder.ofBoolean -->
+     *
+     * @param name property name.
+     * @return instance of {@link ConfigurationPropertyBuilder}.
+     */
+    public static ConfigurationPropertyBuilder<Boolean> ofBoolean(String name) {
+        return new ConfigurationPropertyBuilder<>(name, CONFIGURATION_PROPERTY_BOOLEAN_CONVERTER).logValue(true);
+    }
 
     /**
      * Constructs {@code ConfigurationPropertyBuilder} instance.
@@ -31,7 +120,7 @@ public final class ConfigurationPropertyBuilder<T> {
      * <pre>
      * ConfigurationProperty&lt;SampleEnumProperty&gt; modeProperty =
      *     new ConfigurationPropertyBuilder&lt;&gt;&#40;&quot;mode&quot;, SampleEnumProperty::fromString&#41;
-     *         .canLogValue&#40;true&#41;
+     *         .logValue&#40;true&#41;
      *         .defaultValue&#40;SampleEnumProperty.MODE_1&#41;
      *         .build&#40;&#41;;
      * System.out.println&#40;configuration.get&#40;modeProperty&#41;&#41;;
@@ -76,12 +165,12 @@ public final class ConfigurationPropertyBuilder<T> {
      * Sets flag indicating if property value can be logged.
      * Default is {@code false}, indicating that property value will be redacted in logs.
      *
-     * @param canLogValue If set to {@code true}, {@link Configuration#get(ConfigurationProperty)} will log property value,
+     * @param logValue If set to {@code true}, {@link Configuration#get(ConfigurationProperty)} will log property value,
      *                    Otherwise, value is redacted.
      * @return the updated ConfigurationPropertyBuilder object.
      */
-    public ConfigurationPropertyBuilder<T> canLogValue(boolean canLogValue) {
-        if (canLogValue) {
+    public ConfigurationPropertyBuilder<T> logValue(boolean logValue) {
+        if (logValue) {
             this.valueSanitizer = PERMIT_VALUE_SANITIZER;
         }
 
@@ -113,17 +202,38 @@ public final class ConfigurationPropertyBuilder<T> {
     }
 
     /**
-     * Sets one or more environment variable (or system property) property name.
-     * {@link Configuration#get(ConfigurationProperty)} falls back when property value is not found by {@code name}, alias,
-     * in local and shared configuration (if enabled) and only then checks environment variables (and system properties).
-     * When environment properties are not set, {@link Configuration#get(ConfigurationProperty)} does not attempt to
+     * Sets environment variable name that can represent this property if explicit configuration is not set.
+     *
+     * <p>
+     * When property value is not found by {@code name} or {@code alias}, {@link Configuration#get(ConfigurationProperty)} falls back to
+     * system properties and environment variables.
+     *
+     * When environment variable (or system property) is not set, {@link Configuration#get(ConfigurationProperty)} does not attempt to
      * read environment configuration.
      *
-     * @param environmentAliases one or more environment variable (or system property).
+     * @param environmentVariableName environment variable name.
      * @return the updated ConfigurationPropertyBuilder object.
      */
-    public ConfigurationPropertyBuilder<T> environmentAliases(String... environmentAliases) {
-        this.environmentAliases = environmentAliases;
+    public ConfigurationPropertyBuilder<T> environmentVariableName(String environmentVariableName) {
+        this.environmentVariableName = environmentVariableName;
+        return this;
+    }
+
+    /**
+     * Sets system property name that can represent this property if explicit configuration is not set.
+     *
+     * <p>
+     * When property value is not found by {@code name} or {@code alias}, {@link Configuration#get(ConfigurationProperty)} falls back to
+     * system properties and environment variables.
+     *
+     * When environment variable (or system property) is not set, {@link Configuration#get(ConfigurationProperty)} does not attempt to
+     * read environment configuration.
+     *
+     * @param systemPropertyName one or more environment variable (or system property).
+     * @return the updated ConfigurationPropertyBuilder object.
+     */
+    public ConfigurationPropertyBuilder<T> systemPropertyName(String systemPropertyName) {
+        this.systemPropertyName = systemPropertyName;
         return this;
     }
 
@@ -132,6 +242,6 @@ public final class ConfigurationPropertyBuilder<T> {
      * @return {@link ConfigurationProperty} instance.
      */
     public ConfigurationProperty<T> build() {
-        return new ConfigurationProperty<>(name, defaultValue, required, converter, shared, environmentAliases, aliases, valueSanitizer);
+        return new ConfigurationProperty<>(name, defaultValue, required, converter, shared, environmentVariableName, systemPropertyName, aliases, valueSanitizer);
     }
 }

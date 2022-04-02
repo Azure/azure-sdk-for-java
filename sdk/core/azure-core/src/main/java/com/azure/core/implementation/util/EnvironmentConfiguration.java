@@ -4,8 +4,11 @@
 package com.azure.core.implementation.util;
 
 import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationSource;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
@@ -13,7 +16,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.function.Function;
 
 /**
  * Contains environment (system properties and environment variables) configuration information that is
@@ -55,37 +57,86 @@ public class EnvironmentConfiguration {
         Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT
     ));
 
-    private static final EnvironmentConfiguration GLOBAL_CONFIGURATION = new EnvironmentConfiguration();
+    private static EnvironmentConfiguration GLOBAL_CONFIGURATION = new EnvironmentConfiguration();
 
-    private final ConcurrentMap<String, Optional<String>> configurations;
+    private final ConcurrentMap<String, String> explicitConfigurations;
+    private final ConcurrentMap<String, Optional<String>> envConfigurations;
+    private final ConcurrentMap<String, Optional<String>> sysPropertiesConfigurations;
 
     /**
      * Constructs a configuration containing the known Azure properties constants.
      */
     public EnvironmentConfiguration() {
-        this.configurations = loadBaseConfiguration();
+        this(EnvironmentVariablesConfigurationSource.GLOBAL_SOURCE, path -> Collections.emptyMap());
     }
 
     /**
      * Clones original configuration.
      */
     public EnvironmentConfiguration(EnvironmentConfiguration original) {
-        this.configurations = new ConcurrentHashMap<>(original.configurations);
+        this.explicitConfigurations = new ConcurrentHashMap<>(original.explicitConfigurations);
+        this.envConfigurations = new ConcurrentHashMap<>(original.envConfigurations);
+        this.sysPropertiesConfigurations = new ConcurrentHashMap<>(original.sysPropertiesConfigurations);
     }
 
     /**
      * Constructs a configuration containing mocked environment. Use this constructor for testing.
      */
-    public EnvironmentConfiguration(Map<String, String> configurations) {
-        Objects.requireNonNull(configurations, "'configurations' can't be null");
-        this.configurations = new ConcurrentHashMap<>(configurations.size());
-        for (Map.Entry<String, String> config : configurations.entrySet()) {
-            this.configurations.put(config.getKey(), Optional.ofNullable(config.getValue()));
+    public EnvironmentConfiguration(ConfigurationSource environmentConfigurationSource, ConfigurationSource systemPropertiesConfigurationSource) {
+        this.explicitConfigurations = new ConcurrentHashMap<>();
+
+        if (environmentConfigurationSource == null) {
+            environmentConfigurationSource = EnvironmentVariablesConfigurationSource.GLOBAL_SOURCE;
+        }
+
+        Map<String, String> fromEnvironment = environmentConfigurationSource.getProperties(null);
+        Objects.requireNonNull(fromEnvironment, "'environmentConfigurationSource.getProperties(null)' can't be null");
+
+        this.envConfigurations = new ConcurrentHashMap<>(fromEnvironment.size());
+        for (Map.Entry<String, String> config : fromEnvironment.entrySet()) {
+            this.envConfigurations.put(config.getKey(), Optional.ofNullable(config.getValue()));
+        }
+
+        if (systemPropertiesConfigurationSource == null) {
+            this.sysPropertiesConfigurations = new ConcurrentHashMap<>();
+        } else {
+            Map<String, String> fromSystemProperties = systemPropertiesConfigurationSource.getProperties(null);
+            Objects.requireNonNull(fromSystemProperties, "'systemPropertiesConfigurationSource.getProperties(null)' can't be null");
+            this.sysPropertiesConfigurations = new ConcurrentHashMap<>(fromSystemProperties.size());
+            for (Map.Entry<String, String> config : fromSystemProperties.entrySet()) {
+                this.sysPropertiesConfigurations.put(config.getKey(), Optional.ofNullable(config.getValue()));
+            }
         }
     }
 
     public static EnvironmentConfiguration getGlobalConfiguration() {
         return GLOBAL_CONFIGURATION;
+    }
+
+    /**
+     * Gets the value of the environment variable.
+     * <p>
+     * This method first checks the values previously loaded from the environment, if the configuration is found there
+     * it will be returned. Otherwise, this will attempt to load the value from the environment.
+     *
+     * @param name Name of the configuration.
+     * @return Value of the configuration if found, otherwise null.
+     */
+    public String getEnvironmentVariable(String name) {
+        return getOrLoad(name, envConfigurations, false);
+    }
+
+    /**
+     * Gets the value of the system property.
+     * <p>
+     * This method first checks the values previously loaded from the environment, if the configuration is found there
+     * it will be returned. Otherwise, this will attempt to load the value from the environment.
+     *
+     * @param name Name of the configuration.
+     * @return Value of the configuration if found, otherwise null.
+     */
+    public String getSystemProperty(String name) {
+        return getOrLoad(name, sysPropertiesConfigurations, true);
     }
 
     /**
@@ -97,48 +148,19 @@ public class EnvironmentConfiguration {
      * @param name Name of the configuration.
      * @return Value of the configuration if found, otherwise null.
      */
-    public String get(String name) {
-        return getOrLoad(name);
-    }
-
-    /**
-     * Gets the value of the configuration converted to {@code T}.
-     * <p>
-     * This method first checks the values previously loaded from the environment, if the configuration is found there
-     * it will be returned. Otherwise, this will attempt to load the value from the environment.
-     * <p>
-     * If no configuration is found, the {@code defaultValue} is returned.
-     *
-     * @param name Name of the configuration.
-     * @param defaultValue Value to return if the configuration isn't found.
-     * @param <T> Type that the configuration is converted to if found.
-     * @return The converted configuration if found, otherwise the default value is returned.
-     */
-    public <T> T get(String name, T defaultValue) {
-        return ConfigurationUtils.convertToPrimitiveOrDefault(getOrLoad(name), defaultValue);
-    }
-
-    /**
-     * Gets the value of the configuration and converts it with the {@code converter}.
-     * <p>
-     * This method first checks the values previously loaded from the environment, if the configuration is found there
-     * it will be returned. Otherwise, this will attempt to load the value from the environment.
-     * <p>
-     * If no configuration is found the {@code converter} won't be called and null will be returned.
-     *
-     * @param name Name of the configuration.
-     * @param converter Converter used to map the configuration to {@code T}.
-     * @param <T> Type that the configuration is converted to if found.
-     * @return The converted configuration if found, otherwise null.
-     */
-    public <T> T get(String name, Function<String, T> converter) {
-        Objects.requireNonNull(converter, "'converter' can't be null");
-        String value = getOrLoad(name);
-        if (value == null) {
-            return null;
+    public String getAny(String name) {
+        String value = explicitConfigurations.get(name);
+        if (value != null) {
+            return value;
         }
 
-        return converter.apply(value);
+        value = getSystemProperty(name);
+
+        if (value != null) {
+            return value;
+        }
+
+        return getEnvironmentVariable(name);
     }
 
     /*
@@ -147,17 +169,17 @@ public class EnvironmentConfiguration {
      *
      * If no configuration is found null is returned.
      *
-     * @param name Name of the configuration.
+     * @param name Configuration property name.
      * @return The configuration value from either the configuration store, runtime parameters, or environment
      * variable, in that order, if found, otherwise null.
      */
-    private String getOrLoad(String name) {
+    private String getOrLoad(String name, ConcurrentMap<String, Optional<String>> configurations, boolean loadFromSystemProperties) {
         Optional<String> value = configurations.get(name);
         if (value != null) {
             return value.orElse(null);
         }
 
-        String envValue = load(name);
+        String envValue = loadFromSystemProperties ? loadFromProperties(name) : loadFromEnvironment(name);
         configurations.put(name, Optional.ofNullable(envValue));
         return envValue;
     }
@@ -172,7 +194,7 @@ public class EnvironmentConfiguration {
      * @return The updated Configuration object.
      */
     public EnvironmentConfiguration put(String name, String value) {
-        configurations.put(name, Optional.ofNullable(value));
+        explicitConfigurations.put(name, value);
         return this;
     }
 
@@ -185,32 +207,7 @@ public class EnvironmentConfiguration {
      * @return The configuration if it previously existed, otherwise null.
      */
     public String remove(String name) {
-        Optional<String> value = configurations.remove(name);
-        return (value != null && value.isPresent()) ? value.get() : null;
-    }
-
-    /**
-     * Determines if the configuration exists.
-     * <p>
-     * This only checks against values previously loaded into the Configuration object, this won't inspect the
-     * environment for containing the value.
-     *
-     * @param name Name of the configuration.
-     * @return True if the configuration exists, otherwise false.
-     */
-    public boolean contains(String name) {
-        Optional<String> value = configurations.get(name);
-        return value != null && value.isPresent();
-    }
-
-    private String load(String propertyName) {
-        String value = loadFromProperties(propertyName);
-
-        if (value != null) {
-            return value;
-        }
-
-        return loadFromEnvironment(propertyName);
+        return explicitConfigurations.remove(name);
     }
 
     String loadFromEnvironment(String name) {
@@ -221,15 +218,23 @@ public class EnvironmentConfiguration {
         return System.getProperty(name);
     }
 
-    private ConcurrentMap<String, Optional<String>> loadBaseConfiguration() {
-        ConcurrentMap<String, Optional<String>> configurations = new ConcurrentHashMap<>();
-        for (String config : DEFAULT_CONFIGURATIONS) {
-            String value = load(config);
-            if (value != null) {
-                configurations.put(config, Optional.of(value));
+    public static class EnvironmentVariablesConfigurationSource implements ConfigurationSource {
+        public static final ConfigurationSource GLOBAL_SOURCE = new EnvironmentVariablesConfigurationSource();
+        Map<String, String> configurations;
+
+        private EnvironmentVariablesConfigurationSource() {
+            configurations = new HashMap<>();
+            for (String config : DEFAULT_CONFIGURATIONS) {
+                String value = System.getenv(config);
+                if (value != null) {
+                    configurations.put(config, value);
+                }
             }
         }
 
-        return configurations;
+        @Override
+        public Map<String, String> getProperties(String ignored) {
+            return configurations;
+        }
     }
 }

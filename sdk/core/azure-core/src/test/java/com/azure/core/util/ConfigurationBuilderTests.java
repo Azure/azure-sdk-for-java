@@ -38,7 +38,7 @@ public class ConfigurationBuilderTests {
             .root("az");
         assertEquals("az.local", builder.buildSection("local").get("bar"));
 
-        ConfigurationProperty<String> prop = ConfigurationProperty.stringPropertyBuilder("foo").shared(true).build();
+        ConfigurationProperty<String> prop = ConfigurationPropertyBuilder.ofString("foo").shared(true).build();
         assertEquals("az", builder.buildSection("another").get(prop));
     }
 

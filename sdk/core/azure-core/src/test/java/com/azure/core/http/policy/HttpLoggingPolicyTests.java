@@ -295,7 +295,7 @@ public class HttpLoggingPolicyTests {
     }
 
     private void setupLogLevel(int logLevelToSet) {
-        originalLogLevel = EnvironmentConfiguration.getGlobalConfiguration().get(PROPERTY_AZURE_LOG_LEVEL);
+        originalLogLevel = EnvironmentConfiguration.getGlobalConfiguration().getAny(PROPERTY_AZURE_LOG_LEVEL);
         EnvironmentConfiguration.getGlobalConfiguration().put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(logLevelToSet));
     }
 

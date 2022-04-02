@@ -39,6 +39,39 @@ public class ProxyOptions implements AutoCloseable {
      */
     public static final String PROXY_AUTHENTICATION_TYPE = "PROXY_AUTHENTICATION_TYPE";
 
+    private static final ConfigurationProperty<ProxyAuthenticationType> AUTH_TYPE_PROPERTY =
+        new ConfigurationPropertyBuilder<>(ConfigurationProperties.AUTHENTICATION_TYPE, s -> ProxyAuthenticationType.valueOf(s))
+            .shared(true)
+            .logValue(true)
+            .defaultValue(ProxyAuthenticationType.NONE)
+            .build();
+
+    static final ConfigurationProperty<Proxy.Type> TYPE_PROPERTY =
+        new ConfigurationPropertyBuilder<>(ConfigurationProperties.TYPE, s -> Proxy.Type.valueOf(s))
+            .shared(true)
+            .logValue(true)
+            .defaultValue(Proxy.Type.DIRECT)
+            .build();
+
+    static final ConfigurationProperty<String> HOST_PROPERTY = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.HOST)
+        .shared(true)
+        .logValue(true)
+        .build();
+
+    static final ConfigurationProperty<Integer> PORT_PROPERTY = ConfigurationPropertyBuilder.ofInteger(ConfigurationProperties.PORT)
+        .shared(true)
+        .required(true)
+        .build();
+
+    static final ConfigurationProperty<String> USER_PROPERTY = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.USER)
+        .shared(true)
+        .logValue(true)
+        .build();
+
+    static final ConfigurationProperty<String> PASSWORD_PROPERTY = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.PASSWORD)
+        .shared(true)
+        .build();
+
     private static final ClientLogger LOGGER = new ClientLogger(ProxyOptions.class);
     private final PasswordAuthentication credentials;
     private final Proxy proxyAddress;
@@ -101,20 +134,20 @@ public class ProxyOptions implements AutoCloseable {
             ? Configuration.getGlobalConfiguration()
             : configuration;
 
-        String host = proxyConfiguration.get(Properties.PROXY_HOST);
+        String host = proxyConfiguration.get(HOST_PROPERTY);
 
         // No proxy configuration setup.
         if (CoreUtils.isNullOrEmpty(host)) {
             return null;
         }
 
-        int port = proxyConfiguration.get(Properties.PROXY_PORT);
+        int port = proxyConfiguration.get(PORT_PROPERTY);
         InetSocketAddress socketAddress = new InetSocketAddress(host, port);
 
-        Proxy.Type proxyType = proxyConfiguration.get(Properties.PROXY_TYPE);
-        ProxyAuthenticationType authType = proxyConfiguration.get(Properties.AUTHENTICATION_TYPE);
-        String username = proxyConfiguration.get(Properties.PROXY_USER);
-        String password = proxyConfiguration.get(Properties.PROXY_PASSWORD);
+        Proxy.Type proxyType = proxyConfiguration.get(TYPE_PROPERTY);
+        ProxyAuthenticationType authType = proxyConfiguration.get(AUTH_TYPE_PROPERTY);
+        String username = proxyConfiguration.get(USER_PROPERTY);
+        String password = proxyConfiguration.get(PASSWORD_PROPERTY);
 
         return new ProxyOptions(authType, new Proxy(proxyType, socketAddress), username, password);
     }
@@ -178,39 +211,12 @@ public class ProxyOptions implements AutoCloseable {
         }
     }
 
-    private static class Properties {
-        public static final ConfigurationProperty<ProxyAuthenticationType> AUTHENTICATION_TYPE =
-            new ConfigurationPropertyBuilder<>("amqp.proxy.authentication-type", s -> ProxyAuthenticationType.valueOf(s))
-                .shared(true)
-                .canLogValue(true)
-                .defaultValue(ProxyAuthenticationType.NONE)
-                .build();
-
-        public static final ConfigurationProperty<Proxy.Type> PROXY_TYPE =
-            new ConfigurationPropertyBuilder<>("amqp.proxy.type", s -> Proxy.Type.valueOf(s))
-                .shared(true)
-                .canLogValue(true)
-                .defaultValue(Proxy.Type.DIRECT)
-                .build();
-
-        public static final ConfigurationProperty<String> PROXY_HOST = ConfigurationProperty.stringPropertyBuilder("amqp.proxy.hostname")
-            .shared(true)
-            .canLogValue(true)
-            .build();
-
-        public static final ConfigurationProperty<Integer> PROXY_PORT = ConfigurationProperty.integerPropertyBuilder("amqp.proxy.port")
-            .shared(true)
-            .required(true)
-            .build();
-
-        public static final ConfigurationProperty<String> PROXY_USER = ConfigurationProperty.stringPropertyBuilder("amqp.proxy.username")
-            .shared(true)
-            .canLogValue(true)
-            .build();
-
-        public static final ConfigurationProperty<String> PROXY_PASSWORD = ConfigurationProperty.stringPropertyBuilder("amqp.proxy.password")
-            .shared(true)
-            .build();
-
+    public static class ConfigurationProperties {
+        public static final String AUTHENTICATION_TYPE = "amqp.proxy.authentication-type";
+        public static final String TYPE = "amqp.proxy.type";
+        public static final String HOST = "amqp.proxy.hostname";
+        public static final String PORT = "amqp.proxy.port";
+        public static final String USER = "amqp.proxy.username";
+        public static final String PASSWORD = "amqp.proxy.password";
     }
 }

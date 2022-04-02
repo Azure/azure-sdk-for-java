@@ -14,8 +14,8 @@ import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.Context;
-import com.azure.core.util.TestConfigurationBuilder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -137,11 +137,11 @@ public class UserAgentTests {
             Configuration.getGlobalConfiguration().get("os.name"),
             Configuration.getGlobalConfiguration().get("os.version"));
 
-        Configuration enabledTelemetryConfiguration = new TestConfigurationBuilder()
-            .add(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, "false")
+        Configuration enabledTelemetryConfiguration = new ConfigurationBuilder()
+            .addProperty(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, "false")
             .build();
-        Configuration disabledTelemetryConfiguration = new TestConfigurationBuilder()
-            .add(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, "true")
+        Configuration disabledTelemetryConfiguration = new ConfigurationBuilder()
+            .addProperty(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, "true")
             .build();
 
         return Stream.of(

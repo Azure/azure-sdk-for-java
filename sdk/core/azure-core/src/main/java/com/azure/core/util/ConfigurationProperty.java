@@ -3,27 +3,23 @@
 
 package com.azure.core.util;
 
-import java.time.Duration;
 import java.util.Objects;
 import java.util.function.Function;
 
-import static com.azure.core.implementation.util.ConfigurationUtils.CONFIGURATION_PROPERTY_BOOLEAN_CONVERTER;
-import static com.azure.core.implementation.util.ConfigurationUtils.CONFIGURATION_PROPERTY_DURATION_CONVERTER;
-import static com.azure.core.implementation.util.ConfigurationUtils.CONFIGURATION_PROPERTY_INTEGER_CONVERTER;
-import static com.azure.core.implementation.util.ConfigurationUtils.CONFIGURATION_PROPERTY_STRING_CONVERTER;
 
 /**
  * Represents configuration property.
  *
  * @param <T> Type of property value.
  */
-public final class ConfigurationProperty<T> {
+public class ConfigurationProperty<T> {
     private static final String[] EMPTY_ARRAY = new String[0];
     private static final Function<String, String> REDACT_VALUE_SANITIZER = (value) -> "redacted";
 
     private final String name;
     private final String[] aliases;
-    private final String[] environmentVariables;
+    private final String environmentVariable;
+    private final String systemProperty;
     private final Function<String, T> converter;
     private final Function<String, String> valueSanitizer;
     private final T defaultValue;
@@ -38,15 +34,17 @@ public final class ConfigurationProperty<T> {
      * @param isRequired indicates required property for validation purposes
      * @param converter converts String property value to property type and performs validation.
      * @param isShared indicates property that can be specified in per-client and root sections.
-     * @param environmentVariables list of environment variables the property can be represented with. Can be null.
+     * @param environmentVariable environment variables the property can be represented with. Can be null.
+     * @param systemProperty system property the property can be represented with. Can be null.
      * @param aliases list of alternative names of the property. Can be null.
      * @param valueSanitizer sanitizes property value for logging purposes.
      */
     ConfigurationProperty(String name, T defaultValue, boolean isRequired, Function<String, T> converter, boolean isShared,
-                          String[] environmentVariables, String[] aliases, Function<String, String> valueSanitizer) {
+                          String environmentVariable, String systemProperty, String[] aliases, Function<String, String> valueSanitizer) {
         this.name = Objects.requireNonNull(name, "'name' cannot be null");
         this.converter = Objects.requireNonNull(converter, "'converter' cannot be null");
-        this.environmentVariables = environmentVariables == null ? EMPTY_ARRAY : environmentVariables;
+        this.environmentVariable = environmentVariable;
+        this.systemProperty = systemProperty;
         this.aliases = aliases == null ? EMPTY_ARRAY : aliases;
         this.defaultValue = defaultValue;
         this.isRequired = isRequired;
@@ -107,88 +105,14 @@ public final class ConfigurationProperty<T> {
     /**
      * Gets name of environment variables this property can be configured with.
      */
-    String[] getEnvironmentVariables() {
-        return environmentVariables;
+    String getEnvironmentVariableName() {
+        return environmentVariable;
     }
 
     /**
-     * Creates default {@link ConfigurationPropertyBuilder} configured to redact property value.
-     *
-     * <!-- src_embed com.azure.core.util.Configuration.get#ConfigurationProperty -->
-     * <pre>
-     * ConfigurationProperty&lt;String&gt; property = ConfigurationProperty.stringPropertyBuilder&#40;&quot;http.proxy.hostname&quot;&#41;
-     *     .shared&#40;true&#41;
-     *     .canLogValue&#40;true&#41;
-     *     .environmentAliases&#40;&quot;http.proxyHost&quot;&#41;
-     *     .build&#40;&#41;;
-     *
-     * &#47;&#47; attempts to get local `azure.sdk.&lt;client-name&gt;.http.proxy.host` property and falls back to
-     * &#47;&#47; shared azure.sdk.http.proxy.port
-     * System.out.println&#40;configuration.get&#40;property&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.core.util.Configuration.get#ConfigurationProperty -->
-     *
-     * @param name property name.
-     * @return instance of {@link ConfigurationPropertyBuilder}.
+     * Gets name of system property this property can be configured with.
      */
-    public static ConfigurationPropertyBuilder<String> stringPropertyBuilder(String name) {
-        return new ConfigurationPropertyBuilder<>(name, CONFIGURATION_PROPERTY_STRING_CONVERTER);
-    }
-
-    /**
-     * Creates {@link ConfigurationPropertyBuilder} configured to log property value and
-     * parse value using {@link Integer#valueOf(String)}, proxying {@link NumberFormatException} exception.
-     *
-     * <!-- src_embed com.azure.core.util.ConfigurationProperty.integerPropertyBuilder -->
-     * <pre>
-     * ConfigurationProperty&lt;Integer&gt; integerProperty = ConfigurationProperty.integerPropertyBuilder&#40;&quot;retry-count&quot;&#41;
-     *     .build&#40;&#41;;
-     * System.out.println&#40;configuration.get&#40;integerProperty&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.core.util.ConfigurationProperty.integerPropertyBuilder -->
-     *
-     * @param name property name.
-     * @return instance of {@link ConfigurationPropertyBuilder}.
-     */
-    public static ConfigurationPropertyBuilder<Integer> integerPropertyBuilder(String name) {
-        return new ConfigurationPropertyBuilder<>(name, CONFIGURATION_PROPERTY_INTEGER_CONVERTER).canLogValue(true);
-    }
-
-    /**
-     * Creates {@link ConfigurationPropertyBuilder} configured to log property value and
-     * parses value as long number of milliseconds, proxying  {@link NumberFormatException} exception.
-     *
-     * <!-- src_embed com.azure.core.util.ConfigurationProperty.durationPropertyBuilder -->
-     * <pre>
-     * ConfigurationProperty&lt;Duration&gt; timeoutProperty = ConfigurationProperty.durationPropertyBuilder&#40;&quot;timeout&quot;&#41;
-     *     .build&#40;&#41;;
-     * System.out.println&#40;configuration.get&#40;timeoutProperty&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.core.util.ConfigurationProperty.durationPropertyBuilder -->
-     *
-     * @param name property name.
-     * @return instance of {@link ConfigurationPropertyBuilder}.
-     */
-    public static ConfigurationPropertyBuilder<Duration> durationPropertyBuilder(String name) {
-        return new ConfigurationPropertyBuilder<>(name, CONFIGURATION_PROPERTY_DURATION_CONVERTER).canLogValue(true);
-    }
-
-    /**
-     * Creates {@link ConfigurationPropertyBuilder} configured to log property value and
-     * parse value using {@link Boolean#parseBoolean(String)}.
-     *
-     * <!-- src_embed com.azure.core.util.ConfigurationProperty.booleanPropertyBuilder -->
-     * <pre>
-     * ConfigurationProperty&lt;Boolean&gt; booleanProperty = ConfigurationProperty.booleanPropertyBuilder&#40;&quot;is-enabled&quot;&#41;
-     *     .build&#40;&#41;;
-     * System.out.println&#40;configuration.get&#40;booleanProperty&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.core.util.ConfigurationProperty.booleanPropertyBuilder -->
-     *
-     * @param name property name.
-     * @return instance of {@link ConfigurationPropertyBuilder}.
-     */
-    public static ConfigurationPropertyBuilder<Boolean> booleanPropertyBuilder(String name) {
-        return new ConfigurationPropertyBuilder<>(name, CONFIGURATION_PROPERTY_BOOLEAN_CONVERTER).canLogValue(true);
+    String getSystemPropertyName() {
+        return systemProperty;
     }
 }

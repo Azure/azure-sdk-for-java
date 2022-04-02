@@ -5,17 +5,29 @@ package com.azure.core.util;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.implementation.util.EnvironmentConfiguration;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
  * Builds {@link Configuration} with external source.
  */
 @Fluent
-public class ConfigurationBuilder {
-    private final ConfigurationSource source;
-    private final EnvironmentConfiguration environmentConfiguration;
+public final class ConfigurationBuilder {
+
+    private final MutableConfigurationSource mutableSource;
+    private ConfigurationSource environmentConfigurationSource = null;
+    private ConfigurationSource systemPropertiesConfigurationSource = null;
     private String rootPath;
     private Configuration sharedConfiguration;
+    private EnvironmentConfiguration environmentConfiguration;
+
+    public ConfigurationBuilder() {
+        this.mutableSource = new MutableConfigurationSource();
+        this.environmentConfiguration = null;
+    }
 
     /**
      * Creates {@code ConfigurationBuilder}.
@@ -30,20 +42,30 @@ public class ConfigurationBuilder {
      * @param source Custom {@link ConfigurationSource} containing known Azure SDK configuration properties
      */
     public ConfigurationBuilder(ConfigurationSource source) {
-        this.source = Objects.requireNonNull(source, "'source' cannot be null");
-        this.environmentConfiguration = EnvironmentConfiguration.getGlobalConfiguration();
+        Objects.requireNonNull(source, "'source' cannot be null");
+        this.mutableSource = new MutableConfigurationSource(source);
+        this.environmentConfiguration = null;
     }
 
-    /**
-     * Creates {@code ConfigurationBuilder} with custom environment configuration. Used to test configuration.
-     *
-     * @param source {@link ConfigurationSource} instance containing known Azure SDK configuration properties
-     * @param environmentConfigurationSource {@link ConfigurationSource} instance containing known Azure SDK environment configuration.
-     */
-    ConfigurationBuilder(ConfigurationSource source, ConfigurationSource environmentConfigurationSource) {
-        this.source = Objects.requireNonNull(source, "'source' cannot be null");
-        Objects.requireNonNull(environmentConfigurationSource, "'source' cannot be null");
-        this.environmentConfiguration = new EnvironmentConfiguration(environmentConfigurationSource.getProperties(null));
+    public ConfigurationBuilder addProperty(String name, String value) {
+        Objects.requireNonNull(name, "'name' cannot be null.");
+        Objects.requireNonNull(value, "'value' cannot be null.");
+
+        mutableSource.add(name, value);
+
+        return this;
+    }
+
+    public ConfigurationBuilder environmentSource(ConfigurationSource environmentConfigurationSource) {
+        this.environmentConfigurationSource = Objects.requireNonNull(environmentConfigurationSource, "'environmentConfigurationSource' cannot be null");
+        this.environmentConfiguration = null;
+        return this;
+    }
+
+    public ConfigurationBuilder systemPropertiesSource(ConfigurationSource systemPropertiesConfigurationSource) {
+        this.systemPropertiesConfigurationSource = Objects.requireNonNull(systemPropertiesConfigurationSource, "'systemPropertiesConfigurationSource' cannot be null");
+        this.environmentConfiguration = null;
+        return this;
     }
 
     /**
@@ -85,7 +107,7 @@ public class ConfigurationBuilder {
     public Configuration build() {
         if (sharedConfiguration == null) {
             // defaults can be reused to get different client sections.
-            sharedConfiguration = new Configuration(source, environmentConfiguration, rootPath, null);
+            sharedConfiguration = new Configuration(mutableSource, getOrCreateEnvironmentConfiguration(), rootPath, null);
         }
 
         return sharedConfiguration;
@@ -111,11 +133,11 @@ public class ConfigurationBuilder {
         Objects.requireNonNull(path, "'path' cannot be null");
         if (sharedConfiguration == null) {
             // sharedConfiguration can be reused to build different client sections.
-            sharedConfiguration = new Configuration(this.source, environmentConfiguration, rootPath, null);
+            sharedConfiguration = new Configuration(mutableSource, getOrCreateEnvironmentConfiguration(), rootPath, null);
         }
 
         String absolutePath = getAbsolutePath(rootPath, path);
-        return new Configuration(this.source, environmentConfiguration, absolutePath, sharedConfiguration);
+        return new Configuration(mutableSource, getOrCreateEnvironmentConfiguration(), absolutePath, sharedConfiguration);
     }
 
     private static String getAbsolutePath(String root, String relative) {
@@ -124,5 +146,64 @@ public class ConfigurationBuilder {
         }
 
         return root + "." + relative;
+    }
+
+    private EnvironmentConfiguration getOrCreateEnvironmentConfiguration() {
+        if (environmentConfiguration != null) {
+            return environmentConfiguration;
+        }
+
+        if (environmentConfigurationSource == null && systemPropertiesConfigurationSource == null) {
+            return EnvironmentConfiguration.getGlobalConfiguration();
+        }
+
+        return new EnvironmentConfiguration(environmentConfigurationSource, systemPropertiesConfigurationSource);
+    }
+
+    private static final class MutableConfigurationSource implements ConfigurationSource {
+
+        private final ConfigurationSource originalSource;
+        private Map<String, String> additionalConfigurations;
+
+        private MutableConfigurationSource() {
+            this.originalSource = null;
+            this.additionalConfigurations = null;
+        }
+
+        private MutableConfigurationSource(ConfigurationSource originalSource) {
+            this.originalSource = originalSource;
+            this.additionalConfigurations = null;
+        }
+
+        MutableConfigurationSource add(String key, String value) {
+            if (additionalConfigurations == null) {
+                additionalConfigurations = new HashMap<>();
+            }
+
+            additionalConfigurations.put(key, value);
+
+            return this;
+        }
+
+        @Override
+        public Map<String, String> getProperties(String source) {
+            Map<String, String> original = originalSource == null ? Collections.emptyMap() : originalSource.getProperties(source);
+            if (additionalConfigurations == null) {
+                return original;
+            }
+
+            Map<String, String> allConfigurations = new HashMap<>(original);
+            for (Map.Entry<String, String> prop : additionalConfigurations.entrySet()) {
+                if (hasPrefix(prop.getKey(), source)) {
+                    allConfigurations.put(prop.getKey(), prop.getValue());
+                }
+            }
+
+            return allConfigurations;
+        }
+
+        private static boolean hasPrefix(String key, String prefix) {
+            return prefix == null || key.startsWith(prefix) && key.length() > prefix.length() && key.charAt(prefix.length()) == '.';
+        }
     }
 }

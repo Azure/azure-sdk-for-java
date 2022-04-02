@@ -35,8 +35,8 @@ public interface ConfigurationSource {
      *       <li>{@code getProperties("azure.sdk.ba")} must return empty map</li>
      * </ul>
      *
-     * @param path property name prefix
+     * @param source property name prefix
      * @return Map of properties under given path.
      */
-    Map<String, String> getProperties(String path);
+    Map<String, String> getProperties(String source);
 }
