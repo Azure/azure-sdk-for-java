@@ -36,6 +36,7 @@ import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.DataLakeFileOpenInputStreamResult;
 import com.azure.storage.file.datalake.models.FileQueryAsyncResponse;
 import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
+import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.models.FileQueryResponse;
@@ -201,7 +202,8 @@ public class DataLakeFileClient extends DataLakePathClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean deleteIfExists() {
-        Response<Void> response = deleteIfExistsWithResponse(false,null, null, Context.NONE);
+        Response<Void> response = deleteIfExistsWithResponse(new DataLakePathDeleteOptions().setIsRecursive(false)
+            .setRequestConditions(new DataLakeRequestConditions()), null, Context.NONE);
         return response != null && response.getStatusCode() == 200;
     }
 
@@ -214,8 +216,10 @@ public class DataLakeFileClient extends DataLakePathClient {
      * <pre>
      * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
      *     .setLeaseId&#40;leaseId&#41;;
+     * DataLakePathDeleteOptions options = new DataLakePathDeleteOptions&#40;&#41;.setIsRecursive&#40;false&#41;
+     *      .setRequestConditions&#40;requestConditions&#41;;
      *
-     * Response&lt;Void&gt; response = client.deleteIfExistsWithResponse&#40;requestConditions, timeout, new Context&#40;key1, value1&#41;&#41;;
+     * Response&lt;Void&gt; response = client.deleteIfExistsWithResponse&#40;options, timeout, new Context&#40;key1, value1&#41;&#41;;
      * if &#40;response == null&#41; &#123;
      *      System.out.println&#40;&quot;Does not exist.&quot;&#41;;
      * &#125; else &#123;
@@ -228,7 +232,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
      * Docs</a></p>
      *
-     * @param requestConditions {@link DataLakeRequestConditions}
+     * @param options {@link DataLakePathDeleteOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
@@ -236,10 +240,10 @@ public class DataLakeFileClient extends DataLakePathClient {
      * file was deleted successfully, {@code null} indicates the file does not exist at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteIfExistsWithResponse(DataLakeRequestConditions requestConditions, Duration timeout,
+    public Response<Void> deleteIfExistsWithResponse(DataLakePathDeleteOptions options, Duration timeout,
         Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(dataLakeFileAsyncClient
-            .deleteIfExistsWithResponse(false, requestConditions, context), timeout);
+            .deleteIfExistsWithResponse(options, context), timeout);
     }
 
 

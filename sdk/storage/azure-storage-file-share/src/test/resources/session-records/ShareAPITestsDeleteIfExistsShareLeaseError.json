@@ -1,32 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://REDACTED.file.core.windows.net/f05cbcdbf05cbcdbc5a996295b8af2097a5e4393b9?restype=share",
+    "Uri" : "http://REDACTED.file.core.windows.net/f05cbcdbf05cbcdbaa4114614dd1c807bdba4bbbbe?restype=share",
     "Headers" : {
       "x-ms-version" : "2021-04-10",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "1720d4be-44b7-4878-b37c-fa3a04f05e7a"
+      "x-ms-client-request-id" : "c3769d87-c425-48e1-bc4a-517e362ac231"
     },
     "Response" : {
       "content-length" : "0",
       "x-ms-version" : "2021-04-10",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "eTag" : "0x8DA136979DE45F6",
-      "Last-Modified" : "Thu, 31 Mar 2022 22:54:56 GMT",
+      "eTag" : "0x8DA14F0DC229C5C",
+      "Last-Modified" : "Sat, 02 Apr 2022 21:36:34 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "0a8452df-001a-0007-7252-457e9b000000",
-      "x-ms-client-request-id" : "1720d4be-44b7-4878-b37c-fa3a04f05e7a",
-      "Date" : "Thu, 31 Mar 2022 22:54:56 GMT"
+      "x-ms-request-id" : "079f0ebb-101a-0056-41d9-46e317000000",
+      "x-ms-client-request-id" : "c3769d87-c425-48e1-bc4a-517e362ac231",
+      "Date" : "Sat, 02 Apr 2022 21:36:33 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://REDACTED.file.core.windows.net/f05cbcdbf05cbcdbc5a996295b8af2097a5e4393b9?restype=share",
+    "Uri" : "http://REDACTED.file.core.windows.net/f05cbcdbf05cbcdbaa4114614dd1c807bdba4bbbbe?restype=share",
     "Headers" : {
       "x-ms-version" : "2021-04-10",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "83921805-ca01-444a-9293-6e84eae7e4bb"
+      "x-ms-client-request-id" : "92e72f62-352c-401e-803c-f1479fafed2c"
     },
     "Response" : {
       "content-length" : "252",
@@ -35,13 +35,13 @@
       "x-ms-error-code" : "LeaseNotPresentWithContainerOperation",
       "retry-after" : "0",
       "StatusCode" : "412",
-      "x-ms-request-id" : "2e979411-301a-0023-3a52-45883b000000",
-      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>LeaseNotPresentWithContainerOperation</Code><Message>There is currently no lease on the file share.\nRequestId:2e979411-301a-0023-3a52-45883b000000\nTime:2022-03-31T22:54:56.6213786Z</Message></Error>",
-      "x-ms-client-request-id" : "83921805-ca01-444a-9293-6e84eae7e4bb",
-      "Date" : "Thu, 31 Mar 2022 22:54:56 GMT",
+      "x-ms-request-id" : "358898fc-901a-0005-1dd9-46c023000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>LeaseNotPresentWithContainerOperation</Code><Message>There is currently no lease on the file share.\nRequestId:358898fc-901a-0005-1dd9-46c023000000\nTime:2022-04-02T21:36:34.6937460Z</Message></Error>",
+      "x-ms-client-request-id" : "92e72f62-352c-401e-803c-f1479fafed2c",
+      "Date" : "Sat, 02 Apr 2022 21:36:33 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "f05cbcdbf05cbcdbc5a996295b8af2097a5e4393b9" ]
+  "variables" : [ "f05cbcdbf05cbcdbaa4114614dd1c807bdba4bbbbe" ]
 }

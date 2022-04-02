@@ -1,32 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://REDACTED.file.core.windows.net/a2d5e0e8a2d5e0e8427469364c214a1ef12d4bb2a0?restype=share",
+    "Uri" : "http://REDACTED.file.core.windows.net/a2d5e0e8a2d5e0e8447044450c3e3a176756400ba7?restype=share",
     "Headers" : {
       "x-ms-version" : "2021-04-10",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "61efeeee-6aa5-46cd-876e-b177aea6920c"
+      "x-ms-client-request-id" : "4566d129-e1f5-450d-883b-2285c0d91684"
     },
     "Response" : {
       "content-length" : "0",
       "x-ms-version" : "2021-04-10",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "eTag" : "0x8DA1369C9130811",
-      "Last-Modified" : "Thu, 31 Mar 2022 22:57:09 GMT",
+      "eTag" : "0x8DA14F0FB7035EA",
+      "Last-Modified" : "Sat, 02 Apr 2022 21:37:26 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "d393d929-801a-0019-7c52-459243000000",
-      "x-ms-client-request-id" : "61efeeee-6aa5-46cd-876e-b177aea6920c",
-      "Date" : "Thu, 31 Mar 2022 22:57:08 GMT"
+      "x-ms-request-id" : "8d45279b-701a-000d-73d9-46da2c000000",
+      "x-ms-client-request-id" : "4566d129-e1f5-450d-883b-2285c0d91684",
+      "Date" : "Sat, 02 Apr 2022 21:37:26 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://REDACTED.file.core.windows.net/a2d5e0e8a2d5e0e8427469364c214a1ef12d4bb2a0/testCreateDirectory?restype=directory",
+    "Uri" : "http://REDACTED.file.core.windows.net/a2d5e0e8a2d5e0e8447044450c3e3a176756400ba7/testCreateDirectory?restype=directory",
     "Headers" : {
       "x-ms-version" : "2021-04-10",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "859b2477-69c8-4ac5-8b44-f8bd445ab514"
+      "x-ms-client-request-id" : "c9cac2fa-236c-4fbf-8928-bc8edd12e44a"
     },
     "Response" : {
       "content-length" : "223",
@@ -35,13 +35,13 @@
       "x-ms-error-code" : "ResourceNotFound",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "x-ms-request-id" : "1ca3e0de-501a-0035-3352-457eec000000",
-      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:1ca3e0de-501a-0035-3352-457eec000000\nTime:2022-03-31T22:57:09.4203317Z</Message></Error>",
-      "x-ms-client-request-id" : "859b2477-69c8-4ac5-8b44-f8bd445ab514",
-      "Date" : "Thu, 31 Mar 2022 22:57:08 GMT",
+      "x-ms-request-id" : "b19dbc1f-d01a-0049-20d9-465013000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:b19dbc1f-d01a-0049-20d9-465013000000\nTime:2022-04-02T21:37:27.0811442Z</Message></Error>",
+      "x-ms-client-request-id" : "c9cac2fa-236c-4fbf-8928-bc8edd12e44a",
+      "Date" : "Sat, 02 Apr 2022 21:37:26 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "a2d5e0e8a2d5e0e8427469364c214a1ef12d4bb2a0" ]
+  "variables" : [ "a2d5e0e8a2d5e0e8447044450c3e3a176756400ba7" ]
 }

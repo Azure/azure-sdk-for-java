@@ -16,6 +16,7 @@ import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.models.ShareRootSquash
 import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.options.ShareCreateOptions
+import com.azure.storage.file.share.options.ShareDeleteOptions
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions
 import com.azure.storage.file.share.options.ShareSetPropertiesOptions
 import reactor.test.StepVerifier
@@ -797,8 +798,8 @@ class ShareAsyncAPITests extends APISpec {
         def leaseId = createLeaseClient(primaryShareAsyncClient.getFileClient(fileName)).acquireLease().block()
 
         expect:
-        StepVerifier.create(primaryShareAsyncClient.deleteFileIfExistsWithResponse(fileName,
-            new ShareRequestConditions().setLeaseId(leaseId)))
+        StepVerifier.create(primaryShareAsyncClient.deleteFileIfExistsWithResponse(fileName, new ShareDeleteOptions()
+            .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId))))
             .expectNextCount(1).verifyComplete()
     }
 
@@ -822,8 +823,8 @@ class ShareAsyncAPITests extends APISpec {
         createLeaseClient(primaryShareAsyncClient.getFileClient(fileName)).acquireLease().block()
 
         expect:
-        StepVerifier.create(primaryShareAsyncClient.deleteFileIfExistsWithResponse(fileName,
-            new ShareRequestConditions().setLeaseId(namer.getRandomUuid())))
+        StepVerifier.create(primaryShareAsyncClient.deleteFileIfExistsWithResponse(fileName, new ShareDeleteOptions()
+            .setRequestConditions(new ShareRequestConditions().setLeaseId(namer.getRandomUuid()))))
             .verifyError(ShareStorageException)
     }
 

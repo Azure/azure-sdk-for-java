@@ -1,76 +1,76 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://REDACTED.file.core.windows.net/ea80240fea80240f54b04072bde9d57c85a149c887?restype=share",
+    "Uri" : "http://REDACTED.file.core.windows.net/ea80240fea80240ff5c359320eb16feb161b4b13b9?restype=share",
     "Headers" : {
       "x-ms-version" : "2021-04-10",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "0dd931d0-18c7-4ee0-a405-5f31caea79f7"
+      "x-ms-client-request-id" : "dc7b848c-79ea-4b43-adb5-bf270940a7b8"
     },
     "Response" : {
       "content-length" : "0",
       "x-ms-version" : "2021-04-10",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "eTag" : "0x8DA136979DE8B8F",
-      "Last-Modified" : "Thu, 31 Mar 2022 22:54:56 GMT",
+      "eTag" : "0x8DA14F0DC2398B0",
+      "Last-Modified" : "Sat, 02 Apr 2022 21:36:34 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "d5f4b5ba-101a-001b-2552-452cfb000000",
-      "x-ms-client-request-id" : "0dd931d0-18c7-4ee0-a405-5f31caea79f7",
-      "Date" : "Thu, 31 Mar 2022 22:54:55 GMT"
+      "x-ms-request-id" : "623eec37-001a-0075-60d9-4679d4000000",
+      "x-ms-client-request-id" : "dc7b848c-79ea-4b43-adb5-bf270940a7b8",
+      "Date" : "Sat, 02 Apr 2022 21:36:33 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://REDACTED.file.core.windows.net/ea80240fea80240f54b04072bde9d57c85a149c887?restype=share&comp=snapshot",
+    "Uri" : "http://REDACTED.file.core.windows.net/ea80240fea80240ff5c359320eb16feb161b4b13b9?restype=share&comp=snapshot",
     "Headers" : {
       "x-ms-version" : "2021-04-10",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "12102bc0-ad43-4f2f-add8-c2200dd7545b"
+      "x-ms-client-request-id" : "9d875cc2-37d0-4ceb-bd31-714e7f4ab020"
     },
     "Response" : {
       "content-length" : "0",
       "x-ms-version" : "2021-04-10",
-      "x-ms-snapshot" : "2022-03-31T22:54:56.0000000Z",
+      "x-ms-snapshot" : "2022-04-02T21:36:34.0000000Z",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "eTag" : "0x8DA136979DE8B8F",
-      "Last-Modified" : "Thu, 31 Mar 2022 22:54:56 GMT",
+      "eTag" : "0x8DA14F0DC2398B0",
+      "Last-Modified" : "Sat, 02 Apr 2022 21:36:34 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "ee89e37f-401a-004b-0b52-45eeab000000",
-      "x-ms-client-request-id" : "12102bc0-ad43-4f2f-add8-c2200dd7545b",
-      "Date" : "Thu, 31 Mar 2022 22:54:55 GMT"
+      "x-ms-request-id" : "7c97c646-701a-007f-5ed9-46dd63000000",
+      "x-ms-client-request-id" : "9d875cc2-37d0-4ceb-bd31-714e7f4ab020",
+      "Date" : "Sat, 02 Apr 2022 21:36:33 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://REDACTED.file.core.windows.net/ea80240fea80240f54b04072bde9d57c85a149c887?restype=share&comp=snapshot",
+    "Uri" : "http://REDACTED.file.core.windows.net/ea80240fea80240ff5c359320eb16feb161b4b13b9?restype=share&comp=snapshot",
     "Headers" : {
       "x-ms-version" : "2021-04-10",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a59c20e5-e440-43f4-9ab3-dd1a2987f662"
+      "x-ms-client-request-id" : "d4d32a5c-9bda-4512-b78e-6278f7630664"
     },
     "Response" : {
       "content-length" : "0",
       "x-ms-version" : "2021-04-10",
-      "x-ms-snapshot" : "2022-03-31T22:54:57.0000000Z",
+      "x-ms-snapshot" : "2022-04-02T21:36:35.0000000Z",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "eTag" : "0x8DA136979DE8B8F",
-      "Last-Modified" : "Thu, 31 Mar 2022 22:54:56 GMT",
+      "eTag" : "0x8DA14F0DC2398B0",
+      "Last-Modified" : "Sat, 02 Apr 2022 21:36:34 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "ee89e381-401a-004b-0c52-45eeab000000",
-      "x-ms-client-request-id" : "a59c20e5-e440-43f4-9ab3-dd1a2987f662",
-      "Date" : "Thu, 31 Mar 2022 22:54:56 GMT"
+      "x-ms-request-id" : "7c97c648-701a-007f-5fd9-46dd63000000",
+      "x-ms-client-request-id" : "d4d32a5c-9bda-4512-b78e-6278f7630664",
+      "Date" : "Sat, 02 Apr 2022 21:36:33 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://REDACTED.file.core.windows.net/ea80240fea80240f54b04072bde9d57c85a149c887?restype=share",
+    "Uri" : "http://REDACTED.file.core.windows.net/ea80240fea80240ff5c359320eb16feb161b4b13b9?restype=share",
     "Headers" : {
       "x-ms-version" : "2021-04-10",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a6ae56ac-da1f-4d4c-b6ee-00826c65689b"
+      "x-ms-client-request-id" : "a9ef3415-865a-4837-b2c1-52c42432d359"
     },
     "Response" : {
       "content-length" : "0",
@@ -78,18 +78,18 @@
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "d5f4b5c0-101a-001b-2852-452cfb000000",
-      "x-ms-client-request-id" : "a6ae56ac-da1f-4d4c-b6ee-00826c65689b",
-      "Date" : "Thu, 31 Mar 2022 22:54:56 GMT"
+      "x-ms-request-id" : "a308f69e-d01a-0059-3ed9-46957b000000",
+      "x-ms-client-request-id" : "a9ef3415-865a-4837-b2c1-52c42432d359",
+      "Date" : "Sat, 02 Apr 2022 21:36:34 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://REDACTED.file.core.windows.net/ea80240fea80240f54b04072bde9d57c85a149c887?restype=share&sharesnapshot=2022-03-31T22%3A54%3A56.0000000Z",
+    "Uri" : "http://REDACTED.file.core.windows.net/ea80240fea80240ff5c359320eb16feb161b4b13b9?restype=share&sharesnapshot=2022-04-02T21%3A36%3A34.0000000Z",
     "Headers" : {
       "x-ms-version" : "2021-04-10",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "9b168746-9782-48f0-8f97-c9bd93207007"
+      "x-ms-client-request-id" : "5971934e-8e9d-4388-b941-e65187786feb"
     },
     "Response" : {
       "content-length" : "217",
@@ -99,20 +99,20 @@
       "x-ms-error-code" : "ShareNotFound",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "x-ms-request-id" : "ee89e382-401a-004b-0d52-45eeab000000",
-      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:ee89e382-401a-004b-0d52-45eeab000000\nTime:2022-03-31T22:54:56.8107460Z</Message></Error>",
-      "x-ms-client-request-id" : "9b168746-9782-48f0-8f97-c9bd93207007",
-      "Date" : "Thu, 31 Mar 2022 22:54:56 GMT",
+      "x-ms-request-id" : "623eec3d-001a-0075-63d9-4679d4000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:623eec3d-001a-0075-63d9-4679d4000000\nTime:2022-04-02T21:36:34.8760895Z</Message></Error>",
+      "x-ms-client-request-id" : "5971934e-8e9d-4388-b941-e65187786feb",
+      "Date" : "Sat, 02 Apr 2022 21:36:34 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://REDACTED.file.core.windows.net/ea80240fea80240f54b04072bde9d57c85a149c887?restype=share&sharesnapshot=2022-03-31T22%3A54%3A57.0000000Z",
+    "Uri" : "http://REDACTED.file.core.windows.net/ea80240fea80240ff5c359320eb16feb161b4b13b9?restype=share&sharesnapshot=2022-04-02T21%3A36%3A35.0000000Z",
     "Headers" : {
       "x-ms-version" : "2021-04-10",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "005f9f6b-11e6-488b-9d26-c9800f608012"
+      "x-ms-client-request-id" : "3b0aa770-ae3c-4797-bf69-950f758657fc"
     },
     "Response" : {
       "content-length" : "217",
@@ -122,13 +122,13 @@
       "x-ms-error-code" : "ShareNotFound",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "x-ms-request-id" : "d5f4b5c1-101a-001b-2952-452cfb000000",
-      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:d5f4b5c1-101a-001b-2952-452cfb000000\nTime:2022-03-31T22:54:56.8555264Z</Message></Error>",
-      "x-ms-client-request-id" : "005f9f6b-11e6-488b-9d26-c9800f608012",
-      "Date" : "Thu, 31 Mar 2022 22:54:56 GMT",
+      "x-ms-request-id" : "a308f69f-d01a-0059-3fd9-46957b000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:a308f69f-d01a-0059-3fd9-46957b000000\nTime:2022-04-02T21:36:34.9228230Z</Message></Error>",
+      "x-ms-client-request-id" : "3b0aa770-ae3c-4797-bf69-950f758657fc",
+      "Date" : "Sat, 02 Apr 2022 21:36:34 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "ea80240fea80240f54b04072bde9d57c85a149c887" ]
+  "variables" : [ "ea80240fea80240ff5c359320eb16feb161b4b13b9" ]
 }

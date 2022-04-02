@@ -9,6 +9,7 @@ import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
+import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
@@ -202,7 +203,7 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
 
     /**
      * Code snippets for {@link DataLakeDirectoryAsyncClient#deleteIfExists()} and
-     * {@link DataLakeDirectoryAsyncClient#deleteIfExistsWithResponse(boolean, DataLakeRequestConditions)}
+     * {@link DataLakeDirectoryAsyncClient#deleteIfExistsWithResponse(DataLakePathDeleteOptions)}
      */
     public void deleteIfExistsCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteIfExists
@@ -215,15 +216,17 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
         });
         // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteIfExists
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteIfExistsWithResponse#boolean-DataLakeRequestConditions
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
             .setLeaseId(leaseId);
         boolean recursive = false; // Default value
+        DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setIsRecursive(recursive)
+            .setRequestConditions(requestConditions);
 
-        client.deleteIfExistsWithResponse(recursive, requestConditions).switchIfEmpty(Mono.<Response<Void>>empty()
+        client.deleteIfExistsWithResponse(options).switchIfEmpty(Mono.<Response<Void>>empty()
             .doOnSuccess(x -> System.out.println("Does not exist."))).subscribe(response ->
             System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
-        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteIfExistsWithResponse#boolean-DataLakeRequestConditions
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions
     }
 
     /**
@@ -252,7 +255,7 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
 
     /**
      * Code snippets for {@link DataLakeDirectoryAsyncClient#deleteFile(String)} and
-     * {@link DataLakeDirectoryAsyncClient#deleteFileIfExistsWithResponse(String, DataLakeRequestConditions)}
+     * {@link DataLakeDirectoryAsyncClient#deleteFileIfExistsWithResponse(String, DataLakePathDeleteOptions)}
      */
     public void deleteFileIfExistsCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteFileIfExists#String
@@ -265,14 +268,16 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
         });
         // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteFileIfExists#String
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteFileIfExistsWithResponse#String-DataLakeRequestConditions
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteFileIfExistsWithResponse#String-DataLakePathDeleteOptions
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
             .setLeaseId(leaseId);
+        DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setIsRecursive(false)
+            .setRequestConditions(requestConditions);
 
-        client.deleteFileIfExistsWithResponse(fileName, requestConditions).switchIfEmpty(Mono.<Response<Void>>empty()
+        client.deleteFileIfExistsWithResponse(fileName, options).switchIfEmpty(Mono.<Response<Void>>empty()
             .doOnSuccess(x -> System.out.println("Does not exist."))).subscribe(response ->
             System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
-        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteFileIfExistsWithResponse#String-DataLakeRequestConditions
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteFileIfExistsWithResponse#String-DataLakePathDeleteOptions
     }
 
     /**
@@ -280,13 +285,11 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
      * {@link DataLakeDirectoryAsyncClient#createSubdirectoryIfNotExistsWithResponse(String, DataLakePathCreateOptions)}
      */
     public void createSubdirectoryIfNotExistsCodeSnippets() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectory#String
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectoryIfNotExists#String
         client.createSubdirectoryIfNotExists(directoryName).switchIfEmpty(Mono.<DataLakeDirectoryAsyncClient>empty()
             .doOnSuccess(x -> System.out.println("Already exists.")))
             .subscribe(response -> System.out.println("Created subdirectory."));
-
-        //client.createSubdirectoryIfNotExists(directoryName).switchIfEmpty(Mono.<DataLakeDirectoryAsyncClient>)
-        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectory#String
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectoryIfNotExists#String
 
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectoryWithResponse#String-DataLakePathCreateOptions
         PathHttpHeaders headers = new PathHttpHeaders()
@@ -306,7 +309,7 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
 
     /**
      * Code snippets for {@link DataLakeDirectoryAsyncClient#deleteSubdirectoryIfExists(String)} and
-     * {@link DataLakeDirectoryAsyncClient#deleteSubdirectoryIfExistsWithResponse(String, boolean, DataLakeRequestConditions)}
+     * {@link DataLakeDirectoryAsyncClient#deleteSubdirectoryIfExistsWithResponse(String, DataLakePathDeleteOptions)}
      */
     public void deleteSubdirectoryIfExistsCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteSubdirectoryIfExists#String
@@ -319,14 +322,16 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
         });
         // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteSubdirectoryIfExists#String
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteSubdirectoryIfExistsWithResponse#String-boolean-DataLakeRequestConditions
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteSubdirectoryIfExistsWithResponse#String-DataLakePathDeleteOptions
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
             .setLeaseId(leaseId);
         boolean recursive = false; // Default value
+        DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setIsRecursive(recursive)
+            .setRequestConditions(requestConditions);
 
-        client.deleteSubdirectoryIfExistsWithResponse(directoryName, recursive, requestConditions)
+        client.deleteSubdirectoryIfExistsWithResponse(directoryName, options)
             .switchIfEmpty(Mono.<Response<Void>>empty().doOnSuccess(x -> System.out.println("Does not exist.")))
             .subscribe(response -> System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
-        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteSubdirectoryIfExistsWithResponse#String-boolean-DataLakeRequestConditions
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteSubdirectoryIfExistsWithResponse#String-DataLakePathDeleteOptions
     }
 }

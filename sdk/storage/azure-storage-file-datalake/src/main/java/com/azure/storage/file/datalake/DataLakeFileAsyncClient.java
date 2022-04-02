@@ -42,6 +42,8 @@ import com.azure.storage.file.datalake.models.FileReadAsyncResponse;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathProperties;
+import com.azure.storage.file.datalake.models.RolePermissions;
+import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions;
@@ -235,7 +237,9 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse(null).map(response -> true).switchIfEmpty(Mono.just(false));
+        return deleteIfExistsWithResponse(new DataLakePathDeleteOptions().setIsRecursive(false)
+            .setRequestConditions(new DataLakeRequestConditions())).map(response -> true)
+            .switchIfEmpty(Mono.just(false));
     }
 
     /**
@@ -243,31 +247,35 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileAsyncClient.deleteIfExistsWithResponse#DataLakeRequestConditions -->
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileAsyncClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions -->
      * <pre>
      * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
      *     .setLeaseId&#40;leaseId&#41;;
+     * DataLakePathDeleteOptions options = new DataLakePathDeleteOptions&#40;&#41;.setIsRecursive&#40;false&#41;
+     *      .setRequestConditions&#40;requestConditions&#41;;
      *
-     * client.deleteIfExistsWithResponse&#40;requestConditions&#41;.switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
-     *      .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;.subscribe&#40;response -&gt;
+     * client.deleteIfExistsWithResponse&#40;options&#41;.switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
+     *          .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;.subscribe&#40;response -&gt;
      *      System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeFileAsyncClient.deleteIfExistsWithResponse#DataLakeRequestConditions -->
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileAsyncClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions -->
      *
      * <p>For more information see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
      * Docs</a></p>
      *
-     * @param requestConditions {@link DataLakeRequestConditions}
+     * @param options {@link DataLakePathDeleteOptions}
      *
      * @return A reactive response signaling completion. The presence of a {@link Response} item indicates the file
      * was successfully deleted. An empty {@code Mono} indicates that the file did not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteIfExistsWithResponse(DataLakeRequestConditions requestConditions) {
+    public Mono<Response<Void>> deleteIfExistsWithResponse(DataLakePathDeleteOptions options) {
         try {
-            return deleteWithResponse(requestConditions).onErrorResume(t -> t instanceof DataLakeStorageException
-                && ((DataLakeStorageException)t).getStatusCode() == 404, t -> Mono.empty());
+            options = options == null ? new DataLakePathDeleteOptions() : options;
+            return deleteWithResponse(options.getRequestConditions()).onErrorResume(t -> t
+                instanceof DataLakeStorageException && ((DataLakeStorageException) t).getStatusCode() == 404,
+                t -> Mono.empty());
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

@@ -1,32 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://REDACTED.file.core.windows.net/8895b21d8895b21d5db80841b82247d6c4694fdf8a?restype=share",
+    "Uri" : "http://REDACTED.file.core.windows.net/8895b21d8895b21d8dc12698cf30ba9533654850ae?restype=share",
     "Headers" : {
       "x-ms-version" : "2021-04-10",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "680f5854-ad6c-4bef-8fb8-3a55bb7d5474"
+      "x-ms-client-request-id" : "a2b2cb21-c15a-4bb5-8e03-a4fb747a391a"
     },
     "Response" : {
       "content-length" : "0",
       "x-ms-version" : "2021-04-10",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "eTag" : "0x8DA136832CE9F54",
-      "Last-Modified" : "Thu, 31 Mar 2022 22:45:47 GMT",
+      "eTag" : "0x8DA14F1AED27BD7",
+      "Last-Modified" : "Sat, 02 Apr 2022 21:42:27 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "d393d2d5-801a-0019-1051-459243000000",
-      "x-ms-client-request-id" : "680f5854-ad6c-4bef-8fb8-3a55bb7d5474",
-      "Date" : "Thu, 31 Mar 2022 22:45:46 GMT"
+      "x-ms-request-id" : "68c0f72e-a01a-001e-60da-46fe20000000",
+      "x-ms-client-request-id" : "a2b2cb21-c15a-4bb5-8e03-a4fb747a391a",
+      "Date" : "Sat, 02 Apr 2022 21:42:27 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://REDACTED.file.core.windows.net/8895b21d8895b21d5db80841b82247d6c4694fdf8a/testCreateFile",
+    "Uri" : "http://REDACTED.file.core.windows.net/8895b21d8895b21d8dc12698cf30ba9533654850ae/testCreateFile",
     "Headers" : {
       "x-ms-version" : "2021-04-10",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "5a4bb650-ebb9-45c1-ad8d-f84b0d03ef92"
+      "x-ms-client-request-id" : "b0c4e8cb-6bf9-4171-bd21-7bc36c9ea89f"
     },
     "Response" : {
       "content-length" : "0",
@@ -34,50 +34,50 @@
       "x-ms-file-permission-key" : "8144742230974320152*15683512651994179222",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2022-03-31T22:45:47.8428606Z",
-      "Last-Modified" : "Thu, 31 Mar 2022 22:45:47 GMT",
+      "x-ms-file-creation-time" : "2022-04-02T21:42:28.1245557Z",
+      "Last-Modified" : "Sat, 02 Apr 2022 21:42:28 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Thu, 31 Mar 2022 22:45:47 GMT",
+      "Date" : "Sat, 02 Apr 2022 21:42:27 GMT",
       "x-ms-file-attributes" : "Archive",
-      "x-ms-file-change-time" : "2022-03-31T22:45:47.8428606Z",
+      "x-ms-file-change-time" : "2022-04-02T21:42:28.1245557Z",
       "x-ms-file-parent-id" : "0",
-      "eTag" : "0x8DA136832EF7BBE",
-      "x-ms-request-id" : "0d7d4e15-f01a-002c-5151-45fe57000000",
-      "x-ms-client-request-id" : "5a4bb650-ebb9-45c1-ad8d-f84b0d03ef92",
-      "x-ms-file-last-write-time" : "2022-03-31T22:45:47.8428606Z"
+      "eTag" : "0x8DA14F1AEF3FB75",
+      "x-ms-request-id" : "36307b1f-801a-0009-04da-46572b000000",
+      "x-ms-client-request-id" : "b0c4e8cb-6bf9-4171-bd21-7bc36c9ea89f",
+      "x-ms-file-last-write-time" : "2022-04-02T21:42:28.1245557Z"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://REDACTED.file.core.windows.net/8895b21d8895b21d5db80841b82247d6c4694fdf8a/testCreateFile?comp=lease",
+    "Uri" : "http://REDACTED.file.core.windows.net/8895b21d8895b21d8dc12698cf30ba9533654850ae/testCreateFile?comp=lease",
     "Headers" : {
       "x-ms-version" : "2021-04-10",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "1e47e883-e308-4a19-a762-24478fd882d4"
+      "x-ms-client-request-id" : "94561381-2042-42f5-83a0-0e3017a1f039"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "x-ms-version" : "2021-04-10",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-lease-id" : "06a2febd-e5c9-4694-b93a-f05473de239f",
-      "eTag" : "0x8DA136832EF7BBE",
-      "Last-Modified" : "Thu, 31 Mar 2022 22:45:47 GMT",
+      "x-ms-lease-id" : "8e4c0d47-89ce-4b02-ab8c-97e4bfb738b5",
+      "eTag" : "0x8DA14F1AEF3FB75",
+      "Last-Modified" : "Sat, 02 Apr 2022 21:42:28 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "d393d2dd-801a-0019-1351-459243000000",
-      "x-ms-client-request-id" : "1e47e883-e308-4a19-a762-24478fd882d4",
-      "Date" : "Thu, 31 Mar 2022 22:45:47 GMT"
+      "x-ms-request-id" : "d5710cd3-b01a-0060-50da-466e67000000",
+      "x-ms-client-request-id" : "94561381-2042-42f5-83a0-0e3017a1f039",
+      "Date" : "Sat, 02 Apr 2022 21:42:27 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://REDACTED.file.core.windows.net/8895b21d8895b21d5db80841b82247d6c4694fdf8a/testCreateFile",
+    "Uri" : "http://REDACTED.file.core.windows.net/8895b21d8895b21d8dc12698cf30ba9533654850ae/testCreateFile",
     "Headers" : {
       "x-ms-version" : "2021-04-10",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "e9d3acdd-075a-456d-96c4-8d04951affce"
+      "x-ms-client-request-id" : "70852bbe-3afb-41bf-b829-25ce0e64e4e9"
     },
     "Response" : {
       "content-length" : "264",
@@ -86,13 +86,13 @@
       "x-ms-error-code" : "LeaseIdMismatchWithFileOperation",
       "retry-after" : "0",
       "StatusCode" : "412",
-      "x-ms-request-id" : "0d7d4e19-f01a-002c-5351-45fe57000000",
-      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>LeaseIdMismatchWithFileOperation</Code><Message>The lease ID specified did not match the lease ID for the file.\nRequestId:0d7d4e19-f01a-002c-5351-45fe57000000\nTime:2022-03-31T22:45:48.0781921Z</Message></Error>",
-      "x-ms-client-request-id" : "e9d3acdd-075a-456d-96c4-8d04951affce",
-      "Date" : "Thu, 31 Mar 2022 22:45:47 GMT",
+      "x-ms-request-id" : "1da69167-401a-0006-37da-462147000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>LeaseIdMismatchWithFileOperation</Code><Message>The lease ID specified did not match the lease ID for the file.\nRequestId:1da69167-401a-0006-37da-462147000000\nTime:2022-04-02T21:42:28.3566946Z</Message></Error>",
+      "x-ms-client-request-id" : "70852bbe-3afb-41bf-b829-25ce0e64e4e9",
+      "Date" : "Sat, 02 Apr 2022 21:42:28 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "8895b21d8895b21d5db80841b82247d6c4694fdf8a", "24352577-97be-4c75-9011-bd51bc407f66" ]
+  "variables" : [ "8895b21d8895b21d8dc12698cf30ba9533654850ae", "bedcd0ee-dc86-4dfa-b136-07ea417a6696" ]
 }

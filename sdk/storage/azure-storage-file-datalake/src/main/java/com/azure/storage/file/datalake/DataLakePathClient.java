@@ -32,6 +32,7 @@ import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
+import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions;
@@ -318,7 +319,8 @@ public class DataLakePathClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean deleteIfExists() {
-        Response<Void> response = deleteIfExistsWithResponse(false, null, null, null);
+        Response<Void> response = deleteIfExistsWithResponse(new DataLakePathDeleteOptions().setIsRecursive(false)
+            .setRequestConditions(new DataLakeRequestConditions()), null, null);
         return response != null && response.getStatusCode() == 200;
     }
 
@@ -327,12 +329,15 @@ public class DataLakePathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClient.deleteIfExistsWithResponse#boolean-DataLakeRequestConditions-Duration-Context -->
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions-Duration-Context -->
      * <pre>
      * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
      *     .setLeaseId&#40;leaseId&#41;;
-     * Response&lt;Void&gt; response = client.deleteIfExistsWithResponse&#40;false, requestConditions, timeout,
-     *      new Context&#40;key1, value1&#41;&#41;;
+     *
+     * DataLakePathDeleteOptions options = new DataLakePathDeleteOptions&#40;&#41;.setIsRecursive&#40;false&#41;
+     *             .setRequestConditions&#40;requestConditions&#41;;
+     *
+     * Response&lt;Void&gt; response = client.deleteIfExistsWithResponse&#40;options, timeout, new Context&#40;key1, value1&#41;&#41;;
      *
      * if &#40;response != null&#41; &#123;
      *      System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
@@ -343,14 +348,13 @@ public class DataLakePathClient {
      * client.deleteIfExistsWithResponse&#40;requestConditions, timeout, new Context&#40;key1, value1&#41;&#41;;
      * System.out.println&#40;&quot;Delete request completed&quot;&#41;;
      * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakePathClient.deleteIfExistsWithResponse#boolean-DataLakeRequestConditions-Duration-Context -->
+     * <!-- end com.azure.storage.file.datalake.DataLakePathClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions-Duration-Context -->
      *
      * <p>For more information see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
      * Docs</a></p>
      *
-     * @param recursive Whether or not to delete all paths beneath the directory.
-     * @param requestConditions {@link DataLakeRequestConditions}
+     * @param options {@link DataLakePathDeleteOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
@@ -359,10 +363,10 @@ public class DataLakePathClient {
      * resource does not exist at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteIfExistsWithResponse(boolean recursive, DataLakeRequestConditions requestConditions,
-        Duration timeout, Context context) {
+    public Response<Void> deleteIfExistsWithResponse(DataLakePathDeleteOptions options, Duration timeout,
+        Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(dataLakePathAsyncClient
-            .deleteIfExistsWithResponse(recursive, requestConditions, context), timeout);
+            .deleteIfExistsWithResponse(options, context), timeout);
     }
 
     /**

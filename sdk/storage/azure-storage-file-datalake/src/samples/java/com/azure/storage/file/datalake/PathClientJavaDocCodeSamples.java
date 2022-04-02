@@ -18,6 +18,7 @@ import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.RolePermissions;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
+import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions;
@@ -518,7 +519,7 @@ public class PathClientJavaDocCodeSamples {
 
     /**
      * Code snippets for {@link DataLakePathClient#deleteIfExists()} and
-     * {@link DataLakePathClient#deleteIfExistsWithResponse(boolean, DataLakeRequestConditions, Duration, Context)}
+     * {@link DataLakePathClient#deleteIfExistsWithResponse(DataLakePathDeleteOptions, Duration, Context)}
      */
     public void deleteIfExistsCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.deleteIfExists
@@ -527,18 +528,21 @@ public class PathClientJavaDocCodeSamples {
         System.out.println("Delete complete: " + result);
         // END: com.azure.storage.file.datalake.DataLakePathClient.deleteIfExists
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.deleteIfExistsWithResponse#boolean-DataLakeRequestConditions-Duration-Context
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions-Duration-Context
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
             .setLeaseId(leaseId);
-        Response<Void> response = client.deleteIfExistsWithResponse(false, requestConditions, timeout,
-            new Context(key1, value1));
+
+        DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setIsRecursive(false)
+            .setRequestConditions(requestConditions);
+
+        Response<Void> response = client.deleteIfExistsWithResponse(options, timeout, new Context(key1, value1));
 
         if (response != null) {
             System.out.printf("Delete completed with status %d%n", response.getStatusCode());
         } else {
             System.out.println("Does not exist.");
         }
-        // END: com.azure.storage.file.datalake.DataLakePathClient.deleteIfExistsWithResponse#boolean-DataLakeRequestConditions-Duration-Context
+        // END: com.azure.storage.file.datalake.DataLakePathClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions-Duration-Context
     }
 
 }

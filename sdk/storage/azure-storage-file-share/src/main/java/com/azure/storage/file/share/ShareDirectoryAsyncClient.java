@@ -45,6 +45,7 @@ import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileItem;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.options.ShareDeleteOptions;
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
 import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions;
@@ -1874,40 +1875,43 @@ public class ShareDirectoryAsyncClient {
      *
      * <p>Delete the file "filetest"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExistsWithResponse#string-ShareRequestConditions -->
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExistsWithResponse#string-ShareDeleteOptions -->
      * <pre>
      * ShareRequestConditions requestConditions = new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
-     * shareDirectoryAsyncClient.deleteFileIfExistsWithResponse&#40;&quot;myfile&quot;, requestConditions&#41;
+     * ShareDeleteOptions options = new ShareDeleteOptions&#40;&#41;.setRequestConditions&#40;requestConditions&#41;;
+     *
+     * shareDirectoryAsyncClient.deleteFileIfExistsWithResponse&#40;&quot;myfile&quot;, options&#41;
      *      .switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
      *          .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;
      *      .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExistsWithResponse#string-ShareRequestConditions -->
+     * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExistsWithResponse#string-ShareDeleteOptions -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
      *
      * @param fileName Name of the file
-     * @param requestConditions {@link ShareRequestConditions}
+     * @param options {@link ShareDeleteOptions}
      * @return A reactive response {@link Mono} containing status code and HTTP headers signaling completion. The
      * presence of a {@link Response} item indicates the file was successfully deleted. An empty {@code Mono}
      * indicates that the file did not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName, ShareRequestConditions requestConditions) {
+    public Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName, ShareDeleteOptions options) {
         try {
-            return withContext(context -> deleteFileIfExistsWithResponse(fileName, requestConditions,
+            return withContext(context -> deleteFileIfExistsWithResponse(fileName, options,
                 context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName, ShareRequestConditions requestConditions,
-        Context context) {
+    Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName, ShareDeleteOptions options, Context context) {
         try {
-            return deleteFileWithResponse(fileName, requestConditions, context).onErrorResume(t -> t instanceof
-                ShareStorageException && ((ShareStorageException) t).getStatusCode() == 404, t -> Mono.empty());
+            options = options == null ? new ShareDeleteOptions() : options;
+            return deleteFileWithResponse(fileName, options.getRequestConditions(), context)
+                .onErrorResume(t -> t instanceof ShareStorageException && ((ShareStorageException) t)
+                    .getStatusCode() == 404, t -> Mono.empty());
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

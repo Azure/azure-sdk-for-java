@@ -15,6 +15,7 @@ import com.azure.storage.common.Utility
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.datalake.models.*
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions
+import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions
@@ -423,17 +424,18 @@ class DirectoryAPITest extends APISpec {
 
     def "Delete if exists min"() {
         expect:
-        dc.deleteIfExistsWithResponse(false, null, null, null).getStatusCode() == 200
+        dc.deleteIfExistsWithResponse(null, null, null).getStatusCode() == 200
     }
 
     def "Delete if exists recursive"() {
         expect:
-        dc.deleteIfExistsWithResponse(true, null, null, null).getStatusCode() == 200
+        dc.deleteIfExistsWithResponse(new DataLakePathDeleteOptions().setIsRecursive(true),
+            null, null).getStatusCode() == 200
     }
 
     def "Delete if exists dir does not exist anymore"() {
         when:
-        def response = dc.deleteIfExistsWithResponse(false, null, null, null)
+        def response = dc.deleteIfExistsWithResponse(null, null, null)
         dc.getPropertiesWithResponse(null, null, null)
 
         then:
@@ -452,9 +454,10 @@ class DirectoryAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+        def options = new DataLakePathDeleteOptions().setRequestConditions(drc).setIsRecursive(false)
 
         expect:
-        dc.deleteIfExistsWithResponse(false, drc, null, null).getStatusCode() == 200
+        dc.deleteIfExistsWithResponse(options, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -477,9 +480,10 @@ class DirectoryAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+        def options = new DataLakePathDeleteOptions().setRequestConditions(drc).setIsRecursive(false)
 
         when:
-        dc.deleteIfExistsWithResponse(false, drc, null, null).getStatusCode()
+        dc.deleteIfExistsWithResponse(options, null, null).getStatusCode()
 
         then:
         thrown(DataLakeStorageException)
@@ -2887,9 +2891,10 @@ class DirectoryAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+        def options = new DataLakePathDeleteOptions().setRequestConditions(drc)
 
         expect:
-        dc.deleteFileIfExistsWithResponse(pathName, drc, null, null).getStatusCode() == 200
+        dc.deleteFileIfExistsWithResponse(pathName, options, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -2914,9 +2919,10 @@ class DirectoryAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+        def options = new DataLakePathDeleteOptions().setRequestConditions(drc)
 
         when:
-        dc.deleteFileIfExistsWithResponse(pathName, drc, null, null).getStatusCode()
+        dc.deleteFileIfExistsWithResponse(pathName, options, null, null).getStatusCode()
 
         then:
         thrown(DataLakeStorageException)
@@ -3310,25 +3316,25 @@ class DirectoryAPITest extends APISpec {
         expect:
         def pathName = generatePathName()
         dc.createSubdirectoryIfNotExists(pathName)
-        dc.deleteSubdirectoryIfExistsWithResponse(pathName, false, null, null, null).getStatusCode() == 200
+        dc.deleteSubdirectoryIfExistsWithResponse(pathName, null, null, null).getStatusCode() == 200
     }
 
     def "Delete if exists sub dir recursive"() {
         expect:
         def pathName = generatePathName()
         dc.createSubdirectory(pathName)
-        dc.deleteSubdirectoryIfExistsWithResponse(pathName, true, null, null, null).getStatusCode() == 200
+        dc.deleteSubdirectoryIfExistsWithResponse(pathName, new DataLakePathDeleteOptions().setIsRecursive(true), null, null).getStatusCode() == 200
     }
 
     def "Delete if exists sub dir dir does not exist anymore"() {
         when:
         def pathName = generatePathName()
         def client = dc.createSubdirectory(pathName)
-        def response = dc.deleteSubdirectoryIfExistsWithResponse(pathName, false, null, null, null)
+        def response = dc.deleteSubdirectoryIfExistsWithResponse(pathName, null, null, null)
 
         then:
         response.getStatusCode() == 200
-        client.exists() == false
+        !client.exists()
     }
 
     @Unroll
@@ -3344,9 +3350,10 @@ class DirectoryAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+        def options = new DataLakePathDeleteOptions().setRequestConditions(drc).setIsRecursive(false)
 
         expect:
-        dc.deleteSubdirectoryIfExistsWithResponse(pathName, false, drc, null, null).getStatusCode() == 200
+        dc.deleteSubdirectoryIfExistsWithResponse(pathName, options, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -3371,9 +3378,10 @@ class DirectoryAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+        def options = new DataLakePathDeleteOptions().setRequestConditions(drc).setIsRecursive(false)
 
         when:
-        dc.deleteSubdirectoryIfExistsWithResponse(pathName, false, drc, null, null).getStatusCode()
+        dc.deleteSubdirectoryIfExistsWithResponse(pathName, options, null, null).getStatusCode()
 
         then:
         thrown(DataLakeStorageException)

@@ -1744,10 +1744,12 @@ public class ShareClient {
      *
      * <p>Delete the file "myfile"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.deleteFileIfExistsWithResponse#string-ShareRequestConditions-duration-context -->
+     * <!-- src_embed com.azure.storage.file.share.ShareClient.deleteFileIfExistsWithResponse#string-ShareDeleteOptions-duration-context -->
      * <pre>
      * ShareRequestConditions requestConditions = new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
-     * Response&lt;Void&gt; res = shareClient.deleteFileIfExistsWithResponse&#40;&quot;myfile&quot;, requestConditions,
+     * ShareDeleteOptions options = new ShareDeleteOptions&#40;&#41;.setRequestConditions&#40;requestConditions&#41;;
+     *
+     * Response&lt;Void&gt; res = shareClient.deleteFileIfExistsWithResponse&#40;&quot;myfile&quot;, options,
      *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
      * if &#40;response != null&#41; &#123;
      *      System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
@@ -1755,13 +1757,13 @@ public class ShareClient {
      *      System.out.println&#40;&quot;File does not exist.&quot;&#41;;
      * &#125;
      * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.deleteFileIfExistsWithResponse#string-ShareRequestConditions-duration-context -->
+     * <!-- end com.azure.storage.file.share.ShareClient.deleteFileIfExistsWithResponse#string-ShareDeleteOptions-duration-context -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
      *
      * @param fileName Name of the file
-     * @param requestConditions {@link ShareRequestConditions}
+     * @param options {@link ShareDeleteOptions}
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -1770,10 +1772,10 @@ public class ShareClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteFileIfExistsWithResponse(String fileName, ShareRequestConditions requestConditions,
+    public Response<Void> deleteFileIfExistsWithResponse(String fileName, ShareDeleteOptions options,
         Duration timeout, Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(client.deleteFileIfExistsWithResponse(fileName,
-            requestConditions, context), timeout);
+            options, context), timeout);
     }
 
     /**

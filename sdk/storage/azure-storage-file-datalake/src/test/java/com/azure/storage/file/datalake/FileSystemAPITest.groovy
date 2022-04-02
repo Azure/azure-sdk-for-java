@@ -18,6 +18,7 @@ import com.azure.storage.file.datalake.models.PathHttpHeaders
 import com.azure.storage.file.datalake.models.PathItem
 import com.azure.storage.file.datalake.models.PublicAccessType
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions
+import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions
 import spock.lang.Unroll
 
 import java.time.OffsetDateTime
@@ -491,7 +492,7 @@ class FileSystemAPITest extends APISpec {
 
         then:
         response == null
-        fsc.getBlobContainerClient().exists() == false
+        !fsc.getBlobContainerClient().exists()
     }
 
     @Unroll
@@ -502,9 +503,10 @@ class FileSystemAPITest extends APISpec {
             .setLeaseId(leaseID)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+        def options = new DataLakePathDeleteOptions().setRequestConditions(drc)
 
         expect:
-        fsc.deleteIfExistsWithResponse(drc, null, null).getStatusCode() == 202
+        fsc.deleteIfExistsWithResponse(options, null, null).getStatusCode() == 202
 
         where:
         modified | unmodified | leaseID
@@ -521,9 +523,10 @@ class FileSystemAPITest extends APISpec {
             .setLeaseId(leaseID)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+        def options = new DataLakePathDeleteOptions().setRequestConditions(drc)
 
         when:
-        fsc.deleteIfExistsWithResponse(drc, null, null)
+        fsc.deleteIfExistsWithResponse(options, null, null)
 
         then:
         thrown(DataLakeStorageException)
@@ -541,9 +544,10 @@ class FileSystemAPITest extends APISpec {
         def drc = new DataLakeRequestConditions()
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
+        def options = new DataLakePathDeleteOptions().setRequestConditions(drc)
 
         when:
-        fsc.deleteIfExistsWithResponse(drc, null, null)
+        fsc.deleteIfExistsWithResponse(options, null, null)
 
         then:
         thrown(UnsupportedOperationException)
@@ -928,9 +932,10 @@ class FileSystemAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+        def options = new DataLakePathDeleteOptions().setRequestConditions(drc)
 
         expect:
-        fsc.deleteFileIfExistsWithResponse(pathName, drc, null, null).getStatusCode() == 200
+        fsc.deleteFileIfExistsWithResponse(pathName, options, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -955,9 +960,10 @@ class FileSystemAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+        def options = new DataLakePathDeleteOptions().setRequestConditions(drc)
 
         when:
-        fsc.deleteFileIfExistsWithResponse(pathName, drc, null, null).getStatusCode()
+        fsc.deleteFileIfExistsWithResponse(pathName, options, null, null).getStatusCode()
 
         then:
         thrown(DataLakeStorageException)
@@ -1335,24 +1341,24 @@ class FileSystemAPITest extends APISpec {
         expect:
         def pathName = generatePathName()
         fsc.createDirectory(pathName)
-        fsc.deleteDirectoryIfExistsWithResponse(pathName, false, null, null, null).getStatusCode() == 200
+        fsc.deleteDirectoryIfExistsWithResponse(pathName, null, null, null).getStatusCode() == 200
     }
 
     def "Delete if exists dir recursive"() {
         expect:
         def pathName = generatePathName()
         fsc.createDirectory(pathName)
-        fsc.deleteDirectoryIfExistsWithResponse(pathName, true, null, null, null).getStatusCode() == 200
+        fsc.deleteDirectoryIfExistsWithResponse(pathName, new DataLakePathDeleteOptions().setIsRecursive(true), null, null).getStatusCode() == 200
     }
 
     def "Delete if exists dir that does not exist"() {
         when:
         def pathName = generatePathName()
-        def response = fsc.deleteDirectoryIfExistsWithResponse(pathName, false, null, null, null)
+        def response = fsc.deleteDirectoryIfExistsWithResponse(pathName, null, null, null)
 
         then:
         response == null
-        fsc.getDirectoryClient(pathName).exists() == false
+        !fsc.getDirectoryClient(pathName).exists()
     }
 
     @Unroll
@@ -1368,9 +1374,10 @@ class FileSystemAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+        def options = new DataLakePathDeleteOptions().setRequestConditions(drc).setIsRecursive(false)
 
         expect:
-        fsc.deleteDirectoryIfExistsWithResponse(pathName, false, drc, null, null).getStatusCode() == 200
+        fsc.deleteDirectoryIfExistsWithResponse(pathName, options, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -1395,9 +1402,10 @@ class FileSystemAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+        def options = new DataLakePathDeleteOptions().setRequestConditions(drc).setIsRecursive(false)
 
         when:
-        fsc.deleteDirectoryIfExistsWithResponse(pathName, false, drc, null, null).getStatusCode()
+        fsc.deleteDirectoryIfExistsWithResponse(pathName, options, null, null).getStatusCode()
 
         then:
         thrown(DataLakeStorageException)

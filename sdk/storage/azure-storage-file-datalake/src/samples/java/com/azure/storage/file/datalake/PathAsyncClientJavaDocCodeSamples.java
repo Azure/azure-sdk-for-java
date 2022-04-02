@@ -15,6 +15,7 @@ import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.RolePermissions;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
+import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions;
@@ -487,7 +488,7 @@ public class PathAsyncClientJavaDocCodeSamples {
 
     /**
      * Code snippets for {@link DataLakePathAsyncClient#deleteIfExists()} and
-     * {@link DataLakePathAsyncClient#deleteIfExistsWithResponse(boolean, DataLakeRequestConditions, Context)}
+     * {@link DataLakePathAsyncClient#deleteIfExistsWithResponse(DataLakePathDeleteOptions)}
      */
     public void deleteIfExistsCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.deleteIfExists
@@ -496,13 +497,16 @@ public class PathAsyncClientJavaDocCodeSamples {
             error -> System.out.printf("Delete failed: %s%n", error));
         // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.deleteIfExists
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.deleteIfExistsWithResponse#boolean-DataLakeRequestConditions-Context
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
             .setLeaseId(leaseId);
 
-        client.deleteIfExistsWithResponse(false, requestConditions, new Context("key1", "value1"))
-            .switchIfEmpty(Mono.<Response<Void>>empty().doOnSuccess(x -> System.out.println("Does not exist.")))
+        DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setIsRecursive(false)
+            .setRequestConditions(requestConditions);
+
+        client.deleteIfExistsWithResponse(options).switchIfEmpty(Mono.<Response<Void>>empty()
+                .doOnSuccess(x -> System.out.println("Does not exist.")))
             .subscribe(response -> System.out.printf("Delete completed with status %d%n", response.getStatusCode()));
-        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.deleteIfExistsWithResponse#boolean-DataLakeRequestConditions-Context
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions
     }
 }

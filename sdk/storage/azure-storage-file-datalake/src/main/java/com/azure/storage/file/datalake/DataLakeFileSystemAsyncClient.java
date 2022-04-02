@@ -8,6 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
@@ -43,6 +44,7 @@ import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
+import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
@@ -463,7 +465,9 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse(null).map(response -> true).switchIfEmpty(Mono.just(false));
+        return deleteIfExistsWithResponse(new DataLakePathDeleteOptions().setIsRecursive(false)
+            .setRequestConditions(new DataLakeRequestConditions())).map(response -> true)
+            .switchIfEmpty(Mono.just(false));
     }
 
     /**
@@ -473,19 +477,21 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteIfExistsWithResponse#DataLakeRequestConditions -->
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions -->
      * <pre>
      * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
      *     .setLeaseId&#40;leaseId&#41;
      *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     * DataLakePathDeleteOptions options = new DataLakePathDeleteOptions&#40;&#41;.setIsRecursive&#40;false&#41;
+     *      .setRequestConditions&#40;requestConditions&#41;;
      *
-     * client.deleteIfExistsWithResponse&#40;requestConditions&#41;.switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
+     * client.deleteIfExistsWithResponse&#40;options&#41;.switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
      *      .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;
      *      .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteIfExistsWithResponse#DataLakeRequestConditions -->
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions -->
      *
-     * @param requestConditions {@link DataLakeRequestConditions}
+     * @param options {@link DataLakePathDeleteOptions}
      * @return A reactive response containing status code and HTTP headers signaling completion. The presence of a
      * {@link Response} item indicates the file system was successfully deleted. An empty {@code Mono} indicates that
      * the file system did not exist.
@@ -493,10 +499,11 @@ public class DataLakeFileSystemAsyncClient {
      * {@link DataLakeRequestConditions#getIfNoneMatch()} is set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteIfExistsWithResponse(DataLakeRequestConditions requestConditions) {
+    public Mono<Response<Void>> deleteIfExistsWithResponse(DataLakePathDeleteOptions options) {
         try {
+            options = options == null ? new DataLakePathDeleteOptions() : options;
             return blobContainerAsyncClient.deleteIfExistsWithResponse(
-                    Transforms.toBlobRequestConditions(requestConditions))
+                    Transforms.toBlobRequestConditions(options.getRequestConditions()))
                 .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -1048,7 +1055,9 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteFileIfExists(String fileName) {
-        return deleteFileIfExistsWithResponse(fileName, null).map(response -> true).switchIfEmpty(Mono.just(false));
+        return deleteFileIfExistsWithResponse(fileName, new DataLakePathDeleteOptions().setIsRecursive(false)
+            .setRequestConditions(new DataLakeRequestConditions())).map(response -> true)
+            .switchIfEmpty(Mono.just(false));
     }
 
     /**
@@ -1058,29 +1067,30 @@ public class DataLakeFileSystemAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteFileIfExistsWithResponse#String-DataLakeRequestConditions -->
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteFileIfExistsWithResponse#String-DataLakePathDeleteOptions -->
      * <pre>
      * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
      *     .setLeaseId&#40;leaseId&#41;;
+     * DataLakePathDeleteOptions options = new DataLakePathDeleteOptions&#40;&#41;.setIsRecursive&#40;false&#41;
+     *      .setRequestConditions&#40;requestConditions&#41;;
      *
-     * client.deleteFileIfExistsWithResponse&#40;fileName, requestConditions&#41;.switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
+     * client.deleteFileIfExistsWithResponse&#40;fileName, options&#41;.switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
      *      .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;
      *      .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteFileIfExistsWithResponse#String-DataLakeRequestConditions -->
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteFileIfExistsWithResponse#String-DataLakePathDeleteOptions -->
      *
      * @param fileName Name of the file to delete. If the path name contains special characters, pass in the url encoded
      * version of the path name.
-     * @param requestConditions {@link DataLakeRequestConditions}
+     * @param options {@link DataLakePathDeleteOptions}
      * @return A reactive response {@link Mono} containing status code and HTTP headers signaling completion. The
      * presence of a {@link Response} item indicates the file was successfully deleted. An empty {@code Mono} indicates
      * that the file did not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName,
-        DataLakeRequestConditions requestConditions) {
+    public Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName, DataLakePathDeleteOptions options) {
         try {
-            return getFileAsyncClient(fileName).deleteIfExistsWithResponse(requestConditions);
+            return getFileAsyncClient(fileName).deleteIfExistsWithResponse(options);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1342,7 +1352,8 @@ public class DataLakeFileSystemAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteDirectoryIfExists(String directoryName) {
-        return deleteDirectoryIfExistsWithResponse(directoryName, false, null).map(response -> true)
+        return deleteDirectoryIfExistsWithResponse(directoryName, new DataLakePathDeleteOptions().setIsRecursive(false)
+            .setRequestConditions(new DataLakeRequestConditions())).map(response -> true)
             .switchIfEmpty(Mono.just(false));
     }
 
@@ -1358,27 +1369,27 @@ public class DataLakeFileSystemAsyncClient {
      * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
      *     .setLeaseId&#40;leaseId&#41;;
      * boolean recursive = false; &#47;&#47; Default value
+     * DataLakePathDeleteOptions options = new DataLakePathDeleteOptions&#40;&#41;.setIsRecursive&#40;recursive&#41;
+     * .setRequestConditions&#40;requestConditions&#41;;
      *
-     * client.deleteDirectoryIfExistsWithResponse&#40;directoryName, recursive, requestConditions&#41;
-     *      .switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
-     *                 .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;
-     *             .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * client.deleteDirectoryIfExistsWithResponse&#40;directoryName, options&#41;.switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
+     *          .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;
+     *      .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteDirectoryIfExistsWithResponse#String-boolean-DataLakeRequestConditions -->
      *
      * @param directoryName Name of the directory to delete. If the path name contains special characters, pass in the
      * url encoded version of the path name.
-     * @param recursive Whether or not to delete all paths beneath the directory.
-     * @param requestConditions {@link DataLakeRequestConditions}
+     * @param options {@link DataLakePathDeleteOptions}
      * @return A reactive response {@link Mono} containing status code and HTTP headers signaling completion. The
      * presence of a {@link Response} item indicates the directory was successfully deleted. An empty {@code Mono}
      * indicates that the specified directory did not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteDirectoryIfExistsWithResponse(String directoryName, boolean recursive,
-        DataLakeRequestConditions requestConditions) {
+    public Mono<Response<Void>> deleteDirectoryIfExistsWithResponse(String directoryName,
+        DataLakePathDeleteOptions options) {
         try {
-            return getDirectoryAsyncClient(directoryName).deleteIfExistsWithResponse(recursive, requestConditions);
+            return getDirectoryAsyncClient(directoryName).deleteIfExistsWithResponse(options);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

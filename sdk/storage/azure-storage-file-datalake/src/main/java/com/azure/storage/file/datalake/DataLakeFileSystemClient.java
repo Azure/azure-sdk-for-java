@@ -32,6 +32,7 @@ import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
+import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
@@ -408,7 +409,8 @@ public class DataLakeFileSystemClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean deleteIfExists() {
-        Response<Void> response = deleteIfExistsWithResponse(null, null, Context.NONE);
+        Response<Void> response = deleteIfExistsWithResponse(new DataLakePathDeleteOptions()
+            .setRequestConditions(new DataLakeRequestConditions()), null, Context.NONE);
         return response != null && response.getStatusCode() == 202;
     }
 
@@ -419,33 +421,39 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteIfExistsWithResponse#DataLakeRequestConditions-Duration-Context -->
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions-Duration-Context -->
      * <pre>
      * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
      *     .setLeaseId&#40;leaseId&#41;
      *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
      * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
+     * DataLakePathDeleteOptions options = new DataLakePathDeleteOptions&#40;&#41;.setIsRecursive&#40;false&#41;
+     *      .setRequestConditions&#40;requestConditions&#41;;
      *
-     * Response&lt;Void&gt; response = client.deleteIfExistsWithResponse&#40;requestConditions, timeout, context&#41;;
+     * Response&lt;Void&gt; response = client.deleteIfExistsWithResponse&#40;options, timeout, context&#41;;
      * if &#40;response != null&#41; &#123;
      *      System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125; else &#123;
      *      System.out.println&#40;&quot;File system does not exist.&quot;&#41;;
      * &#125;
      * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteIfExistsWithResponse#DataLakeRequestConditions-Duration-Context -->
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions-Duration-Context -->
      *
-     * @param requestConditions {@link DataLakeRequestConditions}
+     * @param options {@link DataLakePathDeleteOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers. The presence of a {@link Response} indicates the
      * file system was deleted successfully, {@code null} indicates the file system does not exist at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteIfExistsWithResponse(DataLakeRequestConditions requestConditions, Duration timeout,
+    public Response<Void> deleteIfExistsWithResponse(DataLakePathDeleteOptions options, Duration timeout,
         Context context) {
+        options = options == null ? new DataLakePathDeleteOptions() : options;
+        DataLakeRequestConditions requestConditions = options == null ? new DataLakeRequestConditions() :
+            options.getRequestConditions();
         return DataLakeImplUtils.returnOrConvertException(() -> blobContainerClient.deleteIfExistsWithResponse(
             Transforms.toBlobRequestConditions(requestConditions), timeout, context), LOGGER);
+
     }
 
     /**
@@ -897,7 +905,8 @@ public class DataLakeFileSystemClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean deleteFileIfExists(String fileName) {
-        Response<Void> response = deleteFileIfExistsWithResponse(fileName, null, null, Context.NONE);
+        Response<Void> response = deleteFileIfExistsWithResponse(fileName, new DataLakePathDeleteOptions()
+            .setIsRecursive(false).setRequestConditions(new DataLakeRequestConditions()), null, Context.NONE);
         return response != null && response.getStatusCode() == 200;
     }
 
@@ -912,24 +921,25 @@ public class DataLakeFileSystemClient {
      * <pre>
      * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
      *     .setLeaseId&#40;leaseId&#41;;
+     * DataLakePathDeleteOptions options = new DataLakePathDeleteOptions&#40;&#41;.setRequestConditions&#40;requestConditions&#41;;
      *
-     * client.deleteFileIfExistsWithResponse&#40;fileName, requestConditions, timeout, new Context&#40;key1, value1&#41;&#41;;
+     * client.deleteFileIfExistsWithResponse&#40;fileName, options, timeout, new Context&#40;key1, value1&#41;&#41;;
      * System.out.println&#40;&quot;Delete request completed&quot;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteFileIfExistsWithResponse#String-DataLakeRequestConditions-Duration-Context -->
      *
      * @param fileName Name of the file to delete. If the path name contains special characters, pass in the url encoded
      * version of the path name.
-     * @param requestConditions {@link DataLakeRequestConditions}
+     * @param options {@link DataLakePathDeleteOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers. The presence of a {@link Response} indicates the
      * file was deleted successfully, {@code null} indicates the file does not exist at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteFileIfExistsWithResponse(String fileName, DataLakeRequestConditions requestConditions,
+    public Response<Void> deleteFileIfExistsWithResponse(String fileName, DataLakePathDeleteOptions options,
         Duration timeout, Context context) {
-        return getFileClient(fileName).deleteIfExistsWithResponse(requestConditions, timeout, context);
+        return getFileClient(fileName).deleteIfExistsWithResponse(options, timeout, context);
     }
             /**
              * Creates a new directory within a file system. By default, this method will not overwrite an existing directory.
@@ -1182,13 +1192,15 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectoryIfExistsWithResponse#String-boolean-DataLakeRequestConditions-Duration-Context -->
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectoryIfExistsWithResponse#String-DataLakePathDeleteOptions-Duration-Context -->
      * <pre>
      * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
      *     .setLeaseId&#40;leaseId&#41;;
      * boolean recursive = false; &#47;&#47; Default value
+     * DataLakePathDeleteOptions options = new DataLakePathDeleteOptions&#40;&#41;.setIsRecursive&#40;recursive&#41;
+     *      .setRequestConditions&#40;requestConditions&#41;;
      *
-     * Response&lt;Void&gt; response = client.deleteDirectoryIfExistsWithResponse&#40;directoryName, recursive, requestConditions,
+     * Response&lt;Void&gt; response = client.deleteDirectoryIfExistsWithResponse&#40;directoryName, options,
      *      timeout, new Context&#40;key1, value1&#41;&#41;;
      * if &#40;response == null&#41; &#123;
      *      System.out.println&#40;&quot;Does not exist.&quot;&#41;;
@@ -1196,22 +1208,20 @@ public class DataLakeFileSystemClient {
      *      System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125;
      * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectoryIfExistsWithResponse#String-boolean-DataLakeRequestConditions-Duration-Context -->
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectoryIfExistsWithResponse#String-DataLakePathDeleteOptions-Duration-Context -->
      *
      * @param directoryName Name of the directory to delete. If the path name contains special characters, pass in the
      * url encoded version of the path name.
-     * @param recursive Whether or not to delete all paths beneath the directory.
-     * @param requestConditions {@link DataLakeRequestConditions}
+     * @param options {@link DataLakePathDeleteOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers. The presence of a {@link Response} indicates the
      * directory was deleted successfully, {@code null} indicates the directory does not exist at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteDirectoryIfExistsWithResponse(String directoryName, boolean recursive,
-        DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
-        return getDirectoryClient(directoryName).deleteIfExistsWithResponse(recursive, requestConditions,
-            timeout, context);
+    public Response<Void> deleteDirectoryIfExistsWithResponse(String directoryName, DataLakePathDeleteOptions options,
+        Duration timeout, Context context) {
+        return getDirectoryClient(directoryName).deleteIfExistsWithResponse(options, timeout, context);
     }
 
     /**

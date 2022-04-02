@@ -47,6 +47,7 @@ import com.azure.storage.file.datalake.models.PathPermissions
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry
 import com.azure.storage.file.datalake.models.RolePermissions
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions
+import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions
 import com.azure.storage.file.datalake.options.FileQueryOptions
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions
@@ -484,8 +485,10 @@ class FileAPITest extends APISpec {
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
 
+        def options = new DataLakePathDeleteOptions().setIsRecursive(false).setRequestConditions(drc)
+
         expect:
-        fc.deleteIfExistsWithResponse(drc, null, null).getStatusCode() == 200
+        fc.deleteIfExistsWithResponse(options, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -508,9 +511,10 @@ class FileAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+        def options = new DataLakePathDeleteOptions().setRequestConditions(drc)
 
         when:
-        fc.deleteIfExistsWithResponse(drc, null, null).getStatusCode()
+        fc.deleteIfExistsWithResponse(options, null, null).getStatusCode()
 
         then:
         thrown(DataLakeStorageException)

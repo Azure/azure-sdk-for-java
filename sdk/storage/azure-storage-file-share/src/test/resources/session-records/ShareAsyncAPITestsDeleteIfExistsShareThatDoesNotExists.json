@@ -1,11 +1,37 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "http://REDACTED.file.core.windows.net/756368e40756368e42d3063266769755c55fb4dd3b35?restype=share",
+    "Uri" : "http://REDACTED.file.core.windows.net/756368e40756368e442f5378345f821f4d0344f13bb7?restype=share",
     "Headers" : {
       "x-ms-version" : "2021-04-10",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "264c419c-c981-4e6a-a845-f1fbde949fd5"
+      "x-ms-client-request-id" : "51e55f87-70ce-49ff-b769-33e02c2e79d0"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "java.net.UnknownHostException",
+      "ErrorMessage" : "xclientdev2.file.core.windows.net"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://REDACTED.file.core.windows.net/756368e40756368e442f5378345f821f4d0344f13bb7?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "51e55f87-70ce-49ff-b769-33e02c2e79d0"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "java.net.UnknownHostException",
+      "ErrorMessage" : "xclientdev2.file.core.windows.net"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://REDACTED.file.core.windows.net/756368e40756368e442f5378345f821f4d0344f13bb7?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "51e55f87-70ce-49ff-b769-33e02c2e79d0"
     },
     "Response" : {
       "content-length" : "217",
@@ -14,20 +40,20 @@
       "x-ms-error-code" : "ShareNotFound",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "x-ms-request-id" : "d7f9933c-801a-0036-3050-459f88000000",
-      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:d7f9933c-801a-0036-3050-459f88000000\nTime:2022-03-31T22:43:24.0357382Z</Message></Error>",
-      "x-ms-client-request-id" : "264c419c-c981-4e6a-a845-f1fbde949fd5",
-      "Date" : "Thu, 31 Mar 2022 22:43:23 GMT",
+      "x-ms-request-id" : "73f26c12-201a-0062-5dda-46d0df000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:73f26c12-201a-0062-5dda-46d0df000000\nTime:2022-04-02T21:39:17.3579857Z</Message></Error>",
+      "x-ms-client-request-id" : "51e55f87-70ce-49ff-b769-33e02c2e79d0",
+      "Date" : "Sat, 02 Apr 2022 21:39:16 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://REDACTED.file.core.windows.net/756368e40756368e42d3063266769755c55fb4dd3b35?restype=share",
+    "Uri" : "http://REDACTED.file.core.windows.net/756368e40756368e442f5378345f821f4d0344f13bb7?restype=share",
     "Headers" : {
       "x-ms-version" : "2021-04-10",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "15b7a4c6-28d9-41f4-98f9-3cea476c79d2"
+      "x-ms-client-request-id" : "51441404-77bc-4119-a177-f2fd3d9c795f"
     },
     "Response" : {
       "content-length" : "217",
@@ -37,13 +63,13 @@
       "x-ms-error-code" : "ShareNotFound",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "x-ms-request-id" : "058a0c9c-a01a-007c-6650-453c07000000",
-      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:058a0c9c-a01a-007c-6650-453c07000000\nTime:2022-03-31T22:43:24.1688998Z</Message></Error>",
-      "x-ms-client-request-id" : "15b7a4c6-28d9-41f4-98f9-3cea476c79d2",
-      "Date" : "Thu, 31 Mar 2022 22:43:23 GMT",
+      "x-ms-request-id" : "73f26c14-201a-0062-5eda-46d0df000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:73f26c14-201a-0062-5eda-46d0df000000\nTime:2022-04-02T21:39:17.5378813Z</Message></Error>",
+      "x-ms-client-request-id" : "51441404-77bc-4119-a177-f2fd3d9c795f",
+      "Date" : "Sat, 02 Apr 2022 21:39:16 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "756368e4756368e42d3735281cc9ba4dacd042849c", "756368e40756368e42d3063266769755c55fb4dd3b35" ]
+  "variables" : [ "756368e4756368e442f909689363209a12844a578a", "756368e40756368e442f5378345f821f4d0344f13bb7" ]
 }

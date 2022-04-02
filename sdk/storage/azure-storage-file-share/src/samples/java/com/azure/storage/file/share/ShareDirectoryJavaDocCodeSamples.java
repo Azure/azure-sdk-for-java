@@ -13,6 +13,7 @@ import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareRequestConditions;
+import com.azure.storage.file.share.options.ShareDeleteOptions;
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
 import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions;
@@ -725,7 +726,7 @@ public class ShareDirectoryJavaDocCodeSamples {
     /**
      * Generates a code sample for using {@link ShareDirectoryClient#deleteFileIfExists(String)},
      * {@link ShareDirectoryClient#deleteFileIfExistsWithResponse(String, Duration, Context)} and
-     * {@link ShareDirectoryClient#deleteFileIfExistsWithResponse(String, ShareRequestConditions, Duration, Context)}
+     * {@link ShareDirectoryClient#deleteFileIfExistsWithResponse(String, ShareDeleteOptions, Duration, Context)}
      */
     public void deleteFileIfExistsCodeSnippets() {
         ShareDirectoryClient shareDirectoryClient = createClientWithSASToken();
@@ -744,16 +745,18 @@ public class ShareDirectoryJavaDocCodeSamples {
         }
         // END: com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExistsWithResponse#String-Duration-Context
 
-        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExistsWithResponse#String-ShareRequestConditions-Duration-Context
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExistsWithResponse#String-ShareDeleteOptions-Duration-Context
         ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
-        Response<Void> fileResponse = shareDirectoryClient.deleteFileIfExistsWithResponse("myfile", requestConditions,
+        ShareDeleteOptions options = new ShareDeleteOptions().setRequestConditions(requestConditions);
+
+        Response<Void> fileResponse = shareDirectoryClient.deleteFileIfExistsWithResponse("myfile", options,
             Duration.ofSeconds(1), new Context(key1, value1));
         if (fileResponse == null) {
             System.out.println("Does not exist.");
         } else {
             System.out.printf("Delete completed with status %d%n", response.getStatusCode());
         }
-        // END: com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExistsWithResponse#String-ShareRequestConditions-Duration-Context
+        // END: com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExistsWithResponse#String-ShareDeleteOptions-Duration-Context
 
     }
 

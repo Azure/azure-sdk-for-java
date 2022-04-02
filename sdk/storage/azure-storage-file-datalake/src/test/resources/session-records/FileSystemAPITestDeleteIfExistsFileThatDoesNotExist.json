@@ -1,32 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://REDACTED.blob.core.windows.net/000d8aac0000d8aacf6704667e4699b7df72447ccbdd?restype=container",
+    "Uri" : "http://REDACTED.blob.core.windows.net/000d8aac0000d8aac9ea602507ecadbee9cd44c0fa8a?restype=container",
     "Headers" : {
       "x-ms-version" : "2021-04-10",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.16.0-beta.1 azsdk-java-azure-storage-file-datalake/12.9.0-beta.1 (11.0.14; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "9acb2357-6c4e-49b3-91a3-49bfcae5168f"
+      "x-ms-client-request-id" : "98113e11-94af-4c94-9315-376a2b30a1c0"
     },
     "Response" : {
       "content-length" : "0",
       "x-ms-version" : "2021-04-10",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "eTag" : "0x8DA1344B663B99F",
-      "Last-Modified" : "Thu, 31 Mar 2022 18:31:46 GMT",
+      "eTag" : "0x8DA1438ADD1A51E",
+      "Last-Modified" : "Fri, 01 Apr 2022 23:38:09 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "83c4be55-401e-0027-612d-458279000000",
-      "x-ms-client-request-id" : "9acb2357-6c4e-49b3-91a3-49bfcae5168f",
-      "Date" : "Thu, 31 Mar 2022 18:31:45 GMT"
+      "x-ms-request-id" : "3fe410b6-201e-003c-1821-46aceb000000",
+      "x-ms-client-request-id" : "98113e11-94af-4c94-9315-376a2b30a1c0",
+      "Date" : "Fri, 01 Apr 2022 23:38:09 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://REDACTED.dfs.core.windows.net/000d8aac0000d8aacf6704667e4699b7df72447ccbdd/000d8aac1000d8aacf6790912c80535801ad54c9299e?recursive=false",
+    "Uri" : "http://REDACTED.dfs.core.windows.net/000d8aac0000d8aac9ea602507ecadbee9cd44c0fa8a/000d8aac1000d8aac9ea17578dddb0b9873ee4415ac9?recursive=false",
     "Headers" : {
       "x-ms-version" : "2021-04-10",
       "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.9.0-beta.1 (11.0.14; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "ffd555c8-264d-4039-aded-f67421d57da5"
+      "x-ms-client-request-id" : "478ec3ad-5107-4458-bf7f-dd9ddc379146"
     },
     "Response" : {
       "content-length" : "163",
@@ -35,13 +35,13 @@
       "x-ms-error-code" : "PathNotFound",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "x-ms-request-id" : "c851ffd1-701f-000d-572d-45f73c000000",
-      "Body" : "{\"error\":{\"code\":\"PathNotFound\",\"message\":\"The specified path does not exist.\\nRequestId:c851ffd1-701f-000d-572d-45f73c000000\\nTime:2022-03-31T18:31:46.9948429Z\"}}",
-      "x-ms-client-request-id" : "ffd555c8-264d-4039-aded-f67421d57da5",
-      "Date" : "Thu, 31 Mar 2022 18:31:46 GMT",
+      "x-ms-request-id" : "e7b6ba68-f01f-003e-0821-46ae11000000",
+      "Body" : "{\"error\":{\"code\":\"PathNotFound\",\"message\":\"The specified path does not exist.\\nRequestId:e7b6ba68-f01f-003e-0821-46ae11000000\\nTime:2022-04-01T23:38:10.0608242Z\"}}",
+      "x-ms-client-request-id" : "478ec3ad-5107-4458-bf7f-dd9ddc379146",
+      "Date" : "Fri, 01 Apr 2022 23:38:09 GMT",
       "Content-Type" : "application/json;charset=utf-8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "000d8aac0000d8aacf6704667e4699b7df72447ccbdd", "000d8aac1000d8aacf6790912c80535801ad54c9299e" ]
+  "variables" : [ "000d8aac0000d8aac9ea602507ecadbee9cd44c0fa8a", "000d8aac1000d8aac9ea17578dddb0b9873ee4415ac9" ]
 }
