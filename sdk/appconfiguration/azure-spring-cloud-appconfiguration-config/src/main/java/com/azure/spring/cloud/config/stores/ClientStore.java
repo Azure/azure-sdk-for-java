@@ -183,6 +183,11 @@ public final class ClientStore {
         return getClient(storeName).listConfigurationSettings(settingSelector);
     }
 
+    /**
+     * Update the sync token for a client store.
+     * @param storeName the name of the client store.
+     * @param syncToken the sync token.
+     */
     public void updateSyncToken(String storeName, String syncToken) {
         if (syncToken != null) {
             getClient(storeName).updateSyncToken(syncToken);
