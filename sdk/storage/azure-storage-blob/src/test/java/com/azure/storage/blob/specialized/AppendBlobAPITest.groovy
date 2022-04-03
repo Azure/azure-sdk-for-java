@@ -290,32 +290,6 @@ class AppendBlobAPITest extends APISpec {
         "foo" | "bar"  | "fizz" | "buzz"
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
-    @Unroll
-    def "Create if not exists tags"() {
-        setup:
-        def tags = new HashMap<String, String>()
-        if (key1 != null) {
-            tags.put(key1, value1)
-        }
-        if (key2 != null) {
-            tags.put(key2, value2)
-        }
-
-        when:
-        bc.createIfNotExistsWithResponse(new AppendBlobCreateOptions().setTags(tags), null, Context.NONE)
-        def response = bc.getTagsWithResponse(new BlobGetTagsOptions(), null, null)
-
-        then:
-        response.getValue() == tags
-
-        where:
-        key1                | value1     | key2   | value2
-        null                | null       | null   | null
-        "foo"               | "bar"      | "fizz" | "buzz"
-        " +-./:=_  +-./:=_" | " +-./:=_" | null   | null
-    }
-
     def "Append block defaults"() {
         setup:
         def appendResponse = bc.appendBlockWithResponse(data.defaultInputStream, data.defaultDataSize, null, null, null,

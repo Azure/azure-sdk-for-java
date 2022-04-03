@@ -407,7 +407,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileIfNotExistsWithResponse#String-DataLakeCreateOptions-->
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileIfNotExistsWithResponse#String-DataLakePathCreateOptions-->
      * <pre>
      * PathHttpHeaders httpHeaders = new PathHttpHeaders&#40;&#41;
      *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
@@ -421,7 +421,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *          .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
      *      .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileIfNotExistsWithResponse#String-DataLakeCreateOptions -->
+     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileIfNotExistsWithResponse#String-DataLakePathCreateOptions -->
      *
      * @param fileName Name of the file to create.
      * @param options {@link DataLakePathCreateOptions}
@@ -744,8 +744,8 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
 
      client.createSubdirectoryIfNotExistsWithResponse&#40;directoryName, options&#41;
      .switchIfEmpty&#40;Mono.&lt;Response&lt;DataLakeDirectoryAsyncClient&gt;&gt;empty&#40;&#41;.doOnSuccess&#40;x -&gt;
-     System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;.subscribe&#40;response -&gt; System.out.printf&#40;&quot;Create completed with status %d%n&quot;,
-     response.getStatusCode&#40;&#41;&#41;&#41;;
+            System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;.subscribe&#40;response -&gt;
+            System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse#String-DataLakePathCreateOptions -->
      *

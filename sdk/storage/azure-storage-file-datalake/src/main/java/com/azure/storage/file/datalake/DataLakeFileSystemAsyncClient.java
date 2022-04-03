@@ -943,7 +943,8 @@ public class DataLakeFileSystemAsyncClient {
      * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;.setPathHttpHeaders&#40;headers&#41;
      *      .setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;.setMetadata&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;;
      *
-     * client.createFileIfNotExistsWithResponse&#40;fileName, options&#41;.switchIfEmpty&#40;Mono.&lt;Response&lt;DataLakeFileAsyncClient&gt;&gt;empty&#40;&#41;
+     * client.createFileIfNotExistsWithResponse&#40;fileName, options&#41;
+     *      .switchIfEmpty&#40;Mono.&lt;Response&lt;DataLakeFileAsyncClient&gt;&gt;empty&#40;&#41;
      *          .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
      *      .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>

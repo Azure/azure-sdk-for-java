@@ -302,8 +302,8 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
 
         client.createSubdirectoryIfNotExistsWithResponse(directoryName, options)
             .switchIfEmpty(Mono.<Response<DataLakeDirectoryAsyncClient>>empty().doOnSuccess(x ->
-                System.out.println("Already exists."))).subscribe(response -> System.out.printf("Create completed with status %d%n",
-                response.getStatusCode()));
+                System.out.println("Already exists."))).subscribe(response ->
+                System.out.printf("Create completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse#String-DataLakePathCreateOptions
     }
 

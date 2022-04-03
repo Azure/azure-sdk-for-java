@@ -551,7 +551,7 @@ public class FileSystemClientJavaDocCodeSamples {
         DataLakeFileClient fileClient = client.createFile(fileName);
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileIfNotExists#String
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileWithResponse#String-DataLakePathCreateOptions-Duration-Context
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileIfNotExistsWithResponse#String-DataLakePathCreateOptions-Duration-Context
 
         PathHttpHeaders headers = new PathHttpHeaders().setContentLanguage("en-US").setContentType("binary");
         String permissions = "permissions";
@@ -566,7 +566,7 @@ public class FileSystemClientJavaDocCodeSamples {
         } else {
             System.out.printf("Create completed with status %d%n", response.getStatusCode());
         }
-        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileWithResponse#String-DataLakePathCreateOptions-Duration-Context
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileIfNotExistsWithResponse#String-DataLakePathCreateOptions-Duration-Context
     }
 
     /**
