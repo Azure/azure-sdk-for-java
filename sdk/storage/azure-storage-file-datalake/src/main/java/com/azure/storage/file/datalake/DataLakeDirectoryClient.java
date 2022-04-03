@@ -648,7 +648,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubdirectoryIfNotExistsWithResponse#String-String-String-PathHttpHeaders-Map-Duration-Context -->
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubdirectoryIfNotExistsWithResponse#String-DataLakePathCreateOptions-Duration-Context -->
      * <pre>
      * PathHttpHeaders headers = new PathHttpHeaders&#40;&#41;
      *      .setContentLanguage&#40;&quot;en-US&quot;&#41;
@@ -666,7 +666,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      *      System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125;
      * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubdirectoryIfNotExistsWithResponse#String-String-String-PathHttpHeaders-Map-Duration-Context -->
+     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubdirectoryIfNotExistsWithResponse#String-DataLakePathCreateOptions-Duration-Context -->
      *
      * @param subdirectoryName Name of the sub-directory to create.
      * @param options {@link DataLakePathCreateOptions}
@@ -786,7 +786,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      *      System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125;
      * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteSubdirectoryIfExistsWithResponse#String-boolean-DataLakeRequestConditions-Duration-Context -->
+     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteSubdirectoryIfExistsWithResponse#String-DataLakePathDeleteOptions-Duration-Context -->
      *
      * @param subdirectoryName Name of the sub-directory to delete.
      * @param options {@link DataLakePathDeleteOptions}

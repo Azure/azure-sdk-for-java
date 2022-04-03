@@ -664,7 +664,8 @@ public class ShareDirectoryJavaDocCodeSamples {
         // END: com.azure.storage.file.share.ShareDirectoryClient.deleteIfExists
 
         // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.deleteIfExistsWithResponse#duration-context
-        Response<Void> response = shareDirectoryClient.deleteIfExistsWithResponse(Duration.ofSeconds(1), new Context(key1, value1));
+        Response<Void> response = shareDirectoryClient.deleteIfExistsWithResponse(Duration.ofSeconds(1),
+            new Context(key1, value1));
         if (response != null) {
             System.out.printf("Delete completed with status %d%n", response.getStatusCode());
         } else {

@@ -570,7 +570,7 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
             .subscribe(response -> System.out.println("Create completed."));
         // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryIfNotExists#String
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryWithResponse#String-DataLakePathCreateOptions
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryIfNotExistsWithResponse#String-DataLakePathCreateOptions
         PathHttpHeaders headers = new PathHttpHeaders()
             .setContentLanguage("en-US")
             .setContentType("binary");
@@ -583,7 +583,7 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
             .switchIfEmpty(Mono.<Response<DataLakeDirectoryAsyncClient>>empty().doOnSuccess(x ->
                 System.out.println("Already exists."))).subscribe(response ->
                 System.out.printf("Create completed with status %d%n", response.getStatusCode()));
-        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryWithResponse#String-DataLakePathCreateOptions
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryIfNotExistsWithResponse#String-DataLakePathCreateOptions
     }
 
     /**

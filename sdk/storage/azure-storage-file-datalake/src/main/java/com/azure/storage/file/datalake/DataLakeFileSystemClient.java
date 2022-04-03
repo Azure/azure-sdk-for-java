@@ -797,13 +797,13 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileIfNotExistsWithResponse#String-String-String-PathHttpHeaders-Map-Duration-Context -->
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileIfNotExistsWithResponse#String-DataLakePathCreateOptions-Duration-Context -->
      * <pre>
      * PathHttpHeaders headers = new PathHttpHeaders&#40;&#41;.setContentLanguage&#40;&quot;en-US&quot;&#41;.setContentType&#40;&quot;binary&quot;&#41;;
      * String permissions = &quot;permissions&quot;;
      * String umask = &quot;umask&quot;;
      * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;.setPathHttpHeaders&#40;headers&#41;
-     *             .setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;.setMetadata&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;;
+     *      .setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;.setMetadata&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;;
      *
      * Response&lt;DataLakeFileClient&gt; response = client.createFileIfNotExistsWithResponse&#40;fileName, options, timeout,
      *      new Context&#40;key1, value1&#41;&#41;;
@@ -813,7 +813,7 @@ public class DataLakeFileSystemClient {
      *      System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125;
      * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileIfNotExistsWithResponse#String-String-String-PathHttpHeaders-Map-Duration-Context -->
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileIfNotExistsWithResponse#String-DataLakePathCreateOptions-Duration-Context -->
      *
      * @param fileName Name of the file to create. If the path name contains special characters, pass in the url encoded
      * version of the path name.
@@ -917,7 +917,7 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteFileIfExistsWithResponse#String-DataLakeRequestConditions-Duration-Context -->
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteFileIfExistsWithResponse#String-DataLakePathDeleteOptions-Duration-Context -->
      * <pre>
      * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
      *     .setLeaseId&#40;leaseId&#41;;
@@ -926,7 +926,7 @@ public class DataLakeFileSystemClient {
      * client.deleteFileIfExistsWithResponse&#40;fileName, options, timeout, new Context&#40;key1, value1&#41;&#41;;
      * System.out.println&#40;&quot;Delete request completed&quot;&#41;;
      * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteFileIfExistsWithResponse#String-DataLakeRequestConditions-Duration-Context -->
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteFileIfExistsWithResponse#String-DataLakePathDeleteOptions-Duration-Context -->
      *
      * @param fileName Name of the file to delete. If the path name contains special characters, pass in the url encoded
      * version of the path name.
@@ -1068,7 +1068,7 @@ public class DataLakeFileSystemClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse#String-String-String-PathHttpHeaders-Map-Duration-Context -->
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse#String-DataLakePathCreateOptions-Duration-Context -->
      * <pre>
      * PathHttpHeaders headers = new PathHttpHeaders&#40;&#41;
      *      .setContentLanguage&#40;&quot;en-US&quot;&#41;
@@ -1086,7 +1086,7 @@ public class DataLakeFileSystemClient {
      *      System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125;
      * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse#String-String-String-PathHttpHeaders-Map-Duration-Context -->
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse#String-DataLakePathCreateOptions-Duration-Context -->
      *
      * @param directoryName Name of the directory to create.  If the path name contains special characters, pass in the
      * url encoded version of the path name.

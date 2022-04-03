@@ -255,7 +255,7 @@ public class ShareDirectoryClient {
      *
      * <p>Create the directory</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.createIfNotExistsWithResponse#ShareDirectoryCreateOptions-Context -->
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.createIfNotExistsWithResponse#ShareDirectoryCreateOptions-Duration-Context -->
      * <pre>
      * ShareDirectoryClient directoryClient = createClientWithSASToken&#40;&#41;;
      * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;;
@@ -272,7 +272,7 @@ public class ShareDirectoryClient {
      *      System.out.println&#40;&quot;Directory already exists.&quot;&#41;;
      * &#125;
      * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.createIfNotExistsWithResponse#ShareDirectoryCreateOptions-Context -->
+     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.createIfNotExistsWithResponse#ShareDirectoryCreateOptions-Duration-Context -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
@@ -379,7 +379,8 @@ public class ShareDirectoryClient {
      *
      * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.deleteIfExistsWithResponse#duration-context -->
      * <pre>
-     * Response&lt;Void&gt; response = shareDirectoryClient.deleteIfExistsWithResponse&#40;Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
+     * Response&lt;Void&gt; response = shareDirectoryClient.deleteIfExistsWithResponse&#40;Duration.ofSeconds&#40;1&#41;,
+     *      new Context&#40;key1, value1&#41;&#41;;
      * if &#40;response != null&#41; &#123;
      *      System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125; else &#123;
@@ -1486,7 +1487,7 @@ public class ShareDirectoryClient {
      *
      * <p>Delete the file "filetest"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExistsWithResponse#String-ShareRequestConditions-Duration-Context -->
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExistsWithResponse#String-ShareDeleteOptions-Duration-Context -->
      * <pre>
      * ShareRequestConditions requestConditions = new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
      * ShareDeleteOptions options = new ShareDeleteOptions&#40;&#41;.setRequestConditions&#40;requestConditions&#41;;
@@ -1500,7 +1501,7 @@ public class ShareDirectoryClient {
      *      System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125;
      * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExistsWithResponse#String-ShareRequestConditions-Duration-Context -->
+     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExistsWithResponse#String-ShareDeleteOptions-Duration-Context -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>

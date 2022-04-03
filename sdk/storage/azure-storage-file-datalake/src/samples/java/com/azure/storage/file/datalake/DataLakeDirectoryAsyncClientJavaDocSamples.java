@@ -231,7 +231,7 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
 
     /**
      * Code snippets for {@link DataLakeDirectoryAsyncClient#createFileIfNotExists(String)} and
-     * {@link DataLakeDirectoryAsyncClient#createIfNotExistsWithResponse(DataLakePathCreateOptions)}
+     * {@link DataLakeDirectoryAsyncClient#createFileIfNotExistsWithResponse(String, DataLakePathCreateOptions)}
      */
     public void createFileIfNotExistsCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileIfNotExists#String
@@ -291,7 +291,7 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
             .subscribe(response -> System.out.println("Created subdirectory."));
         // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectoryIfNotExists#String
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectoryWithResponse#String-DataLakePathCreateOptions
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse#String-DataLakePathCreateOptions
         PathHttpHeaders headers = new PathHttpHeaders()
             .setContentLanguage("en-US")
             .setContentType("binary");
@@ -304,7 +304,7 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
             .switchIfEmpty(Mono.<Response<DataLakeDirectoryAsyncClient>>empty().doOnSuccess(x ->
                 System.out.println("Already exists."))).subscribe(response -> System.out.printf("Create completed with status %d%n",
                 response.getStatusCode()));
-        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectoryWithResponse#String-DataLakePathCreateOptions
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse#String-DataLakePathCreateOptions
     }
 
     /**
