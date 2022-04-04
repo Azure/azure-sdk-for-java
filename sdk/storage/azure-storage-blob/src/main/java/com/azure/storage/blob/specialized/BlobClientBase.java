@@ -1208,11 +1208,11 @@ public class BlobClientBase {
      * <!-- src_embed com.azure.storage.blob.specialized.BlobClientBase.deleteIfExistsWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions-Duration-Context -->
      * <pre>
      * Response&lt;Void&gt; response = client.deleteIfExistsWithResponse&#40;DeleteSnapshotsOptionType.INCLUDE, null, timeout,
-     *      new Context&#40;key1, value1&#41;&#41;;
+     *     new Context&#40;key1, value1&#41;&#41;;
      * if &#40;response == null&#41; &#123;
-     *      System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
      * &#125; else &#123;
-     *      System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.BlobClientBase.deleteIfExistsWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions-Duration-Context -->

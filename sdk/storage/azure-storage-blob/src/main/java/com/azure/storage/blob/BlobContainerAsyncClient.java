@@ -437,11 +437,11 @@ public final class BlobContainerAsyncClient {
      * <!-- src_embed com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExists -->
      * <pre>
      * client.createIfNotExists&#40;&#41;.subscribe&#40;created -&gt; &#123;
-     *      if &#40;created&#41; &#123;
-     *          System.out.println&#40;&quot;successfully created.&quot;&#41;;
-     *      &#125; else &#123;
-     *          System.out.println&#40;&quot;Already exists.&quot;&#41;;
-     *      &#125;
+     *     if &#40;created&#41; &#123;
+     *         System.out.println&#40;&quot;successfully created.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;Already exists.&quot;&#41;;
+     *     &#125;
      * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExists -->
@@ -464,9 +464,9 @@ public final class BlobContainerAsyncClient {
      * <!-- src_embed com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExistsWithResponse#Map-PublicAccessType -->
      * <pre>
      * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
-     * client.createIfNotExistsWithResponse&#40;metadata, PublicAccessType.CONTAINER&#41;.switchIfEmpty&#40;Mono.&lt;Void&gt;empty&#40;&#41;
-     *          .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
-     *      .subscribe&#40;response -&gt;System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * client.createIfNotExistsWithResponse&#40;metadata, PublicAccessType.CONTAINER&#41;.switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
+     *         .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExistsWithResponse#Map-PublicAccessType -->
      *
@@ -578,11 +578,11 @@ public final class BlobContainerAsyncClient {
      * <!-- src_embed com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExists -->
      * <pre>
      * client.deleteIfExists&#40;&#41;.subscribe&#40;deleted -&gt; &#123;
-     *      if &#40;deleted&#41; &#123;
-     *          System.out.println&#40;&quot;Successfully deleted.&quot;&#41;;
-     *      &#125; else &#123;
-     *          System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *      &#125;
+     *     if &#40;deleted&#41; &#123;
+     *         System.out.println&#40;&quot;Successfully deleted.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125;
      * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExists -->
@@ -608,9 +608,9 @@ public final class BlobContainerAsyncClient {
      *     .setLeaseId&#40;leaseId&#41;
      *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
      *
-     * client.deleteIfExistsWithResponse&#40;requestConditions&#41;.switchIfEmpty&#40;Mono.&lt;Response&gt;Void&gt;&gt;empty&#40;&#41;
-     *      .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;
-     *      .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * client.deleteIfExistsWithResponse&#40;requestConditions&#41;.switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
+     *     .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExistsWithResponse#BlobRequestConditions -->
      *

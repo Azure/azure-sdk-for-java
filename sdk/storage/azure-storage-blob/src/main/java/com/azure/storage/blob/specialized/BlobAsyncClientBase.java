@@ -1696,11 +1696,11 @@ public class BlobAsyncClientBase {
      * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteIfExists -->
      * <pre>
      * client.deleteIfExists&#40;&#41;.subscribe&#40;deleted -&gt; &#123;
-     *      if &#40;deleted&#41; &#123;
-     *          System.out.println&#40;&quot;Successfully deleted.&quot;&#41;;
-     *      &#125; else &#123;
-     *          System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *      &#125;
+     *     if &#40;deleted&#41; &#123;
+     *         System.out.println&#40;&quot;Successfully deleted.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125;
      * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteIfExists -->
@@ -1725,9 +1725,9 @@ public class BlobAsyncClientBase {
      *
      * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteIfExistsWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions -->
      * <pre>
-     * client.deleteIfExistsWithResponse&#40;DeleteSnapshotsOptionType.INCLUDE, null&#41;.switchIfEmpty&#40;Mono.&lt;Response&gt;Void&gt;&gt;empty&#40;&#41;
-     *       .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;
-     *       .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * client.deleteIfExistsWithResponse&#40;DeleteSnapshotsOptionType.INCLUDE, null&#41;.switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
+     *     .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteIfExistsWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions -->
      *
@@ -1757,7 +1757,7 @@ public class BlobAsyncClientBase {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
         return deleteWithResponse(deleteBlobSnapshotOptions, requestConditions, context).onErrorResume(t -> t
-            instanceof BlobStorageException && ((BlobStorageException)t).getStatusCode() == 404, t -> Mono.empty());
+            instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 404, t -> Mono.empty());
     }
 
     /**

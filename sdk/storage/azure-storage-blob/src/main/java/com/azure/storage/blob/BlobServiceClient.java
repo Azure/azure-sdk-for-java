@@ -185,14 +185,14 @@ public final class BlobServiceClient {
      * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
      *
      * Response&lt;BlobContainerClient&gt; response = client.createBlobContainerIfNotExistsWithResponse&#40;
-     *      &quot;containerName&quot;,
-     *      metadata,
-     *      PublicAccessType.CONTAINER,
-     *      context&#41;;
+     *     &quot;containerName&quot;,
+     *     metadata,
+     *     PublicAccessType.CONTAINER,
+     *     context&#41;;
      * if &#40;response == null&#41; &#123;
-     *      System.out.println&#40;&quot;Already existed.&quot;&#41;;
+     *     System.out.println&#40;&quot;Already existed.&quot;&#41;;
      * &#125; else &#123;
-     *      System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobServiceClient.createBlobContainerIfNotExistsWithResponse#String-Map-PublicAccessType-Context -->
@@ -290,9 +290,9 @@ public final class BlobServiceClient {
      *
      * Response&lt;Void&gt; response = client.deleteBlobContainerIfExistsWithResponse&#40;&quot;containerName&quot;, context&#41;;
      * if &#40;response == null&#41; &#123;
-     *      System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
      * &#125; else &#123;
-     *      System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobServiceClient.deleteBlobContainerIfExistsWithResponse#String-Context -->

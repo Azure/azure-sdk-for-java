@@ -12,7 +12,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.implementation.util.ModelHelper;
-import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -300,14 +299,14 @@ public final class PageBlobClient extends BlobClientBase {
      * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
      *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
      *     .setContentType&#40;&quot;binary&quot;&#41;;
-     * context = new Context&#40;key, value&#41;;
+     * Context context = new Context&#40;key, value&#41;;
      *
      * Response&lt;PageBlobItem&gt; response = client.createIfNotExistsWithResponse&#40;new PageBlobCreateOptions&#40;size&#41;
-     *             .setHeaders&#40;headers&#41;.setMetadata&#40;metadata&#41;.setTags&#40;tags&#41;, timeout, context&#41;;
+     *     .setHeaders&#40;headers&#41;.setMetadata&#40;metadata&#41;.setTags&#40;tags&#41;, timeout, context&#41;;
      * if &#40;response == null&#41; &#123;
-     *      System.out.println&#40;&quot;Already existed.&quot;&#41;;
+     *     System.out.println&#40;&quot;Already existed.&quot;&#41;;
      * &#125; else &#123;
-     *      System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.PageBlobClient.createIfNotExistsWithResponse#PageBlobCreateOptions-Duration-Context -->

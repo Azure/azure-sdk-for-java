@@ -24,7 +24,6 @@ import com.azure.storage.blob.implementation.models.PageBlobsUpdateSequenceNumbe
 import com.azure.storage.blob.implementation.models.PageBlobsUploadPagesFromURLHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobsUploadPagesHeaders;
 import com.azure.storage.blob.implementation.util.ModelHelper;
-import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobRange;
@@ -346,8 +345,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * <!-- src_embed com.azure.storage.blob.PageBlobAsyncClient.createIfNotExists#long -->
      * <pre>
      * client.createIfNotExists&#40;size&#41;.switchIfEmpty&#40;Mono.&lt;PageBlobItem&gt;empty&#40;&#41;
-     *          .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
-     *      .subscribe&#40;response -&gt; System.out.printf&#40;
+     *         .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;
      *     &quot;Created page blob with sequence number %s%n&quot;, response.getBlobSequenceNumber&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.PageBlobAsyncClient.createIfNotExists#long -->
@@ -378,11 +377,10 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *     .setContentType&#40;&quot;binary&quot;&#41;;
      *
      * client.createIfNotExistsWithResponse&#40;new PageBlobCreateOptions&#40;size&#41;.setSequenceNumber&#40;sequenceNumber&#41;
-     *     .setHeaders&#40;headers&#41;.setMetadata&#40;metadata&#41;.setTags&#40;tags&#41;&#41;
+     *         .setHeaders&#40;headers&#41;.setMetadata&#40;metadata&#41;.setTags&#40;tags&#41;&#41;
      *     .switchIfEmpty&#40;Mono.&lt;Response&lt;PageBlobItem&gt;&gt;empty&#40;&#41;.doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
      *     .subscribe&#40;response -&gt; System.out.printf&#40;
      *         &quot;Created page blob with sequence number %s%n&quot;, response.getValue&#40;&#41;.getBlobSequenceNumber&#40;&#41;&#41;&#41;;
-     *
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.PageBlobAsyncClient.createIfNotExistsWithResponse#PageBlobCreateOptions -->
      *

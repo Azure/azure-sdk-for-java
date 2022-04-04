@@ -291,8 +291,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExists -->
      * <pre>
      * client.createIfNotExists&#40;&#41;.switchIfEmpty&#40;Mono.&lt;AppendBlobItem&gt;empty&#40;&#41;.doOnSuccess&#40;x -&gt;
-     *          System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;.subscribe&#40;response -&gt;
-     *      System.out.printf&#40;&quot;Created AppendBlob at %s%n&quot;, response.getLastModified&#40;&#41;&#41;&#41;;
+     *         System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Created AppendBlob at %s%n&quot;, response.getLastModified&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExists -->
      *
@@ -319,8 +319,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * Map&lt;String, String&gt; tags = Collections.singletonMap&#40;&quot;tag&quot;, &quot;value&quot;&#41;;
      *
      * client.createIfNotExistsWithResponse&#40;new AppendBlobCreateOptions&#40;&#41;.setHeaders&#40;headers&#41;
-     *      .setMetadata&#40;metadata&#41;.setTags&#40;tags&#41;.switchIfEmpty&#40;Mono.&lt;AppendBlobItem&gt;empty&#40;&#41;
-     *          .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;.subscribe&#40;response -&gt;
+     *     .setMetadata&#40;metadata&#41;.setTags&#40;tags&#41;&#41;.switchIfEmpty&#40;Mono.&lt;Response&lt;AppendBlobItem&gt;&gt;empty&#40;&#41;
+     *         .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;.subscribe&#40;response -&gt;
      *     System.out.printf&#40;&quot;Created AppendBlob at %s%n&quot;, response.getValue&#40;&#41;.getLastModified&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExistsWithResponse#AppendBlobCreateOptions -->

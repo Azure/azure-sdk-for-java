@@ -353,9 +353,9 @@ public final class BlobContainerClient {
      *
      * Response&lt;Void&gt; response = client.createIfNotExistsWithResponse&#40;metadata, PublicAccessType.CONTAINER, timeout, context&#41;;
      * if &#40;response == null&#41; &#123;
-     *      System.out.println&#40;&quot;Already existed.&quot;&#41;;
+     *     System.out.println&#40;&quot;Already existed.&quot;&#41;;
      * &#125; else &#123;
-     *      System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerClient.createIfNotExistsWithResponse#Map-PublicAccessType-Duration-Context -->
@@ -443,7 +443,7 @@ public final class BlobContainerClient {
      * <!-- src_embed com.azure.storage.blob.BlobContainerClient.deleteIfExists -->
      * <pre>
      * boolean result = client.deleteIfExists&#40;&#41;;
-     * System.out.printf&#40;&quot;Delete completed: &quot; + result&#41;;
+     * System.out.println&#40;&quot;Delete completed: &quot; + result&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerClient.deleteIfExists -->
      * @return {@code true} if container is successfully deleted, {@code false} if container does not exist.
@@ -470,9 +470,9 @@ public final class BlobContainerClient {
      *
      * Response&lt;Void&gt; response = client.deleteIfExistsWithResponse&#40;requestConditions, timeout, context&#41;;
      * if &#40;response == null&#41; &#123;
-     *      System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
      * &#125; else &#123;
-     *      System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerClient.deleteIfExistsWithResponse#BlobRequestConditions-Duration-Context -->

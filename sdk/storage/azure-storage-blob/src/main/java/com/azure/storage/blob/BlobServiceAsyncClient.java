@@ -279,13 +279,13 @@ public final class BlobServiceAsyncClient {
      * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
      *
      * Response&lt;BlobContainerAsyncClient&gt; response = client.createBlobContainerIfNotExistsWithResponse&#40;
-     *             &quot;containerName&quot;,
-     *             metadata,
-     *             PublicAccessType.CONTAINER&#41;.block&#40;&#41;;
+     *     &quot;containerName&quot;,
+     *     metadata,
+     *     PublicAccessType.CONTAINER&#41;.block&#40;&#41;;
      * if &#40;response == null&#41; &#123;
-     *      System.out.println&#40;&quot;Already existed.&quot;&#41;;
+     *     System.out.println&#40;&quot;Already existed.&quot;&#41;;
      * &#125; else &#123;
-     *      System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerIfNotExistsWithResponse#String-Map-PublicAccessType -->
@@ -314,7 +314,7 @@ public final class BlobServiceAsyncClient {
         Map<String, String> metadata, PublicAccessType accessType, Context context) {
         try {
             return createBlobContainerWithResponse(containerName, metadata, accessType, context)
-                .onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException)t).getStatusCode() == 409,
+                .onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 409,
                     t -> Mono.empty());
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -384,12 +384,12 @@ public final class BlobServiceAsyncClient {
      * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExists#String -->
      * <pre>
      * client.deleteBlobContainerIfExists&#40;&quot;containerName&quot;&#41;.subscribe&#40;deleted -&gt; &#123;
-     *             if &#40;deleted&#41; &#123;
-     *                 System.out.println&#40;&quot;Successfully deleted.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
+     *     if &#40;deleted&#41; &#123;
+     *         System.out.println&#40;&quot;Successfully deleted.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExists#String -->
      *
@@ -414,8 +414,8 @@ public final class BlobServiceAsyncClient {
      * <pre>
      * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
      * client.deleteBlobContainerIfExistsWithResponse&#40;&quot;containerName&quot;&#41;.switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
-     *             .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;.subscribe&#40;response -&gt;
-     *             System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     *     .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExistsWithResponse#String -->
      *
@@ -437,7 +437,7 @@ public final class BlobServiceAsyncClient {
         try {
             return deleteBlobContainerWithResponse(containerName, context)
                 .onErrorResume(t -> t instanceof BlobStorageException
-                    && ((BlobStorageException)t).getStatusCode() == 404, t -> Mono.empty());
+                    && ((BlobStorageException) t).getStatusCode() == 404, t -> Mono.empty());
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

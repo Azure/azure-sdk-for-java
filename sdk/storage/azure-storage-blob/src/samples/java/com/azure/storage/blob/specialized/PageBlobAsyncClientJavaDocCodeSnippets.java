@@ -4,9 +4,7 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.RequestConditions;
-import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.Response;
-import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;

@@ -249,8 +249,8 @@ public final class AppendBlobClient extends BlobClientBase {
      *
      * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobClient.createIfNotExists -->
      * <pre>
-     *  client.createIfNotExists();
-     *  System.out.println&#40;&quot;Created AppendBlob&quot;&#41;;
+     * client.createIfNotExists&#40;&#41;;
+     * System.out.println&#40;&quot;Created AppendBlob&quot;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.AppendBlobClient.createIfNotExists -->
      *
@@ -278,11 +278,11 @@ public final class AppendBlobClient extends BlobClientBase {
      * Context context = new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;;
      *
      * Response&lt;AppendBlobItem&gt; response = client.createIfNotExistsWithResponse&#40;new AppendBlobCreateOptions&#40;&#41;
-     *             .setHeaders&#40;headers&#41;.setMetadata&#40;metadata&#41;.setTags&#40;tags&#41;, timeout, context&#41;;
+     *     .setHeaders&#40;headers&#41;.setMetadata&#40;metadata&#41;.setTags&#40;tags&#41;, timeout, context&#41;;
      * if &#40;response == null&#41; &#123;
-     *      System.out.println&#40;&quot;Already existed.&quot;&#41;;
+     *     System.out.println&#40;&quot;Already existed.&quot;&#41;;
      * &#125; else &#123;
-     *      System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.AppendBlobClient.createIfNotExistsWithResponse#AppendBlobCreateOptions-Duration-Context -->
