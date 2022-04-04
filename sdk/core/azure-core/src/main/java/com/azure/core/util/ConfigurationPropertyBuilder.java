@@ -170,7 +170,9 @@ public final class ConfigurationPropertyBuilder<T> {
 
     /**
      * Sets flag indicating if property value can be logged.
-     * Default is {@code false}, indicating that property value will be redacted in logs.
+     * Default is {@code false}, indicating that property value should not be logged. When and if retrieving of corresponding
+     * configuration property is logged, {@link Configuration} will use "redacted" string instead of property value.
+     * If flag is set to {@code true}, value is populated on the logs as is.
      *
      * @param logValue If set to {@code true}, {@link Configuration#get(ConfigurationProperty)} will log property value,
      *                    Otherwise, value is redacted.

@@ -275,18 +275,17 @@ public class NettyAsyncHttpClientBuilderTests {
 
     private static Stream<Arguments> buildWithEnvConfigurationProxySupplier() {
         Supplier<TestConfigurationSource> baseJavaProxyConfigurationSupplier = () -> new TestConfigurationSource()
-                .add(JAVA_HTTP_PROXY_HOST, "localhost")
-                .add(JAVA_HTTP_PROXY_PORT, "12345");
+            .add(JAVA_HTTP_PROXY_HOST, "localhost")
+            .add(JAVA_HTTP_PROXY_PORT, "12345");
 
         List<Arguments> arguments = new ArrayList<>();
 
         /*
          * Simple non-authenticated HTTP proxies.
          */
-        arguments.add(Arguments.of(true, false, new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, baseJavaProxyConfigurationSupplier.get()).build(), defaultUrl));
+        arguments.add(Arguments.of(true, false, new ConfigurationBuilder(EMPTY_SOURCE, baseJavaProxyConfigurationSupplier.get(), EMPTY_SOURCE).build(), defaultUrl));
 
-        Configuration simpleEnvProxy = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
-            new TestConfigurationSource()
+        Configuration simpleEnvProxy = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
                 .add(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:12345")
                 .add(JAVA_SYSTEM_PROXY_PREREQUISITE, "true"))
             .build();
@@ -295,17 +294,14 @@ public class NettyAsyncHttpClientBuilderTests {
         /*
          * HTTP proxy with authentication configured.
          */
-        Configuration javaProxyWithAuthentication = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
-            baseJavaProxyConfigurationSupplier.get()
-                .add(JAVA_HTTP_PROXY_USER,  "1")
-                .add(JAVA_HTTP_PROXY_PASSWORD,  "1"))
-            .build();
-        arguments.add(Arguments.of(true, true, javaProxyWithAuthentication, defaultUrl));
+        TestConfigurationSource javaProxyWithAuthentication = baseJavaProxyConfigurationSupplier.get()
+            .add(JAVA_HTTP_PROXY_USER, "1")
+            .add(JAVA_HTTP_PROXY_PASSWORD, "1");
+        arguments.add(Arguments.of(true, true, new ConfigurationBuilder(EMPTY_SOURCE, javaProxyWithAuthentication, EMPTY_SOURCE).build(), defaultUrl));
 
-        Configuration envProxyWithAuthentication = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
-            new TestConfigurationSource()
-                .add(Configuration.PROPERTY_HTTP_PROXY,  "http://1:1@localhost:12345")
-                .add(JAVA_SYSTEM_PROXY_PREREQUISITE,  "true"))
+        Configuration envProxyWithAuthentication = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
+                .add(Configuration.PROPERTY_HTTP_PROXY, "http://1:1@localhost:12345")
+                .add(JAVA_SYSTEM_PROXY_PREREQUISITE, "true"))
             .build();
         arguments.add(Arguments.of(true, true, envProxyWithAuthentication, defaultUrl));
 
@@ -329,20 +325,20 @@ public class NettyAsyncHttpClientBuilderTests {
         Supplier<TestConfigurationSource> javaNonProxyHostsSupplier = () -> baseJavaProxyConfigurationSupplier.get()
             .add(JAVA_NON_PROXY_HOSTS, rawJavaNonProxyHosts);
         Supplier<TestConfigurationSource> envNonProxyHostsSupplier = () -> new TestConfigurationSource()
-                .add(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:12345")
-                .add(Configuration.PROPERTY_NO_PROXY, rawEnvNonProxyHosts)
-                .add(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
+            .add(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:12345")
+            .add(Configuration.PROPERTY_NO_PROXY, rawEnvNonProxyHosts)
+            .add(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
 
         List<Supplier<TestConfigurationSource>> nonProxyHostsSuppliers = Arrays.asList(javaNonProxyHostsSupplier,
             envNonProxyHostsSupplier);
 
         for (Supplier<TestConfigurationSource> configurationSupplier : nonProxyHostsSuppliers) {
             for (String requestUrl : requestUrlsWithoutProxying) {
-                arguments.add(Arguments.of(false, false, new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, configurationSupplier.get()).build(), requestUrl));
+                arguments.add(Arguments.of(false, false, new ConfigurationBuilder(EMPTY_SOURCE, configurationSupplier.get(), EMPTY_SOURCE).build(), requestUrl));
             }
 
             for (String requestUrl : requestUrlsWithProxying) {
-                arguments.add(Arguments.of(true, false, new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, configurationSupplier.get()).build(), requestUrl));
+                arguments.add(Arguments.of(true, false, new ConfigurationBuilder(EMPTY_SOURCE, configurationSupplier.get(), EMPTY_SOURCE).build(), requestUrl));
             }
         }
 
@@ -350,23 +346,23 @@ public class NettyAsyncHttpClientBuilderTests {
          * HTTP proxies with authentication and non-proxy hosts configured.
          */
         Supplier<TestConfigurationSource> authenticatedJavaNonProxyHostsSupplier = () -> javaNonProxyHostsSupplier.get()
-                .add(JAVA_HTTP_PROXY_USER, "1")
-                .add(JAVA_HTTP_PROXY_PASSWORD, "1");
+            .add(JAVA_HTTP_PROXY_USER, "1")
+            .add(JAVA_HTTP_PROXY_PASSWORD, "1");
         Supplier<TestConfigurationSource> authenticatedEnvNonProxyHostsSupplier = () -> new TestConfigurationSource()
-                .add(Configuration.PROPERTY_HTTP_PROXY, "http://1:1@localhost:12345")
-                .add(Configuration.PROPERTY_NO_PROXY, rawEnvNonProxyHosts)
-                .add(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
+            .add(Configuration.PROPERTY_HTTP_PROXY, "http://1:1@localhost:12345")
+            .add(Configuration.PROPERTY_NO_PROXY, rawEnvNonProxyHosts)
+            .add(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
 
         List<Supplier<TestConfigurationSource>> authenticatedNonProxyHostsSuppliers = Arrays.asList(
             authenticatedJavaNonProxyHostsSupplier, authenticatedEnvNonProxyHostsSupplier);
 
         for (Supplier<TestConfigurationSource> configurationSupplier : authenticatedNonProxyHostsSuppliers) {
             for (String requestUrl : requestUrlsWithoutProxying) {
-                arguments.add(Arguments.of(false, true, new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, configurationSupplier.get()).build(), requestUrl));
+                arguments.add(Arguments.of(false, true, new ConfigurationBuilder(EMPTY_SOURCE, configurationSupplier.get(), EMPTY_SOURCE).build(), requestUrl));
             }
 
             for (String requestUrl : requestUrlsWithProxying) {
-                arguments.add(Arguments.of(true, true, new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, configurationSupplier.get()).build(), requestUrl));
+                arguments.add(Arguments.of(true, true,  new ConfigurationBuilder(EMPTY_SOURCE, configurationSupplier.get(), EMPTY_SOURCE).build(), requestUrl));
             }
         }
 
