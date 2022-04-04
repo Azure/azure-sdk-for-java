@@ -310,11 +310,11 @@ public class DataLakeFileSystemClient {
      * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
      * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
      *
-     * Response&lt;Void&gt; response = client.createIfNotExistsWithResponse&#40;metadata, PublicAccessType.CONTAINER, timeout, context&#41;
+     * Response&lt;Void&gt; response = client.createIfNotExistsWithResponse&#40;metadata, PublicAccessType.CONTAINER, timeout, context&#41;;
      * if &#40;response != null&#41; &#123;
-     *      System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125; else &#123;
-     *      System.out.println&#40;&quot;File system already exists.&quot;&#41;;
+     *     System.out.println&#40;&quot;File system already exists.&quot;&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createIfNotExistsWithResponse#Map-PublicAccessType-Duration-Context -->
@@ -428,13 +428,13 @@ public class DataLakeFileSystemClient {
      *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
      * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
      * DataLakePathDeleteOptions options = new DataLakePathDeleteOptions&#40;&#41;.setIsRecursive&#40;false&#41;
-     *      .setRequestConditions&#40;requestConditions&#41;;
+     *     .setRequestConditions&#40;requestConditions&#41;;
      *
      * Response&lt;Void&gt; response = client.deleteIfExistsWithResponse&#40;options, timeout, context&#41;;
      * if &#40;response != null&#41; &#123;
-     *      System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125; else &#123;
-     *      System.out.println&#40;&quot;File system does not exist.&quot;&#41;;
+     *     System.out.println&#40;&quot;File system does not exist.&quot;&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions-Duration-Context -->
@@ -449,8 +449,8 @@ public class DataLakeFileSystemClient {
     public Response<Void> deleteIfExistsWithResponse(DataLakePathDeleteOptions options, Duration timeout,
         Context context) {
         options = options == null ? new DataLakePathDeleteOptions() : options;
-        DataLakeRequestConditions requestConditions = options == null ? new DataLakeRequestConditions() :
-            options.getRequestConditions();
+        DataLakeRequestConditions requestConditions = options == null ? new DataLakeRequestConditions()
+            : options.getRequestConditions();
         return DataLakeImplUtils.returnOrConvertException(() -> blobContainerClient.deleteIfExistsWithResponse(
             Transforms.toBlobRequestConditions(requestConditions), timeout, context), LOGGER);
 
@@ -775,7 +775,7 @@ public class DataLakeFileSystemClient {
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileIfNotExists#String -->
      * <pre>
-     * DataLakeFileClient fileClient = client.createFileIfNotExists&#40;fileName&#41;;
+     * DataLakeFileClient fileClient = client.createFile&#40;fileName&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileIfNotExists#String -->
      *
@@ -799,18 +799,19 @@ public class DataLakeFileSystemClient {
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileIfNotExistsWithResponse#String-DataLakePathCreateOptions-Duration-Context -->
      * <pre>
+     *
      * PathHttpHeaders headers = new PathHttpHeaders&#40;&#41;.setContentLanguage&#40;&quot;en-US&quot;&#41;.setContentType&#40;&quot;binary&quot;&#41;;
      * String permissions = &quot;permissions&quot;;
      * String umask = &quot;umask&quot;;
      * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;.setPathHttpHeaders&#40;headers&#41;
-     *      .setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;.setMetadata&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;;
+     *     .setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;.setMetadata&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;;
      *
      * Response&lt;DataLakeFileClient&gt; response = client.createFileIfNotExistsWithResponse&#40;fileName, options, timeout,
-     *      new Context&#40;key1, value1&#41;&#41;;
+     *     new Context&#40;key1, value1&#41;&#41;;
      * if &#40;response == null&#41; &#123;
-     *      System.out.println&#40;&quot;Already existed.&quot;&#41;;
+     *     System.out.println&#40;&quot;Already existed.&quot;&#41;;
      * &#125; else &#123;
-     *      System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileIfNotExistsWithResponse#String-DataLakePathCreateOptions-Duration-Context -->
@@ -1071,19 +1072,19 @@ public class DataLakeFileSystemClient {
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse#String-DataLakePathCreateOptions-Duration-Context -->
      * <pre>
      * PathHttpHeaders headers = new PathHttpHeaders&#40;&#41;
-     *      .setContentLanguage&#40;&quot;en-US&quot;&#41;
-     *      .setContentType&#40;&quot;binary&quot;&#41;;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
      * String permissions = &quot;permissions&quot;;
      * String umask = &quot;umask&quot;;
      * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;.setPathHttpHeaders&#40;headers&#41;
-     *      .setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;.setMetadata&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;;
+     *     .setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;.setMetadata&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;;
      *
      * Response&lt;DataLakeDirectoryClient&gt; response = client.createDirectoryIfNotExistsWithResponse&#40;directoryName,
-     *      options, timeout, new Context&#40;key1, value1&#41;&#41;;
+     *     options, timeout, new Context&#40;key1, value1&#41;&#41;;
      * if &#40;response == null&#41; &#123;
-     *      System.out.println&#40;&quot;Already existed.&quot;&#41;;
+     *     System.out.println&#40;&quot;Already existed.&quot;&#41;;
      * &#125; else &#123;
-     *      System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryIfNotExistsWithResponse#String-DataLakePathCreateOptions-Duration-Context -->
@@ -1198,14 +1199,14 @@ public class DataLakeFileSystemClient {
      *     .setLeaseId&#40;leaseId&#41;;
      * boolean recursive = false; &#47;&#47; Default value
      * DataLakePathDeleteOptions options = new DataLakePathDeleteOptions&#40;&#41;.setIsRecursive&#40;recursive&#41;
-     *      .setRequestConditions&#40;requestConditions&#41;;
+     *     .setRequestConditions&#40;requestConditions&#41;;
      *
      * Response&lt;Void&gt; response = client.deleteDirectoryIfExistsWithResponse&#40;directoryName, options,
-     *      timeout, new Context&#40;key1, value1&#41;&#41;;
+     *     timeout, new Context&#40;key1, value1&#41;&#41;;
      * if &#40;response == null&#41; &#123;
-     *      System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
      * &#125; else &#123;
-     *      System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectoryIfExistsWithResponse#String-DataLakePathDeleteOptions-Duration-Context -->

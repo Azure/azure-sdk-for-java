@@ -5,9 +5,6 @@ package com.azure.storage.file.datalake.options;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
-import com.azure.storage.file.datalake.models.PathHttpHeaders;
-
-import java.util.Map;
 
 /**
  * Extended options that may be passed when deleting a datalake resource.
@@ -18,6 +15,9 @@ public class DataLakePathDeleteOptions {
     private boolean isRecursive;
     private DataLakeRequestConditions requestConditions;
 
+    /**
+     * Constructs a {@link DataLakePathDeleteOptions}.
+     */
     public DataLakePathDeleteOptions() {
     }
 

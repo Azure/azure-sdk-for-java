@@ -17,10 +17,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobUrlParts;
-import com.azure.storage.blob.models.AppendBlobItem;
-import com.azure.storage.blob.models.AppendBlobRequestConditions;
-import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -393,8 +389,8 @@ public class DataLakePathAsyncClient {
      * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExists -->
      * <pre>
      * client.createIfNotExists&#40;&#41;.switchIfEmpty&#40;Mono.&lt;PathInfo&gt;empty&#40;&#41;
-     *                 .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
-     *             .subscribe&#40;response -&gt; System.out.println&#40;&quot;Create completed.&quot;&#41;&#41;;
+     *         .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
+     *     .subscribe&#40;response -&gt; System.out.println&#40;&quot;Create completed.&quot;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExists -->
      *
@@ -417,19 +413,18 @@ public class DataLakePathAsyncClient {
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExistsWithResponse#DataLakePathCreateOptions -->
      * <pre>
-     * PathHttpHeaders httpHeaders = new PathHttpHeaders&#40;&#41;
-     *      .setContentLanguage&#40;&quot;en-US&quot;&#41;
-     *      .setContentType&#40;&quot;binary&quot;&#41;
+     * PathHttpHeaders headers = new PathHttpHeaders&#40;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
      * String permissions = &quot;permissions&quot;;
      * String umask = &quot;umask&quot;;
-     *
-     * Map<String, String> metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;);
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
      * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;.setPathHttpHeaders&#40;headers&#41;
-     *      .setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;.setMetadata&#40;metadata&#41;;
+     *     .setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;.setMetadata&#40;metadata&#41;;
      *
      * client.createIfNotExistsWithResponse&#40;options&#41;.switchIfEmpty&#40;Mono.&lt;Response&lt;PathInfo&gt;&gt;empty&#40;&#41;
-     *      .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
-     *      .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     *         .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExistsWithResponse#DataLakePathCreateOptions -->
      *
@@ -497,8 +492,8 @@ public class DataLakePathAsyncClient {
      * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.deleteIfExists -->
      * <pre>
      * client.deleteIfExists&#40;&#41;.subscribe&#40;
-     *      response -> System.out.printf&#40;&quot;Delete completed%n&quot;&#41;,
-     *      error -> System.out.printf&#40;&quot;Delete failed: %s%n&quot;, error&#41;&#41;;
+     *     response -&gt; System.out.printf&#40;&quot;Delete completed%n&quot;&#41;,
+     *     error -&gt; System.out.printf&#40;&quot;Delete failed: %s%n&quot;, error&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.deleteIfExists -->
      *
@@ -527,11 +522,11 @@ public class DataLakePathAsyncClient {
      *     .setLeaseId&#40;leaseId&#41;;
      *
      * DataLakePathDeleteOptions options = new DataLakePathDeleteOptions&#40;&#41;.setIsRecursive&#40;false&#41;
-     *      .setRequestConditions&#40;requestConditions&#41;;
+     *     .setRequestConditions&#40;requestConditions&#41;;
      *
      * client.deleteIfExistsWithResponse&#40;options&#41;.switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
-     *          .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;
-     *      .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     *         .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions -->
      *
@@ -554,7 +549,7 @@ public class DataLakePathAsyncClient {
         }
     }
 
-    public Mono<Response<Void>> deleteIfExistsWithResponse(DataLakePathDeleteOptions options, Context context) {
+    Mono<Response<Void>> deleteIfExistsWithResponse(DataLakePathDeleteOptions options, Context context) {
         try {
             options = options == null ? new DataLakePathDeleteOptions() : options;
             return deleteWithResponse(options.getIsRecursive(), options.getRequestConditions(), context)

@@ -190,8 +190,8 @@ public class DataLakeFileClient extends DataLakePathClient {
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileClient.deleteIfExists -->
      * <pre>
-     * boolean result = client.deleteIfExists&#40;&#41;;
-     * System.out.println&#40;&quot;Delete request completed: &quot; + result&#41;;
+     * client.deleteIfExists&#40;&#41;;
+     * System.out.println&#40;&quot;Delete request completed&quot;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileClient.deleteIfExists -->
      *
@@ -217,13 +217,13 @@ public class DataLakeFileClient extends DataLakePathClient {
      * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
      *     .setLeaseId&#40;leaseId&#41;;
      * DataLakePathDeleteOptions options = new DataLakePathDeleteOptions&#40;&#41;.setIsRecursive&#40;false&#41;
-     *      .setRequestConditions&#40;requestConditions&#41;;
+     *     .setRequestConditions&#40;requestConditions&#41;;
      *
      * Response&lt;Void&gt; response = client.deleteIfExistsWithResponse&#40;options, timeout, new Context&#40;key1, value1&#41;&#41;;
      * if &#40;response == null&#41; &#123;
-     *      System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
      * &#125; else &#123;
-     *      System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions-Duration-Context -->

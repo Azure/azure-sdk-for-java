@@ -261,15 +261,15 @@ public class ShareDirectoryClient {
      * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;;
      * String filePermission = &quot;filePermission&quot;;
      * ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions&#40;&#41;.setSmbProperties&#40;smbProperties&#41;
-     *      .setFilePermission&#40;filePermission&#41;.setMetadata&#40;Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;&#41;;
+     *     .setFilePermission&#40;filePermission&#41;.setMetadata&#40;Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;&#41;;
      *
      * Response&lt;ShareDirectoryInfo&gt; response = directoryClient.createIfNotExistsWithResponse&#40;options,
-     *      Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
+     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
      *
      * if &#40;response != null&#41; &#123;
-     *      System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125; else &#123;
-     *      System.out.println&#40;&quot;Directory already exists.&quot;&#41;;
+     *     System.out.println&#40;&quot;Directory already exists.&quot;&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryClient.createIfNotExistsWithResponse#ShareDirectoryCreateOptions-Duration-Context -->
@@ -380,11 +380,11 @@ public class ShareDirectoryClient {
      * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.deleteIfExistsWithResponse#duration-context -->
      * <pre>
      * Response&lt;Void&gt; response = shareDirectoryClient.deleteIfExistsWithResponse&#40;Duration.ofSeconds&#40;1&#41;,
-     *      new Context&#40;key1, value1&#41;&#41;;
+     *     new Context&#40;key1, value1&#41;&#41;;
      * if &#40;response != null&#41; &#123;
-     *      System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125; else &#123;
-     *      System.out.println&#40;&quot;directory does not exist.&quot;&#41;;
+     *     System.out.println&#40;&quot;Directory does not exist.&quot;&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryClient.deleteIfExistsWithResponse#duration-context -->
@@ -1022,15 +1022,15 @@ public class ShareDirectoryClient {
      * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;;
      * String filePermission = &quot;filePermission&quot;;
      * ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions&#40;&#41;.setSmbProperties&#40;smbProperties&#41;
-     *      .setFilePermission&#40;filePermission&#41;.setMetadata&#40;Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;&#41;;
+     *     .setFilePermission&#40;filePermission&#41;.setMetadata&#40;Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;&#41;;
      *
      * Response&lt;ShareDirectoryClient&gt; response = shareDirectoryClient
-     *      .createSubdirectoryIfNotExistsWithResponse&#40;&quot;subdir&quot;, options, Duration.ofSeconds&#40;1&#41;,
-     *      new Context&#40;key1, value1&#41;&#41;;
+     *     .createSubdirectoryIfNotExistsWithResponse&#40;&quot;subdir&quot;, options, Duration.ofSeconds&#40;1&#41;,
+     *         new Context&#40;key1, value1&#41;&#41;;
      * if &#40;response == null&#41; &#123;
-     *       System.out.println&#40;&quot;Already existed.&quot;&#41;;
+     *     System.out.println&#40;&quot;Already existed.&quot;&#41;;
      * &#125; else &#123;
-     *       System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryClient.createSubdirectoryIfNotExistsWithResponse#String-ShareDirectoryCreateOptions-Duration-Context -->
@@ -1155,10 +1155,10 @@ public class ShareDirectoryClient {
      * <pre>
      * Response&lt;Void&gt; response = shareDirectoryClient.deleteSubdirectoryIfExistsWithResponse&#40;&quot;mysubdirectory&quot;,
      *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * if &#40;response != null&#41; &#123;
-     *      System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * if &#40;response == null&#41; &#123;
+     *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
      * &#125; else &#123;
-     *      System.out.println&#40;&quot;File system does not exist.&quot;&#41;;
+     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryClient.deleteSubdirectoryIfExistsWithResponse#string-duration-context -->
@@ -1429,8 +1429,8 @@ public class ShareDirectoryClient {
      *
      * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExists#string -->
      * <pre>
-     * shareDirectoryClient.deleteFileIfExists&#40;&quot;myfile&quot;&#41;;
-     * System.out.println&#40;&quot;Completed deleting the file.&quot;&#41;;
+     * boolean result = shareDirectoryClient.deleteFileIfExists&#40;&quot;myfile&quot;&#41;;
+     * System.out.println&#40;&quot;File deleted: &quot; + result&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExists#string -->
      *
@@ -1458,10 +1458,10 @@ public class ShareDirectoryClient {
      * <pre>
      * Response&lt;Void&gt; response = shareDirectoryClient.deleteFileIfExistsWithResponse&#40;&quot;myfile&quot;,
      *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * if &#40;response != null&#41; &#123;
-     *      System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * if &#40;response == null&#41; &#123;
+     *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
      * &#125; else &#123;
-     *      System.out.println&#40;&quot;File system does not exist.&quot;&#41;;
+     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExistsWithResponse#String-Duration-Context -->
@@ -1494,11 +1494,10 @@ public class ShareDirectoryClient {
      *
      * Response&lt;Void&gt; fileResponse = shareDirectoryClient.deleteFileIfExistsWithResponse&#40;&quot;myfile&quot;, options,
      *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     *
      * if &#40;fileResponse == null&#41; &#123;
-     *      System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
      * &#125; else &#123;
-     *      System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExistsWithResponse#String-ShareDeleteOptions-Duration-Context -->

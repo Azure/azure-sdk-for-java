@@ -33,7 +33,6 @@ import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
-import com.azure.storage.file.share.options.ShareFileCreateOptions;
 import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
@@ -919,9 +918,9 @@ public class ShareFileClient {
      * <pre>
      * Response&lt;Void&gt; response = fileClient.deleteIfExistsWithResponse&#40;Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
      * if &#40;response != null&#41; &#123;
-     *      System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125; else &#123;
-     *      System.out.println&#40;&quot;File does not exist.&quot;&#41;;
+     *     System.out.println&#40;&quot;File does not exist.&quot;&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareFileClient.deleteIfExistsWithResponse#duration-context -->
@@ -953,9 +952,9 @@ public class ShareFileClient {
      * Response&lt;Void&gt; res = fileClient.deleteWithResponse&#40;requestConditions, Duration.ofSeconds&#40;1&#41;,
      *     new Context&#40;key1, value1&#41;&#41;;
      * if &#40;res != null&#41; &#123;
-     *      System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, res.getStatusCode&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, res.getStatusCode&#40;&#41;&#41;;
      * &#125; else &#123;
-     *      System.out.println&#40;&quot;File does not exist.&quot;&#41;;
+     *     System.out.println&#40;&quot;File does not exist.&quot;&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareFileClient.deleteIfExistsWithResponse#ShareRequestConditions-duration-context -->

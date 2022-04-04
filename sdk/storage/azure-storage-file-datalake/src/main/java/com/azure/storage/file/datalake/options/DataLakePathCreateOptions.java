@@ -20,6 +20,9 @@ public class DataLakePathCreateOptions {
     private Map<String, String> metadata;
     private DataLakeRequestConditions requestConditions;
 
+    /**
+     * Constructs a {@link DataLakePathCreateOptions}.
+     */
     public DataLakePathCreateOptions() {
     }
 

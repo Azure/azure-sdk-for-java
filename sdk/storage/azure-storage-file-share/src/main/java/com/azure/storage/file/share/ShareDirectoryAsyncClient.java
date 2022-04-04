@@ -358,8 +358,8 @@ public class ShareDirectoryAsyncClient {
      * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.createIfNotExists -->
      * <pre>
      * shareDirectoryAsyncClient.createIfNotExists&#40;&#41;.switchIfEmpty&#40;Mono.&lt;ShareDirectoryInfo&gt;empty&#40;&#41;
-     *                 .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
-     *             .subscribe&#40;response -&gt; System.out.println&#40;&quot;Create completed.&quot;&#41;&#41;;
+     *         .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
+     *     .subscribe&#40;response -&gt; System.out.println&#40;&quot;Create completed.&quot;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.createIfNotExists -->
      *
@@ -392,12 +392,12 @@ public class ShareDirectoryAsyncClient {
      * String filePermission = &quot;filePermission&quot;;
      * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;;
      * ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions&#40;&#41;.setSmbProperties&#40;smbProperties&#41;
-     *             .setFilePermission&#40;filePermission&#41;.setMetadata&#40;metadata&#41;;
+     *     .setFilePermission&#40;filePermission&#41;.setMetadata&#40;metadata&#41;;
      *
      * shareDirectoryAsyncClient.createIfNotExistsWithResponse&#40;options&#41;
-     *      .switchIfEmpty&#40;Mono.&lt;Response&lt;ShareDirectoryInfo&gt;&gt;empty&#40;&#41;
-     *          .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
-     *      .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     *     .switchIfEmpty&#40;Mono.&lt;Response&lt;ShareDirectoryInfo&gt;&gt;empty&#40;&#41;
+     *         .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.createIfNotExistsWithResponse#ShareDirectoryCreateOptions -->
      *
@@ -506,12 +506,12 @@ public class ShareDirectoryAsyncClient {
      *
      * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteIfExists -->
      * <pre>
-     * shareDirectoryAsyncClient.deleteIfExists&#40;fileName&#41;.subscribe&#40;deleted -&gt; &#123;
-     *      if &#40;deleted&#41; &#123;
-     *          System.out.println&#40;&quot;Successfully deleted.&quot;&#41;;
-     *      &#125; else &#123;
-     *          System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *      &#125;
+     * shareDirectoryAsyncClient.deleteIfExists&#40;&#41;.subscribe&#40;deleted -&gt; &#123;
+     *     if &#40;deleted&#41; &#123;
+     *         System.out.println&#40;&quot;Successfully deleted.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125;
      * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteIfExists -->
@@ -536,10 +536,10 @@ public class ShareDirectoryAsyncClient {
      *
      * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteIfExistsWithResponse -->
      * <pre>
-     * shareDirectoryAsyncClient.deleteFileIfExistsWithResponse&#40;fileName, requestConditions&#41;
-     *      .switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
-     *          .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;
-     *      .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * shareDirectoryAsyncClient.deleteIfExistsWithResponse&#40;&#41;
+     *     .switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
+     *         .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteIfExistsWithResponse -->
      *
@@ -562,7 +562,7 @@ public class ShareDirectoryAsyncClient {
     Mono<Response<Void>> deleteIfExistsWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
         return deleteWithResponse(context).onErrorResume(t -> t instanceof ShareStorageException
-            && ((ShareStorageException)t).getStatusCode() == 404, t -> Mono.empty());
+            && ((ShareStorageException) t).getStatusCode() == 404, t -> Mono.empty());
     }
 
     /**
@@ -1326,9 +1326,9 @@ public class ShareDirectoryAsyncClient {
      * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubdirectoryIfNotExists#string -->
      * <pre>
      * shareDirectoryAsyncClient.createSubdirectoryIfNotExists&#40;&quot;subdir&quot;&#41;
-     *      .switchIfEmpty&#40;Mono.&lt;ShareDirectoryAsyncClient&gt;empty&#40;&#41;
-     *          .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
-     *      .subscribe&#40;response -&gt; System.out.println&#40;&quot;Create completed.&quot;&#41;&#41;;
+     *     .switchIfEmpty&#40;Mono.&lt;ShareDirectoryAsyncClient&gt;empty&#40;&#41;
+     *         .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
+     *     .subscribe&#40;response -&gt; System.out.println&#40;&quot;Create completed.&quot;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubdirectoryIfNotExists#string -->
      *
@@ -1360,12 +1360,12 @@ public class ShareDirectoryAsyncClient {
      * String filePermission = &quot;filePermission&quot;;
      * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;;
      * ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions&#40;&#41;.setSmbProperties&#40;smbProperties&#41;
-     *             .setFilePermission&#40;filePermission&#41;.setMetadata&#40;metadata&#41;;
+     *     .setFilePermission&#40;filePermission&#41;.setMetadata&#40;metadata&#41;;
      *
      * shareDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse&#40;&quot;subdir&quot;, options&#41;
-     *      .switchIfEmpty&#40;Mono.&lt;Response&lt;ShareDirectoryAsyncClient&gt;&gt;empty&#40;&#41;
-     *          .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
-     *       .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     *     .switchIfEmpty&#40;Mono.&lt;Response&lt;ShareDirectoryAsyncClient&gt;&gt;empty&#40;&#41;
+     *         .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse#String-ShareDirectoryCreateOptions -->
      *
@@ -1395,7 +1395,7 @@ public class ShareDirectoryAsyncClient {
             options = options == null ? new ShareDirectoryCreateOptions() : options;
             ShareDirectoryAsyncClient createSubClient = getSubdirectoryClient(subdirectoryName);
             return createSubClient.createIfNotExistsWithResponse(options, context).onErrorResume(t -> t instanceof
-                    ShareStorageException && ((ShareStorageException)t).getStatusCode() == 409, t -> Mono.empty())
+                    ShareStorageException && ((ShareStorageException) t).getStatusCode() == 409, t -> Mono.empty())
                 .map(response -> new SimpleResponse<>(response, createSubClient));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -1483,11 +1483,11 @@ public class ShareDirectoryAsyncClient {
      * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubdirectoryIfExists#string -->
      * <pre>
      * shareDirectoryAsyncClient.deleteSubdirectoryIfExists&#40;&quot;mysubdirectory&quot;&#41;.subscribe&#40;deleted -&gt; &#123;
-     *      if &#40;deleted&#41; &#123;
-     *          System.out.println&#40;&quot;Successfully deleted.&quot;&#41;;
-     *      &#125; else &#123;
-     *          System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *      &#125;
+     *     if &#40;deleted&#41; &#123;
+     *         System.out.println&#40;&quot;Successfully deleted.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125;
      * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubdirectoryIfExists#string -->
@@ -1515,9 +1515,9 @@ public class ShareDirectoryAsyncClient {
      * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubdirectoryIfExistsWithResponse#string -->
      * <pre>
      * shareDirectoryAsyncClient.deleteSubdirectoryIfExistsWithResponse&#40;&quot;mysubdirectory&quot;&#41;
-     *             .switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
-     *                 .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;
-     *             .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     *     .switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
+     *         .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubdirectoryIfExistsWithResponse#string -->
      *
@@ -1814,11 +1814,11 @@ public class ShareDirectoryAsyncClient {
      * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExists#string -->
      * <pre>
      * shareDirectoryAsyncClient.deleteFileIfExists&#40;&quot;myfile&quot;&#41;.subscribe&#40;deleted -&gt; &#123;
-     *      if &#40;deleted&#41; &#123;
-     *          System.out.println&#40;&quot;Successfully deleted.&quot;&#41;;
-     *      &#125; else &#123;
-     *          System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *      &#125;
+     *     if &#40;deleted&#41; &#123;
+     *         System.out.println&#40;&quot;Successfully deleted.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125;
      * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExists#string -->
@@ -1845,9 +1845,8 @@ public class ShareDirectoryAsyncClient {
      * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExistsWithResponse#string -->
      * <pre>
      * shareDirectoryAsyncClient.deleteFileIfExistsWithResponse&#40;&quot;myfile&quot;&#41;.switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
-     *      .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;
-     *      .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
-     * &#41;;
+     *         .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExistsWithResponse#string -->
      *
@@ -1881,9 +1880,9 @@ public class ShareDirectoryAsyncClient {
      * ShareDeleteOptions options = new ShareDeleteOptions&#40;&#41;.setRequestConditions&#40;requestConditions&#41;;
      *
      * shareDirectoryAsyncClient.deleteFileIfExistsWithResponse&#40;&quot;myfile&quot;, options&#41;
-     *      .switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
-     *          .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;
-     *      .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     *     .switchIfEmpty&#40;Mono.&lt;Response&lt;Void&gt;&gt;empty&#40;&#41;
+     *         .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Does not exist.&quot;&#41;&#41;&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExistsWithResponse#string-ShareDeleteOptions -->
      *

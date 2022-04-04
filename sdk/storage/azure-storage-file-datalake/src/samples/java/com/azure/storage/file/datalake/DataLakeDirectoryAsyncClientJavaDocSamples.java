@@ -4,8 +4,6 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.Context;
-import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
@@ -261,11 +259,11 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
     public void deleteFileIfExistsCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteFileIfExists#String
         client.deleteFileIfExists(fileName).subscribe(deleted -> {
-                if (deleted) {
-                    System.out.println("successfully deleted.");
-                } else {
-                    System.out.println("Does not exist.");
-                }
+            if (deleted) {
+                System.out.println("successfully deleted.");
+            } else {
+                System.out.println("Does not exist.");
+            }
         });
         // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteFileIfExists#String
 
