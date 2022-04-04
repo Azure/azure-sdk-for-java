@@ -106,47 +106,50 @@ public final class SyncRestProxy implements InvocationHandler {
     public Object invoke(Object proxy, final Method method, Object[] args) {
         validateResumeOperationIsNotPresent(method);
 
+        final SwaggerMethodParser methodParser = getMethodParser(method);
+        HttpRequest request;
         try {
-            final SwaggerMethodParser methodParser = getMethodParser(method);
-            final HttpRequest request = createHttpRequest(methodParser, args);
-            Context context = methodParser.setContext(args);
-
-            RequestOptions options = methodParser.setRequestOptions(args);
-            context = mergeRequestOptionsContext(context, options);
-
-            context = context.addData("caller-method", methodParser.getFullyQualifiedMethodName())
-                .addData("azure-eagerly-read-response", shouldEagerlyReadResponse(methodParser.getReturnType()));
-
-            HttpDecodedResponse decodedResponse = null;
-            try {
-                context = startTracingSpan(method, context);
-
-                // If there is 'RequestOptions' apply its request callback operations before validating the body.
-                // This is because the callbacks may mutate the request body.
-                if (options != null) {
-                    options.getRequestCallback().accept(request);
-                }
-
-                if (request.getBody() != null) {
-                    request.setContent(validateLengthSync(request));
-                }
-
-                final HttpResponse response = send(request, context);
-
-                decodedResponse = this.decoder.decodeSync(response, methodParser);
-
-                return handleRestReturnType(decodedResponse, methodParser,
-                    methodParser.getReturnType(), context, options);
-            } catch (Exception e) {
-                endTracingSpan(decodedResponse, e, context);
-                throw new RuntimeException(e);
-            } finally {
-                if (decodedResponse != null) {
-                    endTracingSpan(decodedResponse, null, context);
-                }
-            }
+            request = createHttpRequest(methodParser, args);
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+        }
+
+        Context context = methodParser.setContext(args);
+
+        RequestOptions options = methodParser.setRequestOptions(args);
+        context = mergeRequestOptionsContext(context, options);
+
+        context = context.addData("caller-method", methodParser.getFullyQualifiedMethodName())
+            .addData("azure-eagerly-read-response", shouldEagerlyReadResponse(methodParser.getReturnType()));
+
+        HttpDecodedResponse decodedResponse = null;
+        Throwable throwable = null;
+        try {
+            context = startTracingSpan(method, context);
+
+            // If there is 'RequestOptions' apply its request callback operations before validating the body.
+            // This is because the callbacks may mutate the request body.
+            if (options != null) {
+                options.getRequestCallback().accept(request);
+            }
+
+            if (request.getBody() != null) {
+                request.setContent(validateLengthSync(request));
+            }
+
+            final HttpResponse response = send(request, context);
+
+            decodedResponse = this.decoder.decodeSync(response, methodParser);
+
+            return handleRestReturnType(decodedResponse, methodParser,
+                methodParser.getReturnType(), context, options);
+        } catch (Exception e) {
+            throwable = e;
+            throw new RuntimeException(e);
+        } finally {
+            if (decodedResponse != null || throwable != null) {
+                endTracingSpan(decodedResponse, throwable, context);
+            }
         }
     }
 
@@ -583,7 +586,8 @@ public final class SyncRestProxy implements InvocationHandler {
 
 
         // Get the context that was added to the mono, this will contain the information needed to end the span.
-        Object disableTracingValue = tracingContext.getData(Tracer.DISABLE_TRACING_KEY).get();
+        Object disableTracingValue = (tracingContext.getData(Tracer.DISABLE_TRACING_KEY).isPresent()
+            ? tracingContext.getData(Tracer.DISABLE_TRACING_KEY).get() : null);
         boolean disableTracing = Boolean.TRUE.equals(disableTracingValue != null ? disableTracingValue : false);
 
         if (tracingContext == null || disableTracing) {
