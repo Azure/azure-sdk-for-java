@@ -76,7 +76,7 @@ public final class ContainerRegistryRedirectPolicy implements HttpPipelinePolicy
         if (this.isValidRedirectStatusCode(httpResponse.getStatusCode()) && this.isValidRedirectCount(tryCount) && this.isAllowedRedirectMethod(httpResponse.getRequest().getHttpMethod())) {
             String redirectUrl = this.tryGetRedirectHeader(httpResponse.getHeaders(), REDIRECT_LOCATION_HEADER_NAME);
             if (redirectUrl != null && !this.alreadyAttemptedRedirectUrl(redirectUrl, attemptedRedirectUrls)) {
-                LOGGER.verbose("[Redirecting] Try count: {}, Attempted Redirect URLs: {}", new Object[]{tryCount, attemptedRedirectUrls.toString()});
+                LOGGER.verbose("[Redirecting] Try count: {}, Attempted Redirect URLs: {}", tryCount, String.join(",", attemptedRedirectUrls));
                 attemptedRedirectUrls.add(redirectUrl);
                 return true;
             } else {
@@ -129,7 +129,7 @@ public final class ContainerRegistryRedirectPolicy implements HttpPipelinePolicy
     String tryGetRedirectHeader(HttpHeaders headers, String headerName) {
         String headerValue = headers.getValue(headerName);
         if (CoreUtils.isNullOrEmpty(headerValue)) {
-            LOGGER.error("Redirect url was null for header name: {}, request redirect was terminated.", new Object[]{headerName});
+            LOGGER.error("Redirect url was null for header name: {}, request redirect was terminated.", headerName);
             return null;
         } else {
             return headerValue;

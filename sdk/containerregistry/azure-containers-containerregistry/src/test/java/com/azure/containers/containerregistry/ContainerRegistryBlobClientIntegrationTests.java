@@ -137,7 +137,7 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void canUploadOciManifest(HttpClient httpClient) {
-        // Assumptions.assumeTrue(interceptorManager.isLiveMode() || isWindowsOS);
+        Assumptions.assumeTrue(interceptorManager.isLiveMode() || isWindowsOS);
         client = getBlobClient("oci-artifact", httpClient);
 
         uploadManifestPrerequisites();
@@ -177,7 +177,7 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void canUploadOciManifestViaOptions(HttpClient httpClient) {
-        // Assumptions.assumeTrue(interceptorManager.isLiveMode() || isWindowsOS);
+        Assumptions.assumeTrue(interceptorManager.isLiveMode() || isWindowsOS);
         client = getBlobClient("oci-artifact", httpClient);
         uploadManifestPrerequisites();
         OciManifest manifest = createManifest();
@@ -196,7 +196,7 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void canUploadOciManifestWithTag(HttpClient httpClient) {
-        // Assumptions.assumeTrue(interceptorManager.isLiveMode() || isWindowsOS);
+        Assumptions.assumeTrue(interceptorManager.isLiveMode() || isWindowsOS);
         client = getBlobClient("oci-artifact", httpClient);
         String tag = "v1";
         uploadManifestPrerequisites();
@@ -222,7 +222,7 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void canUploadBlob(HttpClient httpClient) {
-        // Assumptions.assumeTrue(interceptorManager.isLiveMode() || isWindowsOS);
+        Assumptions.assumeTrue(interceptorManager.isLiveMode() || isWindowsOS);
         client = getBlobClient("oci-artifact", httpClient);
 
         UploadBlobResult result = client.uploadBlob(configData);
@@ -245,7 +245,7 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void downloadManifest(HttpClient httpClient) {
-        // Assumptions.assumeTrue(interceptorManager.isLiveMode() || isWindowsOS);
+        Assumptions.assumeTrue(interceptorManager.isLiveMode() || isWindowsOS);
         client = getBlobClient("oci-artifact", httpClient);
         uploadManifestPrerequisites();
         OciManifest manifest = createManifest();
