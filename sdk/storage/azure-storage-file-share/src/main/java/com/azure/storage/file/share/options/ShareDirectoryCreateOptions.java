@@ -18,9 +18,6 @@ public class ShareDirectoryCreateOptions {
     private String filePermission;
     private Map<String, String> metadata;
 
-    public ShareDirectoryCreateOptions() {
-    }
-
     /**
      * @return The file's permission key.
      */

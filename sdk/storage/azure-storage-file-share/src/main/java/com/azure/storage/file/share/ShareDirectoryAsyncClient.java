@@ -1395,9 +1395,9 @@ public class ShareDirectoryAsyncClient {
         try {
             options = options == null ? new ShareDirectoryCreateOptions() : options;
             ShareDirectoryAsyncClient createSubClient = getSubdirectoryClient(subdirectoryName);
-            return createSubClient.createIfNotExistsWithResponse(options, context).onErrorResume(t -> t instanceof
-                    ShareStorageException && ((ShareStorageException) t).getStatusCode() == 409, t -> Mono.empty())
-                .map(response -> new SimpleResponse<>(response, createSubClient));
+            return createSubClient.createIfNotExistsWithResponse(options, context).onErrorResume(t -> t
+                    instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 409,
+                    t -> Mono.empty()).map(response -> new SimpleResponse<>(response, createSubClient));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

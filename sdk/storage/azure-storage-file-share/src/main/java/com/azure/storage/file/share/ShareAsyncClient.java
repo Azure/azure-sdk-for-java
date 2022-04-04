@@ -1850,8 +1850,9 @@ public class ShareAsyncClient {
 
     Mono<Response<Void>> deleteDirectoryIfExistsWithResponse(String directoryName, Context context) {
         try {
-            return deleteDirectoryWithResponse(directoryName, context).onErrorResume(t -> t instanceof
-                ShareStorageException && ((ShareStorageException) t).getStatusCode() == 404, t -> Mono.empty());
+            return deleteDirectoryWithResponse(directoryName, context).onErrorResume(t -> t
+                instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 404,
+                t -> Mono.empty());
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
