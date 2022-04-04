@@ -6,6 +6,7 @@ package com.azure.core.http;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 /**
  * A type that invokes next policy in the pipeline.
@@ -39,11 +40,16 @@ public class HttpPipelineNextPolicy {
      * @return A publisher which upon subscription invokes next policy and emits response from the policy.
      */
     public Mono<HttpResponse> process() {
-        if (isSynchronous) {
+        if (isSynchronous && !Schedulers.isInNonBlockingThread()) {
             // Pipeline executes in synchronous style. We most likely got here via default implementation in the
             // HttpPipelinePolicy.processSynchronously so go back to sync style here.
+            // Don't do this on non-blocking threads.
             return Mono.fromCallable(this::processSynchronously);
         } else {
+            if (isSynchronous) {
+                LOGGER.warning("The pipeline switched from synchronous to asynchronous."
+                    + " Check if all policies override HttpPipelinePolicy.processSynchronously");
+            }
             final int size = this.pipeline.getPolicyCount();
             if (this.currentPolicyIndex > size) {
                 return Mono.error(new IllegalStateException("There is no more policies to execute."));

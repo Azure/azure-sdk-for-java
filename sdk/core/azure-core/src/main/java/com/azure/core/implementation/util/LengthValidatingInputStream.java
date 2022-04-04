@@ -18,7 +18,6 @@ public final class LengthValidatingInputStream extends InputStream {
     private final long expectedReadSize;
 
     private long currentReadSize;
-    private byte lastValidationRead = -2;
 
     /**
      * Creates a new {@link LengthValidatingInputStream}.
@@ -82,40 +81,26 @@ public final class LengthValidatingInputStream extends InputStream {
 
     @Override
     public synchronized int read() throws IOException {
-        // After each read there is a check for if additional content could be read to determine if an
-        // UnexpectedLengthException should be thrown. The check read byte is retained as it will move the read position
-        // of the inner InputStream, so when this API is called it needs to be checked.
-        //
-        // A value of -2 is used to disambiguate between the special -1 returned by InputStream when it has reached its
-        // termination. If the retained validation byte isn't -2 return it, otherwise initiate a read from the inner
-        // InputStream. Then pass either -1 or 1, based on the read being -1 or not, into the length validation.
-        int read = (lastValidationRead != -2) ? lastValidationRead : inner.read();
-        validateLength((read == -1) ? -1 : 1);
+        int read = inner.read();
+        validateLength(read);
 
         return read;
     }
 
-    private void validateLength(int readSize) throws IOException {
+    private void validateLength(int readSize) {
         if (readSize == -1) {
             // If the inner InputStream has reached termination validate that the read bytes matches what was expected.
-            if (currentReadSize != expectedReadSize) {
+            if (currentReadSize > expectedReadSize) {
+                throw new UnexpectedLengthException("Request body emitted " + currentReadSize
+                    + " bytes, more than the expected " + expectedReadSize + " bytes.",
+                    currentReadSize, expectedReadSize);
+            } else if (currentReadSize < expectedReadSize) {
                 throw new UnexpectedLengthException("Request body emitted " + currentReadSize
                     + " bytes, less than the expected" + expectedReadSize + "bytes.",
                     currentReadSize, expectedReadSize);
             }
         } else {
             currentReadSize += readSize;
-            lastValidationRead = (byte) inner.read();
-
-            if (currentReadSize >= expectedReadSize && lastValidationRead != -1) {
-                throw new UnexpectedLengthException("Request body emitted " + currentReadSize + 1
-                    + " bytes, more than the expected " + expectedReadSize + " bytes.",
-                    currentReadSize + 1, expectedReadSize);
-            } else if (currentReadSize < expectedReadSize && lastValidationRead == -1) {
-                throw new UnexpectedLengthException("Request body emitted " + currentReadSize
-                    + " bytes, less than the expected" + expectedReadSize + "bytes.",
-                    currentReadSize, expectedReadSize);
-            }
         }
     }
 }
