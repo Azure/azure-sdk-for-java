@@ -174,16 +174,20 @@ public final class SchemaRegistryApacheAvroSerializer {
         return maybeRegisterSchema(serializerOptions.getSchemaGroup(), schemaFullName, schemaString)
             .handle((schemaId, sink) -> {
                 try {
-                    final byte[] encoded = avroSerializer.encode(object);
+                    final byte[] encoded = avroSerializer.serialize(object, schemaId);
                     final T serializedMessage = messageFactoryToUse.apply(BinaryData.fromBytes(encoded));
 
                     serializedMessage.setContentType(AVRO_MIME_TYPE + "+" + schemaId);
 
                     sink.next(serializedMessage);
                     sink.complete();
+                } catch (SchemaRegistryAvroException e) {
+                    // If an exception happens in the avro library while calling serializer.serialize(object, schemaId)
+                    // we already wrap in an exception, so we don't want to wrap it again.
+                    sink.error(e);
                 } catch (Exception e) {
-                    sink.error(new RuntimeException(String.format(
-                        "Error encountered serializing object: %s with schemaId '%s'.", object, schemaId), e));
+                    sink.error(new SchemaRegistryAvroException(String.format(
+                        "Error encountered serializing object: %s with schemaId '%s'.", object, schemaId), e, schemaId));
                 }
             });
     }

@@ -134,6 +134,7 @@ class AvroSerializer {
      * Returns A byte[] containing Avro encoding of object parameter.
      *
      * @param object Object to be encoded into byte stream
+     * @param schemaId Identifier of the schema trying to be encoded.
      *
      * @return A set of bytes that represent the object.
      *
@@ -141,7 +142,7 @@ class AvroSerializer {
      * @throws IllegalStateException if the object could not be serialized to an object stream or there was a
      *     runtime exception during serialization.
      */
-    <T> byte[] encode(T object) {
+    <T> byte[] serialize(T object, String schemaId) {
         final Schema schema = getSchema(object);
 
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
@@ -162,7 +163,8 @@ class AvroSerializer {
             return outputStream.toByteArray();
         } catch (IOException | RuntimeException e) {
             // Avro serialization can throw AvroRuntimeException, NullPointerException, ClassCastException, etc
-            throw logger.logExceptionAsError(new IllegalStateException("Error serializing Avro message", e));
+            throw logger.logExceptionAsError(new SchemaRegistryAvroException(
+                "An error occurred while attempting to serialize to Avro.", e, schemaId));
         }
     }
 

@@ -133,6 +133,7 @@ public class AvroSerializerTest {
             .setPlayingCardSuit(PlayingCardSuit.DIAMONDS)
             .setIsFaceCard(true).setCardValue(13)
             .build();
+        final String schemaId = "schema-id-1";
 
         // Using the raw message encoder because the default card.getByteBuffer() uses BinaryMessageEncoder which adds
         // a header.
@@ -141,14 +142,14 @@ public class AvroSerializerTest {
         final byte[] expectedData = rawMessageEncoder.encode(card).array();
 
         // Act
-        final byte[] encoded = registryUtils.encode(card);
+        final byte[] encoded = registryUtils.serialize(card, schemaId);
 
         // Assert
         assertArrayEquals(expectedData, encoded);
     }
 
     /**
-     * Tests that we can encode and decode an object using {@link AvroSerializer#encode(Object)} and
+     * Tests that we can encode and decode an object using {@link AvroSerializer#serialize(Object, String)} and
      * {@link AvroSerializer#decode(ByteBuffer, byte[], TypeReference)}.
      */
     @Test
@@ -161,10 +162,11 @@ public class AvroSerializerTest {
                 .setIsFaceCard(true)
                 .setCardValue(13)
                 .build();
+        final String schemaId = "schema-id-1";
 
         // Using the raw message encoder because the default card.getByteBuffer() uses BinaryMessageEncoder which adds
         // a header.
-        final byte[] encoded = registryUtils.encode(expected);
+        final byte[] encoded = registryUtils.serialize(expected, schemaId);
         final byte[] schemaBytes = expected.getSchema().toString().getBytes(StandardCharsets.UTF_8);
 
         // Act

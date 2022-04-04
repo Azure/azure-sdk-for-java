@@ -438,7 +438,7 @@ public class SchemaRegistryApacheAvroSerializerTest {
 
         // Manually serialize the data with the preamble.
         final BinaryData binaryData;
-        final byte[] encodedCard = avroSerializer.encode(expected);
+        final byte[] encodedCard = avroSerializer.serialize(expected, MOCK_GUID);
         final int size = RECORD_FORMAT_INDICATOR_SIZE + SCHEMA_ID_SIZE + encodedCard.length;
         final byte[] guidBytes = MOCK_GUID.getBytes(StandardCharsets.UTF_8);
 
