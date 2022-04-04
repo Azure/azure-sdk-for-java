@@ -157,7 +157,7 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void canUploadOciManifestBinaryData(HttpClient httpClient) {
-        // Assumptions.assumeTrue(interceptorManager.isLiveMode() || isWindowsOS);
+        Assumptions.assumeTrue(interceptorManager.isLiveMode() || isWindowsOS);
         client = getBlobClient("oci-artifact", httpClient);
         uploadManifestPrerequisites();
         OciManifest manifest = createManifest();
