@@ -182,38 +182,43 @@ public final class SyncRestProxy implements InvocationHandler {
         }
 
         final long expectedLength = Long.parseLong(request.getHeaders().getValue("Content-Length"));
+        Long length = binaryData.getLength();
 
-        byte[] content = binaryData.toBytes();
-
-        if (content.length > expectedLength) {
-            throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
-                content.length, expectedLength), content.length, expectedLength);
-        }
-
-        return BinaryData.fromBytes(content);
-// TODO: Fix The LengthValidating Input Stream flow, it fails to read the stream content
-
-//        BinaryDataContent bdc = BinaryDataHelper.getContent(binaryData);
-//       if (length == null) {
-//            if (bdc instanceof FluxByteBufferContent) {
-//                throw new IllegalStateException("Flux Byte Buffer is not supported in Synchronous Rest Proxy.");
-//            } else if (bdc instanceof InputStreamContent) {
-//                InputStreamContent inputStreamContent = ((InputStreamContent) bdc);
-//                InputStream inputStream = inputStreamContent.toStream();
-//                LengthValidatingInputStream lengthValidatingInputStream =
-//                    new LengthValidatingInputStream(inputStream, expectedLength);
+//        byte[] content = binaryData.toBytes();
 //
-//                return BinaryData.fromStream(lengthValidatingInputStream);
-//            } else  {
-//                byte[] b = (bdc).toBytes();
-//                long len = b.length;
-//                if (len > expectedLength) {
-//                    throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
-//                        len, expectedLength), len, expectedLength);
-//                }
-//                return BinaryData.fromBytes(b);
-//            }
-////        }
+//        if (content.length > expectedLength) {
+//            throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
+//                content.length, expectedLength), content.length, expectedLength);
+//        }
+
+//        return BinaryData.fromBytes(content);
+
+        BinaryDataContent bdc = BinaryDataHelper.getContent(binaryData);
+       if (length == null) {
+            if (bdc instanceof FluxByteBufferContent) {
+                throw new IllegalStateException("Flux Byte Buffer is not supported in Synchronous Rest Proxy.");
+            } else if (bdc instanceof InputStreamContent) {
+                InputStreamContent inputStreamContent = ((InputStreamContent) bdc);
+                InputStream inputStream = inputStreamContent.toStream();
+                LengthValidatingInputStream lengthValidatingInputStream =
+                    new LengthValidatingInputStream(inputStream, expectedLength);
+                return BinaryData.fromStream(lengthValidatingInputStream);
+            } else  {
+                byte[] b = (bdc).toBytes();
+                long len = b.length;
+                if (len > expectedLength) {
+                    throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
+                        len, expectedLength), len, expectedLength);
+                }
+                return BinaryData.fromBytes(b);
+            }
+        } else {
+           if (length > expectedLength) {
+               throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
+                   length, expectedLength), length, expectedLength);
+           }
+           return binaryData;
+       }
     }
 
     /**
