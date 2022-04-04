@@ -77,7 +77,7 @@ public class ServiceItemLeaseTests {
                 .timestamp(timestamp)
                 .continuationToken(continuationToken)
                 .properties(
-                        new HashMap<>(){{ put("testKey", "testValue"); }});
+                        new HashMap<String, String>(){{ put("testKey", "testValue"); }});
 
         Lease lease = null;
         if (leaseVersion == ServiceItemLeaseVersion.PartitionKeyRangeBasedLease) {

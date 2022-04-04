@@ -65,7 +65,7 @@ public class FeedRangeGoneSplitHandler implements FeedRangeGoneHandler {
                             .doOnSuccess(lease -> leaseTokens.add(lease.getLeaseToken()));
                 })
                 .doOnComplete(() -> {
-                    this.logger.info(
+                    logger.info(
                             "Lease with token {} split into {}",
                             this.lease.getLeaseToken(),
                             StringUtils.join(leaseTokens, ","));
@@ -108,7 +108,7 @@ public class FeedRangeGoneSplitHandler implements FeedRangeGoneHandler {
                             .doOnSuccess(newLease -> leaseTokens.add(newLease.getLeaseToken()));
                 })
                 .doOnComplete(() -> {
-                    this.logger.info(
+                    logger.info(
                             "Lease with token {} split into {}",
                             this.lease.getLeaseToken(),
                             StringUtils.join(leaseTokens, ","));

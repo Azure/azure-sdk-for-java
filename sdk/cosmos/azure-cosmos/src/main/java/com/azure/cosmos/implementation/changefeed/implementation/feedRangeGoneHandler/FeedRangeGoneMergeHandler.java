@@ -45,7 +45,7 @@ public class FeedRangeGoneMergeHandler implements FeedRangeGoneHandler {
             this.removeCurrentLease.set(true);
             return this.leaseManager.createLeaseIfNotExist((FeedRangeEpkImpl)this.lease.getFeedRange(), this.lease.getContinuationToken())
                     .doOnSuccess(
-                            lease -> this.logger.info(
+                            lease -> logger.info(
                                     "Lease with token {} redirected to partition {}",
                                     this.lease.getLeaseToken(),
                                     this.overlappingRange.getId()))
@@ -56,7 +56,7 @@ public class FeedRangeGoneMergeHandler implements FeedRangeGoneHandler {
             // The epk range just remapped to another partition
             // Will reuse the same lease, and keep draining by using the epk.
             this.removeCurrentLease.set(false);
-            this.logger.info(
+            logger.info(
                     "Lease {} redirected to {}",
                     this.lease.getLeaseToken(),
                     this.overlappingRange.getId());

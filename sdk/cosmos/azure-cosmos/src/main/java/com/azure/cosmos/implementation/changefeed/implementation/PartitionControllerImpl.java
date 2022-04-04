@@ -188,7 +188,7 @@ public class PartitionControllerImpl implements PartitionController {
                 });
     }
 
-    private Mono tryDeleteGoneLease(Lease lease, boolean shouldRemoveLease) {
+    private Mono<Void> tryDeleteGoneLease(Lease lease, boolean shouldRemoveLease) {
         if (shouldRemoveLease) {
             return this.leaseManager.delete(lease);
         }
