@@ -449,8 +449,7 @@ public class DataLakeFileSystemClient {
     public Response<Void> deleteIfExistsWithResponse(DataLakePathDeleteOptions options, Duration timeout,
         Context context) {
         options = options == null ? new DataLakePathDeleteOptions() : options;
-        DataLakeRequestConditions requestConditions = options == null ? new DataLakeRequestConditions()
-            : options.getRequestConditions();
+        DataLakeRequestConditions requestConditions = options.getRequestConditions();
         return DataLakeImplUtils.returnOrConvertException(() -> blobContainerClient.deleteIfExistsWithResponse(
             Transforms.toBlobRequestConditions(requestConditions), timeout, context), LOGGER);
 

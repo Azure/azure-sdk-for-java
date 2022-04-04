@@ -294,6 +294,7 @@ class AppendBlobAPITest extends APISpec {
     @Unroll
     def "Create if not exists tags"() {
         setup:
+        bc.delete()
         def tags = new HashMap<String, String>()
         if (key1 != null) {
             tags.put(key1, value1)
