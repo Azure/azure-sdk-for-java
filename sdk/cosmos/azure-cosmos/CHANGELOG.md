@@ -83,12 +83,29 @@
 
 ### 4.21.0 (2021-11-12)
 #### Features Added
-* GA of `Patch`, `Batch` and `Bulk` API.
+* GA of `CosmosPatch`, `CosmosBatch` and `CosmosBulk` API.
 * GA of `ChangeFeedProcessorState` API.
 * Added `networkRequestTimeout` API for `DirectConnectionConfig`.
 
 #### Key Bug Fixes
 * Override the default keep-alive config on linux to keep connections open and detect a broken connection faster.
+
+#### Other Changes
+* Removed deprecated `BulkExecutionOptions`.
+* Removed deprecated `BulkExecutionThresholds`.
+* Removed deprecated `BulkItemRequestOptions`.
+* Removed deprecated `BulkItemRequestOptionsBase`.
+* Removed deprecated `BulkOperations`.
+* Removed deprecated `BulkPatchItemRequestOptions`.
+* Removed deprecated `BulkProcessingOptions`.
+* Removed deprecated `BulkProcessingThresholds`.
+* Removed deprecated `TransactionalBatch`.
+* Removed deprecated `TransactionalBatchItemRequestOptions`.
+* Removed deprecated `TransactionalBatchItemRequestOptionsBase`.
+* Removed deprecated `TransactionalBatchOperationResult`.
+* Removed deprecated `TransactionalBatchPatchItemRequestOptions`.
+* Removed deprecated `TransactionalBatchRequestOptions`.
+* Removed deprecated `TransactionalBatchResponse`.
 
 ### 4.20.1 (2021-10-27)
 #### Key Bug Fixes
@@ -123,6 +140,28 @@
 #### Key Bug Fixes
 * Added support to switch off IO thread for response processing.
 * Fixed issue for resuming order by queries from continuation token that includes undefined/null.
+
+#### Other Changes
+* Renamed `BulkExecutionOptions` to `CosmosBulkExecutionOptions`.
+* Renamed `BulkExecutionThresholds` to `CosmosBulkExecutionThresholdsState`.
+* Renamed `BulkItemRequestOptions` to `CosmosBulkItemRequestOptions`.
+* Renamed `BulkItemRequestOptionsBase` to `CosmosBulkItemRequestOptionsBase`.
+* Renamed `BulkOperations` to `CosmosBulkOperations`.
+* Renamed `BulkPatchItemRequestOptions` to `CosmosBulkPatchItemRequestOptions`.
+* Renamed `TransactionalBatch` to `CosmosBatch`.
+* Renamed `TransactionalBatchItemRequestOptions` to `CosmosBatchItemRequestOptions`.
+* Renamed `TransactionalBatchItemRequestOptionsBase` to `CosmosBatchItemRequestOptionsBase`.
+* Renamed `TransactionalBatchOperationResult` to `CosmosBatchOperationResult`.
+* Renamed `TransactionalBatchPatchItemRequestOptions` to `CosmosBatchPatchItemRequestOptions`.
+* Renamed `TransactionalBatchRequestOptions` to `CosmosBatchRequestOptions`.
+* Renamed `TransactionalBatchResponse` to `CosmosBatchResponse`.
+* Renamed `processBulkOperations` to `executeBulkOperations` API.
+* Renamed `executeTransactionalBatch` to `executeCosmosBatch` API.
+* Moved `CosmosBulkItemResponse.java` to `com.azure.cosmos.models` package.
+* Moved `CosmosBulkOperationResponse.java` to `com.azure.cosmos.models` package.
+* Moved `CosmosItemOperation.java` to `com.azure.cosmos.models` package.
+* Moved `CosmosItemOperationType.java` to `com.azure.cosmos.models` package.
+* Moved `CosmosPatchOperations.java` to `com.azure.cosmos.models` package.
 
 ### 4.19.0-beta.1 (2021-09-02)
 #### Key Bug Fixes
