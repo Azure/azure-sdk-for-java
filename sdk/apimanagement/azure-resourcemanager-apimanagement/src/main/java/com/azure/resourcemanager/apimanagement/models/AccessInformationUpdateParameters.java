@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.models.AccessInformationUpdateParameterProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Tenant access information update parameters. */
 @Fluent
 public final class AccessInformationUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccessInformationUpdateParameters.class);
-
     /*
      * Tenant access information update parameter properties.
      */

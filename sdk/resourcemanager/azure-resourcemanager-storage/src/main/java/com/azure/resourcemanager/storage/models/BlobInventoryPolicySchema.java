@@ -6,20 +6,25 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The storage account blob inventory policy rules. */
 @Fluent
 public final class BlobInventoryPolicySchema {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobInventoryPolicySchema.class);
-
     /*
      * Policy is enabled if set to true.
      */
     @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
+
+    /*
+     * Deprecated Property from API version 2021-04-01 onwards, the required
+     * destination container name must be specified at the rule level
+     * 'policy.rule.destination'
+     */
+    @JsonProperty(value = "destination", access = JsonProperty.Access.WRITE_ONLY)
+    private String destination;
 
     /*
      * The valid value is Inventory
@@ -52,6 +57,16 @@ public final class BlobInventoryPolicySchema {
     public BlobInventoryPolicySchema withEnabled(boolean enabled) {
         this.enabled = enabled;
         return this;
+    }
+
+    /**
+     * Get the destination property: Deprecated Property from API version 2021-04-01 onwards, the required destination
+     * container name must be specified at the rule level 'policy.rule.destination'.
+     *
+     * @return the destination value.
+     */
+    public String destination() {
+        return this.destination;
     }
 
     /**
@@ -101,16 +116,18 @@ public final class BlobInventoryPolicySchema {
      */
     public void validate() {
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property type in model BlobInventoryPolicySchema"));
         }
         if (rules() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property rules in model BlobInventoryPolicySchema"));
         } else {
             rules().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BlobInventoryPolicySchema.class);
 }

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Table Delete. */
 public final class TableDeleteSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/TableOperationDelete.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/TableOperationDelete.json
      */
     /**
      * Sample code: TableOperationDelete.

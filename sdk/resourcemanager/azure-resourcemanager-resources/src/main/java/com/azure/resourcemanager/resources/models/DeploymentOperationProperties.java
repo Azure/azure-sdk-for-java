@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Deployment operation properties. */
 @Immutable
 public final class DeploymentOperationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentOperationProperties.class);
-
     /*
      * The name of the current provisioning operation.
      */

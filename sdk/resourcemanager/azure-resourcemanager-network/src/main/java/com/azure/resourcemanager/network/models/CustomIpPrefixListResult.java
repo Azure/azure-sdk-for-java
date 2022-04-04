@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.CustomIpPrefixInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for ListCustomIpPrefixes API service call. */
 @Fluent
 public final class CustomIpPrefixListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomIpPrefixListResult.class);
-
     /*
      * A list of Custom IP prefixes that exists in a resource group.
      */

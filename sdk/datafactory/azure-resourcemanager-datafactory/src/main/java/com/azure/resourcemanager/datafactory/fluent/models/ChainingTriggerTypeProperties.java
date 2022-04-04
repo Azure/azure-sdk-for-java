@@ -7,15 +7,12 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.PipelineReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Chaining Trigger properties. */
 @Fluent
 public final class ChainingTriggerTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ChainingTriggerTypeProperties.class);
-
     /*
      * Upstream Pipelines.
      */
@@ -75,7 +72,7 @@ public final class ChainingTriggerTypeProperties {
      */
     public void validate() {
         if (dependsOn() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property dependsOn in model ChainingTriggerTypeProperties"));
@@ -83,10 +80,12 @@ public final class ChainingTriggerTypeProperties {
             dependsOn().forEach(e -> e.validate());
         }
         if (runDimension() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property runDimension in model ChainingTriggerTypeProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ChainingTriggerTypeProperties.class);
 }

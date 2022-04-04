@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The UsersGetHeaders model. */
 @Fluent
 public final class UsersGetHeaders {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsersGetHeaders.class);
-
     /*
      * The Etag property.
      */

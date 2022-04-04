@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The List service SAS credentials operation response. */
 @Immutable
 public final class ListServiceSasResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListServiceSasResponseInner.class);
-
     /*
      * List service SAS credentials of specific resource.
      */

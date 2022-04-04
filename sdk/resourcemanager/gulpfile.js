@@ -35,12 +35,12 @@ async function defaultInfo() {
     });
 
     console.log("--autorest");
-    console.log("\tThe version of AutoRest Core. E.g. 3.0.6368, or the location of AutoRest repo, e.g. E:\\repo\\autorest");
+    console.log("\tThe version of AutoRest Core. E.g. 3.8.1, or the location of AutoRest repo, e.g. E:\\repo\\autorest");
 
     console.log("--autorest-java");
     console.log("\tPath to an autorest.java generator to pass as a --use argument to AutoRest.");
     console.log("\tUsually you'll only need to provide this and not a --autorest argument in order to work on Java code generation.");
-    console.log("\tSee https://github.com/Azure/autorest/blob/master/docs/developer/autorest-extension.md");
+    console.log("\tSee https://github.com/Azure/autorest/blob/main/docs/developer/writing-an-extension.md");
 
     console.log("--debug");
     console.log("\tFlag that allows you to attach a debugger to the autorest.java generator.");
@@ -55,7 +55,7 @@ async function defaultInfo() {
 
 const maxParallelism = parseInt(args['parallel'], 10) || os.cpus().length;
 var projects = args['projects'];
-var autoRestVersion = 'latest'; // default
+var autoRestVersion = '3.8.1'; // default
 if (args['autorest'] !== undefined) {
     autoRestVersion = args['autorest'];
 }

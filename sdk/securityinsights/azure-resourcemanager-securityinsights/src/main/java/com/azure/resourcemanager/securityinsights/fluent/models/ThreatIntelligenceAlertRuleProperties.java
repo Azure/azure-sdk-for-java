@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.AlertSeverity;
 import com.azure.resourcemanager.securityinsights.models.AttackTactic;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -16,8 +15,6 @@ import java.util.List;
 /** Threat Intelligence alert rule base property bag. */
 @Fluent
 public final class ThreatIntelligenceAlertRuleProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ThreatIntelligenceAlertRuleProperties.class);
-
     /*
      * The Name of the alert rule template used to create this rule.
      */
@@ -59,6 +56,12 @@ public final class ThreatIntelligenceAlertRuleProperties {
      */
     @JsonProperty(value = "tactics", access = JsonProperty.Access.WRITE_ONLY)
     private List<AttackTactic> tactics;
+
+    /*
+     * The techniques of the alert rule
+     */
+    @JsonProperty(value = "techniques", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> techniques;
 
     /**
      * Get the alertRuleTemplateName property: The Name of the alert rule template used to create this rule.
@@ -146,17 +149,28 @@ public final class ThreatIntelligenceAlertRuleProperties {
     }
 
     /**
+     * Get the techniques property: The techniques of the alert rule.
+     *
+     * @return the techniques value.
+     */
+    public List<String> techniques() {
+        return this.techniques;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (alertRuleTemplateName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property alertRuleTemplateName in model"
                             + " ThreatIntelligenceAlertRuleProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ThreatIntelligenceAlertRuleProperties.class);
 }

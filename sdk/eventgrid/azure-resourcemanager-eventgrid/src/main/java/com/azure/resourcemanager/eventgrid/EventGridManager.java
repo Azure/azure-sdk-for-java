@@ -22,29 +22,53 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.fluent.EventGridManagementClient;
+import com.azure.resourcemanager.eventgrid.implementation.ChannelsImpl;
+import com.azure.resourcemanager.eventgrid.implementation.DomainEventSubscriptionsImpl;
+import com.azure.resourcemanager.eventgrid.implementation.DomainTopicEventSubscriptionsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.DomainTopicsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.DomainsImpl;
+import com.azure.resourcemanager.eventgrid.implementation.EventChannelsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.EventGridManagementClientBuilder;
 import com.azure.resourcemanager.eventgrid.implementation.EventSubscriptionsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.ExtensionTopicsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.OperationsImpl;
+import com.azure.resourcemanager.eventgrid.implementation.PartnerConfigurationsImpl;
+import com.azure.resourcemanager.eventgrid.implementation.PartnerDestinationsImpl;
+import com.azure.resourcemanager.eventgrid.implementation.PartnerNamespacesImpl;
+import com.azure.resourcemanager.eventgrid.implementation.PartnerRegistrationsImpl;
+import com.azure.resourcemanager.eventgrid.implementation.PartnerTopicEventSubscriptionsImpl;
+import com.azure.resourcemanager.eventgrid.implementation.PartnerTopicsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.PrivateLinkResourcesImpl;
 import com.azure.resourcemanager.eventgrid.implementation.SystemTopicEventSubscriptionsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.SystemTopicsImpl;
+import com.azure.resourcemanager.eventgrid.implementation.TopicEventSubscriptionsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.TopicTypesImpl;
 import com.azure.resourcemanager.eventgrid.implementation.TopicsImpl;
+import com.azure.resourcemanager.eventgrid.implementation.VerifiedPartnersImpl;
+import com.azure.resourcemanager.eventgrid.models.Channels;
+import com.azure.resourcemanager.eventgrid.models.DomainEventSubscriptions;
+import com.azure.resourcemanager.eventgrid.models.DomainTopicEventSubscriptions;
 import com.azure.resourcemanager.eventgrid.models.DomainTopics;
 import com.azure.resourcemanager.eventgrid.models.Domains;
+import com.azure.resourcemanager.eventgrid.models.EventChannels;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptions;
 import com.azure.resourcemanager.eventgrid.models.ExtensionTopics;
 import com.azure.resourcemanager.eventgrid.models.Operations;
+import com.azure.resourcemanager.eventgrid.models.PartnerConfigurations;
+import com.azure.resourcemanager.eventgrid.models.PartnerDestinations;
+import com.azure.resourcemanager.eventgrid.models.PartnerNamespaces;
+import com.azure.resourcemanager.eventgrid.models.PartnerRegistrations;
+import com.azure.resourcemanager.eventgrid.models.PartnerTopicEventSubscriptions;
+import com.azure.resourcemanager.eventgrid.models.PartnerTopics;
 import com.azure.resourcemanager.eventgrid.models.PrivateEndpointConnections;
 import com.azure.resourcemanager.eventgrid.models.PrivateLinkResources;
 import com.azure.resourcemanager.eventgrid.models.SystemTopicEventSubscriptions;
 import com.azure.resourcemanager.eventgrid.models.SystemTopics;
+import com.azure.resourcemanager.eventgrid.models.TopicEventSubscriptions;
 import com.azure.resourcemanager.eventgrid.models.TopicTypes;
 import com.azure.resourcemanager.eventgrid.models.Topics;
+import com.azure.resourcemanager.eventgrid.models.VerifiedPartners;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -54,17 +78,37 @@ import java.util.stream.Collectors;
 
 /** Entry point to EventGridManager. Azure EventGrid Management Client. */
 public final class EventGridManager {
+    private Channels channels;
+
     private Domains domains;
 
     private DomainTopics domainTopics;
 
+    private EventChannels eventChannels;
+
     private EventSubscriptions eventSubscriptions;
+
+    private DomainTopicEventSubscriptions domainTopicEventSubscriptions;
+
+    private TopicEventSubscriptions topicEventSubscriptions;
+
+    private DomainEventSubscriptions domainEventSubscriptions;
 
     private SystemTopicEventSubscriptions systemTopicEventSubscriptions;
 
+    private PartnerTopicEventSubscriptions partnerTopicEventSubscriptions;
+
     private Operations operations;
 
-    private Topics topics;
+    private PartnerConfigurations partnerConfigurations;
+
+    private PartnerDestinations partnerDestinations;
+
+    private PartnerNamespaces partnerNamespaces;
+
+    private PartnerRegistrations partnerRegistrations;
+
+    private PartnerTopics partnerTopics;
 
     private PrivateEndpointConnections privateEndpointConnections;
 
@@ -72,9 +116,13 @@ public final class EventGridManager {
 
     private SystemTopics systemTopics;
 
+    private Topics topics;
+
     private ExtensionTopics extensionTopics;
 
     private TopicTypes topicTypes;
+
+    private VerifiedPartners verifiedPartners;
 
     private final EventGridManagementClient clientObject;
 
@@ -114,7 +162,7 @@ public final class EventGridManager {
 
     /** The Configurable allowing configurations to be set. */
     public static final class Configurable {
-        private final ClientLogger logger = new ClientLogger(Configurable.class);
+        private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
@@ -188,9 +236,11 @@ public final class EventGridManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval = Objects.requireNonNull(defaultPollInterval, "'retryPolicy' cannot be null.");
+            this.defaultPollInterval =
+                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("'httpPipeline' cannot be negative"));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
             }
             return this;
         }
@@ -212,7 +262,7 @@ public final class EventGridManager {
                 .append("-")
                 .append("com.azure.resourcemanager.eventgrid")
                 .append("/")
-                .append("1.1.0");
+                .append("1.2.0-beta.1");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -264,6 +314,14 @@ public final class EventGridManager {
         }
     }
 
+    /** @return Resource collection API of Channels. */
+    public Channels channels() {
+        if (this.channels == null) {
+            this.channels = new ChannelsImpl(clientObject.getChannels(), this);
+        }
+        return channels;
+    }
+
     /** @return Resource collection API of Domains. */
     public Domains domains() {
         if (this.domains == null) {
@@ -280,12 +338,47 @@ public final class EventGridManager {
         return domainTopics;
     }
 
+    /** @return Resource collection API of EventChannels. */
+    public EventChannels eventChannels() {
+        if (this.eventChannels == null) {
+            this.eventChannels = new EventChannelsImpl(clientObject.getEventChannels(), this);
+        }
+        return eventChannels;
+    }
+
     /** @return Resource collection API of EventSubscriptions. */
     public EventSubscriptions eventSubscriptions() {
         if (this.eventSubscriptions == null) {
             this.eventSubscriptions = new EventSubscriptionsImpl(clientObject.getEventSubscriptions(), this);
         }
         return eventSubscriptions;
+    }
+
+    /** @return Resource collection API of DomainTopicEventSubscriptions. */
+    public DomainTopicEventSubscriptions domainTopicEventSubscriptions() {
+        if (this.domainTopicEventSubscriptions == null) {
+            this.domainTopicEventSubscriptions =
+                new DomainTopicEventSubscriptionsImpl(clientObject.getDomainTopicEventSubscriptions(), this);
+        }
+        return domainTopicEventSubscriptions;
+    }
+
+    /** @return Resource collection API of TopicEventSubscriptions. */
+    public TopicEventSubscriptions topicEventSubscriptions() {
+        if (this.topicEventSubscriptions == null) {
+            this.topicEventSubscriptions =
+                new TopicEventSubscriptionsImpl(clientObject.getTopicEventSubscriptions(), this);
+        }
+        return topicEventSubscriptions;
+    }
+
+    /** @return Resource collection API of DomainEventSubscriptions. */
+    public DomainEventSubscriptions domainEventSubscriptions() {
+        if (this.domainEventSubscriptions == null) {
+            this.domainEventSubscriptions =
+                new DomainEventSubscriptionsImpl(clientObject.getDomainEventSubscriptions(), this);
+        }
+        return domainEventSubscriptions;
     }
 
     /** @return Resource collection API of SystemTopicEventSubscriptions. */
@@ -297,6 +390,15 @@ public final class EventGridManager {
         return systemTopicEventSubscriptions;
     }
 
+    /** @return Resource collection API of PartnerTopicEventSubscriptions. */
+    public PartnerTopicEventSubscriptions partnerTopicEventSubscriptions() {
+        if (this.partnerTopicEventSubscriptions == null) {
+            this.partnerTopicEventSubscriptions =
+                new PartnerTopicEventSubscriptionsImpl(clientObject.getPartnerTopicEventSubscriptions(), this);
+        }
+        return partnerTopicEventSubscriptions;
+    }
+
     /** @return Resource collection API of Operations. */
     public Operations operations() {
         if (this.operations == null) {
@@ -305,12 +407,44 @@ public final class EventGridManager {
         return operations;
     }
 
-    /** @return Resource collection API of Topics. */
-    public Topics topics() {
-        if (this.topics == null) {
-            this.topics = new TopicsImpl(clientObject.getTopics(), this);
+    /** @return Resource collection API of PartnerConfigurations. */
+    public PartnerConfigurations partnerConfigurations() {
+        if (this.partnerConfigurations == null) {
+            this.partnerConfigurations = new PartnerConfigurationsImpl(clientObject.getPartnerConfigurations(), this);
         }
-        return topics;
+        return partnerConfigurations;
+    }
+
+    /** @return Resource collection API of PartnerDestinations. */
+    public PartnerDestinations partnerDestinations() {
+        if (this.partnerDestinations == null) {
+            this.partnerDestinations = new PartnerDestinationsImpl(clientObject.getPartnerDestinations(), this);
+        }
+        return partnerDestinations;
+    }
+
+    /** @return Resource collection API of PartnerNamespaces. */
+    public PartnerNamespaces partnerNamespaces() {
+        if (this.partnerNamespaces == null) {
+            this.partnerNamespaces = new PartnerNamespacesImpl(clientObject.getPartnerNamespaces(), this);
+        }
+        return partnerNamespaces;
+    }
+
+    /** @return Resource collection API of PartnerRegistrations. */
+    public PartnerRegistrations partnerRegistrations() {
+        if (this.partnerRegistrations == null) {
+            this.partnerRegistrations = new PartnerRegistrationsImpl(clientObject.getPartnerRegistrations(), this);
+        }
+        return partnerRegistrations;
+    }
+
+    /** @return Resource collection API of PartnerTopics. */
+    public PartnerTopics partnerTopics() {
+        if (this.partnerTopics == null) {
+            this.partnerTopics = new PartnerTopicsImpl(clientObject.getPartnerTopics(), this);
+        }
+        return partnerTopics;
     }
 
     /** @return Resource collection API of PrivateEndpointConnections. */
@@ -338,6 +472,14 @@ public final class EventGridManager {
         return systemTopics;
     }
 
+    /** @return Resource collection API of Topics. */
+    public Topics topics() {
+        if (this.topics == null) {
+            this.topics = new TopicsImpl(clientObject.getTopics(), this);
+        }
+        return topics;
+    }
+
     /** @return Resource collection API of ExtensionTopics. */
     public ExtensionTopics extensionTopics() {
         if (this.extensionTopics == null) {
@@ -352,6 +494,14 @@ public final class EventGridManager {
             this.topicTypes = new TopicTypesImpl(clientObject.getTopicTypes(), this);
         }
         return topicTypes;
+    }
+
+    /** @return Resource collection API of VerifiedPartners. */
+    public VerifiedPartners verifiedPartners() {
+        if (this.verifiedPartners == null) {
+            this.verifiedPartners = new VerifiedPartnersImpl(clientObject.getVerifiedPartners(), this);
+        }
+        return verifiedPartners;
     }
 
     /**

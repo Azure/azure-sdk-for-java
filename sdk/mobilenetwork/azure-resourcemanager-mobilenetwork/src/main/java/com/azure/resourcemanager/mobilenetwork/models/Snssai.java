@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Single-Network Slice Selection Assistance Information (S-NSSAI). */
 @Fluent
 public final class Snssai {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Snssai.class);
-
     /*
      * Slice/Service Type (SST).
      */

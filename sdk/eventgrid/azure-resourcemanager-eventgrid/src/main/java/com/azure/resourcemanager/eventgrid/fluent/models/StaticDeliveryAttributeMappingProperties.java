@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of static delivery attribute mapping. */
 @Fluent
 public final class StaticDeliveryAttributeMappingProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StaticDeliveryAttributeMappingProperties.class);
-
     /*
      * Value of the delivery attribute.
      */

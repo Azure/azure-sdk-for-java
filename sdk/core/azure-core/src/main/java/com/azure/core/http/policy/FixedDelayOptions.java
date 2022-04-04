@@ -17,7 +17,7 @@ public class FixedDelayOptions {
     private final Duration delay;
 
     /**
-     * Creates an instance of {@link maxRetries}.
+     * Creates an instance of {@link FixedDelayOptions}.
      *
      * @param maxRetries The max number of retry attempts that can be made.
      * @param delay The fixed delay duration between retry attempts.

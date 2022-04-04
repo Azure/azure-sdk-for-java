@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Api Operation Entity Base Contract details. */
+/** API Operation Entity Base Contract details. */
 @Fluent
 public class OperationEntityBaseContract {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationEntityBaseContract.class);
-
     /*
      * Collection of URL template parameters.
      */

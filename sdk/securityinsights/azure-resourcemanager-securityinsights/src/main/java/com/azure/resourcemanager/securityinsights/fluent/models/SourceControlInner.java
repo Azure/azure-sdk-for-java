@@ -5,20 +5,19 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.ContentType;
+import com.azure.resourcemanager.securityinsights.models.DeploymentInfo;
 import com.azure.resourcemanager.securityinsights.models.RepoType;
 import com.azure.resourcemanager.securityinsights.models.Repository;
+import com.azure.resourcemanager.securityinsights.models.RepositoryResourceInfo;
 import com.azure.resourcemanager.securityinsights.models.ResourceWithEtag;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.securityinsights.models.Version;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Represents a SourceControl in Azure Security Insights. */
 @Fluent
 public final class SourceControlInner extends ResourceWithEtag {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SourceControlInner.class);
-
     /*
      * source control properties
      */
@@ -61,6 +60,29 @@ public final class SourceControlInner extends ResourceWithEtag {
             this.innerProperties = new SourceControlProperties();
         }
         this.innerProperties().withId(id);
+        return this;
+    }
+
+    /**
+     * Get the version property: The version number associated with the source control.
+     *
+     * @return the version value.
+     */
+    public Version version() {
+        return this.innerProperties() == null ? null : this.innerProperties().version();
+    }
+
+    /**
+     * Set the version property: The version number associated with the source control.
+     *
+     * @param version the version value to set.
+     * @return the SourceControlInner object itself.
+     */
+    public SourceControlInner withVersion(Version version) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlProperties();
+        }
+        this.innerProperties().withVersion(version);
         return this;
     }
 
@@ -176,6 +198,52 @@ public final class SourceControlInner extends ResourceWithEtag {
             this.innerProperties = new SourceControlProperties();
         }
         this.innerProperties().withRepository(repository);
+        return this;
+    }
+
+    /**
+     * Get the repositoryResourceInfo property: Information regarding the resources created in user's repository.
+     *
+     * @return the repositoryResourceInfo value.
+     */
+    public RepositoryResourceInfo repositoryResourceInfo() {
+        return this.innerProperties() == null ? null : this.innerProperties().repositoryResourceInfo();
+    }
+
+    /**
+     * Set the repositoryResourceInfo property: Information regarding the resources created in user's repository.
+     *
+     * @param repositoryResourceInfo the repositoryResourceInfo value to set.
+     * @return the SourceControlInner object itself.
+     */
+    public SourceControlInner withRepositoryResourceInfo(RepositoryResourceInfo repositoryResourceInfo) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlProperties();
+        }
+        this.innerProperties().withRepositoryResourceInfo(repositoryResourceInfo);
+        return this;
+    }
+
+    /**
+     * Get the lastDeploymentInfo property: Information regarding the latest deployment for the source control.
+     *
+     * @return the lastDeploymentInfo value.
+     */
+    public DeploymentInfo lastDeploymentInfo() {
+        return this.innerProperties() == null ? null : this.innerProperties().lastDeploymentInfo();
+    }
+
+    /**
+     * Set the lastDeploymentInfo property: Information regarding the latest deployment for the source control.
+     *
+     * @param lastDeploymentInfo the lastDeploymentInfo value to set.
+     * @return the SourceControlInner object itself.
+     */
+    public SourceControlInner withLastDeploymentInfo(DeploymentInfo lastDeploymentInfo) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlProperties();
+        }
+        this.innerProperties().withLastDeploymentInfo(lastDeploymentInfo);
         return this;
     }
 

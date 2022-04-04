@@ -18,7 +18,7 @@ public interface TenantAccess {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged AccessInformation list representation.
+     * @return paged AccessInformation list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<AccessInformationContract> listByService(String resourceGroupName, String serviceName);
 
@@ -32,7 +32,7 @@ public interface TenantAccess {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged AccessInformation list representation.
+     * @return paged AccessInformation list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<AccessInformationContract> listByService(
         String resourceGroupName, String serviceName, String filter, Context context);
@@ -114,7 +114,7 @@ public interface TenantAccess {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> regeneratePrimaryKeyWithResponse(
         String resourceGroupName, String serviceName, AccessIdName accessName, Context context);
@@ -141,7 +141,7 @@ public interface TenantAccess {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> regenerateSecondaryKeyWithResponse(
         String resourceGroupName, String serviceName, AccessIdName accessName, Context context);

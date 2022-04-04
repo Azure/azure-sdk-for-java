@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** This property enables and defines account-level immutability. Enabling the feature auto-enables Blob Versioning. */
 @Fluent
 public final class ImmutableStorageAccount {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImmutableStorageAccount.class);
-
     /*
      * A boolean flag which enables account-level immutability. All the
      * containers under such an account have object-level immutability enabled

@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.fluent.models.ServiceBusTopicEventSubscriptionDestinationProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,8 +16,6 @@ import java.util.List;
 @JsonTypeName("ServiceBusTopic")
 @Fluent
 public final class ServiceBusTopicEventSubscriptionDestination extends EventSubscriptionDestination {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceBusTopicEventSubscriptionDestination.class);
-
     /*
      * Service Bus Topic Properties of the event subscription destination.
      */
