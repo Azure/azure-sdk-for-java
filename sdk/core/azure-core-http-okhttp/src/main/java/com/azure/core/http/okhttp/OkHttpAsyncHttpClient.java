@@ -178,15 +178,13 @@ class OkHttpAsyncHttpClient implements HttpClient {
         }
 
         BinaryDataContent content = BinaryDataHelper.getContent(bodyContent);
-        if (content instanceof ByteArrayContent) {
+        if (content instanceof ByteArrayContent || content instanceof StringContent) {
             return RequestBody.create(content.toBytes(), mediaType);
         } else if (content instanceof FileContent) {
             FileContent fileContent = (FileContent) content;
             // This won't be right all the time as we may be sending only a partial view of the file.
             // TODO (alzimmer): support ranges in FileContent
             return RequestBody.create(fileContent.getFile().toFile(), mediaType);
-        } else if (content instanceof StringContent) {
-            return RequestBody.create(bodyContent.toString(), mediaType);
         } else if (content instanceof InputStreamContent) {
             return RequestBody.create(toByteString(content.toStream()), mediaType);
         } else {
