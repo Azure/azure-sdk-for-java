@@ -7,8 +7,10 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+
 - Fixed a bug that caused deserialize operation to throw `SchemaParseException` when multiple messages with same schema 
   were deserialized (https://github.com/Azure/azure-sdk-for-java/issues/27602).
+- Wrap Apache Avro exceptions with new exception type, `SchemaRegistryAvroException`.
 
 ### Other Changes
 
