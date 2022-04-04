@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** DDoS custom policy properties. */
 @Fluent
 public final class ProtocolCustomSettingsFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProtocolCustomSettingsFormat.class);
-
     /*
      * The protocol for which the DDoS protection policy is being customized.
      */

@@ -23,8 +23,6 @@ import java.util.Map;
 /** Pipeline resource type. */
 @Fluent
 public final class PipelineResourceInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PipelineResourceInner.class);
-
     /*
      * Properties of the pipeline.
      */
@@ -342,7 +340,7 @@ public final class PipelineResourceInner extends SubResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model PipelineResourceInner"));
@@ -350,4 +348,6 @@ public final class PipelineResourceInner extends SubResource {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PipelineResourceInner.class);
 }

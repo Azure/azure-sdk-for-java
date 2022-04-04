@@ -6,20 +6,15 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of Frontend IP Configuration of the load balancer. */
 @Fluent
 public final class FrontendIpConfigurationPropertiesFormatInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(FrontendIpConfigurationPropertiesFormatInner.class);
-
     /*
      * An array of references to inbound rules that use this frontend IP.
      */

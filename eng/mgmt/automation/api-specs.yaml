@@ -24,6 +24,8 @@ cosmos-db:
   suffix: generated
 cost-management:
   service: costmanagement
+cpim:
+  service: azureadexternalidentities
 customer-insights:
   service: customerinsights
 datalake-analytics:

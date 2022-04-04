@@ -9,15 +9,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.DatasetReference;
 import com.azure.resourcemanager.datafactory.models.FormatReadSettings;
 import com.azure.resourcemanager.datafactory.models.StoreReadSettings;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** GetMetadata activity properties. */
 @Fluent
 public final class GetMetadataActivityTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GetMetadataActivityTypeProperties.class);
-
     /*
      * GetMetadata activity dataset reference.
      */
@@ -129,7 +126,7 @@ public final class GetMetadataActivityTypeProperties {
      */
     public void validate() {
         if (dataset() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property dataset in model GetMetadataActivityTypeProperties"));
@@ -143,4 +140,6 @@ public final class GetMetadataActivityTypeProperties {
             formatSettings().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GetMetadataActivityTypeProperties.class);
 }

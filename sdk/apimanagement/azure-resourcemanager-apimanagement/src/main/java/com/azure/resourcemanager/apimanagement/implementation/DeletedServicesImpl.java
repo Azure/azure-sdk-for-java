@@ -13,10 +13,9 @@ import com.azure.resourcemanager.apimanagement.fluent.DeletedServicesClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.DeletedServiceContractInner;
 import com.azure.resourcemanager.apimanagement.models.DeletedServiceContract;
 import com.azure.resourcemanager.apimanagement.models.DeletedServices;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DeletedServicesImpl implements DeletedServices {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeletedServicesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DeletedServicesImpl.class);
 
     private final DeletedServicesClient innerClient;
 

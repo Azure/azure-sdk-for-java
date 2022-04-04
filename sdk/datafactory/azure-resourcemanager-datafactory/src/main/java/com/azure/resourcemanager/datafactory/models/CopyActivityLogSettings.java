@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Settings for copy activity log. */
 @Fluent
 public final class CopyActivityLogSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CopyActivityLogSettings.class);
-
     /*
      * Gets or sets the log level, support: Info, Warning. Type: string (or
      * Expression with resultType string).

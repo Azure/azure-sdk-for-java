@@ -87,6 +87,10 @@ public final class ExtensionImpl implements Extension {
         }
     }
 
+    public String installedVersion() {
+        return this.innerModel().installedVersion();
+    }
+
     public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }

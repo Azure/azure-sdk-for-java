@@ -6,14 +6,11 @@ package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Domain regenerate share access key request. */
 @Fluent
 public final class DomainRegenerateKeyRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainRegenerateKeyRequest.class);
-
     /*
      * Key name to regenerate key1 or key2.
      */
@@ -47,10 +44,12 @@ public final class DomainRegenerateKeyRequest {
      */
     public void validate() {
         if (keyName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property keyName in model DomainRegenerateKeyRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DomainRegenerateKeyRequest.class);
 }

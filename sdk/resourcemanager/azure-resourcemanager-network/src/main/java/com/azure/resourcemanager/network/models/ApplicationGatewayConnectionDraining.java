@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class ApplicationGatewayConnectionDraining {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayConnectionDraining.class);
-
     /*
      * Whether connection draining is enabled or not.
      */

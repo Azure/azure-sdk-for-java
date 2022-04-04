@@ -40,6 +40,9 @@ public final class ContentFormat extends ExpandableStringEnum<ContentFormat> {
     /** Static value openapi+json-link for ContentFormat. */
     public static final ContentFormat OPENAPI_JSON_LINK = fromString("openapi+json-link");
 
+    /** Static value graphql-link for ContentFormat. */
+    public static final ContentFormat GRAPHQL_LINK = fromString("graphql-link");
+
     /**
      * Creates or finds a ContentFormat from its string representation.
      *

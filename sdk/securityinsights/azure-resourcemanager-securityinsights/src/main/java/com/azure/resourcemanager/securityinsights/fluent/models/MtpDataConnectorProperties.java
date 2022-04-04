@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.DataConnectorTenantId;
 import com.azure.resourcemanager.securityinsights.models.MtpDataConnectorDataTypes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** MTP (Microsoft Threat Protection) data connector properties. */
 @Fluent
 public final class MtpDataConnectorProperties extends DataConnectorTenantId {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MtpDataConnectorProperties.class);
-
     /*
      * The available data types for the connector.
      */
@@ -58,7 +55,7 @@ public final class MtpDataConnectorProperties extends DataConnectorTenantId {
     public void validate() {
         super.validate();
         if (dataTypes() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property dataTypes in model MtpDataConnectorProperties"));
@@ -66,4 +63,6 @@ public final class MtpDataConnectorProperties extends DataConnectorTenantId {
             dataTypes().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MtpDataConnectorProperties.class);
 }

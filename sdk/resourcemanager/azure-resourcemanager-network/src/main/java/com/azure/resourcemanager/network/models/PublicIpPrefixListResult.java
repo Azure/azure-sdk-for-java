@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.PublicIpPrefixInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for ListPublicIpPrefixes API service call. */
 @Fluent
 public final class PublicIpPrefixListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PublicIpPrefixListResult.class);
-
     /*
      * A list of public IP prefixes that exists in a resource group.
      */

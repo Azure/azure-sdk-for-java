@@ -4,11 +4,7 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported `authenticate(HttpPipeline, AzureProfile)` in managers.
 
 ## 2.13.0 (2022-03-11)
 

@@ -10,15 +10,12 @@ import com.azure.resourcemanager.apimanagement.models.OperationEntityBaseContrac
 import com.azure.resourcemanager.apimanagement.models.ParameterContract;
 import com.azure.resourcemanager.apimanagement.models.RequestContract;
 import com.azure.resourcemanager.apimanagement.models.ResponseContract;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Operation Contract Properties. */
 @Fluent
 public final class OperationContractProperties extends OperationEntityBaseContract {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationContractProperties.class);
-
     /*
      * Operation Name.
      */
@@ -148,22 +145,24 @@ public final class OperationContractProperties extends OperationEntityBaseContra
     public void validate() {
         super.validate();
         if (displayName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property displayName in model OperationContractProperties"));
         }
         if (method() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property method in model OperationContractProperties"));
         }
         if (urlTemplate() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property urlTemplate in model OperationContractProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OperationContractProperties.class);
 }

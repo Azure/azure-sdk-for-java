@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.DataConnectorTenantId;
 import com.azure.resourcemanager.securityinsights.models.McasDataConnectorDataTypes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** MCAS (Microsoft Cloud App Security) data connector properties. */
 @Fluent
 public final class McasDataConnectorProperties extends DataConnectorTenantId {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(McasDataConnectorProperties.class);
-
     /*
      * The available data types for the connector.
      */
@@ -58,7 +55,7 @@ public final class McasDataConnectorProperties extends DataConnectorTenantId {
     public void validate() {
         super.validate();
         if (dataTypes() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property dataTypes in model McasDataConnectorProperties"));
@@ -66,4 +63,6 @@ public final class McasDataConnectorProperties extends DataConnectorTenantId {
             dataTypes().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(McasDataConnectorProperties.class);
 }

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCrossConnectionPeeringInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for ListPeering API service call retrieves all peerings that belong to an ExpressRouteCrossConnection. */
 @Fluent
 public final class ExpressRouteCrossConnectionPeeringList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCrossConnectionPeeringList.class);
-
     /*
      * The peerings in an express route cross connection.
      */

@@ -9,15 +9,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mobilenetwork.models.InterfaceProperties;
 import com.azure.resourcemanager.mobilenetwork.models.NaptConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Data network properties. */
 @Fluent
 public final class AttachedDataNetworkPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AttachedDataNetworkPropertiesFormat.class);
-
     /*
      * The provisioning state of the attached data network resource.
      */
@@ -180,7 +177,7 @@ public final class AttachedDataNetworkPropertiesFormat {
      */
     public void validate() {
         if (userPlaneDataInterface() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property userPlaneDataInterface in model"
@@ -192,4 +189,6 @@ public final class AttachedDataNetworkPropertiesFormat {
             naptConfiguration().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AttachedDataNetworkPropertiesFormat.class);
 }

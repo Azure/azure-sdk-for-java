@@ -13,10 +13,9 @@ import com.azure.resourcemanager.apimanagement.fluent.ProductGroupsClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.GroupContractInner;
 import com.azure.resourcemanager.apimanagement.models.GroupContract;
 import com.azure.resourcemanager.apimanagement.models.ProductGroups;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ProductGroupsImpl implements ProductGroups {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProductGroupsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ProductGroupsImpl.class);
 
     private final ProductGroupsClient innerClient;
 
