@@ -135,7 +135,7 @@ public class PartitionSynchronizerImpl implements PartitionSynchronizer {
                                 if (leaseList.stream().anyMatch(lease -> {
                                     if (lease instanceof ServiceItemLeaseEpk && lease.getFeedRange() instanceof FeedRangeEpkImpl) {
                                         Range<String> epkRange = ((FeedRangeEpkImpl) lease.getFeedRange()).getRange();
-                                        return epkRange.getMin() == pkRange.getMinInclusive() || epkRange.getMax() == pkRange.getMaxExclusive();
+                                        return epkRange.getMin().equals(pkRange.getMinInclusive()) || epkRange.getMax().equals(pkRange.getMaxExclusive());
                                     }
                                     return false;
                                 })) {

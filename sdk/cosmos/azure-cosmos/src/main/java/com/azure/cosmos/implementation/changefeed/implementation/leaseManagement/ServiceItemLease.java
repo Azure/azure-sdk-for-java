@@ -171,7 +171,7 @@ public abstract class ServiceItemLease implements Lease {
     @SuppressWarnings("serial")
     static final class ServiceItemLeaseJsonSerializer extends StdSerializer<ServiceItemLease> {
         // this value should be incremented if changes are made to the ServiceItemLease class members
-        private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 2L;
 
         protected ServiceItemLeaseJsonSerializer() { this(null); }
 
@@ -199,6 +199,7 @@ public abstract class ServiceItemLease implements Lease {
     }
 
     static final class ServiceItemLeaseJsonDeserializer extends StdDeserializer<ServiceItemLease> {
+        private static final long serialVersionUID = 1L;
 
         protected ServiceItemLeaseJsonDeserializer() {
             this(null);
