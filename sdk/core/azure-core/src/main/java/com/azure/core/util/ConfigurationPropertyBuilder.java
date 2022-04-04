@@ -7,11 +7,6 @@ import java.time.Duration;
 import java.util.Objects;
 import java.util.function.Function;
 
-import static com.azure.core.implementation.util.ConfigurationUtils.CONFIGURATION_PROPERTY_BOOLEAN_CONVERTER;
-import static com.azure.core.implementation.util.ConfigurationUtils.CONFIGURATION_PROPERTY_DURATION_CONVERTER;
-import static com.azure.core.implementation.util.ConfigurationUtils.CONFIGURATION_PROPERTY_INTEGER_CONVERTER;
-import static com.azure.core.implementation.util.ConfigurationUtils.CONFIGURATION_PROPERTY_STRING_CONVERTER;
-
 /**
  * Builds configuration property.
  * @param <T> The property value type.
@@ -19,6 +14,18 @@ import static com.azure.core.implementation.util.ConfigurationUtils.CONFIGURATIO
 public final class ConfigurationPropertyBuilder<T> {
     private static final String[] EMPTY_ARRAY = new String[0];
     private static final Function<String, String> PERMIT_VALUE_SANITIZER = (value) -> value;
+    private static final Function<String, Boolean> CONFIGURATION_PROPERTY_BOOLEAN_CONVERTER = (value) -> Boolean.valueOf(value);
+    private static final Function<String, Duration> CONFIGURATION_PROPERTY_DURATION_CONVERTER = (value) -> {
+        long timeoutMillis = Long.parseLong(value);
+        if (timeoutMillis < 0) {
+            throw new IllegalArgumentException("Duration can't be negative");
+        }
+
+        return Duration.ofMillis(timeoutMillis);
+    };
+
+    private static final Function<String, Integer> CONFIGURATION_PROPERTY_INTEGER_CONVERTER = (value) -> Integer.valueOf(value);
+    private static final Function<String, String> CONFIGURATION_PROPERTY_STRING_CONVERTER =  Function.identity();
 
     private final String name;
     private final Function<String, T> converter;

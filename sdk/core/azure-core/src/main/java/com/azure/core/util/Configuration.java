@@ -3,10 +3,9 @@
 
 package com.azure.core.util;
 
-import com.azure.core.implementation.util.ConfigurationUtils;
 import com.azure.core.implementation.util.EnvironmentConfiguration;
-import com.azure.core.implementation.util.EnvironmentConfigurationProvider;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -16,8 +15,22 @@ import java.util.function.Function;
 
 /**
  * Contains configuration information that is used during construction of client libraries.
+ *
+ * <!-- src_embed com.azure.core.util.Configuration -->
+ * <pre>
+ * &#47;&#47; Creates Configuration with configured root path to shared properties
+ * Configuration configuration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
+ *     .root&#40;&quot;azure.sdk&quot;&#41;
+ *     .buildSection&#40;&quot;client-name&quot;&#41;;
+ *
+ * ConfigurationProperty&lt;String&gt; proxyHostnameProperty = ConfigurationPropertyBuilder.ofString&#40;&quot;http.proxy.hostname&quot;&#41;
+ *     .shared&#40;true&#41;
+ *     .build&#40;&#41;;
+ * System.out.println&#40;configuration.get&#40;proxyHostnameProperty&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.util.Configuration -->
  */
-public class Configuration extends EnvironmentConfigurationProvider implements Cloneable {
+public class Configuration implements Cloneable {
 
     // Default properties - these are what we read from the environment
     /**
@@ -185,9 +198,7 @@ public class Configuration extends EnvironmentConfigurationProvider implements C
      */
     @SuppressWarnings("StaticInitializerReferencesSubClass")
     public static final Configuration NONE = new NoopConfiguration();
-    private static final String[] EMPTY_ARRAY = new String[0];
     private static final ClientLogger LOGGER = new ClientLogger(Configuration.class);
-    private static final Function<String, String> REDACT_VALUE_SANITIZER = (value) -> "redacted";
 
     private final EnvironmentConfiguration environmentConfiguration;
     private final Map<String, String> configurations;
@@ -227,7 +238,6 @@ public class Configuration extends EnvironmentConfigurationProvider implements C
      * @param sharedConfiguration Instance of shared {@link Configuration} section to retrieve shared properties.
      */
     private Configuration(Map<String, String> configurations, EnvironmentConfiguration environmentConfiguration, String path, Configuration sharedConfiguration) {
-        super(environmentConfiguration);
         this.configurations = configurations;
         this.isEmpty = configurations.isEmpty();
         this.environmentConfiguration = Objects.requireNonNull(environmentConfiguration, "'environmentConfiguration' cannot be null");
@@ -245,7 +255,9 @@ public class Configuration extends EnvironmentConfigurationProvider implements C
     }
 
     /**
-     * Gets the value of the configuration.
+     * Gets the value of system property or environment variable. Use {@link Configuration#get(ConfigurationProperty)}
+     * overload to get explicit configuration or environment configuration from specific source.
+     *
      * <p>
      * This method first checks the values previously loaded from the environment, if the configuration is found there
      * it will be returned. Otherwise, this will attempt to load the value from the environment.
@@ -254,17 +266,16 @@ public class Configuration extends EnvironmentConfigurationProvider implements C
      * @return Value of the configuration if found, otherwise null.
      */
     public String get(String name) {
-        String value = getLocalProperty(name, EMPTY_ARRAY, REDACT_VALUE_SANITIZER);
-        if (value != null) {
-            return value;
-        }
-
         return environmentConfiguration.getAny(name);
     }
 
     /**
-     * Gets the value of the configuration converted to given primitive {@code T} using
+     * Gets the value of system property or environment variable converted to given primitive {@code T} using
      * corresponding {@code parse} method on this type.
+     *
+     * Use {@link Configuration#get(ConfigurationProperty)} overload to get explicit configuration or
+     * environment configuration from specific source.
+     *
      * <p>
      * This method first checks the values previously loaded from the environment, if the configuration is found there
      * it will be returned. Otherwise, this will attempt to load the value from the environment.
@@ -288,16 +299,11 @@ public class Configuration extends EnvironmentConfigurationProvider implements C
      * @return The converted configuration if found, otherwise the default value is returned.
      */
     public <T> T get(String name, T defaultValue) {
-        String value = getLocalProperty(name, EMPTY_ARRAY, REDACT_VALUE_SANITIZER);
-        if (value == null) {
-            value = environmentConfiguration.getAny(name);
-        }
-
-        return ConfigurationUtils.convertToPrimitiveOrDefault(value, defaultValue);
+        return convertToPrimitiveOrDefault(get(name), defaultValue);
     }
 
     /**
-     * Gets the value of the configuration and converts it with the {@code converter}.
+     * Gets the value of system property or environment variable and converts it with the {@code converter}.
      * <p>
      * This method first checks the values previously loaded from the environment, if the configuration is found there
      * it will be returned. Otherwise, this will attempt to load the value from the environment.
@@ -311,12 +317,7 @@ public class Configuration extends EnvironmentConfigurationProvider implements C
      */
     public <T> T get(String name, Function<String, T> converter) {
         Objects.requireNonNull(converter, "'converter' can't be null");
-        String value = getLocalProperty(name, EMPTY_ARRAY, REDACT_VALUE_SANITIZER);
-        if (value == null) {
-            value = environmentConfiguration.getAny(name);
-        }
-
-        return converter.apply(value);
+        return converter.apply(get(name));
     }
 
     /**
@@ -354,7 +355,11 @@ public class Configuration extends EnvironmentConfigurationProvider implements C
     }
 
     /**
-     * Determines if the configuration exists.
+     * Determines if the system property or environment variable is defined.
+     *
+     * Use {@link Configuration#contains(ConfigurationProperty)} overload to get explicit configuration or
+     * environment configuration from specific source.
+     *
      * <p>
      * This only checks against values previously loaded into the Configuration object, this won't inspect the
      * environment for containing the value.
@@ -363,8 +368,7 @@ public class Configuration extends EnvironmentConfigurationProvider implements C
      * @return True if the configuration exists, otherwise false.
      */
     public boolean contains(String name) {
-        String value = getLocalProperty(name, EMPTY_ARRAY, REDACT_VALUE_SANITIZER);
-        return value != null ? true : (environmentConfiguration.getAny(name) != null);
+        return get(name) != null;
     }
 
     /**
@@ -381,7 +385,7 @@ public class Configuration extends EnvironmentConfigurationProvider implements C
 
     /**
      * Checks if configuration contains the property. If property can be shared between clients, checks this {@code Configuration} and
-     * falls back to shared section. If property has name aliases or environment variables defined, checks them as well.
+     * falls back to shared section. If property has aliases, system property or environment variable defined, checks them as well.
      * <p>
      * Value is not validated.
      *
@@ -394,8 +398,17 @@ public class Configuration extends EnvironmentConfigurationProvider implements C
     }
 
     /**
-     * Gets property value. If property can be shared between clients, reads value from this {@code Configuration} and
-     * falls back to shared section. If property has name aliases or environment variables defined, checks them as well.
+     * Gets property value from all available sources in the following order:
+     *
+     * <ul>
+     *     <li>Explicit configuration from given {@link ConfigurationSource} by property name</li>
+     *     <li>Explicit configuration by property aliases in the order they were provided in {@link ConfigurationProperty}</li>
+     *     <li>Explicit configuration by property name in the shared section (if {@link ConfigurationProperty} is shared)</li>
+     *     <li>Explicit configuration by property aliases in the shared section (if {@link ConfigurationProperty} is shared)</li>
+     *     <li>System property (if set)</li>
+     *     <li>Environment variable (if set)</li>
+     * </ul>
+     *
      * <p>
      * Property value is converted to specified type. If property value is missing and not required, default value is returned.
      *
@@ -451,23 +464,27 @@ public class Configuration extends EnvironmentConfigurationProvider implements C
 
         String value = configurations.get(name);
         if (value != null) {
-            LOGGER.atVerbose()
-                .addKeyValue("name", name)
-                .addKeyValue("path", path)
-                .addKeyValue("value", valueSanitizer.apply(value))
-                .log("Got property value by name.");
+            if (LOGGER.canLogAtLevel(LogLevel.VERBOSE)) {
+                LOGGER.atVerbose()
+                    .addKeyValue("name", name)
+                    .addKeyValue("path", path)
+                    .addKeyValue("value", valueSanitizer.apply(value))
+                    .log("Got property value by name.");
+            }
             return value;
         }
 
         for (String alias : aliases) {
             value = configurations.get(alias);
             if (value != null) {
-                LOGGER.atVerbose()
-                    .addKeyValue("name", name)
-                    .addKeyValue("path", path)
-                    .addKeyValue("alias", alias)
-                    .addKeyValue("value", valueSanitizer.apply(value))
-                    .log("Got property value by alias.");
+                if (LOGGER.canLogAtLevel(LogLevel.VERBOSE)) {
+                    LOGGER.atVerbose()
+                        .addKeyValue("name", name)
+                        .addKeyValue("path", path)
+                        .addKeyValue("alias", alias)
+                        .addKeyValue("value", valueSanitizer.apply(value))
+                        .log("Got property value by alias.");
+                }
                 return value;
             }
         }
@@ -476,40 +493,50 @@ public class Configuration extends EnvironmentConfigurationProvider implements C
     }
 
     private <T> String getWithFallback(ConfigurationProperty<T> property) {
-        String value = getLocalProperty(property.getName(), property.getAliases(), property.getValueSanitizer());
-        if (value != null) {
-            return value;
-        }
-
-        if (property.isShared() && sharedConfiguration != null) {
-            value = sharedConfiguration.getLocalProperty(property.getName(), property.getAliases(), property.getValueSanitizer());
+        String name = property.getName();
+        if (!CoreUtils.isNullOrEmpty(name)) {
+            String value = getLocalProperty(name, property.getAliases(), property.getValueSanitizer());
             if (value != null) {
                 return value;
             }
-        }
 
+            if (property.isShared() && sharedConfiguration != null) {
+                value = sharedConfiguration.getLocalProperty(name, property.getAliases(), property.getValueSanitizer());
+                if (value != null) {
+                    return value;
+                }
+            }
+        }
+        return getFromEnvironment(property);
+    }
+
+    private <T> String getFromEnvironment(ConfigurationProperty<T> property) {
         String systemProperty = property.getSystemPropertyName();
         if (systemProperty != null) {
-            value = environmentConfiguration.getSystemProperty(systemProperty);
+            String value = environmentConfiguration.getSystemProperty(systemProperty);
             if (value != null) {
-                LOGGER.atVerbose()
-                    .addKeyValue("name", property.getName())
-                    .addKeyValue("systemProperty", systemProperty)
-                    .addKeyValue("value", property.getValueSanitizer().apply(value))
-                    .log("Got property from system property.");
+                if (LOGGER.canLogAtLevel(LogLevel.VERBOSE)) {
+                    LOGGER.atVerbose()
+                        .addKeyValue("name", property.getName())
+                        .addKeyValue("systemProperty", systemProperty)
+                        .addKeyValue("value", property.getValueSanitizer().apply(value))
+                        .log("Got property from system property.");
+                }
                 return value;
             }
         }
 
         String envVar = property.getEnvironmentVariableName();
         if (envVar != null) {
-            value = environmentConfiguration.getEnvironmentVariable(envVar);
+            String value = environmentConfiguration.getEnvironmentVariable(envVar);
             if (value != null) {
-                LOGGER.atVerbose()
-                    .addKeyValue("name", property.getName())
-                    .addKeyValue("envVar", envVar)
-                    .addKeyValue("value", property.getValueSanitizer().apply(value))
-                    .log("Got property from environment variable.");
+                if (LOGGER.canLogAtLevel(LogLevel.VERBOSE)) {
+                    LOGGER.atVerbose()
+                        .addKeyValue("name", property.getName())
+                        .addKeyValue("envVar", envVar)
+                        .addKeyValue("value", property.getValueSanitizer().apply(value))
+                        .log("Got property from environment variable.");
+                }
                 return value;
             }
         }
@@ -546,5 +573,57 @@ public class Configuration extends EnvironmentConfigurationProvider implements C
         }
 
         return props;
+    }
+
+    /**
+     * Attempts to convert the configuration value to given primitive {@code T} using
+     * corresponding {@code parse} method on this type.
+     *
+     * <p><b>Following types are supported:</b></p>
+     * <ul>
+     * <li>{@link Byte}</li>
+     * <li>{@link Short}</li>
+     * <li>{@link Integer}</li>
+     * <li>{@link Long}</li>
+     * <li>{@link Float}</li>
+     * <li>{@link Double}</li>
+     * <li>{@link Boolean}</li>
+     * </ul>
+     *
+     * If the value is null or empty then the default value is returned.
+     *
+     * @param value Configuration value retrieved from the map.
+     * @param defaultValue Default value to return if the configuration value is null or empty.
+     * @param <T> Generic type that the value is converted to if not null or empty.
+     * @return The converted configuration, if null or empty the default value.
+     */
+    @SuppressWarnings("unchecked")
+    private static <T> T convertToPrimitiveOrDefault(String value, T defaultValue) {
+        // Value is null or empty, return the default.
+        if (CoreUtils.isNullOrEmpty(value)) {
+            return defaultValue;
+        }
+
+        // Check the default value's type to determine how it needs to be converted.
+        Object convertedValue;
+        if (defaultValue instanceof Byte) {
+            convertedValue = Byte.parseByte(value);
+        } else if (defaultValue instanceof Short) {
+            convertedValue = Short.parseShort(value);
+        } else if (defaultValue instanceof Integer) {
+            convertedValue = Integer.parseInt(value);
+        } else if (defaultValue instanceof Long) {
+            convertedValue = Long.parseLong(value);
+        } else if (defaultValue instanceof Float) {
+            convertedValue = Float.parseFloat(value);
+        } else if (defaultValue instanceof Double) {
+            convertedValue = Double.parseDouble(value);
+        } else if (defaultValue instanceof Boolean) {
+            convertedValue = Boolean.parseBoolean(value);
+        } else {
+            convertedValue = value;
+        }
+
+        return (T) convertedValue;
     }
 }

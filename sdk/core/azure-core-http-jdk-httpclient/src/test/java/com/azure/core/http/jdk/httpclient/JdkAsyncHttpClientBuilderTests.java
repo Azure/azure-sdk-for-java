@@ -7,9 +7,10 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
-import com.azure.core.util.TestConfigurationSource;
+import com.azure.core.util.ConfigurationSource;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
@@ -51,6 +52,7 @@ public class JdkAsyncHttpClientBuilderTests {
     private static final String PROXY_PASSWORD = "bar";
     private static final String PROXY_USER_INFO = PROXY_USERNAME + ":" + PROXY_PASSWORD + "@";
     private static final String SERVICE_ENDPOINT = "/default";
+    private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
 
     /**
      * Tests that an {@link JdkAsyncHttpClient} is able to be built from an existing
@@ -182,8 +184,8 @@ public class JdkAsyncHttpClientBuilderTests {
         try {
             SimpleBasicAuthHttpProxyServer.ProxyEndpoint proxyEndpoint = proxyServer.start();
 
-            Configuration configuration = new ConfigurationBuilder()
-                .environmentSource(new TestConfigurationSource()
+            Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
+                new TestConfigurationSource()
                     .add(Configuration.PROPERTY_HTTP_PROXY, "http://" + PROXY_USER_INFO + proxyEndpoint.getHost() + ":" + proxyEndpoint.getPort())
                     .add("java.net.useSystemProxies", "true"))
                 .build();
@@ -262,8 +264,8 @@ public class JdkAsyncHttpClientBuilderTests {
     private static Stream<Arguments> buildWithExplicitConfigurationProxySupplier() {
         List<Arguments> arguments = new ArrayList<>();
 
-        final Configuration envConfiguration = new ConfigurationBuilder()
-            .environmentSource(new TestConfigurationSource()
+        final Configuration envConfiguration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
+            new TestConfigurationSource()
                 .add(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:8888")
                 .add(Configuration.PROPERTY_NO_PROXY, "localhost"))
             .build();
@@ -296,8 +298,9 @@ public class JdkAsyncHttpClientBuilderTests {
 
     @Test
     void testAllowedHeadersFromConfiguration() {
-        Configuration configuration = new ConfigurationBuilder()
-            .systemPropertiesSource(new TestConfigurationSource("jdk.httpclient.allowRestrictedHeaders", "content-length, upgrade"))
+        Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE,
+                new TestConfigurationSource("jdk.httpclient.allowRestrictedHeaders", "content-length, upgrade"),
+                EMPTY_SOURCE)
             .build();
 
         JdkAsyncHttpClientBuilder jdkAsyncHttpClientBuilder = spy(
@@ -315,8 +318,9 @@ public class JdkAsyncHttpClientBuilderTests {
 
     @Test
     void testAllowedHeadersFromBoth() {
-        Configuration configuration = new ConfigurationBuilder()
-            .systemPropertiesSource(new TestConfigurationSource("jdk.httpclient.allowRestrictedHeaders", "content-length, upgrade"))
+        Configuration configuration = new ConfigurationBuilder(new TestConfigurationSource(),
+                new TestConfigurationSource("jdk.httpclient.allowRestrictedHeaders", "content-length, upgrade"),
+                new TestConfigurationSource())
             .build();
 
         JdkAsyncHttpClientBuilder jdkAsyncHttpClientBuilder = spy(

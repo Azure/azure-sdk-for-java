@@ -15,24 +15,40 @@ import java.util.stream.Collectors;
 public final class TestConfigurationSource implements ConfigurationSource {
     private final Map<String, String> testData;
 
-    public TestConfigurationSource(String... testData) {
+    /**
+     * Creates TestConfigurationSource with given property names and values.
+     *
+     * @param testProperties array of interleaved key-value pairs.
+     * @throws IllegalArgumentException if test properties' length is odd.
+     */
+    public TestConfigurationSource(String... testProperties) {
         this.testData = new HashMap<>();
 
-        if (testData != null) {
-            if (testData.length % 2 != 0) {
+        if (testProperties != null) {
+            if (testProperties.length % 2 != 0) {
                 throw new IllegalArgumentException("Configuration 'testData' length is odd, expected to be even to represent names and values of properties");
             }
-            for (int i = 0; i < testData.length; i += 2) {
-                this.testData.put(testData[i], testData[i + 1]);
+            for (int i = 0; i < testProperties.length; i += 2) {
+                this.testData.put(testProperties[i], testProperties[i + 1]);
             }
         }
     }
 
-    public TestConfigurationSource add(String key, String value) {
-        this.testData.put(key, value);
+    /**
+     * Adds property name and value to the source.
+     *
+     * @param name property name
+     * @param value property value
+     * @return this {@code TestConfigurationSource} for chaining.
+     */
+    public TestConfigurationSource add(String name, String value) {
+        this.testData.put(name, value);
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Map<String, String> getProperties(String path) {
         if (path == null) {

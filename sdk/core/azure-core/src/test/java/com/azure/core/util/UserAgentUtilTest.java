@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
  * Unit tests for {@link UserAgentUtil}.
  */
 public class UserAgentUtilTest {
+    private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
 
     @Test
     void testUserAgentStringFormat() {
@@ -33,10 +34,10 @@ public class UserAgentUtilTest {
         // without platform info
         assertEquals("azsdk-java-azure-storage-blob/12.0.0",
             UserAgentUtil.toUserAgentString(null, "azure-storage-blob", "12.0.0",
-                new ConfigurationBuilder().addProperty("AZURE_TELEMETRY_DISABLED", "true").build()));
+                new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource("AZURE_TELEMETRY_DISABLED", "true")).build()));
         assertEquals("myapp azsdk-java-azure-storage-blob/12.0.0",
             UserAgentUtil.toUserAgentString("myapp", "azure-storage-blob", "12.0.0",
-                new ConfigurationBuilder().addProperty("AZURE_TELEMETRY_DISABLED", "true").build()));
+                new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource("AZURE_TELEMETRY_DISABLED", "true")).build()));
 
         // long app id should be truncated
         assertThrows(IllegalArgumentException.class, () ->

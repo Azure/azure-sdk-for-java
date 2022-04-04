@@ -18,53 +18,99 @@ import java.util.Objects;
 public final class ConfigurationBuilder {
 
     private final MutableConfigurationSource mutableSource;
-    private ConfigurationSource environmentConfigurationSource = null;
-    private ConfigurationSource systemPropertiesConfigurationSource = null;
+    private final EnvironmentConfiguration environmentConfiguration;
     private String rootPath;
     private Configuration sharedConfiguration;
-    private EnvironmentConfiguration environmentConfiguration;
-
-    public ConfigurationBuilder() {
-        this.mutableSource = new MutableConfigurationSource();
-        this.environmentConfiguration = null;
-    }
 
     /**
      * Creates {@code ConfigurationBuilder}.
      *
-     * <!-- src_embed com.azure.core.util.ConfigurationBuilder -->
+     * <!-- src_embed com.azure.core.util.ConfigurationBuilder#addProperty -->
      * <pre>
-     * &#47;&#47; Creates ConfigurationBuilder with configured root path to shared properties
-     * ConfigurationBuilder configurationBuilder = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
-     *     .root&#40;&quot;azure.sdk&quot;&#41;; &#47;&#47; shared properties' absolute path
+     * &#47;&#47; Creates Configuration with manually added properties.
+     * configuration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
+     *     .addProperty&#40;&quot;azure.sdk.client-name.connection-string&quot;, &quot;...&quot;&#41;
+     *     .root&#40;&quot;azure.sdk&quot;&#41;
+     *     .buildSection&#40;&quot;client-name&quot;&#41;;
+     *
+     * ConfigurationProperty&lt;String&gt; connectionStringProperty = ConfigurationPropertyBuilder.ofString&#40;&quot;connection-string&quot;&#41;
+     *     .build&#40;&#41;;
+     *
+     * System.out.println&#40;configuration.get&#40;connectionStringProperty&#41;&#41;;
      * </pre>
-     * <!-- end com.com.azure.core.util.ConfigurationBuilder -->
-     * @param source Custom {@link ConfigurationSource} containing known Azure SDK configuration properties
+     * <!-- end com.com.azure.core.util.ConfigurationBuilder#addProperty -->
      */
-    public ConfigurationBuilder(ConfigurationSource source) {
-        Objects.requireNonNull(source, "'source' cannot be null");
-        this.mutableSource = new MutableConfigurationSource(source);
-        this.environmentConfiguration = null;
+    public ConfigurationBuilder() {
+        this.mutableSource = new MutableConfigurationSource();
+        this.environmentConfiguration = EnvironmentConfiguration.getGlobalConfiguration();
     }
 
+    /**
+     * Creates {@code ConfigurationBuilder} with configuration source.
+     *
+     * <!-- src_embed com.azure.core.util.Configuration -->
+     * <pre>
+     * &#47;&#47; Creates Configuration with configured root path to shared properties
+     * Configuration configuration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
+     *     .root&#40;&quot;azure.sdk&quot;&#41;
+     *     .buildSection&#40;&quot;client-name&quot;&#41;;
+     *
+     * ConfigurationProperty&lt;String&gt; proxyHostnameProperty = ConfigurationPropertyBuilder.ofString&#40;&quot;http.proxy.hostname&quot;&#41;
+     *     .shared&#40;true&#41;
+     *     .build&#40;&#41;;
+     * System.out.println&#40;configuration.get&#40;proxyHostnameProperty&#41;&#41;;
+     * </pre>
+     * <!-- end com.com.azure.core.util.Configuration -->
+     * @param source Custom {@link ConfigurationSource} containing known Azure SDK configuration properties.
+     */
+    public ConfigurationBuilder(ConfigurationSource source) {
+        this.mutableSource = new MutableConfigurationSource(Objects.requireNonNull(source, "'source' cannot be null"));
+        this.environmentConfiguration = EnvironmentConfiguration.getGlobalConfiguration();
+    }
+
+    /**
+     * Creates {@code ConfigurationBuilder} with configuration sources for explicit configuration, system properties and environment configuration sources.
+     * Use this constructor to customize known Azure SDK system properties and environment variables retrieval.
+     *
+     * @param source Custom {@link ConfigurationSource} containing known Azure SDK configuration properties
+     * @param systemPropertiesConfigurationSource {@link ConfigurationSource} containing known Azure SDK system properties.
+     * @param environmentConfigurationSource {@link ConfigurationSource} containing known Azure SDK environment variables.
+     */
+    public ConfigurationBuilder(ConfigurationSource source, ConfigurationSource systemPropertiesConfigurationSource, ConfigurationSource environmentConfigurationSource) {
+        Objects.requireNonNull(source, "'source' cannot be null");
+        Objects.requireNonNull(systemPropertiesConfigurationSource, "'systemPropertiesConfigurationSource' cannot be null");
+        Objects.requireNonNull(environmentConfigurationSource, "'environmentConfigurationSource' cannot be null");
+        this.mutableSource = new MutableConfigurationSource(source);
+        this.environmentConfiguration = new EnvironmentConfiguration(systemPropertiesConfigurationSource, environmentConfigurationSource);
+    }
+
+    /**
+     * Add property to the configuration source.
+     *
+     * <!-- src_embed com.azure.core.util.Configuration -->
+     * <pre>
+     * &#47;&#47; Creates Configuration with configured root path to shared properties
+     * Configuration configuration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
+     *     .root&#40;&quot;azure.sdk&quot;&#41;
+     *     .buildSection&#40;&quot;client-name&quot;&#41;;
+     *
+     * ConfigurationProperty&lt;String&gt; proxyHostnameProperty = ConfigurationPropertyBuilder.ofString&#40;&quot;http.proxy.hostname&quot;&#41;
+     *     .shared&#40;true&#41;
+     *     .build&#40;&#41;;
+     * System.out.println&#40;configuration.get&#40;proxyHostnameProperty&#41;&#41;;
+     * </pre>
+     * <!-- end com.com.azure.core.util.Configuration -->
+     *
+     * @param name Property name.
+     * @param value Property value.
+     * @return {@code ConfigurationBuilder} instance for chaining.
+     */
     public ConfigurationBuilder addProperty(String name, String value) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(value, "'value' cannot be null.");
 
         mutableSource.add(name, value);
-
-        return this;
-    }
-
-    public ConfigurationBuilder environmentSource(ConfigurationSource environmentConfigurationSource) {
-        this.environmentConfigurationSource = Objects.requireNonNull(environmentConfigurationSource, "'environmentConfigurationSource' cannot be null");
-        this.environmentConfiguration = null;
-        return this;
-    }
-
-    public ConfigurationBuilder systemPropertiesSource(ConfigurationSource systemPropertiesConfigurationSource) {
-        this.systemPropertiesConfigurationSource = Objects.requireNonNull(systemPropertiesConfigurationSource, "'systemPropertiesConfigurationSource' cannot be null");
-        this.environmentConfiguration = null;
+        sharedConfiguration = null;
         return this;
     }
 
@@ -72,13 +118,19 @@ public final class ConfigurationBuilder {
      * Sets path to root configuration properties where shared Azure SDK properties are defined.
      * When local per-client property is missing, {@link Configuration} falls back to shared properties.
      *
-     * <!-- src_embed com.azure.core.util.ConfigurationBuilder -->
+     * <!-- src_embed com.azure.core.util.Configuration -->
      * <pre>
-     * &#47;&#47; Creates ConfigurationBuilder with configured root path to shared properties
-     * ConfigurationBuilder configurationBuilder = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
-     *     .root&#40;&quot;azure.sdk&quot;&#41;; &#47;&#47; shared properties' absolute path
+     * &#47;&#47; Creates Configuration with configured root path to shared properties
+     * Configuration configuration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
+     *     .root&#40;&quot;azure.sdk&quot;&#41;
+     *     .buildSection&#40;&quot;client-name&quot;&#41;;
+     *
+     * ConfigurationProperty&lt;String&gt; proxyHostnameProperty = ConfigurationPropertyBuilder.ofString&#40;&quot;http.proxy.hostname&quot;&#41;
+     *     .shared&#40;true&#41;
+     *     .build&#40;&#41;;
+     * System.out.println&#40;configuration.get&#40;proxyHostnameProperty&#41;&#41;;
      * </pre>
-     * <!-- end com.com.azure.core.util.ConfigurationBuilder -->
+     * <!-- end com.com.azure.core.util.Configuration -->
      *
      * @param rootPath absolute root path, can be {@code null}.
      * @return {@code ConfigurationBuilder} instance for chaining.
@@ -107,7 +159,7 @@ public final class ConfigurationBuilder {
     public Configuration build() {
         if (sharedConfiguration == null) {
             // defaults can be reused to get different client sections.
-            sharedConfiguration = new Configuration(mutableSource, getOrCreateEnvironmentConfiguration(), rootPath, null);
+            sharedConfiguration = new Configuration(mutableSource, environmentConfiguration, rootPath, null);
         }
 
         return sharedConfiguration;
@@ -120,7 +172,7 @@ public final class ConfigurationBuilder {
      * <!-- src_embed com.azure.core.util.ConfigurationBuilder#buildSection -->
      * <pre>
      * &#47;&#47; Builds Configuration for &lt;client-name&gt; with fallback to shared properties.
-     * Configuration configuration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
+     * configuration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
      *     .root&#40;&quot;azure.sdk&quot;&#41;
      *     .buildSection&#40;&quot;client-name&quot;&#41;;
      * </pre>
@@ -133,11 +185,11 @@ public final class ConfigurationBuilder {
         Objects.requireNonNull(path, "'path' cannot be null");
         if (sharedConfiguration == null) {
             // sharedConfiguration can be reused to build different client sections.
-            sharedConfiguration = new Configuration(mutableSource, getOrCreateEnvironmentConfiguration(), rootPath, null);
+            sharedConfiguration = new Configuration(mutableSource, environmentConfiguration, rootPath, null);
         }
 
         String absolutePath = getAbsolutePath(rootPath, path);
-        return new Configuration(mutableSource, getOrCreateEnvironmentConfiguration(), absolutePath, sharedConfiguration);
+        return new Configuration(mutableSource, environmentConfiguration, absolutePath, sharedConfiguration);
     }
 
     private static String getAbsolutePath(String root, String relative) {
@@ -146,18 +198,6 @@ public final class ConfigurationBuilder {
         }
 
         return root + "." + relative;
-    }
-
-    private EnvironmentConfiguration getOrCreateEnvironmentConfiguration() {
-        if (environmentConfiguration != null) {
-            return environmentConfiguration;
-        }
-
-        if (environmentConfigurationSource == null && systemPropertiesConfigurationSource == null) {
-            return EnvironmentConfiguration.getGlobalConfiguration();
-        }
-
-        return new EnvironmentConfiguration(environmentConfigurationSource, systemPropertiesConfigurationSource);
     }
 
     private static final class MutableConfigurationSource implements ConfigurationSource {

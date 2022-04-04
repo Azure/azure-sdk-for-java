@@ -42,15 +42,34 @@ public class ConfigurationJavaDocCodeSnippet {
         properties.put("azure.sdk.http.proxy.username", "user");
         properties.put("azure.sdk.http.proxy.password", "pwd");
 
-        // BEGIN: com.azure.core.util.ConfigurationBuilder
-        // Creates ConfigurationBuilder with configured root path to shared properties
-        ConfigurationBuilder configurationBuilder = new ConfigurationBuilder(new SampleSource(properties))
-            .root("azure.sdk"); // shared properties' absolute path
-        // END: com.azure.core.util.ConfigurationBuilder
+        // BEGIN: com.azure.core.util.Configuration
+        // Creates Configuration with configured root path to shared properties
+        Configuration configuration = new ConfigurationBuilder(new SampleSource(properties))
+            .root("azure.sdk")
+            .buildSection("client-name");
+
+        ConfigurationProperty<String> proxyHostnameProperty = ConfigurationPropertyBuilder.ofString("http.proxy.hostname")
+            .shared(true)
+            .build();
+        System.out.println(configuration.get(proxyHostnameProperty));
+        // END: com.azure.core.util.Configuration
+
+        // BEGIN: com.azure.core.util.ConfigurationBuilder#addProperty
+        // Creates Configuration with manually added properties.
+        configuration = new ConfigurationBuilder(new SampleSource(properties))
+            .addProperty("azure.sdk.client-name.connection-string", "...")
+            .root("azure.sdk")
+            .buildSection("client-name");
+
+        ConfigurationProperty<String> connectionStringProperty = ConfigurationPropertyBuilder.ofString("connection-string")
+            .build();
+
+        System.out.println(configuration.get(connectionStringProperty));
+        // END: com.azure.core.util.ConfigurationBuilder#addProperty
 
         // BEGIN: com.azure.core.util.ConfigurationBuilder#buildSection
         // Builds Configuration for <client-name> with fallback to shared properties.
-        Configuration configuration = new ConfigurationBuilder(new SampleSource(properties))
+        configuration = new ConfigurationBuilder(new SampleSource(properties))
             .root("azure.sdk")
             .buildSection("client-name");
         // END: com.azure.core.util.ConfigurationBuilder#buildSection

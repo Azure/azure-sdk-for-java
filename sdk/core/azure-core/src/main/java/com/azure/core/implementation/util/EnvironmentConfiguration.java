@@ -57,7 +57,7 @@ public class EnvironmentConfiguration {
         Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT
     ));
 
-    private static EnvironmentConfiguration GLOBAL_CONFIGURATION = new EnvironmentConfiguration();
+    private static final EnvironmentConfiguration GLOBAL_CONFIGURATION = new EnvironmentConfiguration();
 
     private final ConcurrentMap<String, String> explicitConfigurations;
     private final ConcurrentMap<String, Optional<String>> envConfigurations;
@@ -66,7 +66,7 @@ public class EnvironmentConfiguration {
     /**
      * Constructs a configuration containing the known Azure properties constants.
      */
-    public EnvironmentConfiguration() {
+    private EnvironmentConfiguration() {
         this(EnvironmentVariablesConfigurationSource.GLOBAL_SOURCE, path -> Collections.emptyMap());
     }
 
@@ -82,7 +82,7 @@ public class EnvironmentConfiguration {
     /**
      * Constructs a configuration containing mocked environment. Use this constructor for testing.
      */
-    public EnvironmentConfiguration(ConfigurationSource environmentConfigurationSource, ConfigurationSource systemPropertiesConfigurationSource) {
+    public EnvironmentConfiguration(ConfigurationSource systemPropertiesConfigurationSource, ConfigurationSource environmentConfigurationSource) {
         this.explicitConfigurations = new ConcurrentHashMap<>();
 
         if (environmentConfigurationSource == null) {
@@ -155,7 +155,6 @@ public class EnvironmentConfiguration {
         }
 
         value = getSystemProperty(name);
-
         if (value != null) {
             return value;
         }
@@ -210,15 +209,15 @@ public class EnvironmentConfiguration {
         return explicitConfigurations.remove(name);
     }
 
-    String loadFromEnvironment(String name) {
+    private String loadFromEnvironment(String name) {
         return System.getenv(name);
     }
 
-    String loadFromProperties(String name) {
+    private String loadFromProperties(String name) {
         return System.getProperty(name);
     }
 
-    public static class EnvironmentVariablesConfigurationSource implements ConfigurationSource {
+    public static final class EnvironmentVariablesConfigurationSource implements ConfigurationSource {
         public static final ConfigurationSource GLOBAL_SOURCE = new EnvironmentVariablesConfigurationSource();
         Map<String, String> configurations;
 

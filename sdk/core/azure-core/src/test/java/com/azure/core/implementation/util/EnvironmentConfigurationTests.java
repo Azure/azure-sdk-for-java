@@ -3,15 +3,12 @@
 
 package com.azure.core.implementation.util;
 
+import com.azure.core.util.ConfigurationSource;
 import com.azure.core.util.TestConfigurationSource;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
 
 /**
  * Tests the configuration API.
@@ -20,15 +17,16 @@ public class EnvironmentConfigurationTests {
     private static final String MY_CONFIGURATION = "myConfigurationABC123";
     private static final String EXPECTED_VALUE = "aConfigurationValueAbc123";
     private static final String UNEXPECTED_VALUE = "notMyConfigurationValueDef456";
+    private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
 
     /**
      * Verifies that a runtime parameter is able to be retrieved.
      */
     @Test
     public void runtimeConfigurationFound() {
-        EnvironmentConfiguration configuration = spy(emptyConfiguration());
-        when(configuration.loadFromProperties(MY_CONFIGURATION)).thenReturn(EXPECTED_VALUE);
-        when(configuration.loadFromEnvironment(MY_CONFIGURATION)).thenReturn(null);
+        EnvironmentConfiguration configuration = new EnvironmentConfiguration(
+            new TestConfigurationSource().add(MY_CONFIGURATION, EXPECTED_VALUE),
+            EMPTY_SOURCE);
 
         assertEquals(EXPECTED_VALUE, configuration.getSystemProperty(MY_CONFIGURATION));
         assertEquals(EXPECTED_VALUE, configuration.getAny(MY_CONFIGURATION));
@@ -40,11 +38,12 @@ public class EnvironmentConfigurationTests {
      */
     @Test
     public void environmentConfigurationFound() {
-        EnvironmentConfiguration configuration = spy(emptyConfiguration());
-        when(configuration.loadFromProperties(MY_CONFIGURATION)).thenReturn(null);
-        when(configuration.loadFromEnvironment(MY_CONFIGURATION)).thenReturn(EXPECTED_VALUE);
+        EnvironmentConfiguration configuration = new EnvironmentConfiguration(EMPTY_SOURCE,
+            new TestConfigurationSource().add(MY_CONFIGURATION, EXPECTED_VALUE));
 
         assertEquals(EXPECTED_VALUE, configuration.getEnvironmentVariable(MY_CONFIGURATION));
+        assertEquals(EXPECTED_VALUE, configuration.getAny(MY_CONFIGURATION));
+        assertNull(configuration.getSystemProperty(MY_CONFIGURATION));
     }
 
     /**
@@ -54,6 +53,8 @@ public class EnvironmentConfigurationTests {
     public void configurationNotFound() {
         EnvironmentConfiguration configuration = emptyConfiguration();
         assertNull(configuration.getEnvironmentVariable(MY_CONFIGURATION));
+        assertNull(configuration.getSystemProperty(MY_CONFIGURATION));
+        assertNull(configuration.getAny(MY_CONFIGURATION));
     }
 
     /**
@@ -61,31 +62,80 @@ public class EnvironmentConfigurationTests {
      */
     @Test
     public void runtimeConfigurationPreferredOverEnvironmentConfiguration() {
-        EnvironmentConfiguration configuration = spy(emptyConfiguration());
-        when(configuration.loadFromProperties(MY_CONFIGURATION)).thenReturn(EXPECTED_VALUE);
-        when(configuration.loadFromEnvironment(MY_CONFIGURATION)).thenReturn(UNEXPECTED_VALUE);
+        EnvironmentConfiguration configuration = new EnvironmentConfiguration(
+            new TestConfigurationSource().add(MY_CONFIGURATION, EXPECTED_VALUE),
+            new TestConfigurationSource().add(MY_CONFIGURATION, UNEXPECTED_VALUE));
 
         assertEquals(EXPECTED_VALUE, configuration.getSystemProperty(MY_CONFIGURATION));
     }
 
-    private EnvironmentConfiguration emptyConfiguration() {
-        return new EnvironmentConfiguration(new TestConfigurationSource(), new TestConfigurationSource());
-    }
-
     @Test
     public void cloneConfiguration() {
-        EnvironmentConfiguration configuration = new EnvironmentConfiguration(new TestConfigurationSource()
-            .add("variable1", "value1"), path -> Collections.emptyMap());
+        EnvironmentConfiguration configuration = new EnvironmentConfiguration(
+            new TestConfigurationSource().add("sys", "sysVal"),
+            new TestConfigurationSource().add("env", "envVal"));
 
         EnvironmentConfiguration configurationClone = new EnvironmentConfiguration(configuration);
 
-        configuration.put("variable2", "value2");
-        // Verify that the clone has the expected values.
-        assertEquals(configuration.getEnvironmentVariable("variable1"), configurationClone.getEnvironmentVariable("variable1"));
-        assertEquals(configuration.getEnvironmentVariable("variable2"), configurationClone.getEnvironmentVariable("variable2"));
+        configuration.put("foo", "bar");
 
         // The clone should be a separate instance, verify its modifications won't affect the original copy.
-        configurationClone.remove("variable2");
-        assertNull(configuration.getEnvironmentVariable("variable2"));
+        configurationClone.remove("foo");
+        assertNull(configurationClone.getAny("foo"));
+        assertEquals("bar", configuration.getAny("foo"));
     }
+
+    @Test
+    public void removeDoesNotChangeEnvironmentOrSystemVariables() {
+        EnvironmentConfiguration configuration = new EnvironmentConfiguration(
+            new TestConfigurationSource().add("sys", "sysVal"),
+            new TestConfigurationSource().add("env", "envVal"));
+
+        configuration.put("foo", "bar");
+
+        // Verify that the clone has the expected values.
+        assertEquals("envVal", configuration.getEnvironmentVariable("env"));
+        assertEquals("sysVal", configuration.getSystemProperty("sys"));
+        assertEquals("bar", configuration.getAny("foo"));
+
+        configuration.remove("foo");
+        configuration.remove("env");
+        configuration.remove("sys");
+        assertNull(configuration.getAny("foo"));
+
+        assertEquals("envVal", configuration.getEnvironmentVariable("env"));
+        assertEquals("sysVal", configuration.getSystemProperty("sys"));
+    }
+
+    @Test
+    public void putAndRemoveOverride() {
+        EnvironmentConfiguration configuration = new EnvironmentConfiguration(
+            new TestConfigurationSource().add("sys", "sysVal"),
+            new TestConfigurationSource().add("env", "envVal"));
+
+        configuration.put("env", "bar1");
+        configuration.put("sys", "bar2");
+        configuration.put("foo", "bar");
+
+        assertEquals("bar1", configuration.getAny("env"));
+        assertEquals("envVal", configuration.getEnvironmentVariable("env"));
+        assertEquals("bar2", configuration.getAny("sys"));
+        assertEquals("sysVal", configuration.getSystemProperty("sys"));
+        assertEquals("bar", configuration.getAny("foo"));
+
+        configuration.remove("foo");
+        configuration.remove("env");
+        configuration.remove("sys");
+        assertNull(configuration.getAny("foo"));
+
+        assertEquals("envVal", configuration.getAny("env"));
+        assertEquals("envVal", configuration.getEnvironmentVariable("env"));
+        assertEquals("sysVal", configuration.getAny("sys"));
+        assertEquals("sysVal", configuration.getSystemProperty("sys"));
+    }
+
+    private EnvironmentConfiguration emptyConfiguration() {
+        return new EnvironmentConfiguration(EMPTY_SOURCE, EMPTY_SOURCE);
+    }
+
 }

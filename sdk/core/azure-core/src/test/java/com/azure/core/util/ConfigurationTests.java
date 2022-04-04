@@ -12,6 +12,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -24,17 +25,47 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ConfigurationTests {
     private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
     private static final ConfigurationSource FOO_SOURCE = new TestConfigurationSource("foo", "bar");
+    private static final ConfigurationProperty<String> FOO_PROPERTY = ConfigurationPropertyBuilder.ofString("foo").build();
 
     @Test
-    public void environmentConfigurationFallback() {
+    public void environmentConfigurationDefaultSources() {
+        String sysPropName = UUID.randomUUID().toString();
+        System.setProperty(sysPropName, "value");
+        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(null, null);
+        Configuration configuration = new Configuration(EMPTY_SOURCE, envConfiguration, null, null);
+
+        assertNull(configuration.get("foo"));
+        assertFalse(configuration.contains("foo"));
+        assertEquals("value", configuration.get(sysPropName));
+        assertTrue(configuration.contains(sysPropName));
+
+        System.clearProperty(sysPropName);
+    }
+
+    @Test
+    public void environmentConfigurationEnvVar() {
         EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(FOO_SOURCE, null);
         Configuration configuration = new Configuration(EMPTY_SOURCE, envConfiguration, null, null);
         assertEquals("bar", configuration.get("foo"));
         assertTrue(configuration.contains("foo"));
+
+        assertNull(configuration.get(FOO_PROPERTY));
+        assertFalse(configuration.contains(FOO_PROPERTY));
     }
 
     @Test
-    public void environmentConfigurationFallbackNotFound() {
+    public void environmentConfigurationSystemProperty() {
+        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(null, FOO_SOURCE);
+        Configuration configuration = new Configuration(EMPTY_SOURCE, envConfiguration, null, null);
+        assertEquals("bar", configuration.get("foo"));
+        assertTrue(configuration.contains("foo"));
+
+        assertNull(configuration.get(FOO_PROPERTY));
+        assertFalse(configuration.contains(FOO_PROPERTY));
+    }
+
+    @Test
+    public void environmentConfigurationNotFound() {
         EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(EMPTY_SOURCE, null);
         Configuration configuration = new Configuration(EMPTY_SOURCE, envConfiguration, null, null);
         assertNull(configuration.get("foo"));
@@ -42,7 +73,7 @@ public class ConfigurationTests {
     }
 
     @Test
-    public void environmentConfigurationFallbackDefaultValue() {
+    public void environmentConfigurationEnvVarDefaultValue() {
         EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(new TestConfigurationSource("foo", "42"), null);
         Configuration configuration = new Configuration(EMPTY_SOURCE, envConfiguration, null, null);
         assertEquals(42, configuration.get("foo", 0));
@@ -50,7 +81,31 @@ public class ConfigurationTests {
     }
 
     @Test
-    public void environmentConfigurationFallbackConverter() {
+    public void environmentConfigurationSysPropDefaultValue() {
+        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(null, new TestConfigurationSource("foo", "42"));
+        Configuration configuration = new Configuration(EMPTY_SOURCE, envConfiguration, null, null);
+        assertEquals(42, configuration.get("foo", 0));
+        assertEquals(0, configuration.get("foo-not-found", 0));
+    }
+
+    @Test
+    public void environmentConfigurationEnvVarConverter() {
+        Map<String, String> props = new HashMap<>();
+        props.put("foo", "42");
+        props.put("bar", "forty two");
+
+        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(EMPTY_SOURCE, new TestConfigurationSource()
+                .add("foo", "42")
+                .add("bar", "forty two"));
+        Configuration configuration = new Configuration(EMPTY_SOURCE, envConfiguration, null, null);
+        Function<String, Integer> converter = Integer::parseInt;
+        assertEquals(42, configuration.get("foo", converter));
+        assertThrows(NumberFormatException.class, () -> configuration.get("bar", Integer::parseInt));
+    }
+
+
+    @Test
+    public void environmentConfigurationSysPropConverter() {
         Map<String, String> props = new HashMap<>();
         props.put("foo", "42");
         props.put("bar", "forty two");
@@ -67,8 +122,8 @@ public class ConfigurationTests {
 
     @Test
     @SuppressWarnings("deprecation")
-    public void environmentConfigurationFallbackCanNotRemoveEnvVar() {
-        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(FOO_SOURCE, null);
+    public void environmentConfigurationCanNotRemoveEnvVar() {
+        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(EMPTY_SOURCE, FOO_SOURCE);
         Configuration configuration = new Configuration(EMPTY_SOURCE, envConfiguration, null, null);
         assertEquals("bar", configuration.get("foo"));
 
@@ -82,8 +137,8 @@ public class ConfigurationTests {
 
     @Test
     @SuppressWarnings("deprecation")
-    public void environmentConfigurationFallbackCanNotRemoveSystemProperty() {
-        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(EMPTY_SOURCE, FOO_SOURCE);
+    public void environmentConfigurationCanNotRemoveSystemProperty() {
+        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(FOO_SOURCE, EMPTY_SOURCE);
         Configuration configuration = new Configuration(EMPTY_SOURCE, envConfiguration, null, null);
         assertEquals("bar", configuration.get("foo"));
 
@@ -97,8 +152,8 @@ public class ConfigurationTests {
 
     @Test
     @SuppressWarnings("deprecation")
-    public void environmentConfigurationFallbackCanRemoveExplicit() {
-        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(EMPTY_SOURCE, null);
+    public void environmentConfigurationCanRemoveExplicit() {
+        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(EMPTY_SOURCE, EMPTY_SOURCE);
         Configuration configuration = new Configuration(EMPTY_SOURCE, envConfiguration, null, null);
 
         configuration.put("foo", "bar");
@@ -113,14 +168,20 @@ public class ConfigurationTests {
     }
 
     @Test
-    public void getByNameBasic() {
-        Configuration configuration = new ConfigurationBuilder().addProperty("foo", "bar").build();
-        assertEquals("bar", configuration.get("foo"));
-        assertTrue(configuration.contains("foo"));
+    public void environmentGetByNameBasicBuilder() {
+        Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE,
+                new TestConfigurationSource("fooSys", "barSys"),
+                new TestConfigurationSource("fooEnv", "barEnv"))
+            .build();
+        assertEquals("barEnv", configuration.get("fooEnv"));
+        assertTrue(configuration.contains("fooEnv"));
+
+        assertEquals("barSys", configuration.get("fooSys"));
+        assertTrue(configuration.contains("fooSys"));
     }
 
     @Test
-    public void getByNameBasicNotFound() {
+    public void environmentGetByNameBasicBuilderNotFound() {
         Configuration configuration = new ConfigurationBuilder().build();
         assertNull(configuration.get("foo"));
         assertFalse(configuration.contains("foo"));
@@ -129,29 +190,36 @@ public class ConfigurationTests {
     @ParameterizedTest
     @MethodSource("getOrDefaultSupplier")
     public void getByNameImplicitConverter(String configurationValue, Object defaultValue, Object expectedValue) {
-        Configuration configuration = new ConfigurationBuilder().addProperty("foo", configurationValue).build();
+        Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,  new TestConfigurationSource("foo", configurationValue))
+            .build();
 
         assertEquals(expectedValue, configuration.get("foo", defaultValue));
     }
 
     @Test
-    public void getByNameFallbackToDefault() {
+    public void environmentGetByNameFallbackToDefault() {
         Configuration configuration = new ConfigurationBuilder().build();
         assertEquals("0", configuration.get("foo", "0"));
         assertEquals(0, configuration.get("foo", 0));
     }
 
     @Test
-    public void getByNameImplicitConverterThrows() {
-        Configuration configuration = new ConfigurationBuilder().addProperty("foo", "forty two").build();
-        assertThrows(NumberFormatException.class, () -> configuration.get("foo", 0));
+    public void environmentGetByNameImplicitConverterThrows() {
+        Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE,
+                new TestConfigurationSource("fooSys", "forty two"),
+                new TestConfigurationSource("fooEnv", "forty two"))
+            .build();
+        assertThrows(NumberFormatException.class, () -> configuration.get("fooEnv", 0));
+        assertThrows(NumberFormatException.class, () -> configuration.get("fooSys", 0));
     }
 
     @Test
     public void getByNameConverter() {
-        Configuration configuration = new ConfigurationBuilder()
-            .addProperty("foo", "42")
-            .addProperty("bar", "forty two")
+        Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE,
+                EMPTY_SOURCE,
+                new TestConfigurationSource()
+                    .add("foo", "42")
+                    .add("bar", "forty two"))
             .build();
         Function<String, Integer> converter = Integer::parseInt;
         assertEquals(42, configuration.get("foo", converter));
@@ -159,20 +227,55 @@ public class ConfigurationTests {
     }
 
     @Test
-    public void getByNameFallbackToEnv() {
-        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(new TestConfigurationSource()
-                .add("foo", "some value")
-                .add("bar", "baz"),
-            EMPTY_SOURCE);
+    public void getByPropertyVsEnvVarName() {
+        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(FOO_SOURCE, EMPTY_SOURCE);
 
-        ConfigurationSource testSource = new TestConfigurationSource("foo", "42");
+        ConfigurationSource testSource = new TestConfigurationSource("foo", "some value");
         Configuration configuration = new Configuration(testSource, envConfiguration, null, null);
 
-        assertEquals("42", configuration.get("foo"));
-        assertEquals(42, configuration.get("foo", 0));
-        Function<String, Integer> converter = Integer::parseInt;
-        assertEquals(42, configuration.get("foo", converter));
-        assertEquals("baz", configuration.get("bar"));
+        assertEquals("bar", configuration.get("foo"));
+        assertEquals("some value", configuration.get(FOO_PROPERTY));
+    }
+
+    @Test
+    public void getByPropertyVsSysPropName() {
+        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(EMPTY_SOURCE, FOO_SOURCE);
+
+        ConfigurationSource testSource = new TestConfigurationSource("foo", "some value");
+        Configuration configuration = new Configuration(testSource, envConfiguration, null, null);
+
+        assertEquals("bar", configuration.get("foo"));
+        assertEquals("some value", configuration.get(FOO_PROPERTY));
+    }
+
+    @Test
+    public void getExplicitPropertyWithSystemPropertyAndEnvVar() {
+        ConfigurationProperty<String> property = ConfigurationPropertyBuilder.ofString("foo")
+            .systemPropertyName("sys.foo")
+            .environmentVariableName("env.foo")
+            .defaultValue("bar")
+            .build();
+
+        assertEquals("bar", new ConfigurationBuilder().build().get(property));
+        assertEquals("explicit",  new ConfigurationBuilder().addProperty("foo", "explicit").build().get(property));
+    }
+
+    @Test
+    public void getSystemPropertyWithSystemPropertyAndEnvVar() {
+        ConfigurationProperty<String> property = ConfigurationPropertyBuilder.ofString("foo")
+            .systemPropertyName("sys.foo")
+            .environmentVariableName("env.foo")
+            .defaultValue("bar")
+            .build();
+
+        Configuration envOnlyConfig = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource("env.foo", "env")).build();
+        Configuration envAndSysConfig = new ConfigurationBuilder(EMPTY_SOURCE,
+                new TestConfigurationSource("sys.foo", "sys"),
+                new TestConfigurationSource("env.foo", "env"))
+            .build();
+
+        assertEquals("env", envOnlyConfig.get(property));
+        assertEquals("sys", envAndSysConfig.get(property));
     }
 
     @Test
@@ -184,12 +287,14 @@ public class ConfigurationTests {
         Configuration configuration = new Configuration(testSource, envConfiguration, null, null);
 
         envConfiguration.put("foo", "barEnv");
-        assertEquals("bar", configuration.get("foo"));
+        assertEquals("barEnv", configuration.get("foo"));
+        assertEquals("bar", configuration.get(FOO_PROPERTY));
 
         configuration.remove("foo");
         assertNull(envConfiguration.getAny("foo"));
-        assertTrue(configuration.contains("foo"));
-        assertEquals("bar", configuration.get("foo"));
+        assertFalse(configuration.contains("foo"));
+        assertTrue(configuration.contains(FOO_PROPERTY));
+        assertEquals("bar", configuration.get(FOO_PROPERTY));
     }
 
     @Test
@@ -206,7 +311,8 @@ public class ConfigurationTests {
 
         assertTrue(configuration.contains("foo"));
         assertTrue(configuration.contains("baz"));
-        assertEquals("bar", configuration.get("foo"));
+        assertEquals("newBar", configuration.get("foo"));
+        assertEquals("bar", configuration.get(FOO_PROPERTY));
         assertEquals("42", configuration.get("baz"));
     }
 
@@ -291,7 +397,7 @@ public class ConfigurationTests {
             .environmentVariableName("prop")
             .build();
 
-        EnvironmentConfiguration envConfig = new EnvironmentConfiguration(new TestConfigurationSource("prop", "env"), EMPTY_SOURCE);
+        EnvironmentConfiguration envConfig = new EnvironmentConfiguration(EMPTY_SOURCE, new TestConfigurationSource("prop", "env"));
         Configuration config = new Configuration(EMPTY_SOURCE, envConfig, null, null);
         assertTrue(config.contains(prop));
         assertEquals("env", config.get(prop));
@@ -304,7 +410,7 @@ public class ConfigurationTests {
             .systemPropertyName("prop")
             .build();
 
-        EnvironmentConfiguration envConfig = new EnvironmentConfiguration(new TestConfigurationSource("prop", "env"), new TestConfigurationSource("prop", "sys"));
+        EnvironmentConfiguration envConfig = new EnvironmentConfiguration(new TestConfigurationSource("prop", "sys"), new TestConfigurationSource("prop", "env"));
         Configuration config = new Configuration(EMPTY_SOURCE, envConfig, null, null);
         assertTrue(config.contains(prop));
         assertEquals("sys", config.get(prop));
