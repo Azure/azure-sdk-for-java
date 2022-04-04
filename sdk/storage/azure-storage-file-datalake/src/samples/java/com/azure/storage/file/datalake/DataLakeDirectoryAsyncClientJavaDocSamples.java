@@ -247,7 +247,8 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(headers)
             .setPermissions(permissions).setUmask(umask).setMetadata(Collections.singletonMap("metadata", "value"));
 
-        client.createFileIfNotExistsWithResponse(fileName, options).switchIfEmpty(Mono.<Response<DataLakeFileAsyncClient>>empty()
+        client.createFileIfNotExistsWithResponse(fileName, options)
+            .switchIfEmpty(Mono.<Response<DataLakeFileAsyncClient>>empty()
                 .doOnSuccess(x -> System.out.println("Already exists.")))
             .subscribe(response -> System.out.printf("Create completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileIfNotExistsWithResponse#String-DataLakePathCreateOptions
