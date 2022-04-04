@@ -680,6 +680,10 @@ public class IdentityClient {
                     ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
                         .tenant(IdentityUtil
                             .resolveTenantId(tenantId, request, options));
+                if (clientAssertionSupplier != null) {
+                    builder.clientCredential(ClientCredentialFactory
+                        .createFromClientAssertion(clientAssertionSupplier.get()));
+                }
                 return confidentialClient.acquireToken(builder.build());
             }
         )).map(MsalToken::new);

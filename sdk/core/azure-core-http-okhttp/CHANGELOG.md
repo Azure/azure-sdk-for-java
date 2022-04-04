@@ -29,8 +29,6 @@
         .build();
     ```
 
-### Bugs Fixed
-
 ### Other Changes
 
 #### Dependency Updates
