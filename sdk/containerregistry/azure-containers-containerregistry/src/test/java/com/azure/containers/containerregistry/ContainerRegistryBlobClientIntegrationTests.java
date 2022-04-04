@@ -19,6 +19,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -232,7 +233,7 @@ public class ContainerRegistryBlobClientIntegrationTests extends ContainerRegist
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void downloadBlob(HttpClient httpClient) {
-        // Assumptions.assumeTrue(interceptorManager.isLiveMode());
+        Assumptions.assumeTrue(interceptorManager.isLiveMode());
         client = getBlobClient("oci-artifact", httpClient);
         UploadBlobResult uploadResult = client.uploadBlob(configData);
         DownloadBlobResult downloadResult = client.downloadBlob(uploadResult.getDigest());
