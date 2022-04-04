@@ -50,7 +50,6 @@
     <javaModulesSurefireArgLine>
       --add-opens com.azure.core.http.okhttp/com.azure.core.http.okhttp=ALL-UNNAMED
       --add-opens com.azure.core.http.okhttp/com.azure.core.http.okhttp.implementation=ALL-UNNAMED
-      --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
 

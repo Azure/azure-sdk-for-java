@@ -567,10 +567,7 @@
 
   <!-- Super doesn't need to be cloned since it is Object -->
   <Match>
-    <Or>
-      <Class name="com.azure.core.util.Configuration"/>
-      <Class name="com.azure.core.implementation.util.EnvironmentConfiguration"/>
-    </Or>
+    <Class name="com.azure.core.util.Configuration"/>
     <Bug pattern="CN_IDIOM_NO_SUPER_CALL"/>
   </Match>
 

@@ -51,7 +51,6 @@
       <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <javaModulesSurefireArgLine>
       --add-opens com.azure.core.http.jdk.httpclient/com.azure.core.http.jdk.httpclient=ALL-UNNAMED
-      --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
     </javaModulesSurefireArgLine>
     <additionalSurefireArgLine>
       -Djdk.httpclient.allowRestrictedHeaders=Content-Length
