@@ -1373,6 +1373,7 @@ public class ShareDirectoryAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @param subdirectoryName Name of the subdirectory
+     * @param options {@link ShareDirectoryCreateOptions}
      * @return A reactive response signaling completion. The presence of a {@link Response} item indicates a new
      * subdirectory was created, and {@link Response#getValue() value} contains a {@link ShareDirectoryAsyncClient}
      * which can be used to interact with the newly created directory. An empty {@code Mono} indicates the specified

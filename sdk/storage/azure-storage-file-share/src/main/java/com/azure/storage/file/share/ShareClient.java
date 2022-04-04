@@ -1288,6 +1288,7 @@ public class ShareClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @param directoryName Name of the directory
+     * @param options {@link ShareDirectoryCreateOptions}
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.

@@ -1039,6 +1039,7 @@ public class ShareDirectoryClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @param subdirectoryName Name of the subdirectory
+     * @param options {@link ShareDirectoryCreateOptions}
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
