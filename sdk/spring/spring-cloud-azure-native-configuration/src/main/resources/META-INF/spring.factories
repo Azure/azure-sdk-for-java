@@ -1,0 +1,17 @@
+org.springframework.nativex.type.NativeConfiguration=\
+  org.springframework.core.CoreHints,\
+  org.springframework.context.ContextHints,\
+  org.springframework.beans.BeansHints,\
+  org.springframework.cloud.stream.binder.BinderHints,\
+  com.azure.spring.cloud.resourcemanager.ResourceManagerHints,\
+  com.azure.spring.cloud.core.CoreHints,\
+  com.azure.spring.cloud.autoconfigure.AutoconfigureHints,\
+  com.azure.spring.cloud.autoconfigure.storage.StorageCommonHints,\
+  com.azure.spring.cloud.autoconfigure.storage.StorageBlobHints,\
+  com.azure.spring.cloud.autoconfigure.keyvault.KeyVaultCommonHints,\
+  com.azure.spring.cloud.autoconfigure.keyvault.secrets.KeyVaultSecretsHints,\
+  com.azure.spring.cloud.autoconfigure.eventhubs.EventHubsHints,\
+  com.azure.spring.cloud.service.ServiceHints,\
+  com.azure.spring.messaging.storage.queue.StorageQueueHints,\
+  com.azure.spring.messaging.eventhubs.core.properties.MessageEventHubsHints,\
+  com.azure.spring.cloud.stream.binder.eventhubs.EventHubsBinderHints

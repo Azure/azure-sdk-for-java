@@ -133,6 +133,7 @@ org.springframework.boot:spring-boot;2.6.3
 org.springframework.data:spring-data-commons;2.6.1
 org.springframework.data:spring-data-mongodb;3.3.1
 org.springframework.data:spring-data-redis;2.6.1
+org.springframework.experimental:spring-aot;0.11.2
 org.springframework.integration:spring-integration-core;5.5.8
 org.springframework.kafka:spring-kafka;2.8.2
 org.springframework.security:spring-security-config;5.6.1

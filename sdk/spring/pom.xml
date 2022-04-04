@@ -26,6 +26,7 @@
         <module>spring-cloud-azure-actuator</module>
         <module>spring-cloud-azure-actuator-autoconfigure</module>
         <module>spring-cloud-azure-autoconfigure</module>
+        <module>spring-cloud-azure-native-configuration</module>
         <module>spring-cloud-azure-stream-binder-eventhubs-core</module>
         <module>spring-cloud-azure-stream-binder-eventhubs</module>
         <module>spring-cloud-azure-stream-binder-servicebus-core</module>
@@ -92,6 +93,11 @@
           <groupId>com.azure.spring</groupId>
           <artifactId>spring-cloud-azure-autoconfigure</artifactId>
           <version>4.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure.spring</groupId>
+          <artifactId>spring-cloud-azure-native-configuration</artifactId>
+          <version>4.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-native-configuration;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure.spring</groupId>
@@ -212,6 +218,7 @@
         <module>spring-cloud-azure-actuator</module>
         <module>spring-cloud-azure-actuator-autoconfigure</module>
         <module>spring-cloud-azure-autoconfigure</module>
+        <module>spring-cloud-azure-native-configuration</module>
         <module>spring-cloud-azure-starter-active-directory</module>
         <module>spring-cloud-azure-starter-active-directory-b2c</module>
         <module>spring-cloud-azure-starter-actuator</module>
