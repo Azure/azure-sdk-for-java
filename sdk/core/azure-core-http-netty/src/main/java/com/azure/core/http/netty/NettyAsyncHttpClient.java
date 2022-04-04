@@ -134,8 +134,6 @@ class NettyAsyncHttpClient implements HttpClient {
                 .onRetryExhaustedThrow((ignoredSpec, signal) -> signal.failure()));
     }
 
-    private static final int selection = Integer.parseInt(System.getProperty("selection"));
-
     /**
      * Delegate to send the request content.
      *
@@ -178,68 +176,6 @@ class NettyAsyncHttpClient implements HttpClient {
 
             BinaryDataContent binaryDataContent = BinaryDataHelper.getContent(restRequest.getContent());
             if (binaryDataContent instanceof ByteArrayContent || binaryDataContent instanceof StringContent) {
-                switch (selection) {
-                    case 1:
-                        // Completed 7,970 operations in a weighted-average of 60.01s (132.82 ops/s, 0.008 s/op)
-                        // Completed 7,736 operations in a weighted-average of 60.01s (128.91 ops/s, 0.008 s/op)
-                        // Completed 7,531 operations in a weighted-average of 60.00s (125.52 ops/s, 0.008 s/op)
-                        // Completed 7,170 operations in a weighted-average of 60.00s (119.50 ops/s, 0.008 s/op)
-                        // Completed 7,731 operations in a weighted-average of 60.00s (128.85 ops/s, 0.008 s/op)
-                        return reactorNettyOutbound.send(
-                            Mono.fromSupplier(() -> Unpooled.wrappedBuffer(binaryDataContent.toBytes())));
-                    case 2:
-                        // Completed 7,268 operations in a weighted-average of 60.02s (121.10 ops/s, 0.008 s/op)
-                        // Completed 7,750 operations in a weighted-average of 60.01s (129.15 ops/s, 0.008 s/op)
-                        // Completed 7,605 operations in a weighted-average of 60.01s (126.73 ops/s, 0.008 s/op)
-                        // Completed 7,582 operations in a weighted-average of 60.00s (126.36 ops/s, 0.008 s/op)
-                        // Completed 7,400 operations in a weighted-average of 60.00s (123.33 ops/s, 0.008 s/op)
-                        return reactorNettyOutbound.send(
-                            Mono.just(Unpooled.wrappedBuffer(binaryDataContent.toBytes())));
-                    case 4:
-                        // Completed 7,311 operations in a weighted-average of 60.00s (121.84 ops/s, 0.008 s/op)
-                        // Completed 7,729 operations in a weighted-average of 60.01s (128.79 ops/s, 0.008 s/op)
-                        // Completed 7,405 operations in a weighted-average of 60.00s (123.41 ops/s, 0.008 s/op)
-                        // Completed 7,560 operations in a weighted-average of 60.01s (125.99 ops/s, 0.008 s/op)
-                        // Completed 7,544 operations in a weighted-average of 60.01s (125.72 ops/s, 0.008 s/op)
-                        return reactorNettyOutbound.send(
-                            Mono.defer(() -> Mono.just(Unpooled.wrappedBuffer(binaryDataContent.toBytes()))));
-                    case 5:
-                        // Completed 7,310 operations in a weighted-average of 60.00s (121.83 ops/s, 0.008 s/op)
-                        // Completed 7,171 operations in a weighted-average of 60.01s (119.49 ops/s, 0.008 s/op)
-                        // Completed 7,418 operations in a weighted-average of 60.01s (123.62 ops/s, 0.008 s/op)
-                        // Completed 7,664 operations in a weighted-average of 60.01s (127.72 ops/s, 0.008 s/op)
-                        // Completed 7,521 operations in a weighted-average of 60.01s (125.33 ops/s, 0.008 s/op)
-                        return reactorNettyOutbound.send(
-                            Mono.fromCallable(() -> Unpooled.wrappedBuffer(binaryDataContent.toBytes())));
-                    case 6:
-                        // Completed 7,665 operations in a weighted-average of 60.00s (127.74 ops/s, 0.008 s/op)
-                        // Completed 7,735 operations in a weighted-average of 60.00s (128.91 ops/s, 0.008 s/op)
-                        // Completed 7,559 operations in a weighted-average of 60.01s (125.96 ops/s, 0.008 s/op)
-                        // Completed 7,527 operations in a weighted-average of 60.01s (125.43 ops/s, 0.008 s/op)
-                        return reactorNettyOutbound.sendByteArray(
-                            Mono.fromSupplier(binaryDataContent::toBytes));
-                    case 7:
-                        // Completed 7,753 operations in a weighted-average of 60.00s (129.21 ops/s, 0.008 s/op)
-                        // Completed 7,379 operations in a weighted-average of 60.00s (122.98 ops/s, 0.008 s/op)
-                        // Completed 7,589 operations in a weighted-average of 60.00s (126.47 ops/s, 0.008 s/op)
-                        // Completed 7,408 operations in a weighted-average of 60.01s (123.45 ops/s, 0.008 s/op)
-                        return reactorNettyOutbound.sendByteArray(
-                            Mono.just(binaryDataContent.toBytes()));
-                    case 8:
-                        // Completed 7,290 operations in a weighted-average of 60.00s (121.50 ops/s, 0.008 s/op)
-                        // Completed 7,532 operations in a weighted-average of 60.01s (125.52 ops/s, 0.008 s/op)
-                        // Completed 7,566 operations in a weighted-average of 60.00s (126.09 ops/s, 0.008 s/op)
-                        // Completed 7,720 operations in a weighted-average of 60.01s (128.65 ops/s, 0.008 s/op)
-                        return reactorNettyOutbound.sendByteArray(
-                            Mono.defer(() -> Mono.just(binaryDataContent.toBytes())));
-                    case 9:
-                        // Completed 7,391 operations in a weighted-average of 60.01s (123.16 ops/s, 0.008 s/op)
-                        // Completed 7,493 operations in a weighted-average of 60.00s (124.88 ops/s, 0.008 s/op)
-                        // Completed 7,589 operations in a weighted-average of 60.00s (126.47 ops/s, 0.008 s/op)
-                        // Completed 7,901 operations in a weighted-average of 60.01s (131.66 ops/s, 0.008 s/op)
-                        return reactorNettyOutbound.sendByteArray(
-                            Mono.fromCallable(binaryDataContent::toBytes));
-                }
                 return reactorNettyOutbound.send(
                     Mono.fromSupplier(() -> Unpooled.wrappedBuffer(binaryDataContent.toBytes())));
             } else if (binaryDataContent instanceof FileContent) {
