@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.changefeed;
 
-import com.azure.cosmos.implementation.changefeed.implementation.FeedRangeGoneHandler.FeedRangeGoneHandler;
+import com.azure.cosmos.implementation.changefeed.implementation.feedRangeGoneHandler.FeedRangeGoneHandler;
 import reactor.core.publisher.Mono;
 
 /**

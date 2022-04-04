@@ -7,18 +7,19 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.Serializable;
 import java.util.Comparator;
 
 @JsonIgnoreProperties({ "empty", "singleValue", "map", "propertyBag" })
+@JsonPropertyOrder({ "min", "max", "isMinInclusive", "isMaxInclusive" })
 public final class Range<T extends Comparable<T>> extends JsonSerializable {
     private static final String MIN_PROPERTY = "min";
     private static final String MAX_PROPERTY = "max";
     private static final String IS_MIN_INCLUSIVE_PROPERTY = "isMinInclusive";
     private static final String IS_MAX_INCLUSIVE_PROPERTY = "isMaxInclusive";
-    private static final boolean DEFAULT_IS_MIN_INCLUSIVE = true;
 
     private T minValue;
     private T maxValue;
@@ -102,17 +103,13 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
 
     @JsonProperty("isMinInclusive")
     public boolean isMinInclusive() {
-        Boolean isMinInclusive = super.getBoolean(Range.IS_MIN_INCLUSIVE_PROPERTY);
-        if (isMinInclusive == null) {
-            isMinInclusive = DEFAULT_IS_MIN_INCLUSIVE;
-        }
-
-        return isMinInclusive;
+        // isMinInclusive == true is the default - so if the property hasn't been serialized TRUE is the default
+        return !Boolean.FALSE.equals(super.getBoolean(Range.IS_MIN_INCLUSIVE_PROPERTY));
     }
 
     public void setMinInclusive(boolean isMinInclusive) {
         if (isMinInclusive) {
-            BridgeInternal.setProperty(this, Range.IS_MIN_INCLUSIVE_PROPERTY, true);
+            BridgeInternal.remove(this, Range.IS_MIN_INCLUSIVE_PROPERTY);
         } else {
             BridgeInternal.setProperty(this, Range.IS_MIN_INCLUSIVE_PROPERTY, false);
         }

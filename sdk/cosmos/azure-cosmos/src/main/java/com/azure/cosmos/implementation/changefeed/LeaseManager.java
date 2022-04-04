@@ -17,6 +17,7 @@ public interface LeaseManager {
      *
      * @param partitionKeyRange the partition key range for the lease.
      * @param continuationToken the continuation token if it exists.
+     *
      * @return the lease.
      */
     Mono<Lease> createLeaseIfNotExist(PartitionKeyRange partitionKeyRange, String continuationToken);

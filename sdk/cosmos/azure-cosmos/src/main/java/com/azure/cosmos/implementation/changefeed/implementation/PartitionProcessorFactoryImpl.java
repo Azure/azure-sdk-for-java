@@ -29,26 +29,26 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory {
     private final ChangeFeedContextClient documentClient;
     private final ChangeFeedProcessorOptions changeFeedProcessorOptions;
     private final LeaseCheckpointer leaseCheckpointer;
-    private final CosmosAsyncContainer monitoredContainer;
+    private final CosmosAsyncContainer feedContainer;
     private final String collectionResourceId;
 
     public PartitionProcessorFactoryImpl(
             ChangeFeedContextClient documentClient,
             ChangeFeedProcessorOptions changeFeedProcessorOptions,
             LeaseCheckpointer leaseCheckpointer,
-            CosmosAsyncContainer monitoredContainer,
+            CosmosAsyncContainer feedContainer,
             String collectionResourceId) {
 
         checkNotNull(documentClient, "Argument 'documentClient' can not be null");
         checkNotNull(changeFeedProcessorOptions, "Argument 'changeFeedProcessorOptions' can not be null");
         checkNotNull(leaseCheckpointer, "Argument 'leaseCheckpointer' can not be null");
-        checkNotNull(monitoredContainer, "Argument 'monitoredContainer' can not be null");
+        checkNotNull(feedContainer, "Argument 'feedContainer' can not be null");
         checkArgument(StringUtils.isNotEmpty(collectionResourceId), "Argument 'collectionResourceId' can not be null nor empty");
 
         this.documentClient = documentClient;
         this.changeFeedProcessorOptions = changeFeedProcessorOptions;
         this.leaseCheckpointer = leaseCheckpointer;
-        this.monitoredContainer = monitoredContainer;
+        this.feedContainer = feedContainer;
         this.collectionResourceId = collectionResourceId;
     }
 
@@ -93,7 +93,7 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory {
                     lease instanceof ServiceItemLeaseEpk ? lease.getFeedRange() : new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
 
             state = new ChangeFeedStateV1(
-                BridgeInternal.extractContainerSelfLink(this.monitoredContainer),
+                BridgeInternal.extractContainerSelfLink(this.feedContainer),
                 feedRange,
                 ChangeFeedMode.INCREMENTAL,
                 getStartFromSettings(
@@ -104,7 +104,7 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory {
             state = lease.getContinuationState(this.collectionResourceId);
         }
 
-        ProcessorSettings settings = new ProcessorSettings(state, this.monitoredContainer)
+        ProcessorSettings settings = new ProcessorSettings(state, this.feedContainer)
             .withFeedPollDelay(this.changeFeedProcessorOptions.getFeedPollDelay())
             .withMaxItemCount(this.changeFeedProcessorOptions.getMaxItemCount());
 

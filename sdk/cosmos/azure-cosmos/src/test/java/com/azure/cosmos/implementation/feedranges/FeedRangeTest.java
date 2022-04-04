@@ -6,7 +6,6 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
-import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
@@ -19,8 +18,11 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalUtils;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.FeedRange;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.io.IOUtils;
 import org.mockito.Mockito;
 import org.testng.annotations.BeforeClass;
@@ -40,7 +42,6 @@ import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientCon
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
@@ -831,6 +832,67 @@ public class FeedRangeTest {
             (FeedRangePartitionKeyImpl)FeedRange.fromString(base64EncodedJsonRepresentation);
         String representationAfterDeserialization = feedRangeDeserialized.toString();
         assertThat(representationAfterDeserialization).isEqualTo(base64EncodedJsonRepresentation);
+    }
+
+    @Test
+    public void feedRangeEpkSerializationAndDeserialization() throws JsonProcessingException {
+        String epkMin = "AA";
+        String epkMax = "BB";
+        boolean isMinInclusive = true;
+        boolean isMaxInclusive = false;
+
+        Range<String> range = new Range<>(epkMin, epkMax, isMinInclusive, isMaxInclusive);
+
+        FeedRangeInternal feedRangeEpk = new FeedRangeEpkImpl(range);
+
+        String jsonString =
+                Utils.getSimpleObjectMapper().writeValueAsString(feedRangeEpk);
+
+        String expectedJsonString =
+                String.format(
+                    "{\"Range\":{\"min\":\"%s\",\"max\":\"%s\",\"isMinInclusive\":%s,\"isMaxInclusive\":%s}}",
+                    epkMin, epkMax, isMinInclusive, isMaxInclusive);
+
+        assertThat(jsonString).isEqualTo(expectedJsonString);
+
+        FeedRangeEpkImpl feedRangeEpkDeserialized =
+                (FeedRangeEpkImpl) Utils.getSimpleObjectMapper().readValue(jsonString, FeedRangeInternal.class);
+        assertThat(feedRangeEpkDeserialized.getRange().getMin()).isEqualTo(epkMin);
+        assertThat(feedRangeEpkDeserialized.getRange().getMax()).isEqualTo(epkMax);
+        assertThat(feedRangeEpkDeserialized.getRange().isMinInclusive()).isEqualTo(isMinInclusive);
+        assertThat(feedRangeEpkDeserialized.getRange().isMaxInclusive()).isEqualTo(isMaxInclusive);
+    }
+
+    @Test
+    public void feedRangePartitionKeySerializationAndDeserialization() throws JsonProcessingException {
+        String pk = "mypk";
+        FeedRangeInternal feedRangePartitionKey = new FeedRangePartitionKeyImpl(
+                ModelBridgeInternal.getPartitionKeyInternal(new PartitionKey(pk)));
+
+        String jsonString =
+                Utils.getSimpleObjectMapper().writeValueAsString(feedRangePartitionKey);
+        String expectedJsonString = "{\"PK\":[\"mypk\"]}";
+
+        assertThat(jsonString).isEqualTo(expectedJsonString);
+
+        FeedRangePartitionKeyImpl feedRangePartitionKeySame =
+                (FeedRangePartitionKeyImpl) Utils.getSimpleObjectMapper().readValue(jsonString, FeedRangeInternal.class);
+        assertThat(feedRangePartitionKeySame.getPartitionKeyInternal().getComponents().size()).isEqualTo(1);
+    }
+
+    @Test
+    public void feedRangePkRangeSerializationAndDeserialization() throws JsonProcessingException {
+        String pkRangeId = "1";
+        FeedRangeInternal feedRangePartitionKey = new FeedRangePartitionKeyRangeImpl(pkRangeId);
+
+        String jsonString =
+                Utils.getSimpleObjectMapper().writeValueAsString(feedRangePartitionKey);
+        String expectedJsonString = "{\"PKRangeId\":\"" + pkRangeId + "\"}";
+        assertThat(expectedJsonString).isEqualTo(jsonString);
+
+        FeedRangePartitionKeyRangeImpl feedRangePkRangeSame =
+                (FeedRangePartitionKeyRangeImpl) Utils.getSimpleObjectMapper().readValue(jsonString, FeedRangeInternal.class);
+        assertThat(feedRangePkRangeSame.getPartitionKeyRangeId()).isEqualTo(pkRangeId);
     }
 
     private static RxDocumentServiceRequest createMockRequest() {

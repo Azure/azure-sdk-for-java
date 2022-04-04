@@ -6,7 +6,7 @@ package com.azure.cosmos.implementation.changeFeed;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseManager;
-import com.azure.cosmos.implementation.changefeed.implementation.FeedRangeGoneHandler.FeedRangeGoneSplitHandler;
+import com.azure.cosmos.implementation.changefeed.implementation.feedRangeGoneHandler.FeedRangeGoneSplitHandler;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.routing.Range;

@@ -94,7 +94,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                     }).last();
 
             })
-            .flatMap(value -> this.documentClient.createDocumentChangeFeedQuery(this.settings.getMonitoredContainer(),
+            .flatMap(value -> this.documentClient.createDocumentChangeFeedQuery(this.settings.getFeedContainer(),
                                                                                 this.options)
                 .limitRequest(1)
             )

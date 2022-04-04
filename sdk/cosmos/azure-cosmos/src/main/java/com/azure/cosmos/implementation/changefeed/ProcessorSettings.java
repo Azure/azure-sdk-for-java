@@ -16,16 +16,16 @@ public class ProcessorSettings {
     private Integer maxItemCount;
     private Duration feedPollDelay;
     private final ChangeFeedState startState;
-    private final CosmosAsyncContainer monitoredContainer;
+    private final CosmosAsyncContainer feedContainer;
 
     public ProcessorSettings(
         ChangeFeedState startState,
-        CosmosAsyncContainer monitoredContainer) {
+        CosmosAsyncContainer feedContainer) {
 
         checkNotNull(startState, "Argument 'startState' must not be null");
-        checkNotNull(monitoredContainer, "Argument 'monitoredContainer' must not be null");
+        checkNotNull(feedContainer, "Argument 'feedContainer' must not be null");
 
-        this.monitoredContainer = monitoredContainer;
+        this.feedContainer = feedContainer;
         this.startState = startState;
     }
 
@@ -51,7 +51,7 @@ public class ProcessorSettings {
         return this.startState;
     }
 
-    public CosmosAsyncContainer getMonitoredContainer() {
-        return this.monitoredContainer;
+    public CosmosAsyncContainer getFeedContainer() {
+        return this.feedContainer;
     }
 }

@@ -97,6 +97,8 @@ public class LeaseBuilder {
     }
 
     public Lease buildPartitionBasedLease() {
+        this.validate();
+
         return new ServiceItemLeaseCore(
                 this.id,
                 this.leaseToken,
@@ -110,6 +112,8 @@ public class LeaseBuilder {
     }
 
     public Lease buildEpkBasedLease() {
+        this.validate();
+
         return new ServiceItemLeaseEpk(
                 this.id,
                 this.leaseToken,
@@ -132,7 +136,7 @@ public class LeaseBuilder {
             .owner(ModelBridgeInternal.getStringFromJsonSerializable(document, LeaseConstants.PROPERTY_NAME_OWNER))
             .leaseToken(ModelBridgeInternal.getStringFromJsonSerializable(document, LeaseConstants.PROPERTY_NAME_LEASE_TOKEN))
             .continuationToken(ModelBridgeInternal.getStringFromJsonSerializable(document, LeaseConstants.PROPERTY_NAME_CONTINUATION_TOKEN))
-                .timestamp(ModelBridgeInternal.getStringFromJsonSerializable(document, LeaseConstants.PROPERTY_NAME_TIMESTAMP));
+            .timestamp(ModelBridgeInternal.getStringFromJsonSerializable(document, LeaseConstants.PROPERTY_NAME_TIMESTAMP));
 
         JsonNode feedRangeNode = (JsonNode) document.get(LeaseConstants.PROPERTY_FEED_RANGE);
         if (feedRangeNode != null) {
@@ -156,5 +160,11 @@ public class LeaseBuilder {
             default:
                 throw new IllegalStateException("Lease version " + version + " is not supported");
         }
+    }
+
+    private void validate() {
+        checkArgument(StringUtils.isNotEmpty(this.id), "Lease id can not be null nor empty");
+        checkArgument(StringUtils.isNotEmpty(this.leaseToken), "Lease token can not be null nor empty");
+        checkArgument(StringUtils.isNotEmpty(this.timestamp), "Lease timestamp can not be null nor empty");
     }
 }

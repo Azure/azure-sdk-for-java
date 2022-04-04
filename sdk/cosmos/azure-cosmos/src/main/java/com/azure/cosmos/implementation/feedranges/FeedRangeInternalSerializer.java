@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.feedranges;
 
+import com.azure.cosmos.implementation.Constants;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
@@ -12,10 +13,6 @@ import java.io.IOException;
 public class FeedRangeInternalSerializer extends StdSerializer<FeedRangeInternal> {
     private static final long serialVersionUID = 1L;
 
-    private static final String PROPERTY_NAME_RANGE = "Range";
-    private static final String PROPERTY_NAME_PARTITION_KEY = "PK";
-    private static final String PROPERTY_NAME_PARTITION_KEY_RANGE_ID = "PKRangeId";
-
     protected FeedRangeInternalSerializer() { this(null); }
 
     protected FeedRangeInternalSerializer(Class<FeedRangeInternal> t) {
@@ -24,23 +21,23 @@ public class FeedRangeInternalSerializer extends StdSerializer<FeedRangeInternal
 
     @Override
     public void serialize(FeedRangeInternal feedRange, JsonGenerator writer, SerializerProvider serializerProvider) {
+
         try {
             writer.writeStartObject();
 
             if (feedRange instanceof FeedRangeEpkImpl) {
                 writer.writeObjectField(
-                        PROPERTY_NAME_RANGE,
+                        Constants.Properties.RANGE,
                         ((FeedRangeEpkImpl) feedRange).getRange());
 
             } else if (feedRange instanceof FeedRangePartitionKeyImpl) {
-                //TODO: Annie: Confirm format
-                writer.writeStringField(
-                        PROPERTY_NAME_PARTITION_KEY,
-                        ((FeedRangePartitionKeyImpl) feedRange).getPartitionKeyInternal().toString());
+                writer.writeObjectField(
+                        Constants.Properties.FEED_RANGE_PARTITION_KEY,
+                        ((FeedRangePartitionKeyImpl) feedRange).getPartitionKeyInternal());
 
             } else if (feedRange instanceof FeedRangePartitionKeyRangeImpl) {
                 writer.writeStringField(
-                        PROPERTY_NAME_PARTITION_KEY_RANGE_ID,
+                        Constants.Properties.FEED_RANGE_PARTITION_KEY_RANGE_ID,
                         ((FeedRangePartitionKeyRangeImpl) feedRange).getPartitionKeyRangeId());
 
             } else {

@@ -10,7 +10,7 @@ import com.azure.cosmos.implementation.changefeed.PartitionSupervisor;
 import com.azure.cosmos.implementation.changefeed.PartitionSupervisorFactory;
 import com.azure.cosmos.implementation.changefeed.PartitionSynchronizer;
 import com.azure.cosmos.implementation.changefeed.exceptions.FeedRangeGoneException;
-import com.azure.cosmos.implementation.changefeed.implementation.FeedRangeGoneHandler.FeedRangeGoneHandler;
+import com.azure.cosmos.implementation.changefeed.implementation.feedRangeGoneHandler.FeedRangeGoneHandler;
 import com.azure.cosmos.implementation.changefeed.implementation.PartitionControllerImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.routing.Range;
