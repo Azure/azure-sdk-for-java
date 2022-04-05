@@ -266,6 +266,8 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <!-- Miscellaneous other checks.                   -->
     <!-- See http://checkstyle.sf.net/config_misc.html -->
     <module name="ArrayTypeStyle"/>
+    <!-- Verifies that all exceptions classes are immutable. That is, have only final fields.   -->
+    <module name="MutableException"/>
 
     <!--Checks for package naming and name length limit. Package names have to starting with either-->
     <!--'com.microsoft.azure' or 'com.azure', and then the extension names should only contains-->

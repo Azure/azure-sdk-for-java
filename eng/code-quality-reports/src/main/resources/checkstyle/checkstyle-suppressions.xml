@@ -314,13 +314,9 @@ the main ServiceBusClientBuilder. -->
 
   <!-- Suppress the check on code-gen classes -->
   <suppress checks="Indentation" files="com.azure.security.keyvault.administration.implementation.(RoleAssignmentsImpl|RoleDefinitionsImpl)"/>
-  <suppress checks="Indentation" files="com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl"/>
-  <!-- Checkstyle suppressions for the auto generated Chat Client Implementation -->
-  <suppress checks="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck" files="com.azure.communication.chat.implementation.AzureCommunicationChatServiceImpl.java"/>
   <!-- Checkstyle suppressions for the auto generated Phone Number Administration Implementation -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
             files="com.azure.communication.common.implementation.HmacAuthenticationPolicy.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.identity.(CommunicationIdentityClient|CommunicationIdentityAsyncClient).java"/>
 
   <!-- empty class Pattern in Synapse artifacts -->
   <suppress checks="WhitespaceAround" files=".*[/\\]synapse[/\\]azure-analytics-synapse-artifacts[/\\].*"/>
@@ -473,10 +469,6 @@ the main ServiceBusClientBuilder. -->
 
   <!-- Suppress checks on sample for Video Analyzer -->
   <suppress checks="AvoidStarImport" files="com.azure.media.videoanalyzer.edge.LvaInvokeModuleSample"/>
-
-  <!-- Avoiding PagedFlux check if already using RetriableDownloadFlux. -->
-  <!-- Issue: https://github.com/Azure/azure-sdk-for-java/issues/22117 -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.callingserver.CallingServerAsyncClient"/>
 
   <!-- Third party source code files, retained as is. -->
   <suppress checks="[a-zA-Z0-9]*" files="com.azure.identity.implementation.intellij.(Aes|HashedBlockInputStream|LittleEndianDataInputStream|Salsa20)"/>
