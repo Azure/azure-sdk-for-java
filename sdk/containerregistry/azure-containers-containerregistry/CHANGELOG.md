@@ -6,12 +6,6 @@
 - Added interfaces from `com.azure.core.client.traits` to `ContainerRegistryClientBuilder`.
 - Added support for `ContainerRegistryBlobAsyncClient`.
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 1.0.2 (2022-03-08)
 
 ### Other Changes
