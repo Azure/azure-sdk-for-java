@@ -4,7 +4,7 @@ This troubleshooting guide covers failure investigation techniques, common error
 
 ## Table of contents
 - [Handle Azure Identity Exceptions](#handle-azure-identity-exceptions)
-    - [ClientAuthenticationException](#clientAuthenticationException)
+    - [ClientAuthenticationException](#clientauthenticationexception)
     - [CredentialUnavailableException](#credentialunavailableexception)
     - [Permission Issues](#permission-issues)
 - [Find Relevant Information in Exception Messages](#find-relevant-information-in-exception-messages)
