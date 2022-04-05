@@ -6,7 +6,6 @@ package com.azure.identity;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
-import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClientOptions;
 
