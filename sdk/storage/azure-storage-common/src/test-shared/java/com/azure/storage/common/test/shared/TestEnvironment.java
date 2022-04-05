@@ -99,11 +99,11 @@ public final class TestEnvironment {
                     + "AccountKey=%s;EndpointSuffix=core.windows.net", name, key);
             }
         }
-        String blobEndpoint = String.format("http://%s.blob.core.windows.net", name);
-        String blobEndpointSecondary = String.format("http://%s-secondary.blob.core.windows.net", name);
-        String dataLakeEndpoint = String.format("http://%s.dfs.core.windows.net", name);
-        String queueEndpoint = String.format("http://%s.queue.core.windows.net", name);
-        String fileEndpoint = String.format("http://%s.file.core.windows.net", name);
+        String blobEndpoint = String.format("https://%s.blob.core.windows.net", name);
+        String blobEndpointSecondary = String.format("https://%s-secondary.blob.core.windows.net", name);
+        String dataLakeEndpoint = String.format("https://%s.dfs.core.windows.net", name);
+        String queueEndpoint = String.format("https://%s.queue.core.windows.net", name);
+        String fileEndpoint = String.format("https://%s.file.core.windows.net", name);
 
         return new TestAccount(name, key, connectionString, blobEndpoint, blobEndpointSecondary,
             dataLakeEndpoint, queueEndpoint, fileEndpoint);
