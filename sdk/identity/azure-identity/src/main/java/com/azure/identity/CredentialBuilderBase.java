@@ -116,7 +116,7 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
      * Enabling this logs Application ID, Object ID, Tenant ID and User Principal Name at INFO level when an
      * access token is successfully retrieved. Ensure that INFO level logs are enabled to
      * see the account identifier logs.
-     * <p>
+     * </p>
      *
      * @return An updated instance of this builder.
      */
