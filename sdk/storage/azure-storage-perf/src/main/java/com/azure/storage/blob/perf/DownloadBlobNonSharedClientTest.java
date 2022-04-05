@@ -15,7 +15,7 @@ import java.io.OutputStream;
 
 import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
 
-public class NonSharedHttpClientDownloadBlobTest extends ContainerTest<PerfStressOptions> {
+public class DownloadBlobNonSharedClientTest extends ContainerTest<PerfStressOptions> {
     private static final int BUFFER_SIZE = 16 * 1024 * 1024;
     private static final OutputStream DEV_NULL = new NullOutputStream();
     private final BlobAsyncClient blobAsyncClient;
@@ -23,7 +23,7 @@ public class NonSharedHttpClientDownloadBlobTest extends ContainerTest<PerfStres
 
     private final byte[] buffer = new byte[BUFFER_SIZE];
 
-    public NonSharedHttpClientDownloadBlobTest(PerfStressOptions options) {
+    public DownloadBlobNonSharedClientTest(PerfStressOptions options) {
         super(options);
         blobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(blobName);
     }
