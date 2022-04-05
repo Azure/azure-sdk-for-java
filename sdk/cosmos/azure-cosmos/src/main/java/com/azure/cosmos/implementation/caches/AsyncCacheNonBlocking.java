@@ -38,30 +38,30 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
     }
 
     /**
-     *  <summary>
-     *  <para>
-     *  Gets value corresponding to <paramref name="key"/>.
-     *  </para>
-     *  <para>
-     *  If another initialization function is already running, new initialization function will not be started.
-     *  The result will be result of currently running initialization function.
-     *  </para>
-     *  <para>
-     *  If previous initialization function is successfully completed it will return the value. It is possible this
-     *  value is stale and will only be updated after the force refresh task is complete.
-     *  </para>
-     *  <para>
-     *  Force refresh is true:
-     *  If the key does not exist: It will create and await the new task
-     *  If the key exists and the current task is still running: It will return the existing task
-     *  If the key exists and the current task is already done: It will start a new task to get the updated values.
-     *      Once the refresh task is complete it will be returned to caller.
-     *      If it is a success the value in the cache will be updated. If the refresh task throws an exception the key will be removed from the cache.
-     *  </para>
-     *  <para>
-     *  If previous initialization function failed - new one will be launched.
-     *  </para>
-     *  </summary>
+     * <summary>
+     * <para>
+     * Gets value corresponding to <paramref name="key"/>.
+     * </para>
+     * <para>
+     * If another initialization function is already running, new initialization function will not be started.
+     * The result will be result of currently running initialization function.
+     * </para>
+     * <para>
+     * If previous initialization function is successfully completed it will return the value. It is possible this
+     * value is stale and will only be updated after the force refresh task is complete.
+     * </para>
+     * <para>
+     * Force refresh is true:
+     * If the key does not exist: It will create and await the new task
+     * If the key exists and the current task is still running: It will return the existing task
+     * If the key exists and the current task is already done: It will start a new task to get the updated values.
+     * Once the refresh task is complete it will be returned to caller.
+     * If it is a success the value in the cache will be updated. If the refresh task throws an exception the key will be removed from the cache.
+     * </para>
+     * <para>
+     * If previous initialization function failed - new one will be launched.
+     * </para>
+     * </summary>
      */
     public Mono<TValue> getAsync(
         TKey key,
@@ -76,7 +76,7 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
                     if (!forceRefresh) {
                         return Mono.just(value);
                     }
-                } catch(Exception e) {
+                } catch (Exception e) {
                     // This is needed for scenarios where the initial GetAsync was
                     // called but never awaited.
                     if (initialLazyValue.shouldRemoveFromCache()) {
@@ -105,7 +105,7 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
 
         try {
             return result.getValueAsync();
-        } catch(Exception e) {
+        } catch (Exception e) {
             logger.debug("cache[{}] resulted in error", key, e);
             // Remove the failed task from the dictionary so future requests can send other calls..
             this.remove(key);
@@ -120,7 +120,9 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
         this.values.put(key, updatedValue);
     }
 
-    public void remove(TKey key) { values.remove(key); }
+    public void remove(TKey key) {
+        values.remove(key);
+    }
 
     /**
      * This is AsyncLazy that has an additional Task that can

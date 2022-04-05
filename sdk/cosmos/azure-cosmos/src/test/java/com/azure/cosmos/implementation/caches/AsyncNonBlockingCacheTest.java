@@ -17,20 +17,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AsyncNonBlockingCacheTest {
     private static final int TIMEOUT = 2000;
 
-    @Test(groups = { "unit" }, timeOut = TIMEOUT)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void getAsync() {
-        AtomicInteger numberOfCacheRefreshes =  new AtomicInteger(0);
+        AtomicInteger numberOfCacheRefreshes = new AtomicInteger(0);
         final Function<Integer, Mono<Integer>> refreshFunc = key -> {
             numberOfCacheRefreshes.incrementAndGet();
-            return Mono.just(key*2);
+            return Mono.just(key * 2);
         };
 
         AsyncCacheNonBlocking<Integer, Integer> cache = new AsyncCacheNonBlocking<>();
 
         List<Mono<Integer>> tasks = new ArrayList<>();
 
-        for (int j=-0;j<10;j++) {
-            int key =j;
+        for (int j = -0; j < 10; j++) {
+            int key = j;
             tasks.add(cache.getAsync(key, value -> refreshFunc.apply(2), false));
         }
 
