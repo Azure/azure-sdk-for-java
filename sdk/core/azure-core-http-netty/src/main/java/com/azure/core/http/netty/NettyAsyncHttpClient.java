@@ -223,11 +223,7 @@ class NettyAsyncHttpClient implements HttpClient {
                         return new ChunkedStream(stream);
                     },
                     (stream) -> {
-                        try {
-                            stream.close();
-                        } catch (IOException e) {
-                            LOGGER.log(LogLevel.VERBOSE, () -> "Could not close stream", e);
-                        }
+                        // NO-OP. We don't close streams passed to our APIs.
                     });
             } else {
                 Flux<ByteBuf> nettyByteBufFlux = restRequest.getBody().map(Unpooled::wrappedBuffer);
