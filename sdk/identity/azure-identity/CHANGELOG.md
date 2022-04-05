@@ -4,7 +4,7 @@
 
 ### Features Added
 
-### Breaking Changes
+### Breaking Changes against 1.5.0-beta.2
 Removed `disableAuthoriyValidaionSafetyCheck` for GA, will reintroduce in next beta.
 
 ### Bugs Fixed
