@@ -165,7 +165,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
 
             SyncPoller<DocumentOperationResult, DocumentModel> syncPoller2 =
                 client.beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE,
-                    new BuildModelOptions().setModelId("async_component_model_2"))
+                        new BuildModelOptions().setModelId("async_component_model_2"))
                     .setPollInterval(durationTestMode).getSyncPoller();
             syncPoller2.waitForCompletion();
             DocumentModel createdModel2 = syncPoller2.getFinalResult();
@@ -336,7 +336,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
 
         buildModelRunner((trainingFilesUrl) -> {
             StepVerifier.create(client.beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE,
-                        new BuildModelOptions().setPrefix("subfolder"))
+                        new BuildModelOptions().setPrefix("invalidPrefix"))
                     .setPollInterval(durationTestMode))
                 .verifyErrorSatisfies(throwable -> {
                     assertEquals(HttpResponseException.class, throwable.getClass());
@@ -429,14 +429,14 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
     public void listModels(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.listModels().byPage().take(4))
-        .thenConsumeWhile(documentModelInfoPagedResponse -> {
-            documentModelInfoPagedResponse.getValue()
-                .forEach(documentModelInfo -> {
-                    assertNotNull(documentModelInfo.getModelId());
-                    assertNotNull(documentModelInfo.getCreatedOn());
-                });
-            return true;
-        }).verifyComplete();
+            .thenConsumeWhile(documentModelInfoPagedResponse -> {
+                documentModelInfoPagedResponse.getValue()
+                    .forEach(documentModelInfo -> {
+                        assertNotNull(documentModelInfo.getModelId());
+                        assertNotNull(documentModelInfo.getCreatedOn());
+                    });
+                return true;
+            }).verifyComplete();
     }
 
     /**
