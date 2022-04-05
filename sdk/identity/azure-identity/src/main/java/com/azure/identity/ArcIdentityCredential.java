@@ -6,7 +6,6 @@ package com.azure.identity;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClient;
@@ -44,10 +43,7 @@ class ArcIdentityCredential extends ManagedIdentityServiceCredential {
      */
     public Mono<AccessToken> authenticate(TokenRequestContext request) {
         if  (getClientId() != null) {
-            return Mono.error(LOGGER.logExceptionAsError(new ClientAuthenticationException(
-                "User assigned identity is not supported by the Azure Arc Managed Identity Endpoint. To authenticate "
-                    + "with the system assigned identity omit the client id when constructing the"
-                    + " ManagedIdentityCredential.", null)));
+            LOGGER.warning("User assigned managed identities are not supported in the Azure Arc environment.");
         }
         return identityClient.authenticateToArcManagedIdentityEndpoint(identityEndpoint, request);
     }
