@@ -10,7 +10,6 @@ import okhttp3.Response;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 
@@ -18,31 +17,31 @@ import java.nio.ByteBuffer;
  * An OkHttp response where the response body has been buffered into memory.
  */
 public final class OkHttpAsyncBufferedResponse extends OkHttpAsyncResponseBase {
-    private final byte[] body;
+    private final BinaryData body;
 
     public OkHttpAsyncBufferedResponse(Response response, HttpRequest request, byte[] body) {
         super(response, request);
-        this.body = body;
+        this.body = BinaryData.fromBytes(body);
     }
 
     @Override
     public Flux<ByteBuffer> getBody() {
-        return Flux.defer(() -> Flux.just(ByteBuffer.wrap(body)));
+        return body.toFluxByteBuffer();
     }
 
     @Override
     public BinaryData getContent() {
-        return BinaryData.fromBytes(body);
+        return body;
     }
 
     @Override
     public Mono<byte[]> getBodyAsByteArray() {
-        return Mono.defer(() -> Mono.just(body));
+        return Mono.just(body.toBytes());
     }
 
     @Override
     public Mono<InputStream> getBodyAsInputStream() {
-        return Mono.defer(() -> Mono.just(new ByteArrayInputStream(body)));
+        return Mono.fromSupplier(body::toStream);
     }
 
     @Override
