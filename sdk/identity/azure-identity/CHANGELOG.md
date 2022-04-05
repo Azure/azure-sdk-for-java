@@ -5,7 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
-Removed `disableAuthoriyValidaionSafetyCheck` for GA, will reintroduce in next beta. This is not a breaking change from last GA.
+Removed `disableAuthorityValidationSafetyCheck` for GA, will reintroduce in next beta. This is not a breaking change from last GA.
 Creating a `ManagedIdentityCredential` in an Azure Arc environment with a user-assigned Managed Identity no longer throws, but instead prints a warning.
 
 ### Bugs Fixed
