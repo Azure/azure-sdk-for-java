@@ -468,6 +468,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
             .setPathHttpHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions)
             .setPathResourceType(PathResourceType.DIRECTORY);
+
         Response<PathInfo> response = dataLakeDirectoryClient.createWithResponse(options, timeout, context);
         return new SimpleResponse<>(response, dataLakeDirectoryClient);
     }

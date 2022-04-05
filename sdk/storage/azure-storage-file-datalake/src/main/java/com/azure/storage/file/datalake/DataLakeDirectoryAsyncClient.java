@@ -335,7 +335,8 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * DataLakeFileAsyncClient} used to interact with the file created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DataLakeFileAsyncClient>> createFileWithResponse(String fileName, DataLakePathCreateOptions options) {
+    public Mono<Response<DataLakeFileAsyncClient>> createFileWithResponse(String fileName,
+        DataLakePathCreateOptions options) {
         DataLakeFileAsyncClient dataLakeFileAsyncClient;
         try {
             dataLakeFileAsyncClient = getFileAsyncClient(fileName);
@@ -480,7 +481,8 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
             requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
 
-        return createSubdirectoryWithResponse(subdirectoryName, new DataLakePathCreateOptions().setRequestConditions(requestConditions))
+        return createSubdirectoryWithResponse(subdirectoryName, new DataLakePathCreateOptions()
+            .setRequestConditions(requestConditions))
             .flatMap(FluxUtil::toMono);
     }
 
