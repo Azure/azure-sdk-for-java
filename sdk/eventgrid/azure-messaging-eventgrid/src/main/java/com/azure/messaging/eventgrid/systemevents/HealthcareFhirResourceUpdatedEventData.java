@@ -4,10 +4,10 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 
 /** Schema of the Data property of an EventGridEvent for a Microsoft.HealthcareApis.FhirResourceUpdated event. */
-@Immutable
+@Fluent
 public final class HealthcareFhirResourceUpdatedEventData extends HealthcareFhirResourceEventBaseProperties {
     /** {@inheritDoc} */
     @Override
