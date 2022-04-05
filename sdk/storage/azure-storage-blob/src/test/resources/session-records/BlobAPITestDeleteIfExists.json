@@ -1,32 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://REDACTED.blob.core.windows.net/056730280056730284e863193208b879174db4d91961?restype=container",
+    "Uri" : "http://REDACTED.blob.core.windows.net/872766b10872766b14cb87039c11bebcdd5ff4350bc2?restype=container",
     "Headers" : {
       "x-ms-version" : "2021-04-10",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.16.0-beta.1 (11.0.14; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b5b7a760-31f1-4c2e-8a1a-fc65500aa3d5"
+      "x-ms-client-request-id" : "e13d06a4-8e2f-4819-9787-4cccacb5c57a"
     },
     "Response" : {
       "content-length" : "0",
       "x-ms-version" : "2021-04-10",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "eTag" : "0x8DA16E4F1225F99",
+      "eTag" : "0x8DA16E4F122A5D1",
       "Last-Modified" : "Tue, 05 Apr 2022 09:16:18 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "480f5537-f01e-000b-66cd-484ca0000000",
-      "x-ms-client-request-id" : "b5b7a760-31f1-4c2e-8a1a-fc65500aa3d5",
+      "x-ms-request-id" : "a16935e0-a01e-0018-14cd-487941000000",
+      "x-ms-client-request-id" : "e13d06a4-8e2f-4819-9787-4cccacb5c57a",
       "Date" : "Tue, 05 Apr 2022 09:16:17 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://REDACTED.blob.core.windows.net/056730280056730284e863193208b879174db4d91961/056730281056730284e8068775a13748220a440f489d",
+    "Uri" : "http://REDACTED.blob.core.windows.net/872766b10872766b14cb87039c11bebcdd5ff4350bc2/872766b11872766b14cb1545720114ccee1c844da9f9",
     "Headers" : {
       "x-ms-version" : "2021-04-10",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.16.0-beta.1 (11.0.14; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "2215bc91-22c7-4b67-9a69-fa7c3e276f2c",
+      "x-ms-client-request-id" : "d570d8e4-e016-4489-b3e7-b4e4d3a9ec4a",
       "Content-Type" : "application/octet-stream"
     },
     "Response" : {
@@ -38,20 +38,20 @@
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Tue, 05 Apr 2022 09:16:18 GMT",
+      "Date" : "Tue, 05 Apr 2022 09:16:17 GMT",
       "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
-      "eTag" : "0x8DA16E4F158B2EA",
-      "x-ms-request-id" : "31835f63-001e-005a-50cd-485255000000",
-      "x-ms-client-request-id" : "2215bc91-22c7-4b67-9a69-fa7c3e276f2c"
+      "eTag" : "0x8DA16E4F1588BE1",
+      "x-ms-request-id" : "7753ac53-901e-0039-2ccd-481470000000",
+      "x-ms-client-request-id" : "d570d8e4-e016-4489-b3e7-b4e4d3a9ec4a"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://REDACTED.blob.core.windows.net/056730280056730284e863193208b879174db4d91961/056730281056730284e8068775a13748220a440f489d",
+    "Uri" : "http://REDACTED.blob.core.windows.net/872766b10872766b14cb87039c11bebcdd5ff4350bc2/872766b11872766b14cb1545720114ccee1c844da9f9",
     "Headers" : {
       "x-ms-version" : "2021-04-10",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.16.0-beta.1 (11.0.14; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "3d723b6a-b535-4226-a18e-e74ecee31463"
+      "x-ms-client-request-id" : "e20c9cd6-4868-4d41-a516-79e868e7f5ea"
     },
     "Response" : {
       "content-length" : "0",
@@ -60,11 +60,11 @@
       "x-ms-delete-type-permanent" : "false",
       "retry-after" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "26061b9e-101e-00c6-72cd-4829e8000000",
-      "x-ms-client-request-id" : "3d723b6a-b535-4226-a18e-e74ecee31463",
-      "Date" : "Tue, 05 Apr 2022 09:16:17 GMT"
+      "x-ms-request-id" : "31835f66-001e-005a-53cd-485255000000",
+      "x-ms-client-request-id" : "e20c9cd6-4868-4d41-a516-79e868e7f5ea",
+      "Date" : "Tue, 05 Apr 2022 09:16:18 GMT"
     },
     "Exception" : null
   } ],
-  "variables" : [ "056730280056730284e863193208b879174db4d91961", "056730281056730284e8068775a13748220a440f489d" ]
+  "variables" : [ "872766b10872766b14cb87039c11bebcdd5ff4350bc2", "872766b11872766b14cb1545720114ccee1c844da9f9" ]
 }
