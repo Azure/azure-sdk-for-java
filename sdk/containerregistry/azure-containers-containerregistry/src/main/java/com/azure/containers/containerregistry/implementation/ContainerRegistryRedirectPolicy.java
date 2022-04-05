@@ -19,6 +19,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.DOCKER_DIGEST_HEADER_NAME;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.getDigestFromHeader;
 
 /**
  * <p> Redirect policy for the container registry.</p>
@@ -26,7 +27,7 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.DO
  * <p> This reads some of the headers that are returned from the redirect call that core redirect policy does not handle.</p>
  */
 public final class ContainerRegistryRedirectPolicy implements HttpPipelinePolicy {
-    private static final ClientLogger LOGGER = new ClientLogger(com.azure.core.http.policy.DefaultRedirectStrategy.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerRegistryRedirectPolicy.class);
     private static final int MAX_REDIRECT_ATTEMPTS;
     private static final String REDIRECT_LOCATION_HEADER_NAME;
     private static final int PERMANENT_REDIRECT_STATUS_CODE;
@@ -60,9 +61,9 @@ public final class ContainerRegistryRedirectPolicy implements HttpPipelinePolicy
                 return httpResponse.getBody().ignoreElements()
                     .then(this.attemptRedirect(context, next, redirectRequestCopy, redirectAttempt + 1, attemptedRedirectUrls))
                     .flatMap(newResponse -> {
-                        String digest = httpResponse.getHeaders().getValue(DOCKER_DIGEST_HEADER_NAME);
+                        String digest = getDigestFromHeader(httpResponse.getHeaders());
                         if (digest != null) {
-                            newResponse.getHeaders().add(DOCKER_DIGEST_HEADER_NAME, digest);
+                            newResponse.getHeaders().set(DOCKER_DIGEST_HEADER_NAME, digest);
                         }
                         return Mono.just(newResponse);
                     });
@@ -76,7 +77,7 @@ public final class ContainerRegistryRedirectPolicy implements HttpPipelinePolicy
         if (this.isValidRedirectStatusCode(httpResponse.getStatusCode()) && this.isValidRedirectCount(tryCount) && this.isAllowedRedirectMethod(httpResponse.getRequest().getHttpMethod())) {
             String redirectUrl = this.tryGetRedirectHeader(httpResponse.getHeaders(), REDIRECT_LOCATION_HEADER_NAME);
             if (redirectUrl != null && !this.alreadyAttemptedRedirectUrl(redirectUrl, attemptedRedirectUrls)) {
-                LOGGER.verbose("[Redirecting] Try count: {}, Attempted Redirect URLs: {}", tryCount, String.join(",", attemptedRedirectUrls));
+                LOGGER.verbose("[Redirecting] Try count:" + tryCount + ", Attempted Redirect URLs:" + String.join(",", attemptedRedirectUrls));
                 attemptedRedirectUrls.add(redirectUrl);
                 return true;
             } else {
@@ -97,7 +98,7 @@ public final class ContainerRegistryRedirectPolicy implements HttpPipelinePolicy
 
     private boolean alreadyAttemptedRedirectUrl(String redirectUrl, Set<String> attemptedRedirectUrls) {
         if (attemptedRedirectUrls.contains(redirectUrl)) {
-            LOGGER.error("Request was redirected more than once to: {}", new Object[]{redirectUrl});
+            LOGGER.error("Request was redirected more than once to:" + redirectUrl);
             return true;
         } else {
             return false;
@@ -106,7 +107,7 @@ public final class ContainerRegistryRedirectPolicy implements HttpPipelinePolicy
 
     private boolean isValidRedirectCount(int tryCount) {
         if (tryCount >= MAX_REDIRECT_ATTEMPTS) {
-            LOGGER.error("Request has been redirected more than {} times.", new Object[]{MAX_REDIRECT_ATTEMPTS});
+            LOGGER.error("Request has been redirected more than " + MAX_REDIRECT_ATTEMPTS + "times");
             return false;
         } else {
             return true;
@@ -117,7 +118,7 @@ public final class ContainerRegistryRedirectPolicy implements HttpPipelinePolicy
         if (REDIRECT_ALLOWED_METHODS.contains(httpMethod)) {
             return true;
         } else {
-            LOGGER.error("Request was redirected from an invalid redirect allowed method: {}", new Object[]{httpMethod});
+            LOGGER.error("Request was redirected from an invalid redirect allowed method:" + httpMethod);
             return false;
         }
     }
@@ -129,7 +130,7 @@ public final class ContainerRegistryRedirectPolicy implements HttpPipelinePolicy
     String tryGetRedirectHeader(HttpHeaders headers, String headerName) {
         String headerValue = headers.getValue(headerName);
         if (CoreUtils.isNullOrEmpty(headerValue)) {
-            LOGGER.error("Redirect url was null for header name: {}, request redirect was terminated.", headerName);
+            LOGGER.error("Redirect url was null for header name:" + headerName + " request redirect was terminated.");
             return null;
         } else {
             return headerValue;

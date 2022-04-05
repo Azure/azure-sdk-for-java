@@ -339,10 +339,10 @@ public final class UtilsImpl {
 
     /**
      * Get the digest from the response header if available.
-     * @param response The HttpResponse to parse.
+     * @param headers The headers to parse.
      * @return The digest value.
      */
-    public static <T> String getDigestFromHeader(Response<T> response) {
-        return response.getHeaders().getValue(DOCKER_DIGEST_HEADER_NAME);
+    public static <T> String getDigestFromHeader(HttpHeaders headers) {
+        return headers.getValue(DOCKER_DIGEST_HEADER_NAME);
     }
 }
