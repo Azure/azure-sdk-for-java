@@ -159,6 +159,13 @@ function Get-java-UpdatedDocsMsToc($toc) {
     # Add services exsting in old toc but missing in automation.
     $otherService = $services[-1]
     $sortableServices = $services | Where-Object { $_ –ne $otherService }
+    $CoreClient = $otherService.items[0].items[0].items
+    for ($i = 0; $i -lt $CoreClient.Count; $i++) {
+        if ($CoreClient[$i].name -eq 'Test') {
+            $otherService.items[0].items[0].items[$i].children = ($CoreClient[$i].children | ForEach-Object {$_.Trim() + "*"})
+            break
+        }                
+    }
     $sortableServices += [PSCustomObject]@{
         name  = "Active Directory"
         href  = "~/docs-ref-services/{moniker}/resourcemanager-msi-readme.md"
