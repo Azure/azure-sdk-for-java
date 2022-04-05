@@ -531,6 +531,18 @@ public class OkHttpAsyncHttpClientBuilderTests {
     private static OkHttpClient okHttpClientWithProxyValidation(boolean shouldHaveProxy, Proxy.Type proxyType) {
         return new OkHttpClient.Builder()
             .eventListener(new TestEventListenerValidator(shouldHaveProxy, proxyType))
+            // Use a custom Dispatcher and ExecutorService which overrides the uncaught exception handler.
+            // This is done to prevent the tests using this from printing their error stack trace.
+            // The reason this happens is the test throws an exception which goes uncaught in a thread, and this is an
+            // expected exception, which results in the exception and its stack trace being logged, which is very
+            // verbose.
+            .dispatcher(new Dispatcher(Executors.newFixedThreadPool(2, r -> {
+                Thread thread = new Thread(r);
+                thread.setUncaughtExceptionHandler((t, e) -> {
+                });
+
+                return thread;
+            })))
             .build();
     }
 
