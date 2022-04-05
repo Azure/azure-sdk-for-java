@@ -4,8 +4,8 @@
 
 ### Features Added
 
-### Breaking Changes from 1.5.0-beta.2
-Removed `disableAuthoriyValidaionSafetyCheck` for GA, will reintroduce in next beta.
+### Breaking Changes
+Removed `disableAuthorityValidationSafetyCheck` for GA, will reintroduce in next beta. This is not a breaking change from last GA.
 
 ### Bugs Fixed
 Correctly use an `AppServiceMsiCredential` in the case both `IDENTITY_ENDPOINT` and `IDENTITY_HEADER` are set.
